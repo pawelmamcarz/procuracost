@@ -9,60 +9,101 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  Cell,
 } from "recharts";
-import { ComparisonResult, formatPLN, formatPercent } from "@/lib/calculations";
+import {
+  ComparisonResult,
+  ProcurementInputs,
+  formatPLN,
+  formatPercent,
+  calculateMatrix,
+  MatrixCell,
+  TechLevelId,
+} from "@/lib/calculations";
 import { Scenario } from "@/lib/scenarios";
+import { comparisonT, Lang } from "@/lib/i18n";
+import {
+  getSteps,
+  TECH_LEVELS,
+  PROCESS_TYPE_META,
+  ProcessStep,
+} from "@/lib/process-templates";
 
 interface Props {
   result: ComparisonResult;
   scenario: Scenario;
+  inputs: ProcurementInputs;
+  lang?: Lang;
 }
 
-const COST_LABELS: Record<string, string> = {
-  timeCost: "Koszt czasu",
-  adminCost: "Koszty admin.",
-  opportunityCost: "Utracone okazje",
-  renegotiationCost: "Renegocjacje",
-  tcoCost: "Utracone oszczędności TCO",
-  bypassCost: "Koszty obejść rury",
-};
+const TECH_LEVEL_IDS: TechLevelId[] = ["manual", "sourcing_tool", "partial_erp", "end_to_end"];
 
-export default function CostComparison({ result, scenario }: Props) {
-  const { rigid, flexible, delta, deltaPercent, bypassProbability, sources } = result;
+function matrixColor(cost: number, min: number, max: number): string {
+  const ratio = max === min ? 0.5 : (cost - min) / (max - min);
+  // green (low cost) → yellow → red (high cost)
+  if (ratio < 0.5) {
+    const g = Math.round(200 + ratio * 2 * 55);
+    return `rgb(${Math.round(ratio * 2 * 255)}, ${g}, 60)`;
+  }
+  const r = 255;
+  const g = Math.round(200 - (ratio - 0.5) * 2 * 180);
+  return `rgb(${r}, ${Math.max(20, g)}, 40)`;
+}
 
-  const chartData = (Object.keys(COST_LABELS) as Array<keyof typeof rigid>).map((key) => ({
+export default function CostComparison({ result, scenario, inputs, lang = "pl" }: Props) {
+  const tx = comparisonT[lang];
+  const COST_LABELS = tx.costLabels;
+  const { rigid, flexible, delta, deltaPercent, bypassProbability, sources, rigidDays, flexibleDays } = result;
+
+  // Steps for explanation table
+  const steps = getSteps(inputs.processType, inputs.customSteps);
+
+  // 2D matrix
+  const matrix = calculateMatrix(inputs);
+  const allCosts = matrix.map((c) => c.totalCost);
+  const minCost = Math.min(...allCosts);
+  const maxCost = Math.max(...allCosts);
+
+  const chartData = (Object.keys(COST_LABELS) as Array<keyof typeof COST_LABELS>).map((key) => ({
     name: COST_LABELS[key],
-    "Procedura sztywna": rigid[key as keyof typeof rigid] as number,
-    "Polityka zakupowa": flexible[key as keyof typeof flexible] as number,
+    [tx.rigidLabel]: rigid[key as keyof typeof rigid] as number,
+    [tx.flexibleLabel]: flexible[key as keyof typeof flexible] as number,
   }));
 
-  const summaryData = [
-    {
-      name: "SUMA",
-      "Procedura sztywna": rigid.total,
-      "Polityka zakupowa": flexible.total,
-    },
-  ];
-
   const sourcesEntries = Object.entries(sources);
+
+  function getCell(tl: TechLevelId, mode: "rigid" | "flexible"): MatrixCell {
+    return matrix.find((c) => c.techLevel === tl && c.processMode === mode)!;
+  }
+
+  const processLabel = inputs.processType !== "custom"
+    ? (lang === "en" ? PROCESS_TYPE_META[inputs.processType].nameEn : PROCESS_TYPE_META[inputs.processType].name)
+    : (lang === "en" ? "Custom" : "Własny");
 
   return (
     <div className="space-y-8">
       {/* Delta headline */}
       <div className="rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-6 text-white">
         <p className="text-sm font-medium uppercase tracking-wide opacity-80">
-          Koszt utracony przywiązania do procedur
+          {tx.deltaHeadline}
         </p>
         <p className="mt-1 text-4xl font-bold">{formatPLN(delta)}</p>
         <p className="mt-1 text-lg opacity-90">
-          {formatPercent(deltaPercent)} wyższy niż podejście oparte na polityce zakupowej
+          {formatPercent(deltaPercent)} {tx.higherThan}
         </p>
+        {/* Days comparison */}
+        <div className="mt-3 flex gap-4 text-sm">
+          <span className="rounded-lg bg-white/10 px-3 py-1">
+            {tx.rigidLabel}: <strong>{rigidDays}</strong> {lang === "en" ? "days" : "dni"}
+          </span>
+          <span className="rounded-lg bg-white/10 px-3 py-1">
+            {tx.flexibleLabel}: <strong>{flexibleDays}</strong> {lang === "en" ? "days" : "dni"}
+          </span>
+        </div>
         {/* Bypass probability indicator */}
         <div className="mt-4 flex items-start gap-3 rounded-xl bg-white/10 p-3">
           <div className="flex-1">
             <p className="text-xs font-semibold uppercase tracking-wide opacity-70">
-              Prawdopodobieństwo obejścia procedury (Lipsky 1980)
+              {tx.bypassLabel}
             </p>
             <div className="mt-1.5 flex items-center gap-2">
               <div className="h-2 flex-1 overflow-hidden rounded-full bg-white/20">
@@ -73,39 +114,171 @@ export default function CostComparison({ result, scenario }: Props) {
               </div>
               <span className="text-sm font-bold">{Math.round(bypassProbability * 100)}%</span>
             </div>
-            <p className="mt-1 text-xs opacity-60">
-              Przy tej sztywności kupcy statystycznie obchodzą procedurę nieformalnie (mail/telefon/Excel)
-            </p>
+            <p className="mt-1 text-xs opacity-60">{tx.bypassNote}</p>
           </div>
         </div>
         {scenario.caseStudy && (
           <div className="mt-3 rounded-xl bg-white/10 p-3 text-sm">
             <p className="font-semibold">{scenario.caseStudy.title}</p>
-            <p className="mt-1 opacity-90">{scenario.caseStudy.insight}</p>
-            <p className="mt-1 text-xs opacity-60">Źródło: {scenario.caseStudy.source}</p>
+            <p className="mt-1 opacity-90">
+              {lang === "en" ? scenario.caseStudy.insightEn : scenario.caseStudy.insight}
+            </p>
+            <p className="mt-1 text-xs opacity-60">
+              {lang === "en" ? "Source" : "Źródło"}: {scenario.caseStudy.source}
+            </p>
           </div>
         )}
       </div>
 
-      {/* Side-by-side totals */}
+      {/* Side-by-side totals with sub-breakdown */}
       <div className="grid grid-cols-2 gap-4">
         <div className="rounded-xl border border-red-100 bg-red-50 p-4">
-          <p className="text-xs font-semibold uppercase tracking-wide text-red-500">
-            Procedura sztywna
-          </p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-red-500">{tx.rigidLabel}</p>
           <p className="mt-1 text-2xl font-bold text-red-700">{formatPLN(rigid.total)}</p>
+          <div className="mt-2 space-y-0.5 text-xs text-red-400">
+            <div>{tx.staffCost}: {formatPLN(rigid.staffCost)}</div>
+            <div>{tx.coordCost}: {formatPLN(rigid.coordCost)}</div>
+            <div>{tx.toolCost}: {formatPLN(rigid.toolCost)}</div>
+          </div>
         </div>
         <div className="rounded-xl border border-green-100 bg-green-50 p-4">
-          <p className="text-xs font-semibold uppercase tracking-wide text-green-500">
-            Polityka zakupowa
-          </p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-green-500">{tx.flexibleLabel}</p>
           <p className="mt-1 text-2xl font-bold text-green-700">{formatPLN(flexible.total)}</p>
+          <div className="mt-2 space-y-0.5 text-xs text-green-400">
+            <div>{tx.staffCost}: {formatPLN(flexible.staffCost)}</div>
+            <div>{tx.coordCost}: {formatPLN(flexible.coordCost)}</div>
+            <div>{tx.toolCost}: {formatPLN(flexible.toolCost)}</div>
+          </div>
         </div>
+      </div>
+
+      {/* Process steps table */}
+      <div>
+        <h3 className="mb-3 text-sm font-semibold text-gray-700">{tx.stepsTitle}</h3>
+        <p className="mb-3 text-xs text-gray-400">{processLabel} — {TECH_LEVELS[inputs.techLevel][lang === "en" ? "nameEn" : "name"]}</p>
+        <div className="overflow-x-auto rounded-xl border border-gray-100">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="bg-gray-50">
+                <th className="px-3 py-2 text-left font-medium text-gray-500">
+                  {lang === "en" ? "Step" : "Krok"}
+                </th>
+                <th className="px-3 py-2 text-right font-medium text-red-400">{tx.stepsRigidDays}</th>
+                <th className="px-3 py-2 text-right font-medium text-green-400">{tx.stepsFlexDays}</th>
+                <th className="px-3 py-2 text-center font-medium text-gray-400">{tx.stepsMandatory}</th>
+                <th className="px-3 py-2 text-left font-medium text-gray-400 hidden sm:table-cell">{tx.stepsParticipants}</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-50">
+              {steps.map((step: ProcessStep) => (
+                <tr key={step.id} className={step.mandatoryWait ? "bg-orange-50" : "hover:bg-gray-50"}>
+                  <td className="px-3 py-2 font-medium text-gray-700">
+                    {lang === "en" ? step.nameEn : step.name}
+                    {step.mandatoryWait && (
+                      <span className="ml-1.5 rounded bg-orange-100 px-1 py-0.5 text-xs text-orange-600">
+                        {lang === "en" ? "⚖ legal" : "⚖ prawo"}
+                      </span>
+                    )}
+                  </td>
+                  <td className="px-3 py-2 text-right tabular-nums text-red-600">
+                    {Math.round(step.rigidDays * TECH_LEVELS[inputs.techLevel].timeMultiplier)}
+                  </td>
+                  <td className="px-3 py-2 text-right tabular-nums">
+                    {step.flexibleDays === null ? (
+                      <span className="italic text-gray-300">{tx.stepsEliminated}</span>
+                    ) : (
+                      <span className="text-green-600">
+                        {Math.round(step.flexibleDays * TECH_LEVELS[inputs.techLevel].timeMultiplier * 0.85)}
+                      </span>
+                    )}
+                  </td>
+                  <td className="px-3 py-2 text-center">
+                    {step.mandatoryWait ? "✓" : ""}
+                  </td>
+                  <td className="px-3 py-2 text-gray-400 hidden sm:table-cell">
+                    {Object.entries(step.participation)
+                      .map(([r, h]) => `${r} ${h}h`)
+                      .join(", ")}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+            <tfoot>
+              <tr className="bg-gray-50 font-semibold">
+                <td className="px-3 py-2">{lang === "en" ? "TOTAL" : "SUMA"}</td>
+                <td className="px-3 py-2 text-right text-red-600">{rigidDays}</td>
+                <td className="px-3 py-2 text-right text-green-600">{flexibleDays}</td>
+                <td colSpan={2} />
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      {/* 2D matrix */}
+      <div>
+        <h3 className="mb-3 text-sm font-semibold text-gray-700">{tx.matrixTitle}</h3>
+        <div className="overflow-x-auto rounded-xl border border-gray-100">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="bg-gray-50">
+                <th className="px-3 py-2 text-left font-medium text-gray-500">{tx.matrixTechLabel}</th>
+                <th className="px-3 py-2 text-center font-medium text-red-400" colSpan={2}>{tx.matrixRigid}</th>
+                <th className="px-3 py-2 text-center font-medium text-green-500" colSpan={2}>{tx.matrixFlexible}</th>
+              </tr>
+              <tr className="bg-gray-50 text-gray-400">
+                <th />
+                <th className="px-3 py-1 text-right">{tx.matrixTotalCost}</th>
+                <th className="px-3 py-1 text-right">{tx.matrixDays}</th>
+                <th className="px-3 py-1 text-right">{tx.matrixTotalCost}</th>
+                <th className="px-3 py-1 text-right">{tx.matrixDays}</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-50">
+              {TECH_LEVEL_IDS.map((tl) => {
+                const rigidCell = getCell(tl, "rigid");
+                const flexCell = getCell(tl, "flexible");
+                const isActive = tl === inputs.techLevel;
+                return (
+                  <tr key={tl} className={isActive ? "ring-1 ring-inset ring-blue-300 bg-blue-50" : "hover:bg-gray-50"}>
+                    <td className="px-3 py-2 font-medium text-gray-700">
+                      {lang === "en" ? TECH_LEVELS[tl].nameEn : TECH_LEVELS[tl].name}
+                      {isActive && (
+                        <span className="ml-1.5 rounded bg-blue-100 px-1 py-0.5 text-xs text-blue-600">
+                          {lang === "en" ? "current" : "aktualne"}
+                        </span>
+                      )}
+                    </td>
+                    <td
+                      className="px-3 py-2 text-right font-semibold tabular-nums"
+                      style={{ color: matrixColor(rigidCell.totalCost, minCost, maxCost) }}
+                    >
+                      {formatPLN(rigidCell.totalCost)}
+                    </td>
+                    <td className="px-3 py-2 text-right text-gray-400 tabular-nums">{rigidCell.days}</td>
+                    <td
+                      className="px-3 py-2 text-right font-semibold tabular-nums"
+                      style={{ color: matrixColor(flexCell.totalCost, minCost, maxCost) }}
+                    >
+                      {formatPLN(flexCell.totalCost)}
+                    </td>
+                    <td className="px-3 py-2 text-right text-gray-400 tabular-nums">{flexCell.days}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <p className="mt-1.5 text-xs text-gray-400">
+          {lang === "en"
+            ? "Color gradient: green = lowest cost, red = highest. Row highlighted = current selection."
+            : "Gradient kolorów: zielony = najniższy koszt, czerwony = najwyższy. Wiersz podświetlony = aktualne ustawienie."}
+        </p>
       </div>
 
       {/* Stacked bar chart */}
       <div>
-        <h3 className="mb-3 text-sm font-semibold text-gray-700">Porównanie wg wymiaru kosztów</h3>
+        <h3 className="mb-3 text-sm font-semibold text-gray-700">{tx.chartTitle}</h3>
         <ResponsiveContainer width="100%" height={320}>
           <BarChart data={chartData} margin={{ top: 5, right: 10, left: 10, bottom: 60 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -131,27 +304,27 @@ export default function CostComparison({ result, scenario }: Props) {
               contentStyle={{ fontSize: 12 }}
             />
             <Legend wrapperStyle={{ fontSize: 12, paddingTop: "8px" }} />
-            <Bar dataKey="Procedura sztywna" fill="#ef4444" radius={[4, 4, 0, 0]} />
-            <Bar dataKey="Polityka zakupowa" fill="#22c55e" radius={[4, 4, 0, 0]} />
+            <Bar dataKey={tx.rigidLabel} fill="#ef4444" radius={[4, 4, 0, 0]} />
+            <Bar dataKey={tx.flexibleLabel} fill="#22c55e" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </div>
 
       {/* Detailed breakdown table */}
       <div>
-        <h3 className="mb-3 text-sm font-semibold text-gray-700">Szczegółowe zestawienie</h3>
+        <h3 className="mb-3 text-sm font-semibold text-gray-700">{tx.tableTitle}</h3>
         <div className="overflow-x-auto rounded-xl border border-gray-100">
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-gray-50">
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500">Wymiar kosztów</th>
-                <th className="px-4 py-3 text-right text-xs font-medium text-red-500">Procedura sztywna</th>
-                <th className="px-4 py-3 text-right text-xs font-medium text-green-500">Polityka zakupowa</th>
-                <th className="px-4 py-3 text-right text-xs font-medium text-gray-500">Różnica</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500">{tx.colCostDim}</th>
+                <th className="px-4 py-3 text-right text-xs font-medium text-red-500">{tx.rigidLabel}</th>
+                <th className="px-4 py-3 text-right text-xs font-medium text-green-500">{tx.flexibleLabel}</th>
+                <th className="px-4 py-3 text-right text-xs font-medium text-gray-500">{tx.colDiff}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
-              {(Object.keys(COST_LABELS) as Array<keyof typeof rigid>).map((key) => {
+              {(Object.keys(COST_LABELS) as Array<keyof typeof COST_LABELS>).map((key) => {
                 const r = rigid[key as keyof typeof rigid] as number;
                 const f = flexible[key as keyof typeof flexible] as number;
                 const diff = r - f;
@@ -160,7 +333,7 @@ export default function CostComparison({ result, scenario }: Props) {
                     <td className="px-4 py-3 font-medium text-gray-700">{COST_LABELS[key]}</td>
                     <td className="px-4 py-3 text-right text-red-600">{formatPLN(r)}</td>
                     <td className="px-4 py-3 text-right text-green-600">{formatPLN(f)}</td>
-                    <td className="px-4 py-3 text-right font-medium text-gray-600">
+                    <td className="px-4 py-3 text-right font-medium">
                       {diff > 0 ? (
                         <span className="text-red-500">+{formatPLN(diff)}</span>
                       ) : diff < 0 ? (
@@ -175,7 +348,7 @@ export default function CostComparison({ result, scenario }: Props) {
             </tbody>
             <tfoot>
               <tr className="bg-gray-50 font-semibold">
-                <td className="px-4 py-3">SUMA</td>
+                <td className="px-4 py-3">{lang === "en" ? "TOTAL" : "SUMA"}</td>
                 <td className="px-4 py-3 text-right text-red-600">{formatPLN(rigid.total)}</td>
                 <td className="px-4 py-3 text-right text-green-600">{formatPLN(flexible.total)}</td>
                 <td className="px-4 py-3 text-right text-red-600">+{formatPLN(delta)}</td>
@@ -188,12 +361,15 @@ export default function CostComparison({ result, scenario }: Props) {
       {/* Sources */}
       <div className="rounded-xl border border-gray-100 bg-gray-50 p-4">
         <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-400">
-          Źródła naukowe modelu
+          {tx.sourcesTitle}
         </h3>
         <ul className="space-y-1">
           {sourcesEntries.map(([key, src]) => (
             <li key={key} className="text-xs text-gray-500">
-              <span className="font-medium text-gray-600">{COST_LABELS[key]}:</span> {src}
+              <span className="font-medium text-gray-600">
+                {COST_LABELS[key as keyof typeof COST_LABELS]}:
+              </span>{" "}
+              {src}
             </li>
           ))}
         </ul>

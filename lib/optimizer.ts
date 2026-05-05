@@ -32,9 +32,12 @@ export interface ProcurementPath {
   nameEn: string;
   pzpArticle: string | null;
   description: string;
+  descriptionEn: string;
   typicalDays: [number, number]; // [min, max]
   conditions: string[];
+  conditionsEn: string[];
   risks: string[];
+  risksEn: string[];
   color: string;
 }
 
@@ -46,6 +49,8 @@ export const PATHS: Record<PathId, ProcurementPath> = {
     pzpArticle: "PZP Art. 129",
     description:
       "Klasyczny przetarg otwarty — oferty składa nieograniczona liczba podmiotów. Maksymalna konkurencja, pełna przejrzystość, najdłuższy czas.",
+    descriptionEn:
+      "Classic open tender — offers submitted by an unlimited number of entities. Maximum competition, full transparency, longest timeline.",
     typicalDays: [60, 180],
     conditions: [
       "Wartość powyżej progów unijnych lub krajowych",
@@ -53,10 +58,21 @@ export const PATHS: Record<PathId, ProcurementPath> = {
       "Specyfikacja dobrze znana",
       "Czas nie jest presją",
     ],
+    conditionsEn: [
+      "Value above EU or national thresholds",
+      "Mature market, many suppliers",
+      "Well-defined specification",
+      "Time is not a constraint",
+    ],
     risks: [
       "Długi czas procesu",
       "Mała elastyczność negocjacyjna",
       "Ryzyko ofert nieporównywalnych",
+    ],
+    risksEn: [
+      "Long process duration",
+      "Low negotiation flexibility",
+      "Risk of non-comparable bids",
     ],
     color: "#3b82f6",
   },
@@ -67,15 +83,26 @@ export const PATHS: Record<PathId, ProcurementPath> = {
     pzpArticle: "PZP Art. 145",
     description:
       "Zaproszenie do składania ofert kierowane do wybranych, wstępnie kwalifikowanych dostawców. Łączy konkurencję z filtrem kompetencji.",
+    descriptionEn:
+      "Invitation to tender sent to selected, pre-qualified suppliers. Combines competition with a competence filter.",
     typicalDays: [45, 120],
     conditions: [
       "Rynek z ograniczoną liczbą kwalifikowanych dostawców",
       "Wysokie wymagania techniczne",
       "Sektor publiczny",
     ],
+    conditionsEn: [
+      "Market with limited qualified suppliers",
+      "High technical requirements",
+      "Public sector",
+    ],
     risks: [
       "Ryzyko wykluczenia najlepszych ofert",
       "Konieczność precyzyjnej kwalifikacji wstępnej",
+    ],
+    risksEn: [
+      "Risk of excluding best offers",
+      "Requires precise pre-qualification",
     ],
     color: "#8b5cf6",
   },
@@ -86,6 +113,8 @@ export const PATHS: Record<PathId, ProcurementPath> = {
     pzpArticle: "PZP Art. 172",
     description:
       "Wieloetapowe negocjacje z wybranymi dostawcami — zamawiający nie zna optymalnego rozwiązania i iteracyjnie go odkrywa. Idealny dla innowacji i złożonych projektów.",
+    descriptionEn:
+      "Multi-stage negotiations with selected suppliers — the contracting authority does not know the optimal solution and iteratively discovers it. Ideal for innovation and complex projects.",
     typicalDays: [90, 270],
     conditions: [
       "Wysoka złożoność lub innowacyjność",
@@ -93,10 +122,21 @@ export const PATHS: Record<PathId, ProcurementPath> = {
       "Sektor publiczny powyżej progów",
       "2–5 dostawców zdolnych do odpowiedzi",
     ],
+    conditionsEn: [
+      "High complexity or innovation required",
+      "Unknown or open specification",
+      "Public sector above thresholds",
+      "2–5 suppliers capable of responding",
+    ],
     risks: [
       "Wysokie koszty procesu po stronie dostawców",
       "Ryzyko ujawnienia informacji konkurencyjnych",
       "Długi czas",
+    ],
+    risksEn: [
+      "High process costs for suppliers",
+      "Risk of disclosing competitive information",
+      "Long duration",
     ],
     color: "#f59e0b",
   },
@@ -107,6 +147,8 @@ export const PATHS: Record<PathId, ProcurementPath> = {
     pzpArticle: "PZP Art. 160 / Art. 214 §1 pkt 1",
     description:
       "Elastyczne negocjacje z wybranymi partnerami bez pełnego postępowania przetargowego. Szybsze, bardziej relacyjne, wymagają silnych kompetencji kupca.",
+    descriptionEn:
+      "Flexible negotiations with selected partners without a full tender procedure. Faster, more relational, requires strong buyer competencies.",
     typicalDays: [20, 90],
     conditions: [
       "Sektor prywatny LUB szczególne przesłanki PZP",
@@ -114,10 +156,21 @@ export const PATHS: Record<PathId, ProcurementPath> = {
       "Wysoka wartość + złożoność + presja czasu",
       "Rynek oligopolistyczny",
     ],
+    conditionsEn: [
+      "Private sector OR specific PZP grounds",
+      "Strategic supplier relationship",
+      "High value + complexity + time pressure",
+      "Oligopolistic market",
+    ],
     risks: [
       "Ryzyko percepcji faworyzowania",
       "Konieczność dokumentacji uzasadnienia",
       "Wymaga dojrzałości kupca",
+    ],
+    risksEn: [
+      "Risk of perceived favoritism",
+      "Requires documentation of justification",
+      "Requires buyer maturity",
     ],
     color: "#10b981",
   },
@@ -128,6 +181,8 @@ export const PATHS: Record<PathId, ProcurementPath> = {
     pzpArticle: "Sektor prywatny / pilotaż publiczny",
     description:
       "Iteracyjny, wieloetapowy proces zakupowy z krótkimi cyklami decyzyjnymi, warsztatami z dostawcami i szybką selekcją. Swiss Casinos: 4 tygodnie vs. 6 miesięcy.",
+    descriptionEn:
+      "Iterative, multi-stage procurement process with short decision cycles, supplier workshops and rapid selection. Swiss Casinos: 4 weeks vs. 6 months.",
     typicalDays: [14, 60],
     conditions: [
       "Wysoka innowacyjność lub presja czasu",
@@ -135,9 +190,19 @@ export const PATHS: Record<PathId, ProcurementPath> = {
       "Dostawcy zdolni do szybkiej odpowiedzi",
       "Kupiec z doświadczeniem agile",
     ],
+    conditionsEn: [
+      "High innovation or time pressure",
+      "Private sector (or public sector pilot)",
+      "Suppliers capable of rapid response",
+      "Buyer with agile experience",
+    ],
     risks: [
       "Ograniczone zastosowanie w sektorze publicznym",
       "Wymaga zaangażowania dostawców w warsztaty",
+    ],
+    risksEn: [
+      "Limited applicability in public sector",
+      "Requires supplier engagement in workshops",
     ],
     color: "#06b6d4",
   },
@@ -148,6 +213,8 @@ export const PATHS: Record<PathId, ProcurementPath> = {
     pzpArticle: "PZP Art. 214 §1 pkt 4/5",
     description:
       "Bezpośrednie zlecenie bez postępowania konkurencyjnego. Uzasadnione w przypadku monopolu, awarii lub wyjątkowej pilności. Wymaga szczegółowej dokumentacji przesłanek.",
+    descriptionEn:
+      "Direct award without competitive procedure. Justified in cases of monopoly, emergency or exceptional urgency. Requires detailed documentation of grounds.",
     typicalDays: [1, 21],
     conditions: [
       "Monopol techniczny lub prawny",
@@ -155,10 +222,21 @@ export const PATHS: Record<PathId, ProcurementPath> = {
       "Wyjątkowa pilność nieprzewidywalna",
       "Poniżej progu 130 000 PLN (bez PZP)",
     ],
+    conditionsEn: [
+      "Technical or legal monopoly",
+      "Emergency / continuity threat",
+      "Exceptional unforeseeable urgency",
+      "Below 130,000 PLN threshold (no PZP required)",
+    ],
     risks: [
       "Najwyższe ryzyko audytowe",
       "Brak efektu konkurencji = ryzyko zawyżonej ceny",
       "Wymaga szczelnej dokumentacji",
+    ],
+    risksEn: [
+      "Highest audit risk",
+      "No competition effect = risk of inflated price",
+      "Requires airtight documentation",
     ],
     color: "#ef4444",
   },
@@ -260,6 +338,7 @@ export interface OptimizationResult {
   featureImportance: FeatureImportance[];
   topPath: PathResult;
   policyNote: string;
+  lang: "pl" | "en";
 }
 
 export interface FeatureImportance {
@@ -268,7 +347,7 @@ export interface FeatureImportance {
   importance: number; // 0–1
 }
 
-const FEATURE_LABELS: Record<keyof ProcurementFeatures, string> = {
+const FEATURE_LABELS_PL: Record<keyof ProcurementFeatures, string> = {
   contractValue: "Wartość kontraktu",
   supplierCount: "Liczba dostawców",
   complexity: "Złożoność zakupu",
@@ -278,6 +357,18 @@ const FEATURE_LABELS: Record<keyof ProcurementFeatures, string> = {
   supplyRisk: "Ryzyko podaży",
   strategicImportance: "Ważność strategiczna",
   marketMaturity: "Dojrzałość rynku",
+};
+
+const FEATURE_LABELS_EN: Record<keyof ProcurementFeatures, string> = {
+  contractValue: "Contract value",
+  supplierCount: "Supplier count",
+  complexity: "Complexity",
+  urgencyDays: "Time pressure",
+  isPublicSector: "Public sector",
+  innovationRequired: "Innovation",
+  supplyRisk: "Supply risk",
+  strategicImportance: "Strategic importance",
+  marketMaturity: "Market maturity",
 };
 
 const N_TREES = 30;
@@ -290,7 +381,7 @@ const PATH_IDS: PathId[] = [
   "bezposrednie",
 ];
 
-export function optimize(features: ProcurementFeatures): OptimizationResult {
+export function optimize(features: ProcurementFeatures, lang: "pl" | "en" = "pl"): OptimizationResult {
   const votes: Record<PathId, number> = {
     przetarg_otwarty: 0,
     przetarg_ograniczony: 0,
@@ -300,6 +391,7 @@ export function optimize(features: ProcurementFeatures): OptimizationResult {
     bezposrednie: 0,
   };
   const scores: Record<PathId, number> = { ...votes };
+  const FEATURE_LABELS = lang === "en" ? FEATURE_LABELS_EN : FEATURE_LABELS_PL;
   const featureHits: Record<string, number> = {};
   Object.keys(FEATURE_LABELS).forEach((k) => (featureHits[k] = 0));
 
@@ -353,23 +445,33 @@ export function optimize(features: ProcurementFeatures): OptimizationResult {
   const topPath = ranked[0];
 
   // PZP policy note
-  const policyNote = generatePolicyNote(features, topPath.path.id);
+  const policyNote = generatePolicyNote(features, topPath.path.id, lang);
 
-  return { ranked, featureImportance, topPath, policyNote };
+  return { ranked, featureImportance, topPath, policyNote, lang };
 }
 
-function generatePolicyNote(f: ProcurementFeatures, winner: PathId): string {
+function generatePolicyNote(f: ProcurementFeatures, winner: PathId, lang: "pl" | "en" = "pl"): string {
+  if (lang === "en") {
+    if (!f.isPublicSector) {
+      return "Private sector: no mandatory PZP thresholds. The organisation's procurement policy is the only constraint — all paths are available.";
+    }
+    if (f.contractValue < 130_000) {
+      return "Below the 130,000 PLN net threshold: purchase without applying PZP. Only the contracting authority's internal procurement policy applies.";
+    }
+    if (f.contractValue < 5_382_000) {
+      return "National PZP thresholds (130,000 – 5,382,000 PLN for supplies/services): national procedures. Available: open tender, restricted tender, price inquiry, negotiations without notice (Art. 275).";
+    }
+    return "Above EU thresholds: full procedure under PZP and Directive 2014/24/EU. Available: open tender (Art. 129), restricted tender (Art. 145), competitive dialogue (Art. 172), negotiated procedure with notice (Art. 160).";
+  }
+
   if (!f.isPublicSector) {
     return "Sektor prywatny: brak obligatoryjnych progów PZP. Polityka zakupowa organizacji jest jedynym ograniczeniem — wszystkie ścieżki są dostępne.";
   }
-
   if (f.contractValue < 130_000) {
     return "Poniżej progu 130 000 PLN netto: zakup bez stosowania PZP. Obowiązuje wyłącznie wewnętrzna polityka zakupowa zamawiającego.";
   }
-
   if (f.contractValue < 5_382_000) {
     return "Progi krajowe PZP (130 000 – 5 382 000 PLN dla dostaw/usług): tryby krajowe. Dostępne: przetarg nieograniczony, ograniczony, zapytanie o cenę, negocjacje bez ogłoszenia (Art. 275).";
   }
-
   return "Powyżej progów unijnych: pełne postępowanie zgodnie z PZP i Dyrektywą 2014/24/UE. Możliwe tryby: przetarg nieograniczony (Art. 129), ograniczony (Art. 145), dialog konkurencyjny (Art. 172), negocjacje z ogłoszeniem (Art. 160).";
 }

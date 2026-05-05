@@ -2,14 +2,28 @@
 
 import { useState } from "react";
 import { SCENARIOS, Scenario } from "@/lib/scenarios";
-import { ProcurementInputs } from "@/lib/calculations";
-import { formatPLN } from "@/lib/calculations";
+import { ProcurementInputs, ProcessType, TechLevelId, StakeholderRole } from "@/lib/calculations";
+import { TECH_LEVELS, PROCESS_TYPE_META, deriveRigidDays, deriveFlexibleDays, getSteps } from "@/lib/process-templates";
+import { calculatorT, Lang } from "@/lib/i18n";
 
 interface Props {
   onCalculate: (inputs: ProcurementInputs, scenario: Scenario) => void;
+  lang?: Lang;
 }
 
-export default function CostCalculator({ onCalculate }: Props) {
+const PROCESS_TYPES: Exclude<ProcessType, "custom">[] = [
+  "pzp_eu",
+  "pzp_krajowy",
+  "private_formal",
+  "policy_only",
+];
+
+const TECH_LEVEL_IDS: TechLevelId[] = ["manual", "sourcing_tool", "partial_erp", "end_to_end"];
+
+const STAKEHOLDER_ROLES: StakeholderRole[] = ["buyer", "lawyer", "finance", "manager", "executive"];
+
+export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
+  const tx = calculatorT[lang];
   const [selectedScenarioId, setSelectedScenarioId] = useState("fleet");
   const [inputs, setInputs] = useState<ProcurementInputs>(SCENARIOS[0].inputs);
 
@@ -19,14 +33,26 @@ export default function CostCalculator({ onCalculate }: Props) {
     if (scenario) setInputs(scenario.inputs);
   }
 
-  function handleChange(field: string, value: number) {
-    setInputs((prev) => {
-      if (field === "rigidDays") return { ...prev, procurementDays: { ...prev.procurementDays, rigid: value } };
-      if (field === "flexibleDays") return { ...prev, procurementDays: { ...prev.procurementDays, flexible: value } };
-      if (field === "rigidAdmin") return { ...prev, adminCostFixed: { ...prev.adminCostFixed, rigid: value } };
-      if (field === "flexibleAdmin") return { ...prev, adminCostFixed: { ...prev.adminCostFixed, flexible: value } };
-      return { ...prev, [field]: value };
-    });
+  function setProcessType(pt: ProcessType) {
+    setInputs((prev) => ({ ...prev, processType: pt }));
+  }
+
+  function setTechLevel(tl: TechLevelId) {
+    setInputs((prev) => ({ ...prev, techLevel: tl }));
+  }
+
+  function setStakeholder(role: StakeholderRole, field: "count" | "dailyRate", value: number) {
+    setInputs((prev) => ({
+      ...prev,
+      stakeholders: {
+        ...prev.stakeholders,
+        [role]: { ...prev.stakeholders[role], [field]: value },
+      },
+    }));
+  }
+
+  function setField(field: keyof ProcurementInputs, value: number) {
+    setInputs((prev) => ({ ...prev, [field]: value }));
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -35,15 +61,23 @@ export default function CostCalculator({ onCalculate }: Props) {
     onCalculate(inputs, scenario);
   }
 
+  // Derived preview of days based on current selections
+  const steps = getSteps(inputs.processType, inputs.customSteps);
+  const tech = TECH_LEVELS[inputs.techLevel];
+  const previewRigidDays = deriveRigidDays(steps, tech.timeMultiplier);
+  const previewFlexDays = deriveFlexibleDays(steps, tech.timeMultiplier);
+
   const inputClass =
     "w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500";
   const labelClass = "block text-xs font-medium text-gray-600 mb-1";
+  const sectionClass = "rounded-xl border border-gray-100 bg-gray-50 p-4 space-y-3";
+  const sectionTitleClass = "text-xs font-semibold uppercase tracking-wide text-gray-500 mb-3";
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-5">
       {/* Scenario selector */}
       <div>
-        <label className={labelClass}>Scenariusz zakupowy</label>
+        <label className={labelClass}>{tx.scenarioLabel}</label>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
           {SCENARIOS.map((s) => (
             <button
@@ -56,180 +90,195 @@ export default function CostCalculator({ onCalculate }: Props) {
                   : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
               }`}
             >
-              {s.name}
+              {lang === "en" ? s.nameEn : s.name}
             </button>
           ))}
         </div>
         <p className="mt-1 text-xs text-gray-400">
-          {SCENARIOS.find((s) => s.id === selectedScenarioId)?.description}
+          {SCENARIOS.find((s) => s.id === selectedScenarioId)?.[lang === "en" ? "descriptionEn" : "description"]}
         </p>
       </div>
 
-      {/* Main parameters */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <div>
-          <label className={labelClass}>Wartość kontraktu (PLN)</label>
-          <input
-            type="number"
-            className={inputClass}
-            value={inputs.contractValue}
-            onChange={(e) => handleChange("contractValue", +e.target.value)}
-            min={0}
-            step={100000}
-          />
-        </div>
-        <div>
-          <label className={labelClass}>Liczba kupców</label>
-          <input
-            type="number"
-            className={inputClass}
-            value={inputs.buyerCount}
-            onChange={(e) => handleChange("buyerCount", +e.target.value)}
-            min={1}
-            max={20}
-          />
-        </div>
-        <div>
-          <label className={labelClass}>Stawka kupca / dzień (PLN)</label>
-          <input
-            type="number"
-            className={inputClass}
-            value={inputs.dailyBuyerRate}
-            onChange={(e) => handleChange("dailyBuyerRate", +e.target.value)}
-            min={0}
-            step={100}
-          />
-        </div>
-        <div>
-          <label className={labelClass}>Dzienny przychód projektu (PLN)</label>
-          <input
-            type="number"
-            className={inputClass}
-            value={inputs.dailyProjectRevenue}
-            onChange={(e) => handleChange("dailyProjectRevenue", +e.target.value)}
-            min={0}
-            step={1000}
-          />
-        </div>
-        <div>
-          <label className={labelClass}>Koszt renegocjacji (PLN)</label>
-          <input
-            type="number"
-            className={inputClass}
-            value={inputs.renegotiationCost}
-            onChange={(e) => handleChange("renegotiationCost", +e.target.value)}
-            min={0}
-            step={10000}
-          />
-        </div>
-        <div>
-          <label className={labelClass}>
-            Ryzyko audytowe przy obejściu (PLN)
-            <span className="ml-1 cursor-help text-gray-400" title="Szacowany koszt audytu, kary regulacyjne lub reputacyjne jeśli nieformalne obejście procedury zostanie odkryte. Źródło: Lipsky (1980), Vaughan (1996)">ⓘ</span>
-          </label>
-          <input
-            type="number"
-            className={inputClass}
-            value={inputs.bypassAuditExposure}
-            onChange={(e) => handleChange("bypassAuditExposure", +e.target.value)}
-            min={0}
-            step={50000}
-          />
-        </div>
-        <div>
-          <label className={labelClass}>Horyzont TCO (lata)</label>
-          <input
-            type="number"
-            className={inputClass}
-            value={inputs.tcoHorizonYears}
-            onChange={(e) => handleChange("tcoHorizonYears", +e.target.value)}
-            min={1}
-            max={10}
-          />
+      {/* Section 1: Process type */}
+      <div className={sectionClass}>
+        <p className={sectionTitleClass}>{tx.processTypeLabel}</p>
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+          {PROCESS_TYPES.map((pt) => {
+            const meta = PROCESS_TYPE_META[pt];
+            const label = tx.processTypes[pt];
+            return (
+              <button
+                key={pt}
+                type="button"
+                onClick={() => setProcessType(pt)}
+                className={`rounded-lg border px-3 py-2 text-left text-xs transition-all ${
+                  inputs.processType === pt
+                    ? "border-indigo-400 bg-indigo-50 text-indigo-700"
+                    : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                }`}
+              >
+                <span className="font-medium">{label}</span>
+                <span className="ml-1 text-gray-400 font-normal">
+                  {lang === "en" ? meta.descriptionEn.slice(0, 60) : meta.description.slice(0, 60)}…
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {/* Procedure times */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div className="rounded-xl border border-red-100 bg-red-50 p-4">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-red-600">
-            Procedura sztywna
-          </p>
-          <div className="space-y-3">
-            <div>
-              <label className={labelClass}>Czas trwania (dni)</label>
-              <input
-                type="number"
-                className={inputClass}
-                value={inputs.procurementDays.rigid}
-                onChange={(e) => handleChange("rigidDays", +e.target.value)}
-                min={1}
-              />
-            </div>
-            <div>
-              <label className={labelClass}>Koszty administracyjne (PLN)</label>
-              <input
-                type="number"
-                className={inputClass}
-                value={inputs.adminCostFixed.rigid}
-                onChange={(e) => handleChange("rigidAdmin", +e.target.value)}
-                min={0}
-                step={5000}
-              />
-            </div>
-          </div>
+      {/* Section 2: Tech level */}
+      <div className={sectionClass}>
+        <p className={sectionTitleClass}>{tx.techLevelLabel}</p>
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+          {TECH_LEVEL_IDS.map((tl) => {
+            const level = TECH_LEVELS[tl];
+            return (
+              <button
+                key={tl}
+                type="button"
+                onClick={() => setTechLevel(tl)}
+                className={`rounded-lg border px-3 py-2.5 text-left text-xs transition-all ${
+                  inputs.techLevel === tl
+                    ? "border-teal-400 bg-teal-50 text-teal-700"
+                    : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                }`}
+              >
+                <div className="font-medium">{lang === "en" ? level.nameEn : level.name}</div>
+                <div className="mt-0.5 text-gray-400">{level.examples.slice(0, 30)}</div>
+              </button>
+            );
+          })}
         </div>
-
-        <div className="rounded-xl border border-green-100 bg-green-50 p-4">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-green-600">
-            Polityka zakupowa (elastyczna)
-          </p>
-          <div className="space-y-3">
-            <div>
-              <label className={labelClass}>Czas trwania (dni)</label>
-              <input
-                type="number"
-                className={inputClass}
-                value={inputs.procurementDays.flexible}
-                onChange={(e) => handleChange("flexibleDays", +e.target.value)}
-                min={1}
-              />
-            </div>
-            <div>
-              <label className={labelClass}>Koszty administracyjne (PLN)</label>
-              <input
-                type="number"
-                className={inputClass}
-                value={inputs.adminCostFixed.flexible}
-                onChange={(e) => handleChange("flexibleAdmin", +e.target.value)}
-                min={0}
-                step={5000}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Flexibility index */}
-      <div>
-        <label className={labelClass}>
-          Indeks elastyczności podejścia polityki:{" "}
-          <span className="font-semibold text-gray-800">
-            {Math.round(inputs.flexibilityIndex * 100)}%
+        {/* Derived days preview */}
+        <div className="mt-2 flex gap-6 text-xs text-gray-500">
+          <span>
+            {tx.rigidProcedure}:{" "}
+            <span className="font-semibold text-red-600">{previewRigidDays} {lang === "en" ? "days" : "dni"}</span>
           </span>
-        </label>
-        <input
-          type="range"
-          min={0}
-          max={1}
-          step={0.05}
-          value={inputs.flexibilityIndex}
-          onChange={(e) => handleChange("flexibilityIndex", +e.target.value)}
-          className="w-full accent-blue-500"
-        />
-        <div className="flex justify-between text-xs text-gray-400">
-          <span>Niska elastyczność (0%)</span>
-          <span>Pełna elastyczność (100%)</span>
+          <span>
+            {tx.flexiblePolicy}:{" "}
+            <span className="font-semibold text-green-600">{previewFlexDays} {lang === "en" ? "days" : "dni"}</span>
+          </span>
+          <span className="text-gray-400 italic">{tx.derivedNote}</span>
+        </div>
+      </div>
+
+      {/* Section 3: Stakeholders */}
+      <div className={sectionClass}>
+        <p className={sectionTitleClass}>{tx.stakeholdersTitle}</p>
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="text-gray-400">
+                <th className="pb-2 text-left font-medium">{lang === "en" ? "Role" : "Rola"}</th>
+                <th className="pb-2 text-right font-medium">{tx.colCount}</th>
+                <th className="pb-2 text-right font-medium">{tx.colDailyRate}</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {STAKEHOLDER_ROLES.map((role) => (
+                <tr key={role}>
+                  <td className="py-1.5 font-medium text-gray-700">
+                    {tx.stakeholderRoles[role]}
+                  </td>
+                  <td className="py-1.5 pl-4">
+                    <input
+                      type="number"
+                      min={0}
+                      max={10}
+                      value={inputs.stakeholders[role].count}
+                      onChange={(e) => setStakeholder(role, "count", +e.target.value)}
+                      className="w-16 rounded border border-gray-200 px-2 py-1 text-right text-xs focus:border-blue-400 focus:outline-none"
+                    />
+                  </td>
+                  <td className="py-1.5 pl-2">
+                    <input
+                      type="number"
+                      min={0}
+                      step={100}
+                      value={inputs.stakeholders[role].dailyRate}
+                      onChange={(e) => setStakeholder(role, "dailyRate", +e.target.value)}
+                      className="w-24 rounded border border-gray-200 px-2 py-1 text-right text-xs focus:border-blue-400 focus:outline-none"
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Section 4: Financial parameters */}
+      <div className={sectionClass}>
+        <p className={sectionTitleClass}>{tx.financialTitle}</p>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div>
+            <label className={labelClass}>{tx.contractValue}</label>
+            <input
+              type="number"
+              className={inputClass}
+              value={inputs.contractValue}
+              onChange={(e) => setField("contractValue", +e.target.value)}
+              min={0}
+              step={100000}
+            />
+          </div>
+          <div>
+            <label className={labelClass}>
+              {tx.dailyCostOfInaction}
+              <span
+                className="ml-1 cursor-help text-gray-400"
+                title={tx.dailyCostOfInactionTooltip}
+              >
+                ⓘ
+              </span>
+            </label>
+            <input
+              type="number"
+              className={inputClass}
+              value={inputs.dailyCostOfInaction}
+              onChange={(e) => setField("dailyCostOfInaction", +e.target.value)}
+              min={0}
+              step={1000}
+            />
+          </div>
+          <div>
+            <label className={labelClass}>{tx.renegotiationCost}</label>
+            <input
+              type="number"
+              className={inputClass}
+              value={inputs.renegotiationCost}
+              onChange={(e) => setField("renegotiationCost", +e.target.value)}
+              min={0}
+              step={10000}
+            />
+          </div>
+          <div>
+            <label className={labelClass}>
+              {tx.bypassExposure}
+              <span className="ml-1 cursor-help text-gray-400" title={tx.bypassTooltip}>ⓘ</span>
+            </label>
+            <input
+              type="number"
+              className={inputClass}
+              value={inputs.bypassAuditExposure}
+              onChange={(e) => setField("bypassAuditExposure", +e.target.value)}
+              min={0}
+              step={50000}
+            />
+          </div>
+          <div>
+            <label className={labelClass}>{tx.tcoHorizon}</label>
+            <input
+              type="number"
+              className={inputClass}
+              value={inputs.tcoHorizonYears}
+              onChange={(e) => setField("tcoHorizonYears", +e.target.value)}
+              min={1}
+              max={10}
+            />
+          </div>
         </div>
       </div>
 
@@ -237,7 +286,7 @@ export default function CostCalculator({ onCalculate }: Props) {
         type="submit"
         className="w-full rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700 active:bg-blue-800"
       >
-        Oblicz koszty utracone
+        {tx.calculate}
       </button>
     </form>
   );
