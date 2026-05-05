@@ -23,6 +23,7 @@ const COST_LABELS: Record<string, string> = {
   timeCost: "Koszt czasu",
   adminCost: "Koszty admin.",
   opportunityCost: "Utracone okazje",
+  productivityCost: "Koszt produktywności",
   renegotiationCost: "Renegocjacje",
   tcoCost: "Utracone oszczędności TCO",
   bypassCost: "Koszty obejść rury",
