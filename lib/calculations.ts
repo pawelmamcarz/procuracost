@@ -63,6 +63,11 @@ function bypassProbability(rigidityIndex: number): number {
   return 1 / (1 + Math.exp(-BYPASS_SIGMOID_STEEPNESS * (rigidityIndex - BYPASS_THRESHOLD)));
 }
 
+function clamp(value: number, min: number, max: number): number {
+  if (!Number.isFinite(value)) return min;
+  return Math.min(max, Math.max(min, value));
+}
+
 export function calculateCosts(inputs: ProcurementInputs): ComparisonResult {
   const {
     contractValue,
@@ -77,7 +82,8 @@ export function calculateCosts(inputs: ProcurementInputs): ComparisonResult {
     bypassAuditExposure,
   } = inputs;
 
-  const rigidityIndex = 1 - flexibilityIndex; // field model uses inverse
+  const normalizedFlexibility = clamp(flexibilityIndex, 0, 1);
+  const rigidityIndex = 1 - normalizedFlexibility; // field model uses inverse
 
   // 1. Time cost
   const rigidTimeCost = procurementDays.rigid * buyerCount * dailyBuyerRate;
@@ -95,14 +101,15 @@ export function calculateCosts(inputs: ProcurementInputs): ComparisonResult {
   const flexibleOpportunityCost = 0;
 
   // 4. Renegotiation cost
-  const rigidRenegotiationProb = BASE_RENEGOTIATION_PROBABILITY + RIGIDITY_RENEGOTIATION_PREMIUM;
-  const flexibleRenegotiationProb = BASE_RENEGOTIATION_PROBABILITY * (1 - flexibilityIndex * 0.3);
+  const rigidRenegotiationProb = clamp(BASE_RENEGOTIATION_PROBABILITY + RIGIDITY_RENEGOTIATION_PREMIUM, 0, 1);
+  const flexibleRenegotiationProb = clamp(BASE_RENEGOTIATION_PROBABILITY * (1 - normalizedFlexibility * 0.3), 0, 1);
   const rigidRenegotiationExpected = rigidRenegotiationProb * renegotiationCost;
   const flexibleRenegotiationExpected = flexibleRenegotiationProb * renegotiationCost;
 
   // 5. TCO foregone savings
-  const rigidTCOForgone = contractValue * TCO_SAVINGS_RATE_PER_YEAR * tcoHorizonYears * (1 - 0.1);
-  const flexibleTCOForgone = contractValue * TCO_SAVINGS_RATE_PER_YEAR * tcoHorizonYears * (1 - flexibilityIndex);
+  const normalizedTcoHorizonYears = Math.max(0, tcoHorizonYears);
+  const rigidTCOForgone = contractValue * TCO_SAVINGS_RATE_PER_YEAR * normalizedTcoHorizonYears * rigidityIndex;
+  const flexibleTCOForgone = contractValue * TCO_SAVINGS_RATE_PER_YEAR * normalizedTcoHorizonYears * (rigidityIndex * 0.35);
 
   // 6. Bypass cost (Pipe vs. Field model — Lipsky 1980, Vaughan 1996)
   // Rigid procedure: when rigidity > threshold, actors bypass informally
