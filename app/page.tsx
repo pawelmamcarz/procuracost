@@ -1,65 +1,102 @@
-import Image from "next/image";
+import Link from "next/link";
 
-export default function Home() {
+const stats = [
+  { value: "+2%", label: "wyższe ceny przy sztywnych procedurach", source: "Szucs, JEEA 2024" },
+  { value: "+7.7%", label: "wyższe ryzyko renegocjacji kontraktu", source: "Beuve et al., NBER 2021" },
+  { value: "42%", label: "dłuższy czas realizacji projektów", source: "World Bank, 2023" },
+  { value: "30%", label: "potencjalne oszczędności TCO przy elastyczności", source: "ISM" },
+];
+
+const principles = [
+  {
+    title: "Procedura ≠ Polityka",
+    body: "Polityka zakupowa wyznacza ramy i zasady. Procedura to tylko jedna z wielu metod ich realizacji. Mylenie ich kosztuje organizacje miliony.",
+  },
+  {
+    title: "Kupiec jako strateg",
+    body: "Ścisłe procedury zwalniają kupca z myślenia — 'zrobiłem zgodnie z procedurą, jestem bezpieczny'. Polityka zakupowa wymaga refleksji i kreatywności.",
+  },
+  {
+    title: "Koszty są mierzalne",
+    body: "Każdy dzień opóźnienia, każda renegocjacja, każda utracona okazja ma cenę. Ten kalkulator pomaga ją zobaczyć.",
+  },
+];
+
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="mx-auto max-w-5xl px-6 py-12">
+      {/* Hero */}
+      <div className="text-center">
+        <span className="inline-block rounded-full bg-blue-50 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-blue-600">
+          Narzędzie badawczo-konsultingowe
+        </span>
+        <h1 className="mt-4 text-4xl font-bold text-gray-900">
+          Ile kosztuje przywiązanie
+          <br />
+          do procedur zakupowych?
+        </h1>
+        <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-500">
+          Ścisłe procedury przetargowe generują mierzalne koszty utraconych korzyści. Kalkulator
+          pozwala porównać realne koszty procedury sztywnej z podejściem opartym wyłącznie na
+          polityce zakupowej.
+        </p>
+        <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+          <Link
+            href="/calculator"
+            className="rounded-xl bg-blue-600 px-8 py-3 text-sm font-semibold text-white hover:bg-blue-700"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            Uruchom kalkulator →
+          </Link>
+          <Link
+            href="/methodology"
+            className="rounded-xl border border-gray-200 bg-white px-8 py-3 text-sm font-semibold text-gray-600 hover:border-gray-300"
           >
-            Documentation
-          </a>
+            Metodologia (EN)
+          </Link>
         </div>
-      </main>
+      </div>
+
+      {/* Stats */}
+      <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-4">
+        {stats.map((s) => (
+          <div
+            key={s.label}
+            className="rounded-2xl border border-gray-100 bg-white p-5 text-center shadow-sm"
+          >
+            <p className="text-3xl font-bold text-blue-700">{s.value}</p>
+            <p className="mt-1 text-xs text-gray-600">{s.label}</p>
+            <p className="mt-2 text-xs text-gray-400">{s.source}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Principles */}
+      <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-3">
+        {principles.map((p) => (
+          <div
+            key={p.title}
+            className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm"
+          >
+            <h3 className="font-bold text-gray-900">{p.title}</h3>
+            <p className="mt-2 text-sm text-gray-500">{p.body}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* CTA */}
+      <div className="mt-16 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-center text-white">
+        <h2 className="text-2xl font-bold">Sprawdź swój scenariusz</h2>
+        <p className="mt-2 text-blue-100">
+          Wybierz predefiniowany scenariusz lub wprowadź własne dane. Wynik zawiera szczegółowe
+          rozbicie kosztów i cytowania akademickie.
+        </p>
+        <Link
+          href="/calculator"
+          className="mt-6 inline-block rounded-xl bg-white px-8 py-3 text-sm font-semibold text-blue-700 hover:bg-blue-50"
+        >
+          Idź do kalkulatora
+        </Link>
+      </div>
     </div>
   );
 }
