@@ -12,11 +12,13 @@ Organizations routinely conflate procurement *policy*—a high-level framework o
 
 Drawing on empirical evidence from public procurement economics, we construct a five-dimensional cost model quantifying the opportunity costs of procedural rigidity relative to policy-only compliance. Our model integrates four key empirical findings: (1) rigid auction requirements increase effective contract prices by approximately 2% (Szucs 2024); (2) contractual rigidity raises renegotiation probability by 7.7–10.5 percentage points above a 22% baseline (Beuve, Moszoro & Saussier 2021); (3) infrastructure procurement under rigid public rules extends project duration by 42% above contract baseline (World Bank 2021); and (4) Total Cost of Ownership approaches yield savings of up to 30% over three years compared to compliance-first procurement (ISM).
 
-We operationalize the model in an open-source calculator (ProcuraCost) and demonstrate its application across four procurement archetypes: fleet acquisition, IT/ERP implementation, logistics contracting, and production materials sourcing. Results consistently show that rigid-procedure costs exceed policy-only costs by 100–400%, with the gap driven primarily by foregone TCO optimization and deployment delay costs.
+We operationalize the model in an open-source calculator (ProcuraCost) and demonstrate its application across four procurement archetypes: fleet acquisition, IT/ERP implementation, logistics contracting, and production materials sourcing. Results consistently show that rigid-procedure costs exceed policy-only costs by 100–400%, with the gap driven primarily by foregone TCO optimization, deployment delay costs, and — critically — bypass risk costs generated when rigid procedures are informally circumvented under operational pressure.
 
-We argue that the policy/procedure distinction is not merely semantic but operationally critical: procurement policy defines *what* must be achieved, while procedure is only *one* method of achievement. A policy-compliant but procedure-flexible procurement organization retains full governance accountability while dramatically expanding its optimization space.
+We introduce the **Pipe vs. Field** model as the organizing metaphor: a procedure is a pipe (single path, binary compliance, human as step-executor); a procurement policy enforced by modern information systems is a field (multiple paths, continuous compliance, human as value navigator). We demonstrate, drawing on Lipsky (1980), Vaughan (1996), Holmström & Milgrom (1991), Scott (1998), and Norman (1988), that the enforcement response to procedural bypass — "make the pipe harder to exit" — is empirically predicted to fail across five independent analytical traditions. The correct response is not a better pipe. It is a field.
 
-**Keywords:** procurement policy, procurement procedure, opportunity cost, procedural compliance, agile procurement, total cost of ownership, renegotiation risk
+We argue that the policy/procedure distinction is not merely semantic but operationally critical: procurement policy defines *what* must be achieved, while procedure is only *one* method of achievement. Modern ERP and AI-powered procurement systems have absorbed the compliance enforcement function that procedures were designed to perform, rendering procedural gatekeeping structurally obsolete.
+
+**Keywords:** procurement policy, procurement procedure, opportunity cost, procedural compliance, bypass cost, pipe vs. field model, agile procurement, total cost of ownership, renegotiation risk, street-level bureaucracy, normalization of deviance
 
 ---
 
@@ -82,6 +84,36 @@ A policy-compliant but procedure-flexible approach retains all governance and ac
 - Ethical constraints: preserved (same conflict-of-interest rules)
 
 What changes is the *method*: the specific sequence of actions, timelines, supplier engagement formats, and negotiation strategies are dynamically calibrated to the procurement context. A routine, low-complexity purchase uses a streamlined approach. A strategic, high-value, relationship-dependent acquisition uses a sophisticated multi-round engagement. Neither deviates from policy; both select the procedure appropriate to context.
+
+### 2.4 The Pipe vs. Field Model
+
+The policy/procedure distinction can be captured in a spatial metaphor that is both intuitive and formally precise: the **pipe** versus the **field**.
+
+**The Pipe Model (procedure-first):** A procurement procedure defines a single ordered sequence of actions A = (a₁, a₂, ..., aₙ). The human actor is a step-executor: her role is to complete each action in sequence. Compliance is binary—she is either in the pipe or outside it. When real-world conditions deviate from the assumptions embedded in the procedure design (time pressure, missing data, uncooperative suppliers, market discontinuities), the pipe fails. The actor faces a binary choice: force reality into the pipe at high cost, or exit the pipe and proceed informally. This is the bypass.
+
+```
+Pipe:    a₁ → a₂ → a₃ → ··· → aₙ
+         (one path, sequential, human as executor)
+         ↓ under pressure:
+         a₁ → [BYPASS] → informal path (mail/phone/Excel)
+```
+
+**The Field Model (policy-first):** A procurement policy defines a bounded space Φ ⊂ ℝⁿ of permissible actions. The boundaries are defined by constraints C = {c₁, c₂, ..., cₖ} — authorization thresholds, competitive requirements, documentation standards, ethical rules. Within Φ, any path is valid. The human actor is a navigator: her role is to find the path through the field that maximizes value, subject to staying within the boundary constraints.
+
+```
+Field:   ∂Φ defined by C = {authorization, competition, ethics, documentation}
+         Interior: infinite paths, all compliant
+         Human role: navigate toward maximum value
+         (no bypass possible — boundaries are everywhere and always active)
+```
+
+The critical structural difference: in the pipe model, compliance is a momentary state (am I in the pipe right now?). In the field model, compliance is continuous — the constraint set is evaluated at every point of movement, not only at predefined checkpoints. Modern procurement information systems (ERP, spend analytics, AI-assisted sourcing) make the field model operationally viable: they enforce boundary constraints automatically at every transaction, in real time, without procedural gatekeeping.
+
+> **Proposition 1:** Any procurement action that satisfies policy constraints C is fully compliant regardless of the path taken. The claim "she bypassed the process" conflates bypassing a *procedure* (one specific path) with bypassing *policy* (the boundary constraints). These are categorically different.
+
+> **Proposition 2:** As the number of compliant paths within Φ approaches infinity (as procedural constraints are relaxed to pure policy constraints), the bypass incentive approaches zero — because there is nothing to bypass.
+
+This model directly addresses the image diagnosed by Filipowski (2026): "if the user bypasses the process, the process doesn't work." Our response: the process shown is a pipe. The fact that experienced practitioners exit it under pressure (mail, phone, Excel) is not evidence of poor process design or insufficient enforcement — it is evidence that the pipe model is structurally inappropriate for the complexity and dynamism of procurement work. No pipe, however well-designed, survives contact with procurement reality at scale.
 
 ---
 
@@ -234,6 +266,50 @@ The shift from procedure-compliance to policy-compliance requires organizational
 2. **Governance frameworks:** clear policy documentation must precede procedural flexibility; otherwise "flexible" becomes "arbitrary"
 3. **Cultural change:** audit functions and management must reward outcomes, not just compliance—a significant behavioral change in organizations conditioned to procedural accountability
 
+### 6.4 The Enforcement Fallacy: Why Better Pipes Don't Work
+
+A common response to procedural failure is to strengthen enforcement: make procedures harder to bypass, increase audit frequency, implement technical lockouts. This response—which we term the **enforcement fallacy**—is empirically predicted to fail by five decades of organizational research.
+
+**Street-Level Bureaucracy (Lipsky 1980).** Lipsky's foundational study of frontline workers in public organizations demonstrates that adaptation of formal rules to operational reality is not deviance—it is the *normal* condition of complex work. Workers exercise discretion not because they lack commitment to rules but because rules cannot anticipate all operational contingencies. Enforcement that eliminates formal bypasses does not eliminate the underlying adaptation; it drives it underground. What was visible mail-and-phone procurement becomes invisible undocumented procurement. The organization loses auditability without gaining compliance.
+
+**Normalization of Deviance (Vaughan 1996).** Diane Vaughan's analysis of the Space Shuttle *Challenger* disaster demonstrates the catastrophic endpoint of the enforcement fallacy. When operationally necessary workarounds are formally prohibited, they do not disappear—they normalize invisibly. Each successful bypass without consequence reduces the perceived risk of the next bypass. The organization accumulates hidden risk until a threshold failure event. Vaughan's finding applies directly: enforcing procurement procedures more tightly does not eliminate informal procurement; it makes informal procurement invisible and therefore unmanageable.
+
+**Multitask Principal-Agent Theory (Holmström & Milgrom 1991).** Bengt Holmström (Nobel Prize 2016) and Paul Milgrom demonstrate formally that when a principal can measure and enforce some tasks but not others, agents rationally allocate effort away from unmeasured tasks toward measured ones. Applied to procurement: when compliance with procedural steps is measured and enforced, and value creation is not, procurement officers rationally shift effort toward compliance documentation and away from market analysis, negotiation, and total cost optimization. Enforcement of procedural compliance *directly* crowds out value creation—not as a side effect, but as a structural outcome.
+
+**Goodhart's Law (Goodhart 1975; Strathern 1997).** "When a measure becomes a target, it ceases to be a good measure." When procedural compliance rate becomes the KPI for procurement performance, procedural compliance theater is the rational organizational response. Organizations achieve 100% procedural compliance while simultaneously failing to achieve competitive pricing, optimal supplier relationships, or value-for-money outcomes. The measure (compliance) crowds out the goal (value).
+
+**High-Modernist Planning Failure (Scott 1998).** James Scott's comparative analysis of large-scale state planning failures demonstrates a structural pattern: detailed procedural systems designed by central experts fail because they cannot capture *métis*—the local, practical, contextual knowledge that workers accumulate through experience. The procurement equivalent: procedures designed by process consultants in conference rooms (Filipowski's "sala projektowa") cannot encode the market knowledge, supplier relationships, and contextual judgment that experienced buyers (25+ years) bring to complex acquisitions. Better process design does not solve this problem; it remains a category error.
+
+**The Design Implication (Norman 1988).** Donald Norman's foundational work on human-centered design establishes that when users systematically bypass a system, the correct inference is a design failure—not a user failure. "Blame the user" is the designer's fallacy. When experienced procurement officers across organizations, industries, and geographies exit the formal process under time pressure in favor of mail, phone, and Excel, the correct interpretation is not "these professionals lack discipline." The correct interpretation is: the system was designed for a world that does not exist.
+
+**Synthesis.** The enforcement response to procedural bypass — "if users circumvent the process, the process doesn't work; therefore, make circumvention impossible" — is empirically wrong in five independent analytical traditions. Lipsky tells us circumvention is structurally inevitable. Vaughan tells us forcing it underground makes it dangerous. Holmström-Milgrom tells us enforcement crowds out the actual goal. Goodhart tells us the compliance measure will be gamed. Scott tells us the procedures can't encode what they need to encode. Norman tells us the system design is the problem.
+
+The correct response is not a better pipe. It is a field.
+
+### 6.5 Technology as the New Compliance Infrastructure: The Field Made Operational
+
+If the pipe model was the pre-digital solution to the problem of compliance enforcement, it was a solution constrained by the technology of its time. In the absence of real-time information systems, procedural checkpoints were the only mechanism available to verify that policy constraints were being respected. A five-person evaluation committee, a 21-day bid period, a physical approval signature — these were not arbitrary bureaucratic inventions. They were the best available instruments for ensuring competitive validation and documented decision-making in a paper-based organizational world.
+
+That world no longer exists.
+
+Modern procurement information systems fundamentally change the compliance architecture:
+
+- **ERP systems** (SAP Ariba, Coupa, Oracle Procurement Cloud) enforce authorization thresholds at the transaction level, in real time, without requiring a procedural checkpoint. A purchase above €100,000 cannot be approved without the correct authorization level — not because a procedure says so, but because the system enforces the policy constraint automatically.
+
+- **AI-powered spend analytics** (GEP SMART, Jaggaer, Ivalua) detect policy violations, off-contract spend, and anomalous supplier selection in continuous monitoring mode — without requiring procedural audit trails generated by human actors.
+
+- **Automated audit trails** record every action, timestamp, and decision with cryptographic integrity, providing a compliance record that is more complete and tamper-resistant than any procedural documentation requirement could generate.
+
+- **Machine learning path optimization** (emerging) can model the space of procurement decisions and identify which paths through the policy field deliver optimal outcomes for a given procurement context — making the field model not merely permissive but actively prescriptive.
+
+The implication is straightforward: **procedures were a pre-digital compliance mechanism**. Their function — ensuring that policy constraints are respected — has been absorbed by information systems that perform this function better, faster, and more completely than procedural checkpoints ever could.
+
+The analogy is direct: a procedure is a security guard at a gate. A modern procurement system is AI-monitored perimeter surveillance of the entire facility. The question "how do we design a better security guard?" becomes irrelevant when the entire perimeter is monitored continuously.
+
+This does not mean governance disappears. Policy — the definition of the permissible field — remains essential and must be maintained with rigor. Authorization structures, competitive requirements, ethical constraints, conflict-of-interest rules — these are the boundary conditions of the field, and they must be precisely specified. What becomes obsolete is the human-executed sequential procedure as the primary mechanism for enforcing those boundaries.
+
+In the context of Polish public procurement law (*Prawo Zamówień Publicznych*, PZP), this distinction is already partially encoded: PZP specifies *what* must be achieved (competitive award, documentation, equal treatment of suppliers) without mandating a single operational procedure for achieving it. The field exists in the law; the pipe is an organizational choice layered on top of it. Organizations that mistake their pipe for the law misread both.
+
 ---
 
 ## 7. Conclusions and Policy Implications
@@ -252,6 +328,10 @@ For public sector procurement specifically, the Szucs (2024) finding suggests th
 
 Beuve, J., Moszoro, M., & Saussier, S. (2021). *Contractual Rigidity and Political Contestability: Revisiting Public Contract Renegotiations*. NBER Working Paper 28491. National Bureau of Economic Research.
 
+Goodhart, C. A. E. (1975). Problems of monetary management: The UK experience. *Papers in Monetary Economics*, 1. Reserve Bank of Australia. [Popularized as "Goodhart's Law" by Strathern 1997.]
+
+Holmström, B., & Milgrom, P. (1991). Multitask principal-agent analyses: Incentive contracts, asset ownership, and job design. *Journal of Law, Economics, & Organization*, 7, 24–52.
+
 Chartered Institute of Procurement & Supply (CIPS). (2024). *Procurement Policies & Procedures Explained*. CIPS Intelligence Hub.
 
 DiMaggio, P. J., & Powell, W. W. (1983). The iron cage revisited: Institutional isomorphism and collective rationality in organizational fields. *American Sociological Review*, 48(2), 147–160.
@@ -266,13 +346,23 @@ International Journal of Research and Analytical Reviews (IJRAR). (2019). *Ryana
 
 Kelman, S. (1990). *Procurement and Public Management: The Fear of Discretion and the Quality of Government Performance*. AEI Press.
 
+Lipsky, M. (1980). *Street-Level Bureaucracy: Dilemmas of the Individual in Public Services*. Russell Sage Foundation.
+
+Norman, D. A. (1988). *The Design of Everyday Things*. Basic Books.
+
 OECD. (2023). *Public Procurement Performance*. OECD Publishing, Paris. https://doi.org/10.1787/0dde73f4-en
 
+Scott, J. C. (1998). *Seeing Like a State: How Certain Schemes to Improve the Human Condition Have Failed*. Yale University Press.
+
 Skylight Digital. (2024). *Agile Procurement Playbook — Appendix A: Case Studies*. U.S. Digital Service.
+
+Strathern, M. (1997). 'Improving ratings': Audit in the British University system. *European Review*, 5(3), 305–321.
 
 Szucs, F. (2024). Discretion and Favoritism in Public Procurement. *Journal of the European Economic Association*, 22(1), 117–151. https://doi.org/10.1093/jeea/jvad036
 
 Tradogram. (2024). *Agile Procurement Practices: A Comprehensive Guide*. Tradogram Blog.
+
+Vaughan, D. (1996). *The Challenger Launch Decision: Risky Technology, Culture, and Deviance at NASA*. University of Chicago Press.
 
 World Bank. (2021). *Improving Public Procurement Outcomes: Review of Tools and the State of the Evidence Base*. Policy Research Paper 9690. World Bank Group.
 

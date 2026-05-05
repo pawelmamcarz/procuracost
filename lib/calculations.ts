@@ -1,7 +1,9 @@
-// Core cost model based on academic sources:
+// Core cost model — academic sources:
 // - Szucs (JEEA 2024): discretion → +2% price, -1.6% productivity
 // - Beuve, Moszoro & Saussier (NBER wp28491): rigidity → +7.7-10.5% renegotiations
-// - ISM Total Cost of Ownership: up to 30% savings over 3 years with TCO approach
+// - ISM Total Cost of Ownership: up to 30% savings over 3 years
+// - Lipsky (1980) + Vaughan (1996): bypass probability under rigidity
+// - Holmström & Milgrom (1991): enforcement crowds out value creation
 
 export interface ProcurementInputs {
   contractValue: number;        // PLN
@@ -9,7 +11,7 @@ export interface ProcurementInputs {
     rigid: number;              // days for rigid procedure
     flexible: number;           // days for policy-only compliance
   };
-  buyerCount: number;           // number of procurement staff involved
+  buyerCount: number;
   dailyBuyerRate: number;       // PLN per day per buyer (salary + overhead)
   adminCostFixed: {
     rigid: number;              // fixed admin overhead for rigid procedure (PLN)
@@ -17,8 +19,9 @@ export interface ProcurementInputs {
   };
   dailyProjectRevenue: number;  // PLN per day — value of delayed deployment
   renegotiationCost: number;    // PLN — cost if contract is renegotiated
-  tcoHorizonYears: number;      // TCO horizon in years
+  tcoHorizonYears: number;
   flexibilityIndex: number;     // 0–1: how flexible the policy approach is
+  bypassAuditExposure: number;  // PLN — audit/penalty cost if informal bypass discovered
 }
 
 export interface CostBreakdown {
@@ -27,6 +30,7 @@ export interface CostBreakdown {
   opportunityCost: number;
   renegotiationCost: number;
   tcoCost: number;
+  bypassCost: number;           // Dimension 6: cost of informal workarounds
   total: number;
 }
 
@@ -35,26 +39,29 @@ export interface ComparisonResult {
   flexible: CostBreakdown;
   delta: number;
   deltaPercent: number;
-  // source references for each dimension
+  bypassProbability: number;    // for display
   sources: {
     timeCost: string;
     opportunityCost: string;
     renegotiationCost: string;
     tcoCost: string;
+    bypassCost: string;
   };
 }
 
-// Price premium caused by rigidity (Szucs 2024)
 const RIGIDITY_PRICE_PREMIUM = 0.02;
-
-// Additional renegotiation probability under rigidity (Beuve et al. NBER wp28491)
 const RIGIDITY_RENEGOTIATION_PREMIUM = 0.077;
-
-// Baseline renegotiation probability for public contracts
 const BASE_RENEGOTIATION_PROBABILITY = 0.22;
+const TCO_SAVINGS_RATE_PER_YEAR = 0.10;
 
-// TCO savings potential with full flexibility (ISM)
-const TCO_SAVINGS_RATE_PER_YEAR = 0.10; // 30% over 3 years ≈ 10% per year
+// Bypass threshold: rigidity > 0.5 triggers meaningful bypass probability
+// Sigmoid function calibrated so rigidity=0.7 → P≈0.73, rigidity=0.9 → P≈0.95
+const BYPASS_SIGMOID_STEEPNESS = 10;
+const BYPASS_THRESHOLD = 0.5;
+
+function bypassProbability(rigidityIndex: number): number {
+  return 1 / (1 + Math.exp(-BYPASS_SIGMOID_STEEPNESS * (rigidityIndex - BYPASS_THRESHOLD)));
+}
 
 export function calculateCosts(inputs: ProcurementInputs): ComparisonResult {
   const {
@@ -67,7 +74,10 @@ export function calculateCosts(inputs: ProcurementInputs): ComparisonResult {
     renegotiationCost,
     tcoHorizonYears,
     flexibilityIndex,
+    bypassAuditExposure,
   } = inputs;
+
+  const rigidityIndex = 1 - flexibilityIndex; // field model uses inverse
 
   // 1. Time cost
   const rigidTimeCost = procurementDays.rigid * buyerCount * dailyBuyerRate;
@@ -77,10 +87,8 @@ export function calculateCosts(inputs: ProcurementInputs): ComparisonResult {
   const rigidAdminCost = adminCostFixed.rigid;
   const flexibleAdminCost = adminCostFixed.flexible;
 
-  // 3. Opportunity cost
-  // a) Price premium: rigid procedures lead to higher prices (less discretion = less negotiation)
+  // 3. Opportunity cost: price premium + deployment delay
   const rigidPricePremium = contractValue * RIGIDITY_PRICE_PREMIUM;
-  // b) Deployment delay: extra days × daily revenue value
   const delayDays = procurementDays.rigid - procurementDays.flexible;
   const rigidDelayCost = Math.max(0, delayDays) * dailyProjectRevenue;
   const rigidOpportunityCost = rigidPricePremium + rigidDelayCost;
@@ -92,11 +100,17 @@ export function calculateCosts(inputs: ProcurementInputs): ComparisonResult {
   const rigidRenegotiationExpected = rigidRenegotiationProb * renegotiationCost;
   const flexibleRenegotiationExpected = flexibleRenegotiationProb * renegotiationCost;
 
-  // 5. TCO cost (foregone savings)
-  // Rigid: low flexibility → less TCO optimization
+  // 5. TCO foregone savings
   const rigidTCOForgone = contractValue * TCO_SAVINGS_RATE_PER_YEAR * tcoHorizonYears * (1 - 0.1);
-  // Flexible: higher flexibility → more TCO savings captured
   const flexibleTCOForgone = contractValue * TCO_SAVINGS_RATE_PER_YEAR * tcoHorizonYears * (1 - flexibilityIndex);
+
+  // 6. Bypass cost (Pipe vs. Field model — Lipsky 1980, Vaughan 1996)
+  // Rigid procedure: when rigidity > threshold, actors bypass informally
+  // Bypass creates: audit exposure + informal coordination costs + shadow procurement losses
+  const pBypassRigid = bypassProbability(rigidityIndex);
+  const rigidBypassCost = pBypassRigid * bypassAuditExposure;
+  // Field model: no bypass incentive — boundaries are continuous, not checkpoints
+  const flexibleBypassCost = 0;
 
   const rigid: CostBreakdown = {
     timeCost: rigidTimeCost,
@@ -104,7 +118,8 @@ export function calculateCosts(inputs: ProcurementInputs): ComparisonResult {
     opportunityCost: rigidOpportunityCost,
     renegotiationCost: rigidRenegotiationExpected,
     tcoCost: rigidTCOForgone,
-    total: rigidTimeCost + rigidAdminCost + rigidOpportunityCost + rigidRenegotiationExpected + rigidTCOForgone,
+    bypassCost: rigidBypassCost,
+    total: rigidTimeCost + rigidAdminCost + rigidOpportunityCost + rigidRenegotiationExpected + rigidTCOForgone + rigidBypassCost,
   };
 
   const flexible: CostBreakdown = {
@@ -113,7 +128,8 @@ export function calculateCosts(inputs: ProcurementInputs): ComparisonResult {
     opportunityCost: flexibleOpportunityCost,
     renegotiationCost: flexibleRenegotiationExpected,
     tcoCost: flexibleTCOForgone,
-    total: flexibleTimeCost + flexibleAdminCost + flexibleOpportunityCost + flexibleRenegotiationExpected + flexibleTCOForgone,
+    bypassCost: flexibleBypassCost,
+    total: flexibleTimeCost + flexibleAdminCost + flexibleOpportunityCost + flexibleRenegotiationExpected + flexibleTCOForgone + flexibleBypassCost,
   };
 
   const delta = rigid.total - flexible.total;
@@ -124,11 +140,13 @@ export function calculateCosts(inputs: ProcurementInputs): ComparisonResult {
     flexible,
     delta,
     deltaPercent,
+    bypassProbability: pBypassRigid,
     sources: {
       timeCost: "OECD Public Procurement Performance (2023)",
       opportunityCost: "Szucs, F. (2024). Discretion and Favoritism in Public Procurement. JEEA 22(1):117",
       renegotiationCost: "Beuve, Moszoro & Saussier (2021). Contractual Rigidity and Political Contestability. NBER wp28491",
       tcoCost: "Institute for Supply Management (ISM). Total Cost of Ownership in Procurement",
+      bypassCost: "Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) The Challenger Launch Decision; Holmström & Milgrom (1991) Multitask Principal-Agent",
     },
   };
 }

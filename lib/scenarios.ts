@@ -27,6 +27,7 @@ export const SCENARIOS: Scenario[] = [
       renegotiationCost: 150_000,
       tcoHorizonYears: 2,
       flexibilityIndex: 0.7,
+      bypassAuditExposure: 500_000,
     },
     caseStudy: {
       title: "Ryanair Fleet Procurement",
@@ -49,6 +50,7 @@ export const SCENARIOS: Scenario[] = [
       renegotiationCost: 300_000,
       tcoHorizonYears: 3,
       flexibilityIndex: 0.8,
+      bypassAuditExposure: 300_000,
     },
     caseStudy: {
       title: "Swiss Casinos ERP — Agile Procurement",
@@ -71,6 +73,7 @@ export const SCENARIOS: Scenario[] = [
       renegotiationCost: 400_000,
       tcoHorizonYears: 3,
       flexibilityIndex: 0.75,
+      bypassAuditExposure: 800_000,
     },
     caseStudy: {
       title: "Air France KLM Martinair Cargo — Lean Agile Procurement",
@@ -93,6 +96,7 @@ export const SCENARIOS: Scenario[] = [
       renegotiationCost: 500_000,
       tcoHorizonYears: 1,
       flexibilityIndex: 0.65,
+      bypassAuditExposure: 1_200_000,
     },
     caseStudy: {
       title: "Zara — Digital & Agile Procurement",
@@ -115,6 +119,7 @@ export const SCENARIOS: Scenario[] = [
       renegotiationCost: 100_000,
       tcoHorizonYears: 2,
       flexibilityIndex: 0.7,
+      bypassAuditExposure: 100_000,
     },
   },
 ];

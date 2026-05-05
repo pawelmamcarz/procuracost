@@ -123,6 +123,20 @@ export default function CostCalculator({ onCalculate }: Props) {
           />
         </div>
         <div>
+          <label className={labelClass}>
+            Ryzyko audytowe przy obejściu (PLN)
+            <span className="ml-1 cursor-help text-gray-400" title="Szacowany koszt audytu, kary regulacyjne lub reputacyjne jeśli nieformalne obejście procedury zostanie odkryte. Źródło: Lipsky (1980), Vaughan (1996)">ⓘ</span>
+          </label>
+          <input
+            type="number"
+            className={inputClass}
+            value={inputs.bypassAuditExposure}
+            onChange={(e) => handleChange("bypassAuditExposure", +e.target.value)}
+            min={0}
+            step={50000}
+          />
+        </div>
+        <div>
           <label className={labelClass}>Horyzont TCO (lata)</label>
           <input
             type="number"

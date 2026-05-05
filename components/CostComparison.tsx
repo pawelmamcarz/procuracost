@@ -25,10 +25,11 @@ const COST_LABELS: Record<string, string> = {
   opportunityCost: "Utracone okazje",
   renegotiationCost: "Renegocjacje",
   tcoCost: "Utracone oszczędności TCO",
+  bypassCost: "Koszty obejść rury",
 };
 
 export default function CostComparison({ result, scenario }: Props) {
-  const { rigid, flexible, delta, deltaPercent, sources } = result;
+  const { rigid, flexible, delta, deltaPercent, bypassProbability, sources } = result;
 
   const chartData = (Object.keys(COST_LABELS) as Array<keyof typeof rigid>).map((key) => ({
     name: COST_LABELS[key],
@@ -57,8 +58,28 @@ export default function CostComparison({ result, scenario }: Props) {
         <p className="mt-1 text-lg opacity-90">
           {formatPercent(deltaPercent)} wyższy niż podejście oparte na polityce zakupowej
         </p>
+        {/* Bypass probability indicator */}
+        <div className="mt-4 flex items-start gap-3 rounded-xl bg-white/10 p-3">
+          <div className="flex-1">
+            <p className="text-xs font-semibold uppercase tracking-wide opacity-70">
+              Prawdopodobieństwo obejścia procedury (Lipsky 1980)
+            </p>
+            <div className="mt-1.5 flex items-center gap-2">
+              <div className="h-2 flex-1 overflow-hidden rounded-full bg-white/20">
+                <div
+                  className="h-full rounded-full bg-orange-400"
+                  style={{ width: `${Math.round(bypassProbability * 100)}%` }}
+                />
+              </div>
+              <span className="text-sm font-bold">{Math.round(bypassProbability * 100)}%</span>
+            </div>
+            <p className="mt-1 text-xs opacity-60">
+              Przy tej sztywności kupcy statystycznie obchodzą procedurę nieformalnie (mail/telefon/Excel)
+            </p>
+          </div>
+        </div>
         {scenario.caseStudy && (
-          <div className="mt-4 rounded-xl bg-white/10 p-3 text-sm">
+          <div className="mt-3 rounded-xl bg-white/10 p-3 text-sm">
             <p className="font-semibold">{scenario.caseStudy.title}</p>
             <p className="mt-1 opacity-90">{scenario.caseStudy.insight}</p>
             <p className="mt-1 text-xs opacity-60">Źródło: {scenario.caseStudy.source}</p>
