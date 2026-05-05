@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
+import { VERSION } from "@/lib/version";
 
 const geist = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 
@@ -20,7 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Link href="/" className="text-lg font-bold text-blue-700">
               ProcuraCost
             </Link>
-            <div className="flex gap-6 text-sm text-gray-500">
+            <div className="flex items-center gap-6 text-sm text-gray-500">
               <Link href="/calculator" className="hover:text-blue-600">
                 Kalkulator
               </Link>
@@ -32,6 +33,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </Link>
               <Link href="/methodology" className="hover:text-blue-600">
                 Methodology (EN)
+              </Link>
+              <Link
+                href="/en"
+                className="rounded-full border border-gray-200 px-2.5 py-0.5 text-xs font-semibold text-gray-500 hover:border-blue-300 hover:text-blue-600"
+              >
+                EN
               </Link>
             </div>
           </div>
@@ -50,7 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="https://silence-tax.com/logo.png"
+                src="/logo.png"
                 alt="Pawel Mamcarz"
                 className="h-8 w-8 rounded-md object-cover"
               />
@@ -72,6 +79,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   label: "CzymPojade.pl",
                   desc: "Kalkulator TCO samochodu",
                   color: "bg-blue-50 text-blue-700 border-blue-200",
+                },
+                {
+                  href: "https://przypominamy.com",
+                  label: "Przypominamy.com",
+                  desc: "Platforma przypomnień",
+                  color: "bg-purple-50 text-purple-700 border-purple-200",
+                },
+                {
+                  href: "https://akrobacja.com",
+                  label: "Akrobacja.com",
+                  desc: "akrobacja.com",
+                  color: "bg-teal-50 text-teal-700 border-teal-200",
                 },
                 {
                   href: "https://www.linkedin.com/in/pawelmamcarz/",
@@ -96,7 +115,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </div>
 
         <footer className="border-t border-gray-100 bg-white px-6 py-3 text-center text-xs text-gray-400">
-          ProcuraCost · Model oparty na badaniach akademickich ·{" "}
+          ProcuraCost{" "}
+          <span className="font-mono text-gray-300">{VERSION}</span>
+          {" · "}Model oparty na badaniach akademickich ·{" "}
           <Link href="/methodology" className="underline hover:text-blue-500">
             Źródła i metodologia
           </Link>
