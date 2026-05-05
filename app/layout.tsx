@@ -37,7 +37,65 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </nav>
         <main className="flex-1">{children}</main>
-        <footer className="border-t border-gray-100 bg-white px-6 py-4 text-center text-xs text-gray-400">
+
+        {/* Projects bar */}
+        <div className="border-t border-gray-100 bg-gray-50">
+          <div className="mx-auto flex max-w-5xl flex-col items-center gap-4 px-6 py-5 sm:flex-row sm:justify-between">
+            {/* Logo + name */}
+            <a
+              href="https://mamcarz.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 opacity-80 hover:opacity-100"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="https://silence-tax.com/logo.png"
+                alt="Pawel Mamcarz"
+                className="h-8 w-8 rounded-md object-cover"
+              />
+              <span className="text-sm font-medium text-gray-700">Pawel Mamcarz</span>
+            </a>
+
+            {/* Other projects */}
+            <div className="flex items-center gap-1 text-xs text-gray-400">
+              <span className="mr-2 hidden sm:inline">Inne projekty:</span>
+              {[
+                {
+                  href: "https://silence-tax.com",
+                  label: "Silence Tax",
+                  desc: "Kalkulator podatku od milczenia",
+                  color: "bg-orange-50 text-orange-700 border-orange-200",
+                },
+                {
+                  href: "https://czympojade.pl",
+                  label: "CzymPojade.pl",
+                  desc: "Kalkulator TCO samochodu",
+                  color: "bg-blue-50 text-blue-700 border-blue-200",
+                },
+                {
+                  href: "https://www.linkedin.com/in/pawelmamcarz/",
+                  label: "LinkedIn",
+                  desc: "Profil zawodowy",
+                  color: "bg-gray-50 text-gray-600 border-gray-200",
+                },
+              ].map((p) => (
+                <a
+                  key={p.href}
+                  href={p.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={p.desc}
+                  className={`rounded-full border px-3 py-1 text-xs font-medium transition-opacity hover:opacity-80 ${p.color}`}
+                >
+                  {p.label} ↗
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <footer className="border-t border-gray-100 bg-white px-6 py-3 text-center text-xs text-gray-400">
           ProcuraCost · Model oparty na badaniach akademickich ·{" "}
           <Link href="/methodology" className="underline hover:text-blue-500">
             Źródła i metodologia
