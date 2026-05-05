@@ -24,6 +24,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Link href="/calculator" className="hover:text-blue-600">
                 Kalkulator
               </Link>
+              <Link href="/optimizer" className="font-medium text-blue-600 hover:text-blue-700">
+                Optymalizator RF
+              </Link>
               <Link href="/case-studies" className="hover:text-blue-600">
                 Case studies
               </Link>
