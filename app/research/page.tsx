@@ -7,6 +7,8 @@ export const metadata = {
 };
 
 const AUTHOR_EMAIL = "pawel@mamcarz.com";
+const AUTHOR_ORCID = "0009-0002-3274-4226";
+const AUTHOR_ORCID_URL = "https://orcid.org/0009-0002-3274-4226";
 
 export default function ResearchPage() {
   return (
@@ -31,7 +33,11 @@ export default function ResearchPage() {
             vs. Policy-Based Procurement
           </h1>
           <p className="mt-3 text-sm text-gray-500">
-            <strong>Working Paper</strong> — May 2026 · Pawel Mamcarz ({AUTHOR_EMAIL})
+            <strong>Working Paper</strong> — May 2026 · Pawel Mamcarz ({AUTHOR_EMAIL} ·{" "}
+            <a href={AUTHOR_ORCID_URL} className="text-green-700 hover:underline" target="_blank" rel="noopener noreferrer">
+              ORCID {AUTHOR_ORCID}
+            </a>
+            )
           </p>
           <p className="mt-1 text-xs text-gray-400">
             <strong>Keywords:</strong> procurement policy, procurement procedure, opportunity cost,
@@ -629,8 +635,11 @@ export default function ResearchPage() {
             calibration, peer review) pending.
           </p>
           <p className="mt-1 text-xs text-amber-600">
-            Contact: {AUTHOR_EMAIL} · Cite as: Mamcarz, P. (2026). The Hidden Cost of Procedural
-            Compliance. Working paper.
+            Contact: {AUTHOR_EMAIL} · ORCID:{" "}
+            <a href={AUTHOR_ORCID_URL} className="text-amber-700 hover:underline" target="_blank" rel="noopener noreferrer">
+              {AUTHOR_ORCID}
+            </a>{" "}
+            · Cite as: Mamcarz, P. (2026). The Hidden Cost of Procedural Compliance. Working paper.
           </p>
         </div>
       </article>

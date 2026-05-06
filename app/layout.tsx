@@ -40,6 +40,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Link href="/methodology" className="hover:text-blue-600">
                 Methodology
               </Link>
+              <Link href="/shortcasty" className="hover:text-blue-600">
+                Shortcasty
+              </Link>
+              <Link href="/team" className="hover:text-blue-600">
+                Zespół
+              </Link>
               <Link
                 href="/en"
                 className="rounded-full border border-gray-200 px-2.5 py-0.5 text-xs font-semibold text-gray-500 hover:border-blue-300 hover:text-blue-600"
@@ -54,21 +60,30 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Projects bar */}
         <div className="border-t border-gray-100 bg-gray-50">
           <div className="mx-auto flex max-w-5xl flex-col items-center gap-4 px-6 py-5 sm:flex-row sm:justify-between">
-            {/* Logo + name */}
-            <a
-              href="https://mamcarz.com"
-              target="_blank"
-              rel="noopener noreferrer"
+            {/* Team */}
+            <Link
+              href="/team"
               className="flex items-center gap-3 opacity-80 hover:opacity-100"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/logo.png"
-                alt="Pawel Mamcarz"
-                className="h-8 w-8 rounded-md object-cover"
-              />
-              <span className="text-sm font-medium text-gray-700">Pawel Mamcarz</span>
-            </a>
+              <div className="flex -space-x-2">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/logo.png" alt="Paweł Mamcarz" className="h-7 w-7 rounded-full object-cover ring-2 ring-white" />
+                {[
+                  { initials: "MK", color: "bg-indigo-100 text-indigo-700" },
+                  { initials: "MB", color: "bg-teal-100 text-teal-700" },
+                  { initials: "TS", color: "bg-amber-100 text-amber-700" },
+                  { initials: "RM", color: "bg-red-100 text-red-700" },
+                ].map(({ initials, color }) => (
+                  <div
+                    key={initials}
+                    className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold ring-2 ring-white ${color}`}
+                  >
+                    {initials}
+                  </div>
+                ))}
+              </div>
+              <span className="text-sm font-medium text-gray-700">Zakupowy kolektyw</span>
+            </Link>
 
             {/* Other projects */}
             <div className="flex items-center gap-1 text-xs text-gray-400">

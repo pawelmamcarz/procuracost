@@ -103,8 +103,8 @@ export default function HomePage() {
       <div className="mt-16 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-center text-white">
         <h2 className="text-2xl font-bold">Sprawdź swój scenariusz</h2>
         <p className="mt-2 text-blue-100">
-          Wybierz predefiniowany scenariusz lub wprowadź własne dane. Wynik zawiera szczegółowe
-          rozbicie kosztów i cytowania akademickie.
+          Wybierz gotowy scenariusz lub wprowadź własne dane. Wynik pokazuje rozbicie kosztów
+          z odniesieniami do badań.
         </p>
         <Link
           href="/calculator"
