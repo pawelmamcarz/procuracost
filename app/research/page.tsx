@@ -55,8 +55,10 @@ export default function ResearchPage() {
             Drawing on empirical evidence from public procurement economics, we construct a
             five-dimensional cost model quantifying the opportunity costs of procedural rigidity
             relative to policy-only compliance. Our model integrates four key empirical findings:
-            (1) rigid auction requirements increase effective contract prices by approximately 2%
-            (Szucs 2024); (2) contractual rigidity raises renegotiation probability by 7.7–10.5
+            (1) rigid auction requirements can reduce purchase prices by approximately 2% through
+            enforced competition — yet this narrow price gain is dominated by delay, renegotiation
+            risk, and foregone TCO savings (Szucs 2024; Goodhart 1975); (2) contractual rigidity
+            raises renegotiation probability by 7.7–10.5
             percentage points above a 22% baseline (Beuve, Moszoro &amp; Saussier 2021); (3)
             infrastructure procurement under rigid public rules extends project duration by 42%
             above contract baseline (World Bank 2021); and (4) Total Cost of Ownership approaches
@@ -178,6 +180,49 @@ export default function ResearchPage() {
             </p>
           </div>
 
+          <div className="mt-4 overflow-x-auto">
+            <table className="w-full border-collapse text-xs">
+              <thead>
+                <tr className="border-b border-gray-200">
+                  <th className="pb-2 pr-4 text-left font-semibold text-gray-500">Domain</th>
+                  <th className="pb-2 pr-4 text-left font-semibold text-gray-500">Policy — What &amp; Why</th>
+                  <th className="pb-2 pr-4 text-left font-semibold text-red-500">Procedure = Pipe</th>
+                  <th className="pb-2 text-left font-semibold text-green-600">Alternative = Field</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {[
+                  {
+                    domain: "Vendor selection",
+                    policy: "Purchases >500k PLN: document competitive pricing from ≥3 suppliers",
+                    pipe: "Send formal RFQ, wait 21 days, open bids with 5-person committee",
+                    field: "Run e-auction in 3 days. OR present market benchmark and negotiate directly with market leader",
+                  },
+                  {
+                    domain: "Approval",
+                    policy: "Any purchase >500k PLN requires CFO sign-off before commitment",
+                    pipe: "Print approval form, collect 3 physical signatures across departments, courier to CFO",
+                    field: "One-click ERP workflow; CFO approves on mobile with audit trail auto-generated",
+                  },
+                  {
+                    domain: "Documentation",
+                    policy: "All purchases must be traceable, auditable, and defensible",
+                    pipe: "Fill 12-field procurement form before any action; archive paper copies",
+                    field: "System auto-generates complete audit trail at every action; zero manual forms",
+                  },
+                ].map((row) => (
+                  <tr key={row.domain}>
+                    <td className="py-2 pr-4 font-medium text-gray-700">{row.domain}</td>
+                    <td className="py-2 pr-4 text-gray-500">{row.policy}</td>
+                    <td className="py-2 pr-4 rounded bg-red-50 px-2 text-red-800">{row.pipe}</td>
+                    <td className="py-2 rounded bg-green-50 px-2 text-green-800">{row.field}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p className="mt-1 text-xs text-gray-400">Table 1. Policy defines the constraint; procedure and field alternative are two different paths through it.</p>
+          </div>
+
           <h3 className="mt-4 text-sm font-semibold text-gray-800">
             2.2 The Compliance-First Incentive Structure
           </h3>
@@ -271,9 +316,9 @@ export default function ResearchPage() {
               n: "3.3",
               title: "Dimension 3: Opportunity Cost (C_opp)",
               formula:
-                "C_opp(R) = V × α + max(0, days_R – days_F) × rev_daily\nC_opp(F) = 0\nα = 0.02 (price premium coefficient, Szucs 2024)",
+                "ΔC_opp = max(0, days_R – days_F) × rev_daily – V × α\nα = 0.02 (price benefit from auction competition, Szucs 2024)\nDelay term dominates: for rigid procedures, days_R >> days_F",
               anchor:
-                "Szucs (2024) analyzes a Hungarian reform removing mandatory open auction requirements. Rigid auctions suppress prices by ~2% relative to discretionary approaches. Delay cost: each day without the contracted asset/service has a measurable daily value.",
+                "Szucs (2024) analyzes a Hungarian reform removing mandatory open auction requirements. When discretion replaced mandatory auctions, prices rose by ~2% — rigid auctions enforce competition and reduce purchase price. This is the Goodhart trap (1975): procedures optimize the measurable metric (purchase price) while delay costs, renegotiation risk, and foregone TCO savings accumulate off the compliance dashboard. The 2% price gain is systematically overwhelmed by the remaining five cost dimensions. Delay cost: each day without the contracted asset/service represents measurable foregone revenue or operational value.",
             },
             {
               n: "3.4",
@@ -290,6 +335,14 @@ export default function ResearchPage() {
                 "C_TCO(R) = V × γ × T × (1 – φ_R)\nC_TCO(F) = V × γ × T × (1 – φ_F)\nγ = 0.10/yr  (ISM: up to 30% over 3 years)",
               anchor:
                 "ISM (Institute for Supply Management): properly implemented TCO sourcing programs yield savings of up to 30% over three years (≈10% annually) relative to price-only procurement. GEP (2024): organizations systematically overpay when evaluation criteria prioritize compliance documentation over cost engineering.",
+            },
+            {
+              n: "3.6",
+              title: "Dimension 6: Normalization of Deviance Cost (C_deviance)",
+              formula:
+                "C_deviance(R) = P_bypass(rigidity) × E[cost_failure]\nP_bypass increases with procedural rigidity and operational pressure\nC_deviance(F) ≈ 0  — no bypass path → no hidden accumulation",
+              anchor:
+                "Vaughan (1996): when operationally necessary workarounds are formally prohibited, they normalize invisibly — hidden risk accumulates until a threshold failure event (cf. Challenger disaster). Unlike other dimensions, C_deviance has a fat-tailed distribution: zero most of the time, catastrophic in the tail (audit findings, procurement scandals, regulatory sanctions). The ProcuraCost calculator proxies P_bypass via the bypass audit exposure input. Rigid procedures systematically increase P_bypass by driving informal workarounds underground — making each bypass invisible and unauditable. Lipsky (1980) predicts this analytically: front-line workers always adapt rules to operational reality; the question is whether that adaptation is visible (field) or hidden (pipe).",
             },
           ].map((d) => (
             <div
@@ -311,7 +364,7 @@ export default function ResearchPage() {
           <div className="mt-4 rounded-xl border border-blue-100 bg-blue-50 p-4">
             <p className="text-xs font-semibold text-blue-700">Total Cost Differential</p>
             <pre className="mt-1 font-mono text-xs text-blue-600">
-              ΔC_total = ΔC_time + ΔC_admin + C_opp(R) + ΔC_reneg + ΔC_TCO
+              ΔC_total = ΔC_time + ΔC_admin + ΔC_opp + ΔC_reneg + ΔC_TCO + C_deviance(R)
             </pre>
             <p className="mt-1 text-xs text-blue-500">
               Calibrated with conservative estimates. Real-world differentials may be substantially
@@ -427,7 +480,7 @@ export default function ResearchPage() {
             },
             {
               author: "Goodhart's Law (1975)",
-              text: "\"When a measure becomes a target, it ceases to be a good measure.\" When procedural compliance rate becomes the KPI, compliance theater is the rational organizational response.",
+              text: "\"When a measure becomes a target, it ceases to be a good measure.\" Szucs (2024) provides the empirical proof: mandatory auctions reduce purchase price by 2% — a measurable, auditable win that makes procedures politically defensible. The remaining costs (deployment delay, renegotiation probability +7.7 pp, foregone TCO savings up to 30%) are not on the compliance dashboard. When procedural compliance rate becomes the KPI, compliance theater is the rational organizational response.",
             },
             {
               author: "High-Modernist Planning Failure (Scott 1998)",

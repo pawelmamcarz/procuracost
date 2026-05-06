@@ -285,3 +285,180 @@ export const optimizerT = {
     importance: "Importance",
   },
 } as const;
+
+export const assessmentT = {
+  pl: {
+    title: "Ocena dojrzałości zakupowej",
+    subtitle: "Rura czy Pole? 10 pytań — 5 minut — konkretna diagnoza Twojej organizacji.",
+    badge: "Bezpłatna samoocena",
+    questionOf: (n: number, total: number) => `Pytanie ${n} z ${total}`,
+    never: "Nigdy",
+    sometimes: "Zależy / czasem",
+    always: "Tak / zawsze",
+    showResult: "Pokaż wynik →",
+    restart: "Zacznij od nowa",
+    yourScore: "Twój wynik",
+    outOf: "/ 20 pkt",
+    levels: {
+      pipe: {
+        label: "Rura",
+        color: "red",
+        headline: "Twoja organizacja działa w trybie rury.",
+        desc: "Procedury blokują dyskrecję kupca i wymuszają nieformalne obejścia. Kalkulator ProcuraCost pokaże konkretny koszt w PLN.",
+      },
+      transition: {
+        label: "Przejście",
+        color: "amber",
+        headline: "Hybryda — część procesów jest elastyczna, część zablokowana.",
+        desc: "Masz pole manewru w niektórych kategoriach. Zidentyfikuj, gdzie procedury dominują i zacznij tam.",
+      },
+      field: {
+        label: "Pole",
+        color: "green",
+        headline: "Twoja organizacja działa w trybie pola.",
+        desc: "Polityka zakupowa wyznacza granice, nie ścieżkę. Kupcy są nawigatorami wartości, nie wykonawcami kroków.",
+      },
+    },
+    ctaCalculator: "Oblicz koszty w kalkulatorze →",
+    ctaResearch: "Przeczytaj artykuł naukowy →",
+    questions: [
+      {
+        q: "Gdy dostawca proponuje szybszą metodę zakupu, kupiec może ją zaakceptować?",
+        dim: "Elastyczność procesu",
+        answers: ["Nigdy — tylko zatwierdzona procedura", "Tak, z dodatkowym approvalem", "Tak, jeśli spełnia kryteria polityki"],
+      },
+      {
+        q: "Istnieją obowiązkowe okresy oczekiwania, których nie można skrócić nawet gdy dostawca i zamawiający się zgadzają?",
+        dim: "Mandatory waits",
+        answers: ["Tak, zawsze (np. 21 lub 35 dni ustawowo)", "Zależy od wartości kontraktu", "Nie — czas wynika z potrzeb, nie z procedury"],
+      },
+      {
+        q: "Pod presją czasu kupcy najczęściej:",
+        dim: "Zachowanie pod presją",
+        answers: ["Obchodzą proceduralnie (mail/telefon/Excel)", "Eskalują do przełożonego", "Wybierają alternatywną, szybszą ścieżkę z polityki zakupowej"],
+      },
+      {
+        q: "Jak zatwierdzane są zakupy powyżej progu uprawnień?",
+        dim: "Mechanizm zatwierdzania",
+        answers: ["Papierowe podpisy zbierane po kolei", "Email do kolejnych osób", "Automatyczny workflow w systemie ERP/P2P"],
+      },
+      {
+        q: "Za co przede wszystkim oceniany jest kupiec?",
+        dim: "KPI kupca",
+        answers: ["Zgodność z procedurą i dokumentacją", "Oba kryteria równie ważne", "Wynik: oszczędności, czas, jakość kontraktu"],
+      },
+      {
+        q: "Jak często dochodzi do renegocjacji zawartych kontraktów?",
+        dim: "Renegocjacje (Beuve 2021)",
+        answers: ["Często — ponad 30% kontraktów", "Czasem — 10–30%", "Rzadko — poniżej 10%"],
+      },
+      {
+        q: "Dostawcy skarżą się na złożoność procesu zakupowego?",
+        dim: "Doświadczenie dostawcy",
+        answers: ["Tak, regularnie", "Sporadycznie", "Rzadko — uważają nasz proces za sprawny"],
+      },
+      {
+        q: "Kupiec może zamawiać standardowe pozycje z katalogu lub przez e-auction bez pełnej procedury?",
+        dim: "Ścieżki operacyjne (downstream)",
+        answers: ["Nie — każdy zakup przez tę samą procedurę", "Tylko poniżej określonego progu wartości", "Tak — mamy dedykowane ścieżki dla katalogów i MRP"],
+      },
+      {
+        q: "System IT pokrywa cały cykl zakupowy (P2P)?",
+        dim: "Poziom technologiczny",
+        answers: ["Głównie Excel i email", "Częściowy ERP — sourcing lub PO, nie całość", "End-to-end: od zapotrzebowania do faktury w jednym systemie"],
+      },
+      {
+        q: "Polityka zakupowa określa granice (co i dlaczego), nie kroki (jak i w jakiej kolejności)?",
+        dim: "Model polityki vs procedury",
+        answers: ["Nie — mamy procedurę krok po kroku", "Częściowo — polityka istnieje, ale procedury dominują", "Tak — polityka wyznacza granice, kupiec decyduje o ścieżce"],
+      },
+    ],
+  },
+  en: {
+    title: "Procurement Maturity Assessment",
+    subtitle: "Pipe or Field? 10 questions — 5 minutes — a concrete diagnosis of your organisation.",
+    badge: "Free self-assessment",
+    questionOf: (n: number, total: number) => `Question ${n} of ${total}`,
+    never: "Never",
+    sometimes: "Sometimes / depends",
+    always: "Yes / always",
+    showResult: "Show result →",
+    restart: "Start over",
+    yourScore: "Your score",
+    outOf: "/ 20 pts",
+    levels: {
+      pipe: {
+        label: "Pipe",
+        color: "red",
+        headline: "Your organisation operates in pipe mode.",
+        desc: "Procedures lock buyer discretion and force informal bypasses. The ProcuraCost calculator will show the concrete cost in PLN.",
+      },
+      transition: {
+        label: "Transition",
+        color: "amber",
+        headline: "Hybrid — some processes are flexible, others locked.",
+        desc: "You have room to manoeuvre in some categories. Identify where procedures dominate and start there.",
+      },
+      field: {
+        label: "Field",
+        color: "green",
+        headline: "Your organisation operates in field mode.",
+        desc: "Procurement policy sets boundaries, not the path. Buyers are value navigators, not step-executors.",
+      },
+    },
+    ctaCalculator: "Calculate costs in the calculator →",
+    ctaResearch: "Read the academic paper →",
+    questions: [
+      {
+        q: "When a supplier proposes a faster procurement method, can the buyer accept it?",
+        dim: "Process flexibility",
+        answers: ["Never — only the approved procedure", "Yes, with additional approval", "Yes, if it meets policy criteria"],
+      },
+      {
+        q: "Are there mandatory waiting periods that cannot be shortened even when both parties agree?",
+        dim: "Mandatory waits",
+        answers: ["Yes, always (e.g. 21 or 35 days statutory)", "Depends on contract value", "No — timing follows needs, not procedure"],
+      },
+      {
+        q: "Under time pressure, buyers typically:",
+        dim: "Behaviour under pressure",
+        answers: ["Work around the procedure (email/phone/Excel)", "Escalate to a manager", "Choose a faster alternative path within the procurement policy"],
+      },
+      {
+        q: "How are purchases above the authorisation threshold approved?",
+        dim: "Approval mechanism",
+        answers: ["Paper signatures collected sequentially", "Email chain to successive approvers", "Automated ERP/P2P workflow"],
+      },
+      {
+        q: "What is the buyer primarily evaluated on?",
+        dim: "Buyer KPIs",
+        answers: ["Procedural compliance and documentation", "Both criteria equally", "Outcomes: savings, lead time, contract quality"],
+      },
+      {
+        q: "How often are signed contracts renegotiated?",
+        dim: "Renegotiation (Beuve 2021)",
+        answers: ["Often — over 30% of contracts", "Sometimes — 10–30%", "Rarely — below 10%"],
+      },
+      {
+        q: "Do suppliers complain about the complexity of your procurement process?",
+        dim: "Supplier experience",
+        answers: ["Yes, regularly", "Occasionally", "Rarely — they find our process efficient"],
+      },
+      {
+        q: "Can the buyer order standard items from a catalog or via e-auction without a full procedure?",
+        dim: "Operational paths (downstream)",
+        answers: ["No — every purchase goes through the same procedure", "Only below a certain value threshold", "Yes — we have dedicated paths for catalogs and MRP"],
+      },
+      {
+        q: "Does the IT system cover the full procurement cycle (P2P)?",
+        dim: "Technology level",
+        answers: ["Mainly Excel and email", "Partial ERP — sourcing or PO, not both", "End-to-end: from requisition to invoice in one system"],
+      },
+      {
+        q: "Does the procurement policy define boundaries (what & why), not steps (how & in what order)?",
+        dim: "Policy vs procedure model",
+        answers: ["No — we have a step-by-step procedure", "Partially — policy exists but procedures dominate", "Yes — policy sets boundaries, buyer decides the path"],
+      },
+    ],
+  },
+} as const;

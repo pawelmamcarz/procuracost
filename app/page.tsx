@@ -32,14 +32,15 @@ export default function HomePage() {
           Narzędzie badawczo-konsultingowe
         </span>
         <h1 className="mt-4 text-4xl font-bold text-gray-900">
-          Ile kosztuje przywiązanie
+          Twoje procedury to rura.
           <br />
-          do procedur zakupowych?
+          Polityka zakupowa to pole.
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-500">
-          Ścisłe procedury przetargowe generują mierzalne koszty utraconych korzyści. Kalkulator
-          pozwala porównać realne koszty procedury sztywnej z podejściem opartym wyłącznie na
-          polityce zakupowej.
+          Empiryczny model oparty na recenzowanych badaniach pokazuje: koszty procedur sztywnych
+          przewyższają koszty polityki zakupowej o{" "}
+          <span className="font-semibold text-gray-700">100–400%</span>. Sprawdź, ile traci Twoja
+          organizacja.
         </p>
         <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link
@@ -49,10 +50,10 @@ export default function HomePage() {
             Uruchom kalkulator →
           </Link>
           <Link
-            href="/methodology"
+            href="/assessment"
             className="rounded-xl border border-gray-200 bg-white px-8 py-3 text-sm font-semibold text-gray-600 hover:border-gray-300"
           >
-            Metodologia (EN)
+            Ocena dojrzałości →
           </Link>
         </div>
       </div>

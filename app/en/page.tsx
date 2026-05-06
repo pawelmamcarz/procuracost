@@ -32,13 +32,14 @@ export default function EnHomePage() {
           Research & Consulting Tool
         </span>
         <h1 className="mt-4 text-4xl font-bold text-gray-900">
-          What does procedure lock-in
+          Your procedures are a pipe.
           <br />
-          actually cost you?
+          Procurement policy is a field.
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-500">
-          Rigid tender procedures generate measurable opportunity costs. This calculator lets you
-          compare the real costs of a strict procedure against a policy-only flexible approach.
+          An empirical model built on peer-reviewed research shows: rigid-procedure costs exceed
+          policy-only costs by{" "}
+          <span className="font-semibold text-gray-700">100–400%</span>. Run your scenario.
         </p>
         <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link
@@ -48,10 +49,10 @@ export default function EnHomePage() {
             Open calculator →
           </Link>
           <Link
-            href="/methodology"
+            href="/en/assessment"
             className="rounded-xl border border-gray-200 bg-white px-8 py-3 text-sm font-semibold text-gray-600 hover:border-gray-300"
           >
-            Methodology
+            Maturity assessment →
           </Link>
         </div>
       </div>

@@ -31,6 +31,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Link href="/case-studies" className="hover:text-blue-600">
                 Case studies
               </Link>
+              <Link href="/assessment" className="hover:text-blue-600">
+                Ocena dojrzałości
+              </Link>
               <Link href="/research" className="hover:text-blue-600">
                 Research paper
               </Link>
