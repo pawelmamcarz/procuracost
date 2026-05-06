@@ -1,4 +1,5 @@
 import Link from "next/link";
+import PipeFieldDiagram from "@/components/PipeFieldDiagram";
 
 const stats = [
   { value: "+2%", label: "wyższe ceny przy sztywnych procedurach", source: "Szucs, JEEA 2024" },
@@ -81,6 +82,20 @@ export default function HomePage() {
             <p className="mt-2 text-sm text-gray-500">{p.body}</p>
           </div>
         ))}
+      </div>
+
+      {/* Pipe vs Field */}
+      <div className="mt-12 rounded-2xl border border-blue-100 bg-blue-50 p-6">
+        <h2 className="font-bold text-blue-900">Model rury i pola</h2>
+        <p className="mt-1 text-sm text-blue-700">
+          Ten sam zakup — ta sama wartość — dwa światy. Procedura blokuje jedną ścieżkę i wymusza obejścia. Polityka wyznacza granice i daje wolność wyboru.
+        </p>
+        <div className="mt-4">
+          <PipeFieldDiagram lang="pl" />
+        </div>
+        <p className="mt-3 text-xs text-blue-600">
+          Podstawa teoretyczna: Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) Challenger; Holmström &amp; Milgrom (1991) Multitask Principal-Agent
+        </p>
       </div>
 
       {/* CTA */}

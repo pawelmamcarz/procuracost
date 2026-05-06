@@ -16,11 +16,14 @@ const PROCESS_TYPES: Exclude<ProcessType, "custom">[] = [
   "pzp_krajowy",
   "private_formal",
   "policy_only",
+  "catalog_order",
+  "mrp_order",
+  "capex",
 ];
 
 const TECH_LEVEL_IDS: TechLevelId[] = ["manual", "sourcing_tool", "partial_erp", "end_to_end"];
 
-const STAKEHOLDER_ROLES: StakeholderRole[] = ["buyer", "lawyer", "finance", "manager", "executive"];
+const STAKEHOLDER_ROLES: StakeholderRole[] = ["requestor", "buyer", "lawyer", "finance", "manager", "executive"];
 
 export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
   const tx = calculatorT[lang];

@@ -14,24 +14,28 @@ const COST_LABELS_PL: Record<string, string> = {
   timeCost: "Koszt czasu",
   adminCost: "Koszty administracyjne",
   opportunityCost: "Utracone okazje",
+  productivityCost: "Spadek produktywności dostawcy",
   renegotiationCost: "Koszty renegocjacji",
   tcoCost: "Utracone oszczędności TCO",
+  bypassCost: "Koszty obejść rury",
 };
 
 const COST_LABELS_EN: Record<string, string> = {
   timeCost: "Time Cost",
   adminCost: "Administrative Overhead",
   opportunityCost: "Opportunity Cost",
+  productivityCost: "Supplier Productivity Drag",
   renegotiationCost: "Renegotiation Cost",
   tcoCost: "Foregone TCO Savings",
+  bypassCost: "Bypass Risk Cost",
 };
 
 export default function PDFExport({ result, scenario, lang = "pl" }: Props) {
   const [generating, setGenerating] = useState(false);
-  const labels = lang === "pl" ? COST_LABELS_PL : COST_LABELS_EN;
 
-  function openPrintView() {
-    const now = new Date().toLocaleDateString(lang === "pl" ? "pl-PL" : "en-GB", {
+  function openPrintView(exportLang: "pl" | "en") {
+    const labels = exportLang === "pl" ? COST_LABELS_PL : COST_LABELS_EN;
+    const now = new Date().toLocaleDateString(exportLang === "pl" ? "pl-PL" : "en-GB", {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -53,12 +57,12 @@ export default function PDFExport({ result, scenario, lang = "pl" }: Props) {
       .join("");
 
     const title =
-      lang === "pl"
+      exportLang === "pl"
         ? "Raport: Koszty utracone procedur zakupowych"
         : "Report: Hidden Cost of Procurement Procedures";
 
     const html = `<!DOCTYPE html>
-<html lang="${lang}">
+<html lang="${exportLang}">
 <head>
   <meta charset="UTF-8">
   <title>ProcuraCost — ${scenario.name}</title>
@@ -105,22 +109,22 @@ export default function PDFExport({ result, scenario, lang = "pl" }: Props) {
 <body>
   <div class="header">
     <h1>ProcuraCost — ${title}</h1>
-    <p>${lang === "pl" ? "Scenariusz" : "Scenario"}: ${scenario.name} · ${lang === "pl" ? "Data" : "Date"}: ${now}</p>
+    <p>${exportLang === "pl" ? "Scenariusz" : "Scenario"}: ${scenario.name} · ${exportLang === "pl" ? "Data" : "Date"}: ${now}</p>
   </div>
 
   <div class="headline">
-    <div class="label">${lang === "pl" ? "Koszt utracony przywiązania do procedur" : "Hidden cost of procedural compliance"}</div>
+    <div class="label">${exportLang === "pl" ? "Koszt utracony przywiązania do procedur" : "Hidden cost of procedural compliance"}</div>
     <div class="amount">${formatPLN(result.delta)}</div>
-    <div class="sub">${lang === "pl" ? `+${result.deltaPercent.toFixed(1)}% wyższy niż podejście oparte na polityce zakupowej` : `+${result.deltaPercent.toFixed(1)}% higher than policy-based procurement`}</div>
+    <div class="sub">${exportLang === "pl" ? `+${result.deltaPercent.toFixed(1)}% wyższy niż podejście oparte na polityce zakupowej` : `+${result.deltaPercent.toFixed(1)}% higher than policy-based procurement`}</div>
   </div>
 
   <div class="totals">
     <div class="total-box red-box">
-      <div class="label">${lang === "pl" ? "Procedura sztywna" : "Rigid Procedure"}</div>
+      <div class="label">${exportLang === "pl" ? "Procedura sztywna" : "Rigid Procedure"}</div>
       <div class="value">${formatPLN(result.rigid.total)}</div>
     </div>
     <div class="total-box green-box">
-      <div class="label">${lang === "pl" ? "Polityka zakupowa" : "Procurement Policy"}</div>
+      <div class="label">${exportLang === "pl" ? "Polityka zakupowa" : "Procurement Policy"}</div>
       <div class="value">${formatPLN(result.flexible.total)}</div>
     </div>
   </div>
@@ -130,7 +134,7 @@ export default function PDFExport({ result, scenario, lang = "pl" }: Props) {
       ? `<div class="case-study">
     <h3>${scenario.caseStudy.title}</h3>
     <p>${scenario.caseStudy.insight}</p>
-    <div class="src">${lang === "pl" ? "Źródło" : "Source"}: ${scenario.caseStudy.source}</div>
+    <div class="src">${exportLang === "pl" ? "Źródło" : "Source"}: ${scenario.caseStudy.source}</div>
   </div>`
       : ""
   }
@@ -138,16 +142,16 @@ export default function PDFExport({ result, scenario, lang = "pl" }: Props) {
   <table>
     <thead>
       <tr>
-        <th>${lang === "pl" ? "Wymiar kosztów" : "Cost Dimension"}</th>
-        <th class="red">${lang === "pl" ? "Procedura sztywna" : "Rigid Procedure"}</th>
-        <th class="green">${lang === "pl" ? "Polityka zakupowa" : "Policy-Based"}</th>
-        <th>${lang === "pl" ? "Różnica" : "Difference"}</th>
+        <th>${exportLang === "pl" ? "Wymiar kosztów" : "Cost Dimension"}</th>
+        <th class="red">${exportLang === "pl" ? "Procedura sztywna" : "Rigid Procedure"}</th>
+        <th class="green">${exportLang === "pl" ? "Polityka zakupowa" : "Policy-Based"}</th>
+        <th>${exportLang === "pl" ? "Różnica" : "Difference"}</th>
       </tr>
     </thead>
     <tbody>${rows}</tbody>
     <tfoot>
       <tr>
-        <td>${lang === "pl" ? "SUMA" : "TOTAL"}</td>
+        <td>${exportLang === "pl" ? "SUMA" : "TOTAL"}</td>
         <td class="red">${formatPLN(result.rigid.total)}</td>
         <td class="green">${formatPLN(result.flexible.total)}</td>
         <td class="red">+${formatPLN(result.delta)}</td>
@@ -156,7 +160,7 @@ export default function PDFExport({ result, scenario, lang = "pl" }: Props) {
   </table>
 
   <div class="sources">
-    <h3>${lang === "pl" ? "Źródła naukowe modelu" : "Academic Sources"}</h3>
+    <h3>${exportLang === "pl" ? "Źródła naukowe modelu" : "Academic Sources"}</h3>
     <ul>
       ${Object.entries(result.sources)
         .map(([k, v]) => `<li><strong>${labels[k]}:</strong> ${v}</li>`)
@@ -184,7 +188,7 @@ export default function PDFExport({ result, scenario, lang = "pl" }: Props) {
   return (
     <div className="flex gap-2">
       <button
-        onClick={() => { setGenerating(true); openPrintView(); setTimeout(() => setGenerating(false), 1000); }}
+        onClick={() => { setGenerating(true); openPrintView("pl"); setTimeout(() => setGenerating(false), 1000); }}
         disabled={generating}
         className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
       >
@@ -194,7 +198,7 @@ export default function PDFExport({ result, scenario, lang = "pl" }: Props) {
         Raport PDF (PL)
       </button>
       <button
-        onClick={() => { setGenerating(true); openPrintView(); setTimeout(() => setGenerating(false), 1000); }}
+        onClick={() => { setGenerating(true); openPrintView("en"); setTimeout(() => setGenerating(false), 1000); }}
         disabled={generating}
         className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
       >

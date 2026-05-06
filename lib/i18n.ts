@@ -19,6 +19,9 @@ export const calculatorT = {
       pzp_krajowy: "Postępowanie krajowe PZP",
       private_formal: "Formalny przetarg prywatny (RFQ/RFP)",
       policy_only: "Polityka zakupowa (elastyczna)",
+      catalog_order: "Zamówienie z katalogu (near-field)",
+      mrp_order: "Zlecenie MRP / cykl produkcyjny",
+      capex: "Inwestycja CAPEX",
       custom: "Własny",
     },
     // Tech level section
@@ -32,6 +35,7 @@ export const calculatorT = {
     // Stakeholders section
     stakeholdersTitle: "Uczestnicy procesu",
     stakeholderRoles: {
+      requestor: "Zamawiający (biznes)",
       buyer: "Kupiec",
       lawyer: "Prawnik",
       finance: "Finanse",
@@ -66,6 +70,9 @@ export const calculatorT = {
       pzp_krajowy: "National PZP procedure",
       private_formal: "Formal private tender (RFQ/RFP)",
       policy_only: "Procurement policy (flexible)",
+      catalog_order: "Catalog order (near-field)",
+      mrp_order: "MRP order / production cycle",
+      capex: "CAPEX investment",
       custom: "Custom",
     },
     techLevelLabel: "Technology level",
@@ -77,6 +84,7 @@ export const calculatorT = {
     },
     stakeholdersTitle: "Process participants",
     stakeholderRoles: {
+      requestor: "Requestor (business)",
       buyer: "Buyer",
       lawyer: "Lawyer",
       finance: "Finance",
@@ -137,6 +145,14 @@ export const comparisonT = {
     staffCost: "Kadra (godziny × stawki)",
     coordCost: "Koordynacja (email/telefon)",
     toolCost: "Licencja narzędzia",
+    pipeFieldTitle: "Dlaczego ta różnica istnieje? Model rury i pola.",
+    pipeLabel: "Procedura = Rura",
+    pipeDesc:
+      "Sztywna procedura wyznacza jeden zamknięty tor: a₁ → a₂ → a₃ → ... → aₙ. Kupiec jest wykonawcą kroków. Pod presją — czas, rynek, dostawca — wychodzi z rury nieformalnie (mail / telefon / Excel). Obejście jest niewidoczne i kumuluje ryzyko audytowe.",
+    fieldLabel: "Polityka zakupowa = Pole",
+    fieldDesc:
+      "Polityka wyznacza granice (uprawnienia, konkurencja, etyka, dokumentacja), nie ścieżkę. Wewnątrz pola jest nieskończenie wiele ścieżek — wszystkie zgodne. Nie ma co obchodzić, bo granice są aktywne w każdym punkcie, nie tylko na checkpointach.",
+    pipeFieldSource: "Źródło modelu: Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) Challenger; Holmström & Milgrom (1991) Multitask Principal-Agent",
   },
   en: {
     costLabels: {
@@ -176,6 +192,14 @@ export const comparisonT = {
     staffCost: "Staff (hours × rates)",
     coordCost: "Coordination (email/phone)",
     toolCost: "Tool license",
+    pipeFieldTitle: "Why does this gap exist? The Pipe and Field model.",
+    pipeLabel: "Procedure = Pipe",
+    pipeDesc:
+      "A rigid procedure defines one locked path: a₁ → a₂ → a₃ → ... → aₙ. The buyer is a step-executor. Under pressure — time, market, supplier — they exit the pipe informally (email / phone / Excel). The bypass is invisible and accumulates audit risk.",
+    fieldLabel: "Procurement policy = Field",
+    fieldDesc:
+      "Policy defines boundaries (authorisation, competition, ethics, documentation), not the path. Inside the field there are infinitely many paths — all compliant. Nothing to bypass, because boundaries are active at every point, not just at checkpoints.",
+    pipeFieldSource: "Model sources: Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) Challenger; Holmström & Milgrom (1991) Multitask Principal-Agent",
   },
 } as const;
 

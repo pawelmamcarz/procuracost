@@ -9,13 +9,21 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  RadarChart,
+  Radar,
+  PolarGrid,
+  PolarAngleAxis,
+  LineChart,
+  Line,
 } from "recharts";
 import {
   ComparisonResult,
   ProcurementInputs,
   formatPLN,
   formatPercent,
+  formatCompact,
   calculateMatrix,
+  calculateCosts,
   MatrixCell,
   TechLevelId,
 } from "@/lib/calculations";
@@ -27,6 +35,8 @@ import {
   PROCESS_TYPE_META,
   ProcessStep,
 } from "@/lib/process-templates";
+
+const SENSITIVITY_MULTIPLIERS = [0.1, 0.25, 0.5, 1, 2, 5, 10];
 
 interface Props {
   result: ComparisonResult;
@@ -70,6 +80,40 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
   }));
 
   const sourcesEntries = Object.entries(sources);
+
+  // Radar chart: 5 cost dimensions normalized to 100
+  const radarDimensions = [
+    { key: "timeCost", label: lang === "en" ? "Time" : "Czas" },
+    { key: "opportunityCost", label: lang === "en" ? "Opportunity" : "Okazje" },
+    { key: "renegotiationCost", label: lang === "en" ? "Renegotiation" : "Renegocjacje" },
+    { key: "tcoCost", label: "TCO" },
+    { key: "bypassCost", label: lang === "en" ? "Bypass" : "Obejście" },
+    { key: "productivityCost", label: lang === "en" ? "Productivity" : "Produktywność" },
+  ] as const;
+
+  const radarData = radarDimensions.map(({ key, label }) => {
+    const r = rigid[key as keyof typeof rigid] as number;
+    const f = flexible[key as keyof typeof flexible] as number;
+    const maxVal = Math.max(r, f, 1);
+    return {
+      dimension: label,
+      [tx.rigidLabel]: Math.round((r / maxVal) * 100),
+      [tx.flexibleLabel]: Math.round((f / maxVal) * 100),
+    };
+  });
+
+  // Sensitivity analysis: sweep contract value 10%–1000% of current
+  const baseValue = inputs.contractValue;
+  const sensitivityData = SENSITIVITY_MULTIPLIERS.map((mult) => {
+    const r = calculateCosts({ ...inputs, contractValue: baseValue * mult });
+    const label = formatCompact(baseValue * mult);
+    return {
+      value: label,
+      [tx.rigidLabel]: Math.round(r.rigid.total),
+      [tx.flexibleLabel]: Math.round(r.flexible.total),
+      delta: Math.round(r.delta),
+    };
+  });
 
   function getCell(tl: TechLevelId, mode: "rigid" | "flexible"): MatrixCell {
     return matrix.find((c) => c.techLevel === tl && c.processMode === mode)!;
@@ -128,6 +172,34 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
             </p>
           </div>
         )}
+      </div>
+
+      {/* Pipe vs Field interpretation */}
+      <div>
+        <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
+          {tx.pipeFieldTitle}
+        </p>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="rounded-xl border border-red-100 bg-red-50 p-4">
+            <p className="text-xs font-semibold uppercase tracking-wide text-red-600">
+              {tx.pipeLabel}
+            </p>
+            <p className="mt-1 font-mono text-xs text-gray-500">a₁ → a₂ → a₃ → ··· → aₙ</p>
+            <p className="mt-2 text-xs leading-relaxed text-red-700">{tx.pipeDesc}</p>
+          </div>
+          <div className="rounded-xl border border-green-100 bg-green-50 p-4">
+            <p className="text-xs font-semibold uppercase tracking-wide text-green-600">
+              {tx.fieldLabel}
+            </p>
+            <p className="mt-1 font-mono text-xs text-gray-500">
+              {lang === "en"
+                ? "∂Φ = {authorisation, competition, ethics, documentation}"
+                : "∂Φ = {uprawnienia, konkurencja, etyka, dokumentacja}"}
+            </p>
+            <p className="mt-2 text-xs leading-relaxed text-green-700">{tx.fieldDesc}</p>
+          </div>
+        </div>
+        <p className="mt-2 text-xs text-gray-400">{tx.pipeFieldSource}</p>
       </div>
 
       {/* Side-by-side totals with sub-breakdown */}
@@ -290,13 +362,7 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
               interval={0}
             />
             <YAxis
-              tickFormatter={(v) =>
-                v >= 1_000_000
-                  ? `${(v / 1_000_000).toFixed(1)}M`
-                  : v >= 1000
-                  ? `${(v / 1000).toFixed(0)}k`
-                  : `${v}`
-              }
+              tickFormatter={formatCompact}
               tick={{ fontSize: 11, fill: "#6b7280" }}
             />
             <Tooltip
@@ -308,6 +374,101 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
             <Bar dataKey={tx.flexibleLabel} fill="#22c55e" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
+      </div>
+
+      {/* Radar chart — cost profile */}
+      <div>
+        <h3 className="mb-1 text-sm font-semibold text-gray-700">
+          {lang === "en" ? "Cost profile — 6 dimensions (normalized)" : "Profil kosztów — 6 wymiarów (znormalizowane)"}
+        </h3>
+        <p className="mb-3 text-xs text-gray-400">
+          {lang === "en"
+            ? "Each axis shows the cost in that dimension as a % of the higher value (100 = maximum). Smaller area = lower cost."
+            : "Każda oś pokazuje koszt w danym wymiarze jako % wartości wyższej (100 = max). Mniejsza powierzchnia = niższy koszt."}
+        </p>
+        <ResponsiveContainer width="100%" height={300}>
+          <RadarChart data={radarData} margin={{ top: 10, right: 30, left: 30, bottom: 10 }}>
+            <PolarGrid stroke="#e5e7eb" />
+            <PolarAngleAxis dataKey="dimension" tick={{ fontSize: 11, fill: "#6b7280" }} />
+            <Radar
+              name={tx.rigidLabel}
+              dataKey={tx.rigidLabel}
+              stroke="#ef4444"
+              fill="#ef4444"
+              fillOpacity={0.18}
+            />
+            <Radar
+              name={tx.flexibleLabel}
+              dataKey={tx.flexibleLabel}
+              stroke="#22c55e"
+              fill="#22c55e"
+              fillOpacity={0.18}
+            />
+            <Legend wrapperStyle={{ fontSize: 12 }} />
+            <Tooltip formatter={(v) => `${v}%`} contentStyle={{ fontSize: 12 }} />
+          </RadarChart>
+        </ResponsiveContainer>
+      </div>
+
+      {/* Sensitivity analysis */}
+      <div>
+        <h3 className="mb-1 text-sm font-semibold text-gray-700">
+          {lang === "en"
+            ? "Sensitivity: cost vs. contract value"
+            : "Wrażliwość: koszty vs. wartość kontraktu"}
+        </h3>
+        <p className="mb-3 text-xs text-gray-400">
+          {lang === "en"
+            ? "How total costs change as contract value varies. All other parameters fixed."
+            : "Jak zmieniają się koszty całkowite przy zmianie wartości kontraktu. Pozostałe parametry stałe."}
+        </p>
+        <ResponsiveContainer width="100%" height={260}>
+          <LineChart data={sensitivityData} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+            <XAxis
+              dataKey="value"
+              tick={{ fontSize: 11, fill: "#6b7280" }}
+              label={{ value: "PLN", position: "insideBottomRight", offset: -4, fontSize: 10 }}
+            />
+            <YAxis
+              tickFormatter={formatCompact}
+              tick={{ fontSize: 11, fill: "#6b7280" }}
+            />
+            <Tooltip
+              formatter={(value) => [formatPLN(Number(value ?? 0)), ""]}
+              contentStyle={{ fontSize: 12 }}
+            />
+            <Legend wrapperStyle={{ fontSize: 12 }} />
+            <Line
+              type="monotone"
+              dataKey={tx.rigidLabel}
+              stroke="#ef4444"
+              strokeWidth={2}
+              dot={false}
+            />
+            <Line
+              type="monotone"
+              dataKey={tx.flexibleLabel}
+              stroke="#22c55e"
+              strokeWidth={2}
+              dot={false}
+            />
+            <Line
+              type="monotone"
+              dataKey="delta"
+              stroke="#3b82f6"
+              strokeWidth={1.5}
+              strokeDasharray="4 2"
+              dot={false}
+              name={lang === "en" ? "Cost gap" : "Różnica"}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+        <p className="mt-1 text-xs text-gray-400">
+          {lang === "en"
+            ? "Blue dashed line = cost gap (rigid − flexible). Current scenario marked at 100% (contract value 1×)."
+            : "Niebieska przerywana = różnica kosztów (sztywny − elastyczny). Aktualny scenariusz przy 100% (wartość kontraktu 1×)."}
+        </p>
       </div>
 
       {/* Detailed breakdown table */}

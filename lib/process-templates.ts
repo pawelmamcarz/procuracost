@@ -5,9 +5,9 @@
 // - Stakeholder hours: benchmarked from OECD (2023) procurement function surveys
 // - Tech level impacts: derived from EY / Deloitte sourcing transformation studies
 
-export type ProcessType = "pzp_eu" | "pzp_krajowy" | "private_formal" | "policy_only" | "custom";
+export type ProcessType = "pzp_eu" | "pzp_krajowy" | "private_formal" | "policy_only" | "catalog_order" | "mrp_order" | "capex" | "custom";
 export type TechLevelId = "manual" | "sourcing_tool" | "partial_erp" | "end_to_end";
-export type StakeholderRole = "buyer" | "lawyer" | "finance" | "manager" | "executive";
+export type StakeholderRole = "buyer" | "lawyer" | "finance" | "manager" | "executive" | "requestor";
 
 export interface ProcessStep {
   id: string;
@@ -110,7 +110,10 @@ export const PROCESS_RIGIDITY: Record<ProcessType, number> = {
   pzp_krajowy: 0.80,
   private_formal: 0.60,
   policy_only: 0.15,
-  custom: 0.50, // placeholder; overridden by user
+  catalog_order: 0.20,
+  mrp_order: 0.12,
+  capex: 0.72,
+  custom: 0.50,
 };
 
 // ─── Process step templates ─────────────────────────────────────────────────────
@@ -123,9 +126,9 @@ const PZP_EU_STEPS: ProcessStep[] = [
     rigidDays: 7,
     flexibleDays: 3,
     mandatoryWait: false,
-    participation: { buyer: 16, finance: 8, manager: 4 },
-    note: "Określenie wymagań, zatwierdzenie budżetu, wstępna specyfikacja",
-    noteEn: "Requirements definition, budget approval, preliminary specification",
+    participation: { requestor: 16, buyer: 8, finance: 8, manager: 4 },
+    note: "Określenie wymagań, zatwierdzenie budżetu, wstępna specyfikacja. Zamawiający (biznes) angażuje się najbardziej.",
+    noteEn: "Requirements definition, budget approval, preliminary specification. Requestor (business unit) most involved.",
   },
   {
     id: "siwz_prep",
@@ -134,9 +137,9 @@ const PZP_EU_STEPS: ProcessStep[] = [
     rigidDays: 10,
     flexibleDays: null,
     mandatoryWait: false,
-    participation: { buyer: 24, lawyer: 16 },
-    note: "Opracowanie pełnej dokumentacji przetargowej zgodnej z PZP",
-    noteEn: "Preparation of full tender documentation compliant with PZP",
+    participation: { requestor: 8, buyer: 24, lawyer: 16 },
+    note: "Opracowanie pełnej dokumentacji przetargowej zgodnej z PZP. Zamawiający konsultuje wymagania techniczne.",
+    noteEn: "Preparation of full tender documentation compliant with PZP. Requestor consults on technical requirements.",
   },
   {
     id: "publication",
@@ -156,9 +159,9 @@ const PZP_EU_STEPS: ProcessStep[] = [
     rigidDays: 10,
     flexibleDays: 5,
     mandatoryWait: false,
-    participation: { buyer: 24, lawyer: 8, finance: 8 },
-    note: "Formalna weryfikacja i ocena punktowa wszystkich złożonych ofert",
-    noteEn: "Formal verification and scoring of all submitted bids",
+    participation: { requestor: 8, buyer: 24, lawyer: 8, finance: 8 },
+    note: "Formalna weryfikacja i ocena punktowa wszystkich złożonych ofert. Zamawiający ocenia aspekty techniczne.",
+    noteEn: "Formal verification and scoring of all submitted bids. Requestor assesses technical fit.",
   },
   {
     id: "clarifications",
@@ -214,9 +217,9 @@ const PZP_KRAJOWY_STEPS: ProcessStep[] = [
     rigidDays: 5,
     flexibleDays: 3,
     mandatoryWait: false,
-    participation: { buyer: 12, finance: 6, manager: 3 },
-    note: "Określenie wymagań i zatwierdzenie budżetu",
-    noteEn: "Requirements definition and budget approval",
+    participation: { requestor: 12, buyer: 8, finance: 6, manager: 3 },
+    note: "Określenie wymagań i zatwierdzenie budżetu. Zamawiający definiuje potrzebę.",
+    noteEn: "Requirements definition and budget approval. Requestor defines the need.",
   },
   {
     id: "spec_prep",
@@ -225,7 +228,7 @@ const PZP_KRAJOWY_STEPS: ProcessStep[] = [
     rigidDays: 7,
     flexibleDays: null,
     mandatoryWait: false,
-    participation: { buyer: 16, lawyer: 8 },
+    participation: { requestor: 8, buyer: 16, lawyer: 8 },
     note: "Opracowanie dokumentacji — uproszczone względem progów UE",
     noteEn: "Documentation preparation — simplified vs EU thresholds",
   },
@@ -272,9 +275,9 @@ const PRIVATE_FORMAL_STEPS: ProcessStep[] = [
     rigidDays: 7,
     flexibleDays: 3,
     mandatoryWait: false,
-    participation: { buyer: 16, finance: 4 },
-    note: "Rozpoznanie rynku, zebranie informacji od potencjalnych dostawców",
-    noteEn: "Market reconnaissance, gathering information from potential suppliers",
+    participation: { requestor: 8, buyer: 16, finance: 4 },
+    note: "Rozpoznanie rynku, zebranie informacji od potencjalnych dostawców. Zamawiający potwierdza wymagania.",
+    noteEn: "Market reconnaissance, gathering information from potential suppliers. Requestor confirms requirements.",
   },
   {
     id: "rfq",
@@ -341,9 +344,9 @@ const POLICY_ONLY_STEPS: ProcessStep[] = [
     rigidDays: 5,
     flexibleDays: 5,
     mandatoryWait: false,
-    participation: { buyer: 12, manager: 2 },
-    note: "Szybkie rozpoznanie rynku, 2–3 dostawców",
-    noteEn: "Quick market sounding, 2–3 suppliers",
+    participation: { requestor: 8, buyer: 12, manager: 2 },
+    note: "Szybkie rozpoznanie rynku, 2–3 dostawców. Zamawiający kluczowy na starcie.",
+    noteEn: "Quick market sounding, 2–3 suppliers. Requestor critical at the start.",
   },
   {
     id: "evaluation",
@@ -352,9 +355,9 @@ const POLICY_ONLY_STEPS: ProcessStep[] = [
     rigidDays: 7,
     flexibleDays: 7,
     mandatoryWait: false,
-    participation: { buyer: 16, finance: 4 },
-    note: "Ocena ofert według polityki zakupowej",
-    noteEn: "Offer evaluation according to procurement policy",
+    participation: { requestor: 4, buyer: 16, finance: 4 },
+    note: "Ocena ofert według polityki zakupowej. Zamawiający potwierdza dopasowanie.",
+    noteEn: "Offer evaluation according to procurement policy. Requestor confirms fit.",
   },
   {
     id: "approval",
@@ -380,11 +383,166 @@ const POLICY_ONLY_STEPS: ProcessStep[] = [
   },
 ];
 
+const CATALOG_ORDER_STEPS: ProcessStep[] = [
+  {
+    id: "need_identification",
+    name: "Identyfikacja potrzeby",
+    nameEn: "Need identification",
+    rigidDays: 1,
+    flexibleDays: 1,
+    mandatoryWait: false,
+    participation: { requestor: 1 },
+    note: "Zamawiający identyfikuje potrzebę i wyszukuje pozycję w katalogu dostawcy",
+    noteEn: "Requestor identifies need and searches for item in supplier catalog",
+  },
+  {
+    id: "catalog_selection",
+    name: "Wybór z katalogu",
+    nameEn: "Catalog selection",
+    rigidDays: 1,
+    flexibleDays: 1,
+    mandatoryWait: false,
+    participation: { requestor: 1, buyer: 0.5 },
+    note: "Selekcja pre-negocjowanej pozycji — cena i dostępność egzekwowane przez system",
+    noteEn: "Selection of pre-negotiated item — price and availability enforced by system",
+  },
+  {
+    id: "po_approval",
+    name: "Zatwierdzenie PO",
+    nameEn: "PO approval",
+    rigidDays: 1,
+    flexibleDays: 1,
+    mandatoryWait: false,
+    participation: { manager: 0.5 },
+    note: "Automatyczne lub jednokrokowe zatwierdzenie zgodnie z matrycą uprawnień",
+    noteEn: "Automatic or single-step approval per authorization matrix",
+  },
+];
+
+const MRP_ORDER_STEPS: ProcessStep[] = [
+  {
+    id: "mrp_trigger",
+    name: "Sygnał MRP",
+    nameEn: "MRP trigger",
+    rigidDays: 1,
+    flexibleDays: 1,
+    mandatoryWait: false,
+    participation: {},
+    note: "System MRP/ERP generuje zlecenie zakupu automatycznie na podstawie planu produkcji",
+    noteEn: "MRP/ERP system automatically generates purchase order based on production plan",
+  },
+  {
+    id: "po_generation",
+    name: "Generowanie i weryfikacja PO",
+    nameEn: "PO generation and verification",
+    rigidDays: 1,
+    flexibleDays: 1,
+    mandatoryWait: false,
+    participation: { buyer: 1 },
+    note: "Automatyczne generowanie — buyer tylko weryfikuje wyjątki (monopol, nowy dostawca)",
+    noteEn: "Automatic generation — buyer only handles exceptions (monopoly, new supplier)",
+  },
+  {
+    id: "goods_receipt",
+    name: "Odbiór towaru (GR)",
+    nameEn: "Goods receipt (GR)",
+    rigidDays: 1,
+    flexibleDays: 1,
+    mandatoryWait: false,
+    participation: { requestor: 1 },
+    note: "Potwierdzenie odbioru w systemie — zamknięcie pętli P2P",
+    noteEn: "Goods receipt confirmation in system — closing the P2P loop",
+  },
+];
+
+const CAPEX_STEPS: ProcessStep[] = [
+  {
+    id: "business_case",
+    name: "Business case i budżet CAPEX",
+    nameEn: "Business case and CAPEX budget",
+    rigidDays: 14,
+    flexibleDays: 10,
+    mandatoryWait: false,
+    participation: { requestor: 24, finance: 16, manager: 8, executive: 4 },
+    note: "Uzasadnienie inwestycji, analiza NPV/IRR, zatwierdzenie budżetu kapitałowego — governance ma tu wartość",
+    noteEn: "Investment justification, NPV/IRR analysis, capital budget approval — governance has value here",
+  },
+  {
+    id: "technical_spec",
+    name: "Specyfikacja techniczna",
+    nameEn: "Technical specification",
+    rigidDays: 10,
+    flexibleDays: 7,
+    mandatoryWait: false,
+    participation: { requestor: 32, buyer: 16, lawyer: 8 },
+    note: "Pełna specyfikacja techniczna i wymagania eksploatacyjne środka trwałego",
+    noteEn: "Full technical specification and operational requirements for fixed asset",
+  },
+  {
+    id: "capex_committee",
+    name: "Komitet CAPEX",
+    nameEn: "CAPEX committee",
+    rigidDays: 7,
+    flexibleDays: 5,
+    mandatoryWait: false,
+    participation: { finance: 8, manager: 6, executive: 4 },
+    note: "Zatwierdzenie przez komitet CAPEX — formalne ale uzasadnione przy dużych inwestycjach",
+    noteEn: "CAPEX committee approval — formal but justified for large investments",
+  },
+  {
+    id: "vendor_selection",
+    name: "Selekcja i ocena dostawcy",
+    nameEn: "Vendor selection and evaluation",
+    rigidDays: 14,
+    flexibleDays: 10,
+    mandatoryWait: false,
+    participation: { requestor: 16, buyer: 32, finance: 8, manager: 8 },
+    note: "RFP/RFQ lub negocjacje bezpośrednie z kwalifikowanymi dostawcami",
+    noteEn: "RFP/RFQ or direct negotiations with qualified vendors",
+  },
+  {
+    id: "legal_review",
+    name: "Przegląd prawny kontraktu",
+    nameEn: "Contract legal review",
+    rigidDays: 7,
+    flexibleDays: 5,
+    mandatoryWait: false,
+    participation: { lawyer: 24, finance: 8 },
+    note: "Przegląd umowy inwestycyjnej, gwarancji, SLA, warunków serwisowych",
+    noteEn: "Review of investment contract, warranties, SLAs, service conditions",
+  },
+  {
+    id: "final_approval",
+    name: "Finalna akceptacja zarządu",
+    nameEn: "Final board approval",
+    rigidDays: 5,
+    flexibleDays: 3,
+    mandatoryWait: false,
+    participation: { executive: 4, finance: 4 },
+    note: "Finalne zatwierdzenie inwestycji przed podpisaniem — konieczne przy dużej wartości",
+    noteEn: "Final investment approval before signing — necessary for high-value assets",
+  },
+  {
+    id: "contract_signing",
+    name: "Podpisanie i rejestracja",
+    nameEn: "Signing and asset registration",
+    rigidDays: 3,
+    flexibleDays: 2,
+    mandatoryWait: false,
+    participation: { buyer: 4, lawyer: 8, executive: 2 },
+    note: "Podpisanie umowy inwestycyjnej i rejestracja środka trwałego w systemie",
+    noteEn: "Investment contract signing and fixed asset registration in system",
+  },
+];
+
 export const PROCESS_TEMPLATES: Record<Exclude<ProcessType, "custom">, ProcessStep[]> = {
   pzp_eu: PZP_EU_STEPS,
   pzp_krajowy: PZP_KRAJOWY_STEPS,
   private_formal: PRIVATE_FORMAL_STEPS,
   policy_only: POLICY_ONLY_STEPS,
+  catalog_order: CATALOG_ORDER_STEPS,
+  mrp_order: MRP_ORDER_STEPS,
+  capex: CAPEX_STEPS,
 };
 
 export const PROCESS_TYPE_META: Record<Exclude<ProcessType, "custom">, { name: string; nameEn: string; description: string; descriptionEn: string }> = {
@@ -411,6 +569,24 @@ export const PROCESS_TYPE_META: Record<Exclude<ProcessType, "custom">, { name: s
     nameEn: "Procurement policy (flexible path)",
     description: "Zakup prowadzony wyłącznie w ramach polityki zakupowej — bez mandatory procedur. Czas i metoda wybierane przez kupca zgodnie z matrycą uprawnień.",
     descriptionEn: "Purchase conducted solely within the procurement policy framework — no mandatory procedures. Time and method chosen by the buyer per authorization matrix.",
+  },
+  catalog_order: {
+    name: "Zamówienie z katalogu (near-field)",
+    nameEn: "Catalog order (near-field)",
+    description: "Zakup pre-negocjowanych pozycji z katalogu dostawcy. System egzekwuje cenę i dostępność. Kupiec wybiera — nie negocjuje. Najbliższy modelowi pola.",
+    descriptionEn: "Purchase of pre-negotiated catalog items. System enforces price and availability. Buyer selects — does not negotiate. Closest to the field model.",
+  },
+  mrp_order: {
+    name: "Zlecenie MRP/cykl produkcyjny (pure field)",
+    nameEn: "MRP order / production cycle (pure field)",
+    description: "System MRP/ERP generuje zlecenie automatycznie na podstawie planu produkcji. Zero dyskrecji kupca — to jest czyste pole egzekwowane przez system.",
+    descriptionEn: "MRP/ERP system generates orders automatically based on production plan. Zero buyer discretion — this is pure field enforced by the system.",
+  },
+  capex: {
+    name: "Inwestycja CAPEX (uzasadnione zarządzanie)",
+    nameEn: "CAPEX investment (justified governance)",
+    description: "Zakup środków trwałych. Procedury CAPEX są uzasadnione — wysoka wartość, długi horyzont, governance to tu wartość, nie koszt. Jednak nawet tu można skrócić o 30%.",
+    descriptionEn: "Fixed asset procurement. CAPEX procedures are justified — high value, long horizon, governance is value here, not overhead. Yet even here 30% reduction is achievable.",
   },
 };
 

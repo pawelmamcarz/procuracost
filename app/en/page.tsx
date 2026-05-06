@@ -1,4 +1,5 @@
 import Link from "next/link";
+import PipeFieldDiagram from "@/components/PipeFieldDiagram";
 
 const stats = [
   { value: "+2%", label: "higher contract prices under rigid procedures", source: "Szucs, JEEA 2024" },
@@ -85,31 +86,15 @@ export default function EnHomePage() {
       {/* Pipe vs. Field */}
       <div className="mt-12 rounded-2xl border border-blue-100 bg-blue-50 p-6">
         <h2 className="font-bold text-blue-900">The Pipe vs. Field model</h2>
-        <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div className="rounded-xl bg-red-50 border border-red-100 p-4">
-            <p className="text-xs font-semibold uppercase tracking-wide text-red-600 mb-1">
-              Procedure = Pipe
-            </p>
-            <p className="text-sm text-red-800">
-              One path, one direction. Compliance is binary — you&apos;re either in the pipe or outside
-              it. Under time pressure, people bypass it informally (email, phone, Excel). The bypass
-              is invisible and accumulates risk.
-            </p>
-          </div>
-          <div className="rounded-xl bg-green-50 border border-green-100 p-4">
-            <p className="text-xs font-semibold uppercase tracking-wide text-green-600 mb-1">
-              Policy + System = Field
-            </p>
-            <p className="text-sm text-green-800">
-              Many paths, all safe. The ERP/AI system enforces boundaries continuously in real time.
-              The buyer is a navigator, not an executor. There is nothing to bypass — the boundaries
-              are everywhere and always active.
-            </p>
-          </div>
+        <p className="mt-1 text-sm text-blue-700">
+          Same contract — same value — two worlds. The procedure locks one path and forces bypasses. The policy sets boundaries and grants freedom of choice.
+        </p>
+        <div className="mt-4">
+          <PipeFieldDiagram lang="en" />
         </div>
         <p className="mt-3 text-xs text-blue-600">
-          Theoretical basis: Lipsky (1980), Vaughan (1996), Holmström &amp; Milgrom (1991),
-          Breiman (2001)
+          Theoretical basis: Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) Challenger;
+          Holmström &amp; Milgrom (1991) Multitask Principal-Agent
         </p>
       </div>
 

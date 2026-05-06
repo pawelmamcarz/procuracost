@@ -22,6 +22,7 @@ import {
   PATHS,
 } from "@/lib/optimizer";
 import { optimizerT, Lang } from "@/lib/i18n";
+import { formatCompact } from "@/lib/calculations";
 
 const defaultFeatures: ProcurementFeatures = {
   contractValue: 2_000_000,
@@ -36,9 +37,7 @@ const defaultFeatures: ProcurementFeatures = {
 };
 
 function formatPLNShort(v: number) {
-  if (v >= 1_000_000) return `${(v / 1_000_000).toFixed(1)}M PLN`;
-  if (v >= 1_000) return `${(v / 1_000).toFixed(0)}k PLN`;
-  return `${v} PLN`;
+  return `${formatCompact(v)} PLN`;
 }
 
 export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
