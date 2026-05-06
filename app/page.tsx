@@ -94,6 +94,9 @@ export default function HomePage() {
           <br />
           Polityka zakupowa to pole.
         </h1>
+        <p className="mt-2 text-sm italic text-blue-600">
+          Tunel ma ściany. Pole ma horyzont.
+        </p>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-500">
           Empiryczny model oparty na recenzowanych badaniach pokazuje: koszty procedur sztywnych
           przewyższają koszty polityki zakupowej o{" "}

@@ -94,6 +94,9 @@ export default function EnHomePage() {
           <br />
           Procurement policy is a field.
         </h1>
+        <p className="mt-2 text-sm italic text-blue-600">
+          A tunnel has walls. A field has a horizon.
+        </p>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-500">
           An empirical model built on peer-reviewed research shows: rigid-procedure costs exceed
           policy-only costs by{" "}
