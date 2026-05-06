@@ -10,6 +10,48 @@ const stats = [
   { value: "30%", label: "potencjalne oszczędności TCO przy elastyczności", source: "ISM" },
 ];
 
+const howItWorks = [
+  {
+    step: "01",
+    title: "Opisz swój zakup",
+    body: "Wybierz scenariusz (Ryanair, Swiss Casinos, Zara…) lub wpisz własne dane: wartość kontraktu, typ procesu, zespół i stawki. Nie wymaga rejestracji.",
+  },
+  {
+    step: "02",
+    title: "Oblicz koszty ukryte",
+    body: "Model na bazie 4 badań naukowych wylicza 7 wymiarów kosztów — czas kadry, opóźnienia, renegocjacje, ryzyko obejść — i porównuje rurę z polem.",
+  },
+  {
+    step: "03",
+    title: "Porównaj i działaj",
+    body: "Wynik to benchmark branżowy, rekomendacja ścieżki zakupowej (Random Forest, 30 drzew) i raport PDF z cytowaniami akademickimi.",
+  },
+];
+
+const team = [
+  {
+    name: "Paweł Mamcarz",
+    role: "Autor modelu / ProcureTech",
+    initials: "PM",
+    color: "bg-blue-600",
+    url: "https://mamcarz.com",
+  },
+  {
+    name: "Tomasz Ślusarczyk",
+    role: "Ekspert zakupowy",
+    initials: "TŚ",
+    color: "bg-indigo-600",
+    url: null,
+  },
+  {
+    name: "Rafał Madejewski",
+    role: "Analityk i badacz",
+    initials: "RM",
+    color: "bg-teal-600",
+    url: null,
+  },
+];
+
 const caseStudyPreviews = SCENARIOS.filter((s) => s.caseStudy)
   .slice(0, 3)
   .map((s) => {
@@ -69,7 +111,7 @@ export default function HomePage() {
             href="/assessment"
             className="rounded-xl border border-gray-200 bg-white px-8 py-3 text-sm font-semibold text-gray-600 hover:border-gray-300"
           >
-            Ocena dojrzałości →
+            Bezpłatny audyt →
           </Link>
           <Link
             href="/optimizer"
@@ -92,6 +134,22 @@ export default function HomePage() {
             <p className="mt-2 text-xs text-gray-400">{s.source}</p>
           </div>
         ))}
+      </div>
+
+      {/* How it works */}
+      <div className="mt-16">
+        <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-6">
+          Jak działa ProcuraCost
+        </p>
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+          {howItWorks.map((h) => (
+            <div key={h.step} className="rounded-xl border border-gray-100 bg-white p-5 shadow-sm">
+              <span className="text-2xl font-bold text-blue-100">{h.step}</span>
+              <h3 className="mt-2 font-bold text-gray-900">{h.title}</h3>
+              <p className="mt-2 text-sm text-gray-500">{h.body}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Principles */}
@@ -150,19 +208,61 @@ export default function HomePage() {
         </p>
       </div>
 
+      {/* Team */}
+      <div className="mt-16">
+        <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-5">Zespół</p>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {team.map((member) => (
+            <div
+              key={member.name}
+              className="rounded-xl border border-gray-100 bg-white p-5 shadow-sm flex items-center gap-4"
+            >
+              <span
+                className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white ${member.color}`}
+              >
+                {member.initials}
+              </span>
+              <div>
+                {member.url ? (
+                  <a
+                    href={member.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold text-gray-900 hover:text-blue-600"
+                  >
+                    {member.name}
+                  </a>
+                ) : (
+                  <p className="font-semibold text-gray-900">{member.name}</p>
+                )}
+                <p className="text-xs text-gray-500">{member.role}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* CTA */}
       <div className="mt-16 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-center text-white">
-        <h2 className="text-2xl font-bold">Sprawdź swój scenariusz</h2>
+        <h2 className="text-2xl font-bold">Sprawdź, ile traci Twoja organizacja</h2>
         <p className="mt-2 text-blue-100">
-          Wybierz predefiniowany scenariusz lub wprowadź własne dane. Wynik zawiera szczegółowe
-          rozbicie kosztów i cytowania akademickie.
+          Kalkulator kosztów, optymalizator ścieżki i bezpłatny audyt dojrzałości zakupowej —
+          wszystko oparte na recenzowanych badaniach naukowych.
         </p>
-        <Link
-          href="/calculator"
-          className="mt-6 inline-block rounded-xl bg-white px-8 py-3 text-sm font-semibold text-blue-700 hover:bg-blue-50"
-        >
-          Idź do kalkulatora
-        </Link>
+        <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+          <Link
+            href="/calculator"
+            className="rounded-xl bg-white px-8 py-3 text-sm font-semibold text-blue-700 hover:bg-blue-50"
+          >
+            Uruchom kalkulator
+          </Link>
+          <Link
+            href="/assessment"
+            className="rounded-xl border border-white/40 bg-white/10 px-8 py-3 text-sm font-semibold text-white hover:bg-white/20"
+          >
+            Bezpłatny audyt →
+          </Link>
+        </div>
       </div>
     </div>
   );
