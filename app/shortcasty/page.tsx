@@ -147,7 +147,7 @@ export default function ShortcastyPage() {
           {[
             { time: "0:30–1:30", label: "Problem", desc: "Konkretna historia z życia, która boli." },
             { time: "1:30–2:30", label: "Dowód", desc: "Jeden parametr z kalkulatora ProcuraCost i liczby." },
-            { time: "2:30–10:00", label: "Rozmowa", desc: "3–4 pytania do gościa. Żadnych „opowiedz o karierze". Konkret." },
+            { time: "2:30–10:00", label: "Rozmowa", desc: `3–4 pytania do gościa. Żadnych „opowiedz o karierze". Konkret.` },
           ].map((f) => (
             <div key={f.label} className="rounded-lg border border-gray-100 bg-white p-3">
               <p className="font-mono text-xs text-gray-400">{f.time}</p>

@@ -16,11 +16,11 @@ export const EPISODES: Episode[] = [
   {
     number: 1,
     slug: "ile-kosztuje-zgodnosc-z-procedura",
-    title: "Ile kosztuje „zrobić to zgodnie z procedurą"?",
+    title: `Ile kosztuje „zrobić to zgodnie z procedurą"?`,
     dimension: "Czas · Admin",
     guest: "CFO firmy produkcyjnej",
     thesis:
-      "Proceduralna „zgodność" ma metkę. Przeliczamy godziny pracy na złotówki.",
+      `Proceduralna „zgodność" ma metkę. Przeliczamy godziny pracy na złotówki.`,
     recommendation:
       "Zmapujcie czas swoich kupców przez jeden tydzień, zanim zaczniecie zmieniać regulamin.",
   },
@@ -104,7 +104,7 @@ export const EPISODES: Episode[] = [
   {
     number: 9,
     slug: "normalizacja-dewiacji",
-    title: "Normalizacja Dewiacji: Dlaczego „lepsza rura" zawsze prowadzi do katastrofy?",
+    title: `Normalizacja Dewiacji: Dlaczego „lepsza rura" zawsze prowadzi do katastrofy?`,
     dimension: "Psychologia organizacji",
     guest: "Psycholog organizacji / badacz bezpieczeństwa systemów",
     thesis:
@@ -165,7 +165,7 @@ export const EPISODES: Episode[] = [
     thesis:
       "Strach przed kontrolą i audytem jest głównym hamulcowym zmiany — nawet jeśli kosztuje firmę miliony.",
     recommendation:
-      "Przestań pytać „czy to jest zgodne z procedurą", zacznij pytać „czy to jest najlepsze dla organizacji".",
+      `Przestań pytać „czy to jest zgodne z procedurą", zacznij pytać „czy to jest najlepsze dla organizacji".`,
   },
   {
     number: 15,
