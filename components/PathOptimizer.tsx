@@ -249,6 +249,14 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
             </div>
           </div>
 
+          {/* Explanation card */}
+          <div className="rounded-xl border border-blue-100 bg-blue-50 p-4">
+            <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 mb-2">
+              {tx.explanationTitle}
+            </p>
+            <p className="text-sm text-blue-900 leading-relaxed">{result.explanation}</p>
+          </div>
+
           {/* All paths ranked */}
           <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
             <h3 className="mb-4 text-sm font-bold text-gray-900">

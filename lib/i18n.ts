@@ -153,6 +153,11 @@ export const comparisonT = {
     fieldDesc:
       "Polityka wyznacza granice (uprawnienia, konkurencja, etyka, dokumentacja), nie ścieżkę. Wewnątrz pola jest nieskończenie wiele ścieżek — wszystkie zgodne. Nie ma co obchodzić, bo granice są aktywne w każdym punkcie, nie tylko na checkpointach.",
     pipeFieldSource: "Źródło modelu: Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) Challenger; Holmström & Milgrom (1991) Multitask Principal-Agent",
+    benchmarkTitle: "Twój scenariusz na tle przypadków referencyjnych",
+    benchmarkSubtitle: "Premia procedury sztywnej (% ponad koszt polityki zakupowej)",
+    benchmarkYours: "Twój scenariusz",
+    benchmarkSummary: (pct: number, rank: number, total: number) =>
+      `Twój scenariusz generuje ${pct}% premii — wyżej niż ${rank} z ${total} przypadków referencyjnych.`,
   },
   en: {
     costLabels: {
@@ -200,6 +205,11 @@ export const comparisonT = {
     fieldDesc:
       "Policy defines boundaries (authorisation, competition, ethics, documentation), not the path. Inside the field there are infinitely many paths — all compliant. Nothing to bypass, because boundaries are active at every point, not just at checkpoints.",
     pipeFieldSource: "Model sources: Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) Challenger; Holmström & Milgrom (1991) Multitask Principal-Agent",
+    benchmarkTitle: "Your scenario vs reference cases",
+    benchmarkSubtitle: "Rigid procedure premium (% above policy-only cost)",
+    benchmarkYours: "Your scenario",
+    benchmarkSummary: (pct: number, rank: number, total: number) =>
+      `Your scenario has a ${pct}% premium — higher than ${rank} of ${total} reference cases.`,
   },
 } as const;
 
@@ -243,6 +253,7 @@ export const optimizerT = {
       "Model: Random Forest (30 drzew, losowe podzbiory 4–7 cech z 9, głosowanie większościowe). Implementacja: deterministyczna z reprodukowalnym ziarnem (LCG seed per tree). Źródło metodyczne: Breiman, L. (2001). Random Forests.",
     importanceUnit: "%",
     importance: "Ważność",
+    explanationTitle: "Dlaczego ta rekomendacja?",
   },
   en: {
     parametersTitle: "Purchase parameters",
@@ -283,6 +294,7 @@ export const optimizerT = {
       "Model: Random Forest (30 trees, random subsets of 4–7 features from 9, majority vote). Implementation: deterministic with reproducible seed (LCG seed per tree). Methodology: Breiman, L. (2001). Random Forests.",
     importanceUnit: "%",
     importance: "Importance",
+    explanationTitle: "Why this recommendation?",
   },
 } as const;
 

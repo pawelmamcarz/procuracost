@@ -1,5 +1,7 @@
 import Link from "next/link";
 import PipeFieldDiagram from "@/components/PipeFieldDiagram";
+import { SCENARIOS } from "@/lib/scenarios";
+import { calculateCosts } from "@/lib/calculations";
 
 const stats = [
   { value: "+2%", label: "higher contract prices under rigid procedures", source: "Szucs, JEEA 2024" },
@@ -7,6 +9,20 @@ const stats = [
   { value: "42%", label: "longer project delivery times", source: "World Bank, 2023" },
   { value: "30%", label: "potential TCO savings with flexibility", source: "ISM" },
 ];
+
+const caseStudyPreviews = SCENARIOS.filter((s) => s.caseStudy)
+  .slice(0, 3)
+  .map((s) => {
+    const result = calculateCosts(s.inputs);
+    const insight = s.caseStudy!.insightEn;
+    return {
+      title: s.caseStudy!.title,
+      insight: insight.length > 120 ? insight.slice(0, 117) + "…" : insight,
+      rigidDays: result.rigidDays,
+      flexibleDays: result.flexibleDays,
+      source: s.caseStudy!.source,
+    };
+  });
 
 const principles = [
   {
@@ -54,6 +70,12 @@ export default function EnHomePage() {
           >
             Maturity assessment →
           </Link>
+          <Link
+            href="/en/optimizer"
+            className="rounded-xl border border-gray-200 bg-white px-8 py-3 text-sm font-semibold text-gray-600 hover:border-gray-300"
+          >
+            Path optimizer →
+          </Link>
         </div>
       </div>
 
@@ -82,6 +104,35 @@ export default function EnHomePage() {
             <p className="mt-2 text-sm text-gray-500">{p.body}</p>
           </div>
         ))}
+      </div>
+
+      {/* Case Studies Preview */}
+      <div className="mt-16">
+        <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-5">
+          Case studies — flexible procurement in practice
+        </p>
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+          {caseStudyPreviews.map((cs) => (
+            <div key={cs.title} className="rounded-xl border border-gray-100 bg-gray-50 p-4 space-y-3">
+              <p className="text-xs font-bold text-gray-900">{cs.title}</p>
+              <p className="text-xs text-gray-600 leading-relaxed">{cs.insight}</p>
+              <div className="flex gap-2 flex-wrap">
+                <span className="rounded-md bg-red-50 border border-red-200 px-2 py-1 text-xs text-red-700">
+                  Pipe: {cs.rigidDays} days
+                </span>
+                <span className="rounded-md bg-green-50 border border-green-200 px-2 py-1 text-xs text-green-700">
+                  Field: {cs.flexibleDays} days
+                </span>
+              </div>
+              <p className="text-xs text-gray-400">{cs.source}</p>
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 text-right">
+          <Link href="/en/case-studies" className="text-xs text-blue-600 hover:underline">
+            View all case studies →
+          </Link>
+        </div>
       </div>
 
       {/* Pipe vs. Field */}
