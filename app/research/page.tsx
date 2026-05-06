@@ -562,6 +562,21 @@ export default function ResearchPage() {
             framework that requires competitive validation without mandating a specific competition
             format may achieve better outcomes.
           </p>
+          <p className="mt-2 text-sm leading-relaxed text-gray-700">
+            Critically, the field model is not a theoretical aspiration — it is already technologically
+            achievable. Modern ERP systems (SAP Ariba, Coupa, Oracle Procurement Cloud) enforce
+            authorization thresholds at the transaction level, in real time, without procedural
+            checkpoints. AI-powered spend analytics detect policy violations continuously.
+            Automated audit trails generate compliance records more complete and tamper-resistant than
+            any procedural documentation requirement. A procedure is a security guard at a gate. A
+            modern procurement system is AI-monitored perimeter surveillance of the entire facility.
+            Policy — the definition of the permissible field — remains essential. What becomes
+            obsolete is the human-executed sequential procedure as the primary compliance mechanism.
+            In Polish public procurement law (<em>Prawo Zamówień Publicznych</em>), this distinction
+            is already partially encoded: PZP specifies <em>what</em> must be achieved without
+            mandating a single operational path. The field exists in the law. The pipe is an
+            organizational choice layered on top of it — and an expensive one.
+          </p>
         </section>
 
         <section className="mb-8 border-t border-gray-200 pt-6">
@@ -593,6 +608,18 @@ export default function ResearchPage() {
               </li>
             ))}
           </ul>
+        </section>
+
+        <section className="mb-8 border-t border-gray-200 pt-6">
+          <h2 className="text-base font-bold text-gray-900">Acknowledgements</h2>
+          <p className="mt-2 text-sm leading-relaxed text-gray-600">
+            The author thanks an anonymous reviewer whose critical reading identified the apparent
+            tension between the Szucs (2024) empirical finding and the model&apos;s treatment of the
+            opportunity cost coefficient α. That challenge led directly to the Goodhart trap
+            reframing in Section 3.3 — arguably the sharpest argument in the paper. The author also
+            thanks the editorial community around agile procurement and public procurement law reform
+            whose practice-based insights shaped the case studies in Section 4.
+          </p>
         </section>
 
         {/* Draft notice */}
