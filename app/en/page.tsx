@@ -19,7 +19,7 @@ const howItWorks = [
   {
     step: "02",
     title: "Calculate hidden costs",
-    body: "The model, grounded in 4 peer-reviewed studies, computes 7 cost dimensions — staff time, delays, renegotiations, bypass risk — comparing pipe to field.",
+    body: "The model, grounded in 4 peer-reviewed studies, computes 7 cost dimensions — staff time, delays, renegotiations, bypass risk — comparing tunnel to field.",
   },
   {
     step: "03",
@@ -90,7 +90,7 @@ export default function EnHomePage() {
           Research & Consulting Tool
         </span>
         <h1 className="mt-4 text-4xl font-bold text-gray-900">
-          Your procedures are a pipe.
+          Your procedures are a tunnel.
           <br />
           Procurement policy is a field.
         </h1>
@@ -176,7 +176,7 @@ export default function EnHomePage() {
               <p className="text-xs text-gray-600 leading-relaxed">{cs.insight}</p>
               <div className="flex gap-2 flex-wrap">
                 <span className="rounded-md bg-red-50 border border-red-200 px-2 py-1 text-xs text-red-700">
-                  Pipe: {cs.rigidDays} days
+                  Tunnel: {cs.rigidDays} days
                 </span>
                 <span className="rounded-md bg-green-50 border border-green-200 px-2 py-1 text-xs text-green-700">
                   Field: {cs.flexibleDays} days
@@ -195,7 +195,7 @@ export default function EnHomePage() {
 
       {/* Pipe vs. Field */}
       <div className="mt-12 rounded-2xl border border-blue-100 bg-blue-50 p-6">
-        <h2 className="font-bold text-blue-900">The Pipe vs. Field model</h2>
+        <h2 className="font-bold text-blue-900">The Tunnel vs. Field model</h2>
         <p className="mt-1 text-sm text-blue-700">
           Same contract — same value — two worlds. The procedure locks one path and forces bypasses. The policy sets boundaries and grants freedom of choice.
         </p>

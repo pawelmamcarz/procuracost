@@ -27,7 +27,7 @@ export default function PipeFieldDiagram({ lang = "pl" }: Props) {
       <div className="flex flex-col rounded-xl border border-red-200 bg-red-50 p-4">
         <div>
           <p className="text-xs font-bold uppercase tracking-wide text-red-700">
-            {isPl ? "Procedura = Rura" : "Procedure = Pipe"}
+            {isPl ? "Procedura = Tunel" : "Procedure = Tunnel"}
           </p>
           <p className="mt-0.5 font-mono text-xs text-red-400">a₁ → a₂ → a₃ → ··· → aₙ</p>
         </div>
@@ -70,8 +70,8 @@ export default function PipeFieldDiagram({ lang = "pl" }: Props) {
           </div>
           <p className="leading-relaxed text-red-500">
             {isPl
-              ? "Pod presją kupiec wychodzi z rury nieformalnie (mail / Excel) → ryzyko audytowe kumuluje się niewidocznie."
-              : "Under pressure, buyers exit the pipe informally (email / Excel) → audit risk accumulates invisibly."}
+              ? "Pod presją kupiec wychodzi z tunelu nieformalnie (mail / Excel) → ryzyko audytowe kumuluje się niewidocznie."
+              : "Under pressure, buyers exit the tunnel informally (email / Excel) → audit risk accumulates invisibly."}
           </p>
         </div>
       </div>

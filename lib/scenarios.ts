@@ -155,10 +155,10 @@ export const SCENARIOS: Scenario[] = [
   },
   {
     id: "pipe_vs_field",
-    name: "Rura vs Pole",
-    nameEn: "Pipe vs Field",
-    description: "Ten sam kontrakt: pełny przetarg PZP-EU (rura) vs elastyczna polityka zakupowa (pole). Maksymalny kontrast.",
-    descriptionEn: "Same contract: full EU-threshold public tender (pipe) vs flexible procurement policy (field). Maximum contrast.",
+    name: "Tunel vs Pole",
+    nameEn: "Tunnel vs Field",
+    description: "Ten sam kontrakt: pełny przetarg PZP-EU (tunel) vs elastyczna polityka zakupowa (pole). Maksymalny kontrast.",
+    descriptionEn: "Same contract: full EU-threshold public tender (tunnel) vs flexible procurement policy (field). Maximum contrast.",
     inputs: {
       contractValue: 5_000_000,
       tcoHorizonYears: 3,
@@ -177,12 +177,12 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 600_000,
     },
     caseStudy: {
-      title: "Rura vs Pole — ten sam zakup, dwa światy",
+      title: "Tunel vs Pole — ten sam zakup, dwa światy",
       source: "Szucs (JEEA 2024); Beuve et al. (NBER 2021); Lipsky (1980)",
       insight:
-        "Procedura PZP-EU to rura: jeden zamknięty tor, kupiec jako executor. Polityka zakupowa to pole: granice uprawnień aktywne wszędzie, kupiec jako navigator. Ten sam kontrakt — wielokrotnie wyższy koszt utracony po stronie rury.",
+        "Procedura PZP-EU to tunel: jeden zamknięty tor, kupiec jako executor. Polityka zakupowa to pole: granice uprawnień aktywne wszędzie, kupiec jako navigator. Ten sam kontrakt — wielokrotnie wyższy koszt utracony po stronie tunelu.",
       insightEn:
-        "An EU-threshold public tender is a pipe: one locked path, buyer as step-executor. A procurement policy is a field: authorisation boundaries active everywhere, buyer as value navigator. Same contract — drastically higher opportunity cost on the pipe side.",
+        "An EU-threshold public tender is a tunnel: one locked path, buyer as step-executor. A procurement policy is a field: authorisation boundaries active everywhere, buyer as value navigator. Same contract — drastically higher opportunity cost on the tunnel side.",
     },
   },
   {

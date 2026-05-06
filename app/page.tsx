@@ -19,7 +19,7 @@ const howItWorks = [
   {
     step: "02",
     title: "Oblicz koszty ukryte",
-    body: "Model na bazie 4 badań naukowych wylicza 7 wymiarów kosztów — czas kadry, opóźnienia, renegocjacje, ryzyko obejść — i porównuje rurę z polem.",
+    body: "Model na bazie 4 badań naukowych wylicza 7 wymiarów kosztów — czas kadry, opóźnienia, renegocjacje, ryzyko obejść — i porównuje tunel z polem.",
   },
   {
     step: "03",
@@ -90,7 +90,7 @@ export default function HomePage() {
           Narzędzie badawczo-konsultingowe
         </span>
         <h1 className="mt-4 text-4xl font-bold text-gray-900">
-          Twoje procedury to rura.
+          Twoje procedury to tunel.
           <br />
           Polityka zakupowa to pole.
         </h1>
@@ -177,7 +177,7 @@ export default function HomePage() {
               <p className="text-xs text-gray-600 leading-relaxed">{cs.insight}</p>
               <div className="flex gap-2 flex-wrap">
                 <span className="rounded-md bg-red-50 border border-red-200 px-2 py-1 text-xs text-red-700">
-                  Rura: {cs.rigidDays} dni
+                  Tunel: {cs.rigidDays} dni
                 </span>
                 <span className="rounded-md bg-green-50 border border-green-200 px-2 py-1 text-xs text-green-700">
                   Pole: {cs.flexibleDays} dni
@@ -196,7 +196,7 @@ export default function HomePage() {
 
       {/* Pipe vs Field */}
       <div className="mt-12 rounded-2xl border border-blue-100 bg-blue-50 p-6">
-        <h2 className="font-bold text-blue-900">Model rury i pola</h2>
+        <h2 className="font-bold text-blue-900">Model tunelu i pola</h2>
         <p className="mt-1 text-sm text-blue-700">
           Ten sam zakup — ta sama wartość — dwa światy. Procedura blokuje jedną ścieżkę i wymusza obejścia. Polityka wyznacza granice i daje wolność wyboru.
         </p>

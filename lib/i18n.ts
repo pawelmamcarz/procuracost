@@ -112,7 +112,7 @@ export const comparisonT = {
       productivityCost: "Spadek produktywności dostawcy",
       renegotiationCost: "Renegocjacje",
       tcoCost: "Utracone oszczędności TCO",
-      bypassCost: "Koszty obejść rury",
+      bypassCost: "Koszty obejść tunelu",
     },
     deltaHeadline: "Koszt utracony przywiązania do procedur",
     higherThan: "wyższy niż podejście oparte na polityce zakupowej",
@@ -145,10 +145,10 @@ export const comparisonT = {
     staffCost: "Kadra (godziny × stawki)",
     coordCost: "Koordynacja (email/telefon)",
     toolCost: "Licencja narzędzia",
-    pipeFieldTitle: "Dlaczego ta różnica istnieje? Model rury i pola.",
-    pipeLabel: "Procedura = Rura",
+    pipeFieldTitle: "Dlaczego ta różnica istnieje? Model tunelu i pola.",
+    pipeLabel: "Procedura = Tunel",
     pipeDesc:
-      "Sztywna procedura wyznacza jeden zamknięty tor: a₁ → a₂ → a₃ → ... → aₙ. Kupiec jest wykonawcą kroków. Pod presją — czas, rynek, dostawca — wychodzi z rury nieformalnie (mail / telefon / Excel). Obejście jest niewidoczne i kumuluje ryzyko audytowe.",
+      "Sztywna procedura wyznacza jeden zamknięty tor: a₁ → a₂ → a₃ → ... → aₙ. Kupiec jest wykonawcą kroków. Pod presją — czas, rynek, dostawca — wychodzi z tunelu nieformalnie (mail / telefon / Excel). Obejście jest niewidoczne i kumuluje ryzyko audytowe.",
     fieldLabel: "Polityka zakupowa = Pole",
     fieldDesc:
       "Polityka wyznacza granice (uprawnienia, konkurencja, etyka, dokumentacja), nie ścieżkę. Wewnątrz pola jest nieskończenie wiele ścieżek — wszystkie zgodne. Nie ma co obchodzić, bo granice są aktywne w każdym punkcie, nie tylko na checkpointach.",
@@ -197,10 +197,10 @@ export const comparisonT = {
     staffCost: "Staff (hours × rates)",
     coordCost: "Coordination (email/phone)",
     toolCost: "Tool license",
-    pipeFieldTitle: "Why does this gap exist? The Pipe and Field model.",
-    pipeLabel: "Procedure = Pipe",
+    pipeFieldTitle: "Why does this gap exist? The Tunnel and Field model.",
+    pipeLabel: "Procedure = Tunnel",
     pipeDesc:
-      "A rigid procedure defines one locked path: a₁ → a₂ → a₃ → ... → aₙ. The buyer is a step-executor. Under pressure — time, market, supplier — they exit the pipe informally (email / phone / Excel). The bypass is invisible and accumulates audit risk.",
+      "A rigid procedure defines one locked path: a₁ → a₂ → a₃ → ... → aₙ. The buyer is a step-executor. Under pressure — time, market, supplier — they exit the tunnel informally (email / phone / Excel). The bypass is invisible and accumulates audit risk.",
     fieldLabel: "Procurement policy = Field",
     fieldDesc:
       "Policy defines boundaries (authorisation, competition, ethics, documentation), not the path. Inside the field there are infinitely many paths — all compliant. Nothing to bypass, because boundaries are active at every point, not just at checkpoints.",
@@ -301,7 +301,7 @@ export const optimizerT = {
 export const assessmentT = {
   pl: {
     title: "Ocena dojrzałości zakupowej",
-    subtitle: "Rura czy Pole? 10 pytań — 5 minut — konkretna diagnoza Twojej organizacji.",
+    subtitle: "Tunel czy Pole? 10 pytań — 5 minut — konkretna diagnoza Twojej organizacji.",
     badge: "Bezpłatna samoocena",
     questionOf: (n: number, total: number) => `Pytanie ${n} z ${total}`,
     never: "Nigdy",
@@ -313,9 +313,9 @@ export const assessmentT = {
     outOf: "/ 20 pkt",
     levels: {
       pipe: {
-        label: "Rura",
+        label: "Tunel",
         color: "red",
-        headline: "Twoja organizacja działa w trybie rury.",
+        headline: "Twoja organizacja działa w trybie tunelu.",
         desc: "Procedury blokują dyskrecję kupca i wymuszają nieformalne obejścia. Kalkulator ProcuraCost pokaże konkretny koszt w PLN.",
       },
       transition: {
@@ -388,7 +388,7 @@ export const assessmentT = {
   },
   en: {
     title: "Procurement Maturity Assessment",
-    subtitle: "Pipe or Field? 10 questions — 5 minutes — a concrete diagnosis of your organisation.",
+    subtitle: "Tunnel or Field? 10 questions — 5 minutes — a concrete diagnosis of your organisation.",
     badge: "Free self-assessment",
     questionOf: (n: number, total: number) => `Question ${n} of ${total}`,
     never: "Never",
@@ -400,9 +400,9 @@ export const assessmentT = {
     outOf: "/ 20 pts",
     levels: {
       pipe: {
-        label: "Pipe",
+        label: "Tunnel",
         color: "red",
-        headline: "Your organisation operates in pipe mode.",
+        headline: "Your organisation operates in tunnel mode.",
         desc: "Procedures lock buyer discretion and force informal bypasses. The ProcuraCost calculator will show the concrete cost in PLN.",
       },
       transition: {
