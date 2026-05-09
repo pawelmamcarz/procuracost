@@ -545,48 +545,57 @@ export const PROCESS_TEMPLATES: Record<Exclude<ProcessType, "custom">, ProcessSt
   capex: CAPEX_STEPS,
 };
 
-export const PROCESS_TYPE_META: Record<Exclude<ProcessType, "custom">, { name: string; nameEn: string; description: string; descriptionEn: string }> = {
+export type ProcessCategory = "sourcing" | "buying";
+
+export const PROCESS_TYPE_META: Record<Exclude<ProcessType, "custom">, { category: ProcessCategory; name: string; nameEn: string; description: string; descriptionEn: string }> = {
   pzp_eu: {
+    category: "sourcing",
     name: "Przetarg nieograniczony PZP (powyżej progów UE)",
     nameEn: "Open Tender PZP (above EU thresholds)",
     description: "Pełne postępowanie przetargowe z mandatory waiting periods. Dotyczy zamówień powyżej 5 382 000 PLN (usługi/dostawy) lub 139 117 000 PLN (roboty budowlane).",
     descriptionEn: "Full tender procedure with mandatory waiting periods. Applies to contracts above EU thresholds.",
   },
   pzp_krajowy: {
+    category: "sourcing",
     name: "Postępowanie krajowe PZP (130k – 5,38M PLN)",
     nameEn: "National PZP procedure (130k – 5.38M PLN)",
     description: "Uproszczone postępowanie krajowe. Shorter mandatory waiting periods than EU threshold.",
     descriptionEn: "Simplified national procedure. Shorter mandatory waiting periods than EU threshold.",
   },
   private_formal: {
+    category: "sourcing",
     name: "Formalny przetarg prywatny (RFQ/RFP)",
     nameEn: "Formal private tender (RFQ/RFP)",
     description: "Sektor prywatny — wewnętrzny komitet, formalny RFQ/RFP, przegląd prawny. Bez mandatory waits PZP, ale z korporacyjnymi procedurami approval.",
     descriptionEn: "Private sector — internal committee, formal RFQ/RFP, legal review. No mandatory PZP waits, but with corporate approval procedures.",
   },
   policy_only: {
+    category: "sourcing",
     name: "Polityka zakupowa (ścieżka elastyczna)",
     nameEn: "Procurement policy (flexible path)",
     description: "Zakup prowadzony wyłącznie w ramach polityki zakupowej — bez mandatory procedur. Czas i metoda wybierane przez kupca zgodnie z matrycą uprawnień.",
     descriptionEn: "Purchase conducted solely within the procurement policy framework — no mandatory procedures. Time and method chosen by the buyer per authorization matrix.",
   },
-  catalog_order: {
-    name: "Zamówienie z katalogu (near-field)",
-    nameEn: "Catalog order (near-field)",
-    description: "Zakup pre-negocjowanych pozycji z katalogu dostawcy. System egzekwuje cenę i dostępność. Kupiec wybiera — nie negocjuje. Najbliższy modelowi pola.",
-    descriptionEn: "Purchase of pre-negotiated catalog items. System enforces price and availability. Buyer selects — does not negotiate. Closest to the field model.",
-  },
-  mrp_order: {
-    name: "Zlecenie MRP/cykl produkcyjny (pure field)",
-    nameEn: "MRP order / production cycle (pure field)",
-    description: "System MRP/ERP generuje zlecenie automatycznie na podstawie planu produkcji. Zero dyskrecji kupca — to jest czyste pole egzekwowane przez system.",
-    descriptionEn: "MRP/ERP system generates orders automatically based on production plan. Zero buyer discretion — this is pure field enforced by the system.",
-  },
   capex: {
+    category: "sourcing",
     name: "Inwestycja CAPEX (uzasadnione zarządzanie)",
     nameEn: "CAPEX investment (justified governance)",
     description: "Zakup środków trwałych. Procedury CAPEX są uzasadnione — wysoka wartość, długi horyzont, governance to tu wartość, nie koszt. Jednak nawet tu można skrócić o 30%.",
     descriptionEn: "Fixed asset procurement. CAPEX procedures are justified — high value, long horizon, governance is value here, not overhead. Yet even here 30% reduction is achievable.",
+  },
+  catalog_order: {
+    category: "buying",
+    name: "Zamówienie z katalogu (guided buying)",
+    nameEn: "Catalog order (guided buying)",
+    description: "Realizacja pre-negocjowanego kontraktu przez katalog dostawcy. Dostawca i cena są już ustalone — kupiec wybiera, nie negocjuje. System egzekwuje compliance. Porównanie: ręczne PO vs. guided buying w ERP/Ariba.",
+    descriptionEn: "Execution against a pre-negotiated contract via supplier catalog. Supplier and price are already set — buyer selects, does not negotiate. System enforces compliance. Comparison: manual PO vs. guided buying in ERP/Ariba.",
+  },
+  mrp_order: {
+    category: "buying",
+    name: "Zlecenie MRP/cykl produkcyjny (automatyczny)",
+    nameEn: "MRP order / production cycle (automated)",
+    description: "Automatyczna realizacja na bazie planu produkcji. Zakontraktowany dostawca, zakontraktowana cena — ERP/MRP generuje PO bez interwencji kupca. Porównanie: systemy papierowe vs. w pełni zautomatyzowane.",
+    descriptionEn: "Automated execution based on production plan. Contracted supplier, contracted price — ERP/MRP generates POs without buyer intervention. Comparison: paper-based vs. fully automated systems.",
   },
 };
 
