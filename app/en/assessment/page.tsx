@@ -3,9 +3,9 @@ import { assessmentT } from "@/lib/i18n";
 import AssessmentQuiz from "@/components/AssessmentQuiz";
 
 export const metadata: Metadata = {
-  title: "Procurement Maturity Assessment — Pipe or Field? | ProcuraCost",
+  title: "Procurement Maturity Assessment — Tunnel or Field? | ProcuraCost",
   description:
-    "10 questions, 5 minutes. Find out whether your organisation operates as a pipe (procedure) or a field (procurement policy).",
+    "10 questions, 5 minutes. Find out whether your organisation operates as a tunnel (procedure) or a field (procurement policy).",
 };
 
 export default function AssessmentPageEn() {

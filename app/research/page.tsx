@@ -41,7 +41,7 @@ export default function ResearchPage() {
           </p>
           <p className="mt-1 text-xs text-gray-400">
             <strong>Keywords:</strong> procurement policy, procurement procedure, opportunity cost,
-            procedural compliance, bypass cost, pipe vs. field model, agile procurement, total cost
+            procedural compliance, bypass cost, tunnel vs. field model, agile procurement, total cost
             of ownership, renegotiation risk, street-level bureaucracy, normalization of deviance
           </p>
         </div>
@@ -81,14 +81,14 @@ export default function ResearchPage() {
             circumvented under operational pressure.
           </p>
           <p className="mt-2 text-sm leading-relaxed text-gray-700">
-            We introduce the <strong>Pipe vs. Field</strong> model as the organizing metaphor: a
-            procedure is a pipe (single path, binary compliance, human as step-executor); a
+            We introduce the <strong>Tunnel vs. Field</strong> model as the organizing metaphor: a
+            procedure is a tunnel (single path, binary compliance, human as step-executor); a
             procurement policy enforced by modern information systems is a field (multiple paths,
             continuous compliance, human as value navigator). We demonstrate, drawing on Lipsky
             (1980), Vaughan (1996), Holmström &amp; Milgrom (1991), Scott (1998), and Norman
-            (1988), that the enforcement response to procedural bypass — &ldquo;make the pipe harder
+            (1988), that the enforcement response to procedural bypass — &ldquo;make the tunnel harder
             to exit&rdquo; — is empirically predicted to fail across five independent analytical
-            traditions. The correct response is not a better pipe. It is a field.
+            traditions. The correct response is not a better tunnel. It is a field.
           </p>
         </section>
 
@@ -192,7 +192,7 @@ export default function ResearchPage() {
                 <tr className="border-b border-gray-200">
                   <th className="pb-2 pr-4 text-left font-semibold text-gray-500">Domain</th>
                   <th className="pb-2 pr-4 text-left font-semibold text-gray-500">Policy — What &amp; Why</th>
-                  <th className="pb-2 pr-4 text-left font-semibold text-red-500">Procedure = Pipe</th>
+                  <th className="pb-2 pr-4 text-left font-semibold text-red-500">Procedure = Tunnel</th>
                   <th className="pb-2 text-left font-semibold text-green-600">Alternative = Field</th>
                 </tr>
               </thead>
@@ -256,15 +256,15 @@ export default function ResearchPage() {
             otherwise invites legitimacy challenges (DiMaggio &amp; Powell 1983).
           </p>
 
-          <h3 className="mt-4 text-sm font-semibold text-gray-800">2.3 The Pipe vs. Field Model</h3>
+          <h3 className="mt-4 text-sm font-semibold text-gray-800">2.3 The Tunnel vs. Field Model</h3>
           <p className="mt-2 text-sm leading-relaxed text-gray-700">
             The policy/procedure distinction can be captured in a spatial metaphor:{" "}
-            <strong>the pipe versus the field</strong>.
+            <strong>the tunnel versus the field</strong>.
           </p>
           <div className="my-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div className="rounded-xl border border-red-100 bg-red-50 p-4">
               <p className="text-xs font-semibold uppercase tracking-wide text-red-600">
-                Procedure = Pipe
+                Procedure = Tunnel
               </p>
               <p className="mt-1 font-mono text-xs text-gray-600">a₁ → a₂ → a₃ → ··· → aₙ</p>
               <p className="mt-1 text-xs text-gray-600">
@@ -348,7 +348,7 @@ export default function ResearchPage() {
               formula:
                 "C_deviance(R) = P_bypass(rigidity) × E[cost_failure]\nP_bypass increases with procedural rigidity and operational pressure\nC_deviance(F) ≈ 0  — no bypass path → no hidden accumulation",
               anchor:
-                "Vaughan (1996): when operationally necessary workarounds are formally prohibited, they normalize invisibly — hidden risk accumulates until a threshold failure event (cf. Challenger disaster). Unlike other dimensions, C_deviance has a fat-tailed distribution: zero most of the time, catastrophic in the tail (audit findings, procurement scandals, regulatory sanctions). The ProcuraCost calculator proxies P_bypass via the bypass audit exposure input. Rigid procedures systematically increase P_bypass by driving informal workarounds underground — making each bypass invisible and unauditable. Lipsky (1980) predicts this analytically: front-line workers always adapt rules to operational reality; the question is whether that adaptation is visible (field) or hidden (pipe).",
+                "Vaughan (1996): when operationally necessary workarounds are formally prohibited, they normalize invisibly — hidden risk accumulates until a threshold failure event (cf. Challenger disaster). Unlike other dimensions, C_deviance has a fat-tailed distribution: zero most of the time, catastrophic in the tail (audit findings, procurement scandals, regulatory sanctions). The ProcuraCost calculator proxies P_bypass via the bypass audit exposure input. Rigid procedures systematically increase P_bypass by driving informal workarounds underground — making each bypass invisible and unauditable. Lipsky (1980) predicts this analytically: front-line workers always adapt rules to operational reality; the question is whether that adaptation is visible (field) or hidden (tunnel).",
             },
           ].map((d) => (
             <div
@@ -463,7 +463,7 @@ export default function ResearchPage() {
           </p>
 
           <h3 className="mt-4 text-sm font-semibold text-gray-800">
-            6.3 The Enforcement Fallacy: Why Better Pipes Don&apos;t Work
+            6.3 The Enforcement Fallacy: Why Better Tunnels Don&apos;t Work
           </h3>
           <p className="mt-2 text-sm leading-relaxed text-gray-700">
             A common response to procedural failure is to strengthen enforcement: make procedures
@@ -499,7 +499,7 @@ export default function ResearchPage() {
             </div>
           ))}
           <p className="mt-3 text-sm font-medium text-gray-700">
-            The correct response is not a better pipe. It is a field.
+            The correct response is not a better tunnel. It is a field.
           </p>
 
           <h3 className="mt-4 text-sm font-semibold text-gray-800">
@@ -535,7 +535,7 @@ export default function ResearchPage() {
             In the context of Polish public procurement law (<em>Prawo Zamówień Publicznych</em>,
             PZP), this distinction is already partially encoded: PZP specifies{" "}
             <em>what</em> must be achieved without mandating a single operational procedure for
-            achieving it. The field exists in the law; the pipe is an organizational choice layered
+            achieving it. The field exists in the law; the tunnel is an organizational choice layered
             on top of it.
           </p>
         </section>

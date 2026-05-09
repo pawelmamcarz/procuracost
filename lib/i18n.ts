@@ -14,12 +14,15 @@ export const calculatorT = {
     tcoHorizon: "Horyzont TCO (lata)",
     // Process type section
     processTypeLabel: "Typ procesu zakupowego",
+    sourcingCategoryLabel: "Sourcing — wybór dostawcy i negocjacje kontraktu",
+    buyingCategoryLabel: "Buying — realizacja zamówienia na bazie kontraktu",
+    buyingCategoryNote: "Procesy buying operują na pre-negocjowanych kontraktach (dostawca i cena są już ustalone). Model kosztów porównuje tu ręczną realizację z systemem automatycznym (ERP/Ariba Guided Buying), nie wybór procedury przetargowej.",
     processTypes: {
       pzp_eu: "Przetarg PZP (powyżej progów UE)",
       pzp_krajowy: "Postępowanie krajowe PZP",
       private_formal: "Formalny przetarg prywatny (RFQ/RFP)",
       policy_only: "Polityka zakupowa (elastyczna)",
-      catalog_order: "Zamówienie z katalogu (near-field)",
+      catalog_order: "Zamówienie z katalogu (guided buying)",
       mrp_order: "Zlecenie MRP / cykl produkcyjny",
       capex: "Inwestycja CAPEX",
       custom: "Własny",
@@ -65,12 +68,15 @@ export const calculatorT = {
       "Estimated audit cost, regulatory or reputational penalties if an informal procedure bypass is discovered. Source: Lipsky (1980), Vaughan (1996)",
     tcoHorizon: "TCO horizon (years)",
     processTypeLabel: "Procurement process type",
+    sourcingCategoryLabel: "Sourcing — supplier selection & contract negotiation",
+    buyingCategoryLabel: "Buying — order execution against existing contract",
+    buyingCategoryNote: "Buying processes operate on pre-negotiated contracts (supplier and price are already set). The cost model here compares manual execution against system-automated buying (ERP/Ariba Guided Buying), not competing tender approaches.",
     processTypes: {
       pzp_eu: "Open tender PZP (above EU thresholds)",
       pzp_krajowy: "National PZP procedure",
       private_formal: "Formal private tender (RFQ/RFP)",
       policy_only: "Procurement policy (flexible)",
-      catalog_order: "Catalog order (near-field)",
+      catalog_order: "Catalog order (guided buying)",
       mrp_order: "MRP order / production cycle",
       capex: "CAPEX investment",
       custom: "Custom",
@@ -112,7 +118,7 @@ export const comparisonT = {
       productivityCost: "Spadek produktywności dostawcy",
       renegotiationCost: "Renegocjacje",
       tcoCost: "Utracone oszczędności TCO",
-      bypassCost: "Koszty obejść rury",
+      bypassCost: "Koszty obejść tunelu",
     },
     deltaHeadline: "Koszt utracony przywiązania do procedur",
     higherThan: "wyższy niż podejście oparte na polityce zakupowej",
@@ -145,14 +151,19 @@ export const comparisonT = {
     staffCost: "Kadra (godziny × stawki)",
     coordCost: "Koordynacja (email/telefon)",
     toolCost: "Licencja narzędzia",
-    pipeFieldTitle: "Dlaczego ta różnica istnieje? Model rury i pola.",
-    pipeLabel: "Procedura = Rura",
+    pipeFieldTitle: "Dlaczego ta różnica istnieje? Model tunelu i pola.",
+    pipeLabel: "Procedura = Tunel",
     pipeDesc:
-      "Sztywna procedura wyznacza jeden zamknięty tor: a₁ → a₂ → a₃ → ... → aₙ. Kupiec jest wykonawcą kroków. Pod presją — czas, rynek, dostawca — wychodzi z rury nieformalnie (mail / telefon / Excel). Obejście jest niewidoczne i kumuluje ryzyko audytowe.",
+      "Sztywna procedura wyznacza jeden zamknięty tor: a₁ → a₂ → a₃ → ... → aₙ. Kupiec jest wykonawcą kroków. Pod presją — czas, rynek, dostawca — wychodzi z tunelu nieformalnie (mail / telefon / Excel). Obejście jest niewidoczne i kumuluje ryzyko audytowe.",
     fieldLabel: "Polityka zakupowa = Pole",
     fieldDesc:
       "Polityka wyznacza granice (uprawnienia, konkurencja, etyka, dokumentacja), nie ścieżkę. Wewnątrz pola jest nieskończenie wiele ścieżek — wszystkie zgodne. Nie ma co obchodzić, bo granice są aktywne w każdym punkcie, nie tylko na checkpointach.",
     pipeFieldSource: "Źródło modelu: Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) Challenger; Holmström & Milgrom (1991) Multitask Principal-Agent",
+    benchmarkTitle: "Twój scenariusz na tle przypadków referencyjnych",
+    benchmarkSubtitle: "Premia procedury sztywnej (% ponad koszt polityki zakupowej)",
+    benchmarkYours: "Twój scenariusz",
+    benchmarkSummary: (pct: number, rank: number, total: number) =>
+      `Twój scenariusz generuje ${pct}% premii — wyżej niż ${rank} z ${total} przypadków referencyjnych.`,
   },
   en: {
     costLabels: {
@@ -192,14 +203,19 @@ export const comparisonT = {
     staffCost: "Staff (hours × rates)",
     coordCost: "Coordination (email/phone)",
     toolCost: "Tool license",
-    pipeFieldTitle: "Why does this gap exist? The Pipe and Field model.",
-    pipeLabel: "Procedure = Pipe",
+    pipeFieldTitle: "Why does this gap exist? The Tunnel and Field model.",
+    pipeLabel: "Procedure = Tunnel",
     pipeDesc:
-      "A rigid procedure defines one locked path: a₁ → a₂ → a₃ → ... → aₙ. The buyer is a step-executor. Under pressure — time, market, supplier — they exit the pipe informally (email / phone / Excel). The bypass is invisible and accumulates audit risk.",
+      "A rigid procedure defines one locked path: a₁ → a₂ → a₃ → ... → aₙ. The buyer is a step-executor. Under pressure — time, market, supplier — they exit the tunnel informally (email / phone / Excel). The bypass is invisible and accumulates audit risk.",
     fieldLabel: "Procurement policy = Field",
     fieldDesc:
       "Policy defines boundaries (authorisation, competition, ethics, documentation), not the path. Inside the field there are infinitely many paths — all compliant. Nothing to bypass, because boundaries are active at every point, not just at checkpoints.",
     pipeFieldSource: "Model sources: Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) Challenger; Holmström & Milgrom (1991) Multitask Principal-Agent",
+    benchmarkTitle: "Your scenario vs reference cases",
+    benchmarkSubtitle: "Rigid procedure premium (% above policy-only cost)",
+    benchmarkYours: "Your scenario",
+    benchmarkSummary: (pct: number, rank: number, total: number) =>
+      `Your scenario has a ${pct}% premium — higher than ${rank} of ${total} reference cases.`,
   },
 } as const;
 
@@ -243,6 +259,7 @@ export const optimizerT = {
       "Model: Random Forest (30 drzew, losowe podzbiory 4–7 cech z 9, głosowanie większościowe). Implementacja: deterministyczna z reprodukowalnym ziarnem (LCG seed per tree). Źródło metodyczne: Breiman, L. (2001). Random Forests.",
     importanceUnit: "%",
     importance: "Ważność",
+    explanationTitle: "Dlaczego ta rekomendacja?",
   },
   en: {
     parametersTitle: "Purchase parameters",
@@ -283,13 +300,14 @@ export const optimizerT = {
       "Model: Random Forest (30 trees, random subsets of 4–7 features from 9, majority vote). Implementation: deterministic with reproducible seed (LCG seed per tree). Methodology: Breiman, L. (2001). Random Forests.",
     importanceUnit: "%",
     importance: "Importance",
+    explanationTitle: "Why this recommendation?",
   },
 } as const;
 
 export const assessmentT = {
   pl: {
     title: "Ocena dojrzałości zakupowej",
-    subtitle: "Rura czy Pole? 10 pytań — 5 minut — konkretna diagnoza Twojej organizacji.",
+    subtitle: "Tunel czy Pole? 10 pytań — 5 minut — konkretna diagnoza Twojej organizacji.",
     badge: "Bezpłatna samoocena",
     questionOf: (n: number, total: number) => `Pytanie ${n} z ${total}`,
     never: "Nigdy",
@@ -301,9 +319,9 @@ export const assessmentT = {
     outOf: "/ 20 pkt",
     levels: {
       pipe: {
-        label: "Rura",
+        label: "Tunel",
         color: "red",
-        headline: "Twoja organizacja działa w trybie rury.",
+        headline: "Twoja organizacja działa w trybie tunelu.",
         desc: "Procedury blokują dyskrecję kupca i wymuszają nieformalne obejścia. Kalkulator ProcuraCost pokaże konkretny koszt w PLN.",
       },
       transition: {
@@ -376,7 +394,7 @@ export const assessmentT = {
   },
   en: {
     title: "Procurement Maturity Assessment",
-    subtitle: "Pipe or Field? 10 questions — 5 minutes — a concrete diagnosis of your organisation.",
+    subtitle: "Tunnel or Field? 10 questions — 5 minutes — a concrete diagnosis of your organisation.",
     badge: "Free self-assessment",
     questionOf: (n: number, total: number) => `Question ${n} of ${total}`,
     never: "Never",
@@ -388,9 +406,9 @@ export const assessmentT = {
     outOf: "/ 20 pts",
     levels: {
       pipe: {
-        label: "Pipe",
+        label: "Tunnel",
         color: "red",
-        headline: "Your organisation operates in pipe mode.",
+        headline: "Your organisation operates in tunnel mode.",
         desc: "Procedures lock buyer discretion and force informal bypasses. The ProcuraCost calculator will show the concrete cost in PLN.",
       },
       transition: {

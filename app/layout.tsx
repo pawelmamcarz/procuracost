@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
+import NavBar from "@/components/NavBar";
 import { VERSION } from "@/lib/version";
 
 const geist = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -16,45 +17,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pl" className={`${geist.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
-        <nav className="border-b border-gray-100 bg-white px-6 py-4 shadow-sm">
-          <div className="mx-auto flex max-w-5xl items-center justify-between">
-            <Link href="/" className="text-lg font-bold text-blue-700">
-              ProcuraCost
-            </Link>
-            <div className="flex items-center gap-6 text-sm text-gray-500">
-              <Link href="/calculator" className="hover:text-blue-600">
-                Kalkulator
-              </Link>
-              <Link href="/optimizer" className="font-medium text-blue-600 hover:text-blue-700">
-                Optymalizator RF
-              </Link>
-              <Link href="/case-studies" className="hover:text-blue-600">
-                Case studies
-              </Link>
-              <Link href="/assessment" className="hover:text-blue-600">
-                Ocena dojrzałości
-              </Link>
-              <Link href="/research" className="hover:text-blue-600">
-                Research paper
-              </Link>
-              <Link href="/methodology" className="hover:text-blue-600">
-                Methodology
-              </Link>
-              <Link href="/shortcasty" className="hover:text-blue-600">
-                Shortcasty
-              </Link>
-              <Link href="/team" className="hover:text-blue-600">
-                Zespół
-              </Link>
-              <Link
-                href="/en"
-                className="rounded-full border border-gray-200 px-2.5 py-0.5 text-xs font-semibold text-gray-500 hover:border-blue-300 hover:text-blue-600"
-              >
-                EN
-              </Link>
-            </div>
-          </div>
-        </nav>
+        <NavBar
+          brand={{ href: "/", label: "ProcuraCost" }}
+          items={[
+            { href: "/calculator", label: "Kalkulator" },
+            { href: "/optimizer", label: "Optymalizator RF", highlight: true },
+            { href: "/case-studies", label: "Case studies" },
+            { href: "/assessment", label: "Ocena dojrzałości" },
+            { href: "/shortcasty", label: "Shortcasty" },
+            { href: "/team", label: "Zespół" },
+            { href: "/research", label: "Research paper" },
+            { href: "/methodology", label: "Methodology" },
+          ]}
+          langSwitch={{ href: "/en", label: "EN" }}
+        />
         <main className="flex-1">{children}</main>
 
         {/* Projects bar */}

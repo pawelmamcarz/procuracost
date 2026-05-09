@@ -339,6 +339,7 @@ export interface OptimizationResult {
   topPath: PathResult;
   policyNote: string;
   lang: "pl" | "en";
+  explanation: string;
 }
 
 export interface FeatureImportance {
@@ -446,8 +447,74 @@ export function optimize(features: ProcurementFeatures, lang: "pl" | "en" = "pl"
 
   // PZP policy note
   const policyNote = generatePolicyNote(features, topPath.path.id, lang);
+  const explanation = generateExplanation(features, topPath, featureImportance, lang);
 
-  return { ranked, featureImportance, topPath, policyNote, lang };
+  return { ranked, featureImportance, topPath, policyNote, lang, explanation };
+}
+
+function describeFeatureValue(
+  feature: keyof ProcurementFeatures,
+  features: ProcurementFeatures,
+  lang: "pl" | "en"
+): string {
+  const pl = lang === "pl";
+  const v = features[feature];
+  switch (feature) {
+    case "contractValue": {
+      const m = (v as number) / 1_000_000;
+      const tag = m >= 10 ? (pl ? "bardzo wysoka" : "very high") :
+                  m >= 2  ? (pl ? "wysoka" : "high") :
+                  m >= 0.5 ? (pl ? "średnia" : "medium") : (pl ? "niska" : "low");
+      return `${pl ? "wartość kontraktu" : "contract value"}: ${tag} (${m.toFixed(1)}M PLN)`;
+    }
+    case "urgencyDays": {
+      const d = v as number;
+      const tag = d <= 21 ? (pl ? "krytyczna pilność" : "critical urgency") :
+                  d <= 60 ? (pl ? "pilny" : "urgent") :
+                  d <= 180 ? (pl ? "umiarkowany" : "moderate") : (pl ? "brak presji" : "no pressure");
+      return `${pl ? "presja czasu" : "time pressure"}: ${tag} (${d} ${pl ? "dni" : "days"})`;
+    }
+    case "supplierCount": {
+      const n = v as number;
+      const tag = n === 1 ? (pl ? "monopol" : "monopoly") :
+                  n <= 3  ? (pl ? "bardzo mało" : "very few") :
+                  n <= 7  ? (pl ? "kilku" : "few") : (pl ? "wielu" : "many");
+      return `${pl ? "liczba dostawców" : "supplier count"}: ${tag} (${n})`;
+    }
+    case "isPublicSector":
+      return `${pl ? "sektor publiczny" : "public sector"}: ${v ? (pl ? "tak" : "yes") : (pl ? "nie" : "no")}`;
+    case "innovationRequired":
+      return `${pl ? "innowacyjność wymagana" : "innovation required"}: ${v ? (pl ? "tak" : "yes") : (pl ? "nie" : "no")}`;
+    default: {
+      const n = v as number;
+      const labels = pl
+        ? ["bardzo niski", "niski", "średni", "wysoki", "bardzo wysoki"]
+        : ["very low", "low", "medium", "high", "very high"];
+      const featureName = pl
+        ? ({ complexity: "złożoność", supplyRisk: "ryzyko podaży", strategicImportance: "ważność strategiczna", marketMaturity: "dojrzałość rynku" } as Record<string, string>)[feature] ?? feature
+        : feature.replace(/([A-Z])/g, " $1").toLowerCase();
+      return `${featureName}: ${labels[n - 1] ?? n}`;
+    }
+  }
+}
+
+function generateExplanation(
+  features: ProcurementFeatures,
+  topPath: PathResult,
+  featureImportance: FeatureImportance[],
+  lang: "pl" | "en"
+): string {
+  const pathName = lang === "en" ? topPath.path.nameEn : topPath.path.name;
+  const pct = Math.round(topPath.confidence * 100);
+  const votes = topPath.votes;
+  const top = featureImportance.slice(0, 2);
+  const f1 = describeFeatureValue(top[0]?.feature as keyof ProcurementFeatures, features, lang);
+  const f2 = top[1] ? describeFeatureValue(top[1].feature as keyof ProcurementFeatures, features, lang) : null;
+
+  if (lang === "en") {
+    return `The model recommends "${pathName}" primarily because of: ${f1}${f2 ? ` and ${f2}` : ""}. This combination was decisive in ${votes}/30 decision trees (confidence: ${pct}%).`;
+  }
+  return `Model rekomenduje "${pathName}" przede wszystkim ze względu na: ${f1}${f2 ? ` oraz ${f2}` : ""}. Ta kombinacja zadecydowała w ${votes}/30 drzewach decyzyjnych (pewność: ${pct}%).`;
 }
 
 function generatePolicyNote(f: ProcurementFeatures, winner: PathId, lang: "pl" | "en" = "pl"): string {
