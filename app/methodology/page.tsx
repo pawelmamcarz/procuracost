@@ -53,6 +53,15 @@ export default function MethodologyPage() {
             what we term <strong>procedural compliance theater</strong>—full documentation, zero
             optimization.
           </p>
+          <blockquote className="mt-4 rounded-xl border border-blue-100 bg-blue-50 px-5 py-3">
+            <p className="text-sm italic text-blue-800">
+              "A tunnel has walls. A field has a horizon."
+            </p>
+            <p className="mt-1 text-xs text-blue-600">
+              The <strong>Tunnel vs. Field</strong> model: a procedure locks one path (tunnel);
+              a policy sets boundaries and grants freedom to navigate (field).
+            </p>
+          </blockquote>
         </section>
 
         {/* Cost Model */}

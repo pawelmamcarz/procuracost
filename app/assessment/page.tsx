@@ -3,9 +3,9 @@ import { assessmentT } from "@/lib/i18n";
 import AssessmentQuiz from "@/components/AssessmentQuiz";
 
 export const metadata: Metadata = {
-  title: "Ocena dojrzałości zakupowej — Rura czy Pole? | ProcuraCost",
+  title: "Ocena dojrzałości zakupowej — Tunel czy Pole? | ProcuraCost",
   description:
-    "10 pytań, 5 minut. Sprawdź, czy Twoja organizacja działa w trybie rury (procedura) czy pola (polityka zakupowa).",
+    "10 pytań, 5 minut. Sprawdź, czy Twoja organizacja działa w trybie tunelu (procedura) czy pola (polityka zakupowa).",
 };
 
 export default function AssessmentPage() {

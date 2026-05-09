@@ -1,5 +1,7 @@
 import Link from "next/link";
 import PipeFieldDiagram from "@/components/PipeFieldDiagram";
+import { SCENARIOS } from "@/lib/scenarios";
+import { calculateCosts } from "@/lib/calculations";
 
 const stats = [
   { value: "+2%", label: "higher contract prices under rigid procedures", source: "Szucs, JEEA 2024" },
@@ -7,6 +9,62 @@ const stats = [
   { value: "42%", label: "longer project delivery times", source: "World Bank, 2023" },
   { value: "30%", label: "potential TCO savings with flexibility", source: "ISM" },
 ];
+
+const howItWorks = [
+  {
+    step: "01",
+    title: "Describe your purchase",
+    body: "Choose a scenario (Ryanair, Swiss Casinos, Zara…) or enter your own data: contract value, process type, team and rates. No registration required.",
+  },
+  {
+    step: "02",
+    title: "Calculate hidden costs",
+    body: "The model, grounded in 4 peer-reviewed studies, computes 7 cost dimensions — staff time, delays, renegotiations, bypass risk — comparing tunnel to field.",
+  },
+  {
+    step: "03",
+    title: "Compare and act",
+    body: "Results include an industry benchmark, an optimal path recommendation (Random Forest, 30 trees) and a PDF report with academic citations.",
+  },
+];
+
+const team = [
+  {
+    name: "Paweł Mamcarz",
+    role: "Model architect / ProcureTech",
+    initials: "PM",
+    color: "bg-blue-600",
+    url: "https://mamcarz.com",
+  },
+  {
+    name: "Tomasz Ślusarczyk",
+    role: "Procurement expert",
+    initials: "TŚ",
+    color: "bg-indigo-600",
+    url: null,
+  },
+  {
+    name: "Rafał Madejewski",
+    role: "Analyst & researcher",
+    initials: "RM",
+    color: "bg-teal-600",
+    url: null,
+  },
+];
+
+const caseStudyPreviews = SCENARIOS.filter((s) => s.caseStudy)
+  .slice(0, 3)
+  .map((s) => {
+    const result = calculateCosts(s.inputs);
+    const insight = s.caseStudy!.insightEn;
+    return {
+      title: s.caseStudy!.title,
+      insight: insight.length > 120 ? insight.slice(0, 117) + "…" : insight,
+      rigidDays: result.rigidDays,
+      flexibleDays: result.flexibleDays,
+      source: s.caseStudy!.source,
+    };
+  });
 
 const principles = [
   {
@@ -32,10 +90,13 @@ export default function EnHomePage() {
           Research & Consulting Tool
         </span>
         <h1 className="mt-4 text-4xl font-bold text-gray-900">
-          Your procedures are a pipe.
+          Your procedures are a tunnel.
           <br />
           Procurement policy is a field.
         </h1>
+        <p className="mt-2 text-sm italic text-blue-600">
+          A tunnel has walls. A field has a horizon.
+        </p>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-500">
           An empirical model built on peer-reviewed research shows: rigid-procedure costs exceed
           policy-only costs by{" "}
@@ -52,7 +113,13 @@ export default function EnHomePage() {
             href="/en/assessment"
             className="rounded-xl border border-gray-200 bg-white px-8 py-3 text-sm font-semibold text-gray-600 hover:border-gray-300"
           >
-            Maturity assessment →
+            Free audit →
+          </Link>
+          <Link
+            href="/en/optimizer"
+            className="rounded-xl border border-gray-200 bg-white px-8 py-3 text-sm font-semibold text-gray-600 hover:border-gray-300"
+          >
+            Path optimizer →
           </Link>
         </div>
       </div>
@@ -71,6 +138,22 @@ export default function EnHomePage() {
         ))}
       </div>
 
+      {/* How it works */}
+      <div className="mt-16">
+        <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-6">
+          How ProcuraCost works
+        </p>
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+          {howItWorks.map((h) => (
+            <div key={h.step} className="rounded-xl border border-gray-100 bg-white p-5 shadow-sm">
+              <span className="text-2xl font-bold text-blue-100">{h.step}</span>
+              <h3 className="mt-2 font-bold text-gray-900">{h.title}</h3>
+              <p className="mt-2 text-sm text-gray-500">{h.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Principles */}
       <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-3">
         {principles.map((p) => (
@@ -84,9 +167,38 @@ export default function EnHomePage() {
         ))}
       </div>
 
+      {/* Case Studies Preview */}
+      <div className="mt-16">
+        <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-5">
+          Case studies — flexible procurement in practice
+        </p>
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+          {caseStudyPreviews.map((cs) => (
+            <div key={cs.title} className="rounded-xl border border-gray-100 bg-gray-50 p-4 space-y-3">
+              <p className="text-xs font-bold text-gray-900">{cs.title}</p>
+              <p className="text-xs text-gray-600 leading-relaxed">{cs.insight}</p>
+              <div className="flex gap-2 flex-wrap">
+                <span className="rounded-md bg-red-50 border border-red-200 px-2 py-1 text-xs text-red-700">
+                  Tunnel: {cs.rigidDays} days
+                </span>
+                <span className="rounded-md bg-green-50 border border-green-200 px-2 py-1 text-xs text-green-700">
+                  Field: {cs.flexibleDays} days
+                </span>
+              </div>
+              <p className="text-xs text-gray-400">{cs.source}</p>
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 text-right">
+          <Link href="/en/case-studies" className="text-xs text-blue-600 hover:underline">
+            View all case studies →
+          </Link>
+        </div>
+      </div>
+
       {/* Pipe vs. Field */}
       <div className="mt-12 rounded-2xl border border-blue-100 bg-blue-50 p-6">
-        <h2 className="font-bold text-blue-900">The Pipe vs. Field model</h2>
+        <h2 className="font-bold text-blue-900">The Tunnel vs. Field model</h2>
         <p className="mt-1 text-sm text-blue-700">
           Same contract — same value — two worlds. The procedure locks one path and forces bypasses. The policy sets boundaries and grants freedom of choice.
         </p>
@@ -99,19 +211,61 @@ export default function EnHomePage() {
         </p>
       </div>
 
+      {/* Team */}
+      <div className="mt-16">
+        <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-5">Team</p>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {team.map((member) => (
+            <div
+              key={member.name}
+              className="rounded-xl border border-gray-100 bg-white p-5 shadow-sm flex items-center gap-4"
+            >
+              <span
+                className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white ${member.color}`}
+              >
+                {member.initials}
+              </span>
+              <div>
+                {member.url ? (
+                  <a
+                    href={member.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold text-gray-900 hover:text-blue-600"
+                  >
+                    {member.name}
+                  </a>
+                ) : (
+                  <p className="font-semibold text-gray-900">{member.name}</p>
+                )}
+                <p className="text-xs text-gray-500">{member.role}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* CTA */}
-      <div className="mt-10 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-center text-white">
-        <h2 className="text-2xl font-bold">Analyse your scenario</h2>
+      <div className="mt-16 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-center text-white">
+        <h2 className="text-2xl font-bold">See what your organisation is losing</h2>
         <p className="mt-2 text-blue-100">
-          Choose a pre-built scenario or enter your own data. The result includes a detailed cost
-          breakdown with academic citations.
+          Cost calculator, path optimizer and a free procurement maturity audit —
+          all grounded in peer-reviewed research.
         </p>
-        <Link
-          href="/en/calculator"
-          className="mt-6 inline-block rounded-xl bg-white px-8 py-3 text-sm font-semibold text-blue-700 hover:bg-blue-50"
-        >
-          Go to calculator
-        </Link>
+        <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+          <Link
+            href="/en/calculator"
+            className="rounded-xl bg-white px-8 py-3 text-sm font-semibold text-blue-700 hover:bg-blue-50"
+          >
+            Open calculator
+          </Link>
+          <Link
+            href="/en/assessment"
+            className="rounded-xl border border-white/40 bg-white/10 px-8 py-3 text-sm font-semibold text-white hover:bg-white/20"
+          >
+            Free audit →
+          </Link>
+        </div>
       </div>
     </div>
   );

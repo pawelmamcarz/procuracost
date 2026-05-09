@@ -17,7 +17,7 @@ const COST_LABELS_PL: Record<string, string> = {
   productivityCost: "Spadek produktywności dostawcy",
   renegotiationCost: "Koszty renegocjacji",
   tcoCost: "Utracone oszczędności TCO",
-  bypassCost: "Koszty obejść rury",
+  bypassCost: "Koszty obejść tunelu",
 };
 
 const COST_LABELS_EN: Record<string, string> = {

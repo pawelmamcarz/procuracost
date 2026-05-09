@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { SCENARIOS, Scenario } from "@/lib/scenarios";
 import { ProcurementInputs, ProcessType, TechLevelId, StakeholderRole } from "@/lib/calculations";
-import { TECH_LEVELS, PROCESS_TYPE_META, deriveRigidDays, deriveFlexibleDays, getSteps } from "@/lib/process-templates";
+import { TECH_LEVELS, PROCESS_TYPE_META, ProcessCategory, deriveRigidDays, deriveFlexibleDays, getSteps } from "@/lib/process-templates";
 import { calculatorT, Lang } from "@/lib/i18n";
 
 interface Props {
@@ -11,15 +11,10 @@ interface Props {
   lang?: Lang;
 }
 
-const PROCESS_TYPES: Exclude<ProcessType, "custom">[] = [
-  "pzp_eu",
-  "pzp_krajowy",
-  "private_formal",
-  "policy_only",
-  "catalog_order",
-  "mrp_order",
-  "capex",
-];
+const PROCESS_TYPES_BY_CATEGORY: Record<ProcessCategory, Exclude<ProcessType, "custom">[]> = {
+  sourcing: ["pzp_eu", "pzp_krajowy", "private_formal", "policy_only", "capex"],
+  buying: ["catalog_order", "mrp_order"],
+};
 
 const TECH_LEVEL_IDS: TechLevelId[] = ["manual", "sourcing_tool", "partial_erp", "end_to_end"];
 
@@ -105,26 +100,46 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
       {/* Section 1: Process type */}
       <div className={sectionClass}>
         <p className={sectionTitleClass}>{tx.processTypeLabel}</p>
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-          {PROCESS_TYPES.map((pt) => {
-            const meta = PROCESS_TYPE_META[pt];
-            const label = tx.processTypes[pt];
+
+        <div className="space-y-4">
+          {(["sourcing", "buying"] as ProcessCategory[]).map((category) => {
+            const pts = PROCESS_TYPES_BY_CATEGORY[category];
+            const categoryLabel = category === "sourcing" ? tx.sourcingCategoryLabel : tx.buyingCategoryLabel;
+            const isBuyingSelected = category === "buying" && pts.includes(inputs.processType as Exclude<ProcessType, "custom">);
             return (
-              <button
-                key={pt}
-                type="button"
-                onClick={() => setProcessType(pt)}
-                className={`rounded-lg border px-3 py-2 text-left text-xs transition-all ${
-                  inputs.processType === pt
-                    ? "border-indigo-400 bg-indigo-50 text-indigo-700"
-                    : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
-                }`}
-              >
-                <span className="font-medium">{label}</span>
-                <span className="ml-1 text-gray-400 font-normal">
-                  {lang === "en" ? meta.descriptionEn.slice(0, 60) : meta.description.slice(0, 60)}…
-                </span>
-              </button>
+              <div key={category}>
+                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">
+                  {categoryLabel}
+                </p>
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  {pts.map((pt) => {
+                    const meta = PROCESS_TYPE_META[pt];
+                    const label = tx.processTypes[pt];
+                    return (
+                      <button
+                        key={pt}
+                        type="button"
+                        onClick={() => setProcessType(pt)}
+                        className={`rounded-lg border px-3 py-2 text-left text-xs transition-all ${
+                          inputs.processType === pt
+                            ? "border-indigo-400 bg-indigo-50 text-indigo-700"
+                            : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                        }`}
+                      >
+                        <span className="font-medium">{label}</span>
+                        <span className="ml-1 text-gray-400 font-normal">
+                          {lang === "en" ? meta.descriptionEn.slice(0, 60) : meta.description.slice(0, 60)}…
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+                {isBuyingSelected && (
+                  <p className="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800 leading-relaxed">
+                    {tx.buyingCategoryNote}
+                  </p>
+                )}
+              </div>
             );
           })}
         </div>

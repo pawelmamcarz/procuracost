@@ -1,4 +1,4 @@
-import Link from "next/link";
+import NavBar from "@/components/NavBar";
 
 export const metadata = {
   title: "ProcuraCost — Procurement Cost Calculator",
@@ -9,33 +9,16 @@ export const metadata = {
 export default function EnLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <nav className="border-b border-gray-100 bg-white px-6 py-4 shadow-sm">
-        <div className="mx-auto flex max-w-5xl items-center justify-between">
-          <Link href="/en" className="text-lg font-bold text-blue-700">
-            ProcuraCost
-          </Link>
-          <div className="flex items-center gap-6 text-sm text-gray-500">
-            <Link href="/en/calculator" className="hover:text-blue-600">
-              Calculator
-            </Link>
-            <Link href="/en/optimizer" className="font-medium text-blue-600 hover:text-blue-700">
-              RF Optimizer
-            </Link>
-            <Link href="/en/case-studies" className="hover:text-blue-600">
-              Case Studies
-            </Link>
-            <Link href="/methodology" className="hover:text-blue-600">
-              Methodology
-            </Link>
-            <Link
-              href="/"
-              className="rounded-full border border-gray-200 px-2.5 py-0.5 text-xs font-semibold text-gray-500 hover:border-blue-300 hover:text-blue-600"
-            >
-              PL
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <NavBar
+        brand={{ href: "/en", label: "ProcuraCost" }}
+        items={[
+          { href: "/en/calculator", label: "Calculator" },
+          { href: "/en/optimizer", label: "RF Optimizer", highlight: true },
+          { href: "/en/case-studies", label: "Case Studies" },
+          { href: "/methodology", label: "Methodology" },
+        ]}
+        langSwitch={{ href: "/", label: "PL" }}
+      />
       {children}
     </>
   );

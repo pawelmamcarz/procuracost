@@ -14,11 +14,11 @@ Drawing on empirical evidence from public procurement economics, we construct a 
 
 We operationalize the model in an open-source calculator (ProcuraCost) and demonstrate its application across four procurement archetypes: fleet acquisition, IT/ERP implementation, logistics contracting, and production materials sourcing. Results consistently show that rigid-procedure costs exceed policy-only costs by 100–400%, with the gap driven primarily by foregone TCO optimization, deployment delay costs, and — critically — bypass risk costs generated when rigid procedures are informally circumvented under operational pressure.
 
-We introduce the **Pipe vs. Field** model as the organizing metaphor: a procedure is a pipe (single path, binary compliance, human as step-executor); a procurement policy enforced by modern information systems is a field (multiple paths, continuous compliance, human as value navigator). We demonstrate, drawing on Lipsky (1980), Vaughan (1996), Holmström & Milgrom (1991), Scott (1998), and Norman (1988), that the enforcement response to procedural bypass — "make the pipe harder to exit" — is empirically predicted to fail across five independent analytical traditions. The correct response is not a better pipe. It is a field.
+We introduce the **Tunnel vs. Field** model as the organizing metaphor: a procedure is a tunnel (single path, one direction, human as step-executor); a procurement policy enforced by modern information systems is a field (multiple paths, continuous compliance, human as value navigator). We demonstrate, drawing on Lipsky (1980), Vaughan (1996), Holmström & Milgrom (1991), Scott (1998), and Norman (1988), that the enforcement response to procedural bypass — "make the tunnel harder to exit" — is empirically predicted to fail across five independent analytical traditions. The correct response is not a better tunnel. It is a field. *A tunnel has walls. A field has a horizon.*
 
 We argue that the policy/procedure distinction is not merely semantic but operationally critical: procurement policy defines *what* must be achieved, while procedure is only *one* method of achievement. Modern ERP and AI-powered procurement systems have absorbed the compliance enforcement function that procedures were designed to perform, rendering procedural gatekeeping structurally obsolete.
 
-**Keywords:** procurement policy, procurement procedure, opportunity cost, procedural compliance, bypass cost, pipe vs. field model, agile procurement, total cost of ownership, renegotiation risk, street-level bureaucracy, normalization of deviance
+**Keywords:** procurement policy, procurement procedure, opportunity cost, procedural compliance, bypass cost, tunnel vs. field model, agile procurement, total cost of ownership, renegotiation risk, street-level bureaucracy, normalization of deviance
 
 ---
 
@@ -85,14 +85,16 @@ A policy-compliant but procedure-flexible approach retains all governance and ac
 
 What changes is the *method*: the specific sequence of actions, timelines, supplier engagement formats, and negotiation strategies are dynamically calibrated to the procurement context. A routine, low-complexity purchase uses a streamlined approach. A strategic, high-value, relationship-dependent acquisition uses a sophisticated multi-round engagement. Neither deviates from policy; both select the procedure appropriate to context.
 
-### 2.4 The Pipe vs. Field Model
+### 2.4 The Tunnel vs. Field Model
 
-The policy/procedure distinction can be captured in a spatial metaphor that is both intuitive and formally precise: the **pipe** versus the **field**.
+The policy/procedure distinction can be captured in a spatial metaphor that is both intuitive and formally precise: the **tunnel** versus the **field**.
 
-**The Pipe Model (procedure-first):** A procurement procedure defines a single ordered sequence of actions A = (a₁, a₂, ..., aₙ). The human actor is a step-executor: her role is to complete each action in sequence. Compliance is binary—she is either in the pipe or outside it. When real-world conditions deviate from the assumptions embedded in the procedure design (time pressure, missing data, uncooperative suppliers, market discontinuities), the pipe fails. The actor faces a binary choice: force reality into the pipe at high cost, or exit the pipe and proceed informally. This is the bypass.
+> *"A tunnel has walls. A field has a horizon."*
+
+**The Tunnel Model (procedure-first):** A procurement procedure defines a single ordered sequence of actions A = (a₁, a₂, ..., aₙ). The human actor is a step-executor: her role is to complete each action in sequence. Compliance is binary—she is either in the tunnel or outside it. When real-world conditions deviate from the assumptions embedded in the procedure design (time pressure, missing data, uncooperative suppliers, market discontinuities), the tunnel fails. The actor faces a binary choice: force reality into the tunnel at high cost, or exit the tunnel and proceed informally. This is the bypass.
 
 ```
-Pipe:    a₁ → a₂ → a₃ → ··· → aₙ
+Tunnel:  a₁ → a₂ → a₃ → ··· → aₙ
          (one path, sequential, human as executor)
          ↓ under pressure:
          a₁ → [BYPASS] → informal path (mail/phone/Excel)
@@ -107,13 +109,13 @@ Field:   ∂Φ defined by C = {authorization, competition, ethics, documentation
          (no bypass possible — boundaries are everywhere and always active)
 ```
 
-The critical structural difference: in the pipe model, compliance is a momentary state (am I in the pipe right now?). In the field model, compliance is continuous — the constraint set is evaluated at every point of movement, not only at predefined checkpoints. Modern procurement information systems (ERP, spend analytics, AI-assisted sourcing) make the field model operationally viable: they enforce boundary constraints automatically at every transaction, in real time, without procedural gatekeeping.
+The critical structural difference: in the tunnel model, compliance is a momentary state (am I in the tunnel right now?). In the field model, compliance is continuous — the constraint set is evaluated at every point of movement, not only at predefined checkpoints. Modern procurement information systems (ERP, spend analytics, AI-assisted sourcing) make the field model operationally viable: they enforce boundary constraints automatically at every transaction, in real time, without procedural gatekeeping.
 
 > **Proposition 1:** Any procurement action that satisfies policy constraints C is fully compliant regardless of the path taken. The claim "she bypassed the process" conflates bypassing a *procedure* (one specific path) with bypassing *policy* (the boundary constraints). These are categorically different.
 
 > **Proposition 2:** As the number of compliant paths within Φ approaches infinity (as procedural constraints are relaxed to pure policy constraints), the bypass incentive approaches zero — because there is nothing to bypass.
 
-This model directly addresses the image diagnosed by Filipowski (2026): "if the user bypasses the process, the process doesn't work." Our response: the process shown is a pipe. The fact that experienced practitioners exit it under pressure (mail, phone, Excel) is not evidence of poor process design or insufficient enforcement — it is evidence that the pipe model is structurally inappropriate for the complexity and dynamism of procurement work. No pipe, however well-designed, survives contact with procurement reality at scale.
+This model directly addresses the image diagnosed by Filipowski (2026): "if the user bypasses the process, the process doesn't work." Our response: the process shown is a tunnel. The fact that experienced practitioners exit it under pressure (mail, phone, Excel) is not evidence of poor process design or insufficient enforcement — it is evidence that the tunnel model is structurally inappropriate for the complexity and dynamism of procurement work. No tunnel, however well-designed, survives contact with procurement reality at scale.
 
 ---
 
@@ -266,7 +268,7 @@ The shift from procedure-compliance to policy-compliance requires organizational
 2. **Governance frameworks:** clear policy documentation must precede procedural flexibility; otherwise "flexible" becomes "arbitrary"
 3. **Cultural change:** audit functions and management must reward outcomes, not just compliance—a significant behavioral change in organizations conditioned to procedural accountability
 
-### 6.4 The Enforcement Fallacy: Why Better Pipes Don't Work
+### 6.4 The Enforcement Fallacy: Why Better Tunnels Don't Work
 
 A common response to procedural failure is to strengthen enforcement: make procedures harder to bypass, increase audit frequency, implement technical lockouts. This response—which we term the **enforcement fallacy**—is empirically predicted to fail by five decades of organizational research.
 
@@ -284,11 +286,11 @@ A common response to procedural failure is to strengthen enforcement: make proce
 
 **Synthesis.** The enforcement response to procedural bypass — "if users circumvent the process, the process doesn't work; therefore, make circumvention impossible" — is empirically wrong in five independent analytical traditions. Lipsky tells us circumvention is structurally inevitable. Vaughan tells us forcing it underground makes it dangerous. Holmström-Milgrom tells us enforcement crowds out the actual goal. Goodhart tells us the compliance measure will be gamed. Scott tells us the procedures can't encode what they need to encode. Norman tells us the system design is the problem.
 
-The correct response is not a better pipe. It is a field.
+The correct response is not a better tunnel. It is a field. *A tunnel has walls. A field has a horizon.*
 
 ### 6.5 Technology as the New Compliance Infrastructure: The Field Made Operational
 
-If the pipe model was the pre-digital solution to the problem of compliance enforcement, it was a solution constrained by the technology of its time. In the absence of real-time information systems, procedural checkpoints were the only mechanism available to verify that policy constraints were being respected. A five-person evaluation committee, a 21-day bid period, a physical approval signature — these were not arbitrary bureaucratic inventions. They were the best available instruments for ensuring competitive validation and documented decision-making in a paper-based organizational world.
+If the tunnel model was the pre-digital solution to the problem of compliance enforcement, it was a solution constrained by the technology of its time. In the absence of real-time information systems, procedural checkpoints were the only mechanism available to verify that policy constraints were being respected. A five-person evaluation committee, a 21-day bid period, a physical approval signature — these were not arbitrary bureaucratic inventions. They were the best available instruments for ensuring competitive validation and documented decision-making in a paper-based organizational world.
 
 That world no longer exists.
 

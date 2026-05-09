@@ -7,7 +7,7 @@ Every new UI element maps to one of these roles. Never introduce new palette ent
 | Role | Tailwind border/bg/text | Use when |
 |---|---|---|
 | Primary action | `blue-500/600`, `blue-50`, `blue-700` | Buttons, links, scenario pills, chart bars |
-| Rigid / pipe | `red-200/300`, `red-50`, `red-600/700/900` | PZP-EU steps, mandatory waits, pipe metaphor |
+| Rigid / tunnel | `red-200/300`, `red-50`, `red-600/700/900` | PZP-EU steps, mandatory waits, tunnel metaphor |
 | Flexible / field | `green-200/400`, `green-50`, `green-600/700` | policy_only, field metaphor, savings deltas |
 | Process type selector | `indigo-400`, `indigo-50`, `indigo-700` | Process type toggle buttons |
 | Tech level selector | `teal-400`, `teal-50`, `teal-700` | Technology level toggle buttons |
@@ -39,7 +39,7 @@ Standard section card:
 </div>
 ```
 
-Semantic pipe card (red):
+Semantic tunnel card (red):
 ```tsx
 <div className="rounded-xl border border-red-200 bg-red-50 p-4">
   <p className="text-xs font-bold uppercase tracking-wide text-red-700">…</p>
@@ -119,18 +119,20 @@ All user-facing strings go through `lib/i18n.ts`. Never hardcode Polish or Engli
 
 Exception: the `lang === "en" ? "…" : "…"` ternary is acceptable only for very short labels (e.g., "days" / "dni") where adding an i18n key would be disproportionate.
 
-## Pipe vs Field metaphor — usage rules
+## Tunnel vs Field metaphor — usage rules
 
 Use these terms consistently across all UI surfaces:
 
 | Concept | Polish | English |
 |---|---|---|
-| Locked sequential procedure | rura | pipe |
+| Locked sequential procedure | tunel | tunnel |
 | Policy-bounded freedom | pole | field |
 | Mandatory waiting period | obowiązkowe oczekiwanie | mandatory wait |
-| Informal bypass | obejście / wyjście z rury | bypass / exiting the pipe |
+| Informal bypass | obejście / wyjście z tunelu | bypass / exiting the tunnel |
 | Boundary constraint | granica | boundary |
 | Compliance navigator | nawigator | navigator |
+
+Tagline (canonical): **"Tunel ma ściany. Pole ma horyzont."** / **"A tunnel has walls. A field has a horizon."**
 
 The mathematical notation `∂Φ = {uprawnienia, konkurencja, etyka, dokumentacja}` (PL) / `∂Φ = {auth, competition, ethics, docs}` (EN) is canonical — use it wherever the formal model is referenced.
 
