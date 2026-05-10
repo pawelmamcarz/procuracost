@@ -34,7 +34,7 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 5_000_000,
       tcoHorizonYears: 2,
-      processType: "pzp_krajowy",
+      processType: "private_formal",
       techLevel: "partial_erp",
       stakeholders: {
         requestor: { count: 1, dailyRate: 900 },
@@ -98,7 +98,7 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 8_000_000,
       tcoHorizonYears: 3,
-      processType: "pzp_eu",
+      processType: "private_formal",
       techLevel: "partial_erp",
       stakeholders: {
         requestor: { count: 1, dailyRate: 900 },
@@ -130,7 +130,7 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 12_000_000,
       tcoHorizonYears: 1,
-      processType: "pzp_eu",
+      processType: "private_formal",
       techLevel: "manual",
       stakeholders: {
         requestor: { count: 2, dailyRate: 800 },

@@ -233,6 +233,50 @@ export const EPISODES: Episode[] = [
     recommendation:
       "Dołącz do społeczności procuracost.com — nie po narzędzie, ale po sojuszników.",
   },
+  {
+    number: 21,
+    slug: "obieg-zamowien-jak-po-przestaje-byc-formularzem",
+    title: "Obieg zamówień: Jak PO przestaje być formularzem?",
+    dimension: "Archetyp: Zamówienia operacyjne",
+    guest: "Menedżer P2P w firmie produkcyjnej",
+    thesis:
+      "Obieg zamówień to nie procedura — to infrastruktura. Gdy każde PO wymaga 4 zatwierdzeń, firma płaci za własną nieefektywność.",
+    recommendation:
+      "Policz, ile zatwierdzeń mają wasze zamówienia poniżej 5 000 PLN. Jeśli więcej niż jedno — masz problem.",
+  },
+  {
+    number: 22,
+    slug: "katalog-zakupowy-amazon-dla-twojej-firmy",
+    title: "Katalog zakupowy: Amazon dla Twojej firmy",
+    dimension: "Archetyp: Katalogi · Zapotrzebowanie",
+    guest: "Ekspert wdrożeń Coupa / Ariba",
+    thesis:
+      "Katalog to nie lista produktów — to system granic polityki w modelu pola. Zamawiający klika, system egzekwuje cenę, kupiec zajmuje się wyjątkami.",
+    recommendation:
+      "Zmierz maverick spend w jednej kategorii MRO. Jeśli przekracza 20% — wdrożenie katalogu zwróci się w 3 miesiące.",
+  },
+  {
+    number: 23,
+    slug: "mrp-kiedy-zakup-jest-decyzja-systemu-nie-kupca",
+    title: "MRP: Kiedy zakup jest decyzją systemu, nie kupca",
+    dimension: "Archetyp: MRP · Supply chain",
+    guest: "Kierownik planowania produkcji",
+    thesis:
+      "Czyste pole operacyjne to MRP: system generuje zlecenie, kupiec reaguje tylko na wyjątki. Zero dyskrecji — i to jest zaleta, nie wada.",
+    recommendation:
+      "Sprawdź, jaki procent zleceń zakupu pochodzi z automatycznego MRP. Poniżej 60% oznacza, że planowanie nie jest zintegrowane z zakupami.",
+  },
+  {
+    number: 24,
+    slug: "faktura-koniec-p2p-gdzie-ginie-czas",
+    title: "Faktura: Koniec P2P — gdzie ginie czas?",
+    dimension: "Archetyp: Fakturowanie · P2P",
+    guest: "Dyrektor finansowy i szef AP",
+    thesis:
+      "Faktura to lustro zakupów: jeśli masz 8% wyjątków na fakturach, masz 8% błędów w zamówieniach. Operacyjna doskonałość zaczyna się od PO, kończy na fakturze.",
+    recommendation:
+      "Zmierz match rate swoich faktur (2-way i 3-way match). Poniżej 90% automatic match — szukaj przyczyny w procesie zamówień, nie w AP.",
+  },
 ];
 
 export function getEpisode(slug: string): Episode | undefined {

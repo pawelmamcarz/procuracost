@@ -142,9 +142,9 @@ When displaying all 7 process types in the calculator, they represent three laye
 
 | Layer | Types | Rigidity |
 |---|---|---|
-| Strategic sourcing | `pzp_eu`, `pzp_krajowy`, `private_formal` | 0.60–0.95 |
+| Strategic sourcing | `pzp_eu`, `pzp_krajowy`, `private_formal`, `capex` | 0.60–0.95 |
 | Policy-driven | `policy_only` | 0.15 |
-| Downstream operational | `catalog_order`, `mrp_order`, `capex` | 0.12–0.72 |
+| Downstream operational | `catalog_order`, `mrp_order` | 0.12–0.20 |
 
 Consider adding a visual separator or group label between layers if the selector feels crowded.
 
