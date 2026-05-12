@@ -27,8 +27,9 @@ export default function CalculatorPage() {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900">Kalkulator kosztów procedur zakupowych</h1>
         <p className="mt-1 text-sm text-gray-500">
-          Porównaj całkowite koszty sztywnej procedury przetargowej z podejściem opartym na polityce
-          zakupowej. Czas i koszty wynikają z szablonu procesu i stawek uczestników — nie są wpisywane ręcznie.
+          Porównaj całkowite koszty dla trzech klas procesów: zakupów strategicznych, zakupów
+          operacyjnych oraz strategicznych zakupów PZP. Czas i koszty wynikają z szablonu procesu
+          i stawek uczestników — nie są wpisywane ręcznie.
         </p>
       </div>
 

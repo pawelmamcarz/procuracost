@@ -11,9 +11,12 @@ interface Props {
   lang?: Lang;
 }
 
+const PROCESS_CATEGORY_ORDER: ProcessCategory[] = ["strategic", "operational", "strategic_pzp"];
+
 const PROCESS_TYPES_BY_CATEGORY: Record<ProcessCategory, Exclude<ProcessType, "custom">[]> = {
-  sourcing: ["pzp_eu", "pzp_krajowy", "private_formal", "policy_only", "capex"],
-  buying: ["catalog_order", "mrp_order"],
+  strategic: ["private_formal", "policy_only", "capex"],
+  operational: ["catalog_order", "mrp_order"],
+  strategic_pzp: ["pzp_eu", "pzp_krajowy"],
 };
 
 const TECH_LEVEL_IDS: TechLevelId[] = ["manual", "sourcing_tool", "partial_erp", "end_to_end"];
@@ -102,10 +105,15 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
         <p className={sectionTitleClass}>{tx.processTypeLabel}</p>
 
         <div className="space-y-4">
-          {(["sourcing", "buying"] as ProcessCategory[]).map((category) => {
+          {PROCESS_CATEGORY_ORDER.map((category) => {
             const pts = PROCESS_TYPES_BY_CATEGORY[category];
-            const categoryLabel = category === "sourcing" ? tx.sourcingCategoryLabel : tx.buyingCategoryLabel;
-            const isBuyingSelected = category === "buying" && pts.includes(inputs.processType as Exclude<ProcessType, "custom">);
+            const categoryLabel = tx.processCategoryLabels[category];
+            const isOperationalSelected =
+              category === "operational" &&
+              pts.includes(inputs.processType as Exclude<ProcessType, "custom">);
+            const isStrategicPzpSelected =
+              category === "strategic_pzp" &&
+              pts.includes(inputs.processType as Exclude<ProcessType, "custom">);
             return (
               <div key={category}>
                 <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">
@@ -134,9 +142,14 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
                     );
                   })}
                 </div>
-                {isBuyingSelected && (
+                {isOperationalSelected && (
                   <p className="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800 leading-relaxed">
-                    {tx.buyingCategoryNote}
+                    {tx.operationalCategoryNote}
+                  </p>
+                )}
+                {isStrategicPzpSelected && (
+                  <p className="mt-2 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-xs text-blue-800 leading-relaxed">
+                    {tx.strategicPzpCategoryNote}
                   </p>
                 )}
               </div>
