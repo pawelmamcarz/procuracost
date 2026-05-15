@@ -48,14 +48,14 @@ export default function MethodologyPage() {
           </p>
           <p className="mt-2">
             The pathology we identify is the elevation of procedure to the status of policy: when
-            "following the procedure" becomes the primary success criterion rather than achieving
+            &ldquo;following the procedure&rdquo; becomes the primary success criterion rather than achieving
             value, procurement officers are effectively absolved of strategic judgment. This produces
             what we term <strong>procedural compliance theater</strong>—full documentation, zero
             optimization.
           </p>
           <blockquote className="mt-4 rounded-xl border border-blue-100 bg-blue-50 px-5 py-3">
             <p className="text-sm italic text-blue-800">
-              "A tunnel has walls. A field has a horizon."
+              &ldquo;A tunnel has walls. A field has a horizon.&rdquo;
             </p>
             <p className="mt-1 text-xs text-blue-600">
               The <strong>Tunnel vs. Field</strong> model: a procedure locks one path (tunnel);

@@ -256,7 +256,7 @@ function lcg(seed: number): () => number {
 // Score a single path from features (continuous score 0–100)
 function scorePath(path: PathId, f: ProcurementFeatures, weights: number[]): number {
   const v = f.contractValue / 1_000_000; // normalize to millions
-  const [w0, w1, w2, w3, w4, w5, w6, w7, w8] = weights;
+  const [w0, w1, w2, w3, w4] = weights;
 
   switch (path) {
     case "przetarg_otwarty":

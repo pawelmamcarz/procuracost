@@ -188,24 +188,24 @@ export default function PDFExport({ result, scenario, lang = "pl" }: Props) {
   return (
     <div className="flex gap-2">
       <button
-        onClick={() => { setGenerating(true); openPrintView("pl"); setTimeout(() => setGenerating(false), 1000); }}
+        onClick={() => { setGenerating(true); openPrintView(lang); setTimeout(() => setGenerating(false), 1000); }}
         disabled={generating}
         className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
       >
         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.75 19.77m10.56-5.941l-.001 5.94M10.5 8.5h3M10.5 12h3M12 3v1m0 16v1m8.485-9H21M3 12H2.515M6.343 6.343l-.707-.707M17.657 6.343l.707-.707M6.343 17.657l-.707.707M17.657 17.657l.707.707" />
         </svg>
-        Raport PDF (PL)
+        {lang === "pl" ? "Raport PDF (PL)" : "Report PDF (EN)"}
       </button>
       <button
-        onClick={() => { setGenerating(true); openPrintView("en"); setTimeout(() => setGenerating(false), 1000); }}
+        onClick={() => { setGenerating(true); openPrintView(lang === "pl" ? "en" : "pl"); setTimeout(() => setGenerating(false), 1000); }}
         disabled={generating}
         className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
       >
         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
         </svg>
-        Report PDF (EN)
+        {lang === "pl" ? "Report PDF (EN)" : "Raport PDF (PL)"}
       </button>
     </div>
   );

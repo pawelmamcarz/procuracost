@@ -11,9 +11,33 @@ interface Props {
   lang?: Lang;
 }
 
+const PROCESS_CATEGORY_ORDER: ProcessCategory[] = ["strategic", "operational", "strategic_pzp"];
+
+const PROCESS_CATEGORY_STYLES: Record<ProcessCategory, { border: string; bg: string; text: string; active: string }> = {
+  strategic: {
+    border: "border-indigo-100",
+    bg: "bg-indigo-50",
+    text: "text-indigo-800",
+    active: "border-indigo-400 bg-indigo-50 text-indigo-700",
+  },
+  operational: {
+    border: "border-amber-100",
+    bg: "bg-amber-50",
+    text: "text-amber-800",
+    active: "border-amber-400 bg-amber-50 text-amber-700",
+  },
+  strategic_pzp: {
+    border: "border-blue-100",
+    bg: "bg-blue-50",
+    text: "text-blue-800",
+    active: "border-blue-400 bg-blue-50 text-blue-700",
+  },
+};
+
 const PROCESS_TYPES_BY_CATEGORY: Record<ProcessCategory, Exclude<ProcessType, "custom">[]> = {
-  sourcing: ["pzp_eu", "pzp_krajowy", "private_formal", "policy_only", "capex"],
-  buying: ["catalog_order", "mrp_order"],
+  strategic: ["private_formal", "policy_only", "capex"],
+  operational: ["catalog_order", "mrp_order"],
+  strategic_pzp: ["pzp_eu", "pzp_krajowy"],
 };
 
 const TECH_LEVEL_IDS: TechLevelId[] = ["manual", "sourcing_tool", "partial_erp", "end_to_end"];
@@ -102,15 +126,28 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
         <p className={sectionTitleClass}>{tx.processTypeLabel}</p>
 
         <div className="space-y-4">
-          {(["sourcing", "buying"] as ProcessCategory[]).map((category) => {
+          {PROCESS_CATEGORY_ORDER.map((category) => {
             const pts = PROCESS_TYPES_BY_CATEGORY[category];
-            const categoryLabel = category === "sourcing" ? tx.sourcingCategoryLabel : tx.buyingCategoryLabel;
-            const isBuyingSelected = category === "buying" && pts.includes(inputs.processType as Exclude<ProcessType, "custom">);
+            const categoryLabel = tx.processCategoryLabels[category];
+            const categoryStyle = PROCESS_CATEGORY_STYLES[category];
             return (
-              <div key={category}>
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">
-                  {categoryLabel}
-                </p>
+              <div
+                key={category}
+                className={`rounded-xl border ${categoryStyle.border} ${categoryStyle.bg} p-3`}
+              >
+                <div className="mb-3 flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <p className={`text-xs font-semibold uppercase tracking-wide ${categoryStyle.text}`}>
+                      {categoryLabel}
+                    </p>
+                    <p className="mt-1 text-xs leading-relaxed text-gray-600">
+                      {tx.processCategoryDescriptions[category]}
+                    </p>
+                  </div>
+                  <span className="shrink-0 rounded-full bg-white/80 px-2.5 py-1 text-[11px] font-semibold text-gray-500 ring-1 ring-gray-200">
+                    {pts.length} {tx.categoryPathCountLabel}
+                  </span>
+                </div>
                 <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                   {pts.map((pt) => {
                     const meta = PROCESS_TYPE_META[pt];
@@ -122,7 +159,7 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
                         onClick={() => setProcessType(pt)}
                         className={`rounded-lg border px-3 py-2 text-left text-xs transition-all ${
                           inputs.processType === pt
-                            ? "border-indigo-400 bg-indigo-50 text-indigo-700"
+                            ? categoryStyle.active
                             : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
                         }`}
                       >
@@ -134,11 +171,6 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
                     );
                   })}
                 </div>
-                {isBuyingSelected && (
-                  <p className="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800 leading-relaxed">
-                    {tx.buyingCategoryNote}
-                  </p>
-                )}
               </div>
             );
           })}

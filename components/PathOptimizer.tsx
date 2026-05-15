@@ -2,10 +2,6 @@
 
 import { useState } from "react";
 import {
-  RadarChart,
-  Radar,
-  PolarGrid,
-  PolarAngleAxis,
   ResponsiveContainer,
   BarChart,
   Bar,
@@ -19,7 +15,6 @@ import {
   ProcurementFeatures,
   optimize,
   OptimizationResult,
-  PATHS,
 } from "@/lib/optimizer";
 import { optimizerT, Lang } from "@/lib/i18n";
 import { formatCompact } from "@/lib/calculations";
@@ -59,8 +54,6 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
     }, 50);
   }
 
-  const inputClass =
-    "w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500";
   const labelClass = "block text-xs font-medium text-gray-600 mb-1";
 
   const sliderLabels = tx.sliderLevels;

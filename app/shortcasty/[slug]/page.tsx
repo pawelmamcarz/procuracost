@@ -85,12 +85,12 @@ export default function EpisodePage({ params }: { params: { slug: string } }) {
           <p className="mt-1 text-xs text-amber-600">
             Zapisz się na powiadomienia, żeby nie przegapić premiery.
           </p>
-          <a
+          <Link
             href="/shortcasty"
             className="mt-4 inline-block rounded-lg bg-blue-600 px-5 py-2 text-sm font-semibold text-white hover:bg-blue-700"
           >
             Zapisz się
-          </a>
+          </Link>
         </div>
       )}
 

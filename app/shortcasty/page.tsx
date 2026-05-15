@@ -127,7 +127,7 @@ export default function ShortcastyPage() {
                 <p className="text-sm font-medium text-gray-700 leading-snug">{ep.title}</p>
                 <p className="mt-0.5 text-xs text-gray-400">{ep.dimension} · {ep.guest}</p>
                 <p className="mt-1.5 text-xs text-gray-500 leading-relaxed italic">
-                  „{ep.recommendation}"
+                  „{ep.recommendation}”
                 </p>
               </div>
               <span className="shrink-0 text-xs text-gray-400 bg-gray-100 border border-gray-200 rounded-full px-2.5 py-0.5">
