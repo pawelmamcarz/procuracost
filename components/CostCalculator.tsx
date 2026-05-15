@@ -130,6 +130,12 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
             const pts = PROCESS_TYPES_BY_CATEGORY[category];
             const categoryLabel = tx.processCategoryLabels[category];
             const categoryStyle = PROCESS_CATEGORY_STYLES[category];
+            const isOperationalSelected =
+              category === "operational" &&
+              pts.includes(inputs.processType as Exclude<ProcessType, "custom">);
+            const isStrategicPzpSelected =
+              category === "strategic_pzp" &&
+              pts.includes(inputs.processType as Exclude<ProcessType, "custom">);
             return (
               <div
                 key={category}
@@ -171,6 +177,16 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
                     );
                   })}
                 </div>
+                {isOperationalSelected && (
+                  <p className="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800 leading-relaxed">
+                    {tx.operationalCategoryNote}
+                  </p>
+                )}
+                {isStrategicPzpSelected && (
+                  <p className="mt-2 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-xs text-blue-800 leading-relaxed">
+                    {tx.strategicPzpCategoryNote}
+                  </p>
+                )}
               </div>
             );
           })}
