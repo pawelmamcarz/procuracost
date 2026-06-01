@@ -28,6 +28,7 @@ import {
   calculateCosts,
   MatrixCell,
   TechLevelId,
+  getDimensionMultiplierDetails,
 } from "@/lib/calculations";
 import { Scenario, SCENARIOS } from "@/lib/scenarios";
 import { comparisonT, Lang } from "@/lib/i18n";
@@ -68,6 +69,15 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
 
   // Steps for explanation table
   const steps = getSteps(inputs.processType, inputs.customSteps);
+
+  // Display selected dimensions (Direct/Indirect + Upstream/Downstream) if provided
+  const spendLabel = inputs.spendType 
+    ? (inputs.spendType === "direct" ? (lang === "en" ? "Direct" : "Direct") : (lang === "en" ? "Indirect" : "Indirect"))
+    : null;
+
+  const phaseLabel = inputs.processPhase
+    ? (inputs.processPhase === "upstream" ? (lang === "en" ? "Upstream" : "Upstream") : (lang === "en" ? "Downstream" : "Downstream"))
+    : null;
 
   // 2D matrix
   const matrix = calculateMatrix(inputs);
@@ -158,6 +168,45 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
             {tx.flexibleLabel}: <strong>{flexibleDays}</strong> {lang === "en" ? "days" : "dni"}
           </span>
         </div>
+
+        {/* New dimensions display (Direct/Indirect + Upstream/Downstream) */}
+        {(spendLabel || phaseLabel) && (
+          <div className="mt-3 flex flex-wrap gap-2 text-xs">
+            {spendLabel && (
+              <span className="rounded-full bg-white/20 px-3 py-0.5">
+                {lang === "en" ? "Spend" : "Wydatki"}: <strong>{spendLabel}</strong>
+              </span>
+            )}
+            {phaseLabel && (
+              <span className="rounded-full bg-white/20 px-3 py-0.5">
+                {lang === "en" ? "Phase" : "Faza"}: <strong>{phaseLabel}</strong>
+              </span>
+            )}
+            <span className="text-white/60 italic ml-1">• model adjusted for context</span>
+          </div>
+        )}
+
+        {/* Explanation of dimension-based adjustments (new) */}
+        {(inputs.spendType || inputs.processPhase) && (
+          <div className="mt-4 rounded-xl border border-white/20 bg-white/5 p-3 text-xs text-white/90">
+            <p className="font-medium mb-1">Model adjustments applied:</p>
+            <ul className="space-y-0.5 pl-1 text-white/80">
+              {inputs.spendType === "direct" && (
+                <li>• Higher TCO optimization potential (+35%)</li>
+              )}
+              {inputs.processPhase === "upstream" && (
+                <li>• Higher bypass risk in rigid scenarios (+25%)</li>
+              )}
+              {inputs.processPhase === "downstream" && (
+                <li>• Slightly lower productivity impact from rigidity</li>
+              )}
+              {inputs.spendType === "direct" && inputs.processPhase === "upstream" && (
+                <li>• Strongest combined effect (strategic Direct spend)</li>
+              )}
+            </ul>
+          </div>
+        )}
+
         {/* Bypass probability indicator */}
         <div className="mt-4 flex items-start gap-3 rounded-xl bg-white/10 p-3">
           <div className="flex-1">
@@ -302,9 +351,32 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
         </div>
       </div>
 
-      {/* 2D matrix */}
+      {/* 2D matrix — visibly context-adjusted (pogłębienie) */}
       <div>
-        <h3 className="mb-3 text-sm font-semibold text-gray-700">{tx.matrixTitle}</h3>
+        <h3 className="mb-1.5 text-sm font-semibold text-gray-700">{tx.matrixTitle}</h3>
+        {(inputs.spendType || inputs.processPhase) ? (
+          <div className="mb-2 rounded-md bg-blue-50 border border-blue-100 px-2.5 py-1.5 text-[11px] text-blue-700">
+            <span className="font-medium">
+              {lang === "en" ? "Matrix reflects current context:" : "Macierz uwzględnia bieżący kontekst:"}
+            </span>{" "}
+            <span className="font-semibold">
+              {inputs.spendType === "direct" ? (lang === "en" ? "Direct spend" : "Wydatki Direct") : inputs.spendType === "indirect" ? (lang === "en" ? "Indirect spend" : "Wydatki Indirect") : ""}
+              {inputs.spendType && inputs.processPhase ? " × " : ""}
+              {inputs.processPhase === "upstream" ? (lang === "en" ? "Upstream (strategic)" : "Upstream (strategiczny)") : inputs.processPhase === "downstream" ? (lang === "en" ? "Downstream (operational)" : "Downstream (operacyjny)") : ""}
+            </span>
+            <span className="ml-1 text-blue-600/70">
+              — {lang === "en"
+                ? "higher senior involvement, elevated TCO leverage and risk premia in Upstream+Direct; lighter overhead in Downstream+Indirect."
+                : "wyższa rola kadry zarządzającej, większa dźwignia TCO i premie ryzyka w Upstream+Direct; mniejsze narzuty w Downstream+Indirect."}
+            </span>
+          </div>
+        ) : (
+          <p className="mb-2 text-[10px] text-gray-500">
+            {lang === "en"
+              ? "Matrix shows all technology × process mode combinations for the selected procurement type."
+              : "Macierz pokazuje wszystkie kombinacje technologii × trybu procesu dla wybranego typu zakupu."}
+          </p>
+        )}
         <div className="overflow-x-auto rounded-xl border border-gray-100">
           <table className="w-full text-xs">
             <thead>
@@ -358,10 +430,31 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
         </div>
         <p className="mt-1.5 text-xs text-gray-400">
           {lang === "en"
-            ? "Color gradient: green = lowest cost, red = highest. Row highlighted = current selection."
-            : "Gradient kolorów: zielony = najniższy koszt, czerwony = najwyższy. Wiersz podświetlony = aktualne ustawienie."}
+            ? "Color gradient: green = lowest cost, red = highest. Row highlighted = current selection. Numbers already incorporate Spend Type × Process Phase effects."
+            : "Gradient kolorów: zielony = najniższy koszt, czerwony = najwyższy. Wiersz podświetlony = aktualne ustawienie. Wartości uwzględniają efekty Spend Type × Process Phase."}
         </p>
       </div>
+
+      {/* Live numeric context multipliers (pogłębienie — visible without PDF) */}
+      {(inputs.spendType || inputs.processPhase) && (
+        <div className="mt-3 rounded-lg border border-blue-100 bg-blue-50/60 px-3 py-2 text-[11px]">
+          <div className="mb-1 font-medium text-blue-800">
+            {lang === "en" ? "Applied context multipliers" : "Zastosowane mnożniki kontekstu"}
+          </div>
+          <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-blue-700 tabular-nums">
+            {getDimensionMultiplierDetails(inputs.spendType, inputs.processPhase).map((d) => (
+              <span key={d.key}>
+                {lang === "en" ? d.labelEn : d.label}: <span className="font-semibold">{d.value.toFixed(2)}x</span>
+              </span>
+            ))}
+          </div>
+          <div className="mt-1 text-[10px] text-blue-600/70">
+            {lang === "en"
+              ? "These factors directly scale TCO opportunity cost, delay penalty, renegotiation exposure, staff hours intensity and coordination overhead in the calculations above."
+              : "Te czynniki skalują bezpośrednio koszt alternatywny TCO, karę za opóźnienie, ekspozycję na renegocjacje, intensywność godzin zespołu i narzut koordynacyjny w powyższych wyliczeniach."}
+          </div>
+        </div>
+      )}
 
       {/* Stacked bar chart */}
       <div>

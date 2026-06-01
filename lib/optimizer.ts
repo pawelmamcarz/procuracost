@@ -16,6 +16,10 @@ export interface ProcurementFeatures {
   supplyRisk: number;          // 1–5: 1=commoditized, 5=single source
   strategicImportance: number; // 1–5
   marketMaturity: number;      // 1–5: 1=new market, 5=mature commodity
+
+  // New contextual dimensions (aligned with cost model)
+  spendType?: "direct" | "indirect";
+  processPhase?: "upstream" | "downstream";
 }
 
 export type PathId =
@@ -256,7 +260,11 @@ function lcg(seed: number): () => number {
 // Score a single path from features (continuous score 0–100)
 function scorePath(path: PathId, f: ProcurementFeatures, weights: number[]): number {
   const v = f.contractValue / 1_000_000; // normalize to millions
-  const [w0, w1, w2, w3, w4, w5, w6, w7, w8] = weights;
+  const [w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10] = weights;
+
+  const isDirect = f.spendType === "direct";
+  const isUpstream = f.processPhase === "upstream";
+  const isDownstream = f.processPhase === "downstream";
 
   switch (path) {
     case "przetarg_otwarty":
@@ -283,7 +291,11 @@ function scorePath(path: PathId, f: ProcurementFeatures, weights: number[]): num
         w1 * (f.innovationRequired ? 1 : 0) * 25 +
         w2 * (f.isPublicSector ? 1 : 0) * 15 +
         w3 * Math.min(v / 3, 1) * 15 +
-        w4 * (f.marketMaturity <= 2 ? 1 : 0.3) * 15
+        w4 * (f.marketMaturity <= 2 ? 1 : 0.3) * 15 +
+        // Deepened dimension effects: dialog/competitive negotiation is the natural fit
+        // for complex, high-stakes Direct + Upstream sourcing where relationship and risk allocation matter.
+        w9 * (isUpstream ? 1.35 : 0.65) * 14 +
+        w10 * (isDirect && isUpstream ? 1.6 : isDirect ? 1.1 : 0.7) * 12
       );
 
     case "negocjacje":
@@ -292,7 +304,12 @@ function scorePath(path: PathId, f: ProcurementFeatures, weights: number[]): num
         w1 * (f.supplierCount <= 4 ? 1 : 2 / f.supplierCount) * 20 +
         w2 * (!f.isPublicSector ? 1 : 0.4) * 20 +
         w3 * (f.urgencyDays < 90 ? (90 - f.urgencyDays) / 90 : 0) * 20 +
-        w4 * (f.supplyRisk >= 3 ? f.supplyRisk / 5 : 0) * 15
+        w4 * (f.supplyRisk >= 3 ? f.supplyRisk / 5 : 0) * 15 +
+        // New dimensions - very strong and realistic impact (pogłębienie modelu)
+        // Direct + Upstream → bardzo silna preferencja dla elastycznych, zaawansowanych ścieżek (dialog, negocjacje)
+        // Downstream → większa tolerancja dla prostszych, operacyjnych ścieżek
+        w9 * (isUpstream && isDirect ? 1.8 : 0.4) * 25 +
+        w10 * (isDownstream ? 0.45 : 1.25) * 15
       );
 
     case "agile":
@@ -300,7 +317,10 @@ function scorePath(path: PathId, f: ProcurementFeatures, weights: number[]): num
         w0 * (f.innovationRequired ? 1 : 0.3) * 25 +
         w1 * (f.urgencyDays < 60 ? (60 - f.urgencyDays) / 60 : 0) * 30 +
         w2 * (!f.isPublicSector ? 1 : 0.2) * 25 +
-        w3 * (f.complexity >= 3 ? f.complexity / 5 : 0) * 20
+        w3 * (f.complexity >= 3 ? f.complexity / 5 : 0) * 20 +
+        // Downstream + Indirect favors faster, lighter execution paths
+        w9 * (isDownstream ? 1.25 : 0.85) * 8 +
+        w10 * (isDirect ? 0.9 : 1.15) * 6
       );
 
     case "bezposrednie":
@@ -308,18 +328,21 @@ function scorePath(path: PathId, f: ProcurementFeatures, weights: number[]): num
         w0 * (f.urgencyDays < 21 ? (21 - f.urgencyDays) / 21 : 0) * 35 +
         w1 * (f.supplyRisk >= 5 ? 1 : 0) * 30 +
         w2 * (f.contractValue < 130_000 ? 1 : 0) * 20 +
-        w3 * (!f.isPublicSector ? 0.5 : 0) * 15
+        w3 * (!f.isPublicSector ? 0.5 : 0) * 15 +
+        // Direct + Upstream almost never fits single-source without justification; Downstream+Indirect often does
+        w9 * (isDirect && isUpstream ? 0.25 : isDownstream ? 1.4 : 1.0) * 10 +
+        w10 * (isDownstream && !isDirect ? 1.3 : 0.9) * 6
       );
   }
 }
 
 // Generate one tree's weight vector (random feature subset weighting)
 function treeWeights(rand: () => number): number[] {
-  // 9 weights, randomly 0 or 1 (feature subset), then normalized
-  const active = Array.from({ length: 9 }, () => (rand() > 0.4 ? 1 : 0));
+  // 11 weights now (added spendType + processPhase)
+  const active = Array.from({ length: 11 }, () => (rand() > 0.4 ? 1 : 0));
   // ensure at least 3 active
   while (active.filter(Boolean).length < 3) {
-    active[Math.floor(rand() * 9)] = 1;
+    active[Math.floor(rand() * 11)] = 1;
   }
   // scale with random importance
   return active.map((a) => (a ? 0.5 + rand() * 0.5 : 0));
@@ -358,6 +381,8 @@ const FEATURE_LABELS_PL: Record<keyof ProcurementFeatures, string> = {
   supplyRisk: "Ryzyko podaży",
   strategicImportance: "Ważność strategiczna",
   marketMaturity: "Dojrzałość rynku",
+  spendType: "Rodzaj wydatku (Direct/Indirect)",
+  processPhase: "Faza procesu (Upstream/Downstream)",
 };
 
 const FEATURE_LABELS_EN: Record<keyof ProcurementFeatures, string> = {
@@ -370,6 +395,8 @@ const FEATURE_LABELS_EN: Record<keyof ProcurementFeatures, string> = {
   supplyRisk: "Supply risk",
   strategicImportance: "Strategic importance",
   marketMaturity: "Market maturity",
+  spendType: "Spend type (Direct/Indirect)",
+  processPhase: "Process phase (Upstream/Downstream)",
 };
 
 const N_TREES = 30;

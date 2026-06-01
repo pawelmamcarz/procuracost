@@ -34,6 +34,8 @@ const defaultFeatures: ProcurementFeatures = {
   supplyRisk: 2,
   strategicImportance: 3,
   marketMaturity: 3,
+  spendType: "indirect",
+  processPhase: "upstream",
 };
 
 function formatPLNShort(v: number) {
@@ -194,6 +196,36 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
           </label>
         </div>
 
+        {/* New contextual dimensions */}
+        <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <label className={labelClass}>
+              {lang === "en" ? "Spend Type" : "Rodzaj wydatku"}
+            </label>
+            <select
+              value={features.spendType || "indirect"}
+              onChange={(e) => handleChange("spendType", e.target.value as any)}
+              className={inputClass}
+            >
+              <option value="direct">{lang === "en" ? "Direct (production)" : "Direct (produkcyjny)"}</option>
+              <option value="indirect">{lang === "en" ? "Indirect (support)" : "Indirect (wspierający)"}</option>
+            </select>
+          </div>
+          <div>
+            <label className={labelClass}>
+              {lang === "en" ? "Process Phase" : "Faza procesu"}
+            </label>
+            <select
+              value={features.processPhase || "upstream"}
+              onChange={(e) => handleChange("processPhase", e.target.value as any)}
+              className={inputClass}
+            >
+              <option value="upstream">{lang === "en" ? "Upstream (strategic)" : "Upstream (strategiczny)"}</option>
+              <option value="downstream">{lang === "en" ? "Downstream (operational)" : "Downstream (operacyjny)"}</option>
+            </select>
+          </div>
+        </div>
+
         <button
           onClick={handleOptimize}
           className="mt-6 w-full rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white hover:bg-blue-700"
@@ -241,6 +273,35 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
                 </p>
               </div>
             </div>
+
+            {/* Show applied dimensions + deepened explanation */}
+            {(features.spendType || features.processPhase) && (
+              <div className="mt-3 rounded bg-white/10 px-2.5 py-2 text-xs">
+                <div className="font-medium opacity-90">
+                  {lang === "en" ? "Scoring context:" : "Kontekst scoringu:"}{" "}
+                  <span className="font-semibold">
+                    {features.spendType === "direct" ? (lang === "en" ? "Direct" : "Direct") : features.spendType === "indirect" ? (lang === "en" ? "Indirect" : "Indirect") : "—"} ×{" "}
+                    {features.processPhase === "upstream" ? (lang === "en" ? "Upstream (strategic)" : "Upstream (strategiczny)") : features.processPhase === "downstream" ? (lang === "en" ? "Downstream (operational)" : "Downstream (operacyjny)") : "—"}
+                  </span>
+                </div>
+                <div className="mt-1 text-[10px] opacity-75 leading-snug">
+                  {features.spendType === "direct" && features.processPhase === "upstream" && (lang === "en"
+                    ? "Strong preference for flexible strategic paths (competitive dialogue / negotiations) due to high TCO leverage, relationship intensity and risk allocation needs."
+                    : "Bardzo silna preferencja dla elastycznych ścieżek strategicznych (dialog konkurencyjny / negocjacje) — wysoka dźwignia TCO, intensywność relacji i alokacja ryzyka.")}
+                  {features.spendType === "indirect" && features.processPhase === "downstream" && (lang === "en"
+                    ? "Higher tolerance for simple, transactional execution paths — lower coordination overhead and limited strategic upside from complex procedures."
+                    : "Wyższa tolerancja dla prostych, transakcyjnych ścieżek wykonawczych — mniejsze narzuty koordynacyjne i ograniczona wartość strategiczna złożonych procedur.")}
+                  {!(features.spendType === "direct" && features.processPhase === "upstream") && !(features.spendType === "indirect" && features.processPhase === "downstream") && (lang === "en"
+                    ? "Context shifts the relative attractiveness of negotiation-heavy vs. execution-heavy paths and the weight of senior stakeholder time."
+                    : "Kontekst zmienia względną atrakcyjność ścieżek negocjacyjnych vs. wykonawczych oraz wagę czasu kadry wyższej.")}
+                </div>
+                <div className="mt-1.5 text-[10px] opacity-60">
+                  {lang === "en" 
+                    ? "In scoring: negotiation paths receive up to +1.8× weight, dialogue +1.6× when Direct+Upstream; direct award and simple execution paths heavily down-weighted."
+                    : "W scoringu: ścieżki negocjacyjne dostają do +1.8× wagi, dialog +1.6× przy Direct+Upstream; bezpośredni wybór i proste ścieżki wykonawcze mocno obniżone."}
+                </div>
+              </div>
+            )}
 
             {/* PZP note */}
             <div className="mt-4 rounded-xl bg-white/10 p-3 text-sm">

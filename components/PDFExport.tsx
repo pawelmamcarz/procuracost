@@ -1,212 +1,339 @@
 "use client";
 
 import { useState } from "react";
-import { ComparisonResult, formatPLN } from "@/lib/calculations";
+import jsPDF from "jspdf";
+import { ComparisonResult, formatPLN, getDimensionMultipliers, getDimensionMultiplierDetails } from "@/lib/calculations";
 import { Scenario } from "@/lib/scenarios";
+import { comparisonT } from "@/lib/i18n";
 
 interface Props {
   result: ComparisonResult;
   scenario: Scenario;
   lang?: "pl" | "en";
+  spendType?: "direct" | "indirect";
+  processPhase?: "upstream" | "downstream";
 }
 
-const COST_LABELS_PL: Record<string, string> = {
-  timeCost: "Koszt czasu",
-  adminCost: "Koszty administracyjne",
-  opportunityCost: "Utracone okazje",
-  productivityCost: "Spadek produktywności dostawcy",
-  renegotiationCost: "Koszty renegocjacji",
-  tcoCost: "Utracone oszczędności TCO",
-  bypassCost: "Koszty obejść tunelu",
-};
+export default function PDFExport({ result, scenario, lang = "pl", spendType, processPhase }: Props) {
+  const [generating, setGenerating] = useState<"pl" | "en" | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-const COST_LABELS_EN: Record<string, string> = {
-  timeCost: "Time Cost",
-  adminCost: "Administrative Overhead",
-  opportunityCost: "Opportunity Cost",
-  productivityCost: "Supplier Productivity Drag",
-  renegotiationCost: "Renegotiation Cost",
-  tcoCost: "Foregone TCO Savings",
-  bypassCost: "Bypass Risk Cost",
-};
+  async function generatePDF(exportLang: "pl" | "en") {
+    setGenerating(exportLang);
+    setError(null);
 
-export default function PDFExport({ result, scenario, lang = "pl" }: Props) {
-  const [generating, setGenerating] = useState(false);
+    try {
+      const t = comparisonT[exportLang];
+      const labels = t.costLabels;
 
-  function openPrintView(exportLang: "pl" | "en") {
-    const labels = exportLang === "pl" ? COST_LABELS_PL : COST_LABELS_EN;
+      // Note: spendType and processPhase are closed over from the component scope
+      // (passed via props when the component renders the generate function)
+
+    const doc = new jsPDF();
+    const margin = 18;
+    let y = 18;
+    let pageNumber = 1;
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
     const now = new Date().toLocaleDateString(exportLang === "pl" ? "pl-PL" : "en-GB", {
       year: "numeric",
       month: "long",
       day: "numeric",
     });
 
-    const rows = (Object.keys(labels) as Array<keyof typeof result.rigid>)
-      .map((key) => {
-        const r = result.rigid[key as keyof typeof result.rigid] as number;
-        const f = result.flexible[key as keyof typeof result.flexible] as number;
-        const diff = r - f;
-        return `
-          <tr>
-            <td>${labels[key]}</td>
-            <td class="red">${formatPLN(r)}</td>
-            <td class="green">${formatPLN(f)}</td>
-            <td class="${diff > 0 ? "red" : "green"}">${diff > 0 ? "+" : ""}${formatPLN(diff)}</td>
-          </tr>`;
-      })
-      .join("");
-
-    const title =
-      exportLang === "pl"
-        ? "Raport: Koszty utracone procedur zakupowych"
-        : "Report: Hidden Cost of Procurement Procedures";
-
-    const html = `<!DOCTYPE html>
-<html lang="${exportLang}">
-<head>
-  <meta charset="UTF-8">
-  <title>ProcuraCost — ${scenario.name}</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 11px; color: #1f2937; padding: 32px 40px; }
-    .header { border-bottom: 2px solid #1d4ed8; padding-bottom: 16px; margin-bottom: 24px; }
-    .header h1 { font-size: 18px; font-weight: 700; color: #1d4ed8; }
-    .header p { color: #6b7280; font-size: 10px; margin-top: 4px; }
-    .headline { background: linear-gradient(135deg, #1d4ed8, #1e40af); color: white; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px; }
-    .headline .label { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
-    .headline .amount { font-size: 28px; font-weight: 700; margin: 4px 0; }
-    .headline .sub { font-size: 12px; opacity: 0.9; }
-    .totals { display: flex; gap: 16px; margin-bottom: 20px; }
-    .total-box { flex: 1; border-radius: 6px; padding: 12px 16px; }
-    .total-box.red-box { background: #fef2f2; border: 1px solid #fecaca; }
-    .total-box.green-box { background: #f0fdf4; border: 1px solid #bbf7d0; }
-    .total-box .label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-    .total-box.red-box .label { color: #dc2626; }
-    .total-box.green-box .label { color: #16a34a; }
-    .total-box .value { font-size: 18px; font-weight: 700; margin-top: 4px; }
-    .total-box.red-box .value { color: #dc2626; }
-    .total-box.green-box .value { color: #16a34a; }
-    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-    th { text-align: left; padding: 8px 10px; background: #f9fafb; font-size: 9px; font-weight: 600; text-transform: uppercase; color: #6b7280; border-bottom: 1px solid #e5e7eb; }
-    td { padding: 8px 10px; border-bottom: 1px solid #f3f4f6; }
-    tfoot td { font-weight: 700; background: #f9fafb; border-top: 1px solid #e5e7eb; }
-    .red { color: #dc2626; }
-    .green { color: #16a34a; }
-    .sources { background: #f9fafb; border-radius: 6px; padding: 12px 16px; }
-    .sources h3 { font-size: 9px; text-transform: uppercase; color: #9ca3af; margin-bottom: 6px; letter-spacing: 1px; }
-    .sources li { margin-bottom: 3px; color: #6b7280; font-size: 9px; }
-    .case-study { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 12px 16px; margin-bottom: 20px; }
-    .case-study h3 { font-size: 10px; font-weight: 700; color: #1d4ed8; margin-bottom: 4px; }
-    .case-study p { color: #374151; font-size: 10px; }
-    .case-study .src { color: #6b7280; font-size: 9px; margin-top: 4px; }
-    .footer { margin-top: 24px; padding-top: 12px; border-top: 1px solid #e5e7eb; color: #9ca3af; font-size: 9px; display: flex; justify-content: space-between; }
-    @media print {
-      body { padding: 20px 28px; }
-      @page { margin: 1cm; }
+    function addPageHeader() {
+      doc.setFillColor(30, 64, 175);
+      doc.rect(0, 0, pageWidth, 8, "F");
+      doc.setTextColor(30, 64, 175);
+      doc.setFontSize(10);
+      doc.text("ProcuraCost", margin, 14);
+      doc.setDrawColor(229, 231, 235);
+      doc.line(margin, 18, pageWidth - margin, 18);
+      y = 24;
     }
-  </style>
-</head>
-<body>
-  <div class="header">
-    <h1>ProcuraCost — ${title}</h1>
-    <p>${exportLang === "pl" ? "Scenariusz" : "Scenario"}: ${scenario.name} · ${exportLang === "pl" ? "Data" : "Date"}: ${now}</p>
-  </div>
 
-  <div class="headline">
-    <div class="label">${exportLang === "pl" ? "Koszt utracony przywiązania do procedur" : "Hidden cost of procedural compliance"}</div>
-    <div class="amount">${formatPLN(result.delta)}</div>
-    <div class="sub">${exportLang === "pl" ? `+${result.deltaPercent.toFixed(1)}% wyższy niż podejście oparte na polityce zakupowej` : `+${result.deltaPercent.toFixed(1)}% higher than policy-based procurement`}</div>
-  </div>
+    function addPageNumber() {
+      doc.setFontSize(8);
+      doc.setTextColor(156, 163, 175);
+      doc.text(`Strona ${pageNumber}`, pageWidth / 2 - 10, pageHeight - 12);
+    }
 
-  <div class="totals">
-    <div class="total-box red-box">
-      <div class="label">${exportLang === "pl" ? "Procedura sztywna" : "Rigid Procedure"}</div>
-      <div class="value">${formatPLN(result.rigid.total)}</div>
-    </div>
-    <div class="total-box green-box">
-      <div class="label">${exportLang === "pl" ? "Polityka zakupowa" : "Procurement Policy"}</div>
-      <div class="value">${formatPLN(result.flexible.total)}</div>
-    </div>
-  </div>
+    function checkNewPage(neededSpace: number) {
+      if (y + neededSpace > pageHeight - 25) {
+        addPageNumber();           // number the page we're leaving
+        doc.addPage();
+        pageNumber++;
+        addPageHeader();
+      }
+    }
 
-  ${
-    scenario.caseStudy
-      ? `<div class="case-study">
-    <h3>${scenario.caseStudy.title}</h3>
-    <p>${scenario.caseStudy.insight}</p>
-    <div class="src">${exportLang === "pl" ? "Źródło" : "Source"}: ${scenario.caseStudy.source}</div>
-  </div>`
-      : ""
-  }
+    // First page header
+    addPageHeader();
+    doc.setFontSize(18);
+    doc.text("ProcuraCost", margin, 14);
+    doc.setFontSize(11);
+    doc.setTextColor(55, 65, 81);
+    doc.text(
+      exportLang === "pl" ? "Raport: Koszty utracone procedur zakupowych" : "Report: Hidden Cost of Procurement Procedures",
+      margin,
+      22
+    );
+    y = 30;
 
-  <table>
-    <thead>
-      <tr>
-        <th>${exportLang === "pl" ? "Wymiar kosztów" : "Cost Dimension"}</th>
-        <th class="red">${exportLang === "pl" ? "Procedura sztywna" : "Rigid Procedure"}</th>
-        <th class="green">${exportLang === "pl" ? "Polityka zakupowa" : "Policy-Based"}</th>
-        <th>${exportLang === "pl" ? "Różnica" : "Difference"}</th>
-      </tr>
-    </thead>
-    <tbody>${rows}</tbody>
-    <tfoot>
-      <tr>
-        <td>${exportLang === "pl" ? "SUMA" : "TOTAL"}</td>
-        <td class="red">${formatPLN(result.rigid.total)}</td>
-        <td class="green">${formatPLN(result.flexible.total)}</td>
-        <td class="red">+${formatPLN(result.delta)}</td>
-      </tr>
-    </tfoot>
-  </table>
+    // Scenario + date
+    doc.setFontSize(9);
+    doc.setTextColor(107, 114, 128);
+    doc.text(`${exportLang === "pl" ? "Scenariusz" : "Scenario"}: ${scenario.name}`, margin, y);
+    doc.text(`${exportLang === "pl" ? "Data" : "Date"}: ${now}`, pageWidth - margin - 55, y);
+    y += 12;
 
-  <div class="sources">
-    <h3>${exportLang === "pl" ? "Źródła naukowe modelu" : "Academic Sources"}</h3>
-    <ul>
-      ${Object.entries(result.sources)
-        .map(([k, v]) => `<li><strong>${labels[k]}:</strong> ${v}</li>`)
-        .join("")}
-    </ul>
-  </div>
+    // Big delta highlight box
+    doc.setFillColor(239, 246, 255); // blue-50
+    doc.roundedRect(margin, y, pageWidth - margin * 2, 24, 4, 4, "F");
 
-  <div class="footer">
-    <span>ProcuraCost · Model oparty na badaniach akademickich</span>
-    <span>${now}</span>
-  </div>
+    doc.setTextColor(30, 64, 175);
+    doc.setFontSize(8);
+    doc.text(exportLang === "pl" ? "Koszt utracony przywiązania do procedur" : "Hidden cost of procedural compliance", margin + 8, y + 7);
 
-  <script>window.onload = () => { window.print(); }</script>
-</body>
-</html>`;
+    doc.setFontSize(20);
+    doc.setTextColor(185, 28, 28); // red-700
+    doc.text(formatPLN(result.delta), margin + 8, y + 18);
 
-    const blob = new Blob([html], { type: "text/html" });
-    const url = URL.createObjectURL(blob);
-    const w = window.open(url, "_blank");
-    if (w) {
-      setTimeout(() => URL.revokeObjectURL(url), 10000);
+    doc.setFontSize(10);
+    doc.setTextColor(55, 65, 81);
+    doc.text(
+      `+${result.deltaPercent.toFixed(1)}% ${t.higherThan}`,
+      pageWidth - margin - 8 - 75,
+      y + 16
+    );
+
+    y += 32;
+
+    checkNewPage(50);
+
+    // Two comparison boxes
+    const boxWidth = (pageWidth - margin * 2 - 6) / 2;
+    const boxHeight = 22;
+
+    // Rigid (Tunnel) box
+    doc.setFillColor(254, 242, 242);
+    doc.roundedRect(margin, y, boxWidth, boxHeight, 3, 3, "F");
+    doc.setTextColor(185, 28, 28);
+    doc.setFontSize(8);
+    doc.text(t.rigidLabel, margin + 6, y + 7);
+    doc.setFontSize(15);
+    doc.text(formatPLN(result.rigid.total), margin + 6, y + 16);
+
+    // Flexible (Field) box
+    doc.setFillColor(240, 253, 244);
+    doc.roundedRect(margin + boxWidth + 6, y, boxWidth, boxHeight, 3, 3, "F");
+    doc.setTextColor(21, 128, 61);
+    doc.setFontSize(8);
+    doc.text(t.flexibleLabel, margin + boxWidth + 12, y + 7);
+    doc.setFontSize(15);
+    doc.text(formatPLN(result.flexible.total), margin + boxWidth + 12, y + 16);
+
+    y += boxHeight + 14;
+
+    // Case study (if present)
+    if (scenario.caseStudy) {
+      doc.setFillColor(239, 246, 255);
+      doc.setDrawColor(191, 219, 254);
+      doc.roundedRect(margin, y, pageWidth - margin * 2, 22, 2, 2, "FD");
+      doc.setTextColor(30, 64, 175);
+      doc.setFontSize(9);
+      doc.text(scenario.caseStudy.title, margin + 6, y + 7);
+      doc.setTextColor(55, 65, 81);
+      doc.setFontSize(8);
+      const insight = scenario.caseStudy.insight.length > 140
+        ? scenario.caseStudy.insight.slice(0, 137) + "…"
+        : scenario.caseStudy.insight;
+      doc.text(insight, margin + 6, y + 13);
+      doc.setTextColor(107, 114, 128);
+      doc.text(`${exportLang === "pl" ? "Źródło" : "Source"}: ${scenario.caseStudy.source}`, margin + 6, y + 19);
+      y += 26;
+    }
+
+    checkNewPage(90);
+
+    // Cost breakdown table header
+    doc.setFillColor(243, 244, 246);
+    doc.rect(margin, y, pageWidth - margin * 2, 7, "F");
+    doc.setTextColor(75, 85, 99);
+    doc.setFontSize(7);
+    doc.text(t.colCostDim.toUpperCase(), margin + 4, y + 5);
+    doc.text(t.rigidLabel.toUpperCase(), margin + 72, y + 5);
+    doc.text(t.flexibleLabel.toUpperCase(), margin + 112, y + 5);
+    doc.text(t.colDiff.toUpperCase(), margin + 155, y + 5);
+
+    y += 8;
+
+    // Table rows
+    const costKeys = Object.keys(labels) as Array<keyof typeof comparisonT.pl.costLabels>;
+
+    costKeys.forEach((key, index) => {
+      const r = result.rigid[key] as number;
+      const f = result.flexible[key] as number;
+      const diff = r - f;
+
+      if (index % 2 === 1) {
+        doc.setFillColor(249, 250, 251);
+        doc.rect(margin, y - 1, pageWidth - margin * 2, 7, "F");
+      }
+
+      doc.setTextColor(55, 65, 81);
+      doc.setFontSize(8);
+      doc.text(labels[key], margin + 4, y + 4);
+
+      doc.text(formatPLN(r), margin + 72, y + 4);
+      doc.text(formatPLN(f), margin + 112, y + 4);
+
+      if (diff > 0) {
+        doc.setTextColor(185, 28, 28);
+        doc.text(`+${formatPLN(diff)}`, margin + 155, y + 4);
+      } else {
+        doc.setTextColor(21, 128, 61);
+        doc.text(formatPLN(diff), margin + 155, y + 4);
+      }
+
+      y += 6.5;
+    });
+
+    // Total row
+    doc.setFillColor(30, 64, 175);
+    doc.rect(margin, y, pageWidth - margin * 2, 8, "F");
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(8);
+    doc.text("TOTAL", margin + 4, y + 5.5);
+    doc.text(formatPLN(result.rigid.total), margin + 72, y + 5.5);
+    doc.text(formatPLN(result.flexible.total), margin + 112, y + 5.5);
+    doc.text(`+${formatPLN(result.delta)}`, margin + 155, y + 5.5);
+
+    y += 16;
+
+    // Model Context Adjustments section — numeric multipliers (deepened)
+    if (spendType || processPhase) {
+      y += 4;
+      const dims = getDimensionMultipliers(spendType, processPhase);
+      const details = getDimensionMultiplierDetails(spendType, processPhase);
+
+      const boxHeight = 38 + Math.max(0, (details.length - 3) * 4);
+      doc.setFillColor(243, 244, 246);
+      doc.rect(margin, y, pageWidth - margin * 2, boxHeight, "F");
+
+      doc.setTextColor(75, 85, 99);
+      doc.setFontSize(7);
+      doc.text(exportLang === "pl" ? "KONTEKST MODELU — ZASTOSOWANE MNOŻNIKI" : "MODEL CONTEXT — APPLIED MULTIPLIERS", margin + 4, y + 5);
+
+      doc.setFontSize(6.5);
+      doc.setTextColor(55, 65, 81);
+      let ctx = exportLang === "pl" ? "Kontekst: " : "Context: ";
+      if (spendType) ctx += (spendType === "direct" ? "Direct (strategiczne)" : "Indirect (wspierające)");
+      if (processPhase) ctx += ` × ${processPhase === "upstream" ? "Upstream (strategiczny)" : "Downstream (operacyjny)"}`;
+      doc.text(ctx, margin + 4, y + 11);
+
+      // Compact numeric table
+      doc.setFontSize(6);
+      let my = y + 17;
+      const col1 = margin + 4;
+      const col2 = margin + 95;
+      const col3 = margin + 145;
+
+      details.slice(0, 6).forEach((d, idx) => {
+        const label = exportLang === "pl" ? d.label : d.labelEn;
+        const val = `${d.value.toFixed(2)}x`;
+        const x = idx % 2 === 0 ? col1 : col2;
+        if (idx % 2 === 0 && idx > 0) my += 4.2;
+        doc.setTextColor(100, 116, 139);
+        doc.text(`• ${label}:`, x, my);
+        doc.setTextColor(30, 64, 175);
+        doc.text(val, x + (idx % 2 === 0 ? 58 : 52), my);
+      });
+
+      doc.setFontSize(5.5);
+      doc.setTextColor(120, 113, 108);
+      doc.text(exportLang === "pl"
+        ? "Mnożniki wynikają z różnic w intensywności pracy kadry, ryzyku i dźwigni TCO. Szczegóły: /model/assumptions"
+        : "Multipliers reflect differences in senior effort, risk exposure and TCO leverage. Details: /model/assumptions",
+        margin + 4, y + boxHeight - 5);
+
+      y += boxHeight + 4;
+    }
+
+    checkNewPage(60);
+
+    // Sources section
+    doc.setTextColor(107, 114, 128);
+    doc.setFontSize(7);
+    doc.text(t.sourcesTitle.toUpperCase(), margin, y);
+    y += 5;
+
+    doc.setFontSize(6.5);
+    doc.setTextColor(75, 85, 99);
+    Object.entries(result.sources).forEach(([key, value]) => {
+      const label = labels[key as keyof typeof labels] || key;
+      const text = `• ${label}: ${value}`;
+      const lines = doc.splitTextToSize(text, pageWidth - margin * 2 - 4);
+      checkNewPage(lines.length * 5 + 8);
+      doc.text(lines, margin, y);
+      y += lines.length * 4.5 + 1;
+    });
+
+    // Add page number to the last page
+    addPageNumber();
+
+    // Save
+    const filename = `ProcuraCost_${scenario.id || "report"}_${exportLang}.pdf`;
+    doc.save(filename);
+
+  } catch (err) {
+      console.error("PDF generation failed:", err);
+      setError(
+        exportLang === "pl"
+          ? "Wystąpił błąd podczas generowania PDF. Spróbuj ponownie."
+          : "An error occurred while generating the PDF. Please try again."
+      );
+    } finally {
+      setGenerating(null);
     }
   }
 
   return (
-    <div className="flex gap-2">
-      <button
-        onClick={() => { setGenerating(true); openPrintView("pl"); setTimeout(() => setGenerating(false), 1000); }}
-        disabled={generating}
-        className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
-      >
-        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.75 19.77m10.56-5.941l-.001 5.94M10.5 8.5h3M10.5 12h3M12 3v1m0 16v1m8.485-9H21M3 12H2.515M6.343 6.343l-.707-.707M17.657 6.343l.707-.707M6.343 17.657l-.707.707M17.657 17.657l.707.707" />
-        </svg>
-        Raport PDF (PL)
-      </button>
-      <button
-        onClick={() => { setGenerating(true); openPrintView("en"); setTimeout(() => setGenerating(false), 1000); }}
-        disabled={generating}
-        className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
-      >
-        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-        </svg>
-        Report PDF (EN)
-      </button>
+    <div className="flex flex-col gap-2">
+      <div className="flex gap-2">
+        <button
+          onClick={() => generatePDF("pl")}
+          disabled={!!generating}
+          aria-busy={generating === "pl"}
+          aria-label={generating === "pl" ? "Generowanie raportu PDF po polsku" : "Pobierz raport PDF po polsku"}
+          className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+        >
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.75 19.77m10.56-5.941l-.001 5.94M10.5 8.5h3M10.5 12h3M12 3v1m0 16v1m8.485-9H21M3 12H2.515M6.343 6.343l-.707-.707M17.657 6.343l.707-.707M6.343 17.657l-.707.707M17.657 17.657l.707.707" />
+          </svg>
+          {generating === "pl" ? "Generowanie..." : "Raport PDF (PL)"}
+        </button>
+
+        <button
+          onClick={() => generatePDF("en")}
+          disabled={!!generating}
+          aria-busy={generating === "en"}
+          aria-label={generating === "en" ? "Generating English PDF report" : "Download English PDF report"}
+          className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+        >
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+          </svg>
+          {generating === "en" ? "Generating..." : "Report PDF (EN)"}
+        </button>
+      </div>
+
+      {error && (
+        <p className="text-xs text-red-600 bg-red-50 border border-red-200 rounded px-3 py-1.5">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

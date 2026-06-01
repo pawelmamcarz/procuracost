@@ -30,6 +30,10 @@ export interface ProcurementInputs {
   renegotiationCost: number;   // PLN — cost if contract requires renegotiation
   bypassAuditExposure: number; // PLN — audit/penalty cost if informal bypass discovered
   customSteps?: ProcessStep[];
+
+  // New dimensions (follow-up from academic review feedback):
+  spendType?: "direct" | "indirect";      // Direct = goes into product/service; Indirect = support spend
+  processPhase?: "upstream" | "downstream"; // Upstream = strategic (sourcing/contracting/SRM); Downstream = operational P2P
 }
 
 export interface CostBreakdown {
@@ -85,8 +89,100 @@ const RIGIDITY_RENEGOTIATION_PREMIUM = 0.077;
 const BASE_RENEGOTIATION_PROBABILITY = 0.22;
 const TCO_SAVINGS_RATE_PER_YEAR = 0.10;
 
+/**
+ * Returns a set of multipliers based on Spend Type (Direct/Indirect) and Process Phase (Upstream/Downstream).
+ * This is the central place for dimension-based model behavior.
+ */
+export function getDimensionMultipliers(
+  spendType?: "direct" | "indirect",
+  processPhase?: "upstream" | "downstream"
+) {
+  let tcoMultiplier = 1;
+  let delayMultiplier = 1;
+  let productivityMultiplier = 1;
+  let bypassMultiplier = 1;
+  let renegotiationMultiplier = 1;
+  let staffIntensityMultiplier = 1;   // how expensive the people involved are
+  let coordinationIntensityMultiplier = 1; // how much coordination overhead
+
+  // Direct spend generally has higher strategic leverage
+  if (spendType === "direct") {
+    tcoMultiplier *= 1.35;
+    bypassMultiplier *= 1.15;
+    renegotiationMultiplier *= 1.15;
+  }
+
+  // Upstream vs Downstream effects
+  if (processPhase === "upstream") {
+    delayMultiplier = 1.4;
+    bypassMultiplier *= 1.25;
+    renegotiationMultiplier *= 1.2;
+    staffIntensityMultiplier = 1.25;      // more senior people involved
+    coordinationIntensityMultiplier = 1.3; // higher meeting & alignment effort
+  } else if (processPhase === "downstream") {
+    delayMultiplier = 0.9;
+    productivityMultiplier = 0.85;
+    coordinationIntensityMultiplier = 0.85; // more standardized, less coordination
+  }
+
+  // Strongest effect: Direct + Upstream (critical strategic sourcing)
+  if (spendType === "direct" && processPhase === "upstream") {
+    tcoMultiplier *= 1.2;
+    renegotiationMultiplier *= 1.15;
+    staffIntensityMultiplier *= 1.15;
+  }
+
+  return {
+    tcoMultiplier,
+    delayMultiplier,
+    productivityMultiplier,
+    bypassMultiplier,
+    renegotiationMultiplier,
+    staffIntensityMultiplier,
+    coordinationIntensityMultiplier,
+  };
+}
+
+/**
+ * Human-readable labels for the dimension multipliers (for UI/PDF/reports).
+ * Returns array of { key, label, labelEn, value } for the non-1.0 factors.
+ */
+export function getDimensionMultiplierDetails(
+  spendType?: "direct" | "indirect",
+  processPhase?: "upstream" | "downstream"
+) {
+  const m = getDimensionMultipliers(spendType, processPhase);
+  const details: Array<{ key: string; label: string; labelEn: string; value: number }> = [];
+
+  if (m.tcoMultiplier !== 1) details.push({ key: "tco", label: "Dźwignia TCO", labelEn: "TCO leverage", value: m.tcoMultiplier });
+  if (m.delayMultiplier !== 1) details.push({ key: "delay", label: "Koszt opóźnienia", labelEn: "Delay penalty", value: m.delayMultiplier });
+  if (m.productivityMultiplier !== 1) details.push({ key: "productivity", label: "Wpływ na produktywność dostawcy", labelEn: "Supplier productivity impact", value: m.productivityMultiplier });
+  if (m.bypassMultiplier !== 1) details.push({ key: "bypass", label: "Ryzyko obejścia", labelEn: "Bypass risk", value: m.bypassMultiplier });
+  if (m.renegotiationMultiplier !== 1) details.push({ key: "renegotiation", label: "Ryzyko renegocjacji", labelEn: "Renegotiation exposure", value: m.renegotiationMultiplier });
+  if (m.staffIntensityMultiplier !== 1) details.push({ key: "staff", label: "Intensywność pracy zespołu", labelEn: "Team effort intensity", value: m.staffIntensityMultiplier });
+  if (m.coordinationIntensityMultiplier !== 1) details.push({ key: "coordination", label: "Intensywność koordynacji", labelEn: "Coordination overhead", value: m.coordinationIntensityMultiplier });
+
+  return details;
+}
+
 const BYPASS_SIGMOID_STEEPNESS = 10;
 const BYPASS_THRESHOLD = 0.5;
+
+/** Share of tool license cost attributed to the flexible (policy-only) path.
+ * A flexible approach typically uses only a fraction of the full sourcing/ERP
+ * platform capabilities compared to a rigid, highly formalized process.
+ */
+const FLEXIBLE_TOOL_UTILIZATION_RATE = 0.3;
+
+/** Reduction factor applied to base renegotiation probability in the flexible path.
+ * Policy-based procurement materially lowers renegotiation risk (Beuve et al.).
+ */
+const FLEXIBLE_RENEGOTIATION_PROBABILITY_FACTOR = 0.7;
+
+/** Scaling factor for bypass probability under flexible/policy-driven approaches.
+ * Even in a "field" model, some residual risk remains (e.g. ethical or documentation boundaries).
+ */
+const FLEXIBLE_BYPASS_PROBABILITY_SCALE = 0.1;
 
 function clamp(value: number, min: number, max: number): number {
   if (!Number.isFinite(value)) return min;
@@ -130,15 +226,17 @@ function buildBreakdown(
 }
 
 export function calculateCosts(inputs: ProcurementInputs): ComparisonResult {
+  // Basic sanitization of inputs (defensive programming)
+  const contractValue = Math.max(0, inputs.contractValue);
+  const tcoHorizonYears = Math.max(0, inputs.tcoHorizonYears);
+  const dailyCostOfInaction = Math.max(0, inputs.dailyCostOfInaction);
+  const renegotiationCost = Math.max(0, inputs.renegotiationCost);
+  const bypassAuditExposure = Math.max(0, inputs.bypassAuditExposure);
+
   const {
-    contractValue,
-    tcoHorizonYears,
     processType,
     techLevel,
     stakeholders,
-    dailyCostOfInaction,
-    renegotiationCost,
-    bypassAuditExposure,
     customSteps,
   } = inputs;
 
@@ -147,54 +245,71 @@ export function calculateCosts(inputs: ProcurementInputs): ComparisonResult {
   const baseRigidity = PROCESS_RIGIDITY[processType];
   const tcoYears = Math.max(0, tcoHorizonYears);
 
-  // Derive days from process step templates × tech multiplier
-  const rigidDays = deriveRigidDays(steps, tech.timeMultiplier);
-  const flexibleDays = deriveFlexibleDays(steps, tech.timeMultiplier);
+  // Dimension multipliers must be calculated early
+  const dims = getDimensionMultipliers(inputs.spendType, inputs.processPhase);
+
+  // Derive days from process step templates × tech multiplier + context
+  const rigidDays = deriveRigidDays(steps, tech.timeMultiplier, inputs.processPhase, inputs.spendType);
+  const flexibleDays = deriveFlexibleDays(steps, tech.timeMultiplier, inputs.processPhase, inputs.spendType);
 
   // Staff costs from step participation matrix
-  const rigidStaffCost = deriveStaffCost(steps, false, stakeholders);
-  const flexibleStaffCost = deriveStaffCost(steps, true, stakeholders);
+  const rigidStaffCost = deriveStaffCost(
+    steps, 
+    false, 
+    stakeholders, 
+    inputs.processPhase, 
+    inputs.spendType
+  ) * dims.staffIntensityMultiplier;
+
+  const flexibleStaffCost = deriveStaffCost(
+    steps, 
+    true, 
+    stakeholders, 
+    inputs.processPhase, 
+    inputs.spendType
+  ) * dims.staffIntensityMultiplier;
 
   // Coordination costs (email chains, phone, manual tracking)
-  const rigidCoordCost = tech.coordCostPerDay * rigidDays;
-  const flexibleCoordCost = tech.coordCostPerDay * flexibleDays;
+  const rigidCoordCost = tech.coordCostPerDay * rigidDays * dims.coordinationIntensityMultiplier;
+  const flexibleCoordCost = tech.coordCostPerDay * flexibleDays * dims.coordinationIntensityMultiplier;
 
-  // Tool license (amortized per process); flexible path uses ~30% of tool capacity
+  // Tool license (amortized per process)
   const rigidToolCost = tech.toolCostPerProcess;
-  const flexibleToolCost = tech.toolCostPerProcess * 0.3;
+  const flexibleToolCost = tech.toolCostPerProcess * FLEXIBLE_TOOL_UTILIZATION_RATE;
 
   // Opportunity cost: price premium + deployment delay
   const rigidPricePremium = contractValue * RIGIDITY_PRICE_PREMIUM;
+
   const delayDays = Math.max(0, rigidDays - flexibleDays);
-  const rigidDelayCost = delayDays * dailyCostOfInaction;
+  const rigidDelayCost = delayDays * dailyCostOfInaction * dims.delayMultiplier;
+
   const rigidOpportunityCost = rigidPricePremium + rigidDelayCost;
   const flexibleOpportunityCost = 0;
 
-  // Productivity cost: rigid lowest-price selection → supplier productivity drag
-  // Scaled by process rigidity (pzp_eu=0.95 → near-full loss, policy_only=0.15 → minimal)
-  const rigidProductivityCost = contractValue * RIGIDITY_PRODUCTIVITY_LOSS * baseRigidity;
-  const flexibleProductivityCost = contractValue * RIGIDITY_PRODUCTIVITY_LOSS * PROCESS_RIGIDITY["policy_only"];
+  // Productivity cost
+  const rigidProductivityCost = contractValue * RIGIDITY_PRODUCTIVITY_LOSS * baseRigidity * dims.productivityMultiplier;
+  const flexibleProductivityCost = contractValue * RIGIDITY_PRODUCTIVITY_LOSS * PROCESS_RIGIDITY["policy_only"] * dims.productivityMultiplier;
 
-  // Renegotiation cost — clamped to valid probability range
+  // Renegotiation
   const rigidRenegotiationProb = clamp(
-    BASE_RENEGOTIATION_PROBABILITY + RIGIDITY_RENEGOTIATION_PREMIUM,
+    BASE_RENEGOTIATION_PROBABILITY + RIGIDITY_RENEGOTIATION_PREMIUM * dims.renegotiationMultiplier,
     0, 1,
   );
   const flexibleRenegotiationProb = clamp(
-    BASE_RENEGOTIATION_PROBABILITY * 0.7,
+    BASE_RENEGOTIATION_PROBABILITY * FLEXIBLE_RENEGOTIATION_PROBABILITY_FACTOR,
     0, 1,
   );
   const rigidRenegotiationExpected = rigidRenegotiationProb * renegotiationCost;
   const flexibleRenegotiationExpected = flexibleRenegotiationProb * renegotiationCost;
 
-  // TCO foregone savings — tied to process rigidity, guarded against negative horizon
-  const rigidTCOForgone = contractValue * TCO_SAVINGS_RATE_PER_YEAR * tcoYears * baseRigidity;
-  const flexibleTCOForgone = contractValue * TCO_SAVINGS_RATE_PER_YEAR * tcoYears * PROCESS_RIGIDITY["policy_only"];
+  // TCO foregone savings
+  const rigidTCOForgone = contractValue * TCO_SAVINGS_RATE_PER_YEAR * tcoYears * baseRigidity * dims.tcoMultiplier;
+  const flexibleTCOForgone = contractValue * TCO_SAVINGS_RATE_PER_YEAR * tcoYears * PROCESS_RIGIDITY["policy_only"] * dims.tcoMultiplier;
 
-  // Bypass probability: base rigidity adjusted by tech level
-  const effectiveRigidity = clamp(baseRigidity * tech.bypassProbMultiplier, 0, 1);
+  // Bypass probability
+  const effectiveRigidity = clamp(baseRigidity * tech.bypassProbMultiplier * dims.bypassMultiplier, 0, 1);
   const pBypassRigid = bypassProbability(effectiveRigidity);
-  const pBypassFlexible = tech.policyRigidityIndex * 0.1;
+  const pBypassFlexible = tech.policyRigidityIndex * FLEXIBLE_BYPASS_PROBABILITY_SCALE;
   const rigidBypassCost = pBypassRigid * bypassAuditExposure;
   const flexibleBypassCost = pBypassFlexible * bypassAuditExposure;
 
@@ -250,7 +365,7 @@ export function calculateMatrix(inputs: ProcurementInputs): MatrixCell[] {
       processMode: "flexible",
       totalCost: result.flexible.total,
       days: result.flexibleDays,
-      bypassProbability: result.bypassProbability * 0.1,
+      bypassProbability: result.bypassProbability * FLEXIBLE_BYPASS_PROBABILITY_SCALE,
     });
   }
 
