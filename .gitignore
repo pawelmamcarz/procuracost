@@ -39,3 +39,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# iCloud Drive / multi-machine sync safety
+*.icloud
+.nosync
+**/.DS_Store
+# Large or frequently changing folders that shouldn't travel through iCloud
+.turbo/
+*.log
+playwright-report/
+test-results/
