@@ -326,73 +326,135 @@ The policy implication is tractable: organizations should invest in distinguishi
 
 ## 8. Next Steps for Paper Development and Empirical Agenda (June–December 2026)
 
-This section outlines the concrete next steps required to move from the current demonstration tool and working paper draft to a submission-ready research article and a credible empirical validation program. These steps directly address feedback received from academic reviewers (particularly the emphasis on methodology, parameter traceability, and empirical identification strategy).
+This section provides a detailed, actionable expansion of the work required to transform the current demonstration tool and working paper into a submission-ready research article and a credible empirical program. The steps below are designed to directly address typical reviewer concerns around model transparency, parameter traceability, theoretical contribution, and identification strategy.
 
 ### 8.1 Theoretical and Modeling Refinements (June–July 2026)
 
-**Priority 1 – Formal Specification**
-- Write a complete mathematical appendix specifying all five cost dimensions, their functional forms, and the integration of the Direct/Indirect × Upstream/Downstream 2×2 framework.
-- Explicitly derive how the two new contextual dimensions modify:
-  - Staff-hour participation matrices (role × step)
-  - Calendar time compression factors
-  - TCO, delay, renegotiation, and bypass multipliers
-- Version the model as v1.1 with frozen parameters for replication purposes.
+#### 8.1.1 Formal Mathematical Specification (Appendix A)
+**Deliverable**: 8–12 page technical appendix titled “Formal Specification of the ProcuraCost Cost Model”.
 
-**Priority 2 – Hypotheses Development**
-- Formulate 5–7 testable propositions that link the 2×2 dimensions to observable outcomes (e.g., "The opportunity cost gap between rigid and flexible paths is significantly larger for Direct × Upstream spend than for Indirect × Downstream spend").
-- Distinguish between propositions that can be tested with existing secondary data versus those requiring primary data collection.
+Concrete tasks:
+- Write closed-form expressions for all five cost components (time cost, coordination cost, opportunity cost, productivity loss, renegotiation exposure, bypass risk, TCO foregone).
+- Explicitly model the effect of the 2×2 framework:
+  - Derive the step-level day multipliers for rigid and flexible paths under each of the four quadrants.
+  - Derive the role-specific staff-hour adjustment matrix (6 roles × key process steps) differentiated by Direct/Indirect and Upstream/Downstream.
+  - Specify the functional form of the dimension multipliers (currently implemented in `getDimensionMultipliers()`).
+- Document all calibration decisions with sensitivity ranges.
+- Version the model as **v1.1** and freeze the parameter set for the duration of the first empirical study.
+
+**App support needed**:
+- Add a “Model v1.1 Specification” export (PDF + JSON) directly from the Assumptions Explorer.
+
+#### 8.1.2 Hypothesis Development
+**Deliverable**: Document “Testable Propositions – ProcuraCost 2×2 Framework” (6–8 pages).
+
+Develop and justify 6–8 propositions, for example:
+- P1: The total opportunity cost gap (rigid vs. flexible) is at least 40% larger for Direct×Upstream spend than for Indirect×Downstream spend, ceteris paribus.
+- P2: Senior management time (executive + manager hours) as a share of total staff cost is significantly higher in Upstream phases than in Downstream phases, with the effect amplified for Direct spend.
+- P3: The probability of informal bypass is positively moderated by the interaction of high rigidity and high strategic importance (Direct×Upstream).
+- Distinguish clearly between propositions testable with secondary/archival data and those requiring primary data collection.
 
 ### 8.2 Empirical Instruments and Pilot Design (July–September 2026)
 
-**Priority 1 – Data Collection Tools**
-- Design a structured survey instrument that directly elicits the parameters required by the ProcuraCost model (time allocations by role and step, perceived delay costs, renegotiation frequency, bypass behavior).
-- Develop a semi-structured interview protocol for procurement leaders and CFOs focused on the behavioral mechanisms (compliance theater, normalization of deviance, enforcement fallacy).
-- Create a standardized case study template that maps organizational procurement processes onto the model's five dimensions and 2×2 contextual quadrants.
+#### 8.2.1 Survey Instrument
+**Deliverable**: Validated survey questionnaire (≈35–45 items) + codebook.
 
-**Priority 2 – Pilot Validation**
-- Identify and secure access to 3–5 organizations (mix of public sector, large corporates, and mid-sized firms) for in-depth pilot studies.
-- Run the first two pilots using the current version of ProcuraCost as a structured data collection and sense-making tool.
-- Document the process as a methods appendix ("Using a formal cost model as a research instrument in procurement organizations").
+Required modules:
+- Module A: Procurement process characteristics (use of formal vs. policy-driven paths, typical lead times by category).
+- Module B: Role-level time allocation (hours spent by buyer, lawyer, manager, executive, etc. on different steps).
+- Module C: Perceived costs of delay and renegotiation (direct questions + scenario-based).
+- Module D: Frequency and nature of bypass behavior.
+- Module E: Organizational context (spend mix – % Direct vs Indirect, maturity of digital procurement systems).
+
+Pilot the survey with 15–25 respondents before full launch.
+
+#### 8.2.2 Interview Protocol
+**Deliverable**: Semi-structured interview guide (45–60 min) with procurement leaders, CFOs, and internal auditors.
+
+Core themes:
+- How organizations currently distinguish (or fail to distinguish) policy from procedure.
+- Real examples of high-stakes Direct vs. Indirect and Upstream vs. Downstream decisions.
+- Behavioral drivers of procedural compliance theater.
+- Conditions under which managers would accept more flexibility.
+
+#### 8.2.3 Pilot Case Studies
+**Deliverable**: 3–4 completed pilot cases using a standardized template that directly feeds into ProcuraCost parameters.
+
+Target mix:
+- One large public-sector organization
+- One multinational corporation
+- One mid-sized Polish company
+
+Each pilot should produce:
+- Completed ProcuraCost scenarios for 2–3 representative purchases
+- Qualitative description of actual decision processes
+- Identification of major data gaps for the full study
 
 ### 8.3 Research Infrastructure and Replicability (July–August 2026)
 
-- Finalize and publish a complete **replication package** containing:
-  - All model code with version pinning
-  - Full parameter table with sources and sensitivity ratings
-  - Synthetic datasets that reproduce the four case studies in the paper
-  - Export functionality from the live tool that generates machine-readable scenario files
-- Add a "Researcher Export" mode to ProcuraCost that outputs the complete set of inputs, intermediate calculations, and outputs in a reproducible format (JSON + CSV).
+#### 8.3.1 Replication Package v1.0
+**Deliverable**: Public GitHub release tagged `paper-v1.0` containing:
+- Frozen model code (with exact version of `getDimensionMultipliers`, step templates, etc.)
+- Complete parameter table (Excel + Markdown) with source, type (Empirical/Calibrated/Assumption), sensitivity, and justification for every value used in the paper
+- Synthetic datasets that exactly reproduce the four case studies presented in the paper
+- R/Python scripts to regenerate all tables and figures from the paper
+
+#### 8.3.2 Researcher Export Functionality (in ProcuraCost)
+**Deliverable**: New “Export for Research” button in the calculator and Assumptions Explorer.
+
+Output should include:
+- Full input vector (including chosen spendType and processPhase)
+- All intermediate values (days, staff hours by role, each cost component)
+- Effective multipliers applied
+- Timestamp and model version
+- Option to export as JSON or CSV
+
+This feature turns the live tool into a legitimate data collection instrument.
 
 ### 8.4 Paper Positioning and Writing (August–October 2026)
 
-**Target Journal Shortlist (to be refined)**
-- *Journal of Public Procurement* (Emerald)
-- *Public Administration Review*
-- *Journal of Purchasing and Supply Management*
-- *International Journal of Public Sector Management*
+#### 8.4.1 Journal Targeting
+Recommended order of submission:
+1. *Journal of Public Procurement* (best fit, practitioner-academic audience)
+2. *Journal of Purchasing and Supply Management*
+3. *Public Administration Review* (more ambitious, higher prestige)
 
-**Key Writing Tasks**
-- Expand the literature review to explicitly position the contribution relative to:
-  - Transaction cost economics extensions into public procurement
-  - Behavioral public administration and street-level bureaucracy
-  - Information systems and governance (the "technology as compliance infrastructure" argument)
-- Write a dedicated "Measurement and Operationalization" section that treats ProcuraCost as a measurement instrument.
-- Strengthen the "Contributions to Practice" section with clearer managerial implications and boundary conditions (when rigid procedures may still be justified).
-- Draft a 3–4 page "Research Agenda" companion document suitable for sending to potential supervisors or co-authors.
+For each journal prepare a 1-page positioning statement explaining:
+- Why this paper belongs in that journal
+- How it differs from existing work in that outlet
+
+#### 8.4.2 Core Writing Tasks
+- Write a full “Measurement and Operationalization” section (≈4–5 pages) that treats ProcuraCost as a formal measurement model.
+- Expand the literature review with dedicated subsections on the behavioral mechanisms (especially the five traditions discussed in 6.4).
+- Strengthen the “Boundary Conditions” subsection in the Discussion (when rigid procedures may still be rational).
+- Produce a standalone 4–5 page “Research Agenda for Potential Supervisors / Co-authors” document (separate from the paper).
 
 ### 8.5 Conference and Outreach Plan (September–December 2026)
 
-- Submit to at least two academic conferences in 2026/2027 (e.g. IPSERA, EGPA, Polish Academy of Sciences events, or specialized procurement workshops).
-- Prepare an 8–10 slide academic presentation version of the paper.
-- Develop a one-page "Supervisor Pitch" document summarizing the model, current evidence, validation plan, and requested form of collaboration.
+**Target events 2026/2027**:
+- IPSERA Conference (International Purchasing & Supply Education & Research Association)
+- EGPA (European Group for Public Administration) – Public Procurement track
+- Polish conferences (e.g. Forum Zamówień Publicznych, conferences at SGH or Lazarski)
+- Specialized workshops on behavioral public administration or digital governance
 
-### 8.6 Second Paper Pipeline
+**Materials to prepare**:
+- 10–12 slide academic presentation
+- One-page “Supervisor Pitch” (model + current evidence + validation plan + what collaboration is sought)
+- 2-page extended abstract for conference submissions
 
-The current paper focuses on model development and demonstration. A natural follow-up paper (2027) would report the results of the empirical validation program. Planning for this second paper should begin in parallel, particularly the pre-registration of hypotheses and the design of the identification strategy.
+### 8.6 Second Paper Pipeline (Planning starts July 2026)
+
+**Working title idea**: “From Model to Evidence: An Empirical Test of Opportunity Costs in Rigid vs. Flexible Procurement Using the ProcuraCost Framework”
+
+Key planning activities:
+- Pre-register core hypotheses on OSF or AsPredicted before data collection begins.
+- Design the identification strategy for the main study (difference-in-differences, matching, or multi-level modeling).
+- Define the minimum sample size and power analysis for the primary hypotheses.
+- Outline the structure of Paper 2 so that data collection instruments serve both papers efficiently.
 
 ---
 
-**Status as of May/June 2026**: The core model is implemented, transparently documented, and publicly accessible via the live ProcuraCost tool (including the interactive Assumptions Explorer at `/model/assumptions`). The current working paper draft provides the conceptual framing and initial case evidence. The tasks above represent the critical path from demonstration to publishable, empirically grounded research.
+**Current Status (June 2026)**: The core model (including the 2×2 contextual dimensions) is fully implemented and transparently exposed through the live ProcuraCost tool and the interactive Assumptions Explorer. The working paper provides the conceptual foundation and initial case evidence. The detailed agenda above constitutes the critical path from demonstration tool to a publishable, empirically grounded contribution.
 
 For public sector procurement specifically, the Szucs (2024) finding suggests that mandatory rigid auctions—while achieving price discipline in some contexts—may impose net costs through reduced negotiation quality and increased renegotiation. A policy framework that requires competitive validation without mandating a specific competition format may achieve better outcomes.
 
