@@ -454,7 +454,15 @@ Key planning activities:
 
 ---
 
-**Current Status (June 2026)**: The core model (including the 2×2 contextual dimensions) is fully implemented and transparently exposed through the live ProcuraCost tool and the interactive Assumptions Explorer. The working paper provides the conceptual foundation and initial case evidence. The detailed agenda above constitutes the critical path from demonstration tool to a publishable, empirically grounded contribution.
+**Current Status (June 2026)**: The core model (including the 2×2 contextual dimensions) is fully implemented and transparently exposed through the live ProcuraCost tool and the interactive Assumptions Explorer. The working paper provides the conceptual foundation and initial case evidence.
+
+A detailed, executable 8–10 week plan with week-by-week tasks and deliverables is available in:
+- `docs/RESEARCH_PAPER_ACTION_PLAN.md`
+
+Supporting templates:
+- `docs/research/survey_structure.md`
+- `docs/research/replication_package_spec.md`
+- `docs/research/supervisor_pitch_template.md`
 
 For public sector procurement specifically, the Szucs (2024) finding suggests that mandatory rigid auctions—while achieving price discipline in some contexts—may impose net costs through reduced negotiation quality and increased renegotiation. A policy framework that requires competitive validation without mandating a specific competition format may achieve better outcomes.
 
