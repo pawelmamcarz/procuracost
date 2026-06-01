@@ -40,34 +40,99 @@
 
 ## Module B: Time Allocation by Role and Step (Core Module – Most Important)
 
-**Instruction:** Think about a **typical purchase** in the following two categories. Estimate average hours spent by each role across the main steps of the process.
+**Instruction:** For each of the two categories below, estimate the **average number of hours** spent by each role on the main steps of a typical purchase. Use 0 if a role is not involved.
 
-**Category 1:** Strategic / high-value Direct spend (e.g. production components, critical services, CAPEX > threshold)
+### Category 1: Strategic / High-value Direct Spend
+(Example: production components, critical raw materials, major CAPEX, strategic services)
 
-**Category 2:** Operational / Indirect spend (e.g. office supplies, maintenance services, standard IT)
-
-For each category, respondents fill a matrix:
-
-**Steps (rows):**
+**Steps:**
 - Needs definition & budget approval
-- Specification / tender documentation
-- Supplier identification & market approach
-- Bid evaluation / negotiation
-- Legal / compliance review
-- Approval & contract signing
-- Implementation / onboarding
+- Specification / tender documentation preparation
+- Supplier market research & pre-qualification
+- Bid evaluation / negotiation / competitive dialogue
+- Legal & compliance review
+- Internal approvals & contract signing
+- Supplier onboarding & contract implementation
 
-**Roles (columns):**
+**Roles to rate (hours):**
 - Requestor / Business owner
 - Buyer / Procurement specialist
-- Legal
+- Legal counsel
 - Finance / Controlling
-- Manager (procurement or business)
-- Executive / Board level
+- Procurement or Business Manager
+- Executive / C-level / Board
 
-Respondents enter estimated hours per role per step (or "0" if negligible).
+### Category 2: Operational / Indirect Spend
+(Example: office supplies, maintenance contracts, standard software, facilities services)
 
-This module directly feeds the staff cost component of the model.
+Use the same steps and roles as above.
+
+---
+
+## Module C: Perceived Delay Costs (Sample Questions)
+
+1. For a purchase with a value of approximately **2 million PLN**, what is the rough daily cost to the organization if the purchase is delayed by one month? (open number or bands: <5k / 5–15k / 15–50k / 50–150k / >150k PLN per day)
+
+2. How often do procurement delays cause measurable negative business impact in your organization?  
+   (Never / Rarely / Sometimes / Often / Very often)
+
+3. In which spend categories do you experience the **highest cost of delay**? (select top 3)  
+   - Direct / production materials  
+   - Strategic services / consulting  
+   - CAPEX / investments  
+   - IT systems / digital transformation  
+   - Indirect / support spend  
+   - Other: ____
+
+---
+
+## Module D: Renegotiation Experience (Sample Questions)
+
+1. In the last 3 years, what percentage of contracts above 500,000 PLN required **significant renegotiation or material amendment** after signing?  
+   (0–5% / 6–15% / 16–30% / 31–50% / >50%)
+
+2. What were the most common drivers of renegotiation in your experience? (rank top 3)  
+   - Incomplete or unclear specifications  
+   - Market price changes  
+   - Scope changes requested by the buyer  
+   - Supplier financial or performance issues  
+   - Regulatory or legal changes  
+   - Other: ____
+
+3. Do you observe differences in renegotiation rates between highly formal/rigid tender processes and more flexible, policy-driven approaches?  
+   (Rigid processes have clearly higher / slightly higher / similar / lower renegotiation rates)
+
+---
+
+## Module E: Bypass Behavior (Sample Questions)
+
+1. How frequently do procurement teams in your organization use **informal or accelerated paths** that significantly bypass standard procedures?  
+   (Never / Rarely / Sometimes / Often / Very frequently)
+
+2. In which contexts does bypass happen most often? (use the 2×2 framework)  
+   - Direct + Upstream (strategic sourcing)  
+   - Direct + Downstream (operational buying)  
+   - Indirect + Upstream  
+   - Indirect + Downstream
+
+3. What are the top 3 reasons for using bypass / accelerated paths?  
+   - Time pressure from business stakeholders  
+   - Better commercial outcome possible outside formal process  
+   - Existing strong supplier relationship  
+   - Market opportunity that would be lost  
+   - Formal process too bureaucratic for the value/risk  
+   - Other: ____
+
+4. How visible or documented are these bypass decisions to internal audit / compliance functions?  
+   (Fully documented / Partially visible / Mostly invisible / Completely hidden)
+
+---
+
+## Sample Closing Questions
+
+- Is there anything important about the difference between "following the procedure" and "achieving the best outcome within policy" that we haven't covered?
+- Would you be open to a 30–45 minute follow-up interview? (Yes / No + contact)
+- Consent for anonymized use of responses in academic research (checkbox)
 
 ---
 
