@@ -322,6 +322,78 @@ Our five-dimension cost model demonstrates that this pathology is expensive. Acr
 
 The policy implication is tractable: organizations should invest in distinguishing their procurement policy (governance framework, to be strictly enforced) from their procurement procedures (operational methods, to be contextually selected). This distinction preserves accountability while restoring the optimization space that procedural rigidity eliminates.
 
+---
+
+## 8. Next Steps for Paper Development and Empirical Agenda (June–December 2026)
+
+This section outlines the concrete next steps required to move from the current demonstration tool and working paper draft to a submission-ready research article and a credible empirical validation program. These steps directly address feedback received from academic reviewers (particularly the emphasis on methodology, parameter traceability, and empirical identification strategy).
+
+### 8.1 Theoretical and Modeling Refinements (June–July 2026)
+
+**Priority 1 – Formal Specification**
+- Write a complete mathematical appendix specifying all five cost dimensions, their functional forms, and the integration of the Direct/Indirect × Upstream/Downstream 2×2 framework.
+- Explicitly derive how the two new contextual dimensions modify:
+  - Staff-hour participation matrices (role × step)
+  - Calendar time compression factors
+  - TCO, delay, renegotiation, and bypass multipliers
+- Version the model as v1.1 with frozen parameters for replication purposes.
+
+**Priority 2 – Hypotheses Development**
+- Formulate 5–7 testable propositions that link the 2×2 dimensions to observable outcomes (e.g., "The opportunity cost gap between rigid and flexible paths is significantly larger for Direct × Upstream spend than for Indirect × Downstream spend").
+- Distinguish between propositions that can be tested with existing secondary data versus those requiring primary data collection.
+
+### 8.2 Empirical Instruments and Pilot Design (July–September 2026)
+
+**Priority 1 – Data Collection Tools**
+- Design a structured survey instrument that directly elicits the parameters required by the ProcuraCost model (time allocations by role and step, perceived delay costs, renegotiation frequency, bypass behavior).
+- Develop a semi-structured interview protocol for procurement leaders and CFOs focused on the behavioral mechanisms (compliance theater, normalization of deviance, enforcement fallacy).
+- Create a standardized case study template that maps organizational procurement processes onto the model's five dimensions and 2×2 contextual quadrants.
+
+**Priority 2 – Pilot Validation**
+- Identify and secure access to 3–5 organizations (mix of public sector, large corporates, and mid-sized firms) for in-depth pilot studies.
+- Run the first two pilots using the current version of ProcuraCost as a structured data collection and sense-making tool.
+- Document the process as a methods appendix ("Using a formal cost model as a research instrument in procurement organizations").
+
+### 8.3 Research Infrastructure and Replicability (July–August 2026)
+
+- Finalize and publish a complete **replication package** containing:
+  - All model code with version pinning
+  - Full parameter table with sources and sensitivity ratings
+  - Synthetic datasets that reproduce the four case studies in the paper
+  - Export functionality from the live tool that generates machine-readable scenario files
+- Add a "Researcher Export" mode to ProcuraCost that outputs the complete set of inputs, intermediate calculations, and outputs in a reproducible format (JSON + CSV).
+
+### 8.4 Paper Positioning and Writing (August–October 2026)
+
+**Target Journal Shortlist (to be refined)**
+- *Journal of Public Procurement* (Emerald)
+- *Public Administration Review*
+- *Journal of Purchasing and Supply Management*
+- *International Journal of Public Sector Management*
+
+**Key Writing Tasks**
+- Expand the literature review to explicitly position the contribution relative to:
+  - Transaction cost economics extensions into public procurement
+  - Behavioral public administration and street-level bureaucracy
+  - Information systems and governance (the "technology as compliance infrastructure" argument)
+- Write a dedicated "Measurement and Operationalization" section that treats ProcuraCost as a measurement instrument.
+- Strengthen the "Contributions to Practice" section with clearer managerial implications and boundary conditions (when rigid procedures may still be justified).
+- Draft a 3–4 page "Research Agenda" companion document suitable for sending to potential supervisors or co-authors.
+
+### 8.5 Conference and Outreach Plan (September–December 2026)
+
+- Submit to at least two academic conferences in 2026/2027 (e.g. IPSERA, EGPA, Polish Academy of Sciences events, or specialized procurement workshops).
+- Prepare an 8–10 slide academic presentation version of the paper.
+- Develop a one-page "Supervisor Pitch" document summarizing the model, current evidence, validation plan, and requested form of collaboration.
+
+### 8.6 Second Paper Pipeline
+
+The current paper focuses on model development and demonstration. A natural follow-up paper (2027) would report the results of the empirical validation program. Planning for this second paper should begin in parallel, particularly the pre-registration of hypotheses and the design of the identification strategy.
+
+---
+
+**Status as of May/June 2026**: The core model is implemented, transparently documented, and publicly accessible via the live ProcuraCost tool (including the interactive Assumptions Explorer at `/model/assumptions`). The current working paper draft provides the conceptual framing and initial case evidence. The tasks above represent the critical path from demonstration to publishable, empirically grounded research.
+
 For public sector procurement specifically, the Szucs (2024) finding suggests that mandatory rigid auctions—while achieving price discipline in some contexts—may impose net costs through reduced negotiation quality and increased renegotiation. A policy framework that requires competitive validation without mandating a specific competition format may achieve better outcomes.
 
 ---
