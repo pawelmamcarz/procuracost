@@ -27,8 +27,9 @@ export default function EnCalculatorPage() {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900">Procurement Cost Calculator</h1>
         <p className="mt-1 text-sm text-gray-500">
-          Compare the total costs of a rigid tender procedure against a policy-based flexible approach.
-          Duration and admin costs are derived from the process template and stakeholder rates — not entered manually.
+          Compare total costs across three process classes: strategic procurement, operational
+          procurement and strategic PZP procurement. Duration and admin costs are derived from the
+          process template and stakeholder rates — not entered manually.
         </p>
       </div>
 
