@@ -39,7 +39,7 @@ The cost model is a layered pipeline of pure functions and constants. Changes to
 
 Polish is the default at the root (`app/calculator`, `app/optimizer`, …). English lives under `app/en/` as a **parallel, manually-duplicated subtree** (`app/en/calculator`, …) with its own `app/en/layout.tsx`. There is no locale middleware or dynamic `[lang]` segment — adding or changing a page generally means editing both trees. Language is selected via the NavBar lang switch and the `lang`/`Lang` param threaded into components and i18n lookups.
 
-`app/layout.tsx` (root) and `app/en/layout.tsx` each render `NavBar` directly and inline their own footer/projects bar. **`components/AppShell.tsx` is currently unused** — it's a consolidated shell that was not adopted; the two layouts duplicate its logic instead. If you change nav items or the footer, update both layouts (and ideally reconcile with AppShell).
+Both `app/layout.tsx` (root) and `app/en/layout.tsx` render `NavBar` directly with their own nav items. Note the asymmetry: the **root layout also inlines the footer + projects bar** (and a fuller nav), while `app/en/layout.tsx` renders only `NavBar` + `children` — no footer, no projects bar, and a shorter nav list. **`components/AppShell.tsx` is currently unused** — it's a consolidated shell (NavBar + footer + projects bar, language-aware) that was never adopted; the layouts duplicate parts of its logic instead. If you change nav items, update both layouts; if you change the footer, only the root layout has one today (reconciling all three via AppShell would remove this drift).
 
 ### Components
 
