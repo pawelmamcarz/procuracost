@@ -117,19 +117,32 @@ export const calculatorT = {
   },
 } as const;
 
+// Canonical ∂Φ boundary set (CLAUDE_DESIGN.md) — single source of truth; use verbatim everywhere.
+export const PHI_SET = {
+  pl: "∂Φ = {uprawnienia, konkurencja, etyka, dokumentacja}",
+  en: "∂Φ = {auth, competition, ethics, docs}",
+} as const;
+
 export const comparisonT = {
   pl: {
     costLabels: {
       timeCost: "Koszt czasu (kadra)",
       adminCost: "Koszty admin. (koordynacja + narzędzie)",
       opportunityCost: "Utracone okazje",
-      productivityCost: "Spadek produktywności dostawcy",
+      productivityCost: "Koszt jakości wyboru (dyskrecja/faworytyzm)",
       renegotiationCost: "Renegocjacje",
       tcoCost: "Utracone oszczędności TCO",
       bypassCost: "Koszty obejść tunelu",
     },
-    deltaHeadline: "Koszt utracony przywiązania do procedur",
+    deltaHeadline: "Różnica kosztów: procedura vs polityka zakupowa",
     higherThan: "wyższy niż podejście oparte na polityce zakupowej",
+    lowerThan: "niższy niż podejście oparte na polityce zakupowej (procedura tańsza w tym kontekście)",
+    modelAdjustContext: "model dostosowany do kontekstu",
+    modelAdjustTitle: "Zastosowane korekty modelu:",
+    modelAdjustDirectTco: "Większy potencjał optymalizacji TCO (+35%)",
+    modelAdjustUpstreamBypass: "Wyższe ryzyko obejścia w scenariuszach sztywnych (+25%)",
+    modelAdjustDownstreamProd: "Nieco mniejszy wpływ sztywności na jakość wyboru dostawcy",
+    modelAdjustStrongest: "Najsilniejszy łączny efekt (strategiczny wydatek Direct)",
     bypassLabel: "Prawdopodobieństwo obejścia procedury (Lipsky 1980)",
     bypassNote:
       "Przy tej sztywności kupcy statystycznie obchodzą procedurę nieformalnie (mail/telefon/Excel)",
@@ -178,13 +191,20 @@ export const comparisonT = {
       timeCost: "Time cost (staff)",
       adminCost: "Admin overhead (coordination + tool)",
       opportunityCost: "Opportunity cost",
-      productivityCost: "Supplier productivity drag",
+      productivityCost: "Selection-quality cost (discretion)",
       renegotiationCost: "Renegotiation",
       tcoCost: "Foregone TCO savings",
       bypassCost: "Bypass costs",
     },
-    deltaHeadline: "Hidden cost of procedure lock-in",
+    deltaHeadline: "Cost difference: procedure vs procurement policy",
     higherThan: "higher than the policy-based approach",
+    lowerThan: "lower than the policy-based approach (the procedure is cheaper in this context)",
+    modelAdjustContext: "model adjusted for context",
+    modelAdjustTitle: "Model adjustments applied:",
+    modelAdjustDirectTco: "Higher TCO optimization potential (+35%)",
+    modelAdjustUpstreamBypass: "Higher bypass risk in rigid scenarios (+25%)",
+    modelAdjustDownstreamProd: "Slightly lower selection-quality impact from rigidity",
+    modelAdjustStrongest: "Strongest combined effect (strategic Direct spend)",
     bypassLabel: "Bypass probability (Lipsky 1980)",
     bypassNote:
       "At this rigidity level, buyers statistically work around the procedure informally (email/phone/Excel)",
@@ -246,14 +266,14 @@ export const optimizerT = {
     innovationRequired: "Wymagana innowacyjność",
     findPath: "Znajdź optymalną ścieżkę →",
     recommended: "Rekomendowana ścieżka zakupowa",
-    modelConfidence: "Pewność modelu",
-    treeVotes: "Głosy drzew (z 30)",
+    modelConfidence: "Zgodność modelu",
+    treeVotes: "Zgodne przebiegi (z 30)",
     typicalTime: "Typowy czas",
     pzpNote: "Nota PZP",
-    rankingTitle: "Ranking wszystkich ścieżek (30 drzew decyzyjnych)",
-    importanceTitle: "Ważność cech — co zadecydowało (Random Forest feature importance)",
+    rankingTitle: "Ranking ścieżek (średni wynik, 30 przebiegów wrażliwości)",
+    importanceTitle: "Ważność cech — co decyduje (ablacja)",
     importanceNote:
-      "Częstość z jaką dana cecha była aktywna w drzewie wygrywającym (30 drzew, losowe podzbiory cech).",
+      "Zmiana wyniku rekomendowanej ścieżki po wyzerowaniu danej cechy (ablacja, deterministyczna — bez losowości).",
     whenToUse: "Kiedy stosować",
     risks: "Ryzyka",
     sliderLevels: {
@@ -264,7 +284,7 @@ export const optimizerT = {
       5: "Bardzo wysoki",
     } as Record<number, string>,
     modelNote:
-      "Model: Random Forest (30 drzew, losowe podzbiory 4–7 cech z 9, głosowanie większościowe). Implementacja: deterministyczna z reprodukowalnym ziarnem (LCG seed per tree). Źródło metodyczne: Breiman, L. (2001). Random Forests.",
+      "Model: ważona funkcja oceny (jedna formuła na ścieżkę) — NIE jest to trenowana sieć ML ani prawdziwy las losowy. 30 „przebiegów” to analiza wrażliwości (te same reguły z przeważonymi współczynnikami) pokazująca stabilność rekomendacji, a nie niezależne klasyfikatory. Wagi to założenia modelowe, nie parametry dopasowane do rzeczywistych wyników zamówień. Narzędzie ilustracyjne — niewalidowane na realnych danych zakupowych. Rekomendacje dla sektora publicznego są twardo filtrowane do dopuszczalnych trybów PZP.",
     importanceUnit: "%",
     importance: "Ważność",
     explanationTitle: "Dlaczego ta rekomendacja?",
@@ -287,14 +307,14 @@ export const optimizerT = {
     innovationRequired: "Innovation required",
     findPath: "Find optimal path →",
     recommended: "Recommended procurement path",
-    modelConfidence: "Model confidence",
-    treeVotes: "Tree votes (of 30)",
+    modelConfidence: "Ensemble agreement",
+    treeVotes: "Agreeing runs (of 30)",
     typicalTime: "Typical time",
     pzpNote: "PZP note",
-    rankingTitle: "All paths ranked (30 decision trees)",
-    importanceTitle: "Feature importance — what decided (Random Forest feature importance)",
+    rankingTitle: "All paths ranked (mean score, 30 sensitivity runs)",
+    importanceTitle: "Feature importance — what decides (ablation)",
     importanceNote:
-      "Frequency with which each feature was active in the winning tree (30 trees, random feature subsets).",
+      "Change in the recommended path's score when each feature is neutralized (deterministic ablation — no randomness).",
     whenToUse: "When to use",
     risks: "Risks",
     sliderLevels: {
@@ -305,7 +325,7 @@ export const optimizerT = {
       5: "Very high",
     } as Record<number, string>,
     modelNote:
-      "Model: Random Forest (30 trees, random subsets of 4–7 features from 9, majority vote). Implementation: deterministic with reproducible seed (LCG seed per tree). Methodology: Breiman, L. (2001). Random Forests.",
+      "Model: a weighted scoring function (one formula per path) — NOT a trained ML model or a real random forest. The 30 \"runs\" are a sensitivity sweep (the same rules with reweighted coefficients) that shows how stable the recommendation is, not independent learners. The weights are modeling assumptions, not parameters fitted to real procurement outcomes. Illustrative tool — not validated against real procurement data. Public-sector recommendations are hard-filtered to the lawful PZP procedures.",
     importanceUnit: "%",
     importance: "Importance",
     explanationTitle: "Why this recommendation?",

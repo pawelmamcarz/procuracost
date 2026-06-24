@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import jsPDF from "jspdf";
-import { ComparisonResult, formatPLN, getDimensionMultipliers, getDimensionMultiplierDetails } from "@/lib/calculations";
+import { ComparisonResult, formatPLN, getDimensionMultiplierDetails } from "@/lib/calculations";
 import { Scenario } from "@/lib/scenarios";
 import { comparisonT } from "@/lib/i18n";
 
@@ -84,7 +84,7 @@ export default function PDFExport({ result, scenario, lang = "pl", spendType, pr
     // Scenario + date
     doc.setFontSize(9);
     doc.setTextColor(107, 114, 128);
-    doc.text(`${exportLang === "pl" ? "Scenariusz" : "Scenario"}: ${scenario.name}`, margin, y);
+    doc.text(`${exportLang === "pl" ? "Scenariusz" : "Scenario"}: ${exportLang === "en" ? scenario.nameEn : scenario.name}`, margin, y);
     doc.text(`${exportLang === "pl" ? "Data" : "Date"}: ${now}`, pageWidth - margin - 55, y);
     y += 12;
 
@@ -146,9 +146,10 @@ export default function PDFExport({ result, scenario, lang = "pl", spendType, pr
       doc.text(scenario.caseStudy.title, margin + 6, y + 7);
       doc.setTextColor(55, 65, 81);
       doc.setFontSize(8);
-      const insight = scenario.caseStudy.insight.length > 140
-        ? scenario.caseStudy.insight.slice(0, 137) + "…"
-        : scenario.caseStudy.insight;
+      const caseInsight = exportLang === "en" ? scenario.caseStudy.insightEn : scenario.caseStudy.insight;
+      const insight = caseInsight.length > 140
+        ? caseInsight.slice(0, 137) + "…"
+        : caseInsight;
       doc.text(insight, margin + 6, y + 13);
       doc.setTextColor(107, 114, 128);
       doc.text(`${exportLang === "pl" ? "Źródło" : "Source"}: ${scenario.caseStudy.source}`, margin + 6, y + 19);
@@ -215,7 +216,6 @@ export default function PDFExport({ result, scenario, lang = "pl", spendType, pr
     // Model Context Adjustments section — numeric multipliers (deepened)
     if (spendType || processPhase) {
       y += 4;
-      const dims = getDimensionMultipliers(spendType, processPhase);
       const details = getDimensionMultiplierDetails(spendType, processPhase);
 
       const boxHeight = 38 + Math.max(0, (details.length - 3) * 4);

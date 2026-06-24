@@ -49,12 +49,13 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 500_000,
     },
     caseStudy: {
-      title: "Ryanair Fleet Procurement",
-      source: "IJRAR (2019). Ryanair Strategic Positioning and Fleet Management",
+      title: "Ryanair Fleet Procurement (private-sector example)",
+      source:
+        "Ryanair 2002/2003 Annual Report / SEC Form 20-F (Boeing price concessions)",
       insight:
-        "Ryanair zamawia masowo Boeing 737 po kryzysach (post-9/11: 100 samolotów), osiągając ceny poniżej rynkowych dzięki elastyczności negocjacyjnej — bez sztywnych procedur przetargowych.",
+        "Prywatny przewoźnik: Ryanair zamawiał masowo Boeing 737 po kryzysach (post-9/11), uzyskując znaczne upusty cenowe dzięki elastyczności negocjacyjnej. To efektywność zakupowa sektora prywatnego — nie dowód dotyczący prawa zamówień publicznych.",
       insightEn:
-        "Ryanair bulk-ordered Boeing 737s during crises (post-9/11: 100 aircraft), achieving below-market prices through negotiation flexibility — without rigid tender procedures.",
+        "Private-sector case: Ryanair bulk-ordered Boeing 737s after crises (post-9/11), securing substantial price concessions through negotiation flexibility. This is private-sector purchasing efficiency — not evidence about public-procurement law.",
     },
   },
   {
@@ -81,12 +82,12 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 300_000,
     },
     caseStudy: {
-      title: "Swiss Casinos ERP — Agile Procurement",
-      source: "Skylight Digital. Agile Procurement Playbook — Case Studies",
+      title: "Swiss Casinos ERP — Agile Sourcing (private-sector example)",
+      source: "LAP Alliance / World Procurement Awards 2020",
       insight:
-        "Swiss Casinos wdrożyło system ERP w 4 tygodnie dzięki agile procurement, zamiast standardowych 4–6 miesięcy procedur przetargowych. Oszczędność czasu: ~75%.",
+        "Prywatna firma: Swiss Casinos wybrało dostawcę ERP / przeprowadziło sourcing (od selekcji dostawców do podpisanej umowy) w ~6 tygodni dzięki agile sourcing, zamiast standardowych miesięcy procedur. Dotyczy fazy sourcingu, nie pełnego wdrożenia systemu — i jest to efektywność sektora prywatnego, nie wniosek o prawie zamówień publicznych.",
       insightEn:
-        "Swiss Casinos implemented an ERP system in 4 weeks through agile procurement, instead of the standard 4–6 months of tender procedures. Time savings: ~75%.",
+        "Private-sector case: Swiss Casinos sourced / selected its ERP supplier (from supplier selection to signed contract) in ~6 weeks through agile sourcing, instead of the usual months. This covers the sourcing phase, not full system implementation — and reflects private-sector efficiency, not a conclusion about public-procurement law.",
     },
   },
   {
@@ -113,12 +114,13 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 800_000,
     },
     caseStudy: {
-      title: "Air France KLM Martinair Cargo — Lean Agile Procurement",
-      source: "EY Switzerland. Integrating Agile Practices into Procurement",
+      title: "Air France KLM Martinair Cargo — Lean Agile Procurement (private-sector example)",
+      source:
+        "EY Switzerland — Integrating Agile Practices into Procurement (practitioner example, illustrative)",
       insight:
-        "Air France KLM zastosowało Lean Agile Procurement dla modernizacji cargo door-to-door w ścisłym oknie 6 miesięcy — niemożliwym do dotrzymania przy standardowych przetargach.",
+        "Prywatny przewoźnik: Air France KLM zastosował Lean Agile Procurement dla modernizacji cargo door-to-door w ścisłym oknie czasowym. Przykład praktyczny ilustrujący efektywność sektora prywatnego — nie dowód empiryczny dotyczący prawa zamówień publicznych.",
       insightEn:
-        "Air France KLM applied Lean Agile Procurement for cargo door-to-door modernisation within a strict 6-month window — impossible to meet with standard tender procedures.",
+        "Private-sector case: Air France KLM applied Lean Agile Procurement for cargo door-to-door modernisation within a tight time window. A practitioner example illustrating private-sector efficiency — not empirical evidence about public-procurement law.",
     },
   },
   {
@@ -145,12 +147,13 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 1_200_000,
     },
     caseStudy: {
-      title: "Zara — Digital & Agile Procurement",
-      source: "Tradogram. Agile Procurement Practices (2024)",
+      title: "Zara — Responsive Fast-Fashion Supply Chain (illustrative)",
+      source:
+        "Ferdows, Lewis & Machuca, HBR (2004) — Rapid-Fire Fulfillment (illustrative example)",
       insight:
-        "Zara wdrożyła AI-driven procurement dla szybkiej reakcji na trendy. Tradycyjne procedury przetargowe były zbyt wolne dla 2-tygodniowego cyklu kolekcji.",
+        "Ilustracyjny przykład: model Zary opiera się na krótkich cyklach uzupełnień i szybkiej reakcji łańcucha dostaw na trendy. Przykład ilustruje wartość szybkości w zaopatrzeniu sektora prywatnego — nie udokumentowano tu zastąpienia przetargów zakupami opartymi na AI.",
       insightEn:
-        "Zara implemented AI-driven procurement for rapid trend response. Traditional tender procedures were too slow for their 2-week collection cycle.",
+        "Illustrative example: Zara's model relies on short replenishment cycles and a supply chain that reacts quickly to trends. It illustrates the value of speed in private-sector sourcing — no documented replacement of tenders with AI-driven procurement is claimed here.",
     },
   },
   {
@@ -178,11 +181,12 @@ export const SCENARIOS: Scenario[] = [
     },
     caseStudy: {
       title: "Tunel vs Pole — ten sam zakup, dwa światy",
-      source: "Szucs (JEEA 2024); Beuve et al. (NBER 2021); Lipsky (1980)",
+      source:
+        "Szucs (JEEA 2024); Beuve, Moszoro & Spiller (NBER w.p. 2021, obserwacyjne); Lipsky (1980)",
       insight:
-        "Procedura PZP-EU to tunel: jeden zamknięty tor, kupiec jako executor. Polityka zakupowa to pole: granice uprawnień aktywne wszędzie, kupiec jako navigator. Ten sam kontrakt — wielokrotnie wyższy koszt utracony po stronie tunelu.",
+        "Procedura PZP-EU to tunel: jeden zamknięty tor, kupiec jako executor. Polityka zakupowa to pole: granice uprawnień aktywne wszędzie, kupiec jako navigator. Renegocjacje w przetargach publicznych: Beuve, Moszoro & Spiller szacują efekt rzędu +7,7–10,5 pp (zakres z working paper, dane obserwacyjne). Ten sam kontrakt — wyższy koszt utracony po stronie tunelu.",
       insightEn:
-        "An EU-threshold public tender is a tunnel: one locked path, buyer as step-executor. A procurement policy is a field: authorisation boundaries active everywhere, buyer as value navigator. Same contract — drastically higher opportunity cost on the tunnel side.",
+        "An EU-threshold public tender is a tunnel: one locked path, buyer as step-executor. A procurement policy is a field: authorisation boundaries active everywhere, buyer as value navigator. On renegotiation in public tenders, Beuve, Moszoro & Spiller estimate an effect of roughly +7.7–10.5pp (a range from a working paper, observational data). Same contract — higher opportunity cost on the tunnel side.",
     },
   },
   {
@@ -210,7 +214,7 @@ export const SCENARIOS: Scenario[] = [
     },
     caseStudy: {
       title: "Coupa Catalog — Amazon-like UX for B2B",
-      source: "Coupa. State of Business Spend (2023)",
+      source: "Coupa — State of Business Spend (2023) (vendor report, practitioner example)",
       insight:
         "Firmy z katalogiem end-to-end redukują maverick spend o 60–80% i skracają czas zamówienia z dni do minut. Kupiec staje się kuratorem katalogu, nie procesorem faktur.",
       insightEn:
@@ -241,12 +245,13 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 50_000,
     },
     caseStudy: {
-      title: "Zara MRP — 2-tygodniowy cykl kolekcji",
-      source: "Tradogram. Agile Procurement Practices (2024)",
+      title: "MRP-driven replenishment — short collection cycles (illustrative)",
+      source:
+        "Ferdows, Lewis & Machuca, HBR (2004) — Rapid-Fire Fulfillment (illustrative example)",
       insight:
-        "Zara wdrożyła MRP-driven procurement dla surowców — AI przewiduje zapotrzebowanie, system generuje zlecenia. Tradycyjna procedura przetargowa była zbyt wolna dla 2-tygodniowego cyklu produkcji.",
+        "Ilustracyjny przykład: w modelu szybkiej mody zlecenia uzupełnień surowców generowane są automatycznie przez system (MRP) na podstawie prognoz popytu, co skraca cykl reakcji. Przykład ilustruje wartość automatyzacji operacyjnej w sektorze prywatnym — nie udokumentowano tu zastąpienia przetargów zakupami opartymi na AI.",
       insightEn:
-        "Zara implemented MRP-driven procurement for raw materials — AI forecasts demand, system generates orders. Traditional tender procedures were too slow for the 2-week production cycle.",
+        "Illustrative example: in a fast-fashion model, raw-material replenishment orders are auto-generated by the system (MRP) from demand forecasts, shortening the reaction cycle. It illustrates the value of operational automation in the private sector — no documented replacement of tenders with AI-driven procurement is claimed here.",
     },
   },
   {
@@ -273,12 +278,13 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 2_000_000,
     },
     caseStudy: {
-      title: "Ryanair CAPEX — Boeing bulk order at crisis prices",
-      source: "IJRAR (2019). Ryanair Strategic Positioning and Fleet Management",
+      title: "Ryanair CAPEX — Boeing bulk order at crisis prices (private-sector example)",
+      source:
+        "Ryanair 2002/2003 Annual Report / SEC Form 20-F (Boeing price concessions)",
       insight:
-        "Ryanair stosuje pełny CAPEX governance dla zakupów floty — ale skraca go o 30% dzięki pre-kwalifikacji Boeing jako jedynego dostawcy. Governance ma wartość; marnotrawstwo tkwi w krobach które można wyeliminować.",
+        "Prywatny przewoźnik: Ryanair stosuje pełny CAPEX governance dla zakupów floty, ale skraca proces dzięki pre-kwalifikacji Boeinga jako jedynego dostawcy. Governance ma wartość; marnotrawstwo tkwi w krokach, które można wyeliminować. To efektywność sektora prywatnego — nie wniosek o prawie zamówień publicznych.",
       insightEn:
-        "Ryanair applies full CAPEX governance for fleet purchases — but cuts it 30% via Boeing pre-qualification as sole supplier. Governance has value; waste lies in steps that can be eliminated.",
+        "Private-sector case: Ryanair applies full CAPEX governance for fleet purchases but shortens the process via Boeing pre-qualification as sole supplier. Governance has value; waste lies in steps that can be eliminated. This is private-sector efficiency — not a conclusion about public-procurement law.",
     },
   },
   {

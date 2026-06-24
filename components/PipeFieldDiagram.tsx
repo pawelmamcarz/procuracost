@@ -1,5 +1,7 @@
 "use client";
 
+import { PHI_SET } from "@/lib/i18n";
+
 interface Props {
   lang?: "pl" | "en";
 }
@@ -83,9 +85,7 @@ export default function PipeFieldDiagram({ lang = "pl" }: Props) {
             {isPl ? "Polityka = Pole" : "Policy = Field"}
           </p>
           <p className="mt-0.5 font-mono text-xs text-green-400">
-            {isPl
-              ? "∂Φ = {uprawnienia, konkurencja, etyka, dokumentacja}"
-              : "∂Φ = {auth, competition, ethics, documentation}"}
+            {PHI_SET[lang]}
           </p>
         </div>
 

@@ -11,7 +11,8 @@ export default function CaseStudiesPage() {
         <h1 className="text-2xl font-bold text-gray-900">Case Studies</h1>
         <p className="mt-1 text-sm text-gray-500">
           Rzeczywiste przykłady elastycznych zakupów — od linii lotniczych do wdrożeń IT.
-          Każdy scenariusz w kalkulatorze bazuje na udokumentowanym przypadku.
+          Każdy scenariusz w kalkulatorze bazuje na udokumentowanym przypadku. To w większości
+          prywatne przypadki efektywnościowe, nie dowód dotyczący prawa zamówień publicznych.
         </p>
       </div>
 
@@ -46,7 +47,11 @@ export default function CaseStudiesPage() {
                 </div>
               </div>
 
-              <p className="mt-4 text-xs text-gray-400">
+              <p className="mt-3 text-xs text-gray-400 leading-relaxed">
+                Liczba dni to ilustracyjny wynik modelu dla zakupu tej wielkości, nie dane z cytowanego źródła.
+              </p>
+
+              <p className="mt-2 text-xs text-gray-400">
                 Źródło: {s.caseStudy!.source}
               </p>
             </div>
@@ -54,7 +59,6 @@ export default function CaseStudiesPage() {
         })}
       </div>
 
-      {/* Additional context */}
       <div className="mt-10 rounded-2xl border border-blue-100 bg-blue-50 p-6">
         <h2 className="font-bold text-blue-900">Dlaczego linie lotnicze nie używają przetargów?</h2>
         <p className="mt-2 text-sm text-blue-800">
@@ -63,6 +67,10 @@ export default function CaseStudiesPage() {
           rynkowe do uzyskania cen poniżej katalogowych. Żaden przetarg publiczny nie pozwoliłby
           na taką elastyczność czasową i negocjacyjną. Rezultat: Ryanair zbudował flotę 400+
           samolotów z marżami, których konkurenci mogą tylko pozazdrościć.
+        </p>
+        <p className="mt-2 text-xs text-blue-700">
+          Uwaga: to prywatne przypadki efektywnościowe, nie dowód dotyczący prawa zamówień
+          publicznych — sektor publiczny działa pod innymi ograniczeniami (np. PZP).
         </p>
         <p className="mt-3 text-xs text-blue-600">
           Źródła: Airfleets.net (LOT fleet 2026); IJRAR (2019) Ryanair Strategic Positioning;

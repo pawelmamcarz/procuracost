@@ -14,7 +14,6 @@ export default function MethodologyPage() {
       </div>
 
       <div className="prose prose-sm max-w-none space-y-8 text-gray-700">
-        {/* Abstract */}
         <section>
           <h2 className="text-base font-bold text-gray-900">Abstract</h2>
           <p>
@@ -23,11 +22,14 @@ export default function MethodologyPage() {
             compliance—often adopted as a risk shield by procurement officers—limits negotiation
             discretion, extends timelines, and forecloses value-creating options. Drawing on empirical
             studies from public procurement economics, we construct a five-dimensional cost model
-            comparing rigid-procedure and policy-only approaches. We demonstrate that rigid procedures
-            increase effective contract prices by approximately 2% (Szucs 2024), raise renegotiation
-            risk by 7.7–10.5 percentage points (Beuve et al. 2021), and forego up to 30% of achievable
-            Total Cost of Ownership savings (ISM). The ProcuraCost calculator operationalizes this model
-            for consulting and educational use.
+            comparing rigid-procedure and policy-only approaches. Szucs (2024) shows that{" "}
+            <em>discretion</em> — not rigidity — raises prices: removing mandatory open auctions
+            redistributes roughly 2% of contract value to firms, so competitive tendering averts a
+            favoritism premium under unchecked discretion. We further note that contractual rigidity
+            is observationally associated with renegotiation risk 7.7–10.5 percentage points higher
+            (Beuve et al. 2021), and that Total Cost of Ownership programs can save up to 30% over
+            multiple years (ISM practitioner benchmark). The ProcuraCost calculator operationalizes
+            this model for consulting and educational use.
           </p>
         </section>
 
@@ -107,8 +109,9 @@ export default function MethodologyPage() {
                 <strong>Source:</strong> Szucs, F. (2024). Discretion and Favoritism in Public
                 Procurement. <em>Journal of the European Economic Association</em> 22(1):117–151.
                 Hungarian reform study: removing mandatory open auctions redistributes ~2% of
-                contract value from taxpayers to firms (price premium under rigidity). Procurement
-                delay also defers deployment value.
+                contract value from taxpayers to firms (a favoritism premium under unchecked
+                discretion that competitive tendering averts). Procurement delay also defers
+                deployment value.
               </p>
             </div>
 
@@ -122,7 +125,7 @@ export default function MethodologyPage() {
                 <code>P_rigid = 0.22 + 0.077 = 0.297</code>
               </p>
               <p className="mt-1 text-xs text-gray-500">
-                <strong>Source:</strong> Beuve, J., Moszoro, M., & Saussier, S. (2021). Contractual
+                <strong>Source:</strong> Beuve, J., Moszoro, M., & Spiller, P. T. (2021). Contractual
                 Rigidity and Political Contestability: Revisiting Public Contract Renegotiations.{" "}
                 <em>NBER Working Paper 28491</em>. One standard deviation increase in contractual
                 rigidity increases renegotiation frequency by 7.7–10.5 percentage points (vs. 22%
@@ -159,7 +162,7 @@ export default function MethodologyPage() {
               <em>Journal of the European Economic Association</em>, 22(1), 117–151.
             </li>
             <li>
-              Beuve, J., Moszoro, M., & Saussier, S. (2021). Contractual Rigidity and Political
+              Beuve, J., Moszoro, M., & Spiller, P. T. (2021). Contractual Rigidity and Political
               Contestability. <em>NBER Working Paper 28491</em>.
             </li>
             <li>

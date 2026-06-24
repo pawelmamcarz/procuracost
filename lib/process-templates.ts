@@ -116,6 +116,23 @@ export const PROCESS_RIGIDITY: Record<ProcessType, number> = {
   custom: 0.50,
 };
 
+// ─── Corruption / favoritism-risk context by process type ───────────────────────
+// How much favoritism, price-dispersion and value loss a DISCRETIONARY award would
+// risk in this procurement context (0 = none, 1 = high public-money scrutiny). This
+// is what competitive (rigid) tendering averts — the basis of the governance value
+// credited to formal procedures (Szucs 2024: discretion raises prices and selects
+// less-productive contractors). Public procurement carries the highest stakes.
+export const CORRUPTION_RISK_CONTEXT: Record<ProcessType, number> = {
+  pzp_eu: 1.0,
+  pzp_krajowy: 0.9,
+  capex: 0.6,
+  policy_only: 0.45,
+  private_formal: 0.4,
+  custom: 0.4,
+  catalog_order: 0.2,
+  mrp_order: 0.15,
+};
+
 // ─── Process step templates ─────────────────────────────────────────────────────
 
 const PZP_EU_STEPS: ProcessStep[] = [
@@ -566,13 +583,13 @@ export const PROCESS_TYPE_META: Record<Exclude<ProcessType, "custom">, { categor
     category: "strategic_pzp",
     name: "Strategiczne PZP — przetarg nieograniczony (powyżej progów UE)",
     nameEn: "Strategic PZP — open tender (above EU thresholds)",
-    description: "Pełne postępowanie przetargowe z mandatory waiting periods. Dotyczy zamówień powyżej 5 382 000 PLN (usługi/dostawy) lub 139 117 000 PLN (roboty budowlane).",
-    descriptionEn: "Full tender procedure with mandatory waiting periods. Applies to contracts above EU thresholds.",
+    description: "Pełne postępowanie przetargowe z obowiązkowymi okresami oczekiwania. Dotyczy zamówień powyżej progów UE: ok. 600 tys.–930 tys. PLN dla dostaw/usług oraz ok. 23,3 mln PLN dla robót budowlanych (progi 2026, wg kursu UZP).",
+    descriptionEn: "Full tender procedure with mandatory waiting periods. Applies to contracts above the EU thresholds: ~PLN 600k–930k for supplies/services and ~PLN 23.3M for construction works (2026 thresholds, UZP conversion).",
   },
   pzp_krajowy: {
     category: "strategic_pzp",
-    name: "Strategiczne PZP — postępowanie krajowe (130k – 5,38M PLN)",
-    nameEn: "Strategic PZP — national procedure (130k – 5.38M PLN)",
+    name: "Strategiczne PZP — postępowanie krajowe (130k PLN – próg UE)",
+    nameEn: "Strategic PZP — national procedure (130k PLN – EU threshold)",
     description: "Uproszczone postępowanie krajowe. Shorter mandatory waiting periods than EU threshold.",
     descriptionEn: "Simplified national procedure. Shorter mandatory waiting periods than EU threshold.",
   },
@@ -650,9 +667,6 @@ export function deriveRigidDays(
   processPhase?: "upstream" | "downstream",
   spendType?: "direct" | "indirect"
 ): number {
-  // Base sum of template days
-  let total = steps.reduce((sum, s) => sum + s.rigidDays, 0);
-
   // Deepened per-step contextual adjustment (pogłębienie modelu)
   // In Upstream + Direct the most strategic/risky steps require materially more calendar time:
   // more alignment rounds, legal reviews, board-level prep, risk workshops, supplier iterations.
@@ -670,17 +684,24 @@ export function deriveRigidDays(
     return 1.0;
   };
 
-  let adjustedTotal = 0;
+  // Mandatory legal waiting periods (publication, standstill) are fixed by statute and
+  // must NOT be compressed by the technology multiplier — they stay at their legal floor.
+  let mandatoryDays = 0;
+  let adjustedCompressible = 0;
   for (const s of steps) {
-    adjustedTotal += s.rigidDays * stepDayBoost(s.id);
+    if (s.mandatoryWait) {
+      mandatoryDays += s.rigidDays;
+    } else {
+      adjustedCompressible += s.rigidDays * stepDayBoost(s.id);
+    }
   }
 
-  // Global strategic premium (kept for calibration stability)
+  // Global strategic premium (kept for calibration stability) — compressible work only
   if (processPhase === "upstream" && spendType === "direct") {
-    adjustedTotal *= 1.06;
+    adjustedCompressible *= 1.06;
   }
 
-  return Math.round(adjustedTotal * techMultiplier);
+  return Math.round(adjustedCompressible * techMultiplier + mandatoryDays);
 }
 
 export function deriveFlexibleDays(
@@ -689,10 +710,6 @@ export function deriveFlexibleDays(
   processPhase?: "upstream" | "downstream",
   spendType?: "direct" | "indirect"
 ): number {
-  let base = steps
-    .filter((s) => s.flexibleDays !== null)
-    .reduce((sum, s) => sum + (s.flexibleDays ?? 0), 0);
-
   const compression = getFlexibleTimeCompression(processPhase);
 
   // Deepened: in flexible path, Upstream+Direct benefits from the largest time compression

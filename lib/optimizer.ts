@@ -1,10 +1,18 @@
-// Procurement Path Optimizer — Random Forest model
+// Procurement Path Optimizer — weighted rule-based scoring model
 //
-// Recommends optimal procurement path (field route) based on purchase parameters.
-// Compatible with Polish Public Procurement Law (PZP) and private sector.
+// Recommends a procurement path (field route) based on purchase parameters.
+// Compatible with Polish Public Procurement Law (PZP) and the private sector.
 //
-// Model: ensemble of 30 synthetic decision trees, each using random feature subsets.
-// Theoretical basis: Breiman (2001) Random Forests; Holmström & Milgrom (1991) multitask model.
+// HONEST DESCRIPTION OF THE METHOD: this is NOT a trained machine-learning model. It is a
+// hand-authored scoring function (one closed-form formula per path). The 30 "trees" are a
+// sensitivity sweep — the same formula re-evaluated with reweighted coefficients — used to
+// report how stable the recommendation is, not independent learners. The scoring weights are
+// modeling assumptions, not parameters fitted to real procurement outcomes. Feature importances
+// are computed by genuine ablation (neutralize a feature, measure the change in the top score).
+// Theoretical grounding for the path logic: Holmström & Milgrom (1991) multitask model; Kraljic (1983).
+//
+// Above-threshold public-sector recommendations are hard-filtered to the lawful PZP trybów so the
+// tool can never recommend a legally-impossible path.
 
 export interface ProcurementFeatures {
   contractValue: number;       // PLN
@@ -50,7 +58,7 @@ export const PATHS: Record<PathId, ProcurementPath> = {
     id: "przetarg_otwarty",
     name: "Przetarg nieograniczony",
     nameEn: "Open Tender",
-    pzpArticle: "PZP Art. 129",
+    pzpArticle: "PZP Art. 132",
     description:
       "Klasyczny przetarg otwarty — oferty składa nieograniczona liczba podmiotów. Maksymalna konkurencja, pełna przejrzystość, najdłuższy czas.",
     descriptionEn:
@@ -84,7 +92,7 @@ export const PATHS: Record<PathId, ProcurementPath> = {
     id: "przetarg_ograniczony",
     name: "Przetarg ograniczony",
     nameEn: "Restricted Tender",
-    pzpArticle: "PZP Art. 145",
+    pzpArticle: "PZP Art. 140",
     description:
       "Zaproszenie do składania ofert kierowane do wybranych, wstępnie kwalifikowanych dostawców. Łączy konkurencję z filtrem kompetencji.",
     descriptionEn:
@@ -114,7 +122,7 @@ export const PATHS: Record<PathId, ProcurementPath> = {
     id: "dialog_konkurencyjny",
     name: "Dialog konkurencyjny",
     nameEn: "Competitive Dialogue",
-    pzpArticle: "PZP Art. 172",
+    pzpArticle: "PZP Art. 169",
     description:
       "Wieloetapowe negocjacje z wybranymi dostawcami — zamawiający nie zna optymalnego rozwiązania i iteracyjnie go odkrywa. Idealny dla innowacji i złożonych projektów.",
     descriptionEn:
@@ -148,7 +156,7 @@ export const PATHS: Record<PathId, ProcurementPath> = {
     id: "negocjacje",
     name: "Negocjacje bezpośrednie",
     nameEn: "Direct Negotiation",
-    pzpArticle: "PZP Art. 160 / Art. 214 §1 pkt 1",
+    pzpArticle: "PZP Art. 153 (przesłanki negocjacji z ogłoszeniem) / Art. 214 ust. 1",
     description:
       "Elastyczne negocjacje z wybranymi partnerami bez pełnego postępowania przetargowego. Szybsze, bardziej relacyjne, wymagają silnych kompetencji kupca.",
     descriptionEn:
@@ -184,9 +192,9 @@ export const PATHS: Record<PathId, ProcurementPath> = {
     nameEn: "Agile Procurement",
     pzpArticle: "Sektor prywatny / pilotaż publiczny",
     description:
-      "Iteracyjny, wieloetapowy proces zakupowy z krótkimi cyklami decyzyjnymi, warsztatami z dostawcami i szybką selekcją. Swiss Casinos: 4 tygodnie vs. 6 miesięcy.",
+      "Iteracyjny, wieloetapowy proces zakupowy z krótkimi cyklami decyzyjnymi, warsztatami z dostawcami i szybką selekcją. Swiss Casinos: wybór dostawcy ERP w ok. 6 tygodni zamiast 6 miesięcy (LAP Alliance, 2020).",
     descriptionEn:
-      "Iterative, multi-stage procurement process with short decision cycles, supplier workshops and rapid selection. Swiss Casinos: 4 weeks vs. 6 months.",
+      "Iterative, multi-stage procurement process with short decision cycles, supplier workshops and rapid selection. Swiss Casinos: ERP supplier sourced in ~6 weeks instead of 6 months (LAP Alliance, 2020).",
     typicalDays: [14, 60],
     conditions: [
       "Wysoka innowacyjność lub presja czasu",
@@ -214,7 +222,7 @@ export const PATHS: Record<PathId, ProcurementPath> = {
     id: "bezposrednie",
     name: "Zamówienie z wolnej ręki",
     nameEn: "Direct Award",
-    pzpArticle: "PZP Art. 214 §1 pkt 4/5",
+    pzpArticle: "PZP Art. 214 ust. 1 pkt 1 (monopol) / pkt 5 (pilność)",
     description:
       "Bezpośrednie zlecenie bez postępowania konkurencyjnego. Uzasadnione w przypadku monopolu, awarii lub wyjątkowej pilności. Wymaga szczegółowej dokumentacji przesłanek.",
     descriptionEn:
@@ -246,7 +254,7 @@ export const PATHS: Record<PathId, ProcurementPath> = {
   },
 };
 
-// ─── Random Forest implementation ─────────────────────────────────────────────
+// ─── Weighted rule-based scoring + sensitivity sweep ────────────────────────────
 
 // LCG pseudo-random (deterministic, reproducible)
 function lcg(seed: number): () => number {
@@ -409,70 +417,98 @@ const PATH_IDS: PathId[] = [
   "bezposrednie",
 ];
 
-export function optimize(features: ProcurementFeatures, lang: "pl" | "en" = "pl"): OptimizationResult {
-  const votes: Record<PathId, number> = {
-    przetarg_otwarty: 0,
-    przetarg_ograniczony: 0,
-    dialog_konkurencyjny: 0,
-    negocjacje: 0,
-    agile: 0,
-    bezposrednie: 0,
-  };
-  const scores: Record<PathId, number> = { ...votes };
-  const FEATURE_LABELS = lang === "en" ? FEATURE_LABELS_EN : FEATURE_LABELS_PL;
-  const featureHits: Record<string, number> = {};
-  Object.keys(FEATURE_LABELS).forEach((k) => (featureHits[k] = 0));
+// ─── Polish PZP thresholds (2026, UZP conversion of EU thresholds) ───────────────
+// Object-type dependent: supplies/services EU threshold ≈ PLN 600k–930k; construction
+// works ≈ PLN 23.3M. The supplies/services threshold is the conservative default since
+// the optimizer does not capture the procurement object type.
+const PZP_EXEMPTION_PLN = 130_000;
+const EU_THRESHOLD_SUPPLIES_SERVICES_PLN = 900_000;
 
+// Lawful competitive trybów for public-sector procurement at/above the EU threshold
+// without documented statutory grounds for a negotiated / single-source award.
+const PUBLIC_COMPETITIVE_PATHS: PathId[] = [
+  "przetarg_otwarty",
+  "przetarg_ograniczony",
+  "dialog_konkurencyjny",
+];
+
+// Hard legal filter: the set of paths the tool is ALLOWED to recommend for these features,
+// so a recommendation can never contradict the legality note.
+function feasiblePathIds(f: ProcurementFeatures): PathId[] {
+  if (!f.isPublicSector) return PATH_IDS;                  // private sector: policy is the only constraint
+  if (f.contractValue < PZP_EXEMPTION_PLN) return PATH_IDS; // below 130k PLN: PZP does not apply
+  // Public sector at/above the threshold: only competitive trybów by default. Negotiated and
+  // single-source awards require documented przesłanki (Art. 153 / 214) not modeled here.
+  return PUBLIC_COMPETITIVE_PATHS;
+}
+
+// Neutral baseline used for ablation feature importance.
+const NEUTRAL_FEATURES: ProcurementFeatures = {
+  contractValue: 1_000_000,
+  supplierCount: 5,
+  complexity: 3,
+  urgencyDays: 90,
+  isPublicSector: false,
+  innovationRequired: false,
+  supplyRisk: 3,
+  strategicImportance: 3,
+  marketMaturity: 3,
+};
+
+const UNIT_WEIGHTS: number[] = Array.from({ length: 11 }, () => 1);
+
+// Genuine ablation importance: neutralize each feature, measure |Δ score| of the top path
+// using the full unbagged scorer. Input-dependent and deterministic (no RNG).
+function ablationImportance(
+  features: ProcurementFeatures,
+  topPathId: PathId,
+  labels: Record<keyof ProcurementFeatures, string>
+): FeatureImportance[] {
+  const base = scorePath(topPathId, features, UNIT_WEIGHTS);
+  const raw = (Object.keys(labels) as (keyof ProcurementFeatures)[]).map((key) => {
+    const perturbed = { ...features, [key]: NEUTRAL_FEATURES[key] };
+    const delta = Math.abs(base - scorePath(topPathId, perturbed, UNIT_WEIGHTS));
+    return { feature: key as string, label: labels[key], importance: delta };
+  });
+  const max = Math.max(...raw.map((r) => r.importance), 0);
+  return raw
+    .map((r) => ({ ...r, importance: max > 0 ? r.importance / max : 0 }))
+    .sort((a, b) => b.importance - a.importance);
+}
+
+export function optimize(features: ProcurementFeatures, lang: "pl" | "en" = "pl"): OptimizationResult {
+  const candidates = feasiblePathIds(features);
+  const FEATURE_LABELS = lang === "en" ? FEATURE_LABELS_EN : FEATURE_LABELS_PL;
+
+  const votes: Record<string, number> = {};
+  const scoreSum: Record<string, number> = {};
+  candidates.forEach((pid) => { votes[pid] = 0; scoreSum[pid] = 0; });
+
+  // Sensitivity sweep: re-evaluate the scoring formula with reweighted coefficients to
+  // measure how STABLE the winner is. These are not independent learners.
   for (let t = 0; t < N_TREES; t++) {
     const rand = lcg(t * 31337 + 42);
     const weights = treeWeights(rand);
-
-    // Score all paths with this tree's weights
-    const treeScores = PATH_IDS.map((pid) => ({
-      pid,
-      s: scorePath(pid, features, weights),
-    }));
-
-    // Winner of this tree
-    treeScores.sort((a, b) => b.s - a.s);
-    const winner = treeScores[0];
-    votes[winner.pid]++;
-    scores[winner.pid] += winner.s;
-
-    // Track which features were most active in this tree (weight > 0.5)
-    weights.forEach((w, i) => {
-      if (w > 0.5) {
-        const key = Object.keys(FEATURE_LABELS)[i];
-        if (key) featureHits[key] = (featureHits[key] || 0) + 1;
-      }
-    });
+    const runScores = candidates.map((pid) => ({ pid, s: scorePath(pid, features, weights) }));
+    runScores.forEach(({ pid, s }) => { scoreSum[pid] += s; });
+    runScores.sort((a, b) => b.s - a.s);
+    votes[runScores[0].pid]++;
   }
 
-  // Build ranked results
-  const ranked: PathResult[] = PATH_IDS.map((pid) => {
-    const rawScore = scores[pid] / Math.max(votes[pid], 1);
-    return {
+  // Rank by mean score across ALL runs (continuous), ensemble agreement as a tiebreak.
+  const ranked: PathResult[] = candidates
+    .map((pid) => ({
       path: PATHS[pid],
-      score: Math.round(Math.min(rawScore, 100)),
+      score: Math.round(Math.min(scoreSum[pid] / N_TREES, 100)),
       votes: votes[pid],
-      confidence: votes[pid] / N_TREES,
+      confidence: votes[pid] / N_TREES, // share of sweep runs where this path won (ensemble agreement)
       featureContributions: {},
-    };
-  }).sort((a, b) => b.votes - a.votes || b.score - a.score);
-
-  // Feature importances (normalized hit frequency)
-  const maxHits = Math.max(...Object.values(featureHits));
-  const featureImportance: FeatureImportance[] = Object.entries(FEATURE_LABELS)
-    .map(([key, label]) => ({
-      feature: key,
-      label,
-      importance: maxHits > 0 ? featureHits[key] / maxHits : 0,
     }))
-    .sort((a, b) => b.importance - a.importance);
+    .sort((a, b) => b.score - a.score || b.votes - a.votes);
 
   const topPath = ranked[0];
+  const featureImportance = ablationImportance(features, topPath.path.id, FEATURE_LABELS);
 
-  // PZP policy note
   const policyNote = generatePolicyNote(features, topPath.path.id, lang);
   const explanation = generateExplanation(features, topPath, featureImportance, lang);
 
@@ -539,33 +575,33 @@ function generateExplanation(
   const f2 = top[1] ? describeFeatureValue(top[1].feature as keyof ProcurementFeatures, features, lang) : null;
 
   if (lang === "en") {
-    return `The model recommends "${pathName}" primarily because of: ${f1}${f2 ? ` and ${f2}` : ""}. This combination was decisive in ${votes}/30 decision trees (confidence: ${pct}%).`;
+    return `The model recommends "${pathName}" mainly because of: ${f1}${f2 ? ` and ${f2}` : ""} (largest sensitivity of the score). The winner held in ${votes}/30 sensitivity runs (ensemble agreement: ${pct}%).`;
   }
-  return `Model rekomenduje "${pathName}" przede wszystkim ze względu na: ${f1}${f2 ? ` oraz ${f2}` : ""}. Ta kombinacja zadecydowała w ${votes}/30 drzewach decyzyjnych (pewność: ${pct}%).`;
+  return `Model rekomenduje "${pathName}" przede wszystkim ze względu na: ${f1}${f2 ? ` oraz ${f2}` : ""} (największy wpływ na wynik). Rekomendacja utrzymała się w ${votes}/30 przebiegach analizy wrażliwości (zgodność: ${pct}%).`;
 }
 
 function generatePolicyNote(f: ProcurementFeatures, winner: PathId, lang: "pl" | "en" = "pl"): string {
   if (lang === "en") {
     if (!f.isPublicSector) {
-      return "Private sector: no mandatory PZP thresholds. The organisation's procurement policy is the only constraint — all paths are available.";
+      return "Private sector: PZP thresholds do not apply. The organisation's procurement policy is the only constraint — all paths are available.";
     }
-    if (f.contractValue < 130_000) {
-      return "Below the 130,000 PLN net threshold: purchase without applying PZP. Only the contracting authority's internal procurement policy applies.";
+    if (f.contractValue < PZP_EXEMPTION_PLN) {
+      return "Below the PLN 130,000 net threshold: purchase without applying PZP. Only the contracting authority's internal procurement policy applies.";
     }
-    if (f.contractValue < 5_382_000) {
-      return "National PZP thresholds (130,000 – 5,382,000 PLN for supplies/services): national procedures. Available: open tender, restricted tender, price inquiry, negotiations without notice (Art. 275).";
+    if (f.contractValue < EU_THRESHOLD_SUPPLIES_SERVICES_PLN) {
+      return "Between PLN 130,000 and the EU threshold (≈ PLN 600k–930k for supplies/services; ≈ PLN 23.3M for works): the national 'tryb podstawowy' applies (Art. 275, three variants), plus negotiations without notice or a single-source award where statutory grounds are documented.";
     }
-    return "Above EU thresholds: full procedure under PZP and Directive 2014/24/EU. Available: open tender (Art. 129), restricted tender (Art. 145), competitive dialogue (Art. 172), negotiated procedure with notice (Art. 160).";
+    return "At/above the EU threshold: full procedure under PZP and Directive 2014/24/EU. Competitive trybów: open tender (Art. 132), restricted tender (Art. 140), competitive dialogue (Art. 169). A negotiated procedure with notice (Art. 153) or a single-source award (Art. 214) requires documented statutory grounds.";
   }
 
   if (!f.isPublicSector) {
-    return "Sektor prywatny: brak obligatoryjnych progów PZP. Polityka zakupowa organizacji jest jedynym ograniczeniem — wszystkie ścieżki są dostępne.";
+    return "Sektor prywatny: progi PZP nie mają zastosowania. Polityka zakupowa organizacji jest jedynym ograniczeniem — wszystkie ścieżki są dostępne.";
   }
-  if (f.contractValue < 130_000) {
+  if (f.contractValue < PZP_EXEMPTION_PLN) {
     return "Poniżej progu 130 000 PLN netto: zakup bez stosowania PZP. Obowiązuje wyłącznie wewnętrzna polityka zakupowa zamawiającego.";
   }
-  if (f.contractValue < 5_382_000) {
-    return "Progi krajowe PZP (130 000 – 5 382 000 PLN dla dostaw/usług): tryby krajowe. Dostępne: przetarg nieograniczony, ograniczony, zapytanie o cenę, negocjacje bez ogłoszenia (Art. 275).";
+  if (f.contractValue < EU_THRESHOLD_SUPPLIES_SERVICES_PLN) {
+    return "Między 130 000 PLN a progiem UE (≈ 600 tys.–930 tys. PLN dla dostaw/usług; ≈ 23,3 mln PLN dla robót budowlanych): tryb podstawowy (Art. 275, trzy warianty), a także negocjacje bez ogłoszenia lub wolna ręka, gdy udokumentowane są ustawowe przesłanki.";
   }
-  return "Powyżej progów unijnych: pełne postępowanie zgodnie z PZP i Dyrektywą 2014/24/UE. Możliwe tryby: przetarg nieograniczony (Art. 129), ograniczony (Art. 145), dialog konkurencyjny (Art. 172), negocjacje z ogłoszeniem (Art. 160).";
+  return "Na/powyżej progu UE: pełne postępowanie zgodnie z PZP i Dyrektywą 2014/24/UE. Tryby konkurencyjne: przetarg nieograniczony (Art. 132), ograniczony (Art. 140), dialog konkurencyjny (Art. 169). Negocjacje z ogłoszeniem (Art. 153) lub wolna ręka (Art. 214) wymagają udokumentowanych przesłanek.";
 }

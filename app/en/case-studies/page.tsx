@@ -11,7 +11,8 @@ export default function EnCaseStudiesPage() {
         <h1 className="text-2xl font-bold text-gray-900">Case Studies</h1>
         <p className="mt-1 text-sm text-gray-500">
           Real-world examples of flexible procurement — from airlines to IT implementations.
-          Each calculator scenario is based on a documented case.
+          Each calculator scenario is based on a documented case. These are mostly private-sector
+          efficiency cases, not evidence about public procurement law.
         </p>
       </div>
 
@@ -46,7 +47,11 @@ export default function EnCaseStudiesPage() {
                 </div>
               </div>
 
-              <p className="mt-4 text-xs text-gray-400">
+              <p className="mt-3 text-xs text-gray-400 leading-relaxed">
+                Day figures are illustrative model output for a purchase of this size, not the figures from the cited case.
+              </p>
+
+              <p className="mt-2 text-xs text-gray-400">
                 Source: {s.caseStudy!.source}
               </p>
             </div>
@@ -54,7 +59,6 @@ export default function EnCaseStudiesPage() {
         })}
       </div>
 
-      {/* Airlines box */}
       <div className="mt-10 rounded-2xl border border-blue-100 bg-blue-50 p-6">
         <h2 className="font-bold text-blue-900">Why don&apos;t airlines use open tenders?</h2>
         <p className="mt-2 text-sm text-blue-800">
@@ -63,6 +67,10 @@ export default function EnCaseStudiesPage() {
           achieve below-catalogue pricing. No public tender could match that level of timing and
           negotiation flexibility. Result: Ryanair built a 400+ aircraft fleet with margins
           competitors can only envy.
+        </p>
+        <p className="mt-2 text-xs text-blue-700">
+          Note: these are private-sector efficiency cases, not evidence about public procurement
+          law — the public sector operates under different constraints.
         </p>
         <p className="mt-3 text-xs text-blue-600">
           Sources: Airfleets.net (LOT fleet 2026); IJRAR (2019) Ryanair Strategic Positioning;

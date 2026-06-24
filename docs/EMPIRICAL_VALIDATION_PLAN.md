@@ -8,18 +8,18 @@
 
 ## 1. Research Objective
 
-The core claim of ProcuraCost is:
+The core claim of ProcuraCost — currently a **model estimate, not an established empirical fact** — is:
 
-> Rigid procurement *procedures* impose significantly higher opportunity costs than flexible, policy-only approaches, even when both remain within the same formal policy constraints.
+> In high-value, high-corruption-risk, strategic contexts, rigid procurement *procedures* impose significantly higher opportunity costs than flexible, policy-only approaches, even when both remain within the same formal policy constraints.
 
-The goal of the empirical validation program is to test this claim and quantify its magnitude using real organizational data.
+This is the directional claim **to be tested**, not assumed. The model is **symmetric**: its favoritism/selection-quality and bypass dimensions can run against the flexible path, so in low-corruption-risk operational contexts the rigid path can be net-cheaper — and the empirical program must be able to detect that case, not only confirm the headline. The goal of the validation program is to test the claim, identify its boundary conditions, and quantify its magnitude using real organizational data.
 
 ---
 
 ## 2. Main Hypotheses (to be refined)
 
-**H1 (Overall Cost Gap)**  
-Organizations using more rigid procedures experience 100–400% higher total opportunity costs compared to policy-flexible approaches in comparable contexts.
+**H1 (Conditional Cost Gap)**  
+In high-value, high-corruption-risk, strategic (Direct × Upstream) contexts, organizations using more rigid procedures experience materially higher total opportunity costs than policy-flexible approaches in comparable contexts. The model's illustrative 100–400% range is the magnitude to be tested, not a confirmed effect; H1 explicitly allows the gap to vanish or reverse in low-corruption-risk operational contexts.
 
 **H2 (Direct vs Indirect)**  
 The cost gap is significantly larger for Direct spend than for Indirect spend.

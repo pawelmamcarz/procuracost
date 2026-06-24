@@ -4,10 +4,9 @@ import { SCENARIOS } from "@/lib/scenarios";
 import { calculateCosts } from "@/lib/calculations";
 
 const stats = [
-  { value: "+2%", label: "higher contract prices under rigid procedures", source: "Szucs, JEEA 2024" },
-  { value: "+7.7%", label: "increased renegotiation risk", source: "Beuve et al., NBER 2021" },
-  { value: "42%", label: "longer project delivery times", source: "World Bank, 2023" },
-  { value: "30%", label: "potential TCO savings with flexibility", source: "ISM" },
+  { value: "~6pp", label: "favoritism premium under unchecked discretion (which competitive tendering averts)", source: "Szucs, JEEA 2024" },
+  { value: "+7.7–10.5pp", label: "increased renegotiation risk (observational)", source: "Beuve, Moszoro & Spiller, NBER 2021" },
+  { value: "30%", label: "potential TCO savings with flexibility (practitioner ceiling, multi-year)", source: "ISM (benchmark)" },
 ];
 
 const howItWorks = [
@@ -19,12 +18,12 @@ const howItWorks = [
   {
     step: "02",
     title: "Calculate hidden costs",
-    body: "The model, grounded in 4 peer-reviewed studies, computes 7 cost dimensions — staff time, delays, renegotiations, bypass risk — comparing tunnel to field.",
+    body: "The model, grounded in the literature and practitioner benchmarks, computes 7 cost dimensions — staff time, delays, renegotiations, bypass risk — comparing tunnel to field.",
   },
   {
     step: "03",
     title: "Compare and act",
-    body: "Results include an industry benchmark, an optimal path recommendation (Random Forest, 30 trees) and a PDF report with academic citations.",
+    body: "Results include illustrative scenarios (model-generated), a procurement-path recommendation (rule-based model with sensitivity analysis) and a PDF report with academic citations.",
   },
 ];
 
@@ -84,7 +83,6 @@ const principles = [
 export default function EnHomePage() {
   return (
     <div className="mx-auto max-w-5xl px-6 py-12">
-      {/* Hero */}
       <div className="text-center">
         <span className="inline-block rounded-full bg-blue-50 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-blue-600">
           Research & Consulting Tool
@@ -98,9 +96,9 @@ export default function EnHomePage() {
           A tunnel has walls. A field has a horizon.
         </p>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-500">
-          An empirical model built on peer-reviewed research shows: rigid-procedure costs exceed
-          policy-only costs by{" "}
-          <span className="font-semibold text-gray-700">100–400%</span>. Run your scenario.
+          The model estimates that rigid procedures are often{" "}
+          <span className="font-semibold text-gray-700">materially more costly</span> than
+          policy-only procurement — check your own case.
         </p>
         <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link
@@ -124,8 +122,7 @@ export default function EnHomePage() {
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <div className="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-3">
         {stats.map((s) => (
           <div
             key={s.label}
@@ -167,7 +164,6 @@ export default function EnHomePage() {
         ))}
       </div>
 
-      {/* Case Studies Preview */}
       <div className="mt-16">
         <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-5">
           Case studies — flexible procurement in practice
@@ -185,6 +181,9 @@ export default function EnHomePage() {
                   Field: {cs.flexibleDays} days
                 </span>
               </div>
+              <p className="text-xs text-gray-400 leading-relaxed">
+                Day figures are illustrative model output for a purchase of this size, not the figures from the cited case.
+              </p>
               <p className="text-xs text-gray-400">{cs.source}</p>
             </div>
           ))}

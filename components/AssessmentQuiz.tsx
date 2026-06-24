@@ -135,7 +135,7 @@ export default function AssessmentQuiz({ lang = "pl" }: Props) {
         <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-gray-100">
           <div
             className="h-1.5 rounded-full bg-blue-500 transition-all"
-            style={{ width: `${((current) / questions.length) * 100}%` }}
+            style={{ width: `${((current + 1) / questions.length) * 100}%` }}
           />
         </div>
       </div>
