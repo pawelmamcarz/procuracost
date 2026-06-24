@@ -27,9 +27,9 @@ A note on interpretation: the model outputs are **estimates** under these assump
 | Parameter | Code Constant | Value | Type | Source | Justification & Limitations | Sensitivity |
 |---------|---------------|-------|------|--------|-----------------------------|-------------|
 | Favoritism / selection-quality premium from **discretion** | `DISCRETION_FAVORITISM_PREMIUM` | 0.06 (≈6pp) | Empirical-informed | Szucs, F. (2024). "Discretion and Favoritism in Public Procurement". *Journal of the European Economic Association*, 22(1), 117–160. DOI 10.1093/jeea/jvad017. | **Direction matters:** Szucs finds that *discretion* raises prices (~6pp, structural) and selects *less-productive* contractors; competitive (rigid) tendering averts this premium. Charged mainly to the flexible/discretionary path. Scales with DISCRETION (1 − rigidity) × `CORRUPTION_RISK_CONTEXT`. **Endogeneity caveat:** Szucs attributes ≈two-thirds of the discontinuity to firm selection/sorting, so this is an upper-bound, not a clean causal coefficient. *(Replaces the removed, inverted `RIGIDITY_PRICE_PREMIUM` and `RIGIDITY_PRODUCTIVITY_LOSS`.)* | High |
-| Base renegotiation probability | `BASE_RENEGOTIATION_PROBABILITY` | 0.22 (22%) | Empirical | Beuve, Moszoro & Spiller (2021). "Contractual Rigidity and Political Contestability". NBER Working Paper 28491 (published *JLEO* 2023). | Baseline (unconditional) renegotiation rate in their public-procurement sample. Observational. | Medium-High |
-| Renegotiation premium associated with contractual rigidity | `RIGIDITY_RENEGOTIATION_PREMIUM` | +0.077 | Empirical | Beuve, Moszoro & Spiller (2021/2023) | **Observational** (associated with, not caused by). The paper reports a range of **+7.7 to +10.5 pp** per SD of rigidity; the model uses the lower bound and **scales it by the process's actual rigidity index**. | High |
-| Annual TCO foregone-savings rate | `TCO_SAVINGS_RATE_PER_YEAR` | 0.10 (10%) | Calibrated | ISM / CAPS Research, consulting benchmarks 2015–2024 (practitioner, not peer-reviewed) | Annual rate of the foregone-savings stream. Applied as a **discounted** annual flow (see `DISCOUNT_RATE`) and **capped** (see `TCO_CUMULATIVE_CAP`) so the cumulative figure never exceeds the cited multi-year ceiling. | High |
+| Base renegotiation probability | `BASE_RENEGOTIATION_PROBABILITY` | 0.22 (22%) | Empirical | Beuve, Moszoro & Spiller (2021/2023), NBER WP 28491 / *JLEO*. Corroborated by Guasch (2004, World Bank): **~30%** of >1,000 Latin-American infrastructure concessions (1985–2000) were renegotiated (≈41.5% incl. telecoms). | Baseline (unconditional) renegotiation rate. Observational. Guasch shows it is highly **design-dependent** (≈60% under lowest-tariff award vs ≈11% under highest-transfer-fee), so 0.22 is a conservative central value for general procurement. | Medium-High |
+| Renegotiation premium associated with contractual rigidity | `RIGIDITY_RENEGOTIATION_PREMIUM` | +0.077 | Empirical-informed | Beuve, Moszoro & Spiller (2021/2023). Mechanism: Bajari & Tadelis (2001); magnitude co-anchor: Bajari, Houghton & Tadelis (AER 2014). | **Observational** (associated with, not caused by). Range **+7.7 to +10.5 pp** per SD of rigidity; the model uses the lower bound, **scaled by the process's actual rigidity index**. **Endogeneity caveat:** Bajari & Tadelis show renegotiation/transaction cost is *endogenous to the contract form, chosen jointly with project complexity* — so this is not a clean causal treatment effect. A better-identified co-anchor is the **adaptation-cost share ≈ 8–14% of contract value** (Bajari, Houghton & Tadelis 2014, Caltrans structural model), which the model could adopt as an alternative renegotiation-cost basis. | High |
+| Annual TCO foregone-savings rate | `TCO_SAVINGS_RATE_PER_YEAR` | 0.10 (10%) | **Modeling Assumption (practitioner ceiling, not peer-reviewed)** | ISM / CAPS Research, consulting benchmarks 2015–2024 | **Weakest-grounded parameter in the model.** No peer-reviewed study supports a flat 10%/yr: the academic TCO literature (Ellram 1993; Wouters et al. 2005) is **conceptual only** (cost-classification frameworks and adoption studies), with no savings magnitude; and even practitioner figures are "soft" (CAPS's own reported savings are definitionally inconsistent). The credible consulting pattern is **5–15% in year one on *sourced* categories, decaying to 2–5%/yr** — so a flat 10%/yr on full contract value across the whole horizon is **optimistic** (the 30% cap mitigates). The *premise* is sound: lowest-price selection leaves recoverable value — Decarolis (2014) finds ≥50% of low-price auction savings are erased by ex-post renegotiation, and operating cost dominates lifecycle cost (~70:30 O&S:acquisition in defense). **Priority candidate for recalibration to a decaying rate.** Applied as a **discounted** flow (see `DISCOUNT_RATE`) and **capped** (see `TCO_CUMULATIVE_CAP`). | High |
 | Cumulative TCO cap (share of contract value) | `TCO_CUMULATIVE_CAP` | 0.30 (30%) | Calibrated | ISM / CAPS Research (practitioner **ceiling** over multiple years) | The ISM "up to 30%" figure is a multi-year **ceiling**, not a flat per-year rate. The model caps cumulative foregone TCO at 30% of contract value so it can never exceed this bound. | High |
 | Discount rate for multi-year flows | `DISCOUNT_RATE` | 0.05 (5%) | Modeling Assumption | Internal (standard PV convention) | Discounts the annual foregone-TCO stream to present value via a Σ 1/(1+d)^y annuity factor. | Medium |
 | Sigmoid steepness for bypass probability | `BYPASS_SIGMOID_STEEPNESS` | 6 | Modeling Assumption | Internal | Controls how sharply realized bypass probability rises with effective rigidity. Recalibrated (was 10). | Medium |
@@ -69,6 +69,17 @@ These are relative multipliers and cost estimates derived from industry benchmar
 | End-to-End (Ariba/Coupa) | 0.70 | 20 PLN | 2,000 PLN | 0.10 | 0.05 | Calibrated | Best-in-class implementations observed in large multinationals |
 
 **Important note**: These values represent relative differences and typical costs in the Polish/Central European context as of 2023–2025. They are not taken from a single peer-reviewed study.
+
+### 2a. Administrative / transaction cost — empirical anchor (EC 2011)
+
+The administrative/coordination cost dimension (`coordCostPerDay × days + toolCostPerProcess`, scaled by `coordinationIntensityMultiplier`) is anchored to the European Commission's canonical study **"Public Procurement in Europe: Cost and Effectiveness" (PwC, London Economics & Ecorys, 2011)**:
+
+- Average total cost of running **one** EU-regulated procedure ≈ **€28,000**, split ~**25% contracting authority / ~75% suppliers** (bid preparation across an average of 5.4 bidders).
+- Aggregate (value-weighted) societal cost ≈ €5.26 bn/yr (EEA-30, 2009) = **< 1.3% of tendered value** *(verified 3/3)*.
+- As a **share of contract value the cost is strongly regressive**: ≈ **6–9% at the €390k median contract, 18–29% at a €125k contract** — small contracts are hit proportionally far harder. This reconciles with the figures above: €28k is ≈7% of a €390k median contract but well under ~1.5% of a large one, so the value-weighted aggregate lands near ~1.3%.
+- Average ≈ 38 person-days (authority + winning firm); restricted procedures are the most expensive for authorities.
+
+Type: **Empirical** (official EC study). The model's coordination + tool costs should sanity-check near ~6–9% of value at a median contract; the regressivity (small contracts cost proportionally more) is a candidate refinement.
 
 ---
 
@@ -127,6 +138,32 @@ The three adjustment multipliers introduced in 2026 currently belong to the last
 The path optimizer is **not** a Random Forest and **not** a trained machine-learning model. It is a **weighted, rule-based scoring function** — one closed-form formula per procurement path. The 30 "trees" are a **30-run sensitivity sweep** (the same formula re-evaluated with reweighted coefficients) used to report how stable the recommendation is, not independent learners; "confidence" is the share of sweep runs in which a path wins. Feature importance is computed by **genuine ablation** (neutralize a feature, measure |Δ| of the top path's score). The scoring weights are modeling assumptions, not parameters fitted to real procurement outcomes; the tool is **illustrative and not validated on real procurement data**. There is **no Breiman (2001) Random Forest** in the implementation, and that citation should not be presented as the implemented method.
 
 Public-sector recommendations are **hard-filtered** to the lawful set of PZP trybów: above the EU threshold without documented statutory grounds, only competitive procedures (open tender Art. 132, restricted Art. 140, competitive dialogue Art. 169) are offered, so the tool can never recommend a legally impossible path.
+
+## 7. Empirical re-grounding — deep-research pass (2026-06-24)
+
+A multi-source deep-research pass (five search angles + adversarial 3-vote verification) was run per cost dimension to test whether each parameter can be re-grounded in citable evidence. Status by dimension:
+
+| Dim | Parameter(s) | Status |
+|---|---|---|
+| 1 — Price / discretion | `DISCRETION_FAVORITISM_PREMIUM` 0.06 | **Grounded** — Szucs (2024), Coviello & Mariniello (2014), Czech reform (2025) converge on ~6–8% |
+| 2 — Renegotiation | `0.22` + `0.077` | **Mechanism + base grounded** (Guasch 2004; Bajari-Houghton-Tadelis 2014); the premium is observational/endogenous; better-identified co-anchor is the **8–14% adaptation-cost share** |
+| 3 — TCO | `0.10` / cap `0.30` | **Weak** — practitioner ceiling only; premise sound (Decarolis 2014), magnitude optimistic; recalibration candidate |
+| 4 — Delay | `days × dailyCostOfInaction` | **Day-gap grounded** (mandatory waits + EC 120-day "Decision Speed" benchmark); the per-day cost is a user input; competition does **not** increase delay (Coviello & Mariniello 2014) |
+| 5 — Admin | `coordCost + toolCost` | **Grounded** — EC PwC/London Economics (2011): ~6–9% of a median contract, regressive (see §2a) |
+
+**Cross-cutting finding:** the dominant procurement friction across dimensions is **ex-post adaptation/renegotiation of incomplete contracts, endogenous to contract design** (Bajari-Houghton-Tadelis) — larger than the bidding markups the auction literature emphasises. This reinforces the model's framing that the lever is **competition and contract completeness, not procedural formality per se**.
+
+### Added references
+
+- Guasch, J. L. (2004). *Granting and Renegotiating Infrastructure Concessions: Doing It Right.* World Bank.
+- Bajari, P., Houghton, S., & Tadelis, S. (2014). Bidding for Incomplete Contracts. *American Economic Review*, 104(4), 1288–1319.
+- Bajari, P., & Tadelis, S. (2001). Incentives versus Transaction Costs: A Theory of Procurement Contracts. *RAND Journal of Economics*, 32(3), 387–407.
+- Decarolis, F. (2014). Awarding Price, Contract Performance, and Bids Screening. *American Economic Journal: Applied Economics*, 6(1), 108–132.
+- Coviello, D., & Mariniello, M. (2014). Publicity Requirements in Public Procurement. *Journal of Public Economics*, 109, 76–100.
+- PwC, London Economics & Ecorys (2011). *Public Procurement in Europe: Cost and Effectiveness.* European Commission.
+- European Commission, *Single Market Scoreboard — Public Procurement* (Decision Speed indicator).
+
+> **Verification status (re-run 2026-06-24).** A controlled adversarial re-verification (3 skeptic votes per claim) **confirmed** the Guasch renegotiation rates, the **8–14% adaptation-cost share** (Bajari-Houghton-Tadelis), Decarolis's "≥50% of low-price savings erased," the **5–15%/2–5% TCO pattern** ("up to 30% over 3 years" being an unsourced vendor claim), the ~70:30 lifecycle ratio, the EC **120-day "Decision Speed"** benchmark, the Coviello & Mariniello delay findings, and the EC **aggregate cost (<1.3% of tendered value)** — 11 of 14 magnitudes confirmed (mostly 3/3). **One figure failed verification and was removed:** a ~0.4% cost increment attributed *specifically* to the EU Directives (the gross ~€28k / ~1.0–1.4% figure stands; the Directive-specific increment could not be substantiated). The per-procedure €28k and the 6–9%/18–29% regressive shares were not independently re-checked in this pass (API errors) but are corroborated by the confirmed aggregate figure and the same EC study.
 
 ## Next Steps (as per PHD_ROADMAP)
 
