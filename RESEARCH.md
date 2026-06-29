@@ -14,7 +14,7 @@ Drawing on empirical evidence from public procurement economics, we construct a 
 
 We operationalize the model in an open-source calculator (ProcuraCost) and demonstrate its application across four procurement archetypes: fleet acquisition, IT/ERP implementation, logistics contracting, and production materials sourcing. Results consistently show that rigid-procedure costs exceed policy-only costs by 100–400%, with the gap driven primarily by foregone TCO optimization, deployment delay costs, and — critically — bypass risk costs generated when rigid procedures are informally circumvented under operational pressure.
 
-We introduce the **Tunnel vs. Field** model as the organizing metaphor: a procedure is a tunnel (single path, one direction, human as step-executor); a procurement policy enforced by modern information systems is a field (multiple paths, continuous compliance, human as value navigator). We demonstrate, drawing on Lipsky (1980), Vaughan (1996), Holmström & Milgrom (1991), Scott (1998), and Norman (1988), that the enforcement response to procedural bypass — "make the tunnel harder to exit" — is empirically predicted to fail across five independent analytical traditions. The correct response is not a better tunnel. It is a field. *A tunnel has walls. A field has a horizon.*
+We introduce the **Tunnel vs. Field** model as the organizing metaphor: a procedure is a tunnel (single path, one direction, human as step-executor); a procurement policy enforced by modern information systems is a field (multiple paths, continuous compliance, human as value navigator). We demonstrate, drawing on Lipsky (1980), Vaughan (1996), Holmström & Milgrom (1991), Scott (1998), and Norman (1988), that the enforcement response to procedural bypass — "make the tunnel harder to exit" — is analytically predicted to fail across five independent theoretical traditions transferred by analogy to procurement. The correct response is not a better tunnel. It is a field. *A tunnel has walls. A field has a horizon.*
 
 We argue that the policy/procedure distinction is not merely semantic but operationally critical: procurement policy defines *what* must be achieved, while procedure is only *one* method of achievement. Modern ERP and AI-powered procurement systems have absorbed the compliance enforcement function that procedures were designed to perform, rendering procedural gatekeeping structurally obsolete.
 
@@ -133,7 +133,7 @@ C_time(F) = days_F × n_buyers × rate_daily
 ΔC_time = (days_R - days_F) × n_buyers × rate_daily
 ```
 
-**Empirical anchors:** OECD (2023) documents average infrastructure procurement durations of 554 days in OECD countries and 836 days in Sub-Saharan Africa. Agile procurement case studies report 60–75% time reductions (Skylight Digital 2024; Swiss Casinos ERP case: 120-day rigid vs. 28-day agile, EY Switzerland 2024).
+**Empirical anchors:** Large infrastructure procurements are widely reported to run on the order of ~550–840 days end-to-end, with longer durations in lower-capacity institutional settings (illustrative range; source to be confirmed). Agile procurement case studies report 60–75% time reductions (Skylight Digital 2024; Swiss Casinos ERP case: 120-day rigid vs. 28-day agile, EY Switzerland 2024).
 
 ### 3.2 Dimension 2: Administrative Overhead (C_admin)
 
@@ -295,7 +295,7 @@ The shift from procedure-compliance to policy-compliance requires organizational
 
 ### 6.4 The Enforcement Fallacy: Why Better Tunnels Don't Work
 
-A common response to procedural failure is to strengthen enforcement: make procedures harder to bypass, increase audit frequency, implement technical lockouts. This response—which we term the **enforcement fallacy**—is empirically predicted to fail by five decades of organizational research.
+A common response to procedural failure is to strengthen enforcement: make procedures harder to bypass, increase audit frequency, implement technical lockouts. This response—which we term the **enforcement fallacy**—is analytically predicted to fail by five decades of organizational research, a deductive synthesis transferred by analogy from these traditions to procurement rather than a direct causal-empirical finding.
 
 **Street-Level Bureaucracy (Lipsky 1980).** Lipsky's foundational study of frontline workers in public organizations demonstrates that adaptation of formal rules to operational reality is not deviance—it is the *normal* condition of complex work. Workers exercise discretion not because they lack commitment to rules but because rules cannot anticipate all operational contingencies. Enforcement that eliminates formal bypasses does not eliminate the underlying adaptation; it drives it underground. What was visible mail-and-phone procurement becomes invisible undocumented procurement. The organization loses auditability without gaining compliance.
 
@@ -518,8 +518,6 @@ Kelman, S. (1990). *Procurement and Public Management: The Fear of Discretion an
 Lipsky, M. (1980). *Street-Level Bureaucracy: Dilemmas of the Individual in Public Services*. Russell Sage Foundation.
 
 Norman, D. A. (1988). *The Design of Everyday Things*. Basic Books.
-
-OECD. (2023). *Public Procurement Performance*. OECD Publishing, Paris. https://doi.org/10.1787/0dde73f4-en
 
 Scott, J. C. (1998). *Seeing Like a State: How Certain Schemes to Improve the Human Condition Have Failed*. Yale University Press.
 

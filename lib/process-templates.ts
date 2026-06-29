@@ -2,8 +2,8 @@
 //
 // Academic basis:
 // - Mandatory wait times: PZP (Dz.U. 2019 poz. 2019) + EU Directive 2014/24/UE
-// - Stakeholder hours: benchmarked from OECD (2023) procurement function surveys
-// - Tech level impacts: derived from EY / Deloitte sourcing transformation studies
+// - Stakeholder hours: calibrated / illustrative (role-hour magnitudes are modeling assumptions)
+// - Tech level impacts: timeMultiplier anchored to APQC/Hackett benchmarks; coordCostPerDay/toolCostPerProcess are modeling assumptions
 
 export type ProcessType = "pzp_eu" | "pzp_krajowy" | "private_formal" | "policy_only" | "catalog_order" | "mrp_order" | "capex" | "custom";
 export type TechLevelId = "manual" | "sourcing_tool" | "partial_erp" | "end_to_end";
@@ -103,7 +103,10 @@ export const TECH_LEVELS: Record<TechLevelId, TechLevel> = {
 };
 
 // ─── Process rigidity by type ───────────────────────────────────────────────────
-// Used for bypass probability and TCO calculations
+// Used for bypass probability and TCO calculations.
+// The cardinal 0–1 values are a Grade-C modeling assumption: the ordinal ranking
+// (pzp_eu > pzp_krajowy > capex > private_formal > … > mrp_order) is defensible, but
+// there is no external 0–1 anchor for the exact magnitudes — they are internal calibration.
 
 export const PROCESS_RIGIDITY: Record<ProcessType, number> = {
   pzp_eu: 0.95,
@@ -117,11 +120,13 @@ export const PROCESS_RIGIDITY: Record<ProcessType, number> = {
 };
 
 // ─── Corruption / favoritism-risk context by process type ───────────────────────
-// How much favoritism, price-dispersion and value loss a DISCRETIONARY award would
-// risk in this procurement context (0 = none, 1 = high public-money scrutiny). This
-// is what competitive (rigid) tendering averts — the basis of the governance value
-// credited to formal procedures (Szucs 2024: discretion raises prices and selects
-// less-productive contractors). Public procurement carries the highest stakes.
+// A calibrated governance-risk index (Grade C) for how much favoritism, price-dispersion
+// and value loss a DISCRETIONARY award would risk in this context (0 = none, 1 = high
+// public-money scrutiny). This is what competitive (rigid) tendering averts — the basis
+// of the governance value credited to formal procedures. The pzp_eu = 1.0 anchor is tied
+// to Szucs 2024 (discretion raises prices and selects less-productive contractors); the
+// ordinal direction is taken from OECD; the intermediate gradient between anchors is a
+// modeling assumption — sensitivity-tested. Public procurement carries the highest stakes.
 export const CORRUPTION_RISK_CONTEXT: Record<ProcessType, number> = {
   pzp_eu: 1.0,
   pzp_krajowy: 0.9,
@@ -206,12 +211,12 @@ const PZP_EU_STEPS: ProcessStep[] = [
     id: "standstill",
     name: "Standstill (art. 264 PZP)",
     nameEn: "Standstill period (art. 264 PZP)",
-    rigidDays: 11,
+    rigidDays: 10,
     flexibleDays: null,
     mandatoryWait: true,
     participation: {},
-    note: "Obowiązkowy okres zawieszenia przed podpisaniem umowy — min. 11 dni (przepisy EU)",
-    noteEn: "Mandatory suspension before signing — min. 11 days (EU regulations)",
+    note: "Obowiązkowy okres zawieszenia przed podpisaniem umowy — min. 10 dni (komunikacja elektroniczna) / 15 dni (inny sposób) — art. 264 ust. 1 PZP",
+    noteEn: "Mandatory suspension before signing — min. 10 days (electronic communication) / 15 days (other means) — art. 264(1) PZP",
   },
   {
     id: "contract_signing",
@@ -257,8 +262,8 @@ const PZP_KRAJOWY_STEPS: ProcessStep[] = [
     flexibleDays: null,
     mandatoryWait: true,
     participation: { buyer: 3 },
-    note: "Obowiązkowy termin składania ofert — min. 21 dni (tryby krajowe PZP)",
-    noteEn: "Mandatory offer submission period — min. 21 days (national PZP procedures)",
+    note: "Obowiązkowy termin składania ofert — min. 7 dni (dostawy/usługi) / 14 dni (roboty budowlane) — art. 283 PZP (21 dni to typowy, nie minimalny czas)",
+    noteEn: "Mandatory offer submission period — min. 7 days (supplies/services) / 14 days (construction works) — art. 283 PZP (21 days is a typical, not minimum, duration)",
   },
   {
     id: "bid_evaluation",
@@ -761,10 +766,11 @@ export function deriveStaffCost(
 
         // === Deepened contextual adjustments (Direct/Indirect + Upstream/Downstream) ===
         // Academic justification (for paper):
-        // These multipliers are calibrated based on practitioner interviews and observed behavior in
-        // procurement organizations. In Upstream + Direct contexts, C-level and legal spend dramatically
-        // more time due to risk, governance, and strategic importance.
-        // In Downstream + Indirect, the work is much more transactional and buyer-driven.
+        // These multipliers are a modeling assumption: their direction is triangulated from
+        // Kraljic/CIPS/APQC (in Upstream + Direct contexts, C-level and legal spend dramatically
+        // more time due to risk, governance, and strategic importance; in Downstream + Indirect
+        // the work is much more transactional and buyer-driven), but the magnitudes are internal
+        // and are to be validated by a time-allocation survey.
 
         // Upstream = strategic work: heavy involvement of seniors, legal, risk management
         if (processPhase === "upstream") {

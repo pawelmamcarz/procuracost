@@ -17,7 +17,7 @@ Procurement *policy* defines principles and boundaries. Procurement *procedure* 
 
 ## Features
 
-- **Cost Calculator** — 7-dimension cost model (time, admin, opportunity, productivity, renegotiation, TCO, bypass) comparing rigid procedures vs. policy-based approaches across 7 process types
+- **Cost Calculator** — 7-dimension cost model (time, admin, opportunity, favoritism / selection-quality, renegotiation, TCO, bypass) comparing rigid procedures vs. policy-based approaches across 7 process types
 - **Path Optimizer** — a weighted, rule-based scoring function (one closed-form formula per path) recommending a procurement path for your context, with a 30-run sensitivity sweep for stability, genuine ablation feature importance, and a natural-language explanation. It is illustrative, not trained ML, and not validated on real procurement data; public-sector recommendations above threshold are hard-filtered to lawful PZP trybów
 - **Maturity Assessment** — 10-question free audit placing your organization on the Tunnel→Field spectrum
 - **Case Studies** — Fleet (Ryanair), ERP (Swiss Casinos), Logistics (Air France KLM), Production (Zara) with empirical benchmarks

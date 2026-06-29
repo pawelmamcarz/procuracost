@@ -7,10 +7,12 @@
 // - Szucs (JEEA 2024, DOI 10.1093/jeea/jvad017): discretion RAISES prices and selects
 //   less-productive contractors. Competitive (rigid) tendering averts this favoritism
 //   premium — the governance value credited to formal procedures here.
-// - Beuve, Moszoro & Spiller (NBER wp28491; JLEO 2023): contractual rigidity is
-//   associated with +7.7–10.5pp renegotiation probability (observational).
-// - ISM / CAPS Research: TCO reduction up to ~30% over multiple years (a ceiling,
-//   discounted to present value here — not a flat compounding annual rate).
+// - Beuve, Moszoro & Spiller (NBER wp28491; JLEO 2023): 2SLS/IV estimate (rigidity
+//   instrumented by political contestability; exclusion restriction load-bearing); French
+//   car-park sector; +7.7–10.5pp renegotiation probability per-SD-dose.
+// - ISM ("Understanding Total Cost of Ownership in Procurement"): TCO reduction up to ~30%
+//   over multiple years — a Supply Chain Management Review best-case "up to" ceiling, kept
+//   only as a conservative cap, discounted to present value here (not a flat compounding rate).
 // - Lipsky (1980) + Vaughan (1996): informal bypass as a behavioural hazard.
 // - Holmström & Milgrom (1991): enforcement can crowd out value creation.
 
@@ -41,7 +43,8 @@ export interface ProcurementInputs {
   bypassAuditExposure: number; // PLN — audit/penalty cost if informal bypass discovered
   customSteps?: ProcessStep[];
 
-  // New dimensions (follow-up from academic review feedback):
+  // New dimensions — modeling assumption (Grade C); direction from Kraljic; the
+  // Direct-TCO ×1.35 magnitude is to be expert-elicited (not yet empirically anchored):
   spendType?: "direct" | "indirect";      // Direct = goes into product/service; Indirect = support spend
   processPhase?: "upstream" | "downstream"; // Upstream = strategic (sourcing/contracting/SRM); Downstream = operational P2P
 }
@@ -94,10 +97,13 @@ export interface MatrixCell {
   bypassProbability: number;
 }
 
-// Szucs (2024): discretion raises prices ~6pp and selects less-productive contractors.
-// This is the per-unit-discretion favoritism premium that competitive tendering averts.
+// Szucs (2024): discretion raises prices ~6% (structural causal estimate; reduced-form 8%)
+// and selects less-productive contractors. Hungarian public-procurement RDD + structural
+// selection-correction; JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017. This is the
+// per-unit-discretion favoritism premium that competitive tendering averts.
 const DISCRETION_FAVORITISM_PREMIUM = 0.06;
 const RIGIDITY_RENEGOTIATION_PREMIUM = 0.077;
+// Beuve, Moszoro & Spiller: unconditional renegotiation probability ~22%.
 const BASE_RENEGOTIATION_PROBABILITY = 0.22;
 // Annual foregone-savings rate; the cumulative (discounted) figure is capped at the
 // ISM ~30%-over-multiple-years ceiling so it can never exceed the cited bound.
@@ -184,6 +190,9 @@ export function getDimensionMultiplierDetails(
 
 // Bypass probability rises with rigidity but is bounded — recalibrated so that even the
 // most rigid process under manual tooling lands well below certainty (no 0.99 saturation).
+// These are modeling assumptions (sign only, not magnitude): the realised rigid ~86% exceeds
+// the empirical off-contract band (~1.8–50%), so the ceiling should be revisited via a
+// primary maverick/bypass audit before any magnitude claim is made.
 const BYPASS_SIGMOID_STEEPNESS = 6;
 const BYPASS_THRESHOLD = 0.9;
 const BYPASS_PROBABILITY_CEILING = 0.95;
@@ -196,6 +205,7 @@ const FLEXIBLE_TOOL_UTILIZATION_RATE = 0.3;
 
 /** Reduction factor applied to base renegotiation probability in the flexible path.
  * Policy-based procurement is associated with lower renegotiation risk (Beuve et al.).
+ * Grade-C assumption (sensitivity-test 0.6–0.85); not directly anchored to a point estimate.
  */
 const FLEXIBLE_RENEGOTIATION_PROBABILITY_FACTOR = 0.7;
 
@@ -382,8 +392,8 @@ export function calculateCosts(inputs: ProcurementInputs): ComparisonResult {
       timeCost: "Step durations: legal minima (PZP 2019 + Dyrektywa 2014/24/UE) and practitioner benchmarks — not a single empirical source",
       opportunityCost: "Deployment-delay cost = procurement duration × daily cost of inaction (model construction)",
       productivityCost: "Szucs, F. (2024). Discretion and Favoritism in Public Procurement. JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017 — discretion raises prices and lowers supplier value; competitive tendering averts this favoritism premium",
-      renegotiationCost: "Beuve, Moszoro & Spiller. Contractual Rigidity and Political Contestability. NBER wp28491 (publ. JLEO 2023) — observational, +7.7–10.5pp",
-      tcoCost: "Institute for Supply Management (ISM) / CAPS Research — up to ~30% TCO reduction over multiple years (practitioner benchmark, discounted at 5%)",
+      renegotiationCost: "Beuve, Moszoro & Spiller. Contractual Rigidity and Political Contestability. NBER wp28491 (publ. JLEO 2023) — 2SLS/IV (rigidity instrumented by political contestability; exclusion restriction load-bearing), French car-park sector, +7.7–10.5pp per-SD-dose",
+      tcoCost: "Institute for Supply Management (ISM), 'Understanding Total Cost of Ownership in Procurement' — up to ~30% TCO reduction over multiple years (a Supply Chain Management Review best-case 'up to' ceiling, kept only as a conservative cap, discounted at 5%)",
       bypassCost: "Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) The Challenger Launch Decision; Holmström & Milgrom (1991) Multitask Principal-Agent",
     },
   };

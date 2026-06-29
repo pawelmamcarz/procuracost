@@ -39,7 +39,7 @@ export default function ModelPage() {
         <h3>1. Rigidity and Behavioral Effects</h3>
         <ul>
           <li><strong>Favoritism premium</strong> under unchecked discretion (which competitive tendering averts): ~6pp (Szucs, JEEA 2024)</li>
-          <li><strong>Productivity loss</strong> from lowest-price selection: ~1.6%</li>
+          <li><strong>Selection-quality loss</strong> under discretion — less-productive contractors selected absent competitive tendering (Szucs, JEEA 2024)</li>
           <li><strong>Renegotiation risk</strong> increase from contractual rigidity: 7.7–10.5 pp (Beuve et al., NBER 2021)</li>
           <li><strong>Bypass probability</strong> modeled via sigmoid function (calibrated)</li>
         </ul>

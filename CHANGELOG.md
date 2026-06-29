@@ -2,6 +2,25 @@
 
 All notable changes to ProcuraCost are documented here.
 
+## [Unreleased] - 2026-06-28
+
+### Comprehensive substantive verification (weryfikacja merytoryczna) + corrections
+
+Full independent verification of the model underpinning the doctoral cycle (deliverable: `docs/VERIFICATION_REPORT.md`). Method: primary-source retrieval for every empirical anchor, adversarial 3-vote refutation on the two anchor studies, parameter triangulation against Polish/EU market data, real-code recompute of all reference scenarios + a symmetry test. 39 corrections logged; the 20 P1 items applied.
+
+**Verified (held up):**
+- **Anchor studies survive adversarial review.** Szucs (2024, `DISCRETION_FAVORITISM_PREMIUM=0.06`) and Beuve-Moszoro-Spiller (`0.077`/base `0.22`) passed the 3-vote refutation with 0 refutations; coded numbers match the primary sources, and the model honestly applies Szucs *against* its own thesis (favoritism scales with `1−ρ`, so the discretionary path bears it).
+
+**Corrected:**
+- **Stale public page brought into line (highest-priority finding).** `app/methodology/page.tsx` still published the retracted, sign-inverted Szucs "~2%" claim, a "five-dimension" label, the removed opportunity `× 0.02` term, Szucs "117–151", a flat `0.297` renegotiation probability, and an undiscounted/uncapped TCO formula. Rewritten to the corrected seven-dimension model (added Favoritism dim 4 + Bypass dim 7; discretion raises prices ~6pp; `P_R = 0.22 + 0.077 × ρ`; discounted/capped TCO; 117–160). The other UI/docs pages were already corrected in the working tree.
+- **Refuted citation removed.** The "OECD (2023) — 554/836 days" infrastructure-duration figures are absent from that paper (grep-verified); softened to an illustrative range with an honest "source to be confirmed" caveat (`RESEARCH.md`).
+- **PZP legal fixes.** National publication minimum corrected to **7/14 days (art. 283)** (the "21 dni" was the abolished 2004-PZP value, kept only as a *typical* duration); standstill corrected to **10/15 days (art. 264 ust. 1)** (was "11 dni"); EU supplies/services threshold `900_000 → 930_960` PLN (M.P. 2025 poz. 1247, 1 EUR = 4.31 PLN, valid 2026–2027); added a **`tryb_podstawowy` (art. 275)** path and branched the legality filter on the EU threshold so the 130k–EU band recommends the correct legal basis.
+- **Identification labels upgraded.** Beuve relabeled from "observational" to **2SLS/IV** (rigidity instrumented by political contestability); Szucs noted as structural-causal (~6% structural / ~8% reduced-form, Hungarian-public RDD); Guasch "41.5% incl. telecom" corrected to **excluding** telecom; "CAPS Research" dropped from the TCO cite; enforcement-fallacy "empirically" → "analytically predicted".
+- **Grade-C relabels.** `TCO_SAVINGS_RATE_PER_YEAR`, `CORRUPTION_RISK_CONTEXT` gradient, `PROCESS_RIGIDITY` cardinals, bypass sigmoid, `FLEXIBLE_RENEGOTIATION_PROBABILITY_FACTOR`, dimension/role multipliers, tech costs all explicitly marked modeling assumptions (Grade C) needing sensitivity tests; stakeholder daily rates documented as Grade B with anchors + gross→loaded conversion.
+
+**Disclosed (not changed):**
+- **The symmetry claim is numerically inert.** Real-code recompute: ΔC is strictly positive in 0/9 scenarios — "the rigid path can be net-cheaper" holds only per-dimension (favoritism subsidizes the rigid path) but never at net, because the rigid-favoring term is structurally bounded an order of magnitude below the TCO/opportunity penalties. To be disclosed honestly in all articles, not tuned away. The flat-vs-decaying TCO recalibration (C32) is **deferred** pending a framing decision.
+
 ## [Unreleased] - 2026-06-24
 
 ### Academic-integrity audit: model "honest reframe" + documentation reconciliation

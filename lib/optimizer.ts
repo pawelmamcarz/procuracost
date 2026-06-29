@@ -34,6 +34,7 @@ export type PathId =
   | "przetarg_otwarty"
   | "przetarg_ograniczony"
   | "dialog_konkurencyjny"
+  | "tryb_podstawowy"
   | "negocjacje"
   | "agile"
   | "bezposrednie";
@@ -151,6 +152,38 @@ export const PATHS: Record<PathId, ProcurementPath> = {
       "Long duration",
     ],
     color: "#f59e0b",
+  },
+  tryb_podstawowy: {
+    id: "tryb_podstawowy",
+    name: "Tryb podstawowy",
+    nameEn: "Basic mode",
+    pzpArticle: "PZP Art. 275",
+    description:
+      "Domyślny krajowy tryb konkurencyjny dla zamówień poniżej progu unijnego (od 130 000 PLN). Trzy warianty: bez negocjacji, z fakultatywnymi negocjacjami oraz z obowiązkowymi negocjacjami. Krótsze terminy niż w trybach unijnych przy zachowaniu konkurencji i przejrzystości.",
+    descriptionEn:
+      "The default national competitive procedure for contracts below the EU threshold (from PLN 130,000). Three variants: without negotiations, with optional negotiations, and with mandatory negotiations. Shorter deadlines than EU procedures while preserving competition and transparency.",
+    typicalDays: [30, 90],
+    conditions: [
+      "Wartość między 130 000 PLN a progiem unijnym",
+      "Sektor publiczny (postępowanie krajowe PZP)",
+      "Standardowy zakup konkurencyjny",
+      "Brak wyjątkowej pilności",
+    ],
+    conditionsEn: [
+      "Value between PLN 130,000 and the EU threshold",
+      "Public sector (national PZP procedure)",
+      "Standard competitive purchase",
+      "No exceptional urgency",
+    ],
+    risks: [
+      "Krótsze terminy niż w trybach unijnych, ale wciąż sformalizowane",
+      "Wymaga publikacji w Biuletynie Zamówień Publicznych",
+    ],
+    risksEn: [
+      "Shorter deadlines than EU procedures, but still formalized",
+      "Requires publication in the Public Procurement Bulletin",
+    ],
+    color: "#6366f1",
   },
   negocjacje: {
     id: "negocjacje",
@@ -306,6 +339,22 @@ function scorePath(path: PathId, f: ProcurementFeatures, weights: number[]): num
         w10 * (isDirect && isUpstream ? 1.6 : isDirect ? 1.1 : 0.7) * 12
       );
 
+    case "tryb_podstawowy":
+      return (
+        // Default competitive Polish procedure below the EU threshold: public-sector,
+        // mid-value (130k–EU band), non-emergency, standard buys.
+        w0 * (f.isPublicSector ? 1 : 0) * 30 +
+        w1 *
+          (f.contractValue >= PZP_EXEMPTION_PLN &&
+          f.contractValue < EU_THRESHOLD_SUPPLIES_SERVICES_PLN
+            ? 1
+            : 0) *
+          30 +
+        w2 * (f.urgencyDays >= 21 ? 1 : f.urgencyDays / 21) * 15 +
+        w3 * (f.supplierCount >= 2 ? 1 : f.supplierCount / 2) * 15 +
+        w4 * ((6 - f.complexity) / 5) * 10
+      );
+
     case "negocjacje":
       return (
         w0 * (f.strategicImportance / 5) * 25 +
@@ -412,17 +461,20 @@ const PATH_IDS: PathId[] = [
   "przetarg_otwarty",
   "przetarg_ograniczony",
   "dialog_konkurencyjny",
+  "tryb_podstawowy",
   "negocjacje",
   "agile",
   "bezposrednie",
 ];
 
-// ─── Polish PZP thresholds (2026, UZP conversion of EU thresholds) ───────────────
-// Object-type dependent: supplies/services EU threshold ≈ PLN 600k–930k; construction
-// works ≈ PLN 23.3M. The supplies/services threshold is the conservative default since
-// the optimizer does not capture the procurement object type.
+// ─── Polish PZP thresholds (2026–2027, UZP conversion of EU thresholds) ──────────
+// Per Obwieszczenie Prezesa UZP z 8.12.2025 (M.P. 2025 poz. 1247): 1 EUR = 4.31 PLN,
+// valid 2026–2027. Supplies/services EU threshold for sub-central contracting
+// authorities = 216,000 EUR × 4.31 ≈ PLN 930,960; construction works ≈ PLN 23.3M.
+// The supplies/services threshold is the conservative default since the optimizer
+// does not capture the procurement object type.
 const PZP_EXEMPTION_PLN = 130_000;
-const EU_THRESHOLD_SUPPLIES_SERVICES_PLN = 900_000;
+const EU_THRESHOLD_SUPPLIES_SERVICES_PLN = 930_960;
 
 // Lawful competitive trybów for public-sector procurement at/above the EU threshold
 // without documented statutory grounds for a negotiated / single-source award.
@@ -432,13 +484,31 @@ const PUBLIC_COMPETITIVE_PATHS: PathId[] = [
   "dialog_konkurencyjny",
 ];
 
+// Lawful paths for public-sector procurement in the 130k PLN–EU-threshold band: the national
+// 'tryb podstawowy' (Art. 275) is the default competitive procedure here. The ≥EU-threshold
+// trybów (open / restricted tender, competitive dialogue) remain available; a negotiated or
+// single-source award still requires documented przesłanki (Art. 275 ust. 2 / 305).
+const PUBLIC_BELOW_EU_PATHS: PathId[] = [
+  "tryb_podstawowy",
+  "przetarg_otwarty",
+  "przetarg_ograniczony",
+  "dialog_konkurencyjny",
+];
+
+// Paths available where PZP's national 'tryb podstawowy' does not apply (private sector, or
+// public buys below the 130k PLN PZP exemption): every path except the band-specific tryb podstawowy.
+const GENERAL_PATHS: PathId[] = PATH_IDS.filter((p) => p !== "tryb_podstawowy");
+
 // Hard legal filter: the set of paths the tool is ALLOWED to recommend for these features,
 // so a recommendation can never contradict the legality note.
 function feasiblePathIds(f: ProcurementFeatures): PathId[] {
-  if (!f.isPublicSector) return PATH_IDS;                  // private sector: policy is the only constraint
-  if (f.contractValue < PZP_EXEMPTION_PLN) return PATH_IDS; // below 130k PLN: PZP does not apply
-  // Public sector at/above the threshold: only competitive trybów by default. Negotiated and
-  // single-source awards require documented przesłanki (Art. 153 / 214) not modeled here.
+  if (!f.isPublicSector) return GENERAL_PATHS;                  // private sector: policy is the only constraint
+  if (f.contractValue < PZP_EXEMPTION_PLN) return GENERAL_PATHS; // below 130k PLN: PZP does not apply
+  // Public sector in the 130k PLN–EU band: the national tryb podstawowy (Art. 275) is the lawful
+  // default, alongside the competitive trybów. Negotiated / single-source awards require przesłanki.
+  if (f.contractValue < EU_THRESHOLD_SUPPLIES_SERVICES_PLN) return PUBLIC_BELOW_EU_PATHS;
+  // Public sector at/above the EU threshold: only the full-procedure competitive trybów by default.
+  // Negotiated and single-source awards require documented przesłanki (Art. 153 / 214) not modeled here.
   return PUBLIC_COMPETITIVE_PATHS;
 }
 
