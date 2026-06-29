@@ -1,9 +1,20 @@
-// Core cost model — academic sources:
-// - Szucs (JEEA 2024): discretion → +2% price, -1.6% productivity loss under rigid selection
-// - Beuve, Moszoro & Saussier (NBER wp28491): rigidity → +7.7-10.5% renegotiations
-// - ISM Total Cost of Ownership: up to 30% savings over 3 years
-// - Lipsky (1980) + Vaughan (1996): bypass probability under rigidity
-// - Holmström & Milgrom (1991): enforcement crowds out value creation
+// Core cost model — each dimension cites a specific source. Outputs are model
+// ESTIMATES under the assumptions documented in docs/MODEL_PARAMETERS.md, not
+// measured facts. The model is SYMMETRIC: the flexible (discretionary) path carries
+// its own favoritism/selection-quality cost, so the rigid path can be net-cheaper for
+// high-value, high-corruption-risk, competitive-market contexts.
+//
+// - Szucs (JEEA 2024, DOI 10.1093/jeea/jvad017): discretion RAISES prices and selects
+//   less-productive contractors. Competitive (rigid) tendering averts this favoritism
+//   premium — the governance value credited to formal procedures here.
+// - Beuve, Moszoro & Spiller (NBER wp28491; JLEO 2023): 2SLS/IV estimate (rigidity
+//   instrumented by political contestability; exclusion restriction load-bearing); French
+//   car-park sector; +7.7–10.5pp renegotiation probability per-SD-dose.
+// - ISM ("Understanding Total Cost of Ownership in Procurement"): TCO reduction up to ~30%
+//   over multiple years — a Supply Chain Management Review best-case "up to" ceiling, kept
+//   only as a conservative cap, discounted to present value here (not a flat compounding rate).
+// - Lipsky (1980) + Vaughan (1996): informal bypass as a behavioural hazard.
+// - Holmström & Milgrom (1991): enforcement can crowd out value creation.
 
 import {
   ProcessType,
@@ -11,6 +22,7 @@ import {
   StakeholderRole,
   TECH_LEVELS,
   PROCESS_RIGIDITY,
+  CORRUPTION_RISK_CONTEXT,
   getSteps,
   deriveRigidDays,
   deriveFlexibleDays,
@@ -31,7 +43,8 @@ export interface ProcurementInputs {
   bypassAuditExposure: number; // PLN — audit/penalty cost if informal bypass discovered
   customSteps?: ProcessStep[];
 
-  // New dimensions (follow-up from academic review feedback):
+  // New dimensions — modeling assumption (Grade C); direction from Kraljic; the
+  // Direct-TCO ×1.35 magnitude is to be expert-elicited (not yet empirically anchored):
   spendType?: "direct" | "indirect";      // Direct = goes into product/service; Indirect = support spend
   processPhase?: "upstream" | "downstream"; // Upstream = strategic (sourcing/contracting/SRM); Downstream = operational P2P
 }
@@ -41,8 +54,11 @@ export interface CostBreakdown {
   timeCost: number;
   // Admin overhead: coordination (email/phone) + tool license
   adminCost: number;
+  // Opportunity cost: deployment-delay cost over this path's own duration
   opportunityCost: number;
-  // Szucs (JEEA 2024): rigid price selection → -1.6% supplier productivity
+  // Favoritism / selection-quality cost: expected price-dispersion and value loss from
+  // DISCRETION (Szucs 2024). Borne mainly by the flexible path; competitive tendering
+  // averts it. (Field kept as `productivityCost` for breakdown-chart compatibility.)
   productivityCost: number;
   renegotiationCost: number;
   tcoCost: number;
@@ -81,13 +97,20 @@ export interface MatrixCell {
   bypassProbability: number;
 }
 
-const RIGIDITY_PRICE_PREMIUM = 0.02;
-// Szucs (JEEA 2024, p.127): lowest-price selection in rigid procedures reduces
-// awarded supplier's productivity by ~1.6% vs. value-based selection
-const RIGIDITY_PRODUCTIVITY_LOSS = 0.016;
+// Szucs (2024): discretion raises prices ~6% (structural causal estimate; reduced-form 8%)
+// and selects less-productive contractors. Hungarian public-procurement RDD + structural
+// selection-correction; JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017. This is the
+// per-unit-discretion favoritism premium that competitive tendering averts.
+const DISCRETION_FAVORITISM_PREMIUM = 0.06;
 const RIGIDITY_RENEGOTIATION_PREMIUM = 0.077;
+// Beuve, Moszoro & Spiller: unconditional renegotiation probability ~22%.
 const BASE_RENEGOTIATION_PROBABILITY = 0.22;
+// Annual foregone-savings rate; the cumulative (discounted) figure is capped at the
+// ISM ~30%-over-multiple-years ceiling so it can never exceed the cited bound.
 const TCO_SAVINGS_RATE_PER_YEAR = 0.10;
+const TCO_CUMULATIVE_CAP = 0.30;
+// Discount rate for multi-year flows (foregone TCO savings) → present value.
+const DISCOUNT_RATE = 0.05;
 
 /**
  * Returns a set of multipliers based on Spend Type (Direct/Indirect) and Process Phase (Upstream/Downstream).
@@ -156,7 +179,7 @@ export function getDimensionMultiplierDetails(
 
   if (m.tcoMultiplier !== 1) details.push({ key: "tco", label: "Dźwignia TCO", labelEn: "TCO leverage", value: m.tcoMultiplier });
   if (m.delayMultiplier !== 1) details.push({ key: "delay", label: "Koszt opóźnienia", labelEn: "Delay penalty", value: m.delayMultiplier });
-  if (m.productivityMultiplier !== 1) details.push({ key: "productivity", label: "Wpływ na produktywność dostawcy", labelEn: "Supplier productivity impact", value: m.productivityMultiplier });
+  if (m.productivityMultiplier !== 1) details.push({ key: "productivity", label: "Wpływ na jakość wyboru dostawcy", labelEn: "Supplier selection-quality impact", value: m.productivityMultiplier });
   if (m.bypassMultiplier !== 1) details.push({ key: "bypass", label: "Ryzyko obejścia", labelEn: "Bypass risk", value: m.bypassMultiplier });
   if (m.renegotiationMultiplier !== 1) details.push({ key: "renegotiation", label: "Ryzyko renegocjacji", labelEn: "Renegotiation exposure", value: m.renegotiationMultiplier });
   if (m.staffIntensityMultiplier !== 1) details.push({ key: "staff", label: "Intensywność pracy zespołu", labelEn: "Team effort intensity", value: m.staffIntensityMultiplier });
@@ -165,8 +188,14 @@ export function getDimensionMultiplierDetails(
   return details;
 }
 
-const BYPASS_SIGMOID_STEEPNESS = 10;
-const BYPASS_THRESHOLD = 0.5;
+// Bypass probability rises with rigidity but is bounded — recalibrated so that even the
+// most rigid process under manual tooling lands well below certainty (no 0.99 saturation).
+// These are modeling assumptions (sign only, not magnitude): the realised rigid ~86% exceeds
+// the empirical off-contract band (~1.8–50%), so the ceiling should be revisited via a
+// primary maverick/bypass audit before any magnitude claim is made.
+const BYPASS_SIGMOID_STEEPNESS = 6;
+const BYPASS_THRESHOLD = 0.9;
+const BYPASS_PROBABILITY_CEILING = 0.95;
 
 /** Share of tool license cost attributed to the flexible (policy-only) path.
  * A flexible approach typically uses only a fraction of the full sourcing/ERP
@@ -175,7 +204,8 @@ const BYPASS_THRESHOLD = 0.5;
 const FLEXIBLE_TOOL_UTILIZATION_RATE = 0.3;
 
 /** Reduction factor applied to base renegotiation probability in the flexible path.
- * Policy-based procurement materially lowers renegotiation risk (Beuve et al.).
+ * Policy-based procurement is associated with lower renegotiation risk (Beuve et al.).
+ * Grade-C assumption (sensitivity-test 0.6–0.85); not directly anchored to a point estimate.
  */
 const FLEXIBLE_RENEGOTIATION_PROBABILITY_FACTOR = 0.7;
 
@@ -191,6 +221,13 @@ function clamp(value: number, min: number, max: number): number {
 
 function bypassProbability(rigidityIndex: number): number {
   return 1 / (1 + Math.exp(-BYPASS_SIGMOID_STEEPNESS * (rigidityIndex - BYPASS_THRESHOLD)));
+}
+
+/** Present-value annuity factor: Σ_{y=1..years} 1/(1+rate)^y. */
+function npvAnnuityFactor(years: number, rate: number): number {
+  let sum = 0;
+  for (let y = 1; y <= Math.floor(years); y++) sum += 1 / Math.pow(1 + rate, y);
+  return sum;
 }
 
 function buildBreakdown(
@@ -243,6 +280,10 @@ export function calculateCosts(inputs: ProcurementInputs): ComparisonResult {
   const tech = TECH_LEVELS[techLevel];
   const steps = getSteps(processType, customSteps);
   const baseRigidity = PROCESS_RIGIDITY[processType];
+  // The flexible path always runs at policy-level rigidity, but never scores as MORE
+  // rigid than the underlying process (fixes the operational-type inversion).
+  const flexibleRigidity = Math.min(baseRigidity, PROCESS_RIGIDITY["policy_only"]);
+  const corruptionContext = CORRUPTION_RISK_CONTEXT[processType];
   const tcoYears = Math.max(0, tcoHorizonYears);
 
   // Dimension multipliers must be calculated early
@@ -254,18 +295,18 @@ export function calculateCosts(inputs: ProcurementInputs): ComparisonResult {
 
   // Staff costs from step participation matrix
   const rigidStaffCost = deriveStaffCost(
-    steps, 
-    false, 
-    stakeholders, 
-    inputs.processPhase, 
+    steps,
+    false,
+    stakeholders,
+    inputs.processPhase,
     inputs.spendType
   ) * dims.staffIntensityMultiplier;
 
   const flexibleStaffCost = deriveStaffCost(
-    steps, 
-    true, 
-    stakeholders, 
-    inputs.processPhase, 
+    steps,
+    true,
+    stakeholders,
+    inputs.processPhase,
     inputs.spendType
   ) * dims.staffIntensityMultiplier;
 
@@ -277,22 +318,23 @@ export function calculateCosts(inputs: ProcurementInputs): ComparisonResult {
   const rigidToolCost = tech.toolCostPerProcess;
   const flexibleToolCost = tech.toolCostPerProcess * FLEXIBLE_TOOL_UTILIZATION_RATE;
 
-  // Opportunity cost: price premium + deployment delay
-  const rigidPricePremium = contractValue * RIGIDITY_PRICE_PREMIUM;
+  // Opportunity cost: deployment-delay cost over EACH path's own duration. Both paths
+  // tie up value while procuring; the saving is the difference, reported honestly as a
+  // delta of two non-zero quantities (no zero-friction baseline).
+  const rigidOpportunityCost = rigidDays * dailyCostOfInaction * dims.delayMultiplier;
+  const flexibleOpportunityCost = flexibleDays * dailyCostOfInaction * dims.delayMultiplier;
 
-  const delayDays = Math.max(0, rigidDays - flexibleDays);
-  const rigidDelayCost = delayDays * dailyCostOfInaction * dims.delayMultiplier;
+  // Favoritism / selection-quality cost (Szucs 2024). Scales with DISCRETION (1 − rigidity)
+  // and the context's corruption risk. The flexible (discretionary) path bears more of it;
+  // competitive tendering averts it — so rigid CAN be cheaper on this dimension.
+  const rigidProductivityCost =
+    contractValue * DISCRETION_FAVORITISM_PREMIUM * (1 - baseRigidity) * corruptionContext * dims.productivityMultiplier;
+  const flexibleProductivityCost =
+    contractValue * DISCRETION_FAVORITISM_PREMIUM * (1 - flexibleRigidity) * corruptionContext * dims.productivityMultiplier;
 
-  const rigidOpportunityCost = rigidPricePremium + rigidDelayCost;
-  const flexibleOpportunityCost = 0;
-
-  // Productivity cost
-  const rigidProductivityCost = contractValue * RIGIDITY_PRODUCTIVITY_LOSS * baseRigidity * dims.productivityMultiplier;
-  const flexibleProductivityCost = contractValue * RIGIDITY_PRODUCTIVITY_LOSS * PROCESS_RIGIDITY["policy_only"] * dims.productivityMultiplier;
-
-  // Renegotiation
+  // Renegotiation — premium scales with the process's actual rigidity (Beuve et al.).
   const rigidRenegotiationProb = clamp(
-    BASE_RENEGOTIATION_PROBABILITY + RIGIDITY_RENEGOTIATION_PREMIUM * dims.renegotiationMultiplier,
+    BASE_RENEGOTIATION_PROBABILITY + RIGIDITY_RENEGOTIATION_PREMIUM * baseRigidity * dims.renegotiationMultiplier,
     0, 1,
   );
   const flexibleRenegotiationProb = clamp(
@@ -302,13 +344,24 @@ export function calculateCosts(inputs: ProcurementInputs): ComparisonResult {
   const rigidRenegotiationExpected = rigidRenegotiationProb * renegotiationCost;
   const flexibleRenegotiationExpected = flexibleRenegotiationProb * renegotiationCost;
 
-  // TCO foregone savings
-  const rigidTCOForgone = contractValue * TCO_SAVINGS_RATE_PER_YEAR * tcoYears * baseRigidity * dims.tcoMultiplier;
-  const flexibleTCOForgone = contractValue * TCO_SAVINGS_RATE_PER_YEAR * tcoYears * PROCESS_RIGIDITY["policy_only"] * dims.tcoMultiplier;
+  // TCO foregone savings — present value of the annual stream, capped at the ISM ~30% ceiling.
+  const discountedHorizon = npvAnnuityFactor(tcoYears, DISCOUNT_RATE);
+  const rigidTCOForgone = contractValue * Math.min(
+    TCO_SAVINGS_RATE_PER_YEAR * discountedHorizon * baseRigidity * dims.tcoMultiplier,
+    TCO_CUMULATIVE_CAP,
+  );
+  const flexibleTCOForgone = contractValue * Math.min(
+    TCO_SAVINGS_RATE_PER_YEAR * discountedHorizon * flexibleRigidity * dims.tcoMultiplier,
+    TCO_CUMULATIVE_CAP,
+  );
 
-  // Bypass probability
-  const effectiveRigidity = clamp(baseRigidity * tech.bypassProbMultiplier * dims.bypassMultiplier, 0, 1);
-  const pBypassRigid = bypassProbability(effectiveRigidity);
+  // Bypass probability (behavioural hazard). Tech ease multiplies the realized probability
+  // outside the sigmoid so high-rigidity processes stay differentiated and never saturate.
+  const effectiveRigidity = clamp(baseRigidity * dims.bypassMultiplier, 0, 1);
+  const pBypassRigid = clamp(
+    bypassProbability(effectiveRigidity) * tech.bypassProbMultiplier,
+    0, BYPASS_PROBABILITY_CEILING,
+  );
   const pBypassFlexible = tech.policyRigidityIndex * FLEXIBLE_BYPASS_PROBABILITY_SCALE;
   const rigidBypassCost = pBypassRigid * bypassAuditExposure;
   const flexibleBypassCost = pBypassFlexible * bypassAuditExposure;
@@ -336,11 +389,11 @@ export function calculateCosts(inputs: ProcurementInputs): ComparisonResult {
     rigidDays,
     flexibleDays,
     sources: {
-      timeCost: "OECD Public Procurement Performance (2023)",
-      opportunityCost: "Szucs, F. (2024). Discretion and Favoritism in Public Procurement. JEEA 22(1):117",
-      productivityCost: "Szucs, F. (2024). Discretion and Favoritism in Public Procurement. JEEA 22(1):127 (−1.6% productivity under rigid lowest-price selection)",
-      renegotiationCost: "Beuve, Moszoro & Saussier (2021). Contractual Rigidity and Political Contestability. NBER wp28491",
-      tcoCost: "Institute for Supply Management (ISM). Total Cost of Ownership in Procurement",
+      timeCost: "Step durations: legal minima (PZP 2019 + Dyrektywa 2014/24/UE) and practitioner benchmarks — not a single empirical source",
+      opportunityCost: "Deployment-delay cost = procurement duration × daily cost of inaction (model construction)",
+      productivityCost: "Szucs, F. (2024). Discretion and Favoritism in Public Procurement. JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017 — discretion raises prices and lowers supplier value; competitive tendering averts this favoritism premium",
+      renegotiationCost: "Beuve, Moszoro & Spiller. Contractual Rigidity and Political Contestability. NBER wp28491 (publ. JLEO 2023) — 2SLS/IV (rigidity instrumented by political contestability; exclusion restriction load-bearing), French car-park sector, +7.7–10.5pp per-SD-dose",
+      tcoCost: "Institute for Supply Management (ISM), 'Understanding Total Cost of Ownership in Procurement' — up to ~30% TCO reduction over multiple years (a Supply Chain Management Review best-case 'up to' ceiling, kept only as a conservative cap, discounted at 5%)",
       bypassCost: "Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) The Challenger Launch Decision; Holmström & Milgrom (1991) Multitask Principal-Agent",
     },
   };
@@ -365,7 +418,9 @@ export function calculateMatrix(inputs: ProcurementInputs): MatrixCell[] {
       processMode: "flexible",
       totalCost: result.flexible.total,
       days: result.flexibleDays,
-      bypassProbability: result.bypassProbability * FLEXIBLE_BYPASS_PROBABILITY_SCALE,
+      // Same formula as the flexible path in calculateCosts (policy index × scale),
+      // not the rigid sigmoid output.
+      bypassProbability: TECH_LEVELS[tl].policyRigidityIndex * FLEXIBLE_BYPASS_PROBABILITY_SCALE,
     });
   }
 
@@ -385,7 +440,9 @@ export function formatPercent(value: number): string {
 }
 
 export function formatCompact(value: number): string {
-  if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M`;
-  if (value >= 1_000) return `${(value / 1_000).toFixed(0)}k`;
-  return `${value}`;
+  const sign = value < 0 ? "-" : "";
+  const v = Math.abs(value);
+  if (v >= 1_000_000) return `${sign}${(v / 1_000_000).toFixed(1)}M`;
+  if (v >= 1_000) return `${sign}${(v / 1_000).toFixed(0)}k`;
+  return `${sign}${v}`;
 }

@@ -2,8 +2,8 @@
 //
 // Academic basis:
 // - Mandatory wait times: PZP (Dz.U. 2019 poz. 2019) + EU Directive 2014/24/UE
-// - Stakeholder hours: benchmarked from OECD (2023) procurement function surveys
-// - Tech level impacts: derived from EY / Deloitte sourcing transformation studies
+// - Stakeholder hours: calibrated / illustrative (role-hour magnitudes are modeling assumptions)
+// - Tech level impacts: timeMultiplier anchored to APQC/Hackett benchmarks; coordCostPerDay/toolCostPerProcess are modeling assumptions
 
 export type ProcessType = "pzp_eu" | "pzp_krajowy" | "private_formal" | "policy_only" | "catalog_order" | "mrp_order" | "capex" | "custom";
 export type TechLevelId = "manual" | "sourcing_tool" | "partial_erp" | "end_to_end";
@@ -103,7 +103,10 @@ export const TECH_LEVELS: Record<TechLevelId, TechLevel> = {
 };
 
 // ─── Process rigidity by type ───────────────────────────────────────────────────
-// Used for bypass probability and TCO calculations
+// Used for bypass probability and TCO calculations.
+// The cardinal 0–1 values are a Grade-C modeling assumption: the ordinal ranking
+// (pzp_eu > pzp_krajowy > capex > private_formal > … > mrp_order) is defensible, but
+// there is no external 0–1 anchor for the exact magnitudes — they are internal calibration.
 
 export const PROCESS_RIGIDITY: Record<ProcessType, number> = {
   pzp_eu: 0.95,
@@ -114,6 +117,25 @@ export const PROCESS_RIGIDITY: Record<ProcessType, number> = {
   mrp_order: 0.12,
   capex: 0.72,
   custom: 0.50,
+};
+
+// ─── Corruption / favoritism-risk context by process type ───────────────────────
+// A calibrated governance-risk index (Grade C) for how much favoritism, price-dispersion
+// and value loss a DISCRETIONARY award would risk in this context (0 = none, 1 = high
+// public-money scrutiny). This is what competitive (rigid) tendering averts — the basis
+// of the governance value credited to formal procedures. The pzp_eu = 1.0 anchor is tied
+// to Szucs 2024 (discretion raises prices and selects less-productive contractors); the
+// ordinal direction is taken from OECD; the intermediate gradient between anchors is a
+// modeling assumption — sensitivity-tested. Public procurement carries the highest stakes.
+export const CORRUPTION_RISK_CONTEXT: Record<ProcessType, number> = {
+  pzp_eu: 1.0,
+  pzp_krajowy: 0.9,
+  capex: 0.6,
+  policy_only: 0.45,
+  private_formal: 0.4,
+  custom: 0.4,
+  catalog_order: 0.2,
+  mrp_order: 0.15,
 };
 
 // ─── Process step templates ─────────────────────────────────────────────────────
@@ -189,12 +211,12 @@ const PZP_EU_STEPS: ProcessStep[] = [
     id: "standstill",
     name: "Standstill (art. 264 PZP)",
     nameEn: "Standstill period (art. 264 PZP)",
-    rigidDays: 11,
+    rigidDays: 10,
     flexibleDays: null,
     mandatoryWait: true,
     participation: {},
-    note: "Obowiązkowy okres zawieszenia przed podpisaniem umowy — min. 11 dni (przepisy EU)",
-    noteEn: "Mandatory suspension before signing — min. 11 days (EU regulations)",
+    note: "Obowiązkowy okres zawieszenia przed podpisaniem umowy — min. 10 dni (komunikacja elektroniczna) / 15 dni (inny sposób) — art. 264 ust. 1 PZP",
+    noteEn: "Mandatory suspension before signing — min. 10 days (electronic communication) / 15 days (other means) — art. 264(1) PZP",
   },
   {
     id: "contract_signing",
@@ -240,8 +262,8 @@ const PZP_KRAJOWY_STEPS: ProcessStep[] = [
     flexibleDays: null,
     mandatoryWait: true,
     participation: { buyer: 3 },
-    note: "Obowiązkowy termin składania ofert — min. 21 dni (tryby krajowe PZP)",
-    noteEn: "Mandatory offer submission period — min. 21 days (national PZP procedures)",
+    note: "Obowiązkowy termin składania ofert — min. 7 dni (dostawy/usługi) / 14 dni (roboty budowlane) — art. 283 PZP (21 dni to typowy, nie minimalny czas)",
+    noteEn: "Mandatory offer submission period — min. 7 days (supplies/services) / 14 days (construction works) — art. 283 PZP (21 days is a typical, not minimum, duration)",
   },
   {
     id: "bid_evaluation",
@@ -566,13 +588,13 @@ export const PROCESS_TYPE_META: Record<Exclude<ProcessType, "custom">, { categor
     category: "strategic_pzp",
     name: "Strategiczne PZP — przetarg nieograniczony (powyżej progów UE)",
     nameEn: "Strategic PZP — open tender (above EU thresholds)",
-    description: "Pełne postępowanie przetargowe z mandatory waiting periods. Dotyczy zamówień powyżej 5 382 000 PLN (usługi/dostawy) lub 139 117 000 PLN (roboty budowlane).",
-    descriptionEn: "Full tender procedure with mandatory waiting periods. Applies to contracts above EU thresholds.",
+    description: "Pełne postępowanie przetargowe z obowiązkowymi okresami oczekiwania. Dotyczy zamówień powyżej progów UE: ok. 600 tys.–930 tys. PLN dla dostaw/usług oraz ok. 23,3 mln PLN dla robót budowlanych (progi 2026, wg kursu UZP).",
+    descriptionEn: "Full tender procedure with mandatory waiting periods. Applies to contracts above the EU thresholds: ~PLN 600k–930k for supplies/services and ~PLN 23.3M for construction works (2026 thresholds, UZP conversion).",
   },
   pzp_krajowy: {
     category: "strategic_pzp",
-    name: "Strategiczne PZP — postępowanie krajowe (130k – 5,38M PLN)",
-    nameEn: "Strategic PZP — national procedure (130k – 5.38M PLN)",
+    name: "Strategiczne PZP — postępowanie krajowe (130k PLN – próg UE)",
+    nameEn: "Strategic PZP — national procedure (130k PLN – EU threshold)",
     description: "Uproszczone postępowanie krajowe. Shorter mandatory waiting periods than EU threshold.",
     descriptionEn: "Simplified national procedure. Shorter mandatory waiting periods than EU threshold.",
   },
@@ -650,9 +672,6 @@ export function deriveRigidDays(
   processPhase?: "upstream" | "downstream",
   spendType?: "direct" | "indirect"
 ): number {
-  // Base sum of template days
-  let total = steps.reduce((sum, s) => sum + s.rigidDays, 0);
-
   // Deepened per-step contextual adjustment (pogłębienie modelu)
   // In Upstream + Direct the most strategic/risky steps require materially more calendar time:
   // more alignment rounds, legal reviews, board-level prep, risk workshops, supplier iterations.
@@ -670,17 +689,24 @@ export function deriveRigidDays(
     return 1.0;
   };
 
-  let adjustedTotal = 0;
+  // Mandatory legal waiting periods (publication, standstill) are fixed by statute and
+  // must NOT be compressed by the technology multiplier — they stay at their legal floor.
+  let mandatoryDays = 0;
+  let adjustedCompressible = 0;
   for (const s of steps) {
-    adjustedTotal += s.rigidDays * stepDayBoost(s.id);
+    if (s.mandatoryWait) {
+      mandatoryDays += s.rigidDays;
+    } else {
+      adjustedCompressible += s.rigidDays * stepDayBoost(s.id);
+    }
   }
 
-  // Global strategic premium (kept for calibration stability)
+  // Global strategic premium (kept for calibration stability) — compressible work only
   if (processPhase === "upstream" && spendType === "direct") {
-    adjustedTotal *= 1.06;
+    adjustedCompressible *= 1.06;
   }
 
-  return Math.round(adjustedTotal * techMultiplier);
+  return Math.round(adjustedCompressible * techMultiplier + mandatoryDays);
 }
 
 export function deriveFlexibleDays(
@@ -689,10 +715,6 @@ export function deriveFlexibleDays(
   processPhase?: "upstream" | "downstream",
   spendType?: "direct" | "indirect"
 ): number {
-  let base = steps
-    .filter((s) => s.flexibleDays !== null)
-    .reduce((sum, s) => sum + (s.flexibleDays ?? 0), 0);
-
   const compression = getFlexibleTimeCompression(processPhase);
 
   // Deepened: in flexible path, Upstream+Direct benefits from the largest time compression
@@ -744,10 +766,11 @@ export function deriveStaffCost(
 
         // === Deepened contextual adjustments (Direct/Indirect + Upstream/Downstream) ===
         // Academic justification (for paper):
-        // These multipliers are calibrated based on practitioner interviews and observed behavior in
-        // procurement organizations. In Upstream + Direct contexts, C-level and legal spend dramatically
-        // more time due to risk, governance, and strategic importance.
-        // In Downstream + Indirect, the work is much more transactional and buyer-driven.
+        // These multipliers are a modeling assumption: their direction is triangulated from
+        // Kraljic/CIPS/APQC (in Upstream + Direct contexts, C-level and legal spend dramatically
+        // more time due to risk, governance, and strategic importance; in Downstream + Indirect
+        // the work is much more transactional and buyer-driven), but the magnitudes are internal
+        // and are to be validated by a time-allocation survey.
 
         // Upstream = strategic work: heavy involvement of seniors, legal, risk management
         if (processPhase === "upstream") {

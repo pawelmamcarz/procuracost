@@ -31,7 +31,7 @@ import {
   getDimensionMultiplierDetails,
 } from "@/lib/calculations";
 import { Scenario, SCENARIOS } from "@/lib/scenarios";
-import { comparisonT, Lang } from "@/lib/i18n";
+import { comparisonT, Lang, PHI_SET } from "@/lib/i18n";
 import {
   getSteps,
   TECH_LEVELS,
@@ -79,8 +79,7 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
     ? (inputs.processPhase === "upstream" ? (lang === "en" ? "Upstream" : "Upstream") : (lang === "en" ? "Downstream" : "Downstream"))
     : null;
 
-  // 2D matrix
-  const matrix = calculateMatrix(inputs);
+  const matrix = useMemo(() => calculateMatrix(inputs), [inputs]);
   const allCosts = matrix.map((c) => c.totalCost);
   const minCost = Math.min(...allCosts);
   const maxCost = Math.max(...allCosts);
@@ -100,7 +99,7 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
     { key: "renegotiationCost", label: lang === "en" ? "Renegotiation" : "Renegocjacje" },
     { key: "tcoCost", label: "TCO" },
     { key: "bypassCost", label: lang === "en" ? "Bypass" : "Obejście" },
-    { key: "productivityCost", label: lang === "en" ? "Productivity" : "Produktywność" },
+    { key: "productivityCost", label: lang === "en" ? "Selection" : "Jakość wyboru" },
   ] as const;
 
   const radarData = radarDimensions.map(({ key, label }) => {
@@ -114,18 +113,19 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
     };
   });
 
-  // Sensitivity analysis: sweep contract value 10%–1000% of current
-  const baseValue = inputs.contractValue;
-  const sensitivityData = SENSITIVITY_MULTIPLIERS.map((mult) => {
-    const r = calculateCosts({ ...inputs, contractValue: baseValue * mult });
-    const label = formatCompact(baseValue * mult);
-    return {
-      value: label,
-      [tx.rigidLabel]: Math.round(r.rigid.total),
-      [tx.flexibleLabel]: Math.round(r.flexible.total),
-      delta: Math.round(r.delta),
-    };
-  });
+  const sensitivityData = useMemo(() => {
+    const baseValue = inputs.contractValue;
+    return SENSITIVITY_MULTIPLIERS.map((mult) => {
+      const r = calculateCosts({ ...inputs, contractValue: baseValue * mult });
+      const label = formatCompact(baseValue * mult);
+      return {
+        value: label,
+        [tx.rigidLabel]: Math.round(r.rigid.total),
+        [tx.flexibleLabel]: Math.round(r.flexible.total),
+        delta: Math.round(r.delta),
+      };
+    });
+  }, [inputs, tx.rigidLabel, tx.flexibleLabel]);
 
   function getCell(tl: TechLevelId, mode: "rigid" | "flexible"): MatrixCell {
     return matrix.find((c) => c.techLevel === tl && c.processMode === mode)!;
@@ -150,16 +150,14 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
 
   return (
     <div className="space-y-8">
-      {/* Delta headline */}
       <div className="rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-6 text-white">
         <p className="text-sm font-medium uppercase tracking-wide opacity-80">
           {tx.deltaHeadline}
         </p>
         <p className="mt-1 text-4xl font-bold">{formatPLN(delta)}</p>
         <p className="mt-1 text-lg opacity-90">
-          {formatPercent(deltaPercent)} {tx.higherThan}
+          {formatPercent(Math.abs(deltaPercent))} {deltaPercent >= 0 ? tx.higherThan : tx.lowerThan}
         </p>
-        {/* Days comparison */}
         <div className="mt-3 flex gap-4 text-sm">
           <span className="rounded-lg bg-white/10 px-3 py-1">
             {tx.rigidLabel}: <strong>{rigidDays}</strong> {lang === "en" ? "days" : "dni"}
@@ -169,7 +167,6 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
           </span>
         </div>
 
-        {/* New dimensions display (Direct/Indirect + Upstream/Downstream) */}
         {(spendLabel || phaseLabel) && (
           <div className="mt-3 flex flex-wrap gap-2 text-xs">
             {spendLabel && (
@@ -182,32 +179,30 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
                 {lang === "en" ? "Phase" : "Faza"}: <strong>{phaseLabel}</strong>
               </span>
             )}
-            <span className="text-white/60 italic ml-1">• model adjusted for context</span>
+            <span className="text-white/60 italic ml-1">• {tx.modelAdjustContext}</span>
           </div>
         )}
 
-        {/* Explanation of dimension-based adjustments (new) */}
         {(inputs.spendType || inputs.processPhase) && (
           <div className="mt-4 rounded-xl border border-white/20 bg-white/5 p-3 text-xs text-white/90">
-            <p className="font-medium mb-1">Model adjustments applied:</p>
+            <p className="font-medium mb-1">{tx.modelAdjustTitle}</p>
             <ul className="space-y-0.5 pl-1 text-white/80">
               {inputs.spendType === "direct" && (
-                <li>• Higher TCO optimization potential (+35%)</li>
+                <li>• {tx.modelAdjustDirectTco}</li>
               )}
               {inputs.processPhase === "upstream" && (
-                <li>• Higher bypass risk in rigid scenarios (+25%)</li>
+                <li>• {tx.modelAdjustUpstreamBypass}</li>
               )}
               {inputs.processPhase === "downstream" && (
-                <li>• Slightly lower productivity impact from rigidity</li>
+                <li>• {tx.modelAdjustDownstreamProd}</li>
               )}
               {inputs.spendType === "direct" && inputs.processPhase === "upstream" && (
-                <li>• Strongest combined effect (strategic Direct spend)</li>
+                <li>• {tx.modelAdjustStrongest}</li>
               )}
             </ul>
           </div>
         )}
 
-        {/* Bypass probability indicator */}
         <div className="mt-4 flex items-start gap-3 rounded-xl bg-white/10 p-3">
           <div className="flex-1">
             <p className="text-xs font-semibold uppercase tracking-wide opacity-70">
@@ -238,7 +233,6 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
         )}
       </div>
 
-      {/* Pipe vs Field interpretation */}
       <div>
         <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
           {tx.pipeFieldTitle}
@@ -256,9 +250,7 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
               {tx.fieldLabel}
             </p>
             <p className="mt-1 font-mono text-xs text-gray-500">
-              {lang === "en"
-                ? "∂Φ = {authorisation, competition, ethics, documentation}"
-                : "∂Φ = {uprawnienia, konkurencja, etyka, dokumentacja}"}
+              {PHI_SET[lang]}
             </p>
             <p className="mt-2 text-xs leading-relaxed text-green-700">{tx.fieldDesc}</p>
           </div>
@@ -266,7 +258,6 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
         <p className="mt-2 text-xs text-gray-400">{tx.pipeFieldSource}</p>
       </div>
 
-      {/* Side-by-side totals with sub-breakdown */}
       <div className="grid grid-cols-2 gap-4">
         <div className="rounded-xl border border-red-100 bg-red-50 p-4">
           <p className="text-xs font-semibold uppercase tracking-wide text-red-500">{tx.rigidLabel}</p>
@@ -288,7 +279,6 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
         </div>
       </div>
 
-      {/* Process steps table */}
       <div>
         <h3 className="mb-3 text-sm font-semibold text-gray-700">{tx.stepsTitle}</h3>
         <p className="mb-3 text-xs text-gray-400">{processLabel} — {TECH_LEVELS[inputs.techLevel][lang === "en" ? "nameEn" : "name"]}</p>
@@ -351,7 +341,6 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
         </div>
       </div>
 
-      {/* 2D matrix — visibly context-adjusted (pogłębienie) */}
       <div>
         <h3 className="mb-1.5 text-sm font-semibold text-gray-700">{tx.matrixTitle}</h3>
         {(inputs.spendType || inputs.processPhase) ? (
@@ -435,7 +424,6 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
         </p>
       </div>
 
-      {/* Live numeric context multipliers (pogłębienie — visible without PDF) */}
       {(inputs.spendType || inputs.processPhase) && (
         <div className="mt-3 rounded-lg border border-blue-100 bg-blue-50/60 px-3 py-2 text-[11px]">
           <div className="mb-1 font-medium text-blue-800">
@@ -456,7 +444,6 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
         </div>
       )}
 
-      {/* Stacked bar chart */}
       <div>
         <h3 className="mb-3 text-sm font-semibold text-gray-700">{tx.chartTitle}</h3>
         <ResponsiveContainer width="100%" height={320}>
@@ -484,7 +471,6 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
         </ResponsiveContainer>
       </div>
 
-      {/* Radar chart — cost profile */}
       <div>
         <h3 className="mb-1 text-sm font-semibold text-gray-700">
           {lang === "en" ? "Cost profile — 6 dimensions (normalized)" : "Profil kosztów — 6 wymiarów (znormalizowane)"}
@@ -518,7 +504,6 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
         </ResponsiveContainer>
       </div>
 
-      {/* Sensitivity analysis */}
       <div>
         <h3 className="mb-1 text-sm font-semibold text-gray-700">
           {lang === "en"
@@ -579,7 +564,6 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
         </p>
       </div>
 
-      {/* Detailed breakdown table */}
       <div>
         <h3 className="mb-3 text-sm font-semibold text-gray-700">{tx.tableTitle}</h3>
         <div className="overflow-x-auto rounded-xl border border-gray-100">
@@ -627,7 +611,6 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
         </div>
       </div>
 
-      {/* Benchmark comparison */}
       <div>
         <h3 className="mb-1 text-sm font-semibold text-gray-700">{tx.benchmarkTitle}</h3>
         <p className="mb-3 text-xs text-gray-400">{tx.benchmarkSubtitle}</p>
@@ -658,7 +641,6 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
         </p>
       </div>
 
-      {/* Sources */}
       <div className="rounded-xl border border-gray-100 bg-gray-50 p-4">
         <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-400">
           {tx.sourcesTitle}

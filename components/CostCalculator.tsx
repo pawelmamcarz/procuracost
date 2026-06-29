@@ -76,7 +76,6 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
-      {/* Scenario selector */}
       <div>
         <label className={labelClass}>{tx.scenarioLabel}</label>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
@@ -100,7 +99,6 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
         </p>
       </div>
 
-      {/* Section 1: Process type */}
       <div className={sectionClass}>
         <p className={sectionTitleClass}>{tx.processTypeLabel}</p>
 
@@ -158,7 +156,6 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
         </div>
       </div>
 
-      {/* Section 2: Tech level */}
       <div className={sectionClass}>
         <p className={sectionTitleClass}>{tx.techLevelLabel}</p>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
@@ -181,7 +178,6 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
             );
           })}
         </div>
-        {/* Derived days preview */}
         <div className="mt-2 flex gap-6 text-xs text-gray-500">
           <span>
             {tx.rigidProcedure}:{" "}
@@ -195,7 +191,6 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
         </div>
       </div>
 
-      {/* Section 3: Stakeholders */}
       <div className={sectionClass}>
         <p className={sectionTitleClass}>{tx.stakeholdersTitle}</p>
         <div className="overflow-x-auto">
@@ -240,7 +235,6 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
         </div>
       </div>
 
-      {/* Section 4: Financial parameters */}
       <div className={sectionClass}>
         <p className={sectionTitleClass}>{tx.financialTitle}</p>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">

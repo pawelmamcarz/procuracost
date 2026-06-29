@@ -14,7 +14,6 @@ export default function MethodologyPage() {
       </div>
 
       <div className="prose prose-sm max-w-none space-y-8 text-gray-700">
-        {/* Abstract */}
         <section>
           <h2 className="text-base font-bold text-gray-900">Abstract</h2>
           <p>
@@ -22,12 +21,15 @@ export default function MethodologyPage() {
             <em>procedure</em> imposes measurable opportunity costs on organizations. Strict procedural
             compliance—often adopted as a risk shield by procurement officers—limits negotiation
             discretion, extends timelines, and forecloses value-creating options. Drawing on empirical
-            studies from public procurement economics, we construct a five-dimensional cost model
-            comparing rigid-procedure and policy-only approaches. We demonstrate that rigid procedures
-            increase effective contract prices by approximately 2% (Szucs 2024), raise renegotiation
-            risk by 7.7–10.5 percentage points (Beuve et al. 2021), and forego up to 30% of achievable
-            Total Cost of Ownership savings (ISM). The ProcuraCost calculator operationalizes this model
-            for consulting and educational use.
+            studies from public procurement economics, we construct a seven-dimensional cost model
+            comparing rigid-procedure and policy-only approaches. Szucs (2024) shows that{" "}
+            <em>discretion</em> — not rigidity — raises prices: granting buyers unchecked discretion
+            raises prices by roughly 6 percentage points, so competitive tendering averts a
+            favoritism premium under unchecked discretion. We further note that contractual rigidity
+            is observationally associated with renegotiation risk 7.7–10.5 percentage points higher
+            (Beuve et al. 2021), and that Total Cost of Ownership programs can save up to 30% over
+            multiple years (ISM practitioner benchmark). The ProcuraCost calculator operationalizes
+            this model for consulting and educational use.
           </p>
         </section>
 
@@ -66,7 +68,7 @@ export default function MethodologyPage() {
 
         {/* Cost Model */}
         <section>
-          <h2 className="text-base font-bold text-gray-900">2. Five-Dimension Cost Model</h2>
+          <h2 className="text-base font-bold text-gray-900">2. Seven-Dimension Cost Model</h2>
 
           <div className="mt-3 space-y-4">
             <div className="rounded-xl border border-gray-100 bg-gray-50 p-4">
@@ -100,51 +102,89 @@ export default function MethodologyPage() {
               </h3>
               <p className="mt-1 text-xs text-gray-600">
                 <code>
-                  = contract_value × 0.02 + delay_days × daily_project_revenue
+                  = delay_days × daily_cost_of_inaction
+                </code>
+              </p>
+              <p className="mt-1 text-xs text-gray-500">
+                Each path ties up deployment value over its own duration; the saving is the
+                difference between the rigid and flexible durations multiplied by the daily cost of
+                inaction. Reported honestly as a delta of two non-zero quantities — no
+                zero-friction baseline.
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-gray-100 bg-gray-50 p-4">
+              <h3 className="text-sm font-semibold text-gray-800">
+                Dimension 4: Favoritism / Selection Quality
+              </h3>
+              <p className="mt-1 text-xs text-gray-600">
+                <code>
+                  = contract_value × 0.06 × (1 − rigidity) × corruption_risk
                 </code>
               </p>
               <p className="mt-1 text-xs text-gray-500">
                 <strong>Source:</strong> Szucs, F. (2024). Discretion and Favoritism in Public
-                Procurement. <em>Journal of the European Economic Association</em> 22(1):117–151.
-                Hungarian reform study: removing mandatory open auctions redistributes ~2% of
-                contract value from taxpayers to firms (price premium under rigidity). Procurement
-                delay also defers deployment value.
+                Procurement. <em>Journal of the European Economic Association</em> 22(1):117–160.
+                Discretion raises prices by ~6 percentage points and selects less-productive
+                contractors. This favoritism premium scales with discretion (1 − rigidity) and the
+                contextual corruption risk, so it is borne mainly by the flexible (discretionary)
+                path — competitive tendering averts it.
               </p>
             </div>
 
             <div className="rounded-xl border border-gray-100 bg-gray-50 p-4">
               <h3 className="text-sm font-semibold text-gray-800">
-                Dimension 4: Renegotiation Risk
+                Dimension 5: Renegotiation Risk
               </h3>
               <p className="mt-1 text-xs text-gray-600">
                 <code>= P(renegotiation) × renegotiation_cost</code>
                 <br />
-                <code>P_rigid = 0.22 + 0.077 = 0.297</code>
+                <code>P_rigid = 0.22 + 0.077 × rigidity</code>
               </p>
               <p className="mt-1 text-xs text-gray-500">
-                <strong>Source:</strong> Beuve, J., Moszoro, M., & Saussier, S. (2021). Contractual
+                <strong>Source:</strong> Beuve, J., Moszoro, M., & Spiller, P. T. (2021). Contractual
                 Rigidity and Political Contestability: Revisiting Public Contract Renegotiations.{" "}
                 <em>NBER Working Paper 28491</em>. One standard deviation increase in contractual
                 rigidity increases renegotiation frequency by 7.7–10.5 percentage points (vs. 22%
-                unconditional average). Public contracts are renegotiated significantly more than
-                private ones.
+                unconditional average); the premium is scaled by the actual process rigidity, so it
+                reaches its 0.297 ceiling only at full rigidity. Public contracts are renegotiated
+                significantly more than private ones.
               </p>
             </div>
 
             <div className="rounded-xl border border-gray-100 bg-gray-50 p-4">
               <h3 className="text-sm font-semibold text-gray-800">
-                Dimension 5: Foregone TCO Savings
+                Dimension 6: Foregone TCO Savings
               </h3>
               <p className="mt-1 text-xs text-gray-600">
                 <code>
-                  = contract_value × 0.10/yr × horizon × (1 − flexibility_index)
+                  = contract_value × min(0.10 × Σ_y(1 / 1.05^y) × rigidity, 0.30)
                 </code>
               </p>
               <p className="mt-1 text-xs text-gray-500">
-                <strong>Source:</strong> Institute for Supply Management (ISM). Total Cost of
-                Ownership in Procurement. TCO sourcing programs can save up to 30% over three years
-                (≈10%/yr). Rigid procedures limit the flexibility required to capture TCO savings
-                through supplier development, volume optimization, and lifecycle costing.
+                <strong>Source:</strong> Institute for Supply Management (ISM) / CAPS Research. Total
+                Cost of Ownership in Procurement. TCO sourcing programs can save up to ~30% over
+                multiple years (≈10%/yr). The annual stream is discounted to present value at 5% and
+                scaled by the process rigidity; the cumulative figure is capped at the ISM 30%
+                ceiling so it can never exceed the cited bound. Rigid procedures limit the
+                flexibility required to capture TCO savings through supplier development, volume
+                optimization, and lifecycle costing.
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-gray-100 bg-gray-50 p-4">
+              <h3 className="text-sm font-semibold text-gray-800">
+                Dimension 7: Informal Bypass Risk
+              </h3>
+              <p className="mt-1 text-xs text-gray-600">
+                <code>= P(bypass) × audit_exposure</code>
+              </p>
+              <p className="mt-1 text-xs text-gray-500">
+                <strong>Source:</strong> Lipsky (1980), <em>Street-Level Bureaucracy</em>; Vaughan
+                (1996), <em>The Challenger Launch Decision</em>; Holmström & Milgrom (1991),
+                Multitask Principal-Agent. Bypass probability rises with rigidity along a bounded
+                sigmoid (capped below certainty): the more rigid the tunnel, the stronger the
+                behavioural incentive to exit it informally, carrying audit and penalty exposure.
               </p>
             </div>
           </div>
@@ -156,10 +196,10 @@ export default function MethodologyPage() {
           <ul className="mt-2 space-y-2 text-xs text-gray-600">
             <li>
               Szucs, F. (2024). Discretion and Favoritism in Public Procurement.{" "}
-              <em>Journal of the European Economic Association</em>, 22(1), 117–151.
+              <em>Journal of the European Economic Association</em>, 22(1), 117–160.
             </li>
             <li>
-              Beuve, J., Moszoro, M., & Saussier, S. (2021). Contractual Rigidity and Political
+              Beuve, J., Moszoro, M., & Spiller, P. T. (2021). Contractual Rigidity and Political
               Contestability. <em>NBER Working Paper 28491</em>.
             </li>
             <li>

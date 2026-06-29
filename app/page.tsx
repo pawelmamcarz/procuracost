@@ -4,10 +4,9 @@ import { SCENARIOS } from "@/lib/scenarios";
 import { calculateCosts } from "@/lib/calculations";
 
 const stats = [
-  { value: "+2%", label: "wyższe ceny przy sztywnych procedurach", source: "Szucs, JEEA 2024" },
-  { value: "+7.7%", label: "wyższe ryzyko renegocjacji kontraktu", source: "Beuve et al., NBER 2021" },
-  { value: "42%", label: "dłuższy czas realizacji projektów", source: "World Bank, 2023" },
-  { value: "30%", label: "potencjalne oszczędności TCO przy elastyczności", source: "ISM" },
+  { value: "~6pp", label: "premia faworyzacji przy nadmiernej dyskrecji (której unika konkurencyjny przetarg)", source: "Szucs, JEEA 2024" },
+  { value: "+7.7–10.5pp", label: "wyższe ryzyko renegocjacji kontraktu (dane obserwacyjne)", source: "Beuve, Moszoro & Spiller, NBER 2021" },
+  { value: "30%", label: "potencjalne oszczędności TCO przy elastyczności (pułap praktyków, wieloletni)", source: "ISM (benchmark)" },
 ];
 
 const howItWorks = [
@@ -19,12 +18,12 @@ const howItWorks = [
   {
     step: "02",
     title: "Oblicz koszty ukryte",
-    body: "Model na bazie 4 badań naukowych wylicza 7 wymiarów kosztów — czas kadry, opóźnienia, renegocjacje, ryzyko obejść — i porównuje tunel z polem.",
+    body: "Model oparty na literaturze i benchmarkach praktyków wylicza 7 wymiarów kosztów — czas kadry, opóźnienia, renegocjacje, ryzyko obejść — i porównuje tunel z polem.",
   },
   {
     step: "03",
     title: "Porównaj i działaj",
-    body: "Wynik to benchmark branżowy, rekomendacja ścieżki zakupowej (Random Forest, 30 drzew) i raport PDF z cytowaniami akademickimi.",
+    body: "Wynik to scenariusze ilustracyjne (generowane przez model), rekomendacja ścieżki zakupowej (model regułowy z analizą wrażliwości) i raport PDF z cytowaniami akademickimi.",
   },
 ];
 
@@ -84,7 +83,6 @@ const principles = [
 export default function HomePage() {
   return (
     <div className="mx-auto max-w-5xl px-6 py-12">
-      {/* Hero */}
       <div className="text-center">
         <span className="inline-block rounded-full bg-blue-50 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-blue-600">
           Narzędzie badawczo-konsultingowe
@@ -98,10 +96,9 @@ export default function HomePage() {
           Tunel ma ściany. Pole ma horyzont.
         </p>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-500">
-          Empiryczny model oparty na recenzowanych badaniach pokazuje: koszty procedur sztywnych
-          przewyższają koszty polityki zakupowej o{" "}
-          <span className="font-semibold text-gray-700">100–400%</span>. Sprawdź, ile traci Twoja
-          organizacja.
+          Model szacuje, że w wielu kontekstach koszty procedur sztywnych są{" "}
+          <span className="font-semibold text-gray-700">istotnie wyższe</span> niż koszty polityki
+          zakupowej — sprawdź swój przypadek.
         </p>
         <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link
@@ -125,8 +122,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <div className="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-3">
         {stats.map((s) => (
           <div
             key={s.label}
@@ -168,7 +164,6 @@ export default function HomePage() {
         ))}
       </div>
 
-      {/* Case Studies Preview */}
       <div className="mt-16">
         <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-5">
           Case studies — elastyczne zakupy w praktyce
@@ -186,6 +181,9 @@ export default function HomePage() {
                   Pole: {cs.flexibleDays} dni
                 </span>
               </div>
+              <p className="text-xs text-gray-400 leading-relaxed">
+                Liczba dni to ilustracyjny wynik modelu dla zakupu tej wielkości, nie dane z cytowanego źródła.
+              </p>
               <p className="text-xs text-gray-400">{cs.source}</p>
             </div>
           ))}

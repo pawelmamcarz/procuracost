@@ -37,27 +37,32 @@ export default function AssumptionsExplorer() {
   const [exampleValue, setExampleValue] = useState(2_000_000); // 2M PLN contract
   const [dailyInaction, setDailyInaction] = useState(15_000);   // daily cost of delay
 
-  // Rough simulation of hidden cost gap using the effective multipliers
-  // This is simplified but directionally useful for sensitivity testing
+  // Rough simulation of the rigid-vs-flexible hidden-cost gap using the effective
+  // multipliers. Simplified but directionally consistent with calculateCosts().
   const rigidDaysBase = 85;
   const flexibleDaysBase = 42;
   const delayDays = Math.max(0, rigidDaysBase - flexibleDaysBase);
 
-  const tcoImpact = exampleValue * 0.10 * (effectiveMultipliers.tcoMultiplier - 1) * 3; // 3 years rough
-  const delayImpact = delayDays * dailyInaction * effectiveMultipliers.delayMultiplier;
-  const renegotiationImpact = exampleValue * 0.03 * (effectiveMultipliers.renegotiationMultiplier - 1);
-  const productivityImpact = exampleValue * 0.016 * (effectiveMultipliers.productivityMultiplier - 1);
+  // Cost-model constants mirrored from lib/calculations.ts — no invented coefficients.
+  const TCO_SAVINGS_RATE_PER_YEAR = 0.10;
+  const DISCRETION_FAVORITISM_PREMIUM = 0.06;
+  const BASE_RENEGOTIATION_PROBABILITY = 0.22;
+  const RIGIDITY_RENEGOTIATION_PREMIUM = 0.077;
+  const FLEXIBLE_RENEGOTIATION_PROBABILITY_FACTOR = 0.7;
+  const REPRESENTATIVE_RIGIDITY = 0.85; // representative rigid-process rigidity index (ρ)
 
-  const simulatedHiddenGap = Math.max(0, tcoImpact + delayImpact + renegotiationImpact + productivityImpact);
-  const baseGap = (() => {
-    const b = baseMultipliers;
-    return Math.max(0,
-      exampleValue * 0.10 * (b.tcoMultiplier - 1) * 3 +
-      delayDays * dailyInaction * b.delayMultiplier +
-      exampleValue * 0.03 * (b.renegotiationMultiplier - 1) +
-      exampleValue * 0.016 * (b.productivityMultiplier - 1)
-    );
-  })();
+  function computeGap(m: { tcoMultiplier: number; delayMultiplier: number; renegotiationMultiplier: number; productivityMultiplier: number }) {
+    const tcoImpact = exampleValue * TCO_SAVINGS_RATE_PER_YEAR * (m.tcoMultiplier - 1) * 3;
+    const delayImpact = delayDays * dailyInaction * m.delayMultiplier;
+    const rigidRenegProb = BASE_RENEGOTIATION_PROBABILITY + RIGIDITY_RENEGOTIATION_PREMIUM * REPRESENTATIVE_RIGIDITY * m.renegotiationMultiplier;
+    const flexibleRenegProb = BASE_RENEGOTIATION_PROBABILITY * FLEXIBLE_RENEGOTIATION_PROBABILITY_FACTOR;
+    const renegotiationImpact = exampleValue * (rigidRenegProb - flexibleRenegProb);
+    const productivityImpact = exampleValue * DISCRETION_FAVORITISM_PREMIUM * (m.productivityMultiplier - 1);
+    return Math.max(0, tcoImpact + delayImpact + renegotiationImpact + productivityImpact);
+  }
+
+  const simulatedHiddenGap = computeGap(effectiveMultipliers);
+  const baseGap = computeGap(baseMultipliers);
 
   const gapChange = simulatedHiddenGap - baseGap;
   const gapChangePercent = baseGap > 0 ? ((simulatedHiddenGap / baseGap) - 1) * 100 : 0;

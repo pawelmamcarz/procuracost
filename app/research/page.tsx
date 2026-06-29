@@ -1,9 +1,10 @@
 import PrintButton from "./PrintButton";
+import { PHI_SET } from "@/lib/i18n";
 
 export const metadata = {
   title: "Research Paper — The Hidden Cost of Procedural Compliance | ProcuraCost",
   description:
-    "Full working paper: opportunity costs of rigid procurement rules vs. policy-based procurement. Five-dimension cost model with empirical anchors.",
+    "Full working paper: opportunity costs of rigid procurement rules vs. policy-based procurement. Seven-dimension cost model with empirical anchors.",
 };
 
 const AUTHOR_EMAIL = "pawel@mamcarz.com";
@@ -59,26 +60,29 @@ export default function ResearchPage() {
           </p>
           <p className="mt-2 text-sm leading-relaxed text-gray-700">
             Drawing on empirical evidence from public procurement economics, we construct a
-            five-dimensional cost model quantifying the opportunity costs of procedural rigidity
+            seven-dimensional cost model quantifying the opportunity costs of procedural rigidity
             relative to policy-only compliance. Our model integrates four key empirical findings:
-            (1) rigid auction requirements can reduce purchase prices by approximately 2% through
-            enforced competition — yet this narrow price gain is dominated by delay, renegotiation
-            risk, and foregone TCO savings (Szucs 2024; Goodhart 1975); (2) contractual rigidity
+            (1) discretion in supplier selection raises prices by approximately 6 percentage points
+            and selects less-productive contractors — a favoritism premium that competitive
+            tendering averts (Szucs 2024); this premium is borne mainly by the discretionary path,
+            the one dimension on which a rigid procedure can be cheaper, yet it is modest relative
+            to delay, renegotiation risk, and foregone TCO savings; (2) contractual rigidity
             raises renegotiation probability by 7.7–10.5
-            percentage points above a 22% baseline (Beuve, Moszoro &amp; Saussier 2021); (3)
-            infrastructure procurement under rigid public rules extends project duration by 42%
-            above contract baseline (World Bank 2021); and (4) Total Cost of Ownership approaches
-            yield savings of up to 30% over three years compared to compliance-first procurement
-            (ISM).
+            percentage points above a 22% baseline (observational; Beuve, Moszoro &amp; Spiller
+            2021); (3) rigid e-procurement design imposes substantial implementation and
+            administrative burden that can depress supplier participation (World Bank 2021); and
+            (4) Total Cost of Ownership approaches yield savings of up to 30% over multiple years
+            compared to compliance-first procurement (ISM practitioner benchmark).
           </p>
           <p className="mt-2 text-sm leading-relaxed text-gray-700">
             We operationalize the model in an open-source calculator (ProcuraCost) and demonstrate
             its application across four procurement archetypes: fleet acquisition, IT/ERP
-            implementation, logistics contracting, and production materials sourcing. Results
-            consistently show that rigid-procedure costs exceed policy-only costs by 100–400%, with
-            the gap driven primarily by foregone TCO optimization, deployment delay costs, and —
-            critically — bypass risk costs generated when rigid procedures are informally
-            circumvented under operational pressure.
+            implementation, logistics contracting, and production materials sourcing. Under the
+            model&apos;s baseline calibration, the estimated rigid-procedure cost gap is large and
+            often dominant — driven primarily by foregone TCO optimization, deployment delay costs,
+            and — critically — bypass risk costs generated when rigid procedures are informally
+            circumvented under operational pressure. These magnitudes are model estimates, not
+            independent empirical measurements.
           </p>
           <p className="mt-2 text-sm leading-relaxed text-gray-700">
             We introduce the <strong>Tunnel vs. Field</strong> model as the organizing metaphor: a
@@ -144,7 +148,7 @@ export default function ResearchPage() {
             We make three contributions. First, we provide a clear operational definition
             distinguishing procurement policy from procurement procedure, grounding it in the
             existing CIPS framework and extending it with an incentive-theoretic analysis. Second,
-            we construct a five-dimensional empirical cost model synthesizing findings from public
+            we construct a seven-dimensional empirical cost model synthesizing findings from public
             procurement economics, infrastructure management, and supply chain management. Third, we
             introduce ProcuraCost—an open-source calculator implementing the model—as a practical
             tool for procurement transformation initiatives.
@@ -276,7 +280,7 @@ export default function ResearchPage() {
               <p className="text-xs font-semibold uppercase tracking-wide text-green-600">
                 Policy + System = Field
               </p>
-              <p className="mt-1 font-mono text-xs text-gray-600">∂Φ = &#123;auth, ethics, docs, competition&#125;</p>
+              <p className="mt-1 font-mono text-xs text-gray-600">{PHI_SET.en}</p>
               <p className="mt-1 text-xs text-gray-600">
                 Infinite paths within boundary Φ. Human as navigator. No bypass possible — the
                 constraints are everywhere and always active.
@@ -297,10 +301,10 @@ export default function ResearchPage() {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-base font-bold text-gray-900">3. The Five-Dimension Cost Model</h2>
+          <h2 className="text-base font-bold text-gray-900">3. The Seven-Dimension Cost Model</h2>
           <p className="mt-2 text-sm leading-relaxed text-gray-700">
             We model the cost differential between a rigid-procedure approach (R) and a
-            policy-compliant flexible approach (F) across five dimensions:
+            policy-compliant flexible approach (F) across seven dimensions:
           </p>
 
           {[
@@ -322,23 +326,23 @@ export default function ResearchPage() {
               n: "3.3",
               title: "Dimension 3: Opportunity Cost (C_opp)",
               formula:
-                "ΔC_opp = max(0, days_R – days_F) × rev_daily – V × α\nα = 0.02 (price benefit from auction competition, Szucs 2024)\nDelay term dominates: for rigid procedures, days_R >> days_F",
+                "ΔC_opp = max(0, days_R – days_F) × rev_daily\nDelay term dominates: for rigid procedures, days_R >> days_F\nFavoritism premium modeled separately (selection-quality dimension): 0.06 × V × (1 – ρ) × corruption_context",
               anchor:
-                "Szucs (2024) analyzes a Hungarian reform removing mandatory open auction requirements. When discretion replaced mandatory auctions, prices rose by ~2% — rigid auctions enforce competition and reduce purchase price. This is the Goodhart trap (1975): procedures optimize the measurable metric (purchase price) while delay costs, renegotiation risk, and foregone TCO savings accumulate off the compliance dashboard. The 2% price gain is systematically overwhelmed by the remaining five cost dimensions. Delay cost: each day without the contracted asset/service represents measurable foregone revenue or operational value.",
+                "Szucs (2024), analyzing Hungarian public procurement (regression-discontinuity plus a structural selection correction; JEEA 22(1):117–160), finds that discretion in supplier selection raises prices by approximately 6 percentage points (reduced-form ~8%) and selects less-productive contractors — a favoritism premium that competitive tendering averts. That premium is captured in a separate selection-quality dimension and is borne mainly by the discretionary path. The cost measured here is the delay cost: each rigid day without the contracted asset/service represents measurable foregone revenue or operational value, and rigid procedures run far longer than flexible ones (days_R >> days_F).",
             },
             {
               n: "3.4",
               title: "Dimension 4: Renegotiation Risk (C_reneg)",
               formula:
-                "C_reneg(R) = P_R × cost_reneg\nP_R = P_base + Δp_rigidity = 0.22 + 0.077 = 0.297\nP_F = P_base × 0.70 = 0.154",
+                "C_reneg(R) = P_R × cost_reneg\nP_R = P_base + Δp_rigidity × ρ = 0.22 + 0.077 × ρ\nP_F = P_base × 0.70 = 0.154",
               anchor:
-                "Beuve, Moszoro & Saussier (2021): one standard deviation increase in contractual rigidity → +7.7–10.5 percentage point increase in renegotiation probability vs. 22% unconditional baseline. The renegotiation paradox: rigidity adopted to reduce accountability risk actually increases the probability of renegotiation — the highest-risk outcome.",
+                "Beuve, Moszoro & Spiller (2021): one standard deviation increase in contractual rigidity → +7.7–10.5 percentage point increase in renegotiation probability vs. 22% unconditional baseline. The renegotiation paradox: rigidity adopted to reduce accountability risk actually increases the probability of renegotiation — the highest-risk outcome.",
             },
             {
               n: "3.5",
               title: "Dimension 5: Foregone TCO Savings (C_TCO)",
               formula:
-                "C_TCO(R) = V × γ × T × (1 – φ_R)\nC_TCO(F) = V × γ × T × (1 – φ_F)\nγ = 0.10/yr  (ISM: up to 30% over 3 years)",
+                "C_TCO(R) = V × min( γ × A(T, 5%) × ρ_R, 0.30 )\nC_TCO(F) = V × min( γ × A(T, 5%) × ρ_F, 0.30 )\nγ = 0.10/yr · A(T, 5%) = present-value annuity factor (5% discount) · capped at 30% of V (ISM ceiling)",
               anchor:
                 "ISM (Institute for Supply Management): properly implemented TCO sourcing programs yield savings of up to 30% over three years (≈10% annually) relative to price-only procurement. GEP (2024): organizations systematically overpay when evaluation criteria prioritize compliance documentation over cost engineering.",
             },
@@ -415,7 +419,7 @@ export default function ResearchPage() {
         <section className="mb-8">
           <h2 className="text-base font-bold text-gray-900">5. The ProcuraCost Calculator</h2>
           <p className="mt-2 text-sm leading-relaxed text-gray-700">
-            ProcuraCost operationalizes the five-dimension model as a web-based calculator. Design
+            ProcuraCost operationalizes the seven-dimension model as a web-based calculator. Design
             priorities: <strong>transparency</strong> (every output traceable to an academic source),{" "}
             <strong>calibration</strong> (baseline parameters reflect conservative empirical
             estimates; users can override), <strong>practical utility</strong> (pre-configured
@@ -426,11 +430,14 @@ export default function ResearchPage() {
           <p className="mt-2 text-sm leading-relaxed text-gray-700">
             Built on Next.js 16 (App Router), Tailwind CSS, and Recharts. Scenarios: fleet
             acquisition, IT/ERP, logistics, production materials, custom. The model produces
-            directionally consistent results across all scenarios: rigid-procedure total costs exceed
-            flexible-policy costs by 100–400%. The largest contributors are TCO foregone savings
-            (driven by horizon length and contract value) and opportunity costs (driven by deployment
-            delay and price premium). Time costs are significant but secondary at standard buyer
-            salary rates.
+            directionally consistent results across all scenarios: under baseline calibration,
+            estimated rigid-procedure total costs are substantially higher than flexible-policy
+            costs. The largest contributors are TCO foregone savings (driven by horizon length and
+            contract value) and opportunity costs (driven by deployment delay). The favoritism /
+            selection-quality cost runs the other way — it is borne mainly by the discretionary path,
+            so the rigid path can be net-cheaper in low-corruption operational contexts. Time costs
+            are significant but secondary at standard buyer salary rates. These are model estimates,
+            not independent empirical measurements.
           </p>
         </section>
 
@@ -486,7 +493,7 @@ export default function ResearchPage() {
             },
             {
               author: "Goodhart's Law (1975)",
-              text: "\"When a measure becomes a target, it ceases to be a good measure.\" Szucs (2024) provides the empirical proof: mandatory auctions reduce purchase price by 2% — a measurable, auditable win that makes procedures politically defensible. The remaining costs (deployment delay, renegotiation probability +7.7 pp, foregone TCO savings up to 30%) are not on the compliance dashboard. When procedural compliance rate becomes the KPI, compliance theater is the rational organizational response.",
+              text: "\"When a measure becomes a target, it ceases to be a good measure.\" Szucs (2024) shows that discretion in supplier selection raises prices by ~6 percentage points and selects less-productive contractors — competitive tendering averts this favoritism premium, a measurable, auditable price-discipline win on that one dimension. But the costs that run the other way (deployment delay, renegotiation probability +7.7 pp, foregone TCO savings up to 30%) are not on the compliance dashboard. When procedural compliance rate becomes the KPI, compliance theater is the rational organizational response.",
             },
             {
               author: "High-Modernist Planning Failure (Scott 1998)",
@@ -549,11 +556,11 @@ export default function ResearchPage() {
             procurement.
           </p>
           <p className="mt-2 text-sm leading-relaxed text-gray-700">
-            Our five-dimension cost model demonstrates that this pathology is expensive. Across four
-            procurement archetypes analyzed, rigid-procedure costs exceed policy-only costs by
-            multiples, not margins. The dominant cost drivers — foregone TCO optimization and
-            deployment delay — are invisible to compliance-focused audits precisely because they are
-            costs of inaction, not action.
+            Our seven-dimension cost model estimates that this pathology is expensive. Across four
+            procurement archetypes analyzed, the model estimates rigid-procedure costs well above
+            policy-only costs — in multiples, not margins, under baseline calibration. The dominant
+            cost drivers — foregone TCO optimization and deployment delay — are invisible to
+            compliance-focused audits precisely because they are costs of inaction, not action.
           </p>
           <p className="mt-2 text-sm leading-relaxed text-gray-700">
             The policy implication is tractable: organizations should invest in distinguishing their
@@ -589,7 +596,7 @@ export default function ResearchPage() {
           <h2 className="text-base font-bold text-gray-900">References</h2>
           <ul className="mt-3 space-y-2 text-xs text-gray-600">
             {[
-              "Beuve, J., Moszoro, M., & Saussier, S. (2021). Contractual Rigidity and Political Contestability: Revisiting Public Contract Renegotiations. NBER Working Paper 28491.",
+              "Beuve, J., Moszoro, M., & Spiller, P. T. (2021/2023). Contractual Rigidity and Political Contestability: Revisiting Public Contract Renegotiations. NBER Working Paper 28491; published in the Journal of Law, Economics, and Organization (2023).",
               "Chartered Institute of Procurement & Supply (CIPS). (2024). Procurement Policies & Procedures Explained. CIPS Intelligence Hub.",
               "DiMaggio, P. J., & Powell, W. W. (1983). The iron cage revisited. American Sociological Review, 48(2), 147–160.",
               "EY Switzerland. (2024). Integrating Agile Practices into Procurement Processes.",
@@ -604,7 +611,7 @@ export default function ResearchPage() {
               "Scott, J. C. (1998). Seeing Like a State. Yale University Press.",
               "Skylight Digital. (2024). Agile Procurement Playbook — Appendix A: Case Studies. U.S. Digital Service.",
               "Strathern, M. (1997). 'Improving ratings': Audit in the British University system. European Review, 5(3), 305–321.",
-              "Szucs, F. (2024). Discretion and Favoritism in Public Procurement. Journal of the European Economic Association, 22(1), 117–151. https://doi.org/10.1093/jeea/jvad036",
+              "Szucs, F. (2024). Discretion and Favoritism in Public Procurement. Journal of the European Economic Association, 22(1), 117–160. https://doi.org/10.1093/jeea/jvad017",
               "Tradogram. (2024). Agile Procurement Practices: A Comprehensive Guide.",
               "Vaughan, D. (1996). The Challenger Launch Decision. University of Chicago Press.",
               "World Bank. (2021). Improving Public Procurement Outcomes. Policy Research Paper 9690.",

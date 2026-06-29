@@ -69,12 +69,10 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
 
   return (
     <div className="space-y-8">
-      {/* Input form */}
       <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
         <h2 className="mb-5 text-base font-bold text-gray-900">{tx.parametersTitle}</h2>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {/* Contract value */}
           <div>
             <label className={labelClass}>
               {tx.contractValue}{" "}
@@ -97,7 +95,6 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
             </div>
           </div>
 
-          {/* Supplier count */}
           <div>
             <label className={labelClass}>
               {tx.supplierCount}{" "}
@@ -118,7 +115,6 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
             </div>
           </div>
 
-          {/* Urgency */}
           <div>
             <label className={labelClass}>
               {tx.timeAvailable}{" "}
@@ -140,7 +136,6 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
           </div>
         </div>
 
-        {/* 5-scale sliders */}
         <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {(
             [
@@ -174,7 +169,6 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
           ))}
         </div>
 
-        {/* Toggles */}
         <div className="mt-5 flex flex-wrap gap-4">
           <label className="flex cursor-pointer items-center gap-2">
             <input
@@ -196,7 +190,6 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
           </label>
         </div>
 
-        {/* New contextual dimensions */}
         <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className={labelClass}>
@@ -234,10 +227,8 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
         </button>
       </div>
 
-      {/* Results */}
       {result && (
         <div id="optimizer-results" className="space-y-6">
-          {/* Top recommendation */}
           <div
             className="rounded-2xl p-6 text-white"
             style={{ background: `linear-gradient(135deg, ${result.topPath.path.color}, ${result.topPath.path.color}cc)` }}
@@ -274,7 +265,6 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
               </div>
             </div>
 
-            {/* Show applied dimensions + deepened explanation */}
             {(features.spendType || features.processPhase) && (
               <div className="mt-3 rounded bg-white/10 px-2.5 py-2 text-xs">
                 <div className="font-medium opacity-90">
@@ -296,21 +286,19 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
                     : "Kontekst zmienia względną atrakcyjność ścieżek negocjacyjnych vs. wykonawczych oraz wagę czasu kadry wyższej.")}
                 </div>
                 <div className="mt-1.5 text-[10px] opacity-60">
-                  {lang === "en" 
-                    ? "In scoring: negotiation paths receive up to +1.8× weight, dialogue +1.6× when Direct+Upstream; direct award and simple execution paths heavily down-weighted."
-                    : "W scoringu: ścieżki negocjacyjne dostają do +1.8× wagi, dialog +1.6× przy Direct+Upstream; bezpośredni wybór i proste ścieżki wykonawcze mocno obniżone."}
+                  {lang === "en"
+                    ? "In scoring: negotiation and dialogue paths are favoured for Direct+Upstream, while direct award and simple execution paths are down-weighted. These are hand-set modeling weights, not learned parameters."
+                    : "W scoringu: ścieżki negocjacyjne i dialog są preferowane dla Direct+Upstream, a bezpośredni wybór i proste ścieżki wykonawcze są obniżone. To ręcznie ustawione wagi modelowe, nie parametry uczone z danych."}
                 </div>
               </div>
             )}
 
-            {/* PZP note */}
             <div className="mt-4 rounded-xl bg-white/10 p-3 text-sm">
               <p className="font-semibold opacity-80">{tx.pzpNote}</p>
               <p className="mt-1 opacity-90">{result.policyNote}</p>
             </div>
           </div>
 
-          {/* Explanation card */}
           <div className="rounded-xl border border-blue-100 bg-blue-50 p-4">
             <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 mb-2">
               {tx.explanationTitle}
@@ -318,7 +306,6 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
             <p className="text-sm text-blue-900 leading-relaxed">{result.explanation}</p>
           </div>
 
-          {/* All paths ranked */}
           <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
             <h3 className="mb-4 text-sm font-bold text-gray-900">
               {tx.rankingTitle}
@@ -340,7 +327,7 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
                       <div
                         className="h-full rounded-full transition-all"
                         style={{
-                          width: `${(r.votes / 30) * 100}%`,
+                          width: `${Math.min(r.score, 100)}%`,
                           background: r.path.color,
                         }}
                       />
@@ -360,7 +347,6 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
             </div>
           </div>
 
-          {/* Feature importance */}
           <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
             <h3 className="mb-4 text-sm font-bold text-gray-900">
               {tx.importanceTitle}
@@ -396,7 +382,6 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
             <p className="mt-2 text-xs text-gray-400">{tx.importanceNote}</p>
           </div>
 
-          {/* Conditions & risks for top 2 */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {result.ranked.slice(0, 2).map((r) => (
               <div
@@ -408,7 +393,7 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
                     className="h-3 w-3 rounded-full"
                     style={{ background: r.path.color }}
                   />
-                  <h4 className="font-bold text-gray-900">{r.path.name}</h4>
+                  <h4 className="font-bold text-gray-900">{lang === "en" ? r.path.nameEn : r.path.name}</h4>
                 </div>
                 <div className="mt-3">
                   <p className="mb-1 text-xs font-semibold text-green-600">{tx.whenToUse}</p>
@@ -434,12 +419,13 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
             ))}
           </div>
 
-          <div className="rounded-xl border border-blue-100 bg-blue-50 p-4 text-xs text-blue-800">
-            {tx.modelNote}{" "}
-            <em>Machine Learning</em>, 45, 5–32.{" "}
-            {lang === "en"
-              ? "Class weights based on procurement theory: Williamson (1985) TCE, Kraljic (1983) portfolio."
-              : "Wagi klas oparte na teorii zakupów: Williamson (1985) TCE, Kraljic (1983) portfolio."}
+          <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-xs text-amber-800">
+            <p className="font-semibold">{tx.modelNote}</p>
+            <p className="mt-2 text-amber-700">
+              {lang === "en"
+                ? "Path logic is grounded conceptually in procurement theory: Williamson (1985) TCE, Kraljic (1983) portfolio."
+                : "Logika ścieżek opiera się koncepcyjnie na teorii zakupów: Williamson (1985) TCE, Kraljic (1983) portfolio."}
+            </p>
           </div>
         </div>
       )}
