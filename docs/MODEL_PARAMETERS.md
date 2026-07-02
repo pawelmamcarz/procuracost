@@ -82,7 +82,7 @@ These are relative multipliers and cost estimates derived from industry benchmar
 
 | Tech Level | Time Multiplier | Coordination Cost per Day | Tool Cost per Process | Bypass Probability Multiplier | Policy Rigidity Index | Type | Basis |
 |------------|-----------------|---------------------------|-----------------------|-------------------------------|-----------------------|------|-------|
-| Manual | 1.40 | 500 PLN | 0 PLN | 1.50 | 0.35 | Calibrated | OECD (2023), EY & Deloitte sourcing transformation studies, multiple Polish consulting projects |
+| Manual | 1.40 | 500 PLN | 0 PLN | 1.50 | 0.35 | Calibrated | timeMultiplier anchored to APQC / Hackett benchmarks; coordination/tool costs are modeling assumptions (Polish consulting practice) |
 | Sourcing Tool | 1.15 | 200 PLN | 800 PLN | 0.80 | 0.22 | Calibrated | Industry benchmarks (Ariba, Jaggaer, Ivalua implementations) |
 | Partial ERP | 1.00 | 100 PLN | 1,200 PLN | 0.55 | 0.15 | Calibrated | Common configuration in mid-sized Polish and CEE companies |
 | End-to-End (Ariba/Coupa) | 0.70 | 20 PLN | 2,000 PLN | 0.10 | 0.05 | Calibrated | Best-in-class implementations observed in large multinationals |
