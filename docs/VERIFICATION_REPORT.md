@@ -7,6 +7,17 @@
 
 ---
 
+> ## ADDENDUM (2026-07-02) — mathematical-correction changeset A–G + online source verification
+>
+> A follow-up hallucination-and-correctness pass (all documents + the whole `lib/` layer, with live online verification of 12 sources) applied the corrective changeset documented in `CHANGELOG.md` [2026-07-02] and `docs/MODEL_PARAMETERS.md` (v1.1 banner): staff double-count removal (A), renegotiation SD-mapping + 0.105 cap (B), genuinely symmetric renegotiation/bypass formulas (C), output-side bypass-multiplier placement (D), TCO multiplier outside the cap (E), context-multiplier recalibration with an audited ≤×1.5 uplift invariant (F), and optimizer weight/normalization/ranking fixes (G).
+>
+> **Consequences for this report:**
+> - **§7 recompute tables are SUPERSEDED.** The canonical recompute is now the in-repo `scripts/recompute.ts` (`npm run recompute`); regenerated results live in `docs/articles/doktorat/00-shared-foundation.md` §5. Headline changes: renegotiation deltas shrink sharply under the symmetric formula; `mrp` dominant dimension reneg → admin; pipe_vs_field +36.19% → +35.78% of CV. The §7 verdicts stand: ΔC > 0 in 9/9, favoritism favors the rigid path in 8/9, symmetry remains numerically inert at net.
+> - **New findings this report missed, caught by online verification:** (i) the "ISM 30% TCO" attribution is **apocryphal** — the quote traces to a content farm on ISM's former domain; relabelled everywhere as an unattributed practitioner heuristic; (ii) the fabricated OECD 554/836 figures were **still live in `app/research` and `app/methodology`** after the 2026-06-28 pass (now removed); (iii) the Szucs "≈two-thirds firm-selection" decomposition is unverifiable and was removed; Szucs magnitudes are percent, not pp (structural ~6%, fuzzy-RD ~9%, selection-corrected ~8%, productivity −10% structural); (iv) Swiss Casinos: LAP Alliance / WPA 2020, ~6 weeks vs ~6 months (EY/Skylight attributions and "4 weeks"/"120 vs 28 days" figures were wrong); (v) Bajari et al. base is "the winning bid"; (vi) EC 2011 aggregate is ~1.4%, not <1.3%; (vii) Beuve n≈279 unconfirmed (2016 WP: 396).
+> - **P7/C35 (Direct-TCO ×1.35 direction) partially resolved:** reduced to ×1.15 pending expert elicitation; the direct+upstream ×1.2 TCO extra removed. **C32 (flat vs decaying TCO rate) remains deferred.**
+
+---
+
 ## 0. Executive Summary
 
 ### 0.1 Per-area RAG status

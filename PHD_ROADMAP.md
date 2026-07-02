@@ -26,7 +26,7 @@ Key extensions:
 **Key Deliverables**:
 - [ ] Complete **Parameter Documentation Table** (Excel + Markdown)
   - For each parameter: Name, Value, Source (paper + page), Type (Empirical / Calibrated / Assumption), Sensitivity, Justification
-- [ ] Full technical appendix describing the five cost dimensions and their functional forms
+- [ ] Full technical appendix describing the seven cost dimensions and their functional forms
 - [ ] Clear separation of:
   - Parameters taken directly from literature (with citations)
   - Parameters calibrated from multiple studies

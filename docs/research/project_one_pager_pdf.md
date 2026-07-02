@@ -21,7 +21,7 @@ Stworzyliśmy otwarty, wielowymiarowy model kosztów (**ProcuraCost**), który k
 - Rozróżnienie **Direct vs Indirect** spend
 - Rozróżnienie **Upstream vs Downstream** faz procesu
 
-Model integruje wyniki badań empirycznych (Szucs 2024, Beuve et al. 2021, ISM i in.) i jest w pełni udokumentowany oraz otwarty.
+Model integruje wyniki badań empirycznych (Szucs 2024, Beuve et al. 2021 i in.) i jest w pełni udokumentowany oraz otwarty.
 
 ---
 

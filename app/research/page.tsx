@@ -62,7 +62,7 @@ export default function ResearchPage() {
             Drawing on empirical evidence from public procurement economics, we construct a
             seven-dimensional cost model quantifying the opportunity costs of procedural rigidity
             relative to policy-only compliance. Our model integrates four key empirical findings:
-            (1) discretion in supplier selection raises prices by approximately 6 percentage points
+            (1) discretion in supplier selection raises prices by approximately 6 percent
             and selects less-productive contractors — a favoritism premium that competitive
             tendering averts (Szucs 2024); this premium is borne mainly by the discretionary path,
             the one dimension on which a rigid procedure can be cheaper, yet it is modest relative
@@ -72,7 +72,8 @@ export default function ResearchPage() {
             2021); (3) rigid e-procurement design imposes substantial implementation and
             administrative burden that can depress supplier participation (World Bank 2021); and
             (4) Total Cost of Ownership approaches yield savings of up to 30% over multiple years
-            compared to compliance-first procurement (ISM practitioner benchmark).
+            compared to compliance-first procurement (an unattributed practitioner heuristic,
+            used only as a conservative cap).
           </p>
           <p className="mt-2 text-sm leading-relaxed text-gray-700">
             We operationalize the model in an open-source calculator (ProcuraCost) and demonstrate
@@ -313,7 +314,7 @@ export default function ResearchPage() {
               title: "Dimension 1: Time Cost (C_time)",
               formula: "C_time(R) = days_R × n_buyers × rate_daily\nC_time(F) = days_F × n_buyers × rate_daily\nΔC_time = (days_R – days_F) × n_buyers × rate_daily",
               anchor:
-                "OECD (2023) documents average infrastructure procurement durations of 554 days in OECD countries and 836 days in Sub-Saharan Africa. Agile procurement case studies report 60–75% time reductions (Skylight Digital 2024; Swiss Casinos ERP: 120-day rigid vs. 28-day agile, EY Switzerland 2024).",
+                "Agile procurement case studies report substantial time reductions — e.g. Swiss Casinos sourced and contracted an ERP system in ~6 weeks instead of a typical ~6 months (~75% faster; LAP Alliance / World Procurement Awards 2020). These are practitioner case reports, not peer-reviewed estimates.",
             },
             {
               n: "3.2",
@@ -328,29 +329,29 @@ export default function ResearchPage() {
               formula:
                 "ΔC_opp = max(0, days_R – days_F) × rev_daily\nDelay term dominates: for rigid procedures, days_R >> days_F\nFavoritism premium modeled separately (selection-quality dimension): 0.06 × V × (1 – ρ) × corruption_context",
               anchor:
-                "Szucs (2024), analyzing Hungarian public procurement (regression-discontinuity plus a structural selection correction; JEEA 22(1):117–160), finds that discretion in supplier selection raises prices by approximately 6 percentage points (reduced-form ~8%) and selects less-productive contractors — a favoritism premium that competitive tendering averts. That premium is captured in a separate selection-quality dimension and is borne mainly by the discretionary path. The cost measured here is the delay cost: each rigid day without the contracted asset/service represents measurable foregone revenue or operational value, and rigid procedures run far longer than flexible ones (days_R >> days_F).",
+                "Szucs (2024), analyzing Hungarian public procurement (regression-discontinuity plus a structural selection correction; JEEA 22(1):117–160), finds that discretion in supplier selection raises prices by approximately 6 percent (structural estimate; reduced-form ~9%) and selects contractors of ~10% lower productivity — a favoritism premium that competitive tendering averts. That premium is captured in a separate selection-quality dimension and is borne mainly by the discretionary path. The cost measured here is the delay cost: each rigid day without the contracted asset/service represents measurable foregone revenue or operational value, and rigid procedures run far longer than flexible ones (days_R >> days_F).",
             },
             {
               n: "3.4",
               title: "Dimension 4: Renegotiation Risk (C_reneg)",
               formula:
-                "C_reneg(R) = P_R × cost_reneg\nP_R = P_base + Δp_rigidity × ρ = 0.22 + 0.077 × ρ\nP_F = P_base × 0.70 = 0.154",
+                "C_reneg = P(ρ) × cost_reneg   (one formula, both paths)\nP(ρ) = P_base + min(0.077 × ρ × m_ctx, 0.105) = 0.22 + min(0.077·ρ·m, 0.105)\nRigid path: ρ_R (process rigidity) · Flexible path: ρ_F = min(ρ_R, 0.15)",
               anchor:
-                "Beuve, Moszoro & Spiller (2021): one standard deviation increase in contractual rigidity → +7.7–10.5 percentage point increase in renegotiation probability vs. 22% unconditional baseline. The renegotiation paradox: rigidity adopted to reduce accountability risk actually increases the probability of renegotiation — the highest-risk outcome.",
+                "Beuve, Moszoro & Spiller (2021): one standard deviation increase in contractual rigidity → +7.7–10.5 percentage point increase in renegotiation probability vs. 22% unconditional baseline (observational; 2SLS/IV). Mapping assumption: the full 0→1 swing of the rigidity index is treated as ~1 SD, anchored at the 7.7pp lower bound and hard-capped at 10.5pp. The renegotiation paradox: rigidity adopted to reduce accountability risk actually increases the probability of renegotiation — the highest-risk outcome.",
             },
             {
               n: "3.5",
               title: "Dimension 5: Foregone TCO Savings (C_TCO)",
               formula:
-                "C_TCO(R) = V × min( γ × A(T, 5%) × ρ_R, 0.30 )\nC_TCO(F) = V × min( γ × A(T, 5%) × ρ_F, 0.30 )\nγ = 0.10/yr · A(T, 5%) = present-value annuity factor (5% discount) · capped at 30% of V (ISM ceiling)",
+                "C_TCO(R) = V × m_ctx × min( γ × A(T, 5%) × ρ_R, 0.30 )\nC_TCO(F) = V × m_ctx × min( γ × A(T, 5%) × ρ_F, 0.30 )\nγ = 0.10/yr · A(T, 5%) = present-value annuity factor (5% discount) · capped at 30% of V (practitioner ceiling)",
               anchor:
-                "ISM (Institute for Supply Management): properly implemented TCO sourcing programs yield savings of up to 30% over three years (≈10% annually) relative to price-only procurement. GEP (2024): organizations systematically overpay when evaluation criteria prioritize compliance documentation over cost engineering.",
+                "The ~30%-over-multiple-years TCO savings ceiling is an unattributed practitioner heuristic from grey literature — no verifiable ISM or peer-reviewed source exists (the circulating 'ISM' attribution traces to a content farm on ISM's former domain). It is kept only as a conservative Grade-C cap on the dimension, never as an expected saving.",
             },
             {
               n: "3.6",
               title: "Dimension 6: Normalization of Deviance Cost (C_deviance)",
               formula:
-                "C_deviance(R) = P_bypass(rigidity) × E[cost_failure]\nP_bypass increases with procedural rigidity and operational pressure\nC_deviance(F) ≈ 0  — no bypass path → no hidden accumulation",
+                "C_deviance = P_bypass(ρ) × E[cost_failure]   (one formula, both paths)\nP_bypass(ρ) = sigmoid(ρ) × m_tech × m_ctx, capped at 0.95\nRigid path: ρ_R (process rigidity) · Flexible path: ρ = policy rigidity of the tech level (≈0.05–0.35)",
               anchor:
                 "Vaughan (1996): when operationally necessary workarounds are formally prohibited, they normalize invisibly — hidden risk accumulates until a threshold failure event (cf. Challenger disaster). Unlike other dimensions, C_deviance has a fat-tailed distribution: zero most of the time, catastrophic in the tail (audit findings, procurement scandals, regulatory sanctions). The ProcuraCost calculator proxies P_bypass via the bypass audit exposure input. Rigid procedures systematically increase P_bypass by driving informal workarounds underground — making each bypass invisible and unauditable. Lipsky (1980) predicts this analytically: front-line workers always adapt rules to operational reality; the question is whether that adaptation is visible (field) or hidden (tunnel).",
             },
@@ -394,13 +395,13 @@ export default function ResearchPage() {
             },
             {
               title: "4.2 ERP Implementation: Swiss Casinos",
-              body: "Swiss Casinos sourced and contracted an enterprise ERP system in four weeks using Lean Agile Procurement (LAP), compared to a typical 4–6 month formal RFP process. Policy compliance: competitive evaluation, structured scoring, executive approval. Procedure: intensive collaborative workshops with pre-qualified vendors, rapid prototype evaluation, direct negotiation (EY Switzerland 2024; Skylight Digital 2024). Quantified benefit: ~75% time reduction translates directly to earlier ROI realization on a multi-million CHF investment.",
-              source: "EY Switzerland (2024). Integrating Agile Practices into Procurement Processes.",
+              body: "Swiss Casinos sourced and contracted an enterprise ERP system in about six weeks using Lean Agile Procurement (LAP) — from business case to signed contract and delivered proof-of-concept — compared to a typical ~6 month formal RFP process. Policy compliance: competitive evaluation, structured scoring, executive approval. Procedure: intensive collaborative workshops with pre-qualified vendors, rapid prototype evaluation, direct negotiation. Quantified benefit: ~75% time reduction translates directly to earlier ROI realization on a multi-million CHF investment.",
+              source: "LAP Alliance (lean-agile-procurement.com) case study; World Procurement Awards 2020 winner.",
             },
             {
               title: "4.3 Cargo Logistics: Air France KLM Martinair",
-              body: "Door-to-door cargo modernization required sourcing within a 6-month window imposed by competitive and regulatory dynamics. Standard tender procedures for a contract of this complexity would require 12–18 months. LAP-based approach completed sourcing within the window (EY Switzerland 2024). The policy was unchanged; the procedure was adapted to the constraint.",
-              source: "EY Switzerland (2024). Integrating Agile Practices into Procurement Processes.",
+              body: "Air France KLM Martinair Cargo needed a new cargo booking system delivered within a six-month deadline. Traditional RFP processes for a contract of this complexity usually lasted several months. The Lean Agile Procurement approach — a two-day 'POCAthlon' workshop with four pre-selected vendors — closed vendor selection in ~6 weeks; the project launched a week later and delivered within the window (LAP Alliance / Agile Business Consortium 2021). The policy was unchanged; the procedure was adapted to the constraint.",
+              source: "LAP Alliance / Agile Business Consortium (2021). Air France KLM Martinair Cargo — Lean-Agile Procurement case study.",
             },
             {
               title: "4.4 Production Materials: Zara (Inditex)",
@@ -493,7 +494,7 @@ export default function ResearchPage() {
             },
             {
               author: "Goodhart's Law (1975)",
-              text: "\"When a measure becomes a target, it ceases to be a good measure.\" Szucs (2024) shows that discretion in supplier selection raises prices by ~6 percentage points and selects less-productive contractors — competitive tendering averts this favoritism premium, a measurable, auditable price-discipline win on that one dimension. But the costs that run the other way (deployment delay, renegotiation probability +7.7 pp, foregone TCO savings up to 30%) are not on the compliance dashboard. When procedural compliance rate becomes the KPI, compliance theater is the rational organizational response.",
+              text: "\"When a measure becomes a target, it ceases to be a good measure.\" Szucs (2024) shows that discretion in supplier selection raises prices by ~6 percent and selects less-productive contractors — competitive tendering averts this favoritism premium, a measurable, auditable price-discipline win on that one dimension. But the costs that run the other way (deployment delay, renegotiation probability +7.7 pp, foregone TCO savings up to 30%) are not on the compliance dashboard. When procedural compliance rate becomes the KPI, compliance theater is the rational organizational response.",
             },
             {
               author: "High-Modernist Planning Failure (Scott 1998)",
@@ -599,15 +600,14 @@ export default function ResearchPage() {
               "Beuve, J., Moszoro, M., & Spiller, P. T. (2021/2023). Contractual Rigidity and Political Contestability: Revisiting Public Contract Renegotiations. NBER Working Paper 28491; published in the Journal of Law, Economics, and Organization (2023).",
               "Chartered Institute of Procurement & Supply (CIPS). (2024). Procurement Policies & Procedures Explained. CIPS Intelligence Hub.",
               "DiMaggio, P. J., & Powell, W. W. (1983). The iron cage revisited. American Sociological Review, 48(2), 147–160.",
-              "EY Switzerland. (2024). Integrating Agile Practices into Procurement Processes.",
+              "Agile Business Consortium / LAP Alliance. (2021). Air France Uses Lean Agile Procurement to Outsource a Critical Project. agilebusiness.org / lap-alliance.org.",
               "GEP. (2024). Should-Cost Modeling: Because You Must Get the Cost Right.",
               "Goodhart, C. A. E. (1975). Problems of monetary management: The UK experience. Papers in Monetary Economics, 1. [Popularized as \"Goodhart's Law\" by Strathern 1997.]",
               "Holmström, B., & Milgrom, P. (1991). Multitask principal-agent analyses. Journal of Law, Economics, & Organization, 7, 24–52.",
-              "Institute for Supply Management (ISM). (2024). Understanding Total Cost of Ownership in Procurement.",
               "Kelman, S. (1990). Procurement and Public Management: The Fear of Discretion. AEI Press.",
+              "LAP Alliance (lean-agile-procurement.com). Swiss Casinos ERP sourcing case study; World Procurement Awards 2020 winner.",
               "Lipsky, M. (1980). Street-Level Bureaucracy. Russell Sage Foundation.",
               "Norman, D. A. (1988). The Design of Everyday Things. Basic Books.",
-              "OECD. (2023). Public Procurement Performance. OECD Publishing, Paris. https://doi.org/10.1787/0dde73f4-en",
               "Scott, J. C. (1998). Seeing Like a State. Yale University Press.",
               "Skylight Digital. (2024). Agile Procurement Playbook — Appendix A: Case Studies. U.S. Digital Service.",
               "Strathern, M. (1997). 'Improving ratings': Audit in the British University system. European Review, 5(3), 305–321.",

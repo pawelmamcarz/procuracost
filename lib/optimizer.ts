@@ -298,108 +298,113 @@ function lcg(seed: number): () => number {
   };
 }
 
-// Score a single path from features (continuous score 0–100)
+// Each path is a declarative list of scoring terms. A term's factor(f) is bounded by
+// maxFactor, so the per-run score can be normalized to a TRUE 0–100 scale for every
+// path ("share of this path's achievable maximum under the run's weights"). This removes
+// the structural bias where paths with dimension bonuses had higher raw ceilings
+// (~164 vs 100) and were systematically favored in vote-based winner selection.
+type TermSpec = {
+  w: number;                              // weight index (0–6)
+  scale: number;                          // path-specific term scale
+  maxFactor: number;                      // largest value factor() can return
+  factor: (f: ProcurementFeatures) => number;
+};
+
+const N_WEIGHTS = 7; // w0–w4 base terms + w5/w6 spendType & processPhase dimension terms
+
+const isDirect = (f: ProcurementFeatures) => f.spendType === "direct";
+const isUpstream = (f: ProcurementFeatures) => f.processPhase === "upstream";
+const isDownstream = (f: ProcurementFeatures) => f.processPhase === "downstream";
+const vMln = (f: ProcurementFeatures) => f.contractValue / 1_000_000;
+
+const PATH_TERMS: Record<PathId, TermSpec[]> = {
+  przetarg_otwarty: [
+    { w: 0, scale: 25, maxFactor: 1, factor: (f) => Math.min(vMln(f) / 10, 1) },                       // large value → open tender
+    { w: 1, scale: 25, maxFactor: 1, factor: (f) => (f.supplierCount >= 5 ? 1 : f.supplierCount / 5) }, // many suppliers
+    { w: 2, scale: 20, maxFactor: 1, factor: (f) => (6 - f.complexity) / 5 },                           // low complexity
+    { w: 3, scale: 15, maxFactor: 1, factor: (f) => (f.urgencyDays > 90 ? 1 : f.urgencyDays / 90) },    // time available
+    { w: 4, scale: 15, maxFactor: 1, factor: (f) => (f.isPublicSector ? 1 : 0) },                       // public sector
+  ],
+  przetarg_ograniczony: [
+    { w: 0, scale: 20, maxFactor: 1, factor: (f) => Math.min(vMln(f) / 5, 1) },
+    { w: 1, scale: 30, maxFactor: 1, factor: (f) => (f.supplierCount >= 2 && f.supplierCount <= 6 ? 1 : 0) },
+    { w: 2, scale: 20, maxFactor: 1, factor: (f) => (f.isPublicSector ? 1 : 0) },
+    { w: 3, scale: 20, maxFactor: 1, factor: (f) => (f.complexity >= 3 ? f.complexity / 5 : 0) },
+    { w: 4, scale: 10, maxFactor: 1, factor: (f) => (f.marketMaturity <= 3 ? 1 : 0) },
+  ],
+  dialog_konkurencyjny: [
+    { w: 0, scale: 30, maxFactor: 1, factor: (f) => f.complexity / 5 },
+    { w: 1, scale: 25, maxFactor: 1, factor: (f) => (f.innovationRequired ? 1 : 0) },
+    { w: 2, scale: 15, maxFactor: 1, factor: (f) => (f.isPublicSector ? 1 : 0) },
+    { w: 3, scale: 15, maxFactor: 1, factor: (f) => Math.min(vMln(f) / 3, 1) },
+    { w: 4, scale: 15, maxFactor: 1, factor: (f) => (f.marketMaturity <= 2 ? 1 : 0.3) },
+    // Dialog/competitive negotiation is the natural fit for complex, high-stakes
+    // Direct + Upstream sourcing where relationship and risk allocation matter.
+    { w: 5, scale: 14, maxFactor: 1.35, factor: (f) => (isUpstream(f) ? 1.35 : 0.65) },
+    { w: 6, scale: 12, maxFactor: 1.6, factor: (f) => (isDirect(f) && isUpstream(f) ? 1.6 : isDirect(f) ? 1.1 : 0.7) },
+  ],
+  tryb_podstawowy: [
+    // Default competitive Polish procedure below the EU threshold: public-sector,
+    // mid-value (130k–EU band), non-emergency, standard buys.
+    { w: 0, scale: 30, maxFactor: 1, factor: (f) => (f.isPublicSector ? 1 : 0) },
+    { w: 1, scale: 30, maxFactor: 1, factor: (f) =>
+        f.contractValue >= PZP_EXEMPTION_PLN && f.contractValue < EU_THRESHOLD_SUPPLIES_SERVICES_PLN ? 1 : 0 },
+    { w: 2, scale: 15, maxFactor: 1, factor: (f) => (f.urgencyDays >= 21 ? 1 : f.urgencyDays / 21) },
+    { w: 3, scale: 15, maxFactor: 1, factor: (f) => (f.supplierCount >= 2 ? 1 : f.supplierCount / 2) },
+    { w: 4, scale: 10, maxFactor: 1, factor: (f) => (6 - f.complexity) / 5 },
+  ],
+  negocjacje: [
+    { w: 0, scale: 25, maxFactor: 1, factor: (f) => f.strategicImportance / 5 },
+    { w: 1, scale: 20, maxFactor: 1, factor: (f) => (f.supplierCount <= 4 ? 1 : 2 / f.supplierCount) },
+    { w: 2, scale: 20, maxFactor: 1, factor: (f) => (!f.isPublicSector ? 1 : 0.4) },
+    { w: 3, scale: 20, maxFactor: 1, factor: (f) => (f.urgencyDays < 90 ? (90 - f.urgencyDays) / 90 : 0) },
+    { w: 4, scale: 15, maxFactor: 1, factor: (f) => (f.supplyRisk >= 3 ? f.supplyRisk / 5 : 0) },
+    // Direct + Upstream → strong preference for flexible, relationship-heavy paths;
+    // Downstream → more tolerance for simpler, operational paths.
+    { w: 5, scale: 25, maxFactor: 1.8, factor: (f) => (isUpstream(f) && isDirect(f) ? 1.8 : 0.4) },
+    { w: 6, scale: 15, maxFactor: 1.25, factor: (f) => (isDownstream(f) ? 0.45 : 1.25) },
+  ],
+  agile: [
+    { w: 0, scale: 25, maxFactor: 1, factor: (f) => (f.innovationRequired ? 1 : 0.3) },
+    { w: 1, scale: 30, maxFactor: 1, factor: (f) => (f.urgencyDays < 60 ? (60 - f.urgencyDays) / 60 : 0) },
+    { w: 2, scale: 25, maxFactor: 1, factor: (f) => (!f.isPublicSector ? 1 : 0.2) },
+    { w: 3, scale: 20, maxFactor: 1, factor: (f) => (f.complexity >= 3 ? f.complexity / 5 : 0) },
+    // Downstream + Indirect favors faster, lighter execution paths
+    { w: 5, scale: 8, maxFactor: 1.25, factor: (f) => (isDownstream(f) ? 1.25 : 0.85) },
+    { w: 6, scale: 6, maxFactor: 1.15, factor: (f) => (isDirect(f) ? 0.9 : 1.15) },
+  ],
+  bezposrednie: [
+    { w: 0, scale: 35, maxFactor: 1, factor: (f) => (f.urgencyDays < 21 ? (21 - f.urgencyDays) / 21 : 0) },
+    { w: 1, scale: 30, maxFactor: 1, factor: (f) => (f.supplyRisk >= 5 ? 1 : 0) },
+    { w: 2, scale: 20, maxFactor: 1, factor: (f) => (f.contractValue < 130_000 ? 1 : 0) },
+    { w: 3, scale: 15, maxFactor: 0.5, factor: (f) => (!f.isPublicSector ? 0.5 : 0) },
+    // Direct + Upstream almost never fits single-source without justification; Downstream+Indirect often does
+    { w: 5, scale: 10, maxFactor: 1.4, factor: (f) => (isDirect(f) && isUpstream(f) ? 0.25 : isDownstream(f) ? 1.4 : 1.0) },
+    { w: 6, scale: 6, maxFactor: 1.3, factor: (f) => (isDownstream(f) && !isDirect(f) ? 1.3 : 0.9) },
+  ],
+};
+
+// Score a single path from features. Normalized per run to a true 0–100 scale: the
+// achieved weighted sum divided by this path's achievable maximum under the same
+// weights, so every path competes on an equal ceiling.
 function scorePath(path: PathId, f: ProcurementFeatures, weights: number[]): number {
-  const v = f.contractValue / 1_000_000; // normalize to millions
-  const [w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10] = weights;
-
-  const isDirect = f.spendType === "direct";
-  const isUpstream = f.processPhase === "upstream";
-  const isDownstream = f.processPhase === "downstream";
-
-  switch (path) {
-    case "przetarg_otwarty":
-      return (
-        w0 * Math.min(v / 10, 1) * 25 +          // large value → open tender
-        w1 * (f.supplierCount >= 5 ? 1 : f.supplierCount / 5) * 25 + // many suppliers
-        w2 * ((6 - f.complexity) / 5) * 20 +     // low complexity
-        w3 * (f.urgencyDays > 90 ? 1 : f.urgencyDays / 90) * 15 +   // time available
-        w4 * (f.isPublicSector ? 1 : 0) * 15     // public sector
-      );
-
-    case "przetarg_ograniczony":
-      return (
-        w0 * Math.min(v / 5, 1) * 20 +
-        w1 * (f.supplierCount >= 2 && f.supplierCount <= 6 ? 1 : 0) * 30 +
-        w2 * (f.isPublicSector ? 1 : 0) * 20 +
-        w3 * (f.complexity >= 3 ? f.complexity / 5 : 0) * 20 +
-        w4 * (f.marketMaturity <= 3 ? 1 : 0) * 10
-      );
-
-    case "dialog_konkurencyjny":
-      return (
-        w0 * (f.complexity / 5) * 30 +
-        w1 * (f.innovationRequired ? 1 : 0) * 25 +
-        w2 * (f.isPublicSector ? 1 : 0) * 15 +
-        w3 * Math.min(v / 3, 1) * 15 +
-        w4 * (f.marketMaturity <= 2 ? 1 : 0.3) * 15 +
-        // Deepened dimension effects: dialog/competitive negotiation is the natural fit
-        // for complex, high-stakes Direct + Upstream sourcing where relationship and risk allocation matter.
-        w9 * (isUpstream ? 1.35 : 0.65) * 14 +
-        w10 * (isDirect && isUpstream ? 1.6 : isDirect ? 1.1 : 0.7) * 12
-      );
-
-    case "tryb_podstawowy":
-      return (
-        // Default competitive Polish procedure below the EU threshold: public-sector,
-        // mid-value (130k–EU band), non-emergency, standard buys.
-        w0 * (f.isPublicSector ? 1 : 0) * 30 +
-        w1 *
-          (f.contractValue >= PZP_EXEMPTION_PLN &&
-          f.contractValue < EU_THRESHOLD_SUPPLIES_SERVICES_PLN
-            ? 1
-            : 0) *
-          30 +
-        w2 * (f.urgencyDays >= 21 ? 1 : f.urgencyDays / 21) * 15 +
-        w3 * (f.supplierCount >= 2 ? 1 : f.supplierCount / 2) * 15 +
-        w4 * ((6 - f.complexity) / 5) * 10
-      );
-
-    case "negocjacje":
-      return (
-        w0 * (f.strategicImportance / 5) * 25 +
-        w1 * (f.supplierCount <= 4 ? 1 : 2 / f.supplierCount) * 20 +
-        w2 * (!f.isPublicSector ? 1 : 0.4) * 20 +
-        w3 * (f.urgencyDays < 90 ? (90 - f.urgencyDays) / 90 : 0) * 20 +
-        w4 * (f.supplyRisk >= 3 ? f.supplyRisk / 5 : 0) * 15 +
-        // New dimensions - very strong and realistic impact (pogłębienie modelu)
-        // Direct + Upstream → bardzo silna preferencja dla elastycznych, zaawansowanych ścieżek (dialog, negocjacje)
-        // Downstream → większa tolerancja dla prostszych, operacyjnych ścieżek
-        w9 * (isUpstream && isDirect ? 1.8 : 0.4) * 25 +
-        w10 * (isDownstream ? 0.45 : 1.25) * 15
-      );
-
-    case "agile":
-      return (
-        w0 * (f.innovationRequired ? 1 : 0.3) * 25 +
-        w1 * (f.urgencyDays < 60 ? (60 - f.urgencyDays) / 60 : 0) * 30 +
-        w2 * (!f.isPublicSector ? 1 : 0.2) * 25 +
-        w3 * (f.complexity >= 3 ? f.complexity / 5 : 0) * 20 +
-        // Downstream + Indirect favors faster, lighter execution paths
-        w9 * (isDownstream ? 1.25 : 0.85) * 8 +
-        w10 * (isDirect ? 0.9 : 1.15) * 6
-      );
-
-    case "bezposrednie":
-      return (
-        w0 * (f.urgencyDays < 21 ? (21 - f.urgencyDays) / 21 : 0) * 35 +
-        w1 * (f.supplyRisk >= 5 ? 1 : 0) * 30 +
-        w2 * (f.contractValue < 130_000 ? 1 : 0) * 20 +
-        w3 * (!f.isPublicSector ? 0.5 : 0) * 15 +
-        // Direct + Upstream almost never fits single-source without justification; Downstream+Indirect often does
-        w9 * (isDirect && isUpstream ? 0.25 : isDownstream ? 1.4 : 1.0) * 10 +
-        w10 * (isDownstream && !isDirect ? 1.3 : 0.9) * 6
-      );
+  let achieved = 0;
+  let achievable = 0;
+  for (const term of PATH_TERMS[path]) {
+    const w = weights[term.w];
+    achieved += w * term.factor(f) * term.scale;
+    achievable += w * term.maxFactor * term.scale;
   }
+  return achievable > 0 ? (100 * achieved) / achievable : 0;
 }
 
-// Generate one tree's weight vector (random feature subset weighting)
+// Generate one sweep run's weight vector (random feature subset weighting).
+// Exactly N_WEIGHTS weights — every generated weight is read by at least one path.
 function treeWeights(rand: () => number): number[] {
-  // 11 weights now (added spendType + processPhase)
-  const active = Array.from({ length: 11 }, () => (rand() > 0.4 ? 1 : 0));
+  const active = Array.from({ length: N_WEIGHTS }, () => (rand() > 0.4 ? 1 : 0));
   // ensure at least 3 active
   while (active.filter(Boolean).length < 3) {
-    active[Math.floor(rand() * 11)] = 1;
+    active[Math.floor(rand() * N_WEIGHTS)] = 1;
   }
   // scale with random importance
   return active.map((a) => (a ? 0.5 + rand() * 0.5 : 0));
@@ -512,7 +517,8 @@ function feasiblePathIds(f: ProcurementFeatures): PathId[] {
   return PUBLIC_COMPETITIVE_PATHS;
 }
 
-// Neutral baseline used for ablation feature importance.
+// Neutral baseline used for ablation feature importance. "Unset" is the documented
+// neutral for the contextual dimensions (all dimension effects off).
 const NEUTRAL_FEATURES: ProcurementFeatures = {
   contractValue: 1_000_000,
   supplierCount: 5,
@@ -523,12 +529,16 @@ const NEUTRAL_FEATURES: ProcurementFeatures = {
   supplyRisk: 3,
   strategicImportance: 3,
   marketMaturity: 3,
+  spendType: undefined,
+  processPhase: undefined,
 };
 
-const UNIT_WEIGHTS: number[] = Array.from({ length: 11 }, () => 1);
+const UNIT_WEIGHTS: number[] = Array.from({ length: N_WEIGHTS }, () => 1);
 
 // Genuine ablation importance: neutralize each feature, measure |Δ score| of the top path
 // using the full unbagged scorer. Input-dependent and deterministic (no RNG).
+// Paths whose term list contains no spendType/processPhase term (the three competitive
+// tender modes) correctly report 0 importance for those features by construction.
 function ablationImportance(
   features: ProcurementFeatures,
   topPathId: PathId,
@@ -565,16 +575,17 @@ export function optimize(features: ProcurementFeatures, lang: "pl" | "en" = "pl"
     votes[runScores[0].pid]++;
   }
 
-  // Rank by mean score across ALL runs (continuous), ensemble agreement as a tiebreak.
+  // Rank by sweep votes (share of runs won) with mean normalized score as the tiebreak,
+  // so the displayed confidence = votes/30 genuinely describes the displayed winner.
   const ranked: PathResult[] = candidates
     .map((pid) => ({
       path: PATHS[pid],
-      score: Math.round(Math.min(scoreSum[pid] / N_TREES, 100)),
+      score: Math.round(scoreSum[pid] / N_TREES),
       votes: votes[pid],
       confidence: votes[pid] / N_TREES, // share of sweep runs where this path won (ensemble agreement)
       featureContributions: {},
     }))
-    .sort((a, b) => b.score - a.score || b.votes - a.votes);
+    .sort((a, b) => b.votes - a.votes || b.score - a.score);
 
   const topPath = ranked[0];
   const featureImportance = ablationImportance(features, topPath.path.id, FEATURE_LABELS);

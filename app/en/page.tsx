@@ -4,9 +4,9 @@ import { SCENARIOS } from "@/lib/scenarios";
 import { calculateCosts } from "@/lib/calculations";
 
 const stats = [
-  { value: "~6pp", label: "favoritism premium under unchecked discretion (which competitive tendering averts)", source: "Szucs, JEEA 2024" },
+  { value: "~6%", label: "favoritism premium under unchecked discretion (which competitive tendering averts)", source: "Szucs, JEEA 2024" },
   { value: "+7.7–10.5pp", label: "increased renegotiation risk (observational)", source: "Beuve, Moszoro & Spiller, NBER 2021" },
-  { value: "30%", label: "potential TCO savings with flexibility (practitioner ceiling, multi-year)", source: "ISM (benchmark)" },
+  { value: "30%", label: "potential TCO savings with flexibility (practitioner ceiling, multi-year)", source: "industry heuristic (unattributed)" },
 ];
 
 const howItWorks = [

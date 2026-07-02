@@ -27,11 +27,11 @@ export const EPISODES: Episode[] = [
   {
     number: 2,
     slug: "paradoks-szucsa",
-    title: "Paradoks Szucsa: 2% taniej w aukcji, 30% drożej w cyklu życia",
+    title: "Paradoks Szucsa: przetarg wygrywa cenę zakupu, przegrywa koszt cyklu życia",
     dimension: "C_opp · C_TCO",
     guest: "Ekspert TCO z branży motoryzacyjnej",
     thesis:
-      "Sztywny przetarg wygrywa bitwę o cenę zakupu i przegrywa wojnę o całkowity koszt.",
+      "Uznaniowość podnosi ceny (~6%, Szucs 2024) — przetarg tę premię oddala, ale bitwę o koszt całkowity i tak można przegrać, gdy kryterium kończy się na cenie zakupu.",
     recommendation:
       "Zmień kryterium wyboru oferty z ceny jednostkowej na koszt całkowity. W jednym pilotażu. Jutro.",
   },
@@ -42,7 +42,7 @@ export const EPISODES: Episode[] = [
     dimension: "C_reneg",
     guest: "Prawnik kontraktowy",
     thesis:
-      "Każdy punkt sztywności w umowie zwiększa ryzyko renegocjacji o 7–10 p.p. (Beuve et al. 2021).",
+      "Wzrost sztywności umowy o odchylenie standardowe wiąże się z ryzykiem renegocjacji wyższym o 7,7–10,5 p.p. (Beuve et al. 2021; zależność obserwacyjna).",
     recommendation:
       "Zastąp dwa najsztywniejsze zapisy w waszym wzorcu umowy klauzulami przeglądowymi.",
   },
@@ -59,12 +59,12 @@ export const EPISODES: Episode[] = [
   },
   {
     number: 5,
-    slug: "it-erp-4-tygodnie-zamiast-6-miesiecy",
-    title: "IT/ERP: 4 tygodnie zamiast 6 miesięcy",
+    slug: "it-erp-6-tygodni-zamiast-6-miesiecy",
+    title: "IT/ERP: 6 tygodni zamiast 6 miesięcy",
     dimension: "Archetyp: IT/ERP",
     guest: "Praktyk Lean Agile Procurement",
     thesis:
-      "LAP pozwala zamknąć sourcing systemu ERP w 4 tygodnie, trzymając się polityki.",
+      "LAP pozwala zamknąć sourcing systemu ERP w ~6 tygodni (Swiss Casinos, LAP Alliance 2020), trzymając się polityki.",
     recommendation:
       "Następnego dużego dostawcę IT zaproś na warsztaty, zanim wyślesz zapytanie ofertowe.",
   },
@@ -86,7 +86,7 @@ export const EPISODES: Episode[] = [
     dimension: "Archetyp: Logistyka",
     guest: "Ekspert logistyki kontraktowej",
     thesis:
-      "Procedura trwała 12–18 miesięcy, okno biznesowe było 6-miesięczne. LAP zamknął sourcing w oknie.",
+      "Klasyczne RFP trwało zwykle wiele miesięcy, a okno na dostarczenie systemu było 6-miesięczne. LAP zamknął wybór dostawcy w ~6 tygodni (Air France KLM Martinair Cargo, LAP Alliance 2021).",
     recommendation:
       "Sprawdź, które kontrakty mają twarde okno czasowe — i zaplanuj je od celu, nie od procesu.",
   },

@@ -39,15 +39,21 @@ export default function AssumptionsExplorerEn() {
   const DISCRETION_FAVORITISM_PREMIUM = 0.06;
   const BASE_RENEGOTIATION_PROBABILITY = 0.22;
   const RIGIDITY_RENEGOTIATION_PREMIUM = 0.077;
-  const FLEXIBLE_RENEGOTIATION_PROBABILITY_FACTOR = 0.7;
+  const RENEGOTIATION_PREMIUM_MAX = 0.105;
   const REPRESENTATIVE_RIGIDITY = 0.85; // representative rigid-process rigidity index (ρ)
+  const FLEXIBLE_RIGIDITY = 0.15;       // policy-level rigidity of the flexible path
+
+  // Same formula for both paths (symmetric model): P(ρ) = 0.22 + min(0.077·ρ·m, 0.105).
+  function renegProb(rigidity: number, mult: number) {
+    return BASE_RENEGOTIATION_PROBABILITY +
+      Math.min(RIGIDITY_RENEGOTIATION_PREMIUM * rigidity * mult, RENEGOTIATION_PREMIUM_MAX);
+  }
 
   function computeGap(m: { tcoMultiplier: number; delayMultiplier: number; renegotiationMultiplier: number; productivityMultiplier: number }) {
     const tcoImpact = exampleValue * TCO_SAVINGS_RATE_PER_YEAR * (m.tcoMultiplier - 1) * 3;
     const delayImpact = delayDays * dailyInaction * m.delayMultiplier;
-    const rigidRenegProb = BASE_RENEGOTIATION_PROBABILITY + RIGIDITY_RENEGOTIATION_PREMIUM * REPRESENTATIVE_RIGIDITY * m.renegotiationMultiplier;
-    const flexibleRenegProb = BASE_RENEGOTIATION_PROBABILITY * FLEXIBLE_RENEGOTIATION_PROBABILITY_FACTOR;
-    const renegotiationImpact = exampleValue * (rigidRenegProb - flexibleRenegProb);
+    const renegotiationImpact = exampleValue *
+      (renegProb(REPRESENTATIVE_RIGIDITY, m.renegotiationMultiplier) - renegProb(FLEXIBLE_RIGIDITY, m.renegotiationMultiplier));
     const productivityImpact = exampleValue * DISCRETION_FAVORITISM_PREMIUM * (m.productivityMultiplier - 1);
     return Math.max(0, tcoImpact + delayImpact + renegotiationImpact + productivityImpact);
   }
@@ -124,7 +130,6 @@ export default function AssumptionsExplorerEn() {
             { key: "delayMultiplier", label: "Delay penalty", min: 0.5, max: 2.5, step: 0.05 },
             { key: "renegotiationMultiplier", label: "Renegotiation exposure", min: 0.5, max: 2.5, step: 0.05 },
             { key: "productivityMultiplier", label: "Supplier productivity impact", min: 0.5, max: 1.5, step: 0.05 },
-            { key: "staffIntensityMultiplier", label: "Team effort intensity", min: 0.6, max: 2.0, step: 0.05 },
             { key: "coordinationIntensityMultiplier", label: "Coordination overhead", min: 0.6, max: 2.0, step: 0.05 },
           ].map(({ key, label, min, max, step }) => {
             const baseVal = (baseMultipliers as any)[key] ?? 1;
@@ -153,7 +158,7 @@ export default function AssumptionsExplorerEn() {
           <div className="space-y-2 text-sm">
             {details.length > 0 ? (
               details.map((d) => {
-                const keyMap: any = { tco: "tcoMultiplier", delay: "delayMultiplier", renegotiation: "renegotiationMultiplier", productivity: "productivityMultiplier", staff: "staffIntensityMultiplier", coordination: "coordinationIntensityMultiplier" };
+                const keyMap: any = { tco: "tcoMultiplier", delay: "delayMultiplier", renegotiation: "renegotiationMultiplier", productivity: "productivityMultiplier", bypass: "bypassMultiplier", coordination: "coordinationIntensityMultiplier" };
                 const mKey = keyMap[d.key] || d.key;
                 const baseVal = (baseMultipliers as any)[mKey] ?? 1;
                 const effVal = (effectiveMultipliers as any)[mKey] ?? baseVal;
@@ -172,7 +177,7 @@ export default function AssumptionsExplorerEn() {
           </div>
 
           <div className="mt-4 pt-3 border-t text-xs text-gray-500">
-            These values are consumed by <strong>calculateCosts</strong>, <strong>deriveStaffCost</strong>, the path optimizer, and PDF export.
+            These values are consumed by <strong>calculateCosts</strong>, the path optimizer, and PDF export. Per-role staff-hour multipliers live separately in <strong>deriveStaffCost</strong>.
           </div>
         </div>
 

@@ -139,7 +139,7 @@ export const comparisonT = {
     lowerThan: "niższy niż podejście oparte na polityce zakupowej (procedura tańsza w tym kontekście)",
     modelAdjustContext: "model dostosowany do kontekstu",
     modelAdjustTitle: "Zastosowane korekty modelu:",
-    modelAdjustDirectTco: "Większy potencjał optymalizacji TCO (+35%)",
+    modelAdjustDirectTco: "Większy potencjał optymalizacji TCO (+15%)",
     modelAdjustUpstreamBypass: "Wyższe ryzyko obejścia w scenariuszach sztywnych (+25%)",
     modelAdjustDownstreamProd: "Nieco mniejszy wpływ sztywności na jakość wyboru dostawcy",
     modelAdjustStrongest: "Najsilniejszy łączny efekt (strategiczny wydatek Direct)",
@@ -201,7 +201,7 @@ export const comparisonT = {
     lowerThan: "lower than the policy-based approach (the procedure is cheaper in this context)",
     modelAdjustContext: "model adjusted for context",
     modelAdjustTitle: "Model adjustments applied:",
-    modelAdjustDirectTco: "Higher TCO optimization potential (+35%)",
+    modelAdjustDirectTco: "Higher TCO optimization potential (+15%)",
     modelAdjustUpstreamBypass: "Higher bypass risk in rigid scenarios (+25%)",
     modelAdjustDownstreamProd: "Slightly lower selection-quality impact from rigidity",
     modelAdjustStrongest: "Strongest combined effect (strategic Direct spend)",
@@ -395,7 +395,7 @@ export const assessmentT = {
       },
       {
         q: "Jak często dochodzi do renegocjacji zawartych kontraktów?",
-        dim: "Renegocjacje (Beuve 2021)",
+        dim: "Renegocjacje (baza ~22%; Beuve 2021)",
         answers: ["Często — ponad 30% kontraktów", "Czasem — 10–30%", "Rzadko — poniżej 10%"],
       },
       {
@@ -482,7 +482,7 @@ export const assessmentT = {
       },
       {
         q: "How often are signed contracts renegotiated?",
-        dim: "Renegotiation (Beuve 2021)",
+        dim: "Renegotiation (~22% baseline; Beuve 2021)",
         answers: ["Often — over 30% of contracts", "Sometimes — 10–30%", "Rarely — below 10%"],
       },
       {
