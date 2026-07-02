@@ -9,9 +9,9 @@ ProcuraCost is an open-source research and consulting tool that quantifies the h
 Procurement *policy* defines principles and boundaries. Procurement *procedure* is just one of many ways to implement them. Conflating the two—treating one rigid workflow as if it were the policy itself—carries costs the model captures through:
 
 - Extended timelines and staff hours
-- A favoritism / selection-quality cost borne mainly by the **discretionary** path: discretion raises prices (~6pp, structural) and selects less-productive contractors; competitive tendering averts this premium (Szucs, JEEA 2024)
+- A favoritism / selection-quality cost borne mainly by the **discretionary** path: discretion raises prices (~6%, structural) and selects less-productive contractors; competitive tendering averts this premium (Szucs, JEEA 2024)
 - 7.7–10.5 pp higher renegotiation probability associated with contractual rigidity, observational (Beuve, Moszoro & Spiller, NBER 2021 / JLEO 2023)
-- Up to 30% foregone TCO savings as a multi-year practitioner ceiling, discounted to present value (ISM, practitioner benchmark)
+- Up to 30% foregone TCO savings as a multi-year practitioner ceiling, discounted to present value (unattributed grey-literature heuristic, used only as a cap)
 
 **The Tunnel vs. Field model:** a procedure is a tunnel — one path, binary compliance, human as step-executor. A procurement policy is a field — multiple compliant paths, human as value navigator.
 
@@ -52,9 +52,9 @@ Open [http://localhost:3000](http://localhost:3000) for the Polish interface or 
 
 The cost model draws on peer-reviewed and practitioner sources (only a subset of the model's parameters are peer-reviewed):
 
-1. **Szucs (2024)** — *Journal of the European Economic Association* 22(1):117–160, DOI 10.1093/jeea/jvad017: discretion raises prices (~6pp, structural) and selects less-productive contractors; competitive (rigid) tendering averts this favoritism premium. Note: Szucs attributes roughly two-thirds of the discontinuity to selection/sorting (an endogeneity caveat)
+1. **Szucs (2024)** — *Journal of the European Economic Association* 22(1):117–160, DOI 10.1093/jeea/jvad017: discretion raises prices (~6%, structural; reduced-form ~9%) and selects contractors of ~10% lower productivity; competitive (rigid) tendering averts this favoritism premium. The structural estimates correct for selection into tenders (Hungarian RDD — transfers are benchmarks, not measurements)
 2. **Beuve, Moszoro & Spiller (2021)** — *NBER WP 28491* (published in *JLEO* 2023): contractual rigidity is **associated with** a 7.7–10.5 pp increase in renegotiation probability (observational, not causal)
-3. **ISM / CAPS Research** — up to 30% TCO reduction as a multi-year practitioner ceiling (not a flat annual rate), discounted to present value and capped at 30% of contract value in the model
+3. **TCO savings ceiling** — up to 30% TCO reduction over multiple years is an **unattributed practitioner heuristic** (grey literature; no verifiable ISM or peer-reviewed source), used in the model only as a conservative cap, discounted to present value
 
 Theoretical grounding: Lipsky (1980) Street-Level Bureaucracy · Vaughan (1996) Challenger · Holmström & Milgrom (1991) Multitask Principal-Agent
 

@@ -438,8 +438,8 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
           </div>
           <div className="mt-1 text-[10px] text-blue-600/70">
             {lang === "en"
-              ? "These factors directly scale TCO opportunity cost, delay penalty, renegotiation exposure, staff hours intensity and coordination overhead in the calculations above."
-              : "Te czynniki skalują bezpośrednio koszt alternatywny TCO, karę za opóźnienie, ekspozycję na renegocjacje, intensywność godzin zespołu i narzut koordynacyjny w powyższych wyliczeniach."}
+              ? "These factors directly scale TCO opportunity cost, delay penalty, renegotiation exposure, bypass risk and coordination overhead in the calculations above. Per-role staff-hour effects are modeled separately in the step participation matrix."
+              : "Te czynniki skalują bezpośrednio koszt alternatywny TCO, karę za opóźnienie, ekspozycję na renegocjacje, ryzyko obejścia i narzut koordynacyjny w powyższych wyliczeniach. Efekty godzin per rola modelowane są osobno w macierzy udziału w krokach."}
           </div>
         </div>
       )}

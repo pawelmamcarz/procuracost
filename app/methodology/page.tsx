@@ -24,11 +24,11 @@ export default function MethodologyPage() {
             studies from public procurement economics, we construct a seven-dimensional cost model
             comparing rigid-procedure and policy-only approaches. Szucs (2024) shows that{" "}
             <em>discretion</em> — not rigidity — raises prices: granting buyers unchecked discretion
-            raises prices by roughly 6 percentage points, so competitive tendering averts a
+            raises prices by roughly 6 percent, so competitive tendering averts a
             favoritism premium under unchecked discretion. We further note that contractual rigidity
             is observationally associated with renegotiation risk 7.7–10.5 percentage points higher
             (Beuve et al. 2021), and that Total Cost of Ownership programs can save up to 30% over
-            multiple years (ISM practitioner benchmark). The ProcuraCost calculator operationalizes
+            multiple years (an unattributed practitioner heuristic, used only as a cap). The ProcuraCost calculator operationalizes
             this model for consulting and educational use.
           </p>
         </section>
@@ -77,8 +77,8 @@ export default function MethodologyPage() {
                 <code>= days_rigid × buyer_count × daily_rate</code>
               </p>
               <p className="mt-1 text-xs text-gray-500">
-                OECD (2023) documents average procurement durations of 554 days (OECD countries) to
-                836 days (Sub-Saharan Africa). Rigid procedures add significant administrative time
+                Step durations derive from legal minima (PZP 2019 + Directive 2014/24/EU) and
+                practitioner benchmarks. Rigid procedures add significant administrative time
                 versus policy-guided flexible approaches.
               </p>
             </div>
@@ -125,7 +125,7 @@ export default function MethodologyPage() {
               <p className="mt-1 text-xs text-gray-500">
                 <strong>Source:</strong> Szucs, F. (2024). Discretion and Favoritism in Public
                 Procurement. <em>Journal of the European Economic Association</em> 22(1):117–160.
-                Discretion raises prices by ~6 percentage points and selects less-productive
+                Discretion raises prices by ~6 percent and selects less-productive
                 contractors. This favoritism premium scales with discretion (1 − rigidity) and the
                 contextual corruption risk, so it is borne mainly by the flexible (discretionary)
                 path — competitive tendering averts it.
@@ -139,16 +139,18 @@ export default function MethodologyPage() {
               <p className="mt-1 text-xs text-gray-600">
                 <code>= P(renegotiation) × renegotiation_cost</code>
                 <br />
-                <code>P_rigid = 0.22 + 0.077 × rigidity</code>
+                <code>P(ρ) = 0.22 + min(0.077 × ρ × m_ctx, 0.105)  — one formula, both paths</code>
               </p>
               <p className="mt-1 text-xs text-gray-500">
                 <strong>Source:</strong> Beuve, J., Moszoro, M., & Spiller, P. T. (2021). Contractual
                 Rigidity and Political Contestability: Revisiting Public Contract Renegotiations.{" "}
                 <em>NBER Working Paper 28491</em>. One standard deviation increase in contractual
                 rigidity increases renegotiation frequency by 7.7–10.5 percentage points (vs. 22%
-                unconditional average); the premium is scaled by the actual process rigidity, so it
-                reaches its 0.297 ceiling only at full rigidity. Public contracts are renegotiated
-                significantly more than private ones.
+                unconditional average; observational). The full 0→1 swing of the rigidity index is
+                mapped to ~1 SD, anchored at the 7.7pp lower bound and hard-capped at 10.5pp; both
+                paths use the same formula at their own rigidity, so the rigidity difference alone
+                drives the delta. Public contracts are renegotiated significantly more than private
+                ones.
               </p>
             </div>
 
@@ -158,15 +160,16 @@ export default function MethodologyPage() {
               </h3>
               <p className="mt-1 text-xs text-gray-600">
                 <code>
-                  = contract_value × min(0.10 × Σ_y(1 / 1.05^y) × rigidity, 0.30)
+                  = contract_value × m_ctx × min(0.10 × Σ_y(1 / 1.05^y) × rigidity, 0.30)
                 </code>
               </p>
               <p className="mt-1 text-xs text-gray-500">
-                <strong>Source:</strong> Institute for Supply Management (ISM) / CAPS Research. Total
-                Cost of Ownership in Procurement. TCO sourcing programs can save up to ~30% over
-                multiple years (≈10%/yr). The annual stream is discounted to present value at 5% and
-                scaled by the process rigidity; the cumulative figure is capped at the ISM 30%
-                ceiling so it can never exceed the cited bound. Rigid procedures limit the
+                <strong>Source:</strong> the &ldquo;up to ~30% over multiple years&rdquo; TCO
+                savings ceiling is an unattributed practitioner heuristic from grey literature —
+                no verifiable ISM or peer-reviewed source exists. It is used only as a conservative
+                Grade-C cap. The annual stream is discounted to present value at 5% and
+                scaled by the process rigidity; the cumulative figure is capped at the 30%
+                ceiling so it can never exceed the assumed bound. Rigid procedures limit the
                 flexibility required to capture TCO savings through supplier development, volume
                 optimization, and lifecycle costing.
               </p>
@@ -206,15 +209,12 @@ export default function MethodologyPage() {
               World Bank (2021). Improving Public Procurement Outcomes. Policy Research Paper 9690.
             </li>
             <li>
-              OECD (2023). Public Procurement Performance. OECD Publishing, Paris.
-            </li>
-            <li>
               Chartered Institute of Procurement & Supply (CIPS). Procurement Policies & Procedures
               Explained.
             </li>
             <li>
-              Institute for Supply Management (ISM). Understanding Total Cost of Ownership in
-              Procurement.
+              TCO savings ceiling (~30% over multiple years): unattributed practitioner heuristic
+              (grey literature); no verifiable ISM or peer-reviewed source — used only as a model cap.
             </li>
             <li>
               Skylight Digital (2024). Agile Procurement Playbook — Case Studies. U.S. federal

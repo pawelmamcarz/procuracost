@@ -48,15 +48,21 @@ export default function AssumptionsExplorer() {
   const DISCRETION_FAVORITISM_PREMIUM = 0.06;
   const BASE_RENEGOTIATION_PROBABILITY = 0.22;
   const RIGIDITY_RENEGOTIATION_PREMIUM = 0.077;
-  const FLEXIBLE_RENEGOTIATION_PROBABILITY_FACTOR = 0.7;
+  const RENEGOTIATION_PREMIUM_MAX = 0.105;
   const REPRESENTATIVE_RIGIDITY = 0.85; // representative rigid-process rigidity index (ρ)
+  const FLEXIBLE_RIGIDITY = 0.15;       // policy-level rigidity of the flexible path
+
+  // Same formula for both paths (symmetric model): P(ρ) = 0.22 + min(0.077·ρ·m, 0.105).
+  function renegProb(rigidity: number, mult: number) {
+    return BASE_RENEGOTIATION_PROBABILITY +
+      Math.min(RIGIDITY_RENEGOTIATION_PREMIUM * rigidity * mult, RENEGOTIATION_PREMIUM_MAX);
+  }
 
   function computeGap(m: { tcoMultiplier: number; delayMultiplier: number; renegotiationMultiplier: number; productivityMultiplier: number }) {
     const tcoImpact = exampleValue * TCO_SAVINGS_RATE_PER_YEAR * (m.tcoMultiplier - 1) * 3;
     const delayImpact = delayDays * dailyInaction * m.delayMultiplier;
-    const rigidRenegProb = BASE_RENEGOTIATION_PROBABILITY + RIGIDITY_RENEGOTIATION_PREMIUM * REPRESENTATIVE_RIGIDITY * m.renegotiationMultiplier;
-    const flexibleRenegProb = BASE_RENEGOTIATION_PROBABILITY * FLEXIBLE_RENEGOTIATION_PROBABILITY_FACTOR;
-    const renegotiationImpact = exampleValue * (rigidRenegProb - flexibleRenegProb);
+    const renegotiationImpact = exampleValue *
+      (renegProb(REPRESENTATIVE_RIGIDITY, m.renegotiationMultiplier) - renegProb(FLEXIBLE_RIGIDITY, m.renegotiationMultiplier));
     const productivityImpact = exampleValue * DISCRETION_FAVORITISM_PREMIUM * (m.productivityMultiplier - 1);
     return Math.max(0, tcoImpact + delayImpact + renegotiationImpact + productivityImpact);
   }
@@ -137,7 +143,6 @@ export default function AssumptionsExplorer() {
             { key: "delayMultiplier", label: "Koszt opóźnienia", min: 0.5, max: 2.5, step: 0.05 },
             { key: "renegotiationMultiplier", label: "Ryzyko renegocjacji", min: 0.5, max: 2.5, step: 0.05 },
             { key: "productivityMultiplier", label: "Wpływ na produktywność", min: 0.5, max: 1.5, step: 0.05 },
-            { key: "staffIntensityMultiplier", label: "Intensywność pracy zespołu", min: 0.6, max: 2.0, step: 0.05 },
             { key: "coordinationIntensityMultiplier", label: "Intensywność koordynacji", min: 0.6, max: 2.0, step: 0.05 },
           ].map(({ key, label, min, max, step }) => {
             const baseVal = (baseMultipliers as any)[key] ?? 1;
@@ -176,16 +181,13 @@ export default function AssumptionsExplorer() {
           <div className="space-y-2 text-sm">
             {details.length > 0 ? (
               details.map((d) => {
-                const baseVal = (baseMultipliers as any)[d.key === "tco" ? "tcoMultiplier" : 
+                const multKey = d.key === "tco" ? "tcoMultiplier" :
                   d.key === "delay" ? "delayMultiplier" :
                   d.key === "renegotiation" ? "renegotiationMultiplier" :
                   d.key === "productivity" ? "productivityMultiplier" :
-                  d.key === "staff" ? "staffIntensityMultiplier" : "coordinationIntensityMultiplier"] ?? 1;
-                const effVal = (effectiveMultipliers as any)[d.key === "tco" ? "tcoMultiplier" : 
-                  d.key === "delay" ? "delayMultiplier" :
-                  d.key === "renegotiation" ? "renegotiationMultiplier" :
-                  d.key === "productivity" ? "productivityMultiplier" :
-                  d.key === "staff" ? "staffIntensityMultiplier" : "coordinationIntensityMultiplier"] ?? baseVal;
+                  d.key === "bypass" ? "bypassMultiplier" : "coordinationIntensityMultiplier";
+                const baseVal = (baseMultipliers as any)[multKey] ?? 1;
+                const effVal = (effectiveMultipliers as any)[multKey] ?? baseVal;
 
                 return (
                   <div key={d.key} className="flex justify-between items-center border-b border-gray-100 pb-1.5">
@@ -203,7 +205,7 @@ export default function AssumptionsExplorer() {
           </div>
 
           <div className="mt-4 pt-3 border-t text-xs text-gray-500">
-            Te wartości są używane w <strong>calculateCosts</strong>, <strong>deriveStaffCost</strong>, optimizerze i raporcie PDF.
+            Te wartości są używane w <strong>calculateCosts</strong>, optimizerze i raporcie PDF. Mnożniki godzin per rola (staff) żyją osobno w <strong>deriveStaffCost</strong>.
           </div>
         </div>
 

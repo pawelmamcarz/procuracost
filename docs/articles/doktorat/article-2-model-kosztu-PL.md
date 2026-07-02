@@ -37,15 +37,15 @@ Ekonomia zamówień publicznych jest bogata w przyczynowo zidentyfikowane estyma
 
 ### 2.1 Dyskrecja i faworytyzm: premia cenowa i jakość selekcji (Szucs, 2024)
 
-Najważniejszym pojedynczym wynikiem dla architektury modelu jest praca Szucsa (2024) opublikowana w *Journal of the European Economic Association*. Wykorzystując nieciągłość regresyjną wokół progu reformy 25 mln HUF w węgierskich zamówieniach publicznych oraz strukturalną korektę selekcji, autor szacuje, że **dyskrecja podnosi znormalizowaną cenę o około 6% (estymata strukturalna przyczynowa; postać zredukowana ~8%; surowa nieciągłość ~9%) i prowadzi do wyboru wykonawców o około 10% mniej produktywnych**. Kluczowa dla uczciwości modelu jest dekompozycja: **około 2/3 nieciągłości to sortowanie/selekcja firm**, nie czysty efekt traktowania dyskrecją. Współczynnik 0,06 należy więc czytać jako *górne*, obciążone endogenicznością oszacowanie (zastrzeżenie o manipulacji wartością i bunchingu wokół progu). Wniosek, który model importuje wbrew własnej tezie nagłówkowej, brzmi: **konkurencyjny przetarg zażegnuje premię faworytyzmu**. Trafność zewnętrzna: dane węgierskiego sektora publicznego → kontekst polski/prywatny jest *transferem*, nie zmierzoną wartością polską.
+Najważniejszym pojedynczym wynikiem dla architektury modelu jest praca Szucsa (2024) opublikowana w *Journal of the European Economic Association*. Wykorzystując nieciągłość regresyjną wokół progu reformy 25 mln HUF w węgierskich zamówieniach publicznych oraz strukturalną korektę selekcji, autor szacuje, że **dyskrecja podnosi znormalizowaną cenę o około 6 procent (estymata strukturalna przyczynowa; postać zredukowana fuzzy-RD ~9%; estymata z korektą selekcji ~8%) i prowadzi do wyboru wykonawców o około 10% mniej produktywnych (estymata strukturalna)**. Kluczowe dla uczciwości modelu jest to, że **estymaty strukturalne korygują selekcję do przetargów**, a transfer liczby poza badaną populację jest benchmarkiem, nie pomiarem. Współczynnik 0,06 należy więc czytać jako obciążone transferem oszacowanie punktowe (zastrzeżenie o manipulacji wartością i bunchingu wokół progu). Wniosek, który model importuje wbrew własnej tezie nagłówkowej, brzmi: **konkurencyjny przetarg zażegnuje premię faworytyzmu**. Trafność zewnętrzna: dane węgierskiego sektora publicznego → kontekst polski/prywatny jest *transferem*, nie zmierzoną wartością polską.
 
 ### 2.2 Sztywność kontraktowa i renegocjacje (Beuve, Moszoro i Spiller, 2023; Guasch, 2004)
 
-Drugim filarem jest praca Beuve'a, Moszoro i Spillera (2023, opublikowana w *Journal of Law, Economics, and Organization*; wcześniej NBER WP 28491, 2021). Autorzy szacują, że **wzrost sztywności kontraktowej o jedno odchylenie standardowe podnosi prawdopodobieństwo renegocjacji o 7,7–10,5 punktu procentowego, względem bezwarunkowej bazy 22%**. Identyfikacja jest **2SLS/IV** (sztywność instrumentowana kontestowalnością polityczną; restrykcja wyłączenia jest nośna), *nie* czysto obserwacyjna. Trafność zewnętrzna: sektor francuskich parkingów, pojedyncze otoczenie koncesyjne, próba estymacyjna n ≈ 279, dawka na jedno odchylenie standardowe. Model przyjmuje dolny kraniec premii (0,077) i skaluje go indeksem sztywności ρ. Wynik koroboruje Guasch (2004): **około 30% koncesji w Ameryce Łacińskiej i na Karaibach było renegocjowanych, a wskaźnik rośnie do ≈41,5% po wyłączeniu telekomunikacji** (41,5% to stopa *bez telekomunikacji*, nie stopa łączna). To obserwacja na koncesjach infrastrukturalnych LAC; służy wyłącznie jako koroboracja bazy 22%.
+Drugim filarem jest praca Beuve'a, Moszoro i Spillera (2023, opublikowana w *Journal of Law, Economics, and Organization*; wcześniej NBER WP 28491, 2021). Autorzy szacują, że **wzrost sztywności kontraktowej o jedno odchylenie standardowe podnosi prawdopodobieństwo renegocjacji o 7,7–10,5 punktu procentowego, względem bezwarunkowej bazy 22%**. Identyfikacja jest **2SLS/IV** (sztywność instrumentowana kontestowalnością polityczną; restrykcja wyłączenia jest nośna), *nie* czysto obserwacyjna. Trafność zewnętrzna: sektor francuskich parkingów, pojedyncze otoczenie koncesyjne (wersja robocza z 2016 r. raportuje 396 kontraktów; ostateczna liczebność próby w wersji opublikowanej niepotwierdzona), dawka na jedno odchylenie standardowe. Model przyjmuje dolny kraniec pasma (0,077) jako nachylenie premii, skaluje go indeksem sztywności ρ przy założeniu mapującym „pełny przeskok indeksu 0→1 ≈ jedno odchylenie standardowe" i twardo ogranicza premię górnym krańcem pasma (`RENEGOTIATION_PREMIUM_MAX` = 0,105). Wynik koroboruje Guasch (2004): **około 30% koncesji w Ameryce Łacińskiej i na Karaibach było renegocjowanych, a wskaźnik rośnie do ≈41,5% po wyłączeniu telekomunikacji** (41,5% to stopa *bez telekomunikacji*, nie stopa łączna). To obserwacja na koncesjach infrastrukturalnych LAC; służy wyłącznie jako koroboracja bazy 22%.
 
 ### 2.3 Niekompletność kontraktu i koszty adaptacji (Bajari, Houghton i Tadelis, 2014; Bajari i Tadelis, 2001)
 
-Bajari, Houghton i Tadelis (2014, *American Economic Review*) szacują, że **koszty adaptacji stanowią 7,5–14% wartości kontraktu** (wersja opublikowana; PDF autorski 8–14%; wersje roboczej ~10%) na danych kalifornijskiego Caltrans (roboty drogowe). Mechanizm endogeniczności formy kontraktu, forma wybierana łącznie ze złożonością, pochodzi z Bajari i Tadelis (2001, *RAND Journal of Economics*). Praca ta jest *istotna teoretycznie* dla uzasadnienia wymiaru TCO, ale **nie jest używana jako podstawa liczbowa wymiaru TCO**, ponieważ podwajałaby liczenie z wymiarem renegocjacji (zastrzeżenie podwójnego liczenia). Trafność zewnętrzna: amerykańskie roboty drogowe → kontekst ogólny/UE/PL.
+Bajari, Houghton i Tadelis (2014, *American Economic Review*) szacują, że **koszty adaptacji stanowią 7,5–14% zwycięskiej oferty** (wersja opublikowana; PDF autorski 8–14%; wersje roboczej ~10%) na danych kalifornijskiego Caltrans (roboty drogowe). Mechanizm endogeniczności formy kontraktu, forma wybierana łącznie ze złożonością, pochodzi z Bajari i Tadelis (2001, *RAND Journal of Economics*). Praca ta jest *istotna teoretycznie* dla uzasadnienia wymiaru TCO, ale **nie jest używana jako podstawa liczbowa wymiaru TCO**, ponieważ podwajałaby liczenie z wymiarem renegocjacji (zastrzeżenie podwójnego liczenia). Trafność zewnętrzna: amerykańskie roboty drogowe → kontekst ogólny/UE/PL.
 
 ### 2.4 Erozja oszczędności ex post (Decarolis, 2014)
 
@@ -57,11 +57,11 @@ Częstym argumentem przeciw konkurencji jest rzekome wydłużenie czasu. Coviell
 
 ### 2.6 Koszt proceduralny jako odsetek wartości (Komisja Europejska, 2011)
 
-Wreszcie, benchmark instytucjonalny (nie recenzowany, oznaczony jako taki): ewaluacja przygotowana przez PwC, London Economics i Ecorys dla Komisji Europejskiej (2011) szacuje **średni koszt procedury na ~28 tys. euro (75% po stronie dostawców), 5,4 oferenta, 38 dni, 5,26 mld euro agregatu, poniżej 1,3% wartości**. Zastrzeżenie nośne: 28 tys. euro to *całkowity* koszt procedury, nie premia za sztywność, jedynie ~0,4% wartości (~1,68 mld euro) jest przyrostowe względem dyrektywy. Benchmark ten kalibruje rząd wielkości kosztów administracyjnych, nie wymiar sztywności.
+Wreszcie, benchmark instytucjonalny (nie recenzowany, oznaczony jako taki): ewaluacja przygotowana przez PwC, London Economics i Ecorys dla Komisji Europejskiej (2011) szacuje **średni koszt procedury na ~28 tys. euro (75% po stronie dostawców), 5,4 oferenta, 38 dni, 5,26 mld euro agregatu, około 1,4% wolumenu zakupowego**. Zastrzeżenie nośne: 28 tys. euro to *całkowity* koszt procedury, nie premia za sztywność, jedynie ~0,4% wartości (~1,68 mld euro) jest przyrostowe względem dyrektywy. Benchmark ten kalibruje rząd wielkości kosztów administracyjnych, nie wymiar sztywności.
 
 ### 2.7 Zestaw teoretyczny i benchmark praktyczny TCO
 
-Architekturę zachowań i wag uzupełnia zestaw teoretyczny: wieloproblemowa teoria agencji (Holmström i Milgrom, 1991), w której egzekwowanie zadań mierzalnych wypiera niemierzalne; biurokracja poziomu ulicy (Lipsky, 1980); normalizacja dewiacji (Vaughan, 1996); prawo Goodharta (Goodhart, 1975; Strathern, 1997); legibilność wysokiego modernizmu (Scott, 1998); projektowanie a obejścia użytkownika (Norman, 1988); izomorfizm instytucjonalny (DiMaggio i Powell, 1983); oraz segmentacja Kraljica (1983). Te prace dostarczają *kierunku*, nie liczb. Górne ograniczenie wymiaru TCO (30% w horyzoncie wieloletnim) pochodzi z benchmarku praktycznego Institute for Supply Management (b.d.), pułapu *najlepszego przypadku* bez kontrfaktu, używanego wyłącznie jako górny pułap kumulacyjny κ_TCO = 0,30, *nie* jako płaska stopa empiryczna.
+Architekturę zachowań i wag uzupełnia zestaw teoretyczny: wieloproblemowa teoria agencji (Holmström i Milgrom, 1991), w której egzekwowanie zadań mierzalnych wypiera niemierzalne; biurokracja poziomu ulicy (Lipsky, 1980); normalizacja dewiacji (Vaughan, 1996); prawo Goodharta (Goodhart, 1975; Strathern, 1997); legibilność wysokiego modernizmu (Scott, 1998); projektowanie a obejścia użytkownika (Norman, 1988); izomorfizm instytucjonalny (DiMaggio i Powell, 1983); oraz segmentacja Kraljica (1983). Te prace dostarczają *kierunku*, nie liczb. Górne ograniczenie wymiaru TCO (30% w horyzoncie wieloletnim) pochodzi z **nieprzypisywalnej heurystyki praktycznej (szara literatura)**: fraza „do 30% w trzy lata" krąży w obiegu z atrybucją do Institute for Supply Management, lecz nie ma weryfikowalnego źródła ISM ani recenzowanego (weryfikacja cytowań 2026-07). Pułap *najlepszego przypadku* bez kontrfaktu jest używany wyłącznie jako górny pułap kumulacyjny klasy C, κ_TCO = 0,30, *nie* jako płaska stopa empiryczna, i nie należy go przypisywać ISM ani CAPS Research.
 
 ### 2.8 Luka: brak zintegrowanego rachunku różnicowego
 
@@ -114,7 +114,7 @@ Koszt czasu to wartość pracy zespołu zamówieniowego pochłoniętej przez wyk
 
 > **ΔC_time = (d_R − d_F) · n_buyers · rate_daily,**
 
-gdzie d to liczba dni roboczych ścieżki, n_buyers, liczba zaangażowanych nabywców, rate_daily, w pełni obciążona dzienna stawka. W warstwie kodu czas jest jednak liczony precyzyjniej, z macierzy uczestnictwa ról w krokach: `S = deriveStaffCost(steps, mode, stakeholders) · m_staff`, gdzie m_staff to mnożnik intensywności kadrowej z wymiarów Direct/Indirect × Upstream/Downstream. Zatem **ΔC_time = (S_R − S_F)·m_staff**. W scenariuszach referencyjnych człon ten jest zwykle bliski zeru (uczestnictwo ról w trybie sztywnym i elastycznym różni się umiarkowanie), z wyjątkiem przypadku pzp_eu (≈14 tys. PLN).
+gdzie d to liczba dni roboczych ścieżki, n_buyers, liczba zaangażowanych nabywców, rate_daily, w pełni obciążona dzienna stawka. W warstwie kodu czas jest jednak liczony precyzyjniej, z macierzy uczestnictwa ról w krokach: `S = deriveStaffCost(steps, mode, stakeholders)`. Po korekcie modelu z 2026-07-02 mnożniki kontekstowe Direct/Indirect × Upstream/Downstream działają wyłącznie na poziomie ról *wewnątrz* `deriveStaffCost` (usunięto zewnętrzny mnożnik intensywności kadrowej, który podwajał ten sam kanał ekonomiczny). Zatem **ΔC_time = S_R − S_F**. W scenariuszach referencyjnych człon ten jest zwykle bliski zeru (uczestnictwo ról w trybie sztywnym i elastycznym różni się umiarkowanie), z wyjątkiem przypadku pzp_eu (≈14 tys. PLN).
 
 ### 3.3 Wymiar 2, Administracja (C_admin)
 
@@ -156,23 +156,23 @@ Oczekiwany koszt renegocjacji *związany ze* sztywnością (import 2SLS/IV, nie 
 
 gdzie K_reneg = `renegotiationCost` (koszt zdarzenia renegocjacji, wejście niezależne od CV), a prawdopodobieństwa:
 
-> **P_R = clamp(0,22 + 0,077 · ρ_R · m_reneg, 0, 1),**   **P_F = 0,22 · 0,7 = 0,154.**
+> **P(ρ) = clamp(0,22 + min(0,077 · ρ · m_reneg, 0,105), 0, 1),**
 
-Baza 0,22 i premia 0,077 pochodzą z Beuve'a i in. (2023); czynnik elastyczny 0,7 jest założeniem klasy C. Różnica:
+jedna, **symetryczna formuła dla obu ścieżek**: sztywna ewaluowana przy ρ_R, elastyczna przy ρ_F = min(ρ_R, 0,15). Baza 0,22 i pasmo premii 7,7–10,5 p.p. pochodzą z Beuve'a i in. (2023). Założeniem mapującym (klasa C) jest potraktowanie pełnego przeskoku indeksu sztywności 0→1 jako w przybliżeniu jednego odchylenia standardowego, z zakotwiczeniem w dolnym krańcu pasma (nachylenie 0,077) i twardym pułapem górnego krańca (`RENEGOTIATION_PREMIUM_MAX` = 0,105), tak by mnożniki kontekstowe mogły poruszać premię wewnątrz pasma, lecz nigdy ponad nie. Różnica:
 
-> **ΔC_reneg = K_reneg · (P_R − P_F) = K_reneg · (0,066 + 0,077 · ρ_R · m_reneg).**
+> **ΔC_reneg = K_reneg · (P_R − P_F) = K_reneg · [min(0,077 · ρ_R · m_reneg, 0,105) − min(0,077 · ρ_F · m_reneg, 0,105)].**
 
-Człon dodatni, umiarkowanej wielkości.
+Człon dodatni, niewielki.
 
 ### 3.7 Wymiar 6, Całkowity koszt posiadania (C_TCO)
 
 Utracone oszczędności TCO, **zdyskontowane** (d = 0,05) i **ograniczone pułapem 30%** wartości kontraktu:
 
-> **C_TCO = CV · min(γ · A(T, d) · ρ · m_tco, κ_TCO),**
+> **C_TCO = CV · m_tco · min(γ · A(T, d) · ρ, κ_TCO),**
 
-gdzie γ = `TCO_SAVINGS_RATE_PER_YEAR` = 0,10/rok, A(T, d) = Σ_{y=1}^{T} (1 + d)^{−y} to czynnik renty zdyskontowanej dla horyzontu T lat, κ_TCO = 0,30. Przesłanka pochodzi z Decarolisa (2014) i BHT (2014), pułap z ISM (b.d.). Różnica:
+gdzie γ = `TCO_SAVINGS_RATE_PER_YEAR` = 0,10/rok, A(T, d) = Σ_{y=1}^{T} (1 + d)^{−y} to czynnik renty zdyskontowanej dla horyzontu T lat, κ_TCO = 0,30. Mnożnik kontekstowy m_tco stoi po korekcie 2026-07-02 *poza* operatorem minimum, więc efektywny pułap wynosi 0,30 · m_tco (maksymalnie 0,345 przy m_tco = 1,15). Przesłanka pochodzi z Decarolisa (2014) i BHT (2014), pułap z nieprzypisywalnej heurystyki praktycznej (szara literatura; zob. §2.7). Różnica:
 
-> **ΔC_TCO = CV · [min(γ · A(T,d) · ρ_R · m_tco, 0,30) − min(γ · A(T,d) · ρ_F · m_tco, 0,30)].**
+> **ΔC_TCO = CV · m_tco · [min(γ · A(T,d) · ρ_R, 0,30) − min(γ · A(T,d) · ρ_F, 0,30)].**
 
 Ponieważ ρ_F jest małe (≤ 0,15), człon elastyczny jest nieduży, a człon sztywny dla wysokiego ρ i długiego horyzontu uderza w pułap 0,30. **To jest dominujący człon karzący sztywność** (dominuje w 4 z 7 wartościowo istotnych scenariuszy: fleet, logistics, pipe_vs_field, capex) i, jak pokazuje rozdział 4, strukturalnie o rząd wielkości większy od subsydium faworytyzmu.
 
@@ -182,7 +182,7 @@ Oczekiwany koszt audytowo-sankcyjny nieformalnego obejścia tunelu, jako sigmoid
 
 > **C_bypass = p_bypass · E_audit,**   gdzie   **σ(x) = 1 / (1 + e^{−k(x − x₀)}),  k = 6, x₀ = 0,9.**
 
-Prawdopodobieństwo ścieżki sztywnej: **p_R = clamp(σ(ρ_R · m_bypass) · m_tech, 0, 0,95)**, gdzie m_tech = `bypassProbMultiplier` poziomu technologii, pułap = `BYPASS_PROBABILITY_CEILING` = 0,95. Prawdopodobieństwo ścieżki elastycznej: **p_F = ι_policy · 0,1**, gdzie ι_policy = `policyRigidityIndex`. E_audit = `bypassAuditExposure`. Różnica **ΔC_bypass = E_audit · (p_R − p_F)**, zwykle dodatnia (rzadkie wyjątki ujemne dla procesów end-to-end o bardzo niskiej sztywności). Zastrzeżenie kalibracyjne: zrealizowane p_R ≈ 86% dla maksymalnie sztywnego procesu manualnego przekracza empiryczne pasmo off-contract (~1,8–50%) 2–3-krotnie; parametry formy są założeniami modelowymi (tylko kierunek), wymagającymi pierwotnego audytu obejść przed jakimkolwiek twierdzeniem o magnitudzie.
+Prawdopodobieństwo jest po korekcie 2026-07-02 liczone jedną, **symetryczną formułą dla obu ścieżek**: **p(ρ) = clamp(σ(ρ) · m_tech · m_bypass, 0, 0,95)**, gdzie oba mnożniki (m_tech = `bypassProbMultiplier` poziomu technologii oraz kontekstowy m_bypass) działają na *wyjściu* sigmoidy, a pułap = `BYPASS_PROBABILITY_CEILING` = 0,95. Ścieżka sztywna jest ewaluowana przy ρ_R, elastyczna przy ρ = ι_policy = `policyRigidityIndex` poziomu technologii. E_audit = `bypassAuditExposure`. Różnica **ΔC_bypass = E_audit · (p_R − p_F)**, dodatnia we wszystkich dziewięciu scenariuszach referencyjnych (dla procesów end-to-end o bardzo niskiej sztywności bliska zeru). Zastrzeżenie kalibracyjne: zrealizowane p_R ≈ 86% dla maksymalnie sztywnego procesu manualnego przekracza empiryczne pasmo off-contract (~1,8–50%) 2–3-krotnie; parametry formy są założeniami modelowymi (tylko kierunek), wymagającymi pierwotnego audytu obejść przed jakimkolwiek twierdzeniem o magnitudzie.
 
 ### 3.9 Taksonomia proweniencji parametrów (klasy A/B/C)
 
@@ -199,23 +199,23 @@ Tabela 1 zestawia kluczowe parametry.
 | Parametr (symbol) | Wartość | Klasa | Źródło / zakotwiczenie | Wrażliwość |
 |---|---|:--:|---|:--:|
 | Bazowe prawdop. renegocjacji (P_base) | 0,22 | **A** | Beuve i in. (2023), bezwarunkowa średnia | Średnia |
-| Premia renegocjacyjna sztywności (Δp) | 0,077 | **A** | Beuve i in. (2023), dolny kraniec 7,7–10,5 p.p. | Średnia |
+| Premia renegocjacyjna sztywności, nachylenie (Δp) | 0,077 | **A** | Beuve i in. (2023), dolny kraniec pasma 7,7–10,5 p.p. (mapowanie 0→1 ≈ 1 SD: klasa C) | Średnia |
+| Pułap premii renegocjacyjnej (`RENEGOTIATION_PREMIUM_MAX`) | 0,105 | **A** | Beuve i in. (2023), górny kraniec pasma | Niska |
 | Premia faworytyzmu dyskrecji (δ) | 0,06 | **A** (transfer-laden) | Szucs (2024), estymata strukturalna ~6% | Wysoka |
 | Przesłanka TCO (≥50% erozji; 7,5–14% adaptacji) | n/d | **A** | Decarolis (2014); BHT (2014) | n/d |
 | Stopa dyskontowa (d) | 0,05 | **B** | EU CBA 2014–2020 (5% realnie, Spójność) | Niska |
 | Stawki dzienne ról | 800–2500 PLN | **B** | Sedlak & Sedlak / GUS / Hays 2024 | Niska |
 | Mnożnik czasu poziomu tech. (timeMultiplier) | 0,70–1,40 | **B** | APQC / Hackett | Niska |
-| Roczna stopa oszczędności TCO (γ) | 0,10 | **C** | ISM (pułap), schemat płaski | **Wysoka** |
-| Pułap kumulacyjny TCO (κ_TCO) | 0,30 | **C** | ISM (b.d.), „do 30% w wiele lat" | **Wysoka** |
+| Roczna stopa oszczędności TCO (γ) | 0,10 | **C** | heurystyka praktyczna bez atrybucji (pułap), schemat płaski | **Wysoka** |
+| Pułap kumulacyjny TCO (κ_TCO) | 0,30 | **C** | heurystyka praktyczna bez atrybucji, „do 30% w trzy lata" (szara literatura) | **Wysoka** |
 | Gradient ryzyka korupcji (κ) | 1,0 … 0,15 | **C** | Szucs (1,0); OECD/Fazekas-Kocsis (porządek) | **Wysoka** |
 | Indeks sztywności kardynalny (ρ) | 0,95 … 0,12 | **C** | Fazekas-Kocsis; porządek triangulowany | Średnia |
-| Czynnik renegocjacji elastycznej | 0,7 | **C** | brak punktu; założenie | Średnia |
 | Sigmoida obejścia (k, x₀, pułap) | 6; 0,9; 0,95 | **C** | Holmström-Milgrom (kierunek) | Średnia |
-| Mnożniki wymiarowe (Direct/Indirect × Up/Down) | 0,85–1,4 | **C** | Kraljic (kierunek) | Niska (znak) |
+| Mnożniki wymiarowe (Direct/Indirect × Up/Down) | 0,85–1,25 | **C** | Kraljic (kierunek); audytowany inwariant: łączny narzut kontekstowy żadnego wymiaru ≤ ~×1,5 | Niska (znak) |
 | Mnożniki rolo-godzin kroków | 0,5–1,85 | **C** | Kraljic/CIPS/APQC (kierunek) | Niska |
 | Koszty koord./narzędzi poziomu tech. | kardynalne | **C** | wycena vendorów (niejawna) | Niska |
 
-**Bilans:** spośród nośnych parametrów modelu **około 35–40% ma rodowód recenzowany (klasa A) lub jest twardo triangulowanych (klasa B)**; pozostałe to założenia kalibracyjne klasy C wyrażone jako liczby kardynalne. Dwa parametry klasy C o **wysokiej** wrażliwości, γ (stopa TCO) oraz gradient κ, potrafią istotnie poruszyć (a w teorii odwrócić) lukę i są przedmiotem osobnej analizy wrażliwości w rozdziale 5. Premia δ = 0,06, choć zakotwiczona w pracy recenzowanej, jest **obciążona transferem** (węgierski sektor publiczny → kontekst ogólny) i ~2/3-selekcyjna, więc traktujemy ją jako górne, ostrożne oszacowanie.
+**Bilans:** spośród nośnych parametrów modelu **około 35–40% ma rodowód recenzowany (klasa A) lub jest twardo triangulowanych (klasa B)**; pozostałe to założenia kalibracyjne klasy C wyrażone jako liczby kardynalne. Dwa parametry klasy C o **wysokiej** wrażliwości, γ (stopa TCO) oraz gradient κ, potrafią istotnie poruszyć (a w teorii odwrócić) lukę i są przedmiotem osobnej analizy wrażliwości w rozdziale 5. Premia δ = 0,06, choć zakotwiczona w pracy recenzowanej (estymata strukturalna, korygująca selekcję do przetargów), jest **obciążona transferem** (węgierski sektor publiczny → kontekst ogólny), więc traktujemy ją jako benchmark, nie pomiar.
 
 ---
 
@@ -254,19 +254,19 @@ Tymczasem sama kara TCO dla wysokiego ρ i wieloletniego horyzontu uderza w puł
 > człon elastyczny: γ·A·ρ_F = 0,10 · 4,3295 · 0,15 = 0,0649;
 > **ΔC_TCO/CV = 0,30 − 0,0649 ≈ 0,235 (23,5% wartości kontraktu).**
 
-Już **sama** kara TCO (~23,5% CV) jest blisko *pięciokrotnie* większa od maksymalnego subsydium faworytyzmu (~4,8% CV). Dodajmy do tego koszt utraconych korzyści (dla scenariusza pzp_eu rzędu 730 tys. PLN na 5 mln, tj. ~14,6% CV) oraz mniejsze człony renegocjacji, administracji i obejścia, a łączna kara Π przekracza 40% CV. Warunek Φ_fav > Π jest niemożliwy do spełnienia o cały rząd wielkości.
+Już **sama** kara TCO (~23,5% CV) jest blisko *pięciokrotnie* większa od maksymalnego subsydium faworytyzmu (~4,8% CV). Dodajmy do tego koszt utraconych korzyści (dla scenariusza pzp_eu rzędu 720 tys. PLN na 5 mln, tj. ~14,4% CV) oraz mniejsze człony renegocjacji, administracji i obejścia, a łączna kara Π przekracza 40% CV. Warunek Φ_fav > Π jest niemożliwy do spełnienia o cały rząd wielkości.
 
 ### 4.4 Uczciwe ujawnienie: znak ΔC nie zmienia się w bazie
 
-Deterministyczne przeliczenie wszystkich dziewięciu scenariuszy referencyjnych (rozdział 6) potwierdza wynik analityczny: **ΔC_total > 0 w 9/9 scenariuszy**: ścieżka elastyczna jest netto tańsza wszędzie, *włącznie* z maksymalnie sztywnym przypadkiem pzp_eu, który okazuje się wręcz **najszerszą luką** jako odsetek wartości kontraktu (+36,19%). Wymiar faworytyzmu *istotnie* sprzyja ścieżce sztywnej w 8/9 scenariuszy (ΔC_fav od −11 tys. do −308 tys. PLN; w przypadku mrp dokładnie 0, bo ρ = 0,12 ≤ próg 0,15), więc wartość zarządcza jest kredytowana **per-wymiar**: lecz **nigdy nie wygrywa netto**.
+Deterministyczne przeliczenie wszystkich dziewięciu scenariuszy referencyjnych (rozdział 6) potwierdza wynik analityczny: **ΔC_total > 0 w 9/9 scenariuszy**: ścieżka elastyczna jest netto tańsza wszędzie, *włącznie* z maksymalnie sztywnym przypadkiem pzp_eu, który okazuje się wręcz **najszerszą luką** jako odsetek wartości kontraktu (+35,78%). Wymiar faworytyzmu *istotnie* sprzyja ścieżce sztywnej w 8/9 scenariuszy (ΔC_fav od −11 tys. do −308 tys. PLN; w przypadku mrp dokładnie 0, bo ρ = 0,12 ≤ próg 0,15), więc wartość zarządcza jest kredytowana **per-wymiar**: lecz **nigdy nie wygrywa netto**.
 
 **To jest sedno uczciwego ujawnienia.** Centralna teza honorowa modelu, że jest symetryczny, więc „ścieżka sztywna bywa tańsza dla wysokowartościowych, wysokokorupcyjnych, konkurencyjnych kontekstów", **obowiązuje wyłącznie jako gest per-wymiar i jest obalona na poziomie netto ΔC.** Symetria jest **kierunkowo zaimplementowana, lecz liczbowo bezczynna**. Należy ją ujawniać jako *możliwość strukturalną*, której realizacja netto zależy od wrażliwości, nigdy jako zaobserwowane czy wyłaniające się ustalenie.
 
 ### 4.5 Ile potrzeba, by znak się odwrócił?
 
-Warunek z §4.1 pozwala policzyć, jak duża musiałaby być premia dyskrecji δ, by odwrócić znak w najkorzystniejszym dla sztywności scenariuszu (pzp_eu, „pipe_vs_field"). W bazie ΔC_total = +36,19% CV, przy czym faworytyzm wnosi już −4,8% CV (−240 tys. na 5 mln). Skalując δ liniowo i przyrównując ΔC_total do zera:
+Warunek z §4.1 pozwala policzyć, jak duża musiałaby być premia dyskrecji δ, by odwrócić znak w najkorzystniejszym dla sztywności scenariuszu (pzp_eu, „pipe_vs_field"). W bazie ΔC_total = +35,78% CV, przy czym faworytyzm wnosi już −4,8% CV (−240 tys. na 5 mln). Skalując δ liniowo i przyrównując ΔC_total do zera:
 
-> 36,19% + (−4,8%)·(δ′/0,06 − 1) = 0   ⟹   δ′/0,06 = (36,19% + 4,8%) / 4,8% = 8,54   ⟹   **δ′ ≈ 0,51 (51%).**
+> 35,78% + (−4,8%)·(δ′/0,06 − 1) = 0   ⟹   δ′/0,06 = (35,78% + 4,8%) / 4,8% = 8,45   ⟹   **δ′ ≈ 0,51 (51%).**
 
 Odwrócenie znaku wymagałoby premii dyskrecji rzędu **51%, około 8,5-krotności estymaty empirycznej Szucsa (6%)**, co jest wartością nieobronioną przez jakąkolwiek literaturę. Trzy, i tylko trzy, dźwignie mogłyby w zasadzie odwrócić znak: (i) podniesienie δ daleko poza estymatę empiryczną, (ii) dopuszczenie κ > 1,0 (poza zakresem kodu), lub (iii) skurczenie kar TCO/opportunity. Żadna nie jest uzasadniona w kalibracji bazowej. **Symetria jest możliwa strukturalnie, lecz nieosiągalna empirycznie w bazie.**
 
@@ -297,17 +297,16 @@ Wniosek: dla wysokosztywnych, wieloletnich przypadków pułap 0,30 wiąże już 
 
 ρ_R wpływa na trzy wymiary jednocześnie: zwiększa karę TCO (γ·A·ρ_R), zwiększa karę renegocjacji (0,077·ρ_R), ale *również* zwiększa subsydium faworytyzmu (przez większą różnicę ρ_R − ρ_F). Obniżanie ρ_R od 0,95 ku 0,15 (poziom policy) kurczy *wszystkie trzy* człony; ponieważ kara TCO maleje szybciej (jest większa i uderza w pułap), luka ΔC_total **zwęża się, lecz pozostaje dodatnia**. Przy ρ_R = ρ_F = 0,15 (graniczny przypadek, w którym tunel jest tak elastyczny jak pole) faworytyzm i TCO niemal się zerują, a różnica jest napędzana resztkowymi członami czasu, administracji i kosztu utraconych korzyści, wciąż dodatnimi, choć małymi. Test potwierdza, że kardynalna wartość 0,95 nie jest „dźwignią ratunkową" dla symetrii: jej obniżenie *nie* odwraca znaku, lecz jedynie zmniejsza magnitudę luki.
 
-### 5.4 Czynnik renegocjacji elastycznej 0,6–0,85
+### 5.4 Nachylenie premii renegocjacyjnej: pasmo Beuve'a `RENEGOTIATION_PREMIUM_MAX` ∈ [0,077; 0,105] i założenie mapujące
 
-Czynnik f (P_F = 0,22·f) jest założeniem klasy C. Sweep:
+Po korekcie 2026-07-02 obie ścieżki dzielą jedną formułę P(ρ) = 0,22 + min(Δp·ρ·m_reneg, 0,105); założeniem klasy C nie jest już osobny „czynnik elastyczny", lecz **mapowanie SD** (pełny przeskok indeksu 0→1 ≈ jedno odchylenie standardowe) oraz wybór nachylenia wewnątrz pasma Beuve'a. Sweep po nachyleniu Δp (przy m_reneg = 1, scenariusz pzp_eu):
 
-| f | P_F = 0,22·f | Kierunek wpływu na ΔC_reneg |
-|---:|---:|---|
-| 0,60 | 0,132 | większa luka renegocjacji (na korzyść tezy) |
-| 0,70 (baza) | 0,154 | baza |
-| 0,85 | 0,187 | mniejsza luka renegocjacji |
+| Δp (nachylenie) | premia sztywna (ρ_R = 0,95) | premia elastyczna (ρ_F = 0,15) | P_R − P_F |
+|---:|---:|---:|---:|
+| 0,077 (baza, dolny kraniec) | 0,0732 | 0,0116 | 0,0616 |
+| 0,105 (górny kraniec pasma) | 0,0998 | 0,0158 | 0,0840 |
 
-Ponieważ ΔC_reneg = K_reneg·(P_R − P_F), wyższe f zmniejsza człon renegocjacji. Wymiar ten jest jednak małym składnikiem sumy (renegocjacja dominuje tylko w 1/9 scenariuszy, mrp, gdzie cała luka wynosi +0,54% CV), więc sweep f **przesuwa ΔC_total o ułamek punktu procentowego** i nie zbliża się do odwrócenia znaku w żadnym wartościowo istotnym przypadku.
+Twardy pułap 0,105 wiąże dopiero wtedy, gdy mnożniki kontekstowe wypchną iloczyn Δp·ρ·m_reneg ponad górny kraniec pasma (przy bazowym nachyleniu wymagałoby to m_reneg > 1,43 dla ρ = 0,95); w scenariuszach referencyjnych (m_reneg = 1) nie wiąże. Przejście na górny kraniec pasma *zwiększa* lukę renegocjacyjną o ~36% jej wartości, lecz wymiar ten jest małym składnikiem sumy (po korekcie nie dominuje w żadnym z dziewięciu scenariuszy; dwie mikroluki, catalog +3,23% i mrp +0,28% CV, są napędzane administracją), więc sweep nachylenia **przesuwa ΔC_total o ułamek punktu procentowego** i nie zbliża się do odwrócenia znaku w żadnym wartościowo istotnym przypadku.
 
 ### 5.5 Podsumowanie wrażliwości
 
@@ -319,7 +318,7 @@ Ponieważ ΔC_reneg = K_reneg·(P_R − P_F), wyższe f zmniejsza człon renegoc
 
 ### 6.1 Pakiet replikacyjny
 
-Przeliczenie wykonano na **realnym kodzie**, nie na reimplementacji: harness w Node v26 z natywnym usuwaniem typów TypeScript importuje *rzeczywiste* funkcje `calculateCosts` oraz zbiór `SCENARIOS` z dosłownych kopii warstwy `lib/` (`calculations.ts`, `process-templates.ts`, `scenarios.ts`). Artefakty: `scratchpad/harness.ts`, kopie `lib/`, `harness-output.json`, `report.txt`. Wszystkie dziewięć scenariuszy referencyjnych pozostawia pola `spendType`/`processPhase` nieustawione, więc mnożniki wymiarowe Direct/Indirect × Upstream/Downstream są uśpione (= 1,0) dla wszystkich wysłanych przypadków. Determinizm jest cechą konstrukcyjną, brak losowości w inferencji. Stan zamrożony na commicie `a1063f9`, data ważności prawnej 2026-06-28.
+Przeliczenie wykonano na **realnym kodzie**, nie na reimplementacji: stały skrypt repozytorium **`scripts/recompute.ts`** (uruchamiany poleceniem **`npm run recompute`** przez runner `tsx`) importuje *rzeczywiste* funkcje `calculateCosts` oraz zbiór `SCENARIOS` bezpośrednio z warstwy `lib/` (`calculations.ts`, `process-templates.ts`, `scenarios.ts`); skrypt zastąpił wcześniejszy, pozarepozytoryjny harness. Wyniki odzwierciedlają korektę modelu z 2026-07-02: symetryczne formuły renegocjacji i obejścia dla obu ścieżek, usunięcie podwójnego liczenia kanału kadrowego, twardy pułap premii renegocjacyjnej (0,105) oraz rekalibrację mnożników kontekstowych z audytowanym inwariantem, że łączny narzut kontekstowy żadnego wymiaru nie przekracza ~×1,5 (maksimum zaobserwowane ×1,483). Wszystkie dziewięć scenariuszy referencyjnych pozostawia pola `spendType`/`processPhase` nieustawione, więc mnożniki wymiarowe Direct/Indirect × Upstream/Downstream są uśpione (= 1,0) dla wszystkich wysłanych przypadków. Determinizm jest cechą konstrukcyjną, brak losowości w inferencji. Stan zamrożony na commicie weryfikacyjnym `a1063f9` z korektą modelu 2026-07-02 (zob. CHANGELOG), data ważności prawnej 2026-06-28.
 
 ### 6.2 Przeliczenie per-wymiar (rigid − flexible), PLN
 
@@ -329,19 +328,19 @@ Tabela 2 odtwarza wynik §7 raportu weryfikacyjnego i §5 fundamentu cyklu *verb
 
 | scenariusz (typ / technologia) | CV | czas | admin | opp | faworyt. | reneg | tco | bypass | RAZEM sztywny | RAZEM elast. | **ΔC** | **% CV** | dominujący |
 |--|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--|
-| fleet (private_formal/partial_erp) | 5,0M | 0 | 3k | 120k | −54k | 17k | 418k | 32k | 940k | 404k | **+536k** | +10,72% | tco |
-| erp (private_formal/sourcing_tool) | 3,0M | 0 | 6k | 420k | −32k | 34k | 368k | 27k | 1,44M | 621k | **+823k** | +27,42% | opp |
-| logistics (private_formal/partial_erp) | 8,0M | 0 | 3k | 480k | −86k | 45k | 980k | 50k | 2,46M | 992k | **+1,47M** | +18,41% | tco |
-| production (private_formal/manual) | 12,0M | 0 | 16k | 1,65M | −130k | 56k | 514k | 213k | 4,34M | 2,02M | **+2,32M** | +19,34% | opp |
-| pipe_vs_field (pzp_eu/partial_erp) | 5,0M | 14k | 8k | 730k | −240k | 28k | 1,09M | 181k | 2,48M | 672k | **+1,81M** | +36,19% | tco |
-| catalog (catalog_order/end_to_end) | 50k | 0 | 1k | 0 | −30 | 0 | 238 | −35 | 5k | 3k | **+1,6k** | +3,15% | admin |
-| mrp (mrp_order/end_to_end) | 500k | 0 | 1k | 0 | 0 | 2k | 0 | −204 | 25k | 22k | **+2,7k** | +0,54% | reneg |
-| capex_investment (capex/partial_erp) | 15,0M | 0 | 3k | 720k | −308k | 97k | 2,76M | 249k | 7,02M | 3,50M | **+3,52M** | +23,49% | tco |
-| custom (private_formal/partial_erp) | 1,0M | 0 | 3k | 240k | −11k | 11k | 84k | 6k | 618k | 284k | **+334k** | +33,36% | opp |
+| fleet (private_formal/partial_erp) | 5,0M | 0 | 3k | 120k | −54k | 5k | 418k | 36k | 940k | 412k | **+529k** | +10,58% | tco |
+| erp (private_formal/sourcing_tool) | 3,0M | 0 | 6k | 420k | −32k | 10k | 368k | 30k | 1,44M | 641k | **+802k** | +26,73% | opp |
+| logistics (private_formal/partial_erp) | 8,0M | 0 | 3k | 480k | −86k | 14k | 980k | 58k | 2,46M | 1,02M | **+1,45M** | +18,11% | tco |
+| production (private_formal/manual) | 12,0M | 0 | 17k | 1,65M | −130k | 17k | 514k | 191k | 4,34M | 2,08M | **+2,26M** | +18,83% | opp |
+| pipe_vs_field (pzp_eu/partial_erp) | 5,0M | 14k | 8k | 720k | −240k | 12k | 1,09M | 186k | 2,47M | 683k | **+1,79M** | +35,78% | tco |
+| catalog (catalog_order/end_to_end) | 50k | 0 | 1k | 0 | −30 | 0 | 238 | 9 | 5k | 3k | **+2k** | +3,23% | admin |
+| mrp (mrp_order/end_to_end) | 500k | 0 | 1k | 0 | 0 | 0 | 0 | 16 | 25k | 23k | **+1k** | +0,28% | admin |
+| capex_investment (capex/partial_erp) | 15,0M | 0 | 3k | 720k | −308k | 35k | 2,76M | 267k | 7,02M | 3,54M | **+3,48M** | +23,20% | tco |
+| custom (private_formal/partial_erp) | 1,0M | 0 | 3k | 240k | −11k | 3k | 84k | 7k | 618k | 291k | **+327k** | +32,68% | opp |
 
 ### 6.3 Test symetrii: czy ΔC kiedykolwiek zmienia znak?
 
-**Nie. 0 z 9 scenariuszy.** ΔC jest ściśle dodatnia w każdym wysłanym przypadku, ścieżka elastyczna jest netto tańsza wszędzie, włącznie z maksymalnie sztywnym pzp_eu (κ = 1,0, ρ = 0,95), który jest *najszerszą* luką jako odsetek CV (+36,19%). Wymiar faworytyzmu sprzyja ścieżce sztywnej w 8/9 scenariuszy (ΔC_fav od −11 tys. do −308 tys. PLN; mrp = 0, bo ρ = 0,12 ≤ próg policy 0,15), więc wartość zarządcza jest kredytowana per-wymiar, lecz nigdy nie wygrywa netto. Luka jest napędzana przez `tcoCost` (4 z 7) lub `opportunityCost` (3 z 7) we wszystkich siedmiu wartościowo istotnych przypadkach (tco: fleet, logistics, pipe_vs_field, capex; opp: erp, production, custom); dwa przypadki podprogowe, catalog (dominanta admin) oraz mrp (dominanta reneg), to mikro-luki poniżej progu istotności (odpowiednio +3,15% i +0,54% CV).
+**Nie. 0 z 9 scenariuszy.** ΔC jest ściśle dodatnia w każdym wysłanym przypadku, ścieżka elastyczna jest netto tańsza wszędzie, włącznie z maksymalnie sztywnym pzp_eu (κ = 1,0, ρ = 0,95), który jest *najszerszą* luką jako odsetek CV (+35,78%). Wymiar faworytyzmu sprzyja ścieżce sztywnej w 8/9 scenariuszy (ΔC_fav od −11 tys. do −308 tys. PLN; mrp = 0, bo ρ = 0,12 ≤ próg policy 0,15), więc wartość zarządcza jest kredytowana per-wymiar, lecz nigdy nie wygrywa netto. Luka jest napędzana przez `tcoCost` (4 z 7) lub `opportunityCost` (3 z 7) we wszystkich siedmiu wartościowo istotnych przypadkach (tco: fleet, logistics, pipe_vs_field, capex; opp: erp, production, custom); dwa przypadki podprogowe, catalog i mrp (w obu dominanta admin), to mikro-luki poniżej progu istotności (odpowiednio +3,23% i +0,28% CV).
 
 **Werdykt (wiążący w całym cyklu):** symetria modelu obowiązuje wyłącznie jako gest per-wymiar i jest obalona na poziomie netto ΔC. Jedyny człon sprzyjający sztywności jest strukturalnie ograniczony (|ΔC_fav| = CV·0,06·κ·(ρ_R − ρ_F) ≤ 0,048·CV, tj. ~4,8% CV, nawet przy pzp_eu/κ = 1,0), podczas gdy człony karzące, TCO (do pułapu 30%) i koszt utraconych korzyści (długie czasy trwania tunelu), są 4–10-krotnie większe (20–36% CV). Żaden scenariusz nie odwraca się na ujemny i żaden realistycznie nie mógłby bez podniesienia δ, dopuszczenia κ > 1,0 lub skurczenia kar TCO/opportunity. **Symetria jest możliwością strukturalną, kierunkowo zaimplementowaną, lecz liczbowo bezczynną, należy ją ujawniać, nigdy nie prezentować jako zaobserwowanego ustalenia netto.**
 
@@ -363,7 +362,7 @@ Jako kotwica dyscypliny *ekonomia i finanse*, niniejsza praca wiąże obiekt eko
 
 ### 7.4 Asymetria pochodzenia: gdzie kończy się pomiar, a zaczyna kalibracja
 
-Wynik z rozdziału 4 należy czytać przez pryzmat taksonomii proweniencji z §3.9. Człon, który *wygrywa* (TCO), opiera magnitudę na parametrze klasy C (γ = 0,10, pułap 0,30 z benchmarku ISM), choć jego *przesłanka* jest recenzowana (Decarolis, 2014; BHT, 2014). Człon, który *przegrywa* (faworytyzm), opiera magnitudę na parametrze klasy A obciążonym transferem (δ = 0,06 z Szucsa). Innymi słowy: dodatni znak luki jest w dużej mierze napędzany **najsłabiej zakotwiczonym** wymiarem, podczas gdy człon przeciwny ma rodowód recenzowany. Ta asymetria pochodzenia jest powodem, dla którego rozdział 5 koncentruje sweep wrażliwości właśnie na γ i pułapie TCO, i powodem, dla którego *nawet* przy γ = 6% (poniżej pułapu) znak się nie odwraca. Uczciwa lektura modelu brzmi więc: „luka jest dodatnia robustnie, lecz jej *magnituda* zależy krytycznie od jednego parametru klasy C, którego pierwotna walidacja pozostaje do wykonania". To rozróżnienie, znak vs magnituda, proweniencja A vs C, jest właśnie tym, co odróżnia jawny model od retorycznej wokandy.
+Wynik z rozdziału 4 należy czytać przez pryzmat taksonomii proweniencji z §3.9. Człon, który *wygrywa* (TCO), opiera magnitudę na parametrze klasy C (γ = 0,10, pułap 0,30 z nieprzypisywalnej heurystyki praktycznej), choć jego *przesłanka* jest recenzowana (Decarolis, 2014; BHT, 2014). Człon, który *przegrywa* (faworytyzm), opiera magnitudę na parametrze klasy A obciążonym transferem (δ = 0,06 z Szucsa). Innymi słowy: dodatni znak luki jest w dużej mierze napędzany **najsłabiej zakotwiczonym** wymiarem, podczas gdy człon przeciwny ma rodowód recenzowany. Ta asymetria pochodzenia jest powodem, dla którego rozdział 5 koncentruje sweep wrażliwości właśnie na γ i pułapie TCO, i powodem, dla którego *nawet* przy γ = 6% (poniżej pułapu) znak się nie odwraca. Uczciwa lektura modelu brzmi więc: „luka jest dodatnia robustnie, lecz jej *magnituda* zależy krytycznie od jednego parametru klasy C, którego pierwotna walidacja pozostaje do wykonania". To rozróżnienie, znak vs magnituda, proweniencja A vs C, jest właśnie tym, co odróżnia jawny model od retorycznej wokandy.
 
 ### 7.5 Wartość metodologiczna negatywnego wyniku
 
@@ -373,15 +372,15 @@ Wynik „symetria liczbowo bezczynna" jest, paradoksalnie, **najmocniejszym** wk
 
 ## 8. Ograniczenia
 
-1. **Parametry klasy C.** Około 60–65% nośnych parametrów to założenia kalibracyjne wyrażone liczbami kardynalnymi (γ, gradient κ, kardynalne ρ, parametry sigmoidy obejścia, czynnik renegocjacji elastycznej, mnożniki wymiarowe i rolo-godzin, koszty koord./narzędzi). Ich *kierunki* są triangulowane, lecz *magnitudy* są konstruowane. Każda nagłówkowa wielkość jest estymacją z przedziałami wrażliwości, nie pomiarem.
+1. **Parametry klasy C.** Około 60–65% nośnych parametrów to założenia kalibracyjne wyrażone liczbami kardynalnymi (γ, gradient κ, kardynalne ρ, parametry sigmoidy obejścia, mapowanie SD premii renegocjacyjnej, mnożniki wymiarowe i rolo-godzin, koszty koord./narzędzi). Ich *kierunki* są triangulowane, lecz *magnitudy* są konstruowane. Każda nagłówkowa wielkość jest estymacją z przedziałami wrażliwości, nie pomiarem.
 
-2. **Transfer zewnętrzny.** Wszystkie importowane efekty niosą zastrzeżenia zewnętrznej trafności: Szucs (węgierski sektor publiczny, RDD, ~2/3 selekcji), Beuve i in. (francuskie parkingi, 2SLS/IV, n ≈ 279), Guasch (LAC bez telekomunikacji), BHT (US Caltrans), Decarolis i Coviello-Mariniello (włoskie roboty). Transfery na kontekst polski są benchmarkami, nie zmierzonymi wartościami polskimi.
+2. **Transfer zewnętrzny.** Wszystkie importowane efekty niosą zastrzeżenia zewnętrznej trafności: Szucs (węgierski sektor publiczny, RDD; estymaty strukturalne korygują selekcję do przetargów), Beuve i in. (francuskie parkingi, 2SLS/IV; n = 396 w wersji roboczej 2016, ostateczna liczebność opublikowanej próby niepotwierdzona), Guasch (LAC bez telekomunikacji), BHT (US Caltrans), Decarolis i Coviello-Mariniello (włoskie roboty). Transfery na kontekst polski są benchmarkami, nie zmierzonymi wartościami polskimi.
 
-3. **Uśpione mnożniki wymiarowe.** Wszystkie dziewięć scenariuszy referencyjnych pozostawia `spendType`/`processPhase` nieustawione, więc mnożniki Direct/Indirect × Upstream/Downstream (potrafiące skumulować się do ~1,62× na TCO) są nieaktywne. Hipotezy H2 (Direct > Indirect) i H3 (Upstream > Downstream) pozostają *kierunkowymi twierdzeniami do przetestowania*, nie wynikami.
+3. **Uśpione mnożniki wymiarowe.** Wszystkie dziewięć scenariuszy referencyjnych pozostawia `spendType`/`processPhase` nieustawione, więc mnożniki Direct/Indirect × Upstream/Downstream (po rekalibracji 2026-07-02 łączny narzut kontekstowy żadnego wymiaru nie przekracza ~×1,5; maksimum zaobserwowane ×1,483) są nieaktywne. Hipotezy H2 (Direct > Indirect) i H3 (Upstream > Downstream) pozostają *kierunkowymi twierdzeniami do przetestowania*, nie wynikami.
 
 4. **Realizowany pułap obejścia.** Zrealizowane p_bypass ≈ 86% dla maksymalnie sztywnego procesu manualnego przekracza empiryczne pasmo off-contract (~1,8–50%) 2–3-krotnie; parametry sigmoidy są założeniami kierunkowymi wymagającymi pierwotnego audytu obejść.
 
-5. **Pułap TCO jako wiązanie.** Pułap κ_TCO = 0,30 wiąże dla wysokowartościowych, długohoryzontowych, wysokosztywnych przypadków, co czyni go *de facto* parametrem dominującym lukę w 4 z 7 wartościowo istotnych scenariuszy. Jego pochodzenie (benchmark praktyczny ISM „najlepszego przypadku") jest słabsze niż przesłanka wymiaru (Decarolis 2014, recenzowana).
+5. **Pułap TCO jako wiązanie.** Pułap κ_TCO = 0,30 (efektywnie 0,30·m_tco po korekcie 2026-07-02) wiąże dla wysokowartościowych, długohoryzontowych, wysokosztywnych przypadków, co czyni go *de facto* parametrem dominującym lukę w 4 z 7 wartościowo istotnych scenariuszy. Jego pochodzenie (nieprzypisywalna heurystyka praktyczna „najlepszego przypadku", szara literatura, bez weryfikowalnego źródła ISM ani recenzowanego) jest słabsze niż przesłanka wymiaru (Decarolis 2014, recenzowana).
 
 6. **Brak walidacji na danych pierwotnych.** Model nie był walidowany na rzeczywistych wynikach polskich zamówień; program empiryczny (zmienność wewnątrz-firmowa + efekty stałe kategorii, skale wieloitemowe, analiza forensyczna PO vs komunikacja, dopasowanie skłonnościowe) pozostaje zaplanowany, nie wykonany.
 
@@ -399,7 +398,7 @@ Wynik „symetria liczbowo bezczynna" jest, paradoksalnie, **najmocniejszym** wk
 > 3. Optymalizator ścieżki to **ważona funkcja scoringowa oparta na regułach z 30-przebiegowym testem wrażliwości**: to **NIE** uczenie maszynowe, **NIE** Random Forest i **NIE** jest walidowany na rzeczywistych wynikach zamówień.
 > 4. Przypadki sektora prywatnego (Ryanair, Swiss Casinos, Air France, Zara) są **wyłącznie ilustracyjną motywacją**; nie są dowodem w sprawie prawa zamówień publicznych.
 > 5. Około **35–40% parametrów modelu jest recenzowanych (peer-reviewed)**; pozostałe to **założenia kalibrowane lub modelowe klasy C** wyrażone jako liczby kardynalne.
-> 6. Wszystkie zaimportowane efekty niosą swoje **zastrzeżenia identyfikacyjne i zewnętrznej trafności** (Szucs: węgierski RDD sektora publicznego, ~2/3 selekcja; Beuve: francuskie parkingi, 2SLS/IV; Guasch: Ameryka Łac. bez telekomunikacji; Bajari-Houghton-Tadelis: US Caltrans; Decarolis/Coviello-Mariniello: włoskie roboty budowlane). Transfery na kontekst polski są benchmarkami, nie pomiarami.
+> 6. Wszystkie zaimportowane efekty niosą swoje **zastrzeżenia identyfikacyjne i zewnętrznej trafności** (Szucs: węgierski RDD sektora publicznego, estymaty strukturalne korygują selekcję do przetargów; Beuve: francuskie parkingi, 2SLS/IV; Guasch: Ameryka Łac. bez telekomunikacji; Bajari-Houghton-Tadelis: US Caltrans; Decarolis/Coviello-Mariniello: włoskie roboty budowlane). Transfery na kontekst polski są benchmarkami, nie pomiarami.
 
 ---
 
@@ -434,8 +433,6 @@ Goodhart, C. A. E. (1975). Problems of monetary management: The U.K. experience.
 Guasch, J. L. (2004). *Granting and renegotiating infrastructure concessions: Doing it right*. World Bank. https://doi.org/10.1596/0-8213-5792-1
 
 Holmström, B., i Milgrom, P. (1991). Multitask principal–agent analyses: Incentive contracts, asset ownership, and job design. *Journal of Law, Economics, & Organization, 7*(Special Issue), 24–52. https://doi.org/10.1093/jleo/7.special_issue.24
-
-Institute for Supply Management. (b.d.). *Understanding total cost of ownership in procurement*. Pobrano z https://www.ism.ws/supply-chain/ownership-in-procurement/
 
 Kelman, S. (1990). *Procurement and public management: The fear of discretion and the quality of government performance*. AEI Press.
 

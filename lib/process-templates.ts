@@ -802,32 +802,13 @@ export function deriveStaffCost(
           if (role === "executive") effectiveHours *= 0.75;
         }
 
-        // Strongest operational profile: Indirect + Downstream (least senior involvement)
+        // Strongest operational profile: Indirect + Downstream (least senior involvement).
+        // Deepens only the SENIOR reduction — the buyer/requestor shift toward hands-on
+        // work is already encoded once in the downstream block above (one channel per
+        // mechanism; a second buyer/requestor boost here double-counted it and pushed the
+        // staff dimension's total context uplift to ×2.15, past the ×1.5 invariant).
         if (spendType === "indirect" && processPhase === "downstream") {
-          if (["executive", "manager"].includes(role)) effectiveHours *= 0.5;
-          if (role === "buyer") effectiveHours *= 1.6;
-          if (role === "requestor") effectiveHours *= 1.4;
-        }
-
-        // === Per-step granularity for highest-leverage situations (pogłębienie #1) ===
-        // In Upstream + Direct, certain governance-heavy steps demand disproportionately more senior time.
-        // This is the academic/practical reality: board and legal do not spread effort evenly.
-        if (processPhase === "upstream" && spendType === "direct") {
-          const stepId = step.id;
-          if (["award_committee", "contract_signing"].includes(stepId)) {
-            if (role === "executive") effectiveHours *= 1.45;   // board actually sits for these
-            if (role === "lawyer") effectiveHours *= 1.35;
-          }
-          if (["siwz_prep", "spec_prep"].includes(stepId)) {
-            if (role === "lawyer") effectiveHours *= 1.4;
-            if (role === "manager") effectiveHours *= 1.25;
-          }
-          if (stepId === "clarifications" && role === "executive") {
-            effectiveHours *= 1.3; // occasional escalation to C-level in strategic deals
-          }
-          if (stepId === "needs_analysis" && role === "executive") {
-            effectiveHours *= 1.6; // initial strategic direction setting
-          }
+          if (["executive", "manager"].includes(role)) effectiveHours *= 0.75;
         }
 
         return stepTotal + (effectiveHours * rate.count * rate.dailyRate) / 8;

@@ -38,7 +38,7 @@ export default function ModelEnPage() {
 
         <h3>1. Rigidity and Behavioral Effects</h3>
         <ul>
-          <li><strong>Favoritism premium</strong> under unchecked discretion (which competitive tendering averts): ~6pp (Szucs, JEEA 2024)</li>
+          <li><strong>Favoritism premium</strong> under unchecked discretion (which competitive tendering averts): ~6% (Szucs, JEEA 2024)</li>
           <li><strong>Selection-quality loss</strong> under discretion — less-productive contractors selected absent competitive tendering (Szucs, JEEA 2024)</li>
           <li><strong>Renegotiation risk</strong> increase from contractual rigidity: 7.7–10.5 pp (Beuve et al., NBER 2021)</li>
           <li><strong>Bypass probability</strong> modeled via sigmoid function (calibrated)</li>
@@ -46,9 +46,9 @@ export default function ModelEnPage() {
 
         <h3>2. Technology Level Impacts</h3>
         <p>
-          Time multipliers, coordination costs, and tool amortization costs are derived from 
-          a synthesis of OECD procurement performance data and consulting benchmarks
-          (EY, Deloitte sourcing transformation studies).
+          Time multipliers, coordination costs, and tool amortization costs are Grade-C
+          calibrations informed by practitioner benchmarks (APQC/Hackett-style process
+          benchmarks); they are modeling assumptions, not peer-reviewed estimates.
         </p>
 
         <div className="my-6 p-4 border border-blue-200 bg-blue-50 rounded-xl">

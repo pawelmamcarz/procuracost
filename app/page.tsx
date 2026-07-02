@@ -4,9 +4,9 @@ import { SCENARIOS } from "@/lib/scenarios";
 import { calculateCosts } from "@/lib/calculations";
 
 const stats = [
-  { value: "~6pp", label: "premia faworyzacji przy nadmiernej dyskrecji (której unika konkurencyjny przetarg)", source: "Szucs, JEEA 2024" },
+  { value: "~6%", label: "premia faworyzacji przy nadmiernej dyskrecji (której unika konkurencyjny przetarg)", source: "Szucs, JEEA 2024" },
   { value: "+7.7–10.5pp", label: "wyższe ryzyko renegocjacji kontraktu (dane obserwacyjne)", source: "Beuve, Moszoro & Spiller, NBER 2021" },
-  { value: "30%", label: "potencjalne oszczędności TCO przy elastyczności (pułap praktyków, wieloletni)", source: "ISM (benchmark)" },
+  { value: "30%", label: "potencjalne oszczędności TCO przy elastyczności (pułap praktyków, wieloletni)", source: "heurystyka branżowa (nieprzypisana)" },
 ];
 
 const howItWorks = [

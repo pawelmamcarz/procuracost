@@ -2,6 +2,32 @@
 
 All notable changes to ProcuraCost are documented here.
 
+## [Unreleased] - 2026-07-02
+
+### Full mathematical correction of the cost model + online citation verification
+
+A model-math audit (triggered by a hallucination-verification pass over all documents and the whole `lib/` layer) found and fixed seven classes of defects. Empirical anchors (0.06, 0.22, 0.077, 0.30, 0.10/yr, 0.05) are unchanged — only how they are applied changed. Deterministic recompute now lives in-repo: `scripts/recompute.ts` (`npm run recompute`), printing the §5.1 table, the symmetry test, and a new context-uplift audit.
+
+**Model corrections (`lib/calculations.ts`, `lib/process-templates.ts`):**
+- **(A) Staff double counting removed.** The outer `staffIntensityMultiplier` (×1.25 upstream, ×1.15 direct+upstream) re-applied what the role-level multipliers inside `deriveStaffCost` already encode; removed. A duplicated buyer/requestor boost in the indirect+downstream block of `deriveStaffCost` (stacking to ×2.4 on buyer hours) was also removed.
+- **(B) Renegotiation unit mismatch fixed.** The Beuve +7.7pp-per-SD effect was applied to a 0–1 index as if it were SD units and context multipliers could push it to ~11.6pp, past the cited 10.5pp. Now: explicit mapping (full 0→1 swing ≈ 1 SD, anchored at 7.7pp) + new `RENEGOTIATION_PREMIUM_MAX = 0.105` hard cap.
+- **(C) Symmetry made real.** Removed the flexible-only discounts `FLEXIBLE_RENEGOTIATION_PROBABILITY_FACTOR` (0.70) and `FLEXIBLE_BYPASS_PROBABILITY_SCALE` (0.10). Both paths now share one renegotiation formula `P(ρ) = 0.22 + min(0.077·ρ·m, 0.105)` and one bypass sigmoid, each evaluated at its own rigidity (flexible: ρ_F = min(ρ, 0.15); bypass at the tech level's `policyRigidityIndex`). The rigidity difference alone drives the delta.
+- **(D) Consistent bypass-multiplier placement.** Context and tech multipliers both scale the sigmoid **output** (previously one was inside, one outside — dimensionally inconsistent and saturating).
+- **(E) TCO multiplier no longer absorbed by the cap.** `C_TCO = V × m_ctx × min(0.10·A(T,5%)·ρ, 0.30)`; effective ceiling 0.30 × m ≤ 0.345. Previously the Direct-spend leverage silently vanished exactly where the cap bound.
+- **(F) Upstream compounding bounded.** One economic channel per mechanism: `delayMultiplier` upstream 1.4 → 1.0 (day boosts are the sole calendar channel), coordination 1.3 → 1.15, Direct TCO 1.35 → 1.15 (direction contested by Sievo/Inverto benchmarks), direct+upstream extra ×1.2 TCO removed. New audited invariant: no dimension's total context uplift exceeds ~×1.5 (max observed ×1.483; was ×2.15).
+- **(G) Optimizer (`lib/optimizer.ts`).** Weights 11 → 7 (w5–w8 were dead — read by no path, diluting the sensitivity sweep); per-run scores normalized to a true 0–100 scale (dimension-bonus paths previously had raw ceilings up to ~164 vs 100, structurally biasing vote-based winner selection); ranking now by sweep votes with mean-score tiebreak so `confidence = votes/30` describes the displayed winner; explicit unset neutrals for spendType/processPhase in ablation. Deterministic; recommendations changed accordingly.
+
+**Recompute impact (baseline scenarios, spend/phase unset):** ΔC still strictly positive 9/9; favoritism still favors the rigid path 8/9. Renegotiation deltas shrank sharply under the symmetric formula (e.g. pipe_vs_field 28k → 12k); `mrp`'s dominant dimension changed reneg → admin; pipe_vs_field headline +36.19% → **+35.78% of CV**. Tables regenerated in `00-shared-foundation.md` §5, `article-2`, and superseding `VERIFICATION_REPORT.md` §7.
+
+**Citation corrections from a live online verification pass (12 sources checked at the primary source):**
+- **Szucs (2024):** effect is "~6 **percent**" (not "6 percentage points"); plain fuzzy-RD reduced form ~9% (8% is the selection-corrected estimate); productivity −10% is the structural estimate. The "≈two-thirds of the effect from firm selection" decomposition could not be verified in any Szucs version and was removed everywhere.
+- **"ISM 30% TCO over 3 years" is apocryphal.** The verbatim quote traces to a content farm squatting ISM's former domain (ism.ws, self-declared unaffiliated); no official ISM/CAPS source exists. Relabelled everywhere as an unattributed practitioner heuristic (grey literature), kept only as the Grade-C cap.
+- **Fabricated "OECD 554/836 days" removed from the live app** (`app/research`, `app/methodology`) — the project's earlier audit had refuted it but two app pages still published it; four independent web searches confirm no source anywhere contains these figures.
+- **Swiss Casinos ERP:** correct attribution is **LAP Alliance / World Procurement Awards 2020** (lean-agile-procurement.com); correct figure **~6 weeks vs ~6 months** (business case → PoC + signed contract). The "4 weeks", "120-day vs 28-day", EY Switzerland and Skylight attributions were wrong (the EY article does not mention Swiss Casinos) and were fixed in both magazine articles, RESEARCH.md, and the app.
+- **Bajari, Houghton & Tadelis (2014):** adaptation costs are 7.5–14% *of the winning bid* (not "of contract value"). **EC (2011) PwC study:** aggregate cost is ~1.4% of purchasing volume (was rendered "<1.3%"). **Beuve et al.:** n≈279 unconfirmed (2016 WP reports 396 contracts). **Verified clean:** Beuve authorship (Spiller), Fazekas & Blum 9690 (retraction of "42%" was correct), Decarolis 2014, Coviello & Mariniello 2014, Guasch 2004, UZP 2023 (all five spot-checked figures match the official report).
+
+**Hallucination fixes in documents:** the EN magazine article's body still carried the retracted claims (2% rigidity premium, 42% overruns) while its footer was corrected — body rewritten to the corrected framing (mirror of the PL article). The untracked pre-audit `.docx`/`.rtf` exports of the PL article (which reverted every audit correction, including the Saussier misattribution) were regenerated from the corrected `.md`. `PHD_ROADMAP.md` "five dimensions" → seven. Unverifiable "EY/Deloitte sourcing transformation studies" attribution replaced with an honest Grade-C label.
+
 ## [Unreleased] - 2026-06-28
 
 ### Comprehensive substantive verification (weryfikacja merytoryczna) + corrections

@@ -21,7 +21,7 @@ Kluczowe rozszerzenie modelu (2026):
 - Rozróżnienie **Direct vs Indirect** spend
 - Rozróżnienie **Upstream vs Downstream** faz procesu
 
-Model integruje wyniki badań empirycznych (m.in. Szucs 2024, Beuve et al. 2021, ISM) i jest w pełni otwarty.
+Model integruje wyniki badań empirycznych (m.in. Szucs 2024, Beuve et al. 2021) i jest w pełni otwarty.
 
 ---
 

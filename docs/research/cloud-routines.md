@@ -43,15 +43,16 @@ SAFETY: run `git remote -v`; if origin does not contain 'pawelmamcarz/procuracos
 CHECKS (report each PASS or FAIL with file:line):
 1. Em-dashes: `grep -rn "—" docs/articles/doktorat/` must be empty. Replace any with context-appropriate punctuation (comma, colon, semicolon, parentheses), never a hyphen; preserve en-dashes in ranges (117-160) and minus signs in formulas.
 2. Retracted or inverted claims anywhere in app/, docs/, lib/, *.md:
-   a. inverted Szucs reading (a standalone "2%" or "redystrybu" tied to Szucs; the correct direction is discretion RAISES prices about 6 percentage points);
+   a. inverted Szucs reading (a standalone "2%" or "redystrybu" tied to Szucs; the correct direction is discretion RAISES prices about 6 percent, and it is percent, not percentage points; "6pp" tied to Szucs is drift);
    b. "five-dimension" or "pieciowymiar" (the model is seven-dimension);
    c. Szucs page range "117-151" (correct is 117-160);
    d. "Random Forest" or "machine learning" applied to the optimizer (it is a weighted rule-based scoring function with a 30-run sensitivity sweep);
-   e. removed constants RIGIDITY_PRICE_PREMIUM, RIGIDITY_PRODUCTIVITY_LOSS, or a hardcoded 0.016 / 0.02 price-or-productivity coefficient in app/ or lib/.
+   e. removed constants RIGIDITY_PRICE_PREMIUM, RIGIDITY_PRODUCTIVITY_LOSS, FLEXIBLE_RENEGOTIATION_PROBABILITY_FACTOR, FLEXIBLE_BYPASS_PROBABILITY_SCALE, staffIntensityMultiplier, or a hardcoded 0.016 / 0.02 price-or-productivity coefficient in app/ or lib/;
+   f. apocryphal attributions: any "ISM"/"CAPS Research" attribution of the 30% TCO ceiling (it is an unattributed practitioner heuristic), the fabricated OECD "554/836 days", Swiss Casinos attributed to EY/Skylight or "4 weeks"/"120 vs 28 days" (correct: LAP Alliance / World Procurement Awards 2020, about 6 weeks vs 6 months), the unverifiable Szucs "two-thirds firm selection" decomposition.
    Fix any hit to match docs/VERIFICATION_REPORT.md and docs/MODEL_PARAMETERS.md.
 3. Honest-framing invariants must remain present and unweakened: the symmetry-inertness disclosure (deltaC > 0 in 9 of 9 scenarios, numerically inert at net), "estimates not facts", roughly 35 to 40 percent peer-reviewed.
 4. PZP legal facts: art. 283 (7/14-day), art. 264 ust. 1 (10/15-day standstill), 130k exemption, EU threshold 930,960 PLN. Flag any change.
-5. Model vs docs consistency: constants in lib/calculations.ts (DISCRETION_FAVORITISM_PREMIUM 0.06, BASE_RENEGOTIATION_PROBABILITY 0.22, RIGIDITY_RENEGOTIATION_PREMIUM 0.077, TCO_SAVINGS_RATE_PER_YEAR 0.10, TCO_CUMULATIVE_CAP 0.30, DISCOUNT_RATE 0.05) match docs/MODEL_PARAMETERS.md.
+5. Model vs docs consistency: constants in lib/calculations.ts (DISCRETION_FAVORITISM_PREMIUM 0.06, BASE_RENEGOTIATION_PROBABILITY 0.22, RIGIDITY_RENEGOTIATION_PREMIUM 0.077, RENEGOTIATION_PREMIUM_MAX 0.105, TCO_SAVINGS_RATE_PER_YEAR 0.10, TCO_CUMULATIVE_CAP 0.30, DISCOUNT_RATE 0.05) match docs/MODEL_PARAMETERS.md; `npm run recompute` runs deterministically and its context-uplift audit reports the ≤ x1.5 invariant HOLDS.
 6. Build: npm ci || npm install; then npm run build must succeed (45 pages). npm run lint must not add NEW errors beyond the pre-existing react/no-unescaped-entities, no-html-link-for-pages, and no-explicit-any debt.
 
 If ALL checks pass and nothing changed: write a one-line "guard: clean" summary and STOP (do not open a PR).

@@ -129,11 +129,11 @@ Wszystkie trzy artykuły i niniejsza spinka używają identycznej notacji kanoni
 
 ### 5.2 Zamrożony model v1.1
 
-Wszystkie wyniki ilościowe pochodzą z jednej, zamrożonej wersji warstwy modelu (`lib/calculations.ts`, `lib/process-templates.ts`, `lib/optimizer.ts`, `lib/scenarios.ts`), zgodnej z commitem weryfikacyjnym `a1063f9`, o dacie ważności prawnej **2026-06-28**. Kluczowe stałe są wspólne dla cyklu: δ = `DISCRETION_FAVORITISM_PREMIUM` = 0,06; P_base = 0,22 i Δp = 0,077 (Beuve i in., 2023); γ = `TCO_SAVINGS_RATE_PER_YEAR` = 0,10/rok z pułapem κ_TCO = 0,30; stopa dyskontowa d = 0,05; sigmoida obejścia (k = 6, x₀ = 0,9, pułap 0,95); indeks sztywności ρ ∈ [0,12; 0,95]. Wcześniejsza, odwrócona lektura Szucsa (parametry `RIGIDITY_PRICE_PREMIUM`, `RIGIDITY_PRODUCTIVITY_LOSS`) została **usunięta** i nie wraca do żadnego artykułu; to inwariant load-bearing. Optymalizator ścieżki jest **ważoną funkcją scoringową opartą na regułach z 30-przebiegowym testem wrażliwości**, *nie* uczeniem maszynowym i *nie* Random Forest.
+Wszystkie wyniki ilościowe pochodzą z jednej, zamrożonej wersji warstwy modelu (`lib/calculations.ts`, `lib/process-templates.ts`, `lib/optimizer.ts`, `lib/scenarios.ts`), zgodnej z commitem weryfikacyjnym `a1063f9`, o dacie ważności prawnej **2026-06-28**. Kluczowe stałe są wspólne dla cyklu: δ = `DISCRETION_FAVORITISM_PREMIUM` = 0,06; P_base = 0,22 i nachylenie premii Δp = 0,077 z twardym pułapem `RENEGOTIATION_PREMIUM_MAX` = 0,105 (pasmo Beuve i in., 2023), jedną symetryczną formułą dla obu ścieżek; γ = `TCO_SAVINGS_RATE_PER_YEAR` = 0,10/rok z pułapem κ_TCO = 0,30 (efektywnie 0,30·m_tco); stopa dyskontowa d = 0,05; sigmoida obejścia (k = 6, x₀ = 0,9, pułap 0,95), wspólna dla obu ścieżek, z mnożnikami na wyjściu; indeks sztywności ρ ∈ [0,12; 0,95]. Wcześniejsza, odwrócona lektura Szucsa (parametry `RIGIDITY_PRICE_PREMIUM`, `RIGIDITY_PRODUCTIVITY_LOSS`) została **usunięta** i nie wraca do żadnego artykułu; to inwariant load-bearing. Optymalizator ścieżki jest **ważoną funkcją scoringową opartą na regułach z 30-przebiegowym testem wrażliwości**, *nie* uczeniem maszynowym i *nie* Random Forest.
 
 ### 5.3 Deterministyczne przeliczenie jako wspólny dowód
 
-Wspólnym materiałem dowodowym cyklu jest **deterministyczne przeliczenie na realnym kodzie**: harness w Node v26 z natywnym usuwaniem typów TypeScript importuje *rzeczywiste* funkcje `calculateCosts` i zbiór `SCENARIOS` z dosłownych kopii warstwy `lib/`, bez reimplementacji. Wszystkie dziewięć scenariuszy referencyjnych pozostawia pola `spendType`/`processPhase` nieustawione, więc mnożniki wymiarowe Direct/Indirect × Upstream/Downstream są uśpione (= 1,0). Wynik (tabela §5 fundamentu, §7 raportu weryfikacyjnego) jest *jeden* i ten sam dla wszystkich trzech artykułów: ΔC_total > 0 w 9/9, najszersza luka w maksymalnie sztywnym pzp_eu (+36,19% CV), faworytyzm subsydiuje ścieżkę sztywną per-wymiar w 8/9. Determinizm (brak losowości w inferencji) jest cechą konstrukcyjną i warunkiem replikowalności.
+Wspólnym materiałem dowodowym cyklu jest **deterministyczne przeliczenie na realnym kodzie**: stały skrypt repozytorium `scripts/recompute.ts` (uruchamiany poleceniem `npm run recompute` przez runner `tsx`) importuje *rzeczywiste* funkcje `calculateCosts` i zbiór `SCENARIOS` bezpośrednio z warstwy `lib/`, bez reimplementacji. Wszystkie dziewięć scenariuszy referencyjnych pozostawia pola `spendType`/`processPhase` nieustawione, więc mnożniki wymiarowe Direct/Indirect × Upstream/Downstream są uśpione (= 1,0). Wynik (tabela §5 fundamentu, §7 raportu weryfikacyjnego) jest *jeden* i ten sam dla wszystkich trzech artykułów: ΔC_total > 0 w 9/9, najszersza luka w maksymalnie sztywnym pzp_eu (+35,78% CV), faworytyzm subsydiuje ścieżkę sztywną per-wymiar w 8/9. Determinizm (brak losowości w inferencji) jest cechą konstrukcyjną i warunkiem replikowalności.
 
 ---
 
@@ -174,7 +174,7 @@ Rozprawa traktuje zastrzeżenia identyfikacyjne i zewnętrznej trafności jako *
 3. **Optymalizator nie jest uczeniem maszynowym.** To ważona funkcja scoringowa oparta na regułach z 30-przebiegowym testem wrażliwości; **nie** uczenie maszynowe, **nie** Random Forest, **nie** walidowany na rzeczywistych wynikach.
 4. **Kazusy prywatne są wyłącznie ilustracyjne** (Ryanair, Swiss Casinos, Air France, Zara); nie są dowodem w sprawie prawa zamówień publicznych.
 5. **Proweniencja parametrów.** Około 35–40% parametrów jest recenzowanych; reszta to założenia kalibracyjne/klasy C wyrażone liczbami kardynalnymi.
-6. **Zastrzeżenia transferu importowanych efektów** (Szucs: węgierski RDD sektora publicznego, ~2/3 selekcja; Beuve: francuskie parkingi, 2SLS/IV; Guasch: LAC bez telekomunikacji; Bajari-Houghton-Tadelis: US Caltrans; Decarolis/Coviello-Mariniello: włoskie roboty). Transfery na kontekst polski są benchmarkami, nie pomiarami.
+6. **Zastrzeżenia transferu importowanych efektów** (Szucs: węgierski RDD sektora publicznego, estymaty strukturalne korygują selekcję do przetargów; Beuve: francuskie parkingi, 2SLS/IV; Guasch: LAC bez telekomunikacji; Bajari-Houghton-Tadelis: US Caltrans; Decarolis/Coviello-Mariniello: włoskie roboty). Transfery na kontekst polski są benchmarkami, nie pomiarami.
 
 Dodatkowo: (a) **identyfikacja obserwacyjna**: projekty empiryczne Artykułu 3 dają *asocjacje*, nie efekty przyczynowe, dopóki nie spełnione są założenia (donut wokół progu, równoległe trendy DiD, egzogeniczność wyboru trybu po efektach stałych); (b) **parametry klasy C** o wysokiej dźwigni (γ TCO; gradient κ) potrafią poruszyć magnitudę luki, choć nie jej znak; (c) **uśpione mnożniki wymiarowe** sprawiają, że H2/H3 pozostają twierdzeniami do przetestowania; (d) **realizowany pułap obejścia** (~86% dla maksymalnie sztywnego procesu manualnego) przekracza empiryczne pasmo off-contract 2–3-krotnie i wymaga pierwotnego audytu.
 
@@ -233,8 +233,6 @@ Szucs, F. (2024). Discretion and favoritism in public procurement. *Journal of t
 
 European Commission. (2011). *Evaluation report: Impact and effectiveness of EU public procurement legislation* [Przygotowane przez PwC, London Economics i Ecorys]. European Commission.
 
-Institute for Supply Management. (b.d.). *Understanding total cost of ownership in procurement*. Pobrano z https://www.ism.ws/supply-chain/ownership-in-procurement/
-
 Komisja Europejska. (2024). *Single Market and Competitiveness Scoreboard: Public procurement, Poland*. European Commission. https://single-market-scoreboard.ec.europa.eu/countries/poland_en
 
 Urząd Zamówień Publicznych. (2024). *Sprawozdanie Prezesa Urzędu Zamówień Publicznych z funkcjonowania systemu zamówień publicznych w 2023 r.* Urząd Zamówień Publicznych. https://www.gov.pl/web/uzp/sprawozdanie-prezesa-uzp-z-funkcjonowania-systemu-zamowien-publicznych-w-2023-roku
@@ -277,9 +275,11 @@ Ustawa z dnia 20 lipca 2018 r., Prawo o szkolnictwie wyższym i nauce (t.j. Dz.U
 
 ### Kazusy ilustracyjne (wyłącznie motywacja, nigdy dowód o PZP)
 
-EY Switzerland. (2024). *Integrating agile practices into procurement processes* [Swiss Casinos ERP; Air France-KLM Martinair cargo].
+Agile Business Consortium / LAP Alliance. (2021). *Air France uses Lean Agile Procurement to outsource a critical project* [Air France-KLM Martinair cargo]. agilebusiness.org / lap-alliance.org.
 
 *IJRAR*. (2019). Ryanair strategic positioning and fleet management. *International Journal of Research and Analytical Reviews, 6*(2).
+
+LAP Alliance. (2020). *Swiss Casinos ERP sourcing: Lean Agile Procurement case study* [zwycięzca World Procurement Awards 2020]. lean-agile-procurement.com.
 
 Tradogram. (2024). *Agile procurement practices: A comprehensive guide* [Zara / Inditex].
 

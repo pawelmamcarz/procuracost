@@ -116,7 +116,7 @@ export const SCENARIOS: Scenario[] = [
     caseStudy: {
       title: "Air France KLM Martinair Cargo — Lean Agile Procurement (private-sector example)",
       source:
-        "EY Switzerland — Integrating Agile Practices into Procurement (practitioner example, illustrative)",
+        "LAP Alliance / Agile Business Consortium (2021) — Air France KLM Martinair Cargo case study (practitioner example, illustrative)",
       insight:
         "Prywatny przewoźnik: Air France KLM zastosował Lean Agile Procurement dla modernizacji cargo door-to-door w ścisłym oknie czasowym. Przykład praktyczny ilustrujący efektywność sektora prywatnego — nie dowód empiryczny dotyczący prawa zamówień publicznych.",
       insightEn:
