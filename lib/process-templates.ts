@@ -648,6 +648,49 @@ export const PROCESS_TYPE_META: Record<Exclude<ProcessType, "custom">, { categor
  */
 const FLEXIBLE_PATH_TIME_COMPRESSION = 0.85;
 
+// ─── Contextual derivation multipliers ──────────────────────────────────────────
+// Per-step and global calendar/staff adjustments applied by the derive* functions
+// below based on the Direct/Indirect × Upstream/Downstream context. All are Grade-C
+// modeling assumptions (docs/MODEL_PARAMETERS.md §4/§5); the audited invariant is that
+// no dimension's total context uplift exceeds ~×1.5 (scripts/recompute.ts).
+
+// deriveRigidDays — extra calendar days on the heaviest governance steps in strategic
+// direct sourcing, plus the global compressible-work premium.
+const RIGID_STRATEGIC_STEP_DAY_BOOST = 1.22;    // governance-heavy steps (+22% days)
+const RIGID_MANDATORY_STEP_DAY_BOOST = 1.08;    // publication/standstill sign-off (+8%)
+const RIGID_UPSTREAM_DIRECT_DAY_PREMIUM = 1.06; // global compressible-work premium
+
+// deriveFlexibleDays — extra compression on formal overhead eliminated under policy.
+const FLEXIBLE_HEAVY_FORMAL_STEP_COMPRESSION = 0.82;    // heaviest formal steps (−18%)
+const FLEXIBLE_MODERATE_FORMAL_STEP_COMPRESSION = 0.90; // moderately formal steps (−10%)
+const FLEXIBLE_UPSTREAM_DIRECT_COMPRESSION = 0.91;      // global upstream+direct compression
+const FLEXIBLE_UPSTREAM_COMPRESSION = 0.95;             // global upstream (non-direct)
+
+// deriveStaffCost — role-level seniority multipliers (the SOLE staff-intensity channel).
+// Upstream = strategic work draws seniors/legal/finance; buyer less dominant.
+const STAFF_UPSTREAM_EXECUTIVE = 1.85;
+const STAFF_UPSTREAM_MANAGER = 1.65;
+const STAFF_UPSTREAM_LAWYER = 1.55;
+const STAFF_UPSTREAM_FINANCE = 1.40;
+const STAFF_UPSTREAM_BUYER = 0.75;
+// Downstream = operational execution: hands-on buyer/requestor, fewer seniors.
+const STAFF_DOWNSTREAM_BUYER = 1.50;
+const STAFF_DOWNSTREAM_REQUESTOR = 1.35;
+const STAFF_DOWNSTREAM_MANAGER = 0.65;
+const STAFF_DOWNSTREAM_EXECUTIVE = 0.50;
+// Direct spend = production-related: more senior/finance/legal oversight.
+const STAFF_DIRECT_EXECUTIVE = 1.30;
+const STAFF_DIRECT_MANAGER = 1.25;
+const STAFF_DIRECT_FINANCE = 1.35;
+const STAFF_DIRECT_LAWYER = 1.20;
+// Indirect+Upstream: strategic but less board-level attention.
+const STAFF_INDIRECT_UPSTREAM_EXECUTIVE = 0.75;
+// Indirect+Downstream: least senior involvement (senior reduction only).
+const STAFF_INDIRECT_DOWNSTREAM_SENIOR = 0.75;
+
+// Fully-loaded daily rates are per 8-hour working day; participation is captured in hours.
+const WORK_HOURS_PER_DAY = 8;
+
 /**
  * Context-aware flexible path compression.
  * We assume that policy-based (flexible) approaches save relatively more time
@@ -681,10 +724,10 @@ export function deriveRigidDays(
 
     // Highest governance load steps in strategic direct sourcing
     if (["siwz_prep", "spec_prep", "clarifications", "bid_evaluation", "award_committee", "contract_signing", "needs_analysis"].includes(stepId)) {
-      return 1.22; // +22% calendar days — extra negotiation/alignment cycles
+      return RIGID_STRATEGIC_STEP_DAY_BOOST; // +22% calendar days — extra negotiation/alignment cycles
     }
     if (["publication", "standstill"].includes(stepId)) {
-      return 1.08; // modest extension (mandatory periods + extra internal sign-off)
+      return RIGID_MANDATORY_STEP_DAY_BOOST; // modest extension (mandatory periods + extra internal sign-off)
     }
     return 1.0;
   };
@@ -703,7 +746,7 @@ export function deriveRigidDays(
 
   // Global strategic premium (kept for calibration stability) — compressible work only
   if (processPhase === "upstream" && spendType === "direct") {
-    adjustedCompressible *= 1.06;
+    adjustedCompressible *= RIGID_UPSTREAM_DIRECT_DAY_PREMIUM;
   }
 
   return Math.round(adjustedCompressible * techMultiplier + mandatoryDays);
@@ -724,10 +767,10 @@ export function deriveFlexibleDays(
     if (processPhase !== "upstream" || spendType !== "direct") return 1.0;
     // Steps that disappear or shrink dramatically under policy in high-stakes direct work
     if (["siwz_prep", "spec_prep", "publication", "standstill", "award_committee"].includes(stepId)) {
-      return 0.82; // extra 18% compression on the heaviest formal overhead
+      return FLEXIBLE_HEAVY_FORMAL_STEP_COMPRESSION; // extra 18% compression on the heaviest formal overhead
     }
     if (["clarifications", "bid_evaluation", "contract_signing"].includes(stepId)) {
-      return 0.90;
+      return FLEXIBLE_MODERATE_FORMAL_STEP_COMPRESSION;
     }
     return 1.0;
   };
@@ -739,9 +782,9 @@ export function deriveFlexibleDays(
   }
 
   if (processPhase === "upstream" && spendType === "direct") {
-    adjustedBase *= 0.91;
+    adjustedBase *= FLEXIBLE_UPSTREAM_DIRECT_COMPRESSION;
   } else if (processPhase === "upstream") {
-    adjustedBase *= 0.95;
+    adjustedBase *= FLEXIBLE_UPSTREAM_COMPRESSION;
   }
 
   return Math.round(adjustedBase * techMultiplier * compression);
@@ -774,32 +817,32 @@ export function deriveStaffCost(
 
         // Upstream = strategic work: heavy involvement of seniors, legal, risk management
         if (processPhase === "upstream") {
-          if (role === "executive") effectiveHours *= 1.85;   // board-level decisions
-          if (role === "manager") effectiveHours *= 1.65;
-          if (role === "lawyer") effectiveHours *= 1.55;
-          if (role === "finance") effectiveHours *= 1.4;
-          if (role === "buyer") effectiveHours *= 0.75; // buyer role is less dominant in pure strategic work
+          if (role === "executive") effectiveHours *= STAFF_UPSTREAM_EXECUTIVE;   // board-level decisions
+          if (role === "manager") effectiveHours *= STAFF_UPSTREAM_MANAGER;
+          if (role === "lawyer") effectiveHours *= STAFF_UPSTREAM_LAWYER;
+          if (role === "finance") effectiveHours *= STAFF_UPSTREAM_FINANCE;
+          if (role === "buyer") effectiveHours *= STAFF_UPSTREAM_BUYER; // buyer role is less dominant in pure strategic work
         }
 
         // Downstream = operational execution: more hands-on buyer and requestor work
         if (processPhase === "downstream") {
-          if (role === "buyer") effectiveHours *= 1.5;
-          if (role === "requestor") effectiveHours *= 1.35;
-          if (role === "manager") effectiveHours *= 0.65;
-          if (role === "executive") effectiveHours *= 0.5;
+          if (role === "buyer") effectiveHours *= STAFF_DOWNSTREAM_BUYER;
+          if (role === "requestor") effectiveHours *= STAFF_DOWNSTREAM_REQUESTOR;
+          if (role === "manager") effectiveHours *= STAFF_DOWNSTREAM_MANAGER;
+          if (role === "executive") effectiveHours *= STAFF_DOWNSTREAM_EXECUTIVE;
         }
 
         // Direct spend = production-related: requires more senior oversight, risk, and finance involvement
         if (spendType === "direct") {
-          if (role === "executive") effectiveHours *= 1.3;
-          if (role === "manager") effectiveHours *= 1.25;
-          if (role === "finance") effectiveHours *= 1.35;
-          if (role === "lawyer") effectiveHours *= 1.2;
+          if (role === "executive") effectiveHours *= STAFF_DIRECT_EXECUTIVE;
+          if (role === "manager") effectiveHours *= STAFF_DIRECT_MANAGER;
+          if (role === "finance") effectiveHours *= STAFF_DIRECT_FINANCE;
+          if (role === "lawyer") effectiveHours *= STAFF_DIRECT_LAWYER;
         }
 
         // Indirect + Upstream still strategic but less board-level attention
         if (spendType === "indirect" && processPhase === "upstream") {
-          if (role === "executive") effectiveHours *= 0.75;
+          if (role === "executive") effectiveHours *= STAFF_INDIRECT_UPSTREAM_EXECUTIVE;
         }
 
         // Strongest operational profile: Indirect + Downstream (least senior involvement).
@@ -808,10 +851,10 @@ export function deriveStaffCost(
         // mechanism; a second buyer/requestor boost here double-counted it and pushed the
         // staff dimension's total context uplift to ×2.15, past the ×1.5 invariant).
         if (spendType === "indirect" && processPhase === "downstream") {
-          if (["executive", "manager"].includes(role)) effectiveHours *= 0.75;
+          if (["executive", "manager"].includes(role)) effectiveHours *= STAFF_INDIRECT_DOWNSTREAM_SENIOR;
         }
 
-        return stepTotal + (effectiveHours * rate.count * rate.dailyRate) / 8;
+        return stepTotal + (effectiveHours * rate.count * rate.dailyRate) / WORK_HOURS_PER_DAY;
       },
       0
     );

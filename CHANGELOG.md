@@ -2,6 +2,18 @@
 
 All notable changes to ProcuraCost are documented here.
 
+## [Unreleased] - 2026-07-05
+
+### Flexible-path bypass rigidity fix + invariant test suite + CI
+
+**Model fix (`lib/calculations.ts`).** The flexible-path bypass sigmoid was evaluated at the tech level's `policyRigidityIndex` (0.05–0.35) **uncapped**, while every other flexible dimension uses `flexibleRigidity = min(ρ, ρ_policy_only)`. For a low-rigidity operational process (`catalog_order` ρ = 0.20, `mrp_order` ρ = 0.12) on **manual** (0.35) or **sourcing_tool** (0.22) tooling, this scored the flexible "field" path as MORE bypass-prone than its own rigid "tunnel" path — inverting the Tunnel/Field thesis and contradicting the in-code comment. Fix: evaluate the flexible-path bypass at `min(policyRigidityIndex, flexibleRigidity)`; the two comments describing the design were rewritten to document the two-rigidity design honestly. **Recompute impact:** the shipped operational scenarios (catalog/mrp) use `end_to_end` tooling and are unaffected; the two `private_formal` scenarios on non-`end_to_end` tooling shift — **erp** (sourcing_tool) deltaC +802k → **+803k** (+26.73% → +26.77% CV), **production** (manual) deltaC +2.26M → **+2.30M** (+18.83% → +19.20% CV). **Symmetry test unchanged: still 0/9 scenarios with deltaC < 0** — the model remains one where the rigid path never wins across the shipped reference set (a documentation follow-up; no new scenario invented).
+
+**Tests (`vitest`).** Added a `test` script and a first invariant suite asserting: renegotiation premium capped at `RENEGOTIATION_PREMIUM_MAX`; no dimension's total context uplift exceeds ~×1.5 across all spendType × processPhase combos (mirrors `scripts/recompute.ts`); the bypass-fix regression (catalog_order/mrp_order under manual & sourcing_tool: flexible bypass ≤ rigid bypass); `calculateCosts` returns finite numbers with a zero-total deltaPercent guard; `optimize()` never recommends a legally filtered-out path across the PZP threshold bands; `getISOWeek` at year boundaries; and `formatPLN`/`formatCompact` sanity.
+
+**CI (`.github/workflows/ci.yml`).** On `pull_request` and push to `main`: `npm ci`, lint (temporarily `continue-on-error` while parallel branches fix pre-existing app/component lint), test, build, recompute.
+
+**Package hygiene.** `name` `procedura` → `procuracost`; removed the unused `html2canvas` dependency (zero source imports); dropped the dead `getScenarioById` export; named the remaining inline model multiplier literals and reused `PZP_EXEMPTION_PLN` for the optimizer's 130k threshold term (pure refactor, recompute byte-identical).
+
 ## [Unreleased] - 2026-07-02
 
 ### Full mathematical correction of the cost model + online citation verification

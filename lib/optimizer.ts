@@ -376,7 +376,7 @@ const PATH_TERMS: Record<PathId, TermSpec[]> = {
   bezposrednie: [
     { w: 0, scale: 35, maxFactor: 1, factor: (f) => (f.urgencyDays < 21 ? (21 - f.urgencyDays) / 21 : 0) },
     { w: 1, scale: 30, maxFactor: 1, factor: (f) => (f.supplyRisk >= 5 ? 1 : 0) },
-    { w: 2, scale: 20, maxFactor: 1, factor: (f) => (f.contractValue < 130_000 ? 1 : 0) },
+    { w: 2, scale: 20, maxFactor: 1, factor: (f) => (f.contractValue < PZP_EXEMPTION_PLN ? 1 : 0) },
     { w: 3, scale: 15, maxFactor: 0.5, factor: (f) => (!f.isPublicSector ? 0.5 : 0) },
     // Direct + Upstream almost never fits single-source without justification; Downstream+Indirect often does
     { w: 5, scale: 10, maxFactor: 1.4, factor: (f) => (isDirect(f) && isUpstream(f) ? 0.25 : isDownstream(f) ? 1.4 : 1.0) },
