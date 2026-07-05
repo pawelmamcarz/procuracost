@@ -1,3 +1,11 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Academic Methodology — ProcuraCost",
+  description:
+    "The seven-dimension cost model's academic methodology: formulas, empirical sources, and target journals.",
+};
+
 export default function MethodologyPage() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-10">
@@ -33,7 +41,6 @@ export default function MethodologyPage() {
           </p>
         </section>
 
-        {/* Policy vs Procedure */}
         <section>
           <h2 className="text-base font-bold text-gray-900">
             1. Procurement Policy vs. Procurement Procedure
@@ -50,14 +57,14 @@ export default function MethodologyPage() {
           </p>
           <p className="mt-2">
             The pathology we identify is the elevation of procedure to the status of policy: when
-            "following the procedure" becomes the primary success criterion rather than achieving
+            &ldquo;following the procedure&rdquo; becomes the primary success criterion rather than achieving
             value, procurement officers are effectively absolved of strategic judgment. This produces
             what we term <strong>procedural compliance theater</strong>—full documentation, zero
             optimization.
           </p>
           <blockquote className="mt-4 rounded-xl border border-blue-100 bg-blue-50 px-5 py-3">
             <p className="text-sm italic text-blue-800">
-              "A tunnel has walls. A field has a horizon."
+              &ldquo;A tunnel has walls. A field has a horizon.&rdquo;
             </p>
             <p className="mt-1 text-xs text-blue-600">
               The <strong>Tunnel vs. Field</strong> model: a procedure locks one path (tunnel);
@@ -66,7 +73,6 @@ export default function MethodologyPage() {
           </blockquote>
         </section>
 
-        {/* Cost Model */}
         <section>
           <h2 className="text-base font-bold text-gray-900">2. Seven-Dimension Cost Model</h2>
 
@@ -193,7 +199,6 @@ export default function MethodologyPage() {
           </div>
         </section>
 
-        {/* Key Sources */}
         <section>
           <h2 className="text-base font-bold text-gray-900">3. Key References</h2>
           <ul className="mt-2 space-y-2 text-xs text-gray-600">
@@ -223,7 +228,6 @@ export default function MethodologyPage() {
           </ul>
         </section>
 
-        {/* Target journals */}
         <section>
           <h2 className="text-base font-bold text-gray-900">4. Target Journals</h2>
           <ul className="mt-2 space-y-1 text-xs text-gray-600">

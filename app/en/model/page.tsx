@@ -91,8 +91,8 @@ export default function ModelEnPage() {
 
         <h2 className="mt-12">Validation Agenda</h2>
         <p>
-          A major objective for 2026 is to move as many parameters as possible from 
-          "modeling assumption" to "empirically grounded".
+          A major objective for 2026 is to move as many parameters as possible from
+          &ldquo;modeling assumption&rdquo; to &ldquo;empirically grounded&rdquo;.
         </p>
         <p>
           See the <Link href="/en/PHD_ROADMAP" className="text-blue-600 underline">PhD Research Roadmap</Link> 

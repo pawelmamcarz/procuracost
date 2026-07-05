@@ -19,7 +19,6 @@ export default function ShortcastyPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-12">
-      {/* Hero */}
       <div className="mb-10 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-white">
         <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-blue-200">
           Sezon 1 · 20 odcinków
@@ -34,7 +33,6 @@ export default function ShortcastyPage() {
           ile naprawdę kosztuje robienie wszystkiego zgodnie z procedurą.
         </p>
 
-        {/* Platform links */}
         <div className="mt-6 flex flex-wrap items-center gap-3">
           <span className="text-xs text-blue-200">Słuchaj na:</span>
           {PLATFORMS.map((p) => (
@@ -49,7 +47,6 @@ export default function ShortcastyPage() {
         </div>
       </div>
 
-      {/* Subscribe */}
       <div className="mb-10 rounded-xl border border-blue-100 bg-blue-50 p-5">
         <p className="text-sm font-semibold text-blue-900 mb-1">
           Zapisz się na powiadomienia
@@ -78,7 +75,6 @@ export default function ShortcastyPage() {
         </form>
       </div>
 
-      {/* Published episodes */}
       {published.length > 0 && (
         <div className="mb-10">
           <p className="mb-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
@@ -109,7 +105,6 @@ export default function ShortcastyPage() {
         </div>
       )}
 
-      {/* Upcoming episodes */}
       <div>
         <p className="mb-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
           {published.length > 0 ? "Nadchodzące odcinki" : "Plan sezonu — 20 odcinków"}
@@ -127,7 +122,7 @@ export default function ShortcastyPage() {
                 <p className="text-sm font-medium text-gray-700 leading-snug">{ep.title}</p>
                 <p className="mt-0.5 text-xs text-gray-400">{ep.dimension} · {ep.guest}</p>
                 <p className="mt-1.5 text-xs text-gray-500 leading-relaxed italic">
-                  „{ep.recommendation}"
+                  „{ep.recommendation}&rdquo;
                 </p>
               </div>
               <span className="shrink-0 text-xs text-gray-400 bg-gray-100 border border-gray-200 rounded-full px-2.5 py-0.5">
@@ -138,7 +133,6 @@ export default function ShortcastyPage() {
         </div>
       </div>
 
-      {/* Format box */}
       <div className="mt-10 rounded-xl border border-gray-100 bg-gray-50 p-6">
         <p className="mb-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
           Format odcinka

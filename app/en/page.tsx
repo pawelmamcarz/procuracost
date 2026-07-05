@@ -1,7 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import PipeFieldDiagram from "@/components/PipeFieldDiagram";
 import { SCENARIOS } from "@/lib/scenarios";
 import { calculateCosts } from "@/lib/calculations";
+
+export const metadata: Metadata = {
+  title: "ProcuraCost — Procurement Cost Calculator",
+  description:
+    "Cost calculator, path optimizer, and a free procurement maturity audit. See what your organisation is losing to rigid procedures.",
+};
 
 const stats = [
   { value: "~6%", label: "favoritism premium under unchecked discretion (which competitive tendering averts)", source: "Szucs, JEEA 2024" },
@@ -135,7 +142,6 @@ export default function EnHomePage() {
         ))}
       </div>
 
-      {/* How it works */}
       <div className="mt-16">
         <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-6">
           How ProcuraCost works
@@ -151,7 +157,6 @@ export default function EnHomePage() {
         </div>
       </div>
 
-      {/* Principles */}
       <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-3">
         {principles.map((p) => (
           <div
@@ -195,7 +200,6 @@ export default function EnHomePage() {
         </div>
       </div>
 
-      {/* Pipe vs. Field */}
       <div className="mt-12 rounded-2xl border border-blue-100 bg-blue-50 p-6">
         <h2 className="font-bold text-blue-900">The Tunnel vs. Field model</h2>
         <p className="mt-1 text-sm text-blue-700">
@@ -210,7 +214,6 @@ export default function EnHomePage() {
         </p>
       </div>
 
-      {/* Team */}
       <div className="mt-16">
         <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-5">Team</p>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -244,7 +247,6 @@ export default function EnHomePage() {
         </div>
       </div>
 
-      {/* CTA */}
       <div className="mt-16 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-center text-white">
         <h2 className="text-2xl font-bold">See what your organisation is losing</h2>
         <p className="mt-2 text-blue-100">

@@ -14,7 +14,6 @@ const AUTHOR_ORCID_URL = "https://orcid.org/0009-0002-3274-4226";
 export default function ResearchPage() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-10 print:max-w-none print:px-0 print:py-0">
-      {/* Top bar */}
       <div className="mb-8 flex items-center justify-between print:hidden">
         <div>
           <span className="inline-block rounded-full bg-blue-50 px-3 py-0.5 text-xs font-medium text-blue-600">
@@ -635,7 +634,6 @@ export default function ResearchPage() {
           </p>
         </section>
 
-        {/* Draft notice */}
         <div className="mt-8 rounded-xl border border-amber-100 bg-amber-50 p-4 print:hidden">
           <p className="text-xs font-medium text-amber-700">
             Draft status: Phase 1 complete (structure, lit review, model). Phase 2 (empirical
@@ -651,7 +649,6 @@ export default function ResearchPage() {
         </div>
       </article>
 
-      {/* Bottom print button */}
       <div className="mt-10 flex justify-center print:hidden">
         <PrintButton />
       </div>

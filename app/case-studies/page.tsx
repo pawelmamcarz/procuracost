@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import { SCENARIOS } from "@/lib/scenarios";
 import { calculateCosts } from "@/lib/calculations";
 import { PROCESS_TYPE_META, TECH_LEVELS } from "@/lib/process-templates";
+
+export const metadata: Metadata = {
+  title: "Case studies — ProcuraCost",
+  description:
+    "Rzeczywiste przypadki elastycznych zakupów — Ryanair, Swiss Casinos, Zara i inne — z benchmarkami kosztowymi.",
+};
 
 export default function CaseStudiesPage() {
   const withStudies = SCENARIOS.filter((s) => s.caseStudy);
