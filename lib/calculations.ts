@@ -306,8 +306,15 @@ export function calculateCosts(inputs: ProcurementInputs): ComparisonResult {
   const tech = TECH_LEVELS[techLevel];
   const steps = getSteps(processType, customSteps);
   const baseRigidity = PROCESS_RIGIDITY[processType];
-  // The flexible path always runs at policy-level rigidity, but never scores as MORE
-  // rigid than the underlying process (fixes the operational-type inversion).
+  // The flexible path is scored against TWO rigidity figures, both bounded so the
+  // "field" path can never read as MORE rigid than the "tunnel":
+  //  1. flexibleRigidity — the PROCESS-level policy rigidity min(ρ, ρ_policy_only), used
+  //     by the favoritism, renegotiation and TCO dimensions.
+  //  2. the TECH-level policyRigidityIndex (0.05–0.35), used by the bypass sigmoid to
+  //     reflect that manual tooling makes even a policy process easier to bypass —
+  //     but capped at flexibleRigidity below, so a low-rigidity operational process on
+  //     manual/sourcing_tool tooling is never scored more bypass-prone than its own
+  //     rigid path (the operational-type inversion this used to produce).
   const flexibleRigidity = Math.min(baseRigidity, PROCESS_RIGIDITY["policy_only"]);
   const corruptionContext = CORRUPTION_RISK_CONTEXT[processType];
   const tcoYears = Math.max(0, tcoHorizonYears);
@@ -389,13 +396,16 @@ export function calculateCosts(inputs: ProcurementInputs): ComparisonResult {
   // Bypass probability (behavioural hazard) — ONE formula for both paths: the sigmoid
   // maps intrinsic rigidity to a hazard; tech ease and context scale the REALIZED
   // probability outside the sigmoid, so high-rigidity processes stay differentiated
-  // and never saturate. The flexible path runs at the tech level's policy rigidity.
+  // and never saturate. The flexible path runs at the tech level's policy rigidity,
+  // but capped at flexibleRigidity so a low-rigidity operational process (catalog_order,
+  // mrp_order) on manual/sourcing_tool tooling is never scored MORE bypass-prone than
+  // its own rigid path — which would invert the Tunnel/Field thesis.
   const realizedBypassProb = (rigidity: number) => clamp(
     bypassProbability(rigidity) * tech.bypassProbMultiplier * dims.bypassMultiplier,
     0, BYPASS_PROBABILITY_CEILING,
   );
   const pBypassRigid = realizedBypassProb(baseRigidity);
-  const pBypassFlexible = realizedBypassProb(tech.policyRigidityIndex);
+  const pBypassFlexible = realizedBypassProb(Math.min(tech.policyRigidityIndex, flexibleRigidity));
   const rigidBypassCost = pBypassRigid * bypassAuditExposure;
   const flexibleBypassCost = pBypassFlexible * bypassAuditExposure;
 
