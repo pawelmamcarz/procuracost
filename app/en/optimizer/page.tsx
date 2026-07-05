@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import PathOptimizer from "@/components/PathOptimizer";
+
+export const metadata: Metadata = {
+  title: "Procurement Path Optimizer — ProcuraCost",
+  description:
+    "A rule-based model with a 30-run sensitivity sweep recommending a lawful procurement path based on your purchase parameters.",
+};
 
 export default function EnOptimizerPage() {
   return (

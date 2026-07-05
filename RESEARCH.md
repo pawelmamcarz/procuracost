@@ -1,7 +1,7 @@
 # The Hidden Cost of Procedural Compliance: Opportunity Costs of Rigid Procurement Rules vs. Policy-Based Procurement
 
-**Working Paper — Draft for Review**  
-Date: May 2026  
+**Working Paper — Draft for Review (living document, updated as the model evolves)**  
+Last updated: 2026-07-02  
 Target journal: *Journal of Public Procurement* (Emerald Publishing)
 
 ---

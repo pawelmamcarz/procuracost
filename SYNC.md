@@ -3,7 +3,7 @@
 ## Aktualny setup
 
 - **Główny development**: robisz na maszynie **Rokale**.
-- **Praca z Claude**: odbywa się w folderze `iCloud Drive/ClaudeSync/claude/procedura`.
+- **Praca z Claude**: odbywa się w folderze `iCloud Drive/ClaudeSync/claude/procuracost`.
 - Ten folder jest synchronizowany przez iCloud Drive między maszynami.
 - Repozytorium na GitHubie jest źródłem prawdy.
 
@@ -11,7 +11,7 @@
 
 ### Na co dzień (Rokale)
 
-1. Pracujesz normalnie w swoim głównym katalogu na Rokale (np. `~/dev/procedura` lub gdziekolwiek masz klona).
+1. Pracujesz normalnie w swoim głównym katalogu na Rokale (np. `~/dev/procuracost` lub gdziekolwiek masz klona).
 2. Regularnie commitujesz i pushujesz (`git push`).
 
 ### Przed dłuższą sesją z Claude
@@ -19,7 +19,7 @@
 Z dowolnej maszyny (najlepiej z Rokale przed rozpoczęciem rozmowy):
 
 ```bash
-cd "/Users/pawelmamcarz/iCloud Drive/ClaudeSync/claude/procedura"
+cd "/Users/pawelmamcarz/iCloud Drive/ClaudeSync/claude/procuracost"
 git pull origin main
 ```
 
@@ -28,7 +28,7 @@ Dzięki temu Claude widzi najnowszy stan kodu z Rokale.
 ### Po sesji z Claude (zmiany zrobione tutaj)
 
 ```bash
-cd "/Users/pawelmamcarz/iCloud Drive/ClaudeSync/claude/procedura"
+cd "/Users/pawelmamcarz/iCloud Drive/ClaudeSync/claude/procuracost"
 git add .
 git commit -m "..." 
 git push origin main
@@ -57,8 +57,8 @@ Na Rokale potem klasycznie: `git pull`.
 Możesz też dodać aliasy do `~/.zshrc`:
 
 ```bash
-alias claude-pull='$HOME"/iCloud Drive/ClaudeSync/claude/procedura/bin/claude-pull.sh"'
-alias claude-push='$HOME"/iCloud Drive/ClaudeSync/claude/procedura/bin/claude-push.sh"'
+alias claude-pull='$HOME"/iCloud Drive/ClaudeSync/claude/procuracost/bin/claude-pull.sh"'
+alias claude-push='$HOME"/iCloud Drive/ClaudeSync/claude/procuracost/bin/claude-push.sh"'
 ```
 
 ## Ważne zasady
@@ -71,10 +71,6 @@ alias claude-push='$HOME"/iCloud Drive/ClaudeSync/claude/procedura/bin/claude-pu
 
 Najczystsze rozwiązanie długoterminowe:
 
-- Na Rokale masz główny klon w `~/dev/procedura`.
+- Na Rokale masz główny klon w `~/dev/procuracost`.
 - Folder w `ClaudeSync` traktujesz wyłącznie jako "kontekst dla Claude" (pull/push przed i po sesji).
 - Nie edytujesz bezpośrednio plików w ClaudeSync na co dzień.
-
----
-
-Chcesz, żebym przygotował skrypty (`bin/sync-pull.sh`, `bin/sync-push.sh`) albo dodał aliasy do dokumentacji? Albo inną strategię (np. git worktree)? Podaj dokładne ścieżki, które używasz na Rokale.

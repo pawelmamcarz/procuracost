@@ -1,8 +1,9 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Model & Assumptions — ProcuraCost",
-  description: "Full transparency of the ProcuraCost cost model, parameters, and sources.",
+  title: "Model i założenia — ProcuraCost",
+  description:
+    "Pełna przejrzystość modelu kosztów ProcuraCost — parametry, źródła i status każdego założenia.",
 };
 
 export default function ModelPage() {
@@ -91,8 +92,8 @@ export default function ModelPage() {
 
         <h2 className="mt-12">Validation Agenda</h2>
         <p>
-          A major objective for 2026 is to move as many parameters as possible from 
-          "modeling assumption" to "empirically grounded".
+          A major objective for 2026 is to move as many parameters as possible from
+          &ldquo;modeling assumption&rdquo; to &ldquo;empirically grounded&rdquo;.
         </p>
         <p>
           See the <Link href="/PHD_ROADMAP" className="text-blue-600 underline">PhD Research Roadmap</Link> 

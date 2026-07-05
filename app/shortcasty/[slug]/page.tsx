@@ -31,7 +31,6 @@ export default function EpisodePage({ params }: { params: { slug: string } }) {
         ← Pole Rozmowy
       </Link>
 
-      {/* Header */}
       <div className="mb-8 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-white">
         <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-blue-200">
           Odcinek {ep.number} · {ep.dimension}
@@ -85,16 +84,15 @@ export default function EpisodePage({ params }: { params: { slug: string } }) {
           <p className="mt-1 text-xs text-amber-600">
             Zapisz się na powiadomienia, żeby nie przegapić premiery.
           </p>
-          <a
+          <Link
             href="/shortcasty"
             className="mt-4 inline-block rounded-lg bg-blue-600 px-5 py-2 text-sm font-semibold text-white hover:bg-blue-700"
           >
             Zapisz się
-          </a>
+          </Link>
         </div>
       )}
 
-      {/* Episode details */}
       <div className="space-y-4">
         <div className="rounded-xl border border-gray-100 bg-gray-50 p-5">
           <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-gray-500">Teza odcinka</p>
@@ -124,7 +122,6 @@ export default function EpisodePage({ params }: { params: { slug: string } }) {
         </div>
       </div>
 
-      {/* Prev / Next */}
       <div className="mt-10 flex items-center justify-between gap-4">
         {prev ? (
           <Link

@@ -1,7 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import PipeFieldDiagram from "@/components/PipeFieldDiagram";
 import { SCENARIOS } from "@/lib/scenarios";
 import { calculateCosts } from "@/lib/calculations";
+
+export const metadata: Metadata = {
+  title: "ProcuraCost — Kalkulator kosztów procedur zakupowych",
+  description:
+    "Model kosztów, optymalizator ścieżki i bezpłatny audyt dojrzałości zakupowej. Sprawdź, ile Twoja organizacja traci na sztywnych procedurach.",
+};
 
 const stats = [
   { value: "~6%", label: "premia faworyzacji przy nadmiernej dyskrecji (której unika konkurencyjny przetarg)", source: "Szucs, JEEA 2024" },
@@ -135,7 +142,6 @@ export default function HomePage() {
         ))}
       </div>
 
-      {/* How it works */}
       <div className="mt-16">
         <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-6">
           Jak działa ProcuraCost
@@ -151,7 +157,6 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Principles */}
       <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-3">
         {principles.map((p) => (
           <div
@@ -195,7 +200,6 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Pipe vs Field */}
       <div className="mt-12 rounded-2xl border border-blue-100 bg-blue-50 p-6">
         <h2 className="font-bold text-blue-900">Model tunelu i pola</h2>
         <p className="mt-1 text-sm text-blue-700">
@@ -209,7 +213,6 @@ export default function HomePage() {
         </p>
       </div>
 
-      {/* Team */}
       <div className="mt-16">
         <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-5">Zespół</p>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -243,7 +246,6 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* CTA */}
       <div className="mt-16 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-center text-white">
         <h2 className="text-2xl font-bold">Sprawdź, ile traci Twoja organizacja</h2>
         <p className="mt-2 text-blue-100">

@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import PathOptimizer from "@/components/PathOptimizer";
+
+export const metadata: Metadata = {
+  title: "Optymalizator ścieżki zakupowej — ProcuraCost",
+  description:
+    "Model regułowy z 30-przebiegową analizą wrażliwości rekomendujący ścieżkę zakupową zgodną z PZP na podstawie parametrów Twojego zakupu.",
+};
 
 export default function OptimizerPage() {
   return (
