@@ -200,21 +200,31 @@ export function getDimensionMultipliers(
 
 /**
  * Human-readable labels for the dimension multipliers (for UI/PDF/reports).
- * Returns array of { key, label, labelEn, value } for the non-1.0 factors.
+ * Returns array of { key, value } for the non-1.0 factors. User-facing labels
+ * live in lib/i18n.ts (dimensionMultiplierLabelsT) — the model layer stays
+ * language-free.
  */
+export type DimensionMultiplierKey =
+  | "tco"
+  | "delay"
+  | "productivity"
+  | "bypass"
+  | "renegotiation"
+  | "coordination";
+
 export function getDimensionMultiplierDetails(
   spendType?: "direct" | "indirect",
   processPhase?: "upstream" | "downstream"
 ) {
   const m = getDimensionMultipliers(spendType, processPhase);
-  const details: Array<{ key: string; label: string; labelEn: string; value: number }> = [];
+  const details: Array<{ key: DimensionMultiplierKey; value: number }> = [];
 
-  if (m.tcoMultiplier !== 1) details.push({ key: "tco", label: "Dźwignia TCO", labelEn: "TCO leverage", value: m.tcoMultiplier });
-  if (m.delayMultiplier !== 1) details.push({ key: "delay", label: "Koszt opóźnienia", labelEn: "Delay penalty", value: m.delayMultiplier });
-  if (m.productivityMultiplier !== 1) details.push({ key: "productivity", label: "Wpływ na jakość wyboru dostawcy", labelEn: "Supplier selection-quality impact", value: m.productivityMultiplier });
-  if (m.bypassMultiplier !== 1) details.push({ key: "bypass", label: "Ryzyko obejścia", labelEn: "Bypass risk", value: m.bypassMultiplier });
-  if (m.renegotiationMultiplier !== 1) details.push({ key: "renegotiation", label: "Ryzyko renegocjacji", labelEn: "Renegotiation exposure", value: m.renegotiationMultiplier });
-  if (m.coordinationIntensityMultiplier !== 1) details.push({ key: "coordination", label: "Intensywność koordynacji", labelEn: "Coordination overhead", value: m.coordinationIntensityMultiplier });
+  if (m.tcoMultiplier !== 1) details.push({ key: "tco", value: m.tcoMultiplier });
+  if (m.delayMultiplier !== 1) details.push({ key: "delay", value: m.delayMultiplier });
+  if (m.productivityMultiplier !== 1) details.push({ key: "productivity", value: m.productivityMultiplier });
+  if (m.bypassMultiplier !== 1) details.push({ key: "bypass", value: m.bypassMultiplier });
+  if (m.renegotiationMultiplier !== 1) details.push({ key: "renegotiation", value: m.renegotiationMultiplier });
+  if (m.coordinationIntensityMultiplier !== 1) details.push({ key: "coordination", value: m.coordinationIntensityMultiplier });
 
   return details;
 }

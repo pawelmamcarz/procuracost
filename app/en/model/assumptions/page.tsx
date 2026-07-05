@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { getDimensionMultipliers, getDimensionMultiplierDetails } from "@/lib/calculations";
+import { dimensionMultiplierLabelsT } from "@/lib/i18n";
 import Link from "next/link";
 
 type DimensionMultipliers = ReturnType<typeof getDimensionMultipliers>;
@@ -172,7 +173,7 @@ export default function AssumptionsExplorerEn() {
                 const effVal = effectiveMultipliers[multKey];
                 return (
                   <div key={d.key} className="flex justify-between items-center border-b border-gray-100 pb-1.5">
-                    <span className="text-gray-700">{d.labelEn}</span>
+                    <span className="text-gray-700">{dimensionMultiplierLabelsT.en[d.key]}</span>
                     <span className="font-mono font-semibold tabular-nums text-blue-700">
                       {effVal.toFixed(2)}x {effVal !== baseVal && <span className="text-gray-500 text-xs ml-1">({baseVal.toFixed(2)}x)</span>}
                     </span>
