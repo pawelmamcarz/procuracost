@@ -27,7 +27,9 @@ const navItemsEn: NavItem[] = [
   { href: "/en/optimizer", label: "RF Optimizer", highlight: true },
   { href: "/en/case-studies", label: "Case Studies" },
   { href: "/en/assessment", label: "Maturity Assessment" },
+  { href: "/en/team", label: "Team" },
   { href: "/en/model", label: "Model" },
+  { href: "/en/methodology", label: "Methodology" },
 ];
 
 export default function AppShell({ children }: { children: React.ReactNode }) {

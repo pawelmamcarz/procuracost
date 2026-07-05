@@ -50,7 +50,7 @@ export default function SiteFooter({ lang }: { lang: Lang }) {
       <div className="border-t border-gray-100 bg-gray-50">
         <div className="mx-auto flex max-w-5xl flex-col items-center gap-4 px-6 py-5 sm:flex-row sm:justify-between">
           <Link
-            href={isEnglish ? "/en" : "/team"}
+            href={isEnglish ? "/en/team" : "/team"}
             className="flex items-center gap-3 opacity-80 hover:opacity-100"
           >
             <div className="flex -space-x-2">
@@ -98,7 +98,7 @@ export default function SiteFooter({ lang }: { lang: Lang }) {
           ? "Model based on peer-reviewed academic research"
           : "Model oparty na badaniach akademickich"}{" "}
         ·{" "}
-        <Link href={isEnglish ? "/en" : "/methodology"} className="underline hover:text-blue-500">
+        <Link href={isEnglish ? "/en/methodology" : "/methodology"} className="underline hover:text-blue-500">
           {isEnglish ? "Sources & methodology" : "Źródła i metodologia"}
         </Link>
       </footer>
