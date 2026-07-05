@@ -6,8 +6,9 @@ export function generateStaticParams() {
   return EPISODES.map((e) => ({ slug: e.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }) {
-  const ep = getEpisode(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const ep = getEpisode(slug);
   if (!ep) return {};
   return {
     title: `Odc. ${ep.number}: ${ep.title} — Pole Rozmowy`,
@@ -15,8 +16,9 @@ export function generateMetadata({ params }: { params: { slug: string } }) {
   };
 }
 
-export default function EpisodePage({ params }: { params: { slug: string } }) {
-  const ep = getEpisode(params.slug);
+export default async function EpisodePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const ep = getEpisode(slug);
   if (!ep) notFound();
 
   const prev = EPISODES.find((e) => e.number === ep.number - 1);
