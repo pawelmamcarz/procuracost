@@ -125,6 +125,21 @@ const TCO_CUMULATIVE_CAP = 0.30;
 // Discount rate for multi-year flows (foregone TCO savings) → present value.
 const DISCOUNT_RATE = 0.05;
 
+// Direct/Indirect × Upstream/Downstream context multipliers (getDimensionMultipliers).
+// Grade-C modeling assumptions; each scales ONE cost channel through the shared
+// per-path formulas. Audited invariant: no dimension's total context uplift exceeds
+// ~×1.5 (scripts/recompute.ts / MODEL_PARAMETERS.md §4).
+const DIRECT_TCO_MULTIPLIER = 1.15;
+const DIRECT_BYPASS_MULTIPLIER = 1.15;
+const DIRECT_RENEGOTIATION_MULTIPLIER = 1.15;
+const UPSTREAM_BYPASS_MULTIPLIER = 1.25;
+const UPSTREAM_RENEGOTIATION_MULTIPLIER = 1.20;
+const UPSTREAM_COORDINATION_MULTIPLIER = 1.15;
+const DOWNSTREAM_DELAY_MULTIPLIER = 0.90;
+const DOWNSTREAM_PRODUCTIVITY_MULTIPLIER = 0.85;
+const DOWNSTREAM_COORDINATION_MULTIPLIER = 0.85;
+const DIRECT_UPSTREAM_RENEGOTIATION_MULTIPLIER = 1.15;
+
 /**
  * Returns a set of multipliers based on Spend Type (Direct/Indirect) and Process Phase (Upstream/Downstream).
  * This is the central place for dimension-based model behavior.
@@ -148,25 +163,25 @@ export function getDimensionMultipliers(
 
   // Direct spend generally has higher strategic leverage
   if (spendType === "direct") {
-    tcoMultiplier *= 1.15;
-    bypassMultiplier *= 1.15;
-    renegotiationMultiplier *= 1.15;
+    tcoMultiplier *= DIRECT_TCO_MULTIPLIER;
+    bypassMultiplier *= DIRECT_BYPASS_MULTIPLIER;
+    renegotiationMultiplier *= DIRECT_RENEGOTIATION_MULTIPLIER;
   }
 
   // Upstream vs Downstream effects
   if (processPhase === "upstream") {
-    bypassMultiplier *= 1.25;
-    renegotiationMultiplier *= 1.2;
-    coordinationIntensityMultiplier = 1.15; // higher meeting & alignment effort per day
+    bypassMultiplier *= UPSTREAM_BYPASS_MULTIPLIER;
+    renegotiationMultiplier *= UPSTREAM_RENEGOTIATION_MULTIPLIER;
+    coordinationIntensityMultiplier = UPSTREAM_COORDINATION_MULTIPLIER; // higher meeting & alignment effort per day
   } else if (processPhase === "downstream") {
-    delayMultiplier = 0.9;
-    productivityMultiplier = 0.85;
-    coordinationIntensityMultiplier = 0.85; // more standardized, less coordination
+    delayMultiplier = DOWNSTREAM_DELAY_MULTIPLIER;
+    productivityMultiplier = DOWNSTREAM_PRODUCTIVITY_MULTIPLIER;
+    coordinationIntensityMultiplier = DOWNSTREAM_COORDINATION_MULTIPLIER; // more standardized, less coordination
   }
 
   // Strongest effect: Direct + Upstream (critical strategic sourcing)
   if (spendType === "direct" && processPhase === "upstream") {
-    renegotiationMultiplier *= 1.15;
+    renegotiationMultiplier *= DIRECT_UPSTREAM_RENEGOTIATION_MULTIPLIER;
   }
 
   return {
