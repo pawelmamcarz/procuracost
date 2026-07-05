@@ -6,7 +6,7 @@
  * - To mark a specific notable release within the same week, set at build time:
  *     NEXT_PUBLIC_VERSION=2026.19.3.0 npm run build
  */
-function getISOWeek(date: Date): number {
+export function getISOWeek(date: Date): number {
   const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
   const dayNum = d.getUTCDay() || 7;
   d.setUTCDate(d.getUTCDate() + 4 - dayNum);
