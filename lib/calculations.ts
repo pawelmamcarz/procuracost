@@ -1,8 +1,12 @@
 // Core cost model — each dimension cites a specific source. Outputs are model
 // ESTIMATES under the assumptions documented in docs/MODEL_PARAMETERS.md, not
-// measured facts. The model is SYMMETRIC: the flexible (discretionary) path carries
-// its own favoritism/selection-quality cost, so the rigid path can be net-cheaper for
-// high-value, high-corruption-risk, competitive-market contexts.
+// measured facts. The model is SYMMETRIC IN STRUCTURE: the flexible (discretionary)
+// path carries its own favoritism/selection-quality cost, so ΔC_total is structurally
+// capable of going negative. Numerically that capability is INERT: ΔC_total > 0 in
+// all 9 reference scenarios and across an 11,844-config full-input-space sweep
+// (scripts/symmetry-sweep.ts, 2026-07-05); in low-corruption-risk operational
+// contexts the gap approaches zero (min observed ≈ +0.4% of contract value) but
+// never flips sign. Disclose this; never present rigid-wins as an observed result.
 //
 // - Szucs (JEEA 2024, DOI 10.1093/jeea/jvad017): discretion RAISES prices and selects
 //   less-productive contractors. Competitive (rigid) tendering averts this favoritism

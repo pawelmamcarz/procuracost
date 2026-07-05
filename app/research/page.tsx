@@ -435,7 +435,9 @@ export default function ResearchPage() {
             costs. The largest contributors are TCO foregone savings (driven by horizon length and
             contract value) and opportunity costs (driven by deployment delay). The favoritism /
             selection-quality cost runs the other way — it is borne mainly by the discretionary path,
-            so the rigid path can be net-cheaper in low-corruption operational contexts. Time costs
+            yet across all scenarios and a full input-space sweep it never outweighs the delay and
+            TCO penalties: in low-corruption operational contexts the net gap approaches zero
+            without the rigid path becoming net-cheaper. Time costs
             are significant but secondary at standard buyer salary rates. These are model estimates,
             not independent empirical measurements.
           </p>
