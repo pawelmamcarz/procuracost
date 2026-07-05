@@ -9,6 +9,9 @@ import { calculatorT, Lang } from "@/lib/i18n";
 interface Props {
   onCalculate: (inputs: ProcurementInputs, scenario: Scenario) => void;
   lang?: Lang;
+  initialInputs?: ProcurementInputs;
+  initialScenarioId?: string;
+  onInputsChange?: (inputs: ProcurementInputs, scenarioId: string) => void;
 }
 
 const PROCESS_CATEGORY_ORDER: ProcessCategory[] = ["strategic", "operational", "strategic_pzp"];
@@ -23,37 +26,42 @@ const TECH_LEVEL_IDS: TechLevelId[] = ["manual", "sourcing_tool", "partial_erp",
 
 const STAKEHOLDER_ROLES: StakeholderRole[] = ["requestor", "buyer", "lawyer", "finance", "manager", "executive"];
 
-export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
+export default function CostCalculator({ onCalculate, lang = "pl", initialInputs, initialScenarioId, onInputsChange }: Props) {
   const tx = calculatorT[lang];
-  const [selectedScenarioId, setSelectedScenarioId] = useState("fleet");
-  const [inputs, setInputs] = useState<ProcurementInputs>(SCENARIOS[0].inputs);
+  const [selectedScenarioId, setSelectedScenarioId] = useState(initialScenarioId ?? "fleet");
+  const [inputs, setInputs] = useState<ProcurementInputs>(initialInputs ?? SCENARIOS[0].inputs);
+
+  function applyInputs(next: ProcurementInputs, scenarioId: string = selectedScenarioId) {
+    setInputs(next);
+    onInputsChange?.(next, scenarioId);
+  }
 
   function handleScenarioChange(id: string) {
     setSelectedScenarioId(id);
     const scenario = SCENARIOS.find((s) => s.id === id);
-    if (scenario) setInputs(scenario.inputs);
+    if (scenario) applyInputs(scenario.inputs, id);
   }
 
   function setProcessType(pt: ProcessType) {
-    setInputs((prev) => ({ ...prev, processType: pt }));
+    applyInputs({ ...inputs, processType: pt });
   }
 
   function setTechLevel(tl: TechLevelId) {
-    setInputs((prev) => ({ ...prev, techLevel: tl }));
+    applyInputs({ ...inputs, techLevel: tl });
   }
 
   function setStakeholder(role: StakeholderRole, field: "count" | "dailyRate", value: number) {
-    setInputs((prev) => ({
-      ...prev,
+    applyInputs({
+      ...inputs,
       stakeholders: {
-        ...prev.stakeholders,
-        [role]: { ...prev.stakeholders[role], [field]: value },
+        ...inputs.stakeholders,
+        [role]: { ...inputs.stakeholders[role], [field]: value },
       },
-    }));
+    });
   }
 
   function setField(field: keyof ProcurementInputs, value: number) {
-    setInputs((prev) => ({ ...prev, [field]: value }));
+    applyInputs({ ...inputs, [field]: value });
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -198,21 +206,22 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
             <thead>
               <tr className="text-gray-400">
                 <th className="pb-2 text-left font-medium">{lang === "en" ? "Role" : "Rola"}</th>
-                <th className="pb-2 text-right font-medium">{tx.colCount}</th>
-                <th className="pb-2 text-right font-medium">{tx.colDailyRate}</th>
+                <th id="stakeholder-col-count" className="pb-2 text-right font-medium">{tx.colCount}</th>
+                <th id="stakeholder-col-rate" className="pb-2 text-right font-medium">{tx.colDailyRate}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
               {STAKEHOLDER_ROLES.map((role) => (
                 <tr key={role}>
-                  <td className="py-1.5 font-medium text-gray-700">
+                  <th scope="row" id={`stakeholder-row-${role}`} className="py-1.5 text-left font-medium text-gray-700">
                     {tx.stakeholderRoles[role]}
-                  </td>
+                  </th>
                   <td className="py-1.5 pl-4">
                     <input
                       type="number"
                       min={0}
                       max={10}
+                      aria-labelledby={`stakeholder-row-${role} stakeholder-col-count`}
                       value={inputs.stakeholders[role].count}
                       onChange={(e) => setStakeholder(role, "count", +e.target.value)}
                       className="w-16 rounded border border-gray-200 px-2 py-1 text-right text-xs focus:border-blue-400 focus:outline-none"
@@ -223,6 +232,7 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
                       type="number"
                       min={0}
                       step={100}
+                      aria-labelledby={`stakeholder-row-${role} stakeholder-col-rate`}
                       value={inputs.stakeholders[role].dailyRate}
                       onChange={(e) => setStakeholder(role, "dailyRate", +e.target.value)}
                       className="w-24 rounded border border-gray-200 px-2 py-1 text-right text-xs focus:border-blue-400 focus:outline-none"
@@ -239,8 +249,9 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
         <p className={sectionTitleClass}>{tx.financialTitle}</p>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <div>
-            <label className={labelClass}>{tx.contractValue}</label>
+            <label className={labelClass} htmlFor="cc-contract-value">{tx.contractValue}</label>
             <input
+              id="cc-contract-value"
               type="number"
               className={inputClass}
               value={inputs.contractValue}
@@ -250,16 +261,19 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
             />
           </div>
           <div>
-            <label className={labelClass}>
-              {tx.dailyCostOfInaction}
-              <span
-                className="ml-1 cursor-help text-gray-400"
+            <div className="flex items-center gap-1 mb-1">
+              <label className="text-xs font-medium text-gray-600" htmlFor="cc-daily-cost">{tx.dailyCostOfInaction}</label>
+              <button
+                type="button"
+                className="cursor-help text-gray-400"
                 title={tx.dailyCostOfInactionTooltip}
+                aria-label={tx.dailyCostOfInactionTooltip}
               >
                 ⓘ
-              </span>
-            </label>
+              </button>
+            </div>
             <input
+              id="cc-daily-cost"
               type="number"
               className={inputClass}
               value={inputs.dailyCostOfInaction}
@@ -269,8 +283,9 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
             />
           </div>
           <div>
-            <label className={labelClass}>{tx.renegotiationCost}</label>
+            <label className={labelClass} htmlFor="cc-renegotiation-cost">{tx.renegotiationCost}</label>
             <input
+              id="cc-renegotiation-cost"
               type="number"
               className={inputClass}
               value={inputs.renegotiationCost}
@@ -280,11 +295,19 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
             />
           </div>
           <div>
-            <label className={labelClass}>
-              {tx.bypassExposure}
-              <span className="ml-1 cursor-help text-gray-400" title={tx.bypassTooltip}>ⓘ</span>
-            </label>
+            <div className="flex items-center gap-1 mb-1">
+              <label className="text-xs font-medium text-gray-600" htmlFor="cc-bypass-exposure">{tx.bypassExposure}</label>
+              <button
+                type="button"
+                className="cursor-help text-gray-400"
+                title={tx.bypassTooltip}
+                aria-label={tx.bypassTooltip}
+              >
+                ⓘ
+              </button>
+            </div>
             <input
+              id="cc-bypass-exposure"
               type="number"
               className={inputClass}
               value={inputs.bypassAuditExposure}
@@ -294,8 +317,9 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
             />
           </div>
           <div>
-            <label className={labelClass}>{tx.tcoHorizon}</label>
+            <label className={labelClass} htmlFor="cc-tco-horizon">{tx.tcoHorizon}</label>
             <input
+              id="cc-tco-horizon"
               type="number"
               className={inputClass}
               value={inputs.tcoHorizonYears}

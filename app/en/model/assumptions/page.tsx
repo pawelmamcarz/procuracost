@@ -4,6 +4,17 @@ import { useState } from "react";
 import { getDimensionMultipliers, getDimensionMultiplierDetails } from "@/lib/calculations";
 import Link from "next/link";
 
+type DimensionMultipliers = ReturnType<typeof getDimensionMultipliers>;
+
+const DETAIL_KEY_TO_MULTIPLIER_KEY: Record<string, keyof DimensionMultipliers> = {
+  tco: "tcoMultiplier",
+  delay: "delayMultiplier",
+  renegotiation: "renegotiationMultiplier",
+  productivity: "productivityMultiplier",
+  bypass: "bypassMultiplier",
+  coordination: "coordinationIntensityMultiplier",
+};
+
 export default function AssumptionsExplorerEn() {
   const [spendType, setSpendType] = useState<"direct" | "indirect">("direct");
   const [processPhase, setProcessPhase] = useState<"upstream" | "downstream">("upstream");
@@ -12,16 +23,13 @@ export default function AssumptionsExplorerEn() {
   const details = getDimensionMultiplierDetails(spendType, processPhase);
 
   // Manual overrides
-  const [overrides, setOverrides] = useState<Record<string, number>>({});
+  const [overrides, setOverrides] = useState<Partial<DimensionMultipliers>>({});
 
-  const effectiveMultipliers = { ...baseMultipliers };
-  Object.keys(overrides).forEach(key => {
-    if (overrides[key] !== undefined) (effectiveMultipliers as any)[key] = overrides[key];
-  });
+  const effectiveMultipliers: DimensionMultipliers = { ...baseMultipliers, ...overrides };
 
   const hasOverrides = Object.keys(overrides).length > 0;
 
-  function setOverride(key: string, value: number) {
+  function setOverride(key: keyof DimensionMultipliers, value: number) {
     setOverrides(prev => ({ ...prev, [key]: value }));
   }
   function resetOverrides() { setOverrides({}); }
@@ -67,7 +75,7 @@ export default function AssumptionsExplorerEn() {
   return (
     <div className="mx-auto max-w-4xl px-6 py-12">
       <div className="mb-8">
-        <span className="inline-block rounded-full bg-purple-100 px-3 py-1 text-xs font-medium text-purple-700">
+        <span className="inline-block rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700">
           Research Tool • Live from model
         </span>
         <h1 className="mt-3 text-3xl font-bold">Model Assumptions Explorer (2026)</h1>
@@ -110,39 +118,40 @@ export default function AssumptionsExplorerEn() {
         </div>
       </div>
 
-      {/* Manual overrides */}
-      <div className="mb-8 rounded-2xl border border-purple-200 bg-purple-50 p-6">
+      <div className="mb-8 rounded-2xl border border-blue-200 bg-blue-50 p-6">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="font-semibold text-purple-900">Manual multiplier overrides (sensitivity analysis)</h3>
-            <p className="text-sm text-purple-700 mt-1">Tweak the values to explore how the model behaves under different assumptions.</p>
+            <h3 className="font-semibold text-blue-900">Manual multiplier overrides (sensitivity analysis)</h3>
+            <p className="text-sm text-blue-700 mt-1">Tweak the values to explore how the model behaves under different assumptions.</p>
           </div>
           {hasOverrides && (
-            <button onClick={resetOverrides} className="text-xs px-3 py-1.5 rounded-lg border border-purple-300 text-purple-700 hover:bg-purple-100">
+            <button onClick={resetOverrides} className="text-xs px-3 py-1.5 rounded-lg border border-blue-300 text-blue-700 hover:bg-blue-100">
               Reset to model defaults
             </button>
           )}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5">
-          {[
-            { key: "tcoMultiplier", label: "TCO leverage", min: 0.8, max: 2.2, step: 0.05 },
-            { key: "delayMultiplier", label: "Delay penalty", min: 0.5, max: 2.5, step: 0.05 },
-            { key: "renegotiationMultiplier", label: "Renegotiation exposure", min: 0.5, max: 2.5, step: 0.05 },
-            { key: "productivityMultiplier", label: "Supplier productivity impact", min: 0.5, max: 1.5, step: 0.05 },
-            { key: "coordinationIntensityMultiplier", label: "Coordination overhead", min: 0.6, max: 2.0, step: 0.05 },
-          ].map(({ key, label, min, max, step }) => {
-            const baseVal = (baseMultipliers as any)[key] ?? 1;
-            const effVal = (effectiveMultipliers as any)[key] ?? baseVal;
+          {(
+            [
+              { key: "tcoMultiplier", label: "TCO leverage", min: 0.8, max: 2.2, step: 0.05 },
+              { key: "delayMultiplier", label: "Delay penalty", min: 0.5, max: 2.5, step: 0.05 },
+              { key: "renegotiationMultiplier", label: "Renegotiation exposure", min: 0.5, max: 2.5, step: 0.05 },
+              { key: "productivityMultiplier", label: "Supplier productivity impact", min: 0.5, max: 1.5, step: 0.05 },
+              { key: "coordinationIntensityMultiplier", label: "Coordination overhead", min: 0.6, max: 2.0, step: 0.05 },
+            ] as { key: keyof DimensionMultipliers; label: string; min: number; max: number; step: number }[]
+          ).map(({ key, label, min, max, step }) => {
+            const baseVal = baseMultipliers[key];
+            const effVal = effectiveMultipliers[key];
             return (
               <div key={key}>
                 <div className="flex justify-between text-sm mb-1">
-                  <span className="text-gray-700">{label}</span>
-                  <span className="font-mono tabular-nums text-purple-700 font-semibold">
-                    {effVal.toFixed(2)}x {effVal !== baseVal && <span className="text-xs text-purple-500">({baseVal.toFixed(2)}x)</span>}
+                  <label className="text-gray-700" htmlFor={`override-${key}`}>{label}</label>
+                  <span className="font-mono tabular-nums text-blue-700 font-semibold">
+                    {effVal.toFixed(2)}x {effVal !== baseVal && <span className="text-xs text-gray-500">({baseVal.toFixed(2)}x)</span>}
                   </span>
                 </div>
-                <input type="range" min={min} max={max} step={step} value={effVal} onChange={e => setOverride(key, parseFloat(e.target.value))} className="w-full accent-purple-600" />
+                <input id={`override-${key}`} type="range" min={min} max={max} step={step} value={effVal} onChange={e => setOverride(key, parseFloat(e.target.value))} className="w-full accent-blue-600" />
               </div>
             );
           })}
@@ -154,19 +163,18 @@ export default function AssumptionsExplorerEn() {
           <h3 className="font-semibold text-gray-900 mb-4">
             {hasOverrides ? "Effective multipliers (with overrides)" : "Live multipliers (production model)"}
           </h3>
-          
+
           <div className="space-y-2 text-sm">
             {details.length > 0 ? (
               details.map((d) => {
-                const keyMap: any = { tco: "tcoMultiplier", delay: "delayMultiplier", renegotiation: "renegotiationMultiplier", productivity: "productivityMultiplier", bypass: "bypassMultiplier", coordination: "coordinationIntensityMultiplier" };
-                const mKey = keyMap[d.key] || d.key;
-                const baseVal = (baseMultipliers as any)[mKey] ?? 1;
-                const effVal = (effectiveMultipliers as any)[mKey] ?? baseVal;
+                const multKey = DETAIL_KEY_TO_MULTIPLIER_KEY[d.key] ?? "coordinationIntensityMultiplier";
+                const baseVal = baseMultipliers[multKey];
+                const effVal = effectiveMultipliers[multKey];
                 return (
                   <div key={d.key} className="flex justify-between items-center border-b border-gray-100 pb-1.5">
                     <span className="text-gray-700">{d.labelEn}</span>
                     <span className="font-mono font-semibold tabular-nums text-blue-700">
-                      {effVal.toFixed(2)}x {effVal !== baseVal && <span className="text-purple-600 text-xs ml-1">({baseVal.toFixed(2)}x)</span>}
+                      {effVal.toFixed(2)}x {effVal !== baseVal && <span className="text-gray-500 text-xs ml-1">({baseVal.toFixed(2)}x)</span>}
                     </span>
                   </div>
                 );
@@ -186,12 +194,12 @@ export default function AssumptionsExplorerEn() {
 
           <div className="space-y-4 mb-5">
             <div>
-              <label className="text-xs text-gray-500 block mb-1">Contract value (PLN)</label>
-              <input type="number" value={exampleValue} onChange={e => setExampleValue(Number(e.target.value))} className="w-full border rounded px-3 py-1.5 text-sm" />
+              <label className="text-xs text-gray-500 block mb-1" htmlFor="sim-contract-value">Contract value (PLN)</label>
+              <input id="sim-contract-value" type="number" value={exampleValue} onChange={e => setExampleValue(Number(e.target.value))} className="w-full border rounded px-3 py-1.5 text-sm" />
             </div>
             <div>
-              <label className="text-xs text-gray-500 block mb-1">Daily cost of inaction (PLN)</label>
-              <input type="number" value={dailyInaction} onChange={e => setDailyInaction(Number(e.target.value))} className="w-full border rounded px-3 py-1.5 text-sm" />
+              <label className="text-xs text-gray-500 block mb-1" htmlFor="sim-daily-inaction">Daily cost of inaction (PLN)</label>
+              <input id="sim-daily-inaction" type="number" value={dailyInaction} onChange={e => setDailyInaction(Number(e.target.value))} className="w-full border rounded px-3 py-1.5 text-sm" />
             </div>
           </div>
 
@@ -210,13 +218,12 @@ export default function AssumptionsExplorerEn() {
         </div>
       </div>
 
-      {/* Deep integration */}
       <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6">
         <h3 className="font-semibold text-blue-900 mb-2">Use these settings in the main calculator</h3>
         <p className="text-sm text-blue-800 mb-4">Want to see how the current (or overridden) multipliers affect your specific procurement scenario?</p>
-        
+
         <div className="flex flex-wrap gap-3">
-          <Link href={`/en/calculator?spendType=${spendType}&processPhase=${processPhase}`} className="inline-flex items-center px-5 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition">
+          <Link href={`/en/calculator?st=${spendType}&pp=${processPhase}`} className="inline-flex items-center px-5 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition">
             Open calculator with this context
           </Link>
           <Link href="/en/calculator" className="inline-flex items-center px-5 py-2.5 rounded-xl border border-blue-300 text-blue-700 text-sm font-medium hover:bg-white transition">

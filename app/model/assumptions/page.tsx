@@ -4,6 +4,17 @@ import { useState } from "react";
 import { getDimensionMultipliers, getDimensionMultiplierDetails } from "@/lib/calculations";
 import Link from "next/link";
 
+type DimensionMultipliers = ReturnType<typeof getDimensionMultipliers>;
+
+const DETAIL_KEY_TO_MULTIPLIER_KEY: Record<string, keyof DimensionMultipliers> = {
+  tco: "tcoMultiplier",
+  delay: "delayMultiplier",
+  renegotiation: "renegotiationMultiplier",
+  productivity: "productivityMultiplier",
+  bypass: "bypassMultiplier",
+  coordination: "coordinationIntensityMultiplier",
+};
+
 export default function AssumptionsExplorer() {
   // Live controls for the two main dimensions (what the real model uses)
   const [spendType, setSpendType] = useState<"direct" | "indirect">("direct");
@@ -14,18 +25,13 @@ export default function AssumptionsExplorer() {
   const details = getDimensionMultiplierDetails(spendType, processPhase);
 
   // === Manual overrides (for sensitivity analysis) ===
-  const [overrides, setOverrides] = useState<Record<string, number>>({});
+  const [overrides, setOverrides] = useState<Partial<DimensionMultipliers>>({});
 
-  const effectiveMultipliers = { ...baseMultipliers };
-  Object.keys(overrides).forEach(key => {
-    if (overrides[key] !== undefined) {
-      (effectiveMultipliers as any)[key] = overrides[key];
-    }
-  });
+  const effectiveMultipliers: DimensionMultipliers = { ...baseMultipliers, ...overrides };
 
   const hasOverrides = Object.keys(overrides).length > 0;
 
-  function setOverride(key: string, value: number) {
+  function setOverride(key: keyof DimensionMultipliers, value: number) {
     setOverrides(prev => ({ ...prev, [key]: value }));
   }
 
@@ -76,7 +82,7 @@ export default function AssumptionsExplorer() {
   return (
     <div className="mx-auto max-w-4xl px-6 py-12">
       <div className="mb-8">
-        <span className="inline-block rounded-full bg-purple-100 px-3 py-1 text-xs font-medium text-purple-700">
+        <span className="inline-block rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700">
           Research Tool • Live from model
         </span>
         <h1 className="mt-3 text-3xl font-bold">Eksplorator założeń modelu (2026)</h1>
@@ -88,7 +94,6 @@ export default function AssumptionsExplorer() {
         </p>
       </div>
 
-      {/* Dimension selectors */}
       <div className="mb-8 grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <div className="text-sm font-medium text-gray-700 mb-2">Spend Type</div>
@@ -120,17 +125,16 @@ export default function AssumptionsExplorer() {
         </div>
       </div>
 
-      {/* Manual overrides for sensitivity analysis (points 2 + 3) */}
-      <div className="mb-8 rounded-2xl border border-purple-200 bg-purple-50 p-6">
+      <div className="mb-8 rounded-2xl border border-blue-200 bg-blue-50 p-6">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="font-semibold text-purple-900">Ręczne nadpisywanie mnożników (analiza wrażliwości)</h3>
-            <p className="text-sm text-purple-700 mt-1">Zmieniaj wartości, żeby zobaczyć jak model zachowuje się przy innych założeniach.</p>
+            <h3 className="font-semibold text-blue-900">Ręczne nadpisywanie mnożników (analiza wrażliwości)</h3>
+            <p className="text-sm text-blue-700 mt-1">Zmieniaj wartości, żeby zobaczyć jak model zachowuje się przy innych założeniach.</p>
           </div>
           {hasOverrides && (
             <button
               onClick={resetOverrides}
-              className="text-xs px-3 py-1.5 rounded-lg border border-purple-300 text-purple-700 hover:bg-purple-100"
+              className="text-xs px-3 py-1.5 rounded-lg border border-blue-300 text-blue-700 hover:bg-blue-100"
             >
               Resetuj do wartości modelu
             </button>
@@ -138,32 +142,35 @@ export default function AssumptionsExplorer() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5">
-          {[
-            { key: "tcoMultiplier", label: "Dźwignia TCO", min: 0.8, max: 2.2, step: 0.05 },
-            { key: "delayMultiplier", label: "Koszt opóźnienia", min: 0.5, max: 2.5, step: 0.05 },
-            { key: "renegotiationMultiplier", label: "Ryzyko renegocjacji", min: 0.5, max: 2.5, step: 0.05 },
-            { key: "productivityMultiplier", label: "Wpływ na produktywność", min: 0.5, max: 1.5, step: 0.05 },
-            { key: "coordinationIntensityMultiplier", label: "Intensywność koordynacji", min: 0.6, max: 2.0, step: 0.05 },
-          ].map(({ key, label, min, max, step }) => {
-            const baseVal = (baseMultipliers as any)[key] ?? 1;
-            const effVal = (effectiveMultipliers as any)[key] ?? baseVal;
+          {(
+            [
+              { key: "tcoMultiplier", label: "Dźwignia TCO", min: 0.8, max: 2.2, step: 0.05 },
+              { key: "delayMultiplier", label: "Koszt opóźnienia", min: 0.5, max: 2.5, step: 0.05 },
+              { key: "renegotiationMultiplier", label: "Ryzyko renegocjacji", min: 0.5, max: 2.5, step: 0.05 },
+              { key: "productivityMultiplier", label: "Wpływ na produktywność", min: 0.5, max: 1.5, step: 0.05 },
+              { key: "coordinationIntensityMultiplier", label: "Intensywność koordynacji", min: 0.6, max: 2.0, step: 0.05 },
+            ] as { key: keyof DimensionMultipliers; label: string; min: number; max: number; step: number }[]
+          ).map(({ key, label, min, max, step }) => {
+            const baseVal = baseMultipliers[key];
+            const effVal = effectiveMultipliers[key];
             return (
               <div key={key}>
                 <div className="flex justify-between text-sm mb-1">
-                  <span className="text-gray-700">{label}</span>
-                  <span className="font-mono tabular-nums text-purple-700 font-semibold">
+                  <label className="text-gray-700" htmlFor={`override-${key}`}>{label}</label>
+                  <span className="font-mono tabular-nums text-blue-700 font-semibold">
                     {effVal.toFixed(2)}x
-                    {effVal !== baseVal && <span className="text-xs text-purple-500 ml-1">(bazowo {baseVal.toFixed(2)}x)</span>}
+                    {effVal !== baseVal && <span className="text-xs text-gray-500 ml-1">(bazowo {baseVal.toFixed(2)}x)</span>}
                   </span>
                 </div>
                 <input
+                  id={`override-${key}`}
                   type="range"
                   min={min}
                   max={max}
                   step={step}
                   value={effVal}
                   onChange={(e) => setOverride(key, parseFloat(e.target.value))}
-                  className="w-full accent-purple-600"
+                  className="w-full accent-blue-600"
                 />
               </div>
             );
@@ -172,29 +179,24 @@ export default function AssumptionsExplorer() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Live multipliers table (with override awareness) */}
         <div className="rounded-2xl border border-gray-200 bg-white p-6">
           <h3 className="font-semibold text-gray-900 mb-4">
             {hasOverrides ? "Efektywne mnożniki (z nadpisaniem)" : "Aktualne mnożniki (produkcyjne)"}
           </h3>
-          
+
           <div className="space-y-2 text-sm">
             {details.length > 0 ? (
               details.map((d) => {
-                const multKey = d.key === "tco" ? "tcoMultiplier" :
-                  d.key === "delay" ? "delayMultiplier" :
-                  d.key === "renegotiation" ? "renegotiationMultiplier" :
-                  d.key === "productivity" ? "productivityMultiplier" :
-                  d.key === "bypass" ? "bypassMultiplier" : "coordinationIntensityMultiplier";
-                const baseVal = (baseMultipliers as any)[multKey] ?? 1;
-                const effVal = (effectiveMultipliers as any)[multKey] ?? baseVal;
+                const multKey = DETAIL_KEY_TO_MULTIPLIER_KEY[d.key] ?? "coordinationIntensityMultiplier";
+                const baseVal = baseMultipliers[multKey];
+                const effVal = effectiveMultipliers[multKey];
 
                 return (
                   <div key={d.key} className="flex justify-between items-center border-b border-gray-100 pb-1.5">
                     <span className="text-gray-700">{d.label}</span>
                     <span className="font-mono font-semibold tabular-nums text-blue-700">
                       {effVal.toFixed(2)}x
-                      {effVal !== baseVal && <span className="text-purple-600 text-xs ml-1">({baseVal.toFixed(2)}x)</span>}
+                      {effVal !== baseVal && <span className="text-gray-500 text-xs ml-1">({baseVal.toFixed(2)}x)</span>}
                     </span>
                   </div>
                 );
@@ -209,27 +211,28 @@ export default function AssumptionsExplorer() {
           </div>
         </div>
 
-        {/* Enhanced impact simulator (points 2 + 3) */}
         <div className="rounded-2xl border border-gray-200 bg-white p-6">
           <h3 className="font-semibold text-gray-900 mb-4">Symulator wpływu na przykładzie</h3>
 
           <div className="space-y-4 mb-5">
             <div>
-              <label className="text-xs text-gray-500 block mb-1">Wartość kontraktu</label>
-              <input 
-                type="number" 
-                value={exampleValue} 
-                onChange={e => setExampleValue(Number(e.target.value))} 
-                className="w-full border rounded px-3 py-1.5 text-sm" 
+              <label className="text-xs text-gray-500 block mb-1" htmlFor="sim-contract-value">Wartość kontraktu</label>
+              <input
+                id="sim-contract-value"
+                type="number"
+                value={exampleValue}
+                onChange={e => setExampleValue(Number(e.target.value))}
+                className="w-full border rounded px-3 py-1.5 text-sm"
               />
             </div>
             <div>
-              <label className="text-xs text-gray-500 block mb-1">Koszt bezczynności dziennie (PLN)</label>
-              <input 
-                type="number" 
-                value={dailyInaction} 
-                onChange={e => setDailyInaction(Number(e.target.value))} 
-                className="w-full border rounded px-3 py-1.5 text-sm" 
+              <label className="text-xs text-gray-500 block mb-1" htmlFor="sim-daily-inaction">Koszt bezczynności dziennie (PLN)</label>
+              <input
+                id="sim-daily-inaction"
+                type="number"
+                value={dailyInaction}
+                onChange={e => setDailyInaction(Number(e.target.value))}
+                className="w-full border rounded px-3 py-1.5 text-sm"
               />
             </div>
           </div>
@@ -241,49 +244,48 @@ export default function AssumptionsExplorer() {
             </div>
             {hasOverrides && (
               <div className={`text-sm mt-1 ${gapChange > 0 ? "text-red-600" : "text-green-600"}`}>
-                {gapChange > 0 ? "+" : ""}{gapChange.toLocaleString("pl-PL")} zł 
+                {gapChange > 0 ? "+" : ""}{gapChange.toLocaleString("pl-PL")} zł
                 ({gapChangePercent > 0 ? "+" : ""}{gapChangePercent.toFixed(1)}% vs wartości bazowe modelu)
               </div>
             )}
           </div>
 
           <p className="mt-4 text-xs text-gray-500 leading-relaxed">
-            To uproszczona symulacja pokazująca kierunkowy wpływ zmian mnożników. 
+            To uproszczona symulacja pokazująca kierunkowy wpływ zmian mnożników.
             Pełny model zawiera dodatkowe interakcje (bypass, staff hours per step itd.).
           </p>
         </div>
       </div>
 
-      {/* Deep integration with the main calculator (point 4) */}
       <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6">
         <h3 className="font-semibold text-blue-900 mb-2">Użyj tych ustawień w kalkulatorze</h3>
         <p className="text-sm text-blue-800 mb-4">
           Chcesz zobaczyć jak wybrane (lub nadpisane) mnożniki wpływają na Twój konkretny scenariusz zakupowy?
         </p>
-        
+
         <div className="flex flex-wrap gap-3">
-          <Link 
-            href={`/calculator?spendType=${spendType}&processPhase=${processPhase}`}
+          <Link
+            href={`/calculator?st=${spendType}&pp=${processPhase}`}
             className="inline-flex items-center px-5 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition"
           >
             Otwórz kalkulator z tym kontekstem
           </Link>
-          
-          <Link 
+
+          <Link
             href="/calculator"
             className="inline-flex items-center px-5 py-2.5 rounded-xl border border-blue-300 text-blue-700 text-sm font-medium hover:bg-white transition"
           >
             Idź do kalkulatora (bez predefiniowanego kontekstu)
           </Link>
         </div>
-        
+
         <p className="mt-3 text-xs text-blue-700">
           W kalkulatorze możesz ręcznie wybrać Spend Type i Process Phase — wtedy wszystkie obliczenia (koszty, macierz, PDF, optimizer) będą używać dokładnie tych mnożników, które widzisz powyżej.
         </p>
       </div>
 
       <div className="mt-8 rounded-xl bg-amber-50 border border-amber-100 p-4 text-sm text-amber-800">
-        <strong>Uwaga badawcza:</strong> Te mnożniki to obecnie kalibrowane założenia modelowe (2026). Są one głównym obiektem planu walidacji empirycznej (patrz docs/EMPIRICAL_VALIDATION_PLAN.md). 
+        <strong>Uwaga badawcza:</strong> Te mnożniki to obecnie kalibrowane założenia modelowe (2026). Są one głównym obiektem planu walidacji empirycznej (patrz docs/EMPIRICAL_VALIDATION_PLAN.md).
         Nadpisane wartości powyżej służą wyłącznie analizie wrażliwości.
       </div>
     </div>

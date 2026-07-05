@@ -9,12 +9,11 @@ import { comparisonT } from "@/lib/i18n";
 interface Props {
   result: ComparisonResult;
   scenario: Scenario;
-  lang?: "pl" | "en";
   spendType?: "direct" | "indirect";
   processPhase?: "upstream" | "downstream";
 }
 
-export default function PDFExport({ result, scenario, lang = "pl", spendType, processPhase }: Props) {
+export default function PDFExport({ result, scenario, spendType, processPhase }: Props) {
   const [generating, setGenerating] = useState<"pl" | "en" | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -238,7 +237,6 @@ export default function PDFExport({ result, scenario, lang = "pl", spendType, pr
       let my = y + 17;
       const col1 = margin + 4;
       const col2 = margin + 95;
-      const col3 = margin + 145;
 
       details.slice(0, 6).forEach((d, idx) => {
         const label = exportLang === "pl" ? d.label : d.labelEn;
