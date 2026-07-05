@@ -25,7 +25,6 @@ export default function PipeFieldDiagram({ lang = "pl" }: Props) {
 
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-      {/* ── Pipe ── */}
       <div className="flex flex-col rounded-xl border border-red-200 bg-red-50 p-4">
         <div>
           <p className="text-xs font-bold uppercase tracking-wide text-red-700">
@@ -78,7 +77,6 @@ export default function PipeFieldDiagram({ lang = "pl" }: Props) {
         </div>
       </div>
 
-      {/* ── Field ── */}
       <div className="flex flex-col rounded-xl border border-green-200 bg-green-50 p-4">
         <div>
           <p className="text-xs font-bold uppercase tracking-wide text-green-700">
@@ -89,9 +87,7 @@ export default function PipeFieldDiagram({ lang = "pl" }: Props) {
           </p>
         </div>
 
-        {/* Field visualisation */}
         <div className="relative mt-3 flex-1 overflow-hidden rounded-xl border-2 border-dashed border-green-400 bg-white" style={{ minHeight: "180px" }}>
-          {/* Constraint badges at corners */}
           {(isPl ? CONSTRAINTS_PL : CONSTRAINTS_EN).map((label, i) => (
             <span
               key={label}
@@ -106,7 +102,6 @@ export default function PipeFieldDiagram({ lang = "pl" }: Props) {
             </span>
           ))}
 
-          {/* Center: ∞ paths */}
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
             <p className="text-3xl font-bold text-green-200">∞</p>
             <p className="text-xs font-medium text-green-600">

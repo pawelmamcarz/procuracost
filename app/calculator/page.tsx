@@ -1,53 +1,7 @@
-"use client";
+import { connection } from "next/server";
+import CalculatorClient from "@/components/CalculatorClient";
 
-import { useState } from "react";
-import CostCalculator from "@/components/CostCalculator";
-import CostComparison from "@/components/CostComparison";
-import PDFExport from "@/components/PDFExport";
-import { calculateCosts, ComparisonResult, ProcurementInputs } from "@/lib/calculations";
-import { Scenario } from "@/lib/scenarios";
-
-export default function CalculatorPage() {
-  const [result, setResult] = useState<ComparisonResult | null>(null);
-  const [activeScenario, setActiveScenario] = useState<Scenario | null>(null);
-  const [activeInputs, setActiveInputs] = useState<ProcurementInputs | null>(null);
-
-  function handleCalculate(inputs: ProcurementInputs, scenario: Scenario) {
-    const r = calculateCosts(inputs);
-    setResult(r);
-    setActiveScenario(scenario);
-    setActiveInputs(inputs);
-    setTimeout(() => {
-      document.getElementById("results")?.scrollIntoView({ behavior: "smooth" });
-    }, 100);
-  }
-
-  return (
-    <div className="mx-auto max-w-5xl px-6 py-10">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Kalkulator kosztów procedur zakupowych</h1>
-        <p className="mt-1 text-sm text-gray-500">
-          Porównaj całkowite koszty dla trzech klas procesów: zakupów strategicznych, zakupów
-          operacyjnych oraz strategicznych zakupów PZP. Czas i koszty wynikają z szablonu procesu
-          i stawek uczestników — nie są wpisywane ręcznie.
-        </p>
-      </div>
-
-      <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-        <CostCalculator onCalculate={handleCalculate} />
-      </div>
-
-      {result && activeScenario && activeInputs && (
-        <div id="results" className="mt-10 rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-          <div className="mb-6 flex items-center justify-between">
-            <h2 className="text-lg font-bold text-gray-900">
-              Wyniki: {activeScenario.name}
-            </h2>
-            <PDFExport result={result} scenario={activeScenario} />
-          </div>
-          <CostComparison result={result} scenario={activeScenario} inputs={activeInputs} />
-        </div>
-      )}
-    </div>
-  );
+export default async function CalculatorPage() {
+  await connection();
+  return <CalculatorClient />;
 }
