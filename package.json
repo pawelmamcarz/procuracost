@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "recompute": "tsx scripts/recompute.ts"
+    "recompute": "tsx scripts/recompute.ts",
+    "sweep": "tsx scripts/symmetry-sweep.ts"
   },
   "dependencies": {
     "@radix-ui/react-select": "^2.2.6",

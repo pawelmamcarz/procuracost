@@ -20,7 +20,7 @@ This document documents the principal quantitative inputs of the ProcuraCost mod
 - Justification and limitations
 - Sensitivity (how much the overall results depend on this parameter)
 
-A note on interpretation: the model outputs are **estimates** under these assumptions, not measured facts, and the model is **symmetric** — the favoritism/selection-quality and bypass dimensions can run against the flexible path, so in low-corruption-risk operational contexts the rigid path can be net-cheaper.
+A note on interpretation: the model outputs are **estimates** under these assumptions, not measured facts. The model is **symmetric in structure** — the favoritism/selection-quality and bypass dimensions can run against the flexible path, so ΔC_total is structurally capable of going negative — but that capability is **numerically inert**: ΔC_total > 0 in all 9 reference scenarios and across an 11,844-configuration full-input-space sweep (`scripts/symmetry-sweep.ts`, verified 2026-07-05; minimum observed gap ≈ +0.4% of contract value, in low-corruption-risk operational contexts). Per the binding verdict in `docs/articles/doktorat/article-2-model-kosztu-PL.md` §4: disclose the structural symmetry, never present a rigid-wins case as an observed net result.
 
 ---
 

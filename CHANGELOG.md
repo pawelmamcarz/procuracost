@@ -2,6 +2,14 @@
 
 All notable changes to ProcuraCost are documented here.
 
+## [Unreleased] - 2026-07-05 (b)
+
+### Symmetry disclosure unified + canonical production URL
+
+**Symmetry wording (docs + code header + /research page).** The 2026-07-02 audit already established that the symmetry claim is numerically inert (C-series note: "to be disclosed honestly in all articles, not tuned away"), and `docs/articles/doktorat/article-2-model-kosztu-PL.md` §4 carries the binding verdict. However, seven surfaces still stated the stale strong form ("in low-corruption-risk operational contexts the rigid path can be net-cheaper"): the `lib/calculations.ts` header (which additionally had the direction backwards — "net-cheaper for high-value, high-corruption-risk" contexts), `CLAUDE.md`, `README.md`, `RESEARCH.md` (abstract, §3, §3.7, §5, discussion), `docs/MODEL_PARAMETERS.md`, and `app/research/page.tsx`. All are now aligned with the verdict: *symmetric in structure, numerically inert at the net level*. New evidence: `scripts/symmetry-sweep.ts` (`npm run sweep`) exhaustively sweeps 3,780 input configurations (plus an 8,064-config extreme-parameter variant run once during the audit: zeroed staff/delay costs, 1-year horizon, extreme renegotiation/audit exposures) — **0 rigid-wins**; minimum observed gap ≈ **+0.4% of contract value** (`catalog_order`/`manual` with zeroed inputs). ΔC_total > 0 everywhere tested.
+
+**Canonical production URL (`app/seo-config.ts`).** Verified live: the site serves at `https://www.procuracost.com` (the apex `procuracost.com` has **no DNS record**), and production `og:url` was leaking the deployment-specific `*.vercel.app` URL because `VERCEL_URL` outranked the domain fallback. `SITE_URL` now resolves `NEXT_PUBLIC_SITE_URL` → (production) `https://www.procuracost.com` → (previews) `VERCEL_URL`. Recommended: set `NEXT_PUBLIC_SITE_URL=https://www.procuracost.com` in Vercel and add an apex→www redirect or A-record.
+
 ## [Unreleased] - 2026-07-05
 
 ### Flexible-path bypass rigidity fix + invariant test suite + CI

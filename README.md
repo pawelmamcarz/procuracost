@@ -2,7 +2,7 @@
 
 > **A tunnel has walls. A field has a horizon.**
 
-ProcuraCost is an open-source research and consulting tool that quantifies the hidden opportunity costs of rigid procurement procedures compared to policy-based procurement. It combines peer-reviewed empirical findings with explicit modeling assumptions (roughly 35–40% of parameters are peer-reviewed; the rest are calibrated or modeling judgments — see `docs/MODEL_PARAMETERS.md`). Its headline result — that rigid-procedure costs can exceed policy-only costs by **100–400%** — is a model **estimate** under documented assumptions, not a measured fact. The model is symmetric: in low-corruption-risk operational contexts the rigid path can be net-cheaper.
+ProcuraCost is an open-source research and consulting tool that quantifies the hidden opportunity costs of rigid procurement procedures compared to policy-based procurement. It combines peer-reviewed empirical findings with explicit modeling assumptions (roughly 35–40% of parameters are peer-reviewed; the rest are calibrated or modeling judgments — see `docs/MODEL_PARAMETERS.md`). Its headline result — that rigid-procedure costs can exceed policy-only costs by **100–400%** — is a model **estimate** under documented assumptions, not a measured fact. The model is symmetric in structure (the favoritism dimension genuinely subsidizes the rigid path), but numerically the flexible path weakly dominates: across all reference scenarios and an 11,844-configuration input-space sweep (`npm run sweep`), the rigid path is never net-cheaper — in low-corruption-risk operational contexts the gap merely approaches zero (≈ +0.4% of contract value at minimum).
 
 ## The Model
 
