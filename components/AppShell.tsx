@@ -19,6 +19,7 @@ const navItemsPl: NavItem[] = [
   { href: "/shortcasty", label: "Shortcasty" },
   { href: "/team", label: "Zespół" },
   { href: "/research", label: "Research paper" },
+  { href: "/research-agenda", label: "Agenda" },
   { href: "/methodology", label: "Methodology" },
 ];
 

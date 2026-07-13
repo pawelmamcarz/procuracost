@@ -1,6 +1,6 @@
 # Supervisor / Co-author Pitch Document
 
-**Date**: June 2026  
+**Date**: July 2026  
 **Author**: Paweł Mamcarz  
 **Working title**: The Hidden Cost of Procedural Compliance: Quantifying Opportunity Costs of Rigid Procurement Rules vs. Policy-Based Procurement
 
@@ -32,7 +32,7 @@ Organizations may conflate procurement *policy* (binding constraints) with procu
 
 ---
 
-## Current State (June 2026)
+## Current State (July 2026)
 
 - Implemented cost model v1.2 with per-step calendar time and senior-effort assumptions for the 2×2 dimensions.
 - Public live tool at procuracost.com (Polish + English) including the interactive Assumptions Explorer that exposes the exact multipliers used in every calculation.
@@ -50,14 +50,17 @@ Organizations may conflate procurement *policy* (binding constraints) with procu
 
 ## Proposed Collaboration / What We Are Looking For
 
-**Option A – Supervision / Mentorship**  
-Regular feedback on theoretical framing, identification strategy, and positioning. Access to academic networks. Guidance on journal targeting (*Journal of Public Procurement*, *Journal of Purchasing & Supply Management*, *Public Administration Review*).
+**Primary ask – Promotor for an external-mode doctorate (tryb eksternistyczny)**  
+I am pursuing the doctorate in the external mode: the research program is self-funded and already in motion, so the ask is scientific supervision of a dissertation built around Paper 1 (conceptual-methodological, near submission-ready) and Paper 2 (confirmatory empirical study, fully designed). No doctoral-school slot or stipend is involved.
+
+**What I bring: a shovel-ready confirmatory study (Paper 2)**  
+The confirmatory design is specified to preregistration grade before any data collection: within-organization matched pairs of procurement events, a continuous observed-rigidity index with a frozen codebook, outcome-blind matching protocol, statistical analysis plan, and power simulation targets (see `docs/research/confirmatory_preregistration_manifest.md` and companion documents). By construction it requires resources I cannot supply alone — two outcome-blind trained coders plus a blinded adjudicator, and multi-organization recruitment. It is therefore an ideal core for a small grant (e.g., NCN) executed with the supervisor's team; a *doktorat wdrożeniowy* is a natural upgrade path if a partner organization formalizes.
 
 **Option B – Active Co-authorship**  
-Joint design and execution of the empirical validation (pilot cases + survey + archival matching). Co-writing of Measurement & Operationalization and identification sections. Joint submission of Paper 1 (model + demonstration) and Paper 2 (empirical test).
+Joint refinement and execution of the empirical validation (pilot cases + archival matching). Co-writing of Measurement & Operationalization and identification sections. Paper 1's journal submission is deliberately held so that venue choice and authorship can be decided jointly (*Journal of Public Procurement*, *Journal of Purchasing & Supply Management*, *Public Administration Review* are candidates).
 
 **Option C – Institutional / Data Access**  
-Introductions to 3–5 organizations for confidential pilots (2–4 hours effort per org). Support for small grant applications to fund larger-scale data collection.
+Introductions to 3–5 organizations for confidential pilots (2–4 hours effort per org). Support for grant applications to fund the confirmatory study.
 
 ---
 

@@ -4,11 +4,11 @@
 
 | Scenario | Context | Rigid days | Flexible days | Rigid total (PLN) | Flexible total (PLN) | Delta |
 |---|---|---:|---:|---:|---:|---:|
-| fleet | direct × upstream | 47 | 17 | 1507996 | 325383 | 363.5% |
-| erp | indirect × upstream | 51 | 20 | 1562625 | 237767 | 557.2% |
-| logistics | indirect × upstream | 44 | 18 | 2569434 | 470482 | 446.1% |
-| production | direct × upstream | 65 | 24 | 5482215 | 466697 | 1074.7% |
-| pipe_vs_field | direct × upstream | 107 | 12 | 3535251 | 444607 | 695.1% |
-| catalog | indirect × downstream | 2 | 2 | 4022 | 2340 | 71.8% |
-| mrp | direct × downstream | 1 | 1 | 16957 | 14357 | 18.1% |
-| capex_investment | direct × upstream | 64 | 30 | 7679564 | 3937699 | 95% |
+| fleet | neutral × neutral | 44 | 20 | 940425 | 411632 | 128.5% |
+| erp | neutral × neutral | 51 | 23 | 1443264 | 640063 | 125.5% |
+| logistics | neutral × neutral | 44 | 20 | 2464454 | 1015804 | 142.6% |
+| production | neutral × neutral | 62 | 29 | 4342559 | 2038493 | 113% |
+| pipe_vs_field | neutral × neutral | 87 | 15 | 2471614 | 682514 | 262.1% |
+| catalog | neutral × neutral | 2 | 2 | 5031 | 3414 | 47.4% |
+| mrp | neutral × neutral | 1 | 1 | 24525 | 23109 | 6.1% |
+| capex_investment | neutral × neutral | 60 | 36 | 7019859 | 3539926 | 98.3% |

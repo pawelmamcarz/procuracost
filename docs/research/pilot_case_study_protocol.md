@@ -10,6 +10,8 @@
 
 **Organization holdout — approved 21 June 2026**: participating pilot organizations and, by default, controlled entities in the same corporate group are ineligible for confirmatory primary recruitment. Store a stable restricted identifier in the phase registry so anonymization does not cause accidental reuse.
 
+**Pilot question #1 — added 13 July 2026**: the single most important feasibility output of the pilot is discovering the real, consistently available, auditable anchor for "formal need-and-budget authorization" (the primary cycle start). Working assumption: no clean single timestamp exists — the authorization is smeared across PR creation, budget approval in a separate planning system, emails, and board minutes. For every pilot event, document ALL candidate start anchors found (system, field, document type, availability, precision), then assess which candidate is defensible and consistently extractable across organizations. **Pre-authorized fallback anchor**: the approved-purchase-requisition timestamp (requisition approval with a completed budget check in the ERP/e-procurement system) is the designated operational anchor if no cleaner authorization timestamp is consistently available. The final anchor definition is frozen from pilot evidence, outcome-blind, before confirmatory registration; a fallback selection is documented with rationale and does not weaken the Tier A exactness requirement.
+
 The pilot may include different sectors or regimes to test coding feasibility. This does not authorize pooled confirmatory inference. Store `country` and `legal_regime` for every event.
 
 The future confirmatory target is strategic private-sector procurement in Poland outside PZP. Pilot records from other populations test instrument coverage only.

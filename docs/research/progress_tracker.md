@@ -1,5 +1,11 @@
 # Research Paper – Progress Tracker (8–10 tygodni)
 
+> **Re-baseline 13.07.2026** (pełna lista decyzji: `docs/RESEARCH_PAPER_ACTION_PLAN.md`, sekcja "approved 13 July 2026"):
+> outreach do promotorów (shortlista 3–5, tryb eksternistyczny) + telefony pilotażowe (pracodawca/klient jako pilot #1) — **natychmiast, lipiec**;
+> paper v1.5 + SSRN/OSF — połowa sierpnia (submission do journala wstrzymane do rozmów z promotorem);
+> pilotaż terenowy — wrzesień–październik; survey zdjęty ze ścieżki krytycznej (kalibracja/lead-gen, po publikacji SSRN).
+> Zasada operacyjna: 2 chronione bloki 30 min/tydzień na pracę outward-facing (maile, telefony) — desk work i tak się dzieje.
+
 **Jak używać:**
 - Skopiuj do Notion, Obsidian, Google Sheets lub dowolnego task managera.
 - Oznaczaj statusy: **To Do** / **In Progress** / **Done** / **Blocked**.

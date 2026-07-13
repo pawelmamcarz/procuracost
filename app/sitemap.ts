@@ -12,6 +12,7 @@ const PL_ROUTES = [
   "/model/assumptions",
   "/optimizer",
   "/research",
+  "/research-agenda",
   "/shortcasty",
   "/team",
 ];

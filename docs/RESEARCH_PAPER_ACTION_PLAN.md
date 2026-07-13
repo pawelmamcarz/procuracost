@@ -104,6 +104,18 @@
 
 **Sub-day cycle durations — approved 22 June 2026**: retain every strictly positive elapsed duration as fractional days (`seconds / 86400`) with full precision. Zero/negative values invalidate the pair; no one-day floor or analytical rounding.
 
+**Doctoral mode — approved 13 July 2026**: tryb eksternistyczny (external-mode doctorate). The supervisor ask is promotorship of an external-mode dissertation; no doctoral-school recruitment deadline applies.
+
+**Supervisor strategy — approved 13 July 2026**: parallel shortlist of 3–5 academics (procurement economics / TCE / public administration), pitched in the same week. No single-target strategy. The pitch presents Paper 2 as a shovel-ready, preregistration-grade confirmatory design that requires an academic home and grant funding (blinded coders and adjudicator come from the supervisor's team or grant staff; doktorat wdrożeniowy is the upgrade path if a partner organization formalizes).
+
+**Paper 1 venue — approved 13 July 2026**: post v1.5 to SSRN/OSF as a working paper when ready (mid-August target) and submit one conference abstract. Journal submission is deliberately held until after supervisor conversations, so venue and co-authorship can be decided jointly.
+
+**Pilot recruitment — approved 13 July 2026**: warm network first; the current employer/main client is pilot #1 (the organization-holdout rule makes this costless for confirmatory work). Pilot feasibility question #1 is the primary-outcome start anchor (see `docs/research/pilot_case_study_protocol.md`).
+
+**Survey status — approved 13 July 2026**: demoted off the critical path. After the archival pivot it is a calibration and lead-generation instrument, run opportunistically after the SSRN posting. Paper 1 must not depend on its results; Weeks 5–6 survey tasks are re-scoped accordingly.
+
+**Timeline re-baseline — approved 13 July 2026**: supervisor pitch + pilot calls happen in July (immediately); paper v1.5 + SSRN posting by mid-August; pilot fieldwork September–October 2026. The binding constraint is protected daytime slots for outward-facing work: two 30-minute outreach blocks per week, calendar-protected.
+
 This plan assumes you can dedicate **15–25 hours per week** to the paper track.
 
 ---
