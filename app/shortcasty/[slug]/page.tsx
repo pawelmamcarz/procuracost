@@ -6,11 +6,7 @@ export function generateStaticParams() {
   return EPISODES.map((e) => ({ slug: e.slug }));
 }
 
-type EpisodePageProps = {
-  params: Promise<{ slug: string }>;
-};
-
-export async function generateMetadata({ params }: EpisodePageProps) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const ep = getEpisode(slug);
   if (!ep) return {};
@@ -20,7 +16,7 @@ export async function generateMetadata({ params }: EpisodePageProps) {
   };
 }
 
-export default async function EpisodePage({ params }: EpisodePageProps) {
+export default async function EpisodePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const ep = getEpisode(slug);
   if (!ep) notFound();
@@ -37,7 +33,6 @@ export default async function EpisodePage({ params }: EpisodePageProps) {
         ← Pole Rozmowy
       </Link>
 
-      {/* Header */}
       <div className="mb-8 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-white">
         <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-blue-200">
           Odcinek {ep.number} · {ep.dimension}
@@ -100,7 +95,6 @@ export default async function EpisodePage({ params }: EpisodePageProps) {
         </div>
       )}
 
-      {/* Episode details */}
       <div className="space-y-4">
         <div className="rounded-xl border border-gray-100 bg-gray-50 p-5">
           <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-gray-500">Teza odcinka</p>
@@ -130,7 +124,6 @@ export default async function EpisodePage({ params }: EpisodePageProps) {
         </div>
       </div>
 
-      {/* Prev / Next */}
       <div className="mt-10 flex items-center justify-between gap-4">
         {prev ? (
           <Link

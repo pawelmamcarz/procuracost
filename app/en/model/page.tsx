@@ -38,15 +38,17 @@ export default function ModelEnPage() {
 
         <h3>1. Rigidity and Behavioral Effects</h3>
         <ul>
-          <li><strong>Discretion boundary condition</strong>: high discretion increased prices and selected less productive suppliers in Szucs (JEEA 2024); no rigidity price/productivity penalty is active in v1.2</li>
-          <li><strong>Renegotiation association</strong>: +7.7–10.5 pp per SD of contractual rigidity; contextual mapping is an assumption (Beuve et al., NBER 2021)</li>
+          <li><strong>Favoritism premium</strong> under unchecked discretion (which competitive tendering averts): ~6% (Szucs, JEEA 2024)</li>
+          <li><strong>Selection-quality loss</strong> under discretion — less-productive contractors selected absent competitive tendering (Szucs, JEEA 2024)</li>
+          <li><strong>Renegotiation risk</strong> increase from contractual rigidity: 7.7–10.5 pp (Beuve et al., NBER 2021)</li>
           <li><strong>Bypass probability</strong> modeled via sigmoid function (calibrated)</li>
         </ul>
 
         <h3>2. Technology Level Impacts</h3>
         <p>
-          Time multipliers, coordination costs, and tool amortization costs are currently modeling
-          assumptions. External calibration is pending.
+          Time multipliers, coordination costs, and tool amortization costs are Grade-C
+          calibrations informed by practitioner benchmarks (APQC/Hackett-style process
+          benchmarks); they are modeling assumptions, not peer-reviewed estimates.
         </p>
 
         <div className="my-6 p-4 border border-blue-200 bg-blue-50 rounded-xl">
@@ -89,8 +91,8 @@ export default function ModelEnPage() {
 
         <h2 className="mt-12">Validation Agenda</h2>
         <p>
-          A major objective for 2026 is to move as many parameters as possible from 
-          &quot;modeling assumption&quot; to &quot;empirically grounded&quot;.
+          A major objective for 2026 is to move as many parameters as possible from
+          &ldquo;modeling assumption&rdquo; to &ldquo;empirically grounded&rdquo;.
         </p>
         <p>
           See the <Link href="/en/PHD_ROADMAP" className="text-blue-600 underline">PhD Research Roadmap</Link> 

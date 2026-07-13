@@ -1,7 +1,7 @@
 export const metadata = {
   title: "Team — ProcuraCost",
   description:
-    "Procurement collective with hands-on implementation, commercial, buying, systems, analytical and client-side experience.",
+    "A procurement collective with implementation, business, buying, systems, analytical, and client-facing experience.",
 };
 
 const TEAM = [
@@ -17,7 +17,7 @@ const TEAM = [
     initials: "MK",
     color: "bg-indigo-100 text-indigo-700",
     linkedin: "https://www.linkedin.com/in/mariuszkosciolek/",
-    roles: ["sales", "implementer", "analyst"],
+    roles: ["salesperson", "implementation specialist", "analyst"],
   },
   {
     name: "Marcin Bogucki",
@@ -31,27 +31,27 @@ const TEAM = [
     initials: "TS",
     color: "bg-amber-100 text-amber-700",
     linkedin: "https://www.linkedin.com/in/tomasz-ślusarczyk-806037141/",
-    roles: ["implementer", "analyst"],
+    roles: ["implementation specialist", "analyst"],
   },
   {
     name: "Rafał Madejewski",
     initials: "RM",
     color: "bg-red-100 text-red-700",
     linkedin: "https://www.linkedin.com/in/rafał-madejewski-a3713382/",
-    roles: ["deep tech wizard", "implementer"],
+    roles: ["deep tech wizard", "implementation specialist"],
   },
 ];
 
 const EXPERTISE = [
   { label: "Implementation", desc: "From contract to working system.", color: "bg-indigo-50 text-indigo-700 border-indigo-200" },
-  { label: "Buying", desc: "Negotiations, sourcing, category management.", color: "bg-green-50 text-green-700 border-green-200" },
-  { label: "Analytical", desc: "Data and models as the foundation of decisions.", color: "bg-blue-50 text-blue-700 border-blue-200" },
-  { label: "Commercial", desc: "Sales, relationships, understanding client needs.", color: "bg-teal-50 text-teal-700 border-teal-200" },
+  { label: "Procurement", desc: "Negotiation, sourcing, purchasing categories.", color: "bg-green-50 text-green-700 border-green-200" },
+  { label: "Analytical", desc: "Data and models as the basis for decisions.", color: "bg-blue-50 text-blue-700 border-blue-200" },
+  { label: "Business", desc: "Sales, relationships, understanding client needs.", color: "bg-teal-50 text-teal-700 border-teal-200" },
   { label: "Systems", desc: "Process architecture, integrations, automation.", color: "bg-red-50 text-red-700 border-red-200" },
-  { label: "Client-side", desc: "Perspective of the buying organization and end user.", color: "bg-amber-50 text-amber-700 border-amber-200" },
+  { label: "Client-facing", desc: "The perspective of the buying organization and its users.", color: "bg-amber-50 text-amber-700 border-amber-200" },
 ];
 
-export default function TeamPage() {
+export default function TeamEnPage() {
   return (
     <div className="mx-auto max-w-5xl px-6 py-12">
       <div className="mb-10 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-center text-white">
@@ -59,11 +59,11 @@ export default function TeamPage() {
           Procurement Collective
         </p>
         <h1 className="text-2xl font-bold leading-tight">
-          Full e2e coverage of the complete procurement ecosystem
+          Full end-to-end coverage of the procurement ecosystem
         </h1>
         <p className="mt-3 text-sm text-blue-100">
-          Implementation, commercial, buying, systems, analytical and client-side.
-          Every procurement project has someone on our team who has already lived through it.
+          Implementation, business, procurement, systems, analytical, and client-facing.
+          Every procurement project has someone on our team who has already been through it.
         </p>
       </div>
 
@@ -105,7 +105,7 @@ export default function TeamPage() {
 
       <div className="rounded-xl border border-gray-100 bg-gray-50 p-6">
         <p className="mb-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-          Coverage of competencies
+          Competency coverage
         </p>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {EXPERTISE.map((e) => (

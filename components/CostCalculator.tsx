@@ -9,6 +9,9 @@ import { calculatorT, Lang } from "@/lib/i18n";
 interface Props {
   onCalculate: (inputs: ProcurementInputs, scenario: Scenario) => void;
   lang?: Lang;
+  initialInputs?: ProcurementInputs;
+  initialScenarioId?: string;
+  onInputsChange?: (inputs: ProcurementInputs, scenarioId: string) => void;
 }
 
 const PROCESS_CATEGORY_ORDER: ProcessCategory[] = ["strategic", "operational", "strategic_pzp"];
@@ -23,45 +26,42 @@ const TECH_LEVEL_IDS: TechLevelId[] = ["manual", "sourcing_tool", "partial_erp",
 
 const STAKEHOLDER_ROLES: StakeholderRole[] = ["requestor", "buyer", "lawyer", "finance", "manager", "executive"];
 
-export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
+export default function CostCalculator({ onCalculate, lang = "pl", initialInputs, initialScenarioId, onInputsChange }: Props) {
   const tx = calculatorT[lang];
-  const [selectedScenarioId, setSelectedScenarioId] = useState("fleet");
-  const [inputs, setInputs] = useState<ProcurementInputs>(SCENARIOS[0].inputs);
+  const [selectedScenarioId, setSelectedScenarioId] = useState(initialScenarioId ?? "fleet");
+  const [inputs, setInputs] = useState<ProcurementInputs>(initialInputs ?? SCENARIOS[0].inputs);
+
+  function applyInputs(next: ProcurementInputs, scenarioId: string = selectedScenarioId) {
+    setInputs(next);
+    onInputsChange?.(next, scenarioId);
+  }
 
   function handleScenarioChange(id: string) {
     setSelectedScenarioId(id);
     const scenario = SCENARIOS.find((s) => s.id === id);
-    if (scenario) setInputs(scenario.inputs);
+    if (scenario) applyInputs(scenario.inputs, id);
   }
 
   function setProcessType(pt: ProcessType) {
-    setInputs((prev) => ({ ...prev, processType: pt }));
+    applyInputs({ ...inputs, processType: pt });
   }
 
   function setTechLevel(tl: TechLevelId) {
-    setInputs((prev) => ({ ...prev, techLevel: tl }));
-  }
-
-  function setSpendType(spendType: NonNullable<ProcurementInputs["spendType"]>) {
-    setInputs((prev) => ({ ...prev, spendType }));
-  }
-
-  function setProcessPhase(processPhase: NonNullable<ProcurementInputs["processPhase"]>) {
-    setInputs((prev) => ({ ...prev, processPhase }));
+    applyInputs({ ...inputs, techLevel: tl });
   }
 
   function setStakeholder(role: StakeholderRole, field: "count" | "dailyRate", value: number) {
-    setInputs((prev) => ({
-      ...prev,
+    applyInputs({
+      ...inputs,
       stakeholders: {
-        ...prev.stakeholders,
-        [role]: { ...prev.stakeholders[role], [field]: value },
+        ...inputs.stakeholders,
+        [role]: { ...inputs.stakeholders[role], [field]: value },
       },
-    }));
+    });
   }
 
   function setField(field: keyof ProcurementInputs, value: number) {
-    setInputs((prev) => ({ ...prev, [field]: value }));
+    applyInputs({ ...inputs, [field]: value });
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -73,18 +73,8 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
   // Derived preview of days based on current selections
   const steps = getSteps(inputs.processType, inputs.customSteps);
   const tech = TECH_LEVELS[inputs.techLevel];
-  const previewRigidDays = deriveRigidDays(
-    steps,
-    tech.timeMultiplier,
-    inputs.processPhase,
-    inputs.spendType,
-  );
-  const previewFlexDays = deriveFlexibleDays(
-    steps,
-    tech.timeMultiplier,
-    inputs.processPhase,
-    inputs.spendType,
-  );
+  const previewRigidDays = deriveRigidDays(steps, tech.timeMultiplier);
+  const previewFlexDays = deriveFlexibleDays(steps, tech.timeMultiplier);
 
   const inputClass =
     "w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500";
@@ -94,7 +84,6 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
-      {/* Scenario selector */}
       <div>
         <label className={labelClass}>{tx.scenarioLabel}</label>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
@@ -118,49 +107,6 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div className={sectionClass}>
-          <p className={sectionTitleClass}>{lang === "en" ? "Spend type" : "Rodzaj wydatku"}</p>
-          <div className="grid grid-cols-2 gap-2">
-            {(["direct", "indirect"] as const).map((spendType) => (
-              <button
-                key={spendType}
-                type="button"
-                onClick={() => setSpendType(spendType)}
-                className={`rounded-lg border px-3 py-2 text-sm font-medium ${
-                  inputs.spendType === spendType
-                    ? "border-blue-500 bg-blue-50 text-blue-700"
-                    : "border-gray-200 bg-white text-gray-600"
-                }`}
-              >
-                {spendType === "direct" ? "Direct" : "Indirect"}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className={sectionClass}>
-          <p className={sectionTitleClass}>{lang === "en" ? "Process phase" : "Faza procesu"}</p>
-          <div className="grid grid-cols-2 gap-2">
-            {(["upstream", "downstream"] as const).map((processPhase) => (
-              <button
-                key={processPhase}
-                type="button"
-                onClick={() => setProcessPhase(processPhase)}
-                className={`rounded-lg border px-3 py-2 text-sm font-medium ${
-                  inputs.processPhase === processPhase
-                    ? "border-blue-500 bg-blue-50 text-blue-700"
-                    : "border-gray-200 bg-white text-gray-600"
-                }`}
-              >
-                {processPhase === "upstream" ? "Upstream" : "Downstream"}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Section 1: Process type */}
       <div className={sectionClass}>
         <p className={sectionTitleClass}>{tx.processTypeLabel}</p>
 
@@ -218,7 +164,6 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
         </div>
       </div>
 
-      {/* Section 2: Tech level */}
       <div className={sectionClass}>
         <p className={sectionTitleClass}>{tx.techLevelLabel}</p>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
@@ -241,7 +186,6 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
             );
           })}
         </div>
-        {/* Derived days preview */}
         <div className="mt-2 flex gap-6 text-xs text-gray-500">
           <span>
             {tx.rigidProcedure}:{" "}
@@ -255,7 +199,6 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
         </div>
       </div>
 
-      {/* Section 3: Stakeholders */}
       <div className={sectionClass}>
         <p className={sectionTitleClass}>{tx.stakeholdersTitle}</p>
         <div className="overflow-x-auto">
@@ -263,21 +206,22 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
             <thead>
               <tr className="text-gray-400">
                 <th className="pb-2 text-left font-medium">{lang === "en" ? "Role" : "Rola"}</th>
-                <th className="pb-2 text-right font-medium">{tx.colCount}</th>
-                <th className="pb-2 text-right font-medium">{tx.colDailyRate}</th>
+                <th id="stakeholder-col-count" className="pb-2 text-right font-medium">{tx.colCount}</th>
+                <th id="stakeholder-col-rate" className="pb-2 text-right font-medium">{tx.colDailyRate}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
               {STAKEHOLDER_ROLES.map((role) => (
                 <tr key={role}>
-                  <td className="py-1.5 font-medium text-gray-700">
+                  <th scope="row" id={`stakeholder-row-${role}`} className="py-1.5 text-left font-medium text-gray-700">
                     {tx.stakeholderRoles[role]}
-                  </td>
+                  </th>
                   <td className="py-1.5 pl-4">
                     <input
                       type="number"
                       min={0}
                       max={10}
+                      aria-labelledby={`stakeholder-row-${role} stakeholder-col-count`}
                       value={inputs.stakeholders[role].count}
                       onChange={(e) => setStakeholder(role, "count", +e.target.value)}
                       className="w-16 rounded border border-gray-200 px-2 py-1 text-right text-xs focus:border-blue-400 focus:outline-none"
@@ -288,6 +232,7 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
                       type="number"
                       min={0}
                       step={100}
+                      aria-labelledby={`stakeholder-row-${role} stakeholder-col-rate`}
                       value={inputs.stakeholders[role].dailyRate}
                       onChange={(e) => setStakeholder(role, "dailyRate", +e.target.value)}
                       className="w-24 rounded border border-gray-200 px-2 py-1 text-right text-xs focus:border-blue-400 focus:outline-none"
@@ -300,13 +245,13 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
         </div>
       </div>
 
-      {/* Section 4: Financial parameters */}
       <div className={sectionClass}>
         <p className={sectionTitleClass}>{tx.financialTitle}</p>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <div>
-            <label className={labelClass}>{tx.contractValue}</label>
+            <label className={labelClass} htmlFor="cc-contract-value">{tx.contractValue}</label>
             <input
+              id="cc-contract-value"
               type="number"
               className={inputClass}
               value={inputs.contractValue}
@@ -316,16 +261,19 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
             />
           </div>
           <div>
-            <label className={labelClass}>
-              {tx.dailyCostOfInaction}
-              <span
-                className="ml-1 cursor-help text-gray-400"
+            <div className="flex items-center gap-1 mb-1">
+              <label className="text-xs font-medium text-gray-600" htmlFor="cc-daily-cost">{tx.dailyCostOfInaction}</label>
+              <button
+                type="button"
+                className="cursor-help text-gray-400"
                 title={tx.dailyCostOfInactionTooltip}
+                aria-label={tx.dailyCostOfInactionTooltip}
               >
                 ⓘ
-              </span>
-            </label>
+              </button>
+            </div>
             <input
+              id="cc-daily-cost"
               type="number"
               className={inputClass}
               value={inputs.dailyCostOfInaction}
@@ -335,8 +283,9 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
             />
           </div>
           <div>
-            <label className={labelClass}>{tx.renegotiationCost}</label>
+            <label className={labelClass} htmlFor="cc-renegotiation-cost">{tx.renegotiationCost}</label>
             <input
+              id="cc-renegotiation-cost"
               type="number"
               className={inputClass}
               value={inputs.renegotiationCost}
@@ -346,11 +295,19 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
             />
           </div>
           <div>
-            <label className={labelClass}>
-              {tx.bypassExposure}
-              <span className="ml-1 cursor-help text-gray-400" title={tx.bypassTooltip}>ⓘ</span>
-            </label>
+            <div className="flex items-center gap-1 mb-1">
+              <label className="text-xs font-medium text-gray-600" htmlFor="cc-bypass-exposure">{tx.bypassExposure}</label>
+              <button
+                type="button"
+                className="cursor-help text-gray-400"
+                title={tx.bypassTooltip}
+                aria-label={tx.bypassTooltip}
+              >
+                ⓘ
+              </button>
+            </div>
             <input
+              id="cc-bypass-exposure"
               type="number"
               className={inputClass}
               value={inputs.bypassAuditExposure}
@@ -360,8 +317,9 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
             />
           </div>
           <div>
-            <label className={labelClass}>{tx.tcoHorizon}</label>
+            <label className={labelClass} htmlFor="cc-tco-horizon">{tx.tcoHorizon}</label>
             <input
+              id="cc-tco-horizon"
               type="number"
               className={inputClass}
               value={inputs.tcoHorizonYears}

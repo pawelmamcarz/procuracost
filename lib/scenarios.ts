@@ -34,8 +34,6 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 5_000_000,
       tcoHorizonYears: 2,
-      spendType: "direct",
-      processPhase: "upstream",
       processType: "private_formal",
       techLevel: "partial_erp",
       stakeholders: {
@@ -51,12 +49,13 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 500_000,
     },
     caseStudy: {
-      title: "Strategiczny zakup floty",
-      source: "Ilustracyjny scenariusz ProcuraCost; założenia w lib/scenarios.ts",
+      title: "Ryanair Fleet Procurement (private-sector example)",
+      source:
+        "Ryanair 2002/2003 Annual Report / SEC Form 20-F (Boeing price concessions)",
       insight:
-        "Syntetyczny zakup floty testuje wpływ wysokiej wartości, długiego horyzontu TCO, timingu i zaangażowania kadry zarządzającej.",
+        "Prywatny przewoźnik: Ryanair zamawiał masowo Boeing 737 po kryzysach (post-9/11), uzyskując znaczne upusty cenowe dzięki elastyczności negocjacyjnej. To efektywność zakupowa sektora prywatnego — nie dowód dotyczący prawa zamówień publicznych.",
       insightEn:
-        "This synthetic fleet acquisition tests high value, a long TCO horizon, timing, and senior-management involvement.",
+        "Private-sector case: Ryanair bulk-ordered Boeing 737s after crises (post-9/11), securing substantial price concessions through negotiation flexibility. This is private-sector purchasing efficiency — not evidence about public-procurement law.",
     },
   },
   {
@@ -68,8 +67,6 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 3_000_000,
       tcoHorizonYears: 3,
-      spendType: "indirect",
-      processPhase: "upstream",
       processType: "private_formal",
       techLevel: "sourcing_tool",
       stakeholders: {
@@ -85,12 +82,12 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 300_000,
     },
     caseStudy: {
-      title: "Strategiczny zakup systemu ERP",
-      source: "Ilustracyjny scenariusz ProcuraCost; założenia w lib/scenarios.ts",
+      title: "Swiss Casinos ERP — Agile Sourcing (private-sector example)",
+      source: "LAP Alliance / World Procurement Awards 2020",
       insight:
-        "Syntetyczny zakup ERP testuje wpływ kosztu opóźnienia wdrożenia, horyzontu TCO i obciążenia ról w fazie Upstream.",
+        "Prywatna firma: Swiss Casinos wybrało dostawcę ERP / przeprowadziło sourcing (od selekcji dostawców do podpisanej umowy) w ~6 tygodni dzięki agile sourcing, zamiast standardowych miesięcy procedur. Dotyczy fazy sourcingu, nie pełnego wdrożenia systemu — i jest to efektywność sektora prywatnego, nie wniosek o prawie zamówień publicznych.",
       insightEn:
-        "This synthetic ERP acquisition tests implementation delay, TCO horizon, and Upstream role-loading assumptions.",
+        "Private-sector case: Swiss Casinos sourced / selected its ERP supplier (from supplier selection to signed contract) in ~6 weeks through agile sourcing, instead of the usual months. This covers the sourcing phase, not full system implementation — and reflects private-sector efficiency, not a conclusion about public-procurement law.",
     },
   },
   {
@@ -102,8 +99,6 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 8_000_000,
       tcoHorizonYears: 3,
-      spendType: "indirect",
-      processPhase: "upstream",
       processType: "private_formal",
       techLevel: "partial_erp",
       stakeholders: {
@@ -119,12 +114,13 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 800_000,
     },
     caseStudy: {
-      title: "Strategiczny kontrakt logistyczny",
-      source: "Ilustracyjny scenariusz ProcuraCost; założenia w lib/scenarios.ts",
+      title: "Air France KLM Martinair Cargo — Lean Agile Procurement (private-sector example)",
+      source:
+        "LAP Alliance / Agile Business Consortium (2021) — Air France KLM Martinair Cargo case study (practitioner example, illustrative)",
       insight:
-        "Syntetyczny kontrakt logistyczny testuje koszt okna operacyjnego oraz przyjęte mnożniki opóźnienia i obejścia procesu.",
+        "Prywatny przewoźnik: Air France KLM zastosował Lean Agile Procurement dla modernizacji cargo door-to-door w ścisłym oknie czasowym. Przykład praktyczny ilustrujący efektywność sektora prywatnego — nie dowód empiryczny dotyczący prawa zamówień publicznych.",
       insightEn:
-        "This synthetic logistics contract tests an operational window plus the assumed delay and bypass multipliers.",
+        "Private-sector case: Air France KLM applied Lean Agile Procurement for cargo door-to-door modernisation within a tight time window. A practitioner example illustrating private-sector efficiency — not empirical evidence about public-procurement law.",
     },
   },
   {
@@ -136,8 +132,6 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 12_000_000,
       tcoHorizonYears: 1,
-      spendType: "direct",
-      processPhase: "upstream",
       processType: "private_formal",
       techLevel: "manual",
       stakeholders: {
@@ -153,12 +147,13 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 1_200_000,
     },
     caseStudy: {
-      title: "Zakup krytycznych materiałów produkcyjnych",
-      source: "Ilustracyjny scenariusz ProcuraCost; założenia w lib/scenarios.ts",
+      title: "Zara — Responsive Fast-Fashion Supply Chain (illustrative)",
+      source:
+        "Ferdows, Lewis & Machuca, HBR (2004) — Rapid-Fire Fulfillment (illustrative example)",
       insight:
-        "Syntetyczny scenariusz produkcyjny łączy wysoką wartość, koszt przestoju i mnożniki Direct+Upstream; skrajny wynik wymaga testów wrażliwości.",
+        "Ilustracyjny przykład: model Zary opiera się na krótkich cyklach uzupełnień i szybkiej reakcji łańcucha dostaw na trendy. Przykład ilustruje wartość szybkości w zaopatrzeniu sektora prywatnego — nie udokumentowano tu zastąpienia przetargów zakupami opartymi na AI.",
       insightEn:
-        "This synthetic production scenario combines high value, inaction cost, and Direct+Upstream multipliers; its extreme output requires sensitivity testing.",
+        "Illustrative example: Zara's model relies on short replenishment cycles and a supply chain that reacts quickly to trends. It illustrates the value of speed in private-sector sourcing — no documented replacement of tenders with AI-driven procurement is claimed here.",
     },
   },
   {
@@ -170,8 +165,6 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 5_000_000,
       tcoHorizonYears: 3,
-      spendType: "direct",
-      processPhase: "upstream",
       processType: "pzp_eu",
       techLevel: "partial_erp",
       stakeholders: {
@@ -188,11 +181,12 @@ export const SCENARIOS: Scenario[] = [
     },
     caseStudy: {
       title: "Tunel vs Pole — ten sam zakup, dwa światy",
-      source: "Szucs (JEEA 2024); Beuve et al. (NBER 2021); Lipsky (1980)",
+      source:
+        "Szucs (JEEA 2024); Beuve, Moszoro & Spiller (NBER w.p. 2021, obserwacyjne); Lipsky (1980)",
       insight:
-        "Procedura PZP-EU to tunel: jeden zamknięty tor, kupiec jako executor. Polityka zakupowa to pole: granice uprawnień aktywne wszędzie, kupiec jako navigator. Ten sam kontrakt — wielokrotnie wyższy koszt utracony po stronie tunelu.",
+        "Procedura PZP-EU to tunel: jeden zamknięty tor, kupiec jako executor. Polityka zakupowa to pole: granice uprawnień aktywne wszędzie, kupiec jako navigator. Renegocjacje w przetargach publicznych: Beuve, Moszoro & Spiller szacują efekt rzędu +7,7–10,5 pp (zakres z working paper, dane obserwacyjne). Ten sam kontrakt — wyższy koszt utracony po stronie tunelu.",
       insightEn:
-        "An EU-threshold public tender is a tunnel: one locked path, buyer as step-executor. A procurement policy is a field: authorisation boundaries active everywhere, buyer as value navigator. Same contract — drastically higher opportunity cost on the tunnel side.",
+        "An EU-threshold public tender is a tunnel: one locked path, buyer as step-executor. A procurement policy is a field: authorisation boundaries active everywhere, buyer as value navigator. On renegotiation in public tenders, Beuve, Moszoro & Spiller estimate an effect of roughly +7.7–10.5pp (a range from a working paper, observational data). Same contract — higher opportunity cost on the tunnel side.",
     },
   },
   {
@@ -204,8 +198,6 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 50_000,
       tcoHorizonYears: 1,
-      spendType: "indirect",
-      processPhase: "downstream",
       processType: "catalog_order",
       techLevel: "end_to_end",
       stakeholders: {
@@ -222,7 +214,7 @@ export const SCENARIOS: Scenario[] = [
     },
     caseStudy: {
       title: "Coupa Catalog — Amazon-like UX for B2B",
-      source: "Coupa. State of Business Spend (2023)",
+      source: "Coupa — State of Business Spend (2023) (vendor report, practitioner example)",
       insight:
         "Firmy z katalogiem end-to-end redukują maverick spend o 60–80% i skracają czas zamówienia z dni do minut. Kupiec staje się kuratorem katalogu, nie procesorem faktur.",
       insightEn:
@@ -238,8 +230,6 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 500_000,
       tcoHorizonYears: 1,
-      spendType: "direct",
-      processPhase: "downstream",
       processType: "mrp_order",
       techLevel: "end_to_end",
       stakeholders: {
@@ -255,12 +245,13 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 50_000,
     },
     caseStudy: {
-      title: "Automatyczne zlecenie MRP",
-      source: "Ilustracyjny scenariusz ProcuraCost; założenia w lib/scenarios.ts",
+      title: "MRP-driven replenishment — short collection cycles (illustrative)",
+      source:
+        "Ferdows, Lewis & Machuca, HBR (2004) — Rapid-Fire Fulfillment (illustrative example)",
       insight:
-        "Syntetyczny scenariusz testuje rutynowe zamówienie materiałowe generowane przez system MRP w kontekście Direct+Downstream.",
+        "Ilustracyjny przykład: w modelu szybkiej mody zlecenia uzupełnień surowców generowane są automatycznie przez system (MRP) na podstawie prognoz popytu, co skraca cykl reakcji. Przykład ilustruje wartość automatyzacji operacyjnej w sektorze prywatnym — nie udokumentowano tu zastąpienia przetargów zakupami opartymi na AI.",
       insightEn:
-        "This synthetic scenario tests a routine material order generated by an MRP system in a Direct+Downstream context.",
+        "Illustrative example: in a fast-fashion model, raw-material replenishment orders are auto-generated by the system (MRP) from demand forecasts, shortening the reaction cycle. It illustrates the value of operational automation in the private sector — no documented replacement of tenders with AI-driven procurement is claimed here.",
     },
   },
   {
@@ -272,8 +263,6 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 15_000_000,
       tcoHorizonYears: 10,
-      spendType: "direct",
-      processPhase: "upstream",
       processType: "capex",
       techLevel: "partial_erp",
       stakeholders: {
@@ -289,12 +278,13 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 2_000_000,
     },
     caseStudy: {
-      title: "Strategiczna inwestycja CAPEX",
-      source: "Ilustracyjny scenariusz ProcuraCost; założenia w lib/scenarios.ts",
+      title: "Ryanair CAPEX — Boeing bulk order at crisis prices (private-sector example)",
+      source:
+        "Ryanair 2002/2003 Annual Report / SEC Form 20-F (Boeing price concessions)",
       insight:
-        "Syntetyczna inwestycja w linię produkcyjną testuje długi horyzont, wysoki koszt renegocjacji i rozbudowany nadzór CAPEX.",
+        "Prywatny przewoźnik: Ryanair stosuje pełny CAPEX governance dla zakupów floty, ale skraca proces dzięki pre-kwalifikacji Boeinga jako jedynego dostawcy. Governance ma wartość; marnotrawstwo tkwi w krokach, które można wyeliminować. To efektywność sektora prywatnego — nie wniosek o prawie zamówień publicznych.",
       insightEn:
-        "This synthetic production-line investment tests a long horizon, high renegotiation cost, and extensive CAPEX governance.",
+        "Private-sector case: Ryanair applies full CAPEX governance for fleet purchases but shortens the process via Boeing pre-qualification as sole supplier. Governance has value; waste lies in steps that can be eliminated. This is private-sector efficiency — not a conclusion about public-procurement law.",
     },
   },
   {
@@ -306,8 +296,6 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 1_000_000,
       tcoHorizonYears: 2,
-      spendType: "indirect",
-      processPhase: "upstream",
       processType: "private_formal",
       techLevel: "partial_erp",
       stakeholders: { ...DEFAULT_STAKEHOLDERS },
@@ -317,7 +305,3 @@ export const SCENARIOS: Scenario[] = [
     },
   },
 ];
-
-export function getScenarioById(id: string): Scenario | undefined {
-  return SCENARIOS.find((s) => s.id === id);
-}

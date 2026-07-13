@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   ResponsiveContainer,
   BarChart,
@@ -11,11 +11,7 @@ import {
   Tooltip,
   Cell,
 } from "recharts";
-import {
-  ProcurementFeatures,
-  optimize,
-  OptimizationResult,
-} from "@/lib/optimizer";
+import { ProcurementFeatures, optimize, OptimizationResult } from "@/lib/optimizer";
 import { optimizerT, Lang } from "@/lib/i18n";
 import { formatCompact } from "@/lib/calculations";
 
@@ -41,6 +37,7 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
   const tx = optimizerT[lang];
   const [features, setFeatures] = useState<ProcurementFeatures>(defaultFeatures);
   const [result, setResult] = useState<OptimizationResult | null>(null);
+  const resultsRef = useRef<HTMLDivElement | null>(null);
 
   function handleChange<K extends keyof ProcurementFeatures>(
     key: K,
@@ -51,9 +48,9 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
 
   function handleOptimize() {
     setResult(optimize(features, lang));
-    setTimeout(() => {
-      document.getElementById("optimizer-results")?.scrollIntoView({ behavior: "smooth" });
-    }, 50);
+    requestAnimationFrame(() => {
+      resultsRef.current?.scrollIntoView({ behavior: "smooth" });
+    });
   }
 
   const inputClass =
@@ -64,20 +61,19 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
 
   return (
     <div className="space-y-8">
-      {/* Input form */}
       <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
         <h2 className="mb-5 text-base font-bold text-gray-900">{tx.parametersTitle}</h2>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {/* Contract value */}
           <div>
-            <label className={labelClass}>
+            <label className={labelClass} htmlFor="pf-contract-value">
               {tx.contractValue}{" "}
               <span className="font-semibold text-gray-800">
                 {formatPLNShort(features.contractValue)}
               </span>
             </label>
             <input
+              id="pf-contract-value"
               type="range"
               min={50000}
               max={50_000_000}
@@ -92,13 +88,13 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
             </div>
           </div>
 
-          {/* Supplier count */}
           <div>
-            <label className={labelClass}>
+            <label className={labelClass} htmlFor="pf-supplier-count">
               {tx.supplierCount}{" "}
               <span className="font-semibold text-gray-800">{features.supplierCount}</span>
             </label>
             <input
+              id="pf-supplier-count"
               type="range"
               min={1}
               max={20}
@@ -113,13 +109,13 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
             </div>
           </div>
 
-          {/* Urgency */}
           <div>
-            <label className={labelClass}>
+            <label className={labelClass} htmlFor="pf-urgency-days">
               {tx.timeAvailable}{" "}
               <span className="font-semibold text-gray-800">{features.urgencyDays} {tx.days}</span>
             </label>
             <input
+              id="pf-urgency-days"
               type="range"
               min={7}
               max={365}
@@ -135,7 +131,6 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
           </div>
         </div>
 
-        {/* 5-scale sliders */}
         <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {(
             [
@@ -146,13 +141,14 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
             ] as [keyof ProcurementFeatures, string][]
           ).map(([key, label]) => (
             <div key={key}>
-              <label className={labelClass}>
+              <label className={labelClass} htmlFor={`pf-${key}`}>
                 {label}:{" "}
                 <span className="font-semibold text-gray-800">
                   {sliderLabels[features[key] as number]}
                 </span>
               </label>
               <input
+                id={`pf-${key}`}
                 type="range"
                 min={1}
                 max={5}
@@ -169,7 +165,6 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
           ))}
         </div>
 
-        {/* Toggles */}
         <div className="mt-5 flex flex-wrap gap-4">
           <label className="flex cursor-pointer items-center gap-2">
             <input
@@ -191,15 +186,15 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
           </label>
         </div>
 
-        {/* New contextual dimensions */}
         <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
-            <label className={labelClass}>
+            <label className={labelClass} htmlFor="pf-spend-type">
               {lang === "en" ? "Spend Type" : "Rodzaj wydatku"}
             </label>
             <select
+              id="pf-spend-type"
               value={features.spendType || "indirect"}
-              onChange={(e) => handleChange("spendType", e.target.value as "direct" | "indirect")}
+              onChange={(e) => handleChange("spendType", e.target.value as ProcurementFeatures["spendType"])}
               className={inputClass}
             >
               <option value="direct">{lang === "en" ? "Direct (production)" : "Direct (produkcyjny)"}</option>
@@ -207,16 +202,17 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
             </select>
           </div>
           <div>
-            <label className={labelClass}>
+            <label className={labelClass} htmlFor="pf-process-phase">
               {lang === "en" ? "Process Phase" : "Faza procesu"}
             </label>
             <select
+              id="pf-process-phase"
               value={features.processPhase || "upstream"}
-              onChange={(e) => handleChange("processPhase", e.target.value as "upstream" | "downstream")}
+              onChange={(e) => handleChange("processPhase", e.target.value as ProcurementFeatures["processPhase"])}
               className={inputClass}
             >
-              <option value="upstream">{lang === "en" ? "Upstream (strategic)" : "Upstream (strategiczny)"}</option>
-              <option value="downstream">{lang === "en" ? "Downstream (operational)" : "Downstream (operacyjny)"}</option>
+              <option value="upstream">{tx.contextUpstreamLabel}</option>
+              <option value="downstream">{tx.contextDownstreamLabel}</option>
             </select>
           </div>
         </div>
@@ -229,10 +225,8 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
         </button>
       </div>
 
-      {/* Results */}
       {result && (
-        <div id="optimizer-results" className="space-y-6">
-          {/* Top recommendation */}
+        <div id="optimizer-results" ref={resultsRef} className="space-y-6">
           <div
             className="rounded-2xl p-6 text-white"
             style={{ background: `linear-gradient(135deg, ${result.topPath.path.color}, ${result.topPath.path.color}cc)` }}
@@ -269,43 +263,32 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
               </div>
             </div>
 
-            {/* Show applied dimensions + deepened explanation */}
             {(features.spendType || features.processPhase) && (
               <div className="mt-3 rounded bg-white/10 px-2.5 py-2 text-xs">
                 <div className="font-medium opacity-90">
-                  {lang === "en" ? "Scoring context:" : "Kontekst scoringu:"}{" "}
+                  {tx.scoringContextLabel}{" "}
                   <span className="font-semibold">
-                    {features.spendType === "direct" ? (lang === "en" ? "Direct" : "Direct") : features.spendType === "indirect" ? (lang === "en" ? "Indirect" : "Indirect") : "—"} ×{" "}
-                    {features.processPhase === "upstream" ? (lang === "en" ? "Upstream (strategic)" : "Upstream (strategiczny)") : features.processPhase === "downstream" ? (lang === "en" ? "Downstream (operational)" : "Downstream (operacyjny)") : "—"}
+                    {features.spendType === "direct" ? "Direct" : features.spendType === "indirect" ? "Indirect" : "—"} ×{" "}
+                    {features.processPhase === "upstream" ? tx.contextUpstreamLabel : features.processPhase === "downstream" ? tx.contextDownstreamLabel : "—"}
                   </span>
                 </div>
                 <div className="mt-1 text-[10px] opacity-75 leading-snug">
-                  {features.spendType === "direct" && features.processPhase === "upstream" && (lang === "en"
-                    ? "Strong preference for flexible strategic paths (competitive dialogue / negotiations) due to high TCO leverage, relationship intensity and risk allocation needs."
-                    : "Bardzo silna preferencja dla elastycznych ścieżek strategicznych (dialog konkurencyjny / negocjacje) — wysoka dźwignia TCO, intensywność relacji i alokacja ryzyka.")}
-                  {features.spendType === "indirect" && features.processPhase === "downstream" && (lang === "en"
-                    ? "Higher tolerance for simple, transactional execution paths — lower coordination overhead and limited strategic upside from complex procedures."
-                    : "Wyższa tolerancja dla prostych, transakcyjnych ścieżek wykonawczych — mniejsze narzuty koordynacyjne i ograniczona wartość strategiczna złożonych procedur.")}
-                  {!(features.spendType === "direct" && features.processPhase === "upstream") && !(features.spendType === "indirect" && features.processPhase === "downstream") && (lang === "en"
-                    ? "Context shifts the relative attractiveness of negotiation-heavy vs. execution-heavy paths and the weight of senior stakeholder time."
-                    : "Kontekst zmienia względną atrakcyjność ścieżek negocjacyjnych vs. wykonawczych oraz wagę czasu kadry wyższej.")}
+                  {features.spendType === "direct" && features.processPhase === "upstream" && tx.scoringContextDirectUpstream}
+                  {features.spendType === "indirect" && features.processPhase === "downstream" && tx.scoringContextIndirectDownstream}
+                  {!(features.spendType === "direct" && features.processPhase === "upstream") && !(features.spendType === "indirect" && features.processPhase === "downstream") && tx.scoringContextOther}
                 </div>
                 <div className="mt-1.5 text-[10px] opacity-60">
-                  {lang === "en" 
-                    ? "In scoring: negotiation paths receive up to +1.8× weight, dialogue +1.6× when Direct+Upstream; direct award and simple execution paths heavily down-weighted."
-                    : "W scoringu: ścieżki negocjacyjne dostają do +1.8× wagi, dialog +1.6× przy Direct+Upstream; bezpośredni wybór i proste ścieżki wykonawcze mocno obniżone."}
+                  {tx.scoringContextWeightsNote}
                 </div>
               </div>
             )}
 
-            {/* PZP note */}
             <div className="mt-4 rounded-xl bg-white/10 p-3 text-sm">
               <p className="font-semibold opacity-80">{tx.pzpNote}</p>
               <p className="mt-1 opacity-90">{result.policyNote}</p>
             </div>
           </div>
 
-          {/* Explanation card */}
           <div className="rounded-xl border border-blue-100 bg-blue-50 p-4">
             <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 mb-2">
               {tx.explanationTitle}
@@ -313,7 +296,6 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
             <p className="text-sm text-blue-900 leading-relaxed">{result.explanation}</p>
           </div>
 
-          {/* All paths ranked */}
           <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
             <h3 className="mb-4 text-sm font-bold text-gray-900">
               {tx.rankingTitle}
@@ -335,7 +317,7 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
                       <div
                         className="h-full rounded-full transition-all"
                         style={{
-                          width: `${(r.votes / 30) * 100}%`,
+                          width: `${Math.min(r.score, 100)}%`,
                           background: r.path.color,
                         }}
                       />
@@ -355,7 +337,6 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
             </div>
           </div>
 
-          {/* Feature importance */}
           <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
             <h3 className="mb-4 text-sm font-bold text-gray-900">
               {tx.importanceTitle}
@@ -391,7 +372,6 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
             <p className="mt-2 text-xs text-gray-400">{tx.importanceNote}</p>
           </div>
 
-          {/* Conditions & risks for top 2 */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {result.ranked.slice(0, 2).map((r) => (
               <div
@@ -403,7 +383,7 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
                     className="h-3 w-3 rounded-full"
                     style={{ background: r.path.color }}
                   />
-                  <h4 className="font-bold text-gray-900">{r.path.name}</h4>
+                  <h4 className="font-bold text-gray-900">{lang === "en" ? r.path.nameEn : r.path.name}</h4>
                 </div>
                 <div className="mt-3">
                   <p className="mb-1 text-xs font-semibold text-green-600">{tx.whenToUse}</p>
@@ -429,12 +409,9 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
             ))}
           </div>
 
-          <div className="rounded-xl border border-blue-100 bg-blue-50 p-4 text-xs text-blue-800">
-            {tx.modelNote}{" "}
-            <em>Machine Learning</em>, 45, 5–32.{" "}
-            {lang === "en"
-              ? "Class weights based on procurement theory: Williamson (1985) TCE, Kraljic (1983) portfolio."
-              : "Wagi klas oparte na teorii zakupów: Williamson (1985) TCE, Kraljic (1983) portfolio."}
+          <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-xs text-amber-800">
+            <p className="font-semibold">{tx.modelNote}</p>
+            <p className="mt-2 text-amber-700">{tx.theoryNote}</p>
           </div>
         </div>
       )}

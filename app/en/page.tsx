@@ -1,30 +1,36 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import PipeFieldDiagram from "@/components/PipeFieldDiagram";
 import { SCENARIOS } from "@/lib/scenarios";
 import { calculateCosts } from "@/lib/calculations";
 
+export const metadata: Metadata = {
+  title: "ProcuraCost — Procurement Cost Calculator",
+  description:
+    "Cost calculator, path optimizer, and a free procurement maturity audit. See what your organisation is losing to rigid procedures.",
+};
+
 const stats = [
-  { value: "+2.3%", label: "average price increase after discretion expanded in the studied system", source: "Szucs, JEEA 2024" },
-  { value: "+7.7–10.5 pp", label: "renegotiation difference per SD of contractual rigidity", source: "Beuve et al., NBER 2021" },
-  { value: "−7%/yr", label: "median procurement-time decline after fit-for-purpose reform", source: "World Bank, 2022" },
-  { value: "Open", label: "TCO and 2×2 assumptions exposed for sensitivity analysis", source: "Model v1.2" },
+  { value: "~6%", label: "favoritism premium under unchecked discretion (which competitive tendering averts)", source: "Szucs, JEEA 2024" },
+  { value: "+7.7–10.5pp", label: "increased renegotiation risk (observational)", source: "Beuve, Moszoro & Spiller, NBER 2021" },
+  { value: "30%", label: "potential TCO savings with flexibility (practitioner ceiling, multi-year)", source: "industry heuristic (unattributed)" },
 ];
 
 const howItWorks = [
   {
     step: "01",
     title: "Describe your purchase",
-    body: "Choose a synthetic scenario or enter your own data: contract value, process type, team and rates. No registration required.",
+    body: "Choose a scenario (Ryanair, Swiss Casinos, Zara…) or enter your own data: contract value, process type, team and rates. No registration required.",
   },
   {
     step: "02",
-    title: "Calculate modeled costs",
-    body: "The model combines research findings with explicit assumptions to compare staff time, delay, renegotiation, TCO, and bypass risk across tunnel and field paths.",
+    title: "Calculate hidden costs",
+    body: "The model, grounded in the literature and practitioner benchmarks, computes 7 cost dimensions — staff time, delays, renegotiations, bypass risk — comparing tunnel to field.",
   },
   {
     step: "03",
     title: "Compare and act",
-    body: "Results include an illustrative scenario comparison, a heuristic procurement-path ranking based on explicit rules, and a PDF report with source and assumption annotations.",
+    body: "Results include illustrative scenarios (model-generated), a procurement-path recommendation (rule-based model with sensitivity analysis) and a PDF report with academic citations.",
   },
 ];
 
@@ -58,18 +64,18 @@ const caseStudyPreviews = SCENARIOS.filter((s) => s.caseStudy)
     const result = calculateCosts(s.inputs);
     const insight = s.caseStudy!.insightEn;
     return {
-      title: s.nameEn,
+      title: s.caseStudy!.title,
       insight: insight.length > 120 ? insight.slice(0, 117) + "…" : insight,
       rigidDays: result.rigidDays,
       flexibleDays: result.flexibleDays,
-      source: "ProcuraCost model 1.2.0",
+      source: s.caseStudy!.source,
     };
   });
 
 const principles = [
   {
     title: "Procedure ≠ Policy",
-    body: "A procurement policy sets principles and boundaries. A procedure is one way to implement them. The model tests whether conflating the two can create opportunity costs.",
+    body: "A procurement policy sets the principles and boundaries. A procedure is just one of many ways to implement them. Conflating the two costs organisations millions.",
   },
   {
     title: "The buyer as strategist",
@@ -84,7 +90,6 @@ const principles = [
 export default function EnHomePage() {
   return (
     <div className="mx-auto max-w-5xl px-6 py-12">
-      {/* Hero */}
       <div className="text-center">
         <span className="inline-block rounded-full bg-blue-50 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-blue-600">
           Research & Consulting Tool
@@ -98,9 +103,9 @@ export default function EnHomePage() {
           A tunnel has walls. A field has a horizon.
         </p>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-500">
-          A transparent simulation model combines research findings with calibrated assumptions.
-          Explore how costs change in your scenario. Outputs are not yet empirical estimates of
-          realized organizational effects.
+          The model estimates that rigid procedures are often{" "}
+          <span className="font-semibold text-gray-700">materially more costly</span> than
+          policy-only procurement — check your own case.
         </p>
         <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link
@@ -124,8 +129,7 @@ export default function EnHomePage() {
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <div className="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-3">
         {stats.map((s) => (
           <div
             key={s.label}
@@ -138,7 +142,6 @@ export default function EnHomePage() {
         ))}
       </div>
 
-      {/* How it works */}
       <div className="mt-16">
         <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-6">
           How ProcuraCost works
@@ -154,7 +157,6 @@ export default function EnHomePage() {
         </div>
       </div>
 
-      {/* Principles */}
       <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-3">
         {principles.map((p) => (
           <div
@@ -167,10 +169,9 @@ export default function EnHomePage() {
         ))}
       </div>
 
-      {/* Case Studies Preview */}
       <div className="mt-16">
         <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-5">
-          Illustrative archetypes — flexible procurement in practice
+          Case studies — flexible procurement in practice
         </p>
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
           {caseStudyPreviews.map((cs) => (
@@ -185,18 +186,20 @@ export default function EnHomePage() {
                   Field: {cs.flexibleDays} days
                 </span>
               </div>
+              <p className="text-xs text-gray-400 leading-relaxed">
+                Day figures are illustrative model output for a purchase of this size, not the figures from the cited case.
+              </p>
               <p className="text-xs text-gray-400">{cs.source}</p>
             </div>
           ))}
         </div>
         <div className="mt-4 text-right">
           <Link href="/en/case-studies" className="text-xs text-blue-600 hover:underline">
-            View all archetypes →
+            View all case studies →
           </Link>
         </div>
       </div>
 
-      {/* Pipe vs. Field */}
       <div className="mt-12 rounded-2xl border border-blue-100 bg-blue-50 p-6">
         <h2 className="font-bold text-blue-900">The Tunnel vs. Field model</h2>
         <p className="mt-1 text-sm text-blue-700">
@@ -211,7 +214,6 @@ export default function EnHomePage() {
         </p>
       </div>
 
-      {/* Team */}
       <div className="mt-16">
         <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-5">Team</p>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -245,12 +247,11 @@ export default function EnHomePage() {
         </div>
       </div>
 
-      {/* CTA */}
       <div className="mt-16 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-center text-white">
         <h2 className="text-2xl font-bold">See what your organisation is losing</h2>
         <p className="mt-2 text-blue-100">
           Cost calculator, path optimizer and a free procurement maturity audit —
-          with empirical sources separated from modeling assumptions.
+          all grounded in peer-reviewed research.
         </p>
         <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link

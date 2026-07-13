@@ -1,28 +1,28 @@
+import type { Metadata } from "next";
 import PathOptimizer from "@/components/PathOptimizer";
+
+export const metadata: Metadata = {
+  title: "Procurement Path Optimizer — ProcuraCost",
+  description:
+    "A rule-based model with a 30-run sensitivity sweep recommending a lawful procurement path based on your purchase parameters.",
+};
 
 export default function EnOptimizerPage() {
   return (
     <div className="mx-auto max-w-5xl px-6 py-10">
       <div className="mb-8">
         <span className="inline-block rounded-full bg-blue-50 px-3 py-0.5 text-xs font-semibold uppercase tracking-wide text-blue-600">
-          Transparent heuristic — 30 scoring variants
+          Rule-based model — sensitivity analysis (30 runs)
         </span>
         <h1 className="mt-3 text-2xl font-bold text-gray-900">
           Procurement Path Optimizer
         </h1>
         <p className="mt-2 text-sm text-gray-500 max-w-2xl">
-          The tool ranks procurement methods using explicit rules and scenario inputs.
-          Its PZP note is orientation only, not an automated legal compliance check.
-          Thresholds are updated for 2026–2027.
+          The model recommends a procurement method based on purchase parameters; public-sector
+          recommendations are hard-filtered to the lawful PZP procedures. It is a weighted scoring
+          function (not a trained ML model); the 30 runs are a sensitivity sweep showing how stable
+          the recommendation is. Illustrative tool.
         </p>
-        <a
-          href="https://www.gov.pl/web/uzp-en/current-thresholds-in-public-procurement-and-current-average-exchange-rate-pln-euro"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-2 inline-block text-xs text-blue-600 underline"
-        >
-          Threshold source: Polish Public Procurement Office
-        </a>
       </div>
       <PathOptimizer lang="en" />
     </div>

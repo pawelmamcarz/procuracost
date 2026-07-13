@@ -50,3 +50,7 @@ next-env.d.ts
 *.log
 playwright-report/
 test-results/
+
+# generated article exports (regenerated on demand from the .md source)
+docs/articles/**/*.docx
+docs/articles/**/*.rtf

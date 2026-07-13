@@ -2,27 +2,26 @@
 
 > **A tunnel has walls. A field has a horizon.**
 
-ProcuraCost is an open-source research prototype for exploring the opportunity costs of rigid procurement procedures compared with policy-based procurement. It combines selected empirical findings with explicit modeling assumptions. Its outputs are deterministic scenario simulations, not empirically validated estimates of realized organizational effects.
+ProcuraCost is an open-source research and consulting tool that quantifies the hidden opportunity costs of rigid procurement procedures compared to policy-based procurement. It combines peer-reviewed empirical findings with explicit modeling assumptions (roughly 35–40% of parameters are peer-reviewed; the rest are calibrated or modeling judgments — see `docs/MODEL_PARAMETERS.md`). Its headline result — that rigid-procedure costs can exceed policy-only costs by **100–400%** — is a model **estimate** under documented assumptions, not a measured fact. The model is symmetric in structure (the favoritism dimension genuinely subsidizes the rigid path), but numerically the flexible path weakly dominates: across all reference scenarios and an 11,844-configuration input-space sweep (`npm run sweep`), the rigid path is never net-cheaper — in low-corruption-risk operational contexts the gap merely approaches zero (≈ +0.4% of contract value at minimum).
 
 ## The Model
 
-Procurement *policy* defines principles and boundaries. Procurement *procedure* is one way to implement them. ProcuraCost explores the hypothesis that conflating the two may create costs through:
+Procurement *policy* defines principles and boundaries. Procurement *procedure* is just one of many ways to implement them. Conflating the two—treating one rigid workflow as if it were the policy itself—carries costs the model captures through:
 
 - Extended timelines and staff hours
-- A countervailing risk from poorly governed discretion: higher prices and less productive suppliers (Szucs, JEEA 2024)
-- 7.7–10.5 pp higher renegotiation probability per SD of contractual rigidity (Beuve et al., NBER 2021)
-- Procurement time and competition effects documented in public-sector evidence reviews
-- Explicit, sensitivity-testable assumptions for TCO, bypass, technology, and the 2×2 context
+- A favoritism / selection-quality cost borne mainly by the **discretionary** path: discretion raises prices (~6%, structural) and selects less-productive contractors; competitive tendering averts this premium (Szucs, JEEA 2024)
+- 7.7–10.5 pp higher renegotiation probability associated with contractual rigidity, observational (Beuve, Moszoro & Spiller, NBER 2021 / JLEO 2023)
+- Up to 30% foregone TCO savings as a multi-year practitioner ceiling, discounted to present value (unattributed grey-literature heuristic, used only as a cap)
 
 **The Tunnel vs. Field model:** a procedure is a tunnel — one path, binary compliance, human as step-executor. A procurement policy is a field — multiple compliant paths, human as value navigator.
 
 ## Features
 
-- **Cost Calculator** — auditable model of active time, admin, opportunity, renegotiation, TCO, and bypass components; the legacy productivity field is inactive in v1.2
-- **Path Optimizer** — transparent decision-support heuristic using 30 deterministic scoring variants and explicit expert rules; it is not a trained ML classifier or legal compliance check
+- **Cost Calculator** — 7-dimension cost model (time, admin, opportunity, favoritism / selection-quality, renegotiation, TCO, bypass) comparing rigid procedures vs. policy-based approaches across 7 process types
+- **Path Optimizer** — a weighted, rule-based scoring function (one closed-form formula per path) recommending a procurement path for your context, with a 30-run sensitivity sweep for stability, genuine ablation feature importance, and a natural-language explanation. It is illustrative, not trained ML, and not validated on real procurement data; public-sector recommendations above threshold are hard-filtered to lawful PZP trybów
 - **Maturity Assessment** — 10-question free audit placing your organization on the Tunnel→Field spectrum
-- **Illustrative Archetypes** — fleet, ERP, logistics, and production scenarios inspired by public practice descriptions; financial inputs are model assumptions
-- **Scenario Benchmark** — compare a result with 8 illustrative reference scenarios
+- **Case Studies** — Fleet (Ryanair), ERP (Swiss Casinos), Logistics (Air France KLM), Production (Zara) with empirical benchmarks
+- **Industry Benchmark** — See where your scenario sits relative to 8 reference cases
 - **Bilingual** — Full Polish and English interfaces
 
 ## Team
@@ -49,14 +48,13 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) for the Polish interface or [http://localhost:3000/en](http://localhost:3000/en) for English.
 
-## Evidence Status
+## Academic Foundation
 
-The model separates external evidence from modeling assumptions:
+The cost model draws on peer-reviewed and practitioner sources (only a subset of the model's parameters are peer-reviewed):
 
-1. **Szucs (2024)** — *Journal of the European Economic Association* 22(1): high discretion can increase prices and select less productive suppliers. ProcuraCost treats this as a boundary condition, not a rigidity penalty.
-2. **Beuve, Moszoro & Saussier (2021)** — *NBER WP 28491*: 7.7–10.5 pp renegotiation risk increase per SD of contractual rigidity
-3. **World Bank (2021)** — Policy Research Paper 9690: the evidence base for procurement interventions is uneven and context-dependent.
-4. **Model assumptions** — TCO opportunity, bypass sigmoid, technology effects, step durations, and 2×2 multipliers require external calibration. TCO is capped at 30% of contract value in model v1.2.
+1. **Szucs (2024)** — *Journal of the European Economic Association* 22(1):117–160, DOI 10.1093/jeea/jvad017: discretion raises prices (~6%, structural; reduced-form ~9%) and selects contractors of ~10% lower productivity; competitive (rigid) tendering averts this favoritism premium. The structural estimates correct for selection into tenders (Hungarian RDD — transfers are benchmarks, not measurements)
+2. **Beuve, Moszoro & Spiller (2021)** — *NBER WP 28491* (published in *JLEO* 2023): contractual rigidity is **associated with** a 7.7–10.5 pp increase in renegotiation probability (observational, not causal)
+3. **TCO savings ceiling** — up to 30% TCO reduction over multiple years is an **unattributed practitioner heuristic** (grey literature; no verifiable ISM or peer-reviewed source), used in the model only as a conservative cap, discounted to present value
 
 Theoretical grounding: Lipsky (1980) Street-Level Bureaucracy · Vaughan (1996) Challenger · Holmström & Milgrom (1991) Multitask Principal-Agent
 
@@ -67,20 +65,20 @@ Full working paper: [`RESEARCH.md`](./RESEARCH.md) | Methodology page: `/methodo
 ```
 app/                    Next.js pages (PL + /en subtree)
   calculator/           Cost calculator
-  optimizer/            Heuristic path optimizer
+  optimizer/            rule-based path optimizer
   assessment/           Maturity quiz
-  case-studies/         Illustrative scenario browser
+  case-studies/         Case study browser
   research/             Research paper viewer
   methodology/          Academic methodology (EN)
 components/             React components
   CostComparison.tsx    Results with benchmark chart
-  PathOptimizer.tsx     Heuristic optimizer with explainability
+  PathOptimizer.tsx     rule-based optimizer with explainability
   AssessmentQuiz.tsx    10-question maturity assessment
   PipeFieldDiagram.tsx  Tunnel vs. Field visual
 lib/
-  calculations.ts       Auditable cost simulation
-  optimizer.ts          Deterministic heuristic scoring ensemble
-  scenarios.ts          8 illustrative reference scenarios
+  calculations.ts       7-dimension cost model
+  optimizer.ts          rule-based path scorer (30-run sensitivity sweep)
+  scenarios.ts          8 reference case studies
   i18n.ts               All user-facing strings (PL + EN)
 ```
 

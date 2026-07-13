@@ -9,7 +9,6 @@ import { comparisonT } from "@/lib/i18n";
 interface Props {
   result: ComparisonResult;
   scenario: Scenario;
-  lang?: "pl" | "en";
   spendType?: "direct" | "indirect";
   processPhase?: "upstream" | "downstream";
 }
@@ -75,7 +74,7 @@ export default function PDFExport({ result, scenario, spendType, processPhase }:
     doc.setFontSize(11);
     doc.setTextColor(55, 65, 81);
     doc.text(
-      exportLang === "pl" ? "Raport: Modelowane koszty ścieżek zakupowych" : "Report: Modeled Procurement Path Costs",
+      exportLang === "pl" ? "Raport: Koszty utracone procedur zakupowych" : "Report: Hidden Cost of Procurement Procedures",
       margin,
       22
     );
@@ -84,7 +83,7 @@ export default function PDFExport({ result, scenario, spendType, processPhase }:
     // Scenario + date
     doc.setFontSize(9);
     doc.setTextColor(107, 114, 128);
-    doc.text(`${exportLang === "pl" ? "Scenariusz" : "Scenario"}: ${scenario.name}`, margin, y);
+    doc.text(`${exportLang === "pl" ? "Scenariusz" : "Scenario"}: ${exportLang === "en" ? scenario.nameEn : scenario.name}`, margin, y);
     doc.text(`${exportLang === "pl" ? "Data" : "Date"}: ${now}`, pageWidth - margin - 55, y);
     y += 12;
 
@@ -94,7 +93,7 @@ export default function PDFExport({ result, scenario, spendType, processPhase }:
 
     doc.setTextColor(30, 64, 175);
     doc.setFontSize(8);
-    doc.text(exportLang === "pl" ? "Modelowana różnica kosztów ścieżek" : "Modeled path cost difference", margin + 8, y + 7);
+    doc.text(exportLang === "pl" ? "Koszt utracony przywiązania do procedur" : "Hidden cost of procedural compliance", margin + 8, y + 7);
 
     doc.setFontSize(20);
     doc.setTextColor(185, 28, 28); // red-700
@@ -143,18 +142,16 @@ export default function PDFExport({ result, scenario, spendType, processPhase }:
       doc.roundedRect(margin, y, pageWidth - margin * 2, 22, 2, 2, "FD");
       doc.setTextColor(30, 64, 175);
       doc.setFontSize(9);
-      doc.text(exportLang === "pl" ? scenario.caseStudy.title : scenario.nameEn, margin + 6, y + 7);
+      doc.text(scenario.caseStudy.title, margin + 6, y + 7);
       doc.setTextColor(55, 65, 81);
       doc.setFontSize(8);
-      const caseInsight = exportLang === "pl"
-        ? scenario.caseStudy.insight
-        : scenario.caseStudy.insightEn;
+      const caseInsight = exportLang === "en" ? scenario.caseStudy.insightEn : scenario.caseStudy.insight;
       const insight = caseInsight.length > 140
         ? caseInsight.slice(0, 137) + "…"
         : caseInsight;
       doc.text(insight, margin + 6, y + 13);
       doc.setTextColor(107, 114, 128);
-      doc.text(`${exportLang === "pl" ? "Źródło" : "Source"}: ProcuraCost model 1.2.0; lib/scenarios.ts`, margin + 6, y + 19);
+      doc.text(`${exportLang === "pl" ? "Źródło" : "Source"}: ${scenario.caseStudy.source}`, margin + 6, y + 19);
       y += 26;
     }
 
@@ -240,6 +237,7 @@ export default function PDFExport({ result, scenario, spendType, processPhase }:
       let my = y + 17;
       const col1 = margin + 4;
       const col2 = margin + 95;
+
       details.slice(0, 6).forEach((d, idx) => {
         const label = exportLang === "pl" ? d.label : d.labelEn;
         const val = `${d.value.toFixed(2)}x`;

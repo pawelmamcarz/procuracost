@@ -4,7 +4,7 @@
 
 set -e
 
-CLAUDE_DIR="/Users/pawelmamcarz/iCloud Drive/ClaudeSync/claude/procedura"
+CLAUDE_DIR="/Users/pawelmamcarz/iCloud Drive/ClaudeSync/claude/procuracost"
 
 echo "→ Ściągam najnowszy kod do folderu Claude..."
 cd "$CLAUDE_DIR"

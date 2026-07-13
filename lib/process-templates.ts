@@ -1,22 +1,13 @@
 // Procurement process step templates and technology level definitions.
 //
-// Evidence status:
-// - Mandatory waits should be checked against the current PZP/EU rules before legal use.
-// - Step durations, stakeholder hours, rigidity indices, and technology effects are
-//   explicit modeling assumptions pending organizational calibration.
+// Academic basis:
+// - Mandatory wait times: PZP (Dz.U. 2019 poz. 2019) + EU Directive 2014/24/UE
+// - Stakeholder hours: calibrated / illustrative (role-hour magnitudes are modeling assumptions)
+// - Tech level impacts: timeMultiplier anchored to APQC/Hackett benchmarks; coordCostPerDay/toolCostPerProcess are modeling assumptions
 
 export type ProcessType = "pzp_eu" | "pzp_krajowy" | "private_formal" | "policy_only" | "catalog_order" | "mrp_order" | "capex" | "custom";
 export type TechLevelId = "manual" | "sourcing_tool" | "partial_erp" | "end_to_end";
 export type StakeholderRole = "buyer" | "lawyer" | "finance" | "manager" | "executive" | "requestor";
-
-export const STAKEHOLDER_ROLES: StakeholderRole[] = [
-  "buyer",
-  "lawyer",
-  "finance",
-  "manager",
-  "executive",
-  "requestor",
-];
 
 export interface ProcessStep {
   id: string;
@@ -112,7 +103,10 @@ export const TECH_LEVELS: Record<TechLevelId, TechLevel> = {
 };
 
 // ─── Process rigidity by type ───────────────────────────────────────────────────
-// Used for bypass probability and TCO calculations
+// Used for bypass probability and TCO calculations.
+// The cardinal 0–1 values are a Grade-C modeling assumption: the ordinal ranking
+// (pzp_eu > pzp_krajowy > capex > private_formal > … > mrp_order) is defensible, but
+// there is no external 0–1 anchor for the exact magnitudes — they are internal calibration.
 
 export const PROCESS_RIGIDITY: Record<ProcessType, number> = {
   pzp_eu: 0.95,
@@ -123,6 +117,25 @@ export const PROCESS_RIGIDITY: Record<ProcessType, number> = {
   mrp_order: 0.12,
   capex: 0.72,
   custom: 0.50,
+};
+
+// ─── Corruption / favoritism-risk context by process type ───────────────────────
+// A calibrated governance-risk index (Grade C) for how much favoritism, price-dispersion
+// and value loss a DISCRETIONARY award would risk in this context (0 = none, 1 = high
+// public-money scrutiny). This is what competitive (rigid) tendering averts — the basis
+// of the governance value credited to formal procedures. The pzp_eu = 1.0 anchor is tied
+// to Szucs 2024 (discretion raises prices and selects less-productive contractors); the
+// ordinal direction is taken from OECD; the intermediate gradient between anchors is a
+// modeling assumption — sensitivity-tested. Public procurement carries the highest stakes.
+export const CORRUPTION_RISK_CONTEXT: Record<ProcessType, number> = {
+  pzp_eu: 1.0,
+  pzp_krajowy: 0.9,
+  capex: 0.6,
+  policy_only: 0.45,
+  private_formal: 0.4,
+  custom: 0.4,
+  catalog_order: 0.2,
+  mrp_order: 0.15,
 };
 
 // ─── Process step templates ─────────────────────────────────────────────────────
@@ -198,12 +211,12 @@ const PZP_EU_STEPS: ProcessStep[] = [
     id: "standstill",
     name: "Standstill (art. 264 PZP)",
     nameEn: "Standstill period (art. 264 PZP)",
-    rigidDays: 11,
+    rigidDays: 10,
     flexibleDays: null,
     mandatoryWait: true,
     participation: {},
-    note: "Obowiązkowy okres zawieszenia przed podpisaniem umowy — min. 11 dni (przepisy EU)",
-    noteEn: "Mandatory suspension before signing — min. 11 days (EU regulations)",
+    note: "Obowiązkowy okres zawieszenia przed podpisaniem umowy — min. 10 dni (komunikacja elektroniczna) / 15 dni (inny sposób) — art. 264 ust. 1 PZP",
+    noteEn: "Mandatory suspension before signing — min. 10 days (electronic communication) / 15 days (other means) — art. 264(1) PZP",
   },
   {
     id: "contract_signing",
@@ -249,8 +262,8 @@ const PZP_KRAJOWY_STEPS: ProcessStep[] = [
     flexibleDays: null,
     mandatoryWait: true,
     participation: { buyer: 3 },
-    note: "Obowiązkowy termin składania ofert — min. 21 dni (tryby krajowe PZP)",
-    noteEn: "Mandatory offer submission period — min. 21 days (national PZP procedures)",
+    note: "Obowiązkowy termin składania ofert — min. 7 dni (dostawy/usługi) / 14 dni (roboty budowlane) — art. 283 PZP (21 dni to typowy, nie minimalny czas)",
+    noteEn: "Mandatory offer submission period — min. 7 days (supplies/services) / 14 days (construction works) — art. 283 PZP (21 days is a typical, not minimum, duration)",
   },
   {
     id: "bid_evaluation",
@@ -575,13 +588,13 @@ export const PROCESS_TYPE_META: Record<Exclude<ProcessType, "custom">, { categor
     category: "strategic_pzp",
     name: "Strategiczne PZP — przetarg nieograniczony (powyżej progów UE)",
     nameEn: "Strategic PZP — open tender (above EU thresholds)",
-    description: "Pełne postępowanie przetargowe z mandatory waiting periods. Dotyczy zamówień powyżej 5 382 000 PLN (usługi/dostawy) lub 139 117 000 PLN (roboty budowlane).",
-    descriptionEn: "Full tender procedure with mandatory waiting periods. Applies to contracts above EU thresholds.",
+    description: "Pełne postępowanie przetargowe z obowiązkowymi okresami oczekiwania. Dotyczy zamówień powyżej progów UE: ok. 600 tys.–930 tys. PLN dla dostaw/usług oraz ok. 23,3 mln PLN dla robót budowlanych (progi 2026, wg kursu UZP).",
+    descriptionEn: "Full tender procedure with mandatory waiting periods. Applies to contracts above the EU thresholds: ~PLN 600k–930k for supplies/services and ~PLN 23.3M for construction works (2026 thresholds, UZP conversion).",
   },
   pzp_krajowy: {
     category: "strategic_pzp",
-    name: "Strategiczne PZP — postępowanie krajowe (130k – 5,38M PLN)",
-    nameEn: "Strategic PZP — national procedure (130k – 5.38M PLN)",
+    name: "Strategiczne PZP — postępowanie krajowe (130k PLN – próg UE)",
+    nameEn: "Strategic PZP — national procedure (130k PLN – EU threshold)",
     description: "Uproszczone postępowanie krajowe. Shorter mandatory waiting periods than EU threshold.",
     descriptionEn: "Simplified national procedure. Shorter mandatory waiting periods than EU threshold.",
   },
@@ -603,8 +616,8 @@ export const PROCESS_TYPE_META: Record<Exclude<ProcessType, "custom">, { categor
     category: "strategic",
     name: "Strategiczna inwestycja CAPEX (uzasadnione zarządzanie)",
     nameEn: "Strategic CAPEX investment (justified governance)",
-    description: "Zakup środków trwałych. Procedury CAPEX mogą być uzasadnione przez wysoką wartość, długi horyzont i wymagania governance; potencjał skrócenia wymaga danych.",
-    descriptionEn: "Fixed asset procurement. CAPEX procedures may be justified by high value, long horizon, and governance needs; any compression potential requires evidence.",
+    description: "Zakup środków trwałych. Procedury CAPEX są uzasadnione — wysoka wartość, długi horyzont, governance to tu wartość, nie koszt. Jednak nawet tu można skrócić o 30%.",
+    descriptionEn: "Fixed asset procurement. CAPEX procedures are justified — high value, long horizon, governance is value here, not overhead. Yet even here 30% reduction is achievable.",
   },
   catalog_order: {
     category: "operational",
@@ -634,6 +647,49 @@ export const PROCESS_TYPE_META: Record<Exclude<ProcessType, "custom">, { categor
  * and practical benchmarks from end-to-end digital procurement implementations.
  */
 const FLEXIBLE_PATH_TIME_COMPRESSION = 0.85;
+
+// ─── Contextual derivation multipliers ──────────────────────────────────────────
+// Per-step and global calendar/staff adjustments applied by the derive* functions
+// below based on the Direct/Indirect × Upstream/Downstream context. All are Grade-C
+// modeling assumptions (docs/MODEL_PARAMETERS.md §4/§5); the audited invariant is that
+// no dimension's total context uplift exceeds ~×1.5 (scripts/recompute.ts).
+
+// deriveRigidDays — extra calendar days on the heaviest governance steps in strategic
+// direct sourcing, plus the global compressible-work premium.
+const RIGID_STRATEGIC_STEP_DAY_BOOST = 1.22;    // governance-heavy steps (+22% days)
+const RIGID_MANDATORY_STEP_DAY_BOOST = 1.08;    // publication/standstill sign-off (+8%)
+const RIGID_UPSTREAM_DIRECT_DAY_PREMIUM = 1.06; // global compressible-work premium
+
+// deriveFlexibleDays — extra compression on formal overhead eliminated under policy.
+const FLEXIBLE_HEAVY_FORMAL_STEP_COMPRESSION = 0.82;    // heaviest formal steps (−18%)
+const FLEXIBLE_MODERATE_FORMAL_STEP_COMPRESSION = 0.90; // moderately formal steps (−10%)
+const FLEXIBLE_UPSTREAM_DIRECT_COMPRESSION = 0.91;      // global upstream+direct compression
+const FLEXIBLE_UPSTREAM_COMPRESSION = 0.95;             // global upstream (non-direct)
+
+// deriveStaffCost — role-level seniority multipliers (the SOLE staff-intensity channel).
+// Upstream = strategic work draws seniors/legal/finance; buyer less dominant.
+const STAFF_UPSTREAM_EXECUTIVE = 1.85;
+const STAFF_UPSTREAM_MANAGER = 1.65;
+const STAFF_UPSTREAM_LAWYER = 1.55;
+const STAFF_UPSTREAM_FINANCE = 1.40;
+const STAFF_UPSTREAM_BUYER = 0.75;
+// Downstream = operational execution: hands-on buyer/requestor, fewer seniors.
+const STAFF_DOWNSTREAM_BUYER = 1.50;
+const STAFF_DOWNSTREAM_REQUESTOR = 1.35;
+const STAFF_DOWNSTREAM_MANAGER = 0.65;
+const STAFF_DOWNSTREAM_EXECUTIVE = 0.50;
+// Direct spend = production-related: more senior/finance/legal oversight.
+const STAFF_DIRECT_EXECUTIVE = 1.30;
+const STAFF_DIRECT_MANAGER = 1.25;
+const STAFF_DIRECT_FINANCE = 1.35;
+const STAFF_DIRECT_LAWYER = 1.20;
+// Indirect+Upstream: strategic but less board-level attention.
+const STAFF_INDIRECT_UPSTREAM_EXECUTIVE = 0.75;
+// Indirect+Downstream: least senior involvement (senior reduction only).
+const STAFF_INDIRECT_DOWNSTREAM_SENIOR = 0.75;
+
+// Fully-loaded daily rates are per 8-hour working day; participation is captured in hours.
+const WORK_HOURS_PER_DAY = 8;
 
 /**
  * Context-aware flexible path compression.
@@ -668,25 +724,32 @@ export function deriveRigidDays(
 
     // Highest governance load steps in strategic direct sourcing
     if (["siwz_prep", "spec_prep", "clarifications", "bid_evaluation", "award_committee", "contract_signing", "needs_analysis"].includes(stepId)) {
-      return 1.22; // +22% calendar days — extra negotiation/alignment cycles
+      return RIGID_STRATEGIC_STEP_DAY_BOOST; // +22% calendar days — extra negotiation/alignment cycles
     }
     if (["publication", "standstill"].includes(stepId)) {
-      return 1.08; // modest extension (mandatory periods + extra internal sign-off)
+      return RIGID_MANDATORY_STEP_DAY_BOOST; // modest extension (mandatory periods + extra internal sign-off)
     }
     return 1.0;
   };
 
-  let adjustedTotal = 0;
+  // Mandatory legal waiting periods (publication, standstill) are fixed by statute and
+  // must NOT be compressed by the technology multiplier — they stay at their legal floor.
+  let mandatoryDays = 0;
+  let adjustedCompressible = 0;
   for (const s of steps) {
-    adjustedTotal += s.rigidDays * stepDayBoost(s.id);
+    if (s.mandatoryWait) {
+      mandatoryDays += s.rigidDays;
+    } else {
+      adjustedCompressible += s.rigidDays * stepDayBoost(s.id);
+    }
   }
 
-  // Global strategic premium (kept for calibration stability)
+  // Global strategic premium (kept for calibration stability) — compressible work only
   if (processPhase === "upstream" && spendType === "direct") {
-    adjustedTotal *= 1.06;
+    adjustedCompressible *= RIGID_UPSTREAM_DIRECT_DAY_PREMIUM;
   }
 
-  return Math.round(adjustedTotal * techMultiplier);
+  return Math.round(adjustedCompressible * techMultiplier + mandatoryDays);
 }
 
 export function deriveFlexibleDays(
@@ -704,10 +767,10 @@ export function deriveFlexibleDays(
     if (processPhase !== "upstream" || spendType !== "direct") return 1.0;
     // Steps that disappear or shrink dramatically under policy in high-stakes direct work
     if (["siwz_prep", "spec_prep", "publication", "standstill", "award_committee"].includes(stepId)) {
-      return 0.82; // extra 18% compression on the heaviest formal overhead
+      return FLEXIBLE_HEAVY_FORMAL_STEP_COMPRESSION; // extra 18% compression on the heaviest formal overhead
     }
     if (["clarifications", "bid_evaluation", "contract_signing"].includes(stepId)) {
-      return 0.90;
+      return FLEXIBLE_MODERATE_FORMAL_STEP_COMPRESSION;
     }
     return 1.0;
   };
@@ -719,9 +782,9 @@ export function deriveFlexibleDays(
   }
 
   if (processPhase === "upstream" && spendType === "direct") {
-    adjustedBase *= 0.91;
+    adjustedBase *= FLEXIBLE_UPSTREAM_DIRECT_COMPRESSION;
   } else if (processPhase === "upstream") {
-    adjustedBase *= 0.95;
+    adjustedBase *= FLEXIBLE_UPSTREAM_COMPRESSION;
   }
 
   return Math.round(adjustedBase * techMultiplier * compression);
@@ -746,107 +809,55 @@ export function deriveStaffCost(
 
         // === Deepened contextual adjustments (Direct/Indirect + Upstream/Downstream) ===
         // Academic justification (for paper):
-        // These multipliers are unvalidated modeling assumptions derived from the conceptual framework.
-        // They are exposed for sensitivity analysis and require calibration with organizational data.
-        // In Upstream + Direct contexts, the model assumes materially more senior and legal effort.
-        // In Downstream + Indirect, the work is much more transactional and buyer-driven.
+        // These multipliers are a modeling assumption: their direction is triangulated from
+        // Kraljic/CIPS/APQC (in Upstream + Direct contexts, C-level and legal spend dramatically
+        // more time due to risk, governance, and strategic importance; in Downstream + Indirect
+        // the work is much more transactional and buyer-driven), but the magnitudes are internal
+        // and are to be validated by a time-allocation survey.
 
         // Upstream = strategic work: heavy involvement of seniors, legal, risk management
         if (processPhase === "upstream") {
-          if (role === "executive") effectiveHours *= 1.85;   // board-level decisions
-          if (role === "manager") effectiveHours *= 1.65;
-          if (role === "lawyer") effectiveHours *= 1.55;
-          if (role === "finance") effectiveHours *= 1.4;
-          if (role === "buyer") effectiveHours *= 0.75; // buyer role is less dominant in pure strategic work
+          if (role === "executive") effectiveHours *= STAFF_UPSTREAM_EXECUTIVE;   // board-level decisions
+          if (role === "manager") effectiveHours *= STAFF_UPSTREAM_MANAGER;
+          if (role === "lawyer") effectiveHours *= STAFF_UPSTREAM_LAWYER;
+          if (role === "finance") effectiveHours *= STAFF_UPSTREAM_FINANCE;
+          if (role === "buyer") effectiveHours *= STAFF_UPSTREAM_BUYER; // buyer role is less dominant in pure strategic work
         }
 
         // Downstream = operational execution: more hands-on buyer and requestor work
         if (processPhase === "downstream") {
-          if (role === "buyer") effectiveHours *= 1.5;
-          if (role === "requestor") effectiveHours *= 1.35;
-          if (role === "manager") effectiveHours *= 0.65;
-          if (role === "executive") effectiveHours *= 0.5;
+          if (role === "buyer") effectiveHours *= STAFF_DOWNSTREAM_BUYER;
+          if (role === "requestor") effectiveHours *= STAFF_DOWNSTREAM_REQUESTOR;
+          if (role === "manager") effectiveHours *= STAFF_DOWNSTREAM_MANAGER;
+          if (role === "executive") effectiveHours *= STAFF_DOWNSTREAM_EXECUTIVE;
         }
 
         // Direct spend = production-related: requires more senior oversight, risk, and finance involvement
         if (spendType === "direct") {
-          if (role === "executive") effectiveHours *= 1.3;
-          if (role === "manager") effectiveHours *= 1.25;
-          if (role === "finance") effectiveHours *= 1.35;
-          if (role === "lawyer") effectiveHours *= 1.2;
+          if (role === "executive") effectiveHours *= STAFF_DIRECT_EXECUTIVE;
+          if (role === "manager") effectiveHours *= STAFF_DIRECT_MANAGER;
+          if (role === "finance") effectiveHours *= STAFF_DIRECT_FINANCE;
+          if (role === "lawyer") effectiveHours *= STAFF_DIRECT_LAWYER;
         }
 
         // Indirect + Upstream still strategic but less board-level attention
         if (spendType === "indirect" && processPhase === "upstream") {
-          if (role === "executive") effectiveHours *= 0.75;
+          if (role === "executive") effectiveHours *= STAFF_INDIRECT_UPSTREAM_EXECUTIVE;
         }
 
-        // Strongest operational profile: Indirect + Downstream (least senior involvement)
+        // Strongest operational profile: Indirect + Downstream (least senior involvement).
+        // Deepens only the SENIOR reduction — the buyer/requestor shift toward hands-on
+        // work is already encoded once in the downstream block above (one channel per
+        // mechanism; a second buyer/requestor boost here double-counted it and pushed the
+        // staff dimension's total context uplift to ×2.15, past the ×1.5 invariant).
         if (spendType === "indirect" && processPhase === "downstream") {
-          if (["executive", "manager"].includes(role)) effectiveHours *= 0.5;
-          if (role === "buyer") effectiveHours *= 1.6;
-          if (role === "requestor") effectiveHours *= 1.4;
+          if (["executive", "manager"].includes(role)) effectiveHours *= STAFF_INDIRECT_DOWNSTREAM_SENIOR;
         }
 
-        // === Per-step granularity for highest-leverage situations (pogłębienie #1) ===
-        // In Upstream + Direct, certain governance-heavy steps demand disproportionately more senior time.
-        // This is the academic/practical reality: board and legal do not spread effort evenly.
-        if (processPhase === "upstream" && spendType === "direct") {
-          const stepId = step.id;
-          if (["award_committee", "contract_signing"].includes(stepId)) {
-            if (role === "executive") effectiveHours *= 1.45;   // board actually sits for these
-            if (role === "lawyer") effectiveHours *= 1.35;
-          }
-          if (["siwz_prep", "spec_prep"].includes(stepId)) {
-            if (role === "lawyer") effectiveHours *= 1.4;
-            if (role === "manager") effectiveHours *= 1.25;
-          }
-          if (stepId === "clarifications" && role === "executive") {
-            effectiveHours *= 1.3; // occasional escalation to C-level in strategic deals
-          }
-          if (stepId === "needs_analysis" && role === "executive") {
-            effectiveHours *= 1.6; // initial strategic direction setting
-          }
-        }
-
-        const count = Math.max(0, rate.count);
-        const dailyRate = Math.max(0, rate.dailyRate);
-        return stepTotal + (effectiveHours * count * dailyRate) / 8;
+        return stepTotal + (effectiveHours * rate.count * rate.dailyRate) / WORK_HOURS_PER_DAY;
       },
       0
     );
     return total + stepCost;
   }, 0);
-}
-
-export function deriveStaffCostByRole(
-  steps: ProcessStep[],
-  flexible: boolean,
-  stakeholders: Record<StakeholderRole, { count: number; dailyRate: number }>,
-  processPhase?: "upstream" | "downstream",
-  spendType?: "direct" | "indirect"
-): Record<StakeholderRole, number> {
-  return Object.fromEntries(
-    STAKEHOLDER_ROLES.map((selectedRole) => {
-      const isolatedStakeholders = Object.fromEntries(
-        STAKEHOLDER_ROLES.map((role) => [
-          role,
-          role === selectedRole
-            ? stakeholders[role]
-            : { count: 0, dailyRate: stakeholders[role].dailyRate },
-        ]),
-      ) as Record<StakeholderRole, { count: number; dailyRate: number }>;
-
-      return [
-        selectedRole,
-        deriveStaffCost(
-          steps,
-          flexible,
-          isolatedStakeholders,
-          processPhase,
-          spendType,
-        ),
-      ];
-    }),
-  ) as Record<StakeholderRole, number>;
 }
