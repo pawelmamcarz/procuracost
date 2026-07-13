@@ -2,7 +2,7 @@
 
 **Goal**: Secure academic supervision (promotor for an external-mode doctorate, *tryb eksternistyczny*) or formal collaboration on a major research project, by approaching a parallel shortlist of 3–5 academics whose work touches procurement economics, TCE, or public administration.
 
-**Re-baseline (13 July 2026)**: supervisor outreach moves from September/October to **now** — pitch to the first 3 shortlist targets and 2–3 warm pilot-organization calls happen in July; paper v1.5 goes to SSRN/OSF as a working paper by mid-August (journal submission deliberately held until after supervisor conversations); pilot fieldwork runs September–October 2026.
+**Re-baseline (13 July 2026)**: model 1.x materials are archived. Supervisor outreach, the article cycle and any pilot fieldwork must use the model 2.0 foundation; historical v1.x pitches and protocols are not reusable without redesign.
 
 This roadmap treats ProcuraCost as a potential **hybrid academic-consulting project** with clear scientific contribution.
 
@@ -10,7 +10,7 @@ This roadmap treats ProcuraCost as a potential **hybrid academic-consulting proj
 
 ## Core Thesis (to be refined)
 
-**"The opportunity costs of rigid procurement procedures significantly exceed those of policy-only compliance, and these costs can be systematically quantified and reduced through better distinction between policy and procedure, supported by modern information systems."**
+**"The relative cost of formal/sequential and adaptive/compliant procurement paths is conditional on competition, contract design, delay, coordination and governance risk; separating policy boundaries from path design makes those trade-offs measurable and testable."**
 
 Key extensions:
 - Explicit incorporation of **Direct vs Indirect** spend
@@ -86,7 +86,7 @@ This is the part the professor cares about most.
 **Objective**: Turn the calculator from a demonstration tool into a proper research instrument.
 
 **Key Deliverables**:
-- [ ] Versioned model (v1.0) with frozen assumptions for replication
+- [x] Versioned model 2.0 with frozen, generated replication outputs
 - [ ] Export functionality for researchers (full parameter set + results in structured format)
 - [ ] Optional: Simple "Research Mode" that logs (anonymized) inputs for future validation studies (with clear consent)
 - [ ] Public technical documentation (how the model works, all formulas)
@@ -123,17 +123,16 @@ This package is what most serious academics are asking for.
 
 ---
 
-## Immediate Next Actions (June 2026)
+## Immediate Next Actions (Model 2.0)
 
-See the detailed, week-by-week execution plan:
+1. Rewrite the three-article cycle from the binding 2.0 foundation; do not restore
+   or rename archived 1.x drafts.
+2. Design a new empirical protocol that separately measures workflow,
+   competition and contractual rigidity before collecting data.
+3. Review the central calibration profiles with domain experts without fitting
+   them to a preferred sign.
+4. Freeze a publication snapshot only after the article text, generated
+   replication outputs and public calculator agree.
 
-→ **`docs/RESEARCH_PAPER_ACTION_PLAN.md`** (8–10 week plan with concrete deliverables)
-
-This plan is the current operational version of the research paper track.
-
-Supporting templates (ready to use/customize):
-- `docs/research/survey_structure.md`
-- `docs/research/replication_package_spec.md`
-- `docs/research/supervisor_pitch_template.md`
-
-The high-level structure of the older roadmap below remains valid as strategic context.
+Historical action plans, surveys and pitch templates are available under
+`docs/archive/model-1.x/` for provenance only.

@@ -27,6 +27,8 @@ const defaultFeatures: ProcurementFeatures = {
   marketMaturity: 3,
   spendType: "indirect",
   processPhase: "upstream",
+  procurementObject: "supplies_services",
+  authorityLevel: "subcentral",
 };
 
 function formatPLNShort(v: number) {
@@ -216,6 +218,40 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
             </select>
           </div>
         </div>
+
+        {features.isPublicSector && (
+          <div className="mt-5 grid grid-cols-1 gap-4 rounded-xl border border-blue-100 bg-blue-50 p-4 sm:grid-cols-2">
+            <div>
+              <label className={labelClass} htmlFor="pf-procurement-object">
+                {lang === "en" ? "Procurement object" : "Przedmiot zamówienia"}
+              </label>
+              <select
+                id="pf-procurement-object"
+                value={features.procurementObject}
+                onChange={(e) => handleChange("procurementObject", e.target.value as ProcurementFeatures["procurementObject"])}
+                className={inputClass}
+              >
+                <option value="supplies_services">{lang === "en" ? "Supplies / services" : "Dostawy / usługi"}</option>
+                <option value="works">{lang === "en" ? "Construction works" : "Roboty budowlane"}</option>
+              </select>
+            </div>
+            <div>
+              <label className={labelClass} htmlFor="pf-authority-level">
+                {lang === "en" ? "Contracting authority" : "Poziom zamawiającego"}
+              </label>
+              <select
+                id="pf-authority-level"
+                value={features.authorityLevel}
+                onChange={(e) => handleChange("authorityLevel", e.target.value as ProcurementFeatures["authorityLevel"])}
+                className={inputClass}
+                disabled={features.procurementObject === "works"}
+              >
+                <option value="subcentral">{lang === "en" ? "Sub-central" : "Subcentralny"}</option>
+                <option value="central">{lang === "en" ? "Central government" : "Administracja centralna"}</option>
+              </select>
+            </div>
+          </div>
+        )}
 
         <button
           onClick={handleOptimize}

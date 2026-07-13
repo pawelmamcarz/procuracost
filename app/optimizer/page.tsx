@@ -18,10 +18,10 @@ export default function OptimizerPage() {
           Optymalizator ścieżki zakupowej
         </h1>
         <p className="mt-2 text-sm text-gray-500 max-w-2xl">
-          Model rekomenduje metodę zakupu (ścieżkę przez pole polityki zakupowej) na podstawie
-          parametrów zakupu; rekomendacje dla sektora publicznego są filtrowane do dopuszczalnych
-          trybów PZP. To ważona funkcja oceny (nie trenowana sieć ML); 30 przebiegów to analiza
-          wrażliwości pokazująca stabilność rekomendacji. Narzędzie ilustracyjne.
+          Model porównuje metody zakupu na podstawie parametrów zakupu; dla sektora publicznego
+          stosuje zakodowane filtry progowe PZP. To ważona funkcja oceny, nie trenowany model ML;
+          30 przebiegów pokazuje wrażliwość rekomendacji. Narzędzie jest ilustracyjne i nie zastępuje
+          analizy prawnej ani regulaminu zamawiającego.
         </p>
       </div>
       <PathOptimizer />

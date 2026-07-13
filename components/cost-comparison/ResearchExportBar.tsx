@@ -30,6 +30,7 @@ export default function ResearchExportBar({ result, scenario, inputs, lang }: Pr
     flexibleDays,
     trace,
     sources,
+    uncertainty,
   } = result;
 
   const baseName = `procura-cost-research-${scenario.id || "scenario"}-${isoDateStamp()}`;
@@ -53,6 +54,7 @@ export default function ResearchExportBar({ result, scenario, inputs, lang }: Pr
         flexibleBypassProbability,
         delta,
         deltaPercent,
+        uncertainty,
         rigid,
         flexible,
         trace,
@@ -74,6 +76,9 @@ export default function ResearchExportBar({ result, scenario, inputs, lang }: Pr
       `TotalPLN,${rigid.total.toFixed(2)},${flexible.total.toFixed(2)}`,
       `DeltaPLN,${delta.toFixed(2)},`,
       `DeltaPercent,${deltaPercent.toFixed(2)},`,
+      `ScenarioLowDeltaPLN,${uncertainty.lowDelta.toFixed(2)},`,
+      `ScenarioHighDeltaPLN,${uncertainty.highDelta.toFixed(2)},`,
+      `ScenarioRangeCrossesZero,${uncertainty.crossesZero},`,
       "",
       "Multiplier,Value",
       ...Object.entries(trace.multipliers).map(([k, v]) => `${k},${v.toFixed(4)}`),
@@ -95,6 +100,7 @@ export default function ResearchExportBar({ result, scenario, inputs, lang }: Pr
       `| Renegotiation prob. | ${(trace.probabilities.renegotiationRigid * 100).toFixed(1)}% | ${(trace.probabilities.renegotiationFlexible * 100).toFixed(1)}% |`,
       `| Total (PLN) | ${Math.round(rigid.total).toLocaleString("pl-PL")} | ${Math.round(flexible.total).toLocaleString("pl-PL")} |`,
       `| Δ | ${Math.round(delta).toLocaleString("pl-PL")} (${deltaPercent.toFixed(1)}%) | — |`,
+      `| Scenario range Δ | ${Math.round(uncertainty.lowDelta).toLocaleString("pl-PL")} to ${Math.round(uncertainty.highDelta).toLocaleString("pl-PL")} | crosses zero: ${uncertainty.crossesZero} |`,
       ``,
       `| Dimension | Rigid (PLN) | Flexible (PLN) |`,
       `|-----------|-------------|----------------|`,

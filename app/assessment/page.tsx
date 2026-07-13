@@ -3,9 +3,9 @@ import { assessmentT } from "@/lib/i18n";
 import AssessmentQuiz from "@/components/AssessmentQuiz";
 
 export const metadata: Metadata = {
-  title: "Ocena dojrzałości zakupowej — Tunel czy Pole? | ProcuraCost",
+  title: "Profil projektowania zakupów — ProcuraCost 2.0",
   description:
-    "10 pytań, 5 minut. Sprawdź, czy Twoja organizacja działa w trybie tunelu (procedura) czy pola (polityka zakupowa).",
+    "Opisowy profil sekwencyjności i adaptacyjności procesu; nie jest walidowanym testem dojrzałości.",
 };
 
 export default function AssessmentPage() {

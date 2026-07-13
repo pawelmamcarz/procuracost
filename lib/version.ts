@@ -1,29 +1,14 @@
-/**
- * Tesla-style versioning: yyyy.week.version.patch
- *
- * - Year and ISO week number are computed automatically (never manual).
- * - The third segment ("version" within the week) and patch default to 0.
- * - To mark a specific notable release within the same week, set at build time:
- *     NEXT_PUBLIC_VERSION=2026.19.3.0 npm run build
- */
-export function getISOWeek(date: Date): number {
-  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-  const dayNum = d.getUTCDay() || 7;
-  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  return Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
-}
+import { resolveSiteVersion } from "./version-core";
 
-function generateTeslaVersion(): string {
-  const now = new Date();
-  const year = now.getFullYear();
-  const week = getISOWeek(now);
-  return `${year}.${week}.0.0`;
-}
+export {
+  generateSiteVersion,
+  getISOWeek,
+  getISOWeekParts,
+  resolveSiteVersion,
+} from "./version-core";
 
-export const VERSION =
-  process.env.NEXT_PUBLIC_VERSION || generateTeslaVersion();
+export const VERSION = resolveSiteVersion(process.env.NEXT_PUBLIC_VERSION);
 
 // Semantic version of the quantitative model. Bump whenever formulas,
 // parameters, or interpretation of outputs change.
-export const MODEL_VERSION = "1.2.0";
+export const MODEL_VERSION = "2.0.0";

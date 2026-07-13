@@ -1,402 +1,49 @@
-"use client";
-
-import { useState } from "react";
-import {
-  getDimensionMultipliers,
-  getDimensionMultiplierDetails,
-  calculateCosts,
-  ProcurementInputs,
-} from "@/lib/calculations";
-import { dimensionMultiplierLabelsT, researchExportT } from "@/lib/i18n";
-import { downloadTextFile, isoDateStamp } from "@/lib/research-export";
-import { MODEL_VERSION, VERSION } from "@/lib/version";
 import Link from "next/link";
+import { calculateCosts } from "@/lib/calculations";
+import { SCENARIOS } from "@/lib/scenarios";
 
-type DimensionMultipliers = ReturnType<typeof getDimensionMultipliers>;
-
-const DETAIL_KEY_TO_MULTIPLIER_KEY: Record<string, keyof DimensionMultipliers> = {
-  tco: "tcoMultiplier",
-  delay: "delayMultiplier",
-  renegotiation: "renegotiationMultiplier",
-  productivity: "productivityMultiplier",
-  bypass: "bypassMultiplier",
-  coordination: "coordinationIntensityMultiplier",
-};
-
-export default function AssumptionsExplorer() {
-  // Live controls for the two main dimensions (what the real model uses)
-  const [spendType, setSpendType] = useState<"direct" | "indirect">("direct");
-  const [processPhase, setProcessPhase] = useState<"upstream" | "downstream">("upstream");
-
-  // Get the *actual* multipliers from the production model code
-  const baseMultipliers = getDimensionMultipliers(spendType, processPhase);
-  const details = getDimensionMultiplierDetails(spendType, processPhase);
-
-  // === Manual overrides (for sensitivity analysis) ===
-  const [overrides, setOverrides] = useState<Partial<DimensionMultipliers>>({});
-
-  const effectiveMultipliers: DimensionMultipliers = { ...baseMultipliers, ...overrides };
-
-  const hasOverrides = Object.keys(overrides).length > 0;
-
-  function setOverride(key: keyof DimensionMultipliers, value: number) {
-    setOverrides(prev => ({ ...prev, [key]: value }));
-  }
-
-  function resetOverrides() {
-    setOverrides({});
-  }
-
-  // === Example scenario simulator (for UX + deeper research value) ===
-  const [exampleValue, setExampleValue] = useState(2_000_000); // 2M PLN contract
-  const [dailyInaction, setDailyInaction] = useState(15_000);   // daily cost of delay
-
-  // Rough simulation of the rigid-vs-flexible hidden-cost gap using the effective
-  // multipliers. Simplified but directionally consistent with calculateCosts().
-  const rigidDaysBase = 85;
-  const flexibleDaysBase = 42;
-  const delayDays = Math.max(0, rigidDaysBase - flexibleDaysBase);
-
-  // Cost-model constants mirrored from lib/calculations.ts — no invented coefficients.
-  const TCO_SAVINGS_RATE_PER_YEAR = 0.10;
-  const DISCRETION_FAVORITISM_PREMIUM = 0.06;
-  const BASE_RENEGOTIATION_PROBABILITY = 0.22;
-  const RIGIDITY_RENEGOTIATION_PREMIUM = 0.077;
-  const RENEGOTIATION_PREMIUM_MAX = 0.105;
-  const REPRESENTATIVE_RIGIDITY = 0.85; // representative rigid-process rigidity index (ρ)
-  const FLEXIBLE_RIGIDITY = 0.15;       // policy-level rigidity of the flexible path
-
-  // Same formula for both paths (symmetric model): P(ρ) = 0.22 + min(0.077·ρ·m, 0.105).
-  function renegProb(rigidity: number, mult: number) {
-    return BASE_RENEGOTIATION_PROBABILITY +
-      Math.min(RIGIDITY_RENEGOTIATION_PREMIUM * rigidity * mult, RENEGOTIATION_PREMIUM_MAX);
-  }
-
-  function computeGap(m: { tcoMultiplier: number; delayMultiplier: number; renegotiationMultiplier: number; productivityMultiplier: number }) {
-    const tcoImpact = exampleValue * TCO_SAVINGS_RATE_PER_YEAR * (m.tcoMultiplier - 1) * 3;
-    const delayImpact = delayDays * dailyInaction * m.delayMultiplier;
-    const renegotiationImpact = exampleValue *
-      (renegProb(REPRESENTATIVE_RIGIDITY, m.renegotiationMultiplier) - renegProb(FLEXIBLE_RIGIDITY, m.renegotiationMultiplier));
-    const productivityImpact = exampleValue * DISCRETION_FAVORITISM_PREMIUM * (m.productivityMultiplier - 1);
-    return Math.max(0, tcoImpact + delayImpact + renegotiationImpact + productivityImpact);
-  }
-
-  const simulatedHiddenGap = computeGap(effectiveMultipliers);
-  const baseGap = computeGap(baseMultipliers);
-
-  const gapChange = simulatedHiddenGap - baseGap;
-  const gapChangePercent = baseGap > 0 ? ((simulatedHiddenGap / baseGap) - 1) * 100 : 0;
-
-  const txExport = researchExportT.pl;
-
-  function handleResearchJsonExport() {
-    const repInputs: ProcurementInputs = {
-      contractValue: exampleValue,
-      tcoHorizonYears: 3,
-      processType: "pzp_eu",
-      techLevel: "partial_erp",
-      stakeholders: {
-        buyer: { count: 1, dailyRate: 1200 },
-        lawyer: { count: 1, dailyRate: 1400 },
-        finance: { count: 1, dailyRate: 1100 },
-        manager: { count: 1, dailyRate: 1500 },
-        executive: { count: 1, dailyRate: 2200 },
-        requestor: { count: 1, dailyRate: 900 },
-      },
-      dailyCostOfInaction: dailyInaction,
-      renegotiationCost: Math.round(exampleValue * 0.08),
-      bypassAuditExposure: Math.round(exampleValue * 0.05),
-      spendType,
-      processPhase,
-    };
-    const fullResult = calculateCosts(repInputs);
-    const payload = {
-      meta: {
-        model: "ProcuraCost",
-        modelVersion: MODEL_VERSION,
-        appVersion: VERSION,
-        exportedAt: new Date().toISOString(),
-        surface: "Assumptions Explorer (research tool)",
-        note: txExport.assumptionsJsonNote,
-      },
-      context: { spendType, processPhase },
-      multipliers: {
-        base: baseMultipliers,
-        effective: effectiveMultipliers,
-        details,
-      },
-      representativeScenario: {
-        inputs: repInputs,
-        results: {
-          rigidDays: fullResult.rigidDays,
-          flexibleDays: fullResult.flexibleDays,
-          delta: fullResult.delta,
-          deltaPercent: fullResult.deltaPercent,
-          bypassProbability: fullResult.bypassProbability,
-          flexibleBypassProbability: fullResult.flexibleBypassProbability,
-          rigid: fullResult.rigid,
-          flexible: fullResult.flexible,
-          trace: fullResult.trace,
-        },
-        sources: fullResult.sources,
-      },
-      simulator: {
-        exampleValue,
-        dailyInaction,
-        simulatedHiddenGap,
-        baseGap,
-        gapChange,
-        gapChangePercent,
-      },
-    };
-    downloadTextFile(
-      `procura-research-multipliers-${spendType}-${processPhase}-${isoDateStamp()}.json`,
-      JSON.stringify(payload, null, 2),
-      "application/json",
-    );
-  }
-
-  function handleCopyMultipliersCsv() {
-    const multRows = details.map((d) => {
-      const key = DETAIL_KEY_TO_MULTIPLIER_KEY[d.key] ?? "coordinationIntensityMultiplier";
-      return `${dimensionMultiplierLabelsT.en[d.key]},${effectiveMultipliers[key].toFixed(2)}x`;
-    });
-    const simRows = [
-      `ExampleValue,${exampleValue}`,
-      `DailyInaction,${dailyInaction}`,
-      `SimulatedGap,${Math.round(simulatedHiddenGap)}`,
-      `BaseGap,${Math.round(baseGap)}`,
-    ];
-    navigator.clipboard.writeText(["Key,Value", ...multRows, ...simRows].join("\n"));
-  }
+export default function AssumptionsPage() {
+  const example = SCENARIOS[0];
+  const result = calculateCosts(example.inputs);
 
   return (
-    <div className="mx-auto max-w-4xl px-6 py-12">
-      <div className="mb-8">
-        <span className="inline-block rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700">
-          Research Tool • Live from model
-        </span>
-        <h1 className="mt-3 text-3xl font-bold">Eksplorator założeń modelu (2026)</h1>
-        <p className="mt-2 text-lg text-gray-600">
-          Dostosuj dwa wymiary kontekstowe (Spend Type × Process Phase) i zobacz dokładnie, jakie mnożniki stosuje produkcyjny model w czasie rzeczywistym.
+    <main className="mx-auto max-w-4xl px-6 py-12">
+      <p className="text-sm font-semibold text-blue-700">ProcuraCost 2.0</p>
+      <h1 className="mt-2 text-3xl font-bold">Założenia i niepewność modelu</h1>
+      <p className="mt-4 text-gray-600">
+        Model porównuje formalną/sekwencyjną i adaptacyjną/zgodną ścieżkę tego
+        samego zakupu. Nie zakłada z góry zwycięzcy. Słabo udokumentowane
+        parametry są scenariuszami, a nie wynikami badań.
+      </p>
+
+      <section className="mt-8 grid gap-4 md:grid-cols-3">
+        {[
+          ["Dobór dostawcy", "0,02–0,09 wartości; Szucs wyznacza kierunek i punkt 0,06."],
+          ["Renegocjacja", "0–10,5 pp; tylko różnica wynikająca ze sztywności kontraktu."],
+          ["TCO i obejścia", "TCO 0–15%; obejścia 1–30%. Oba zakresy są założeniami."],
+        ].map(([title, body]) => (
+          <div key={title} className="rounded-xl border border-gray-200 p-5">
+            <h2 className="font-semibold">{title}</h2>
+            <p className="mt-2 text-sm text-gray-600">{body}</p>
+          </div>
+        ))}
+      </section>
+
+      <section className="mt-8 rounded-xl bg-gray-50 p-6">
+        <h2 className="font-semibold">Przykład kontrolny: {example.name}</h2>
+        <p className="mt-2 text-sm text-gray-700">
+          Centralna różnica formalna − adaptacyjna: {Math.round(result.delta).toLocaleString("pl-PL")} zł.
+          Zakres scenariuszowy: {Math.round(result.uncertainty.lowDelta).toLocaleString("pl-PL")}–
+          {Math.round(result.uncertainty.highDelta).toLocaleString("pl-PL")} zł
+          {result.uncertainty.crossesZero ? "; znak wyniku nie jest odporny." : "; znak wyniku jest odporny w tym zakresie."}
         </p>
-        <p className="mt-1 text-sm text-gray-500">
-          Wszystkie wartości poniżej pochodzą bezpośrednio z <code>getDimensionMultipliers()</code> — tego samego kodu, którego używa kalkulator i optimizer.
-        </p>
-      </div>
+      </section>
 
-      <div className="mb-8 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <div className="text-sm font-medium text-gray-700 mb-2">Spend Type</div>
-          <div className="flex gap-2">
-            {(["direct", "indirect"] as const).map((t) => (
-              <button
-                key={t}
-                onClick={() => setSpendType(t)}
-                className={`flex-1 rounded-lg border px-4 py-2 text-sm font-medium transition ${spendType === t ? "border-blue-600 bg-blue-50 text-blue-700" : "border-gray-200 hover:bg-gray-50"}`}
-              >
-                {t === "direct" ? "Direct (strategiczne)" : "Indirect (wspierające)"}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div>
-          <div className="text-sm font-medium text-gray-700 mb-2">Process Phase</div>
-          <div className="flex gap-2">
-            {(["upstream", "downstream"] as const).map((p) => (
-              <button
-                key={p}
-                onClick={() => setProcessPhase(p)}
-                className={`flex-1 rounded-lg border px-4 py-2 text-sm font-medium transition ${processPhase === p ? "border-blue-600 bg-blue-50 text-blue-700" : "border-gray-200 hover:bg-gray-50"}`}
-              >
-                {p === "upstream" ? "Upstream (strategiczny)" : "Downstream (operacyjny)"}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="mb-8 rounded-2xl border border-blue-200 bg-blue-50 p-6">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h3 className="font-semibold text-blue-900">Ręczne nadpisywanie mnożników (analiza wrażliwości)</h3>
-            <p className="text-sm text-blue-700 mt-1">Zmieniaj wartości, żeby zobaczyć jak model zachowuje się przy innych założeniach.</p>
-          </div>
-          {hasOverrides && (
-            <button
-              onClick={resetOverrides}
-              className="text-xs px-3 py-1.5 rounded-lg border border-blue-300 text-blue-700 hover:bg-blue-100"
-            >
-              Resetuj do wartości modelu
-            </button>
-          )}
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5">
-          {(
-            [
-              { key: "tcoMultiplier", label: "Dźwignia TCO", min: 0.8, max: 2.2, step: 0.05 },
-              { key: "delayMultiplier", label: "Koszt opóźnienia", min: 0.5, max: 2.5, step: 0.05 },
-              { key: "renegotiationMultiplier", label: "Ryzyko renegocjacji", min: 0.5, max: 2.5, step: 0.05 },
-              { key: "productivityMultiplier", label: "Wpływ na produktywność", min: 0.5, max: 1.5, step: 0.05 },
-              { key: "coordinationIntensityMultiplier", label: "Intensywność koordynacji", min: 0.6, max: 2.0, step: 0.05 },
-            ] as { key: keyof DimensionMultipliers; label: string; min: number; max: number; step: number }[]
-          ).map(({ key, label, min, max, step }) => {
-            const baseVal = baseMultipliers[key];
-            const effVal = effectiveMultipliers[key];
-            return (
-              <div key={key}>
-                <div className="flex justify-between text-sm mb-1">
-                  <label className="text-gray-700" htmlFor={`override-${key}`}>{label}</label>
-                  <span className="font-mono tabular-nums text-blue-700 font-semibold">
-                    {effVal.toFixed(2)}x
-                    {effVal !== baseVal && <span className="text-xs text-gray-500 ml-1">(bazowo {baseVal.toFixed(2)}x)</span>}
-                  </span>
-                </div>
-                <input
-                  id={`override-${key}`}
-                  type="range"
-                  min={min}
-                  max={max}
-                  step={step}
-                  value={effVal}
-                  onChange={(e) => setOverride(key, parseFloat(e.target.value))}
-                  className="w-full accent-blue-600"
-                />
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="rounded-2xl border border-gray-200 bg-white p-6">
-          <h3 className="font-semibold text-gray-900 mb-4">
-            {hasOverrides ? "Efektywne mnożniki (z nadpisaniem)" : "Aktualne mnożniki (produkcyjne)"}
-          </h3>
-
-          <div className="space-y-2 text-sm">
-            {details.length > 0 ? (
-              details.map((d) => {
-                const multKey = DETAIL_KEY_TO_MULTIPLIER_KEY[d.key] ?? "coordinationIntensityMultiplier";
-                const baseVal = baseMultipliers[multKey];
-                const effVal = effectiveMultipliers[multKey];
-
-                return (
-                  <div key={d.key} className="flex justify-between items-center border-b border-gray-100 pb-1.5">
-                    <span className="text-gray-700">{dimensionMultiplierLabelsT.pl[d.key]}</span>
-                    <span className="font-mono font-semibold tabular-nums text-blue-700">
-                      {effVal.toFixed(2)}x
-                      {effVal !== baseVal && <span className="text-gray-500 text-xs ml-1">({baseVal.toFixed(2)}x)</span>}
-                    </span>
-                  </div>
-                );
-              })
-            ) : (
-              <p className="text-gray-500">Brak korekt — kontekst neutralny</p>
-            )}
-          </div>
-
-          <div className="mt-4 pt-3 border-t text-xs text-gray-500">
-            Te wartości są używane w <strong>calculateCosts</strong>, optimizerze i raporcie PDF. Mnożniki godzin per rola (staff) żyją osobno w <strong>deriveStaffCost</strong>.
-          </div>
-        </div>
-
-        <div className="rounded-2xl border border-gray-200 bg-white p-6">
-          <h3 className="font-semibold text-gray-900 mb-4">Symulator wpływu na przykładzie</h3>
-
-          <div className="space-y-4 mb-5">
-            <div>
-              <label className="text-xs text-gray-500 block mb-1" htmlFor="sim-contract-value">Wartość kontraktu</label>
-              <input
-                id="sim-contract-value"
-                type="number"
-                value={exampleValue}
-                onChange={e => setExampleValue(Number(e.target.value))}
-                className="w-full border rounded px-3 py-1.5 text-sm"
-              />
-            </div>
-            <div>
-              <label className="text-xs text-gray-500 block mb-1" htmlFor="sim-daily-inaction">Koszt bezczynności dziennie (PLN)</label>
-              <input
-                id="sim-daily-inaction"
-                type="number"
-                value={dailyInaction}
-                onChange={e => setDailyInaction(Number(e.target.value))}
-                className="w-full border rounded px-3 py-1.5 text-sm"
-              />
-            </div>
-          </div>
-
-          <div className="text-center py-4 border-y">
-            <div className="text-xs text-gray-500">Szacowana ukryta luka kosztowa (sztywna ścieżka)</div>
-            <div className="mt-1 text-4xl font-bold tabular-nums text-red-600">
-              {simulatedHiddenGap.toLocaleString("pl-PL")} zł
-            </div>
-            {hasOverrides && (
-              <div className={`text-sm mt-1 ${gapChange > 0 ? "text-red-600" : "text-green-600"}`}>
-                {gapChange > 0 ? "+" : ""}{gapChange.toLocaleString("pl-PL")} zł
-                ({gapChangePercent > 0 ? "+" : ""}{gapChangePercent.toFixed(1)}% vs wartości bazowe modelu)
-              </div>
-            )}
-          </div>
-
-          <p className="mt-4 text-xs text-gray-500 leading-relaxed">
-            To uproszczona symulacja pokazująca kierunkowy wpływ zmian mnożników.
-            Pełny model zawiera dodatkowe interakcje (bypass, staff hours per step itd.).
-          </p>
-        </div>
-      </div>
-
-      <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6">
-        <h3 className="font-semibold text-blue-900 mb-2">Użyj tych ustawień w kalkulatorze</h3>
-        <p className="text-sm text-blue-800 mb-4">
-          Chcesz zobaczyć jak wybrane (lub nadpisane) mnożniki wpływają na Twój konkretny scenariusz zakupowy?
-        </p>
-
-        <div className="flex flex-wrap gap-3">
-          <Link
-            href={`/calculator?st=${spendType}&pp=${processPhase}`}
-            className="inline-flex items-center px-5 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition"
-          >
-            Otwórz kalkulator z tym kontekstem
-          </Link>
-
-          <Link
-            href="/calculator"
-            className="inline-flex items-center px-5 py-2.5 rounded-xl border border-blue-300 text-blue-700 text-sm font-medium hover:bg-white transition"
-          >
-            Idź do kalkulatora (bez predefiniowanego kontekstu)
-          </Link>
-        </div>
-
-        <p className="mt-3 text-xs text-blue-700">
-          W kalkulatorze możesz ręcznie wybrać Spend Type i Process Phase — wtedy wszystkie obliczenia (koszty, macierz, PDF, optimizer) będą używać dokładnie tych mnożników, które widzisz powyżej.
-        </p>
-      </div>
-
-      <div className="mt-8 rounded-xl bg-amber-50 border border-amber-100 p-4 text-sm text-amber-800">
-        <strong>Uwaga badawcza:</strong> Te mnożniki to obecnie kalibrowane założenia modelowe (2026). Są one głównym obiektem planu walidacji empirycznej (patrz docs/EMPIRICAL_VALIDATION_PLAN.md).
-        Nadpisane wartości powyżej służą wyłącznie analizie wrażliwości.
-      </div>
-
-      <div className="mt-6 flex flex-wrap items-center justify-end gap-2 print:hidden">
-        <span className="mr-1 text-xs text-gray-500">{txExport.forPaper}</span>
-        <button
-          onClick={handleResearchJsonExport}
-          title={txExport.assumptionsJsonTitle}
-          className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 active:bg-blue-800"
-        >
-          {txExport.assumptionsExportJson}
-        </button>
-        <button
-          onClick={handleCopyMultipliersCsv}
-          title={txExport.assumptionsCsvTitle}
-          className="rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-600 hover:border-gray-300"
-        >
-          {txExport.assumptionsCopyCsv}
-        </button>
-      </div>
-    </div>
+      <p className="mt-6 text-sm text-gray-600">
+        Pełne równania, pochodzenie parametrów i ograniczenia transferu opisuje{" "}
+        <Link href="/methodology" className="text-blue-700 underline">metodologia</Link>.
+        Dane wejściowe i wynik można wyeksportować z kalkulatora.
+      </p>
+    </main>
   );
 }

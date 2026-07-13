@@ -3,7 +3,7 @@
 // Academic basis:
 // - Mandatory wait times: PZP (Dz.U. 2019 poz. 2019) + EU Directive 2014/24/UE
 // - Stakeholder hours: calibrated / illustrative (role-hour magnitudes are modeling assumptions)
-// - Tech level impacts: timeMultiplier anchored to APQC/Hackett benchmarks; coordCostPerDay/toolCostPerProcess are modeling assumptions
+// - Step effort and all technology multipliers/costs: illustrative model assumptions
 
 export type ProcessType = "pzp_eu" | "pzp_krajowy" | "private_formal" | "policy_only" | "catalog_order" | "mrp_order" | "capex" | "custom";
 export type TechLevelId = "manual" | "sourcing_tool" | "partial_erp" | "end_to_end";
@@ -13,9 +13,9 @@ export interface ProcessStep {
   id: string;
   name: string;
   nameEn: string;
-  // Days in the rigid process path
+  // Days in the formal/sequential path
   rigidDays: number;
-  // Days in the flexible (policy_only) path. null = step eliminated.
+  // Days in the adaptive/compliant path. null = step eliminated.
   flexibleDays: number | null;
   // Legally mandated minimum waiting period — cannot be shortened
   mandatoryWait: boolean;
@@ -39,9 +39,9 @@ export interface TechLevel {
   coordCostPerDay: number;
   // PLN/process: amortised license/subscription cost of the tool
   toolCostPerProcess: number;
-  // Multiplier on bypass probability. end_to_end makes bypass nearly impossible.
+  // Multiplier on the assumed bypass rate.
   bypassProbMultiplier: number;
-  // Process rigidity when used with policy_only (lower = more field-like)
+  // Legacy compatibility index; not used as a causal coefficient in model 2.0.
   policyRigidityIndex: number;
 }
 
@@ -92,7 +92,7 @@ export const TECH_LEVELS: Record<TechLevelId, TechLevel> = {
     name: "End-to-end (Ariba / Coupa)",
     nameEn: "End-to-end (Ariba / Coupa)",
     description: "Pełny cykl zakupowy w jednym systemie: sourcing, zatwierdzenia, PO, faktura, rozliczenie automatyczne. Compliance egzekwowany przez system.",
-    descriptionEn: "Full procurement cycle in one system: sourcing, approvals, PO, invoice, automatic settlement. Compliance enforced by the system — this is how the field model is implemented in technology.",
+    descriptionEn: "Full procurement cycle in one system: sourcing, approvals, PO, invoice and settlement. Configured controls can support either path.",
     examples: "SAP Ariba, Coupa, Oracle Fusion Procurement",
     timeMultiplier: 0.70,
     coordCostPerDay: 20,
@@ -103,10 +103,8 @@ export const TECH_LEVELS: Record<TechLevelId, TechLevel> = {
 };
 
 // ─── Process rigidity by type ───────────────────────────────────────────────────
-// Used for bypass probability and TCO calculations.
-// The cardinal 0–1 values are a Grade-C modeling assumption: the ordinal ranking
-// (pzp_eu > pzp_krajowy > capex > private_formal > … > mrp_order) is defensible, but
-// there is no external 0–1 anchor for the exact magnitudes — they are internal calibration.
+// Legacy values retained for exports and backward compatibility. Model 2.0 does
+// not use this scalar to calculate bypass, TCO, renegotiation or selection costs.
 
 export const PROCESS_RIGIDITY: Record<ProcessType, number> = {
   pzp_eu: 0.95,
@@ -593,8 +591,8 @@ export const PROCESS_TYPE_META: Record<Exclude<ProcessType, "custom">, { categor
   },
   pzp_krajowy: {
     category: "strategic_pzp",
-    name: "Strategiczne PZP — postępowanie krajowe (130k PLN – próg UE)",
-    nameEn: "Strategic PZP — national procedure (130k PLN – EU threshold)",
+    name: "Strategiczne PZP — postępowanie krajowe (170k PLN – próg UE)",
+    nameEn: "Strategic PZP — national procedure (170k PLN – EU threshold)",
     description: "Uproszczone postępowanie krajowe. Shorter mandatory waiting periods than EU threshold.",
     descriptionEn: "Simplified national procedure. Shorter mandatory waiting periods than EU threshold.",
   },
@@ -607,17 +605,17 @@ export const PROCESS_TYPE_META: Record<Exclude<ProcessType, "custom">, { categor
   },
   policy_only: {
     category: "strategic",
-    name: "Strategiczny zakup elastyczny — polityka zakupowa (ścieżka elastyczna)",
-    nameEn: "Strategic flexible purchase — procurement policy",
-    description: "Zakup prowadzony wyłącznie w ramach polityki zakupowej — bez mandatory procedur. Czas i metoda wybierane przez kupca zgodnie z matrycą uprawnień.",
-    descriptionEn: "Purchase conducted solely within the procurement policy framework — no mandatory procedures. Time and method chosen by the buyer per authorization matrix.",
+    name: "Strategiczny zakup — ścieżka adaptacyjna i zgodna",
+    nameEn: "Strategic purchase — adaptive and compliant path",
+    description: "Adaptacyjna sekwencja działań w tej samej granicy uprawnień, konkurencji, etyki i dokumentacji. Nie oznacza zwolnienia z PZP ani kontroli.",
+    descriptionEn: "Adaptive sequencing within the same authorization, competition, ethics and documentation boundary. It is not an exemption from law or control.",
   },
   capex: {
     category: "strategic",
     name: "Strategiczna inwestycja CAPEX (uzasadnione zarządzanie)",
     nameEn: "Strategic CAPEX investment (justified governance)",
-    description: "Zakup środków trwałych. Procedury CAPEX są uzasadnione — wysoka wartość, długi horyzont, governance to tu wartość, nie koszt. Jednak nawet tu można skrócić o 30%.",
-    descriptionEn: "Fixed asset procurement. CAPEX procedures are justified — high value, long horizon, governance is value here, not overhead. Yet even here 30% reduction is achievable.",
+    description: "Zakup środków trwałych. Governance może tworzyć wartość; potencjał skrócenia zależy od kroków i danych wejściowych.",
+    descriptionEn: "Fixed-asset procurement. Governance may create value; any time reduction depends on the modeled steps and inputs.",
   },
   catalog_order: {
     category: "operational",
@@ -637,14 +635,9 @@ export const PROCESS_TYPE_META: Record<Exclude<ProcessType, "custom">, { categor
 
 // ─── Helper functions ───────────────────────────────────────────────────────────
 
-/** Additional time compression applied to the flexible (policy-only) path.
- * This factor represents the assumption that, even at the same technology level,
- * a policy-based approach allows for meaningfully faster execution (~15% on average)
- * due to elimination of mandatory formal steps, reduced coordination overhead,
- * and greater buyer discretion in sequencing work.
- *
- * Source: internal modeling assumption based on OECD procurement performance data
- * and practical benchmarks from end-to-end digital procurement implementations.
+/** Additional time compression applied to the adaptive/compliant path.
+ * The 15% factor is an explicit scenario assumption for parallel work and reduced
+ * coordination; it is not an OECD estimate. Legally mandatory waits remain intact.
  */
 const FLEXIBLE_PATH_TIME_COMPRESSION = 0.85;
 
@@ -660,7 +653,7 @@ const RIGID_STRATEGIC_STEP_DAY_BOOST = 1.22;    // governance-heavy steps (+22% 
 const RIGID_MANDATORY_STEP_DAY_BOOST = 1.08;    // publication/standstill sign-off (+8%)
 const RIGID_UPSTREAM_DIRECT_DAY_PREMIUM = 1.06; // global compressible-work premium
 
-// deriveFlexibleDays — extra compression on formal overhead eliminated under policy.
+// deriveFlexibleDays — assumed compression of non-mandatory sequential overhead.
 const FLEXIBLE_HEAVY_FORMAL_STEP_COMPRESSION = 0.82;    // heaviest formal steps (−18%)
 const FLEXIBLE_MODERATE_FORMAL_STEP_COMPRESSION = 0.90; // moderately formal steps (−10%)
 const FLEXIBLE_UPSTREAM_DIRECT_COMPRESSION = 0.91;      // global upstream+direct compression
@@ -692,8 +685,8 @@ const STAFF_INDIRECT_DOWNSTREAM_SENIOR = 0.75;
 const WORK_HOURS_PER_DAY = 8;
 
 /**
- * Context-aware flexible path compression.
- * We assume that policy-based (flexible) approaches save relatively more time
+ * Context-aware adaptive-path compression.
+ * We assume that adaptive approaches save relatively more time
  * in Upstream/strategic work than in standardized Downstream execution.
  */
 function getFlexibleTimeCompression(
@@ -806,6 +799,13 @@ export function deriveStaffCost(
         if (!rate) return stepTotal;
 
         let effectiveHours = hours;
+
+        // Participation hours describe the rigid version of a step. Scale the
+        // adaptive path's retained-step effort by its own duration ratio. Without
+        // this, elapsed time fell while labour stayed identical in most scenarios.
+        if (flexible && step.flexibleDays !== null && step.rigidDays > 0) {
+          effectiveHours *= Math.min(1, Math.max(0, step.flexibleDays / step.rigidDays));
+        }
 
         // === Deepened contextual adjustments (Direct/Indirect + Upstream/Downstream) ===
         // Academic justification (for paper):

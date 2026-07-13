@@ -6,6 +6,9 @@ date: 2026-06
 length: ~1300 words
 ---
 
+> **WITHDRAWN DRAFT.** It contains obsolete model 1.x figures and must not be
+> published. The current neutral thesis and bibliography are in `RESEARCH.md`.
+
 # A Tunnel Has Walls. A Field Has a Horizon.
 
 **Why faithfully following the procedure can be the most expensive procurement decision in your company**

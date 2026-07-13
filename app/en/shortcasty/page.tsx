@@ -2,9 +2,9 @@ import Link from "next/link";
 import { EPISODES } from "@/lib/shortcasty";
 
 export const metadata = {
-  title: "Field Conversations — ProcuraCost Shortcasty",
+  title: "ProcuraCost 2.0 — methodology shorts",
   description:
-    "A shortcast series about hypotheses and measurement of procurement-procedure costs: one topic, source or assumption, and a decision to investigate.",
+    "A short series about evidence, assumptions and uncertainty in the neutral ProcuraCost 2.0 model.",
 };
 
 const PLATFORMS = [
@@ -22,16 +22,15 @@ export default function ShortcastyEnPage() {
       {/* Hero */}
       <div className="mb-10 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-white">
         <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-blue-200">
-          Season 1 · 20 episodes
+          Model 2.0 · {EPISODES.length} episodes
         </p>
-        <h1 className="text-3xl font-bold leading-tight">Field Conversations</h1>
+        <h1 className="text-3xl font-bold leading-tight">ProcuraCost: evidence and assumptions</h1>
         <p className="mt-1 text-base text-blue-100 font-medium">
-          Short talks about how much you lose in the tunnel — and how to get out into the field.
+          Short explanations of what the model knows, does not know and when its sign changes.
         </p>
         <p className="mt-4 text-sm text-blue-100 max-w-2xl leading-relaxed">
-          10 minutes. One cost dimension. One piece of evidence from the ProcuraCost model.
-          Conversations with buyers, CPOs, CFOs, lawyers and implementers about the real cost of
-          “just following the procedure”.
+          Each episode separates source evidence from model calibration. ProcuraCost
+          outputs are not presented as measured organizational effects.
         </p>
 
         {/* Platform links */}

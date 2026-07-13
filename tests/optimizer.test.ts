@@ -2,8 +2,10 @@ import { describe, it, expect } from "vitest";
 import { optimize, type ProcurementFeatures, type PathId } from "../lib/optimizer";
 
 // Mirrors the hard legal filter in lib/optimizer.ts (feasiblePathIds, not exported).
-const PZP_EXEMPTION_PLN = 130_000;
-const EU_THRESHOLD_SUPPLIES_SERVICES_PLN = 930_960;
+const PZP_EXEMPTION_PLN = 170_000;
+const EU_THRESHOLD_CENTRAL_SUPPLIES_SERVICES_PLN = 603_400;
+const EU_THRESHOLD_SUBCENTRAL_SUPPLIES_SERVICES_PLN = 930_960;
+const EU_THRESHOLD_WORKS_PLN = 23_291_240;
 const PUBLIC_COMPETITIVE: PathId[] = [
   "przetarg_otwarty",
   "przetarg_ograniczony",
@@ -29,7 +31,12 @@ const GENERAL = ALL_PATHS.filter((p) => p !== "tryb_podstawowy");
 function expectedFeasible(f: ProcurementFeatures): PathId[] {
   if (!f.isPublicSector) return GENERAL;
   if (f.contractValue < PZP_EXEMPTION_PLN) return GENERAL;
-  if (f.contractValue < EU_THRESHOLD_SUPPLIES_SERVICES_PLN) return PUBLIC_BELOW_EU;
+  const euThreshold = f.procurementObject === "works"
+    ? EU_THRESHOLD_WORKS_PLN
+    : f.authorityLevel === "central"
+      ? EU_THRESHOLD_CENTRAL_SUPPLIES_SERVICES_PLN
+      : EU_THRESHOLD_SUBCENTRAL_SUPPLIES_SERVICES_PLN;
+  if (f.contractValue < euThreshold) return PUBLIC_BELOW_EU;
   return PUBLIC_COMPETITIVE;
 }
 
@@ -44,6 +51,8 @@ function base(overrides: Partial<ProcurementFeatures> = {}): ProcurementFeatures
     supplyRisk: 3,
     strategicImportance: 3,
     marketMaturity: 3,
+    procurementObject: "supplies_services",
+    authorityLevel: "subcentral",
     ...overrides,
   };
 }
@@ -85,17 +94,22 @@ describe("(e) optimize() never recommends a legally filtered-out path", () => {
     }
   });
 
-  it("in the 130k–EU band (public), single-source/negotiated/agile are excluded", () => {
+  it("in the 170k–EU band (public), single-source/negotiated/agile are excluded", () => {
     const f = base({ contractValue: 300_000, isPublicSector: true, urgencyDays: 10, supplyRisk: 5 });
     const rec = optimize(f, "pl").topPath.path.id;
     expect(PUBLIC_BELOW_EU).toContain(rec);
     expect(["bezposrednie", "negocjacje", "agile"]).not.toContain(rec);
   });
 
-  it("below 130k (public), the national tryb podstawowy is not offered", () => {
+  it("below 170k (public), the national tryb podstawowy is not offered", () => {
     const f = base({ contractValue: 50_000, isPublicSector: true });
     for (const r of optimize(f, "pl").ranked) {
       expect(r.path.id).not.toBe("tryb_podstawowy");
     }
+  });
+
+  it("uses the works threshold instead of misclassifying all public contracts as services", () => {
+    const f = base({ contractValue: 5_000_000, procurementObject: "works" });
+    expect(optimize(f, "pl").ranked.map((r) => r.path.id)).toContain("tryb_podstawowy");
   });
 });

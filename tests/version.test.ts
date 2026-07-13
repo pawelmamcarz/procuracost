@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { getISOWeek } from "../lib/version";
+import {
+  generateSiteVersion,
+  getISOWeek,
+  getISOWeekParts,
+  resolveSiteVersion,
+} from "../lib/version";
 
 describe("(f) getISOWeek at year boundaries (Dec 29 – Jan 4)", () => {
   // ISO-8601 week numbers; dates constructed in the local zone the function reads
@@ -31,5 +36,24 @@ describe("(f) getISOWeek at year boundaries (Dec 29 – Jan 4)", () => {
         expect(w).toBeLessThanOrEqual(53);
       }
     }
+  });
+});
+
+describe("Tesla-style site version", () => {
+  it("uses ISO week and defaults to release.patch 1.1", () => {
+    expect(generateSiteVersion(new Date(2026, 6, 13))).toBe("2026.29.1.1");
+  });
+
+  it("uses the ISO week-year at calendar-year boundaries", () => {
+    expect(getISOWeekParts(new Date(2019, 11, 30))).toEqual({ year: 2020, week: 1 });
+    expect(generateSiteVersion(new Date(2021, 0, 1))).toBe("2020.53.1.1");
+  });
+
+  it("accepts a valid build override", () => {
+    expect(resolveSiteVersion("2026.29.2.3")).toBe("2026.29.2.3");
+  });
+
+  it("rejects an invalid build override", () => {
+    expect(() => resolveSiteVersion("2.0.0")).toThrow(/year\.ISO-week/);
   });
 });

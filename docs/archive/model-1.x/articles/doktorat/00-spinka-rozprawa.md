@@ -1,5 +1,9 @@
 # Spinka rozprawy doktorskiej: studium spajające cyklu trzech artykułów
 
+> **WERSJA HISTORYCZNA — NIE DO ZŁOŻENIA.** Tekst odzwierciedla model 1.x i
+> zawiera nieaktualne wielkości, progi oraz wniosek o „liczbowo bezczynnej”
+> symetrii. Wymaga przepisania według `00-shared-foundation.md` (model 2.0).
+
 **Paweł Mamcarz** (ORCID: 0009-0002-3274-4226)
 Uczelnia Łazarskiego w Warszawie
 

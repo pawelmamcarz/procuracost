@@ -7,7 +7,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-ProcuraCost is a bilingual (PL/EN) Next.js 16 marketing + tooling site for a procurement-economics research project. It quantifies the hidden opportunity costs of rigid procurement procedures vs. policy-based procurement. The interactive tools (cost calculator, weighted rule-based path optimizer, maturity assessment) are all driven by a self-contained model layer in `lib/` — there is no backend, database, or API; every calculation runs client/server-side from constants and pure functions.
+ProcuraCost is a bilingual (PL/EN) Next.js 16 site for a procurement-economics
+research project. Model 2.0 compares formal/sequential and adaptive/compliant paths
+under the same governance boundary. The interactive tools are driven by a
+self-contained model layer in `lib/`; there is no backend, database or API.
 
 ## Commands
 
@@ -18,7 +21,7 @@ npm run start    # serve the production build
 npm run lint     # eslint (next/core-web-vitals + next/typescript)
 ```
 
-There is **no test suite** and no test framework configured. Verify changes via `npm run lint` and by running the dev server. Path alias `@/*` maps to the repo root (e.g. `@/lib/calculations`).
+Vitest covers calculations, optimizer legality, formatting, and versioning. Verify model changes with `npm test`, `npm run recompute`, `npm run sweep`, and `npm run build`. Path alias `@/*` maps to the repo root.
 
 > Per `AGENTS.md`: this is a non-standard Next.js build with breaking changes from training data. When touching App Router internals, routing, or framework APIs, consult `node_modules/next/dist/docs/` rather than assuming conventions.
 
@@ -29,7 +32,7 @@ There is **no test suite** and no test framework configured. Verify changes via 
 The cost model is a layered pipeline of pure functions and constants. Changes to procurement economics happen here, not in components:
 
 - **`lib/process-templates.ts`** — the foundational data layer. Defines the 7 `ProcessType`s (grouped into strategic / policy-driven / operational layers), 4 `TechLevelId`s, 6 `StakeholderRole`s, per-process `ProcessStep[]` templates (rigid vs. flexible day counts, mandatory-wait flags, per-role participation hours), and the `PROCESS_RIGIDITY` index. The `derive*` functions (`deriveRigidDays`, `deriveFlexibleDays`, `deriveStaffCost`) apply contextual multipliers based on the Direct/Indirect × Upstream/Downstream dimensions. **All business-logic constants belong here — never inline magic numbers in components.**
-- **`lib/calculations.ts`** — the 7-dimension cost model (`calculateCosts`): time, admin, opportunity, favoritism / selection-quality (code field `productivityCost`, kept for chart compatibility), renegotiation, TCO, bypass. Consumes `ProcurementInputs`, returns a rigid-vs-flexible `ComparisonResult`. Each dimension documents its source in comments (Szucs JEEA 2024; Beuve, Moszoro & Spiller NBER 2021 / JLEO 2023; the ~30% TCO ceiling is an unattributed practitioner heuristic — no verifiable ISM source; bypass: Lipsky 1980 / Vaughan 1996 / Holmström & Milgrom 1991). Also exports the `formatPLN` / `formatPercent` / `formatCompact` formatters used everywhere.
+- **`lib/calculations.ts`** — neutral 7-dimension model 2.0. Competition, contract rigidity, TCO capture, workflow, and bypass are separate. `calculateCosts` returns a central point plus a low/high scenario interval; TCO and bypass ranges are assumptions, not sourced probabilities.
 - **`lib/optimizer.ts`** — the weighted rule-based path optimizer (`optimize`): one closed-form scoring formula per path with a 30-run sensitivity sweep, recommending one of 6 `PathId`s (mapped to Polish PZP articles). Returns scored paths + feature importances for explainability. Deterministic by design — no randomness at inference.
 - **`lib/scenarios.ts`** — 8 reference case studies (Ryanair fleet, Swiss Casinos ERP, Zara, etc.), each a pre-filled `ProcurementInputs` + citation. Used for the calculator presets and the industry benchmark chart.
 - **`lib/i18n.ts`** — every user-facing string, keyed by `pl` / `en` (`calculatorT`, `comparisonT`, etc.). See i18n rule below.
@@ -49,7 +52,7 @@ Chrome (NavBar + footer + projects bar) is rendered **once** by `components/AppS
 
 - **i18n**: never hardcode Polish/English strings in components — route them through `lib/i18n.ts` (`tx = calculatorT[lang]`). Short label ternaries (`lang === "en" ? "days" : "dni"`) are the only allowed exception. See `CLAUDE_DESIGN.md`.
 - **Design system**: `CLAUDE_DESIGN.md` is authoritative for color semantics, typography, card/button patterns, and the Tunnel-vs-Field metaphor vocabulary. The canonical tagline and the `∂Φ` notation must be used verbatim where referenced.
-- **Versioning**: the version is Tesla-style `year.isoweek.minor.patch`, computed at build time. `next.config.ts` injects it as `NEXT_PUBLIC_VERSION`; `lib/version.ts` reads that or recomputes. Do not hand-edit a version string into source — to pin a release within a week, build with `NEXT_PUBLIC_VERSION=2026.19.3.0 npm run build`.
+- **Site versioning**: the version is Tesla-style `ISO-week-year.ISO-week.release.patch`, computed at build time with `release.patch` defaulting to `1.1` (for example `2026.29.1.1` on 13 July 2026). `lib/version-core.ts` is the single generator; `next.config.ts` injects its result as `NEXT_PUBLIC_VERSION`. To pin a later release in the same week, run `NEXT_PUBLIC_VERSION=2026.29.2.1 npm run build`. The quantitative model has a separate semantic version in `lib/version.ts`.
 - **No JSX comments** (`{/* */}`) in returned markup, no `useEffect` for derived values, no new chart libraries — see the Anti-patterns section of `CLAUDE_DESIGN.md`.
 
 ## Repo sync (machine-specific)
@@ -58,7 +61,10 @@ This working copy lives in an iCloud-synced folder shared with another machine (
 
 ## Research docs (not code)
 
-`RESEARCH.md`, `PHD_ROADMAP.md`, `CHANGELOG.md`, and `docs/` (including `docs/research/`) are the academic working paper, roadmap, and supporting materials. They drive the economics behind the model — read them when changing cost-model assumptions, but they are documentation, not part of the build.
+`RESEARCH.md`, `PHD_ROADMAP.md`, `CHANGELOG.md`, `docs/MODEL_PARAMETERS.md`,
+`docs/articles/doktorat/00-shared-foundation.md`, and `docs/research/` are the
+active academic materials. Everything under `docs/archive/model-1.x/` is historical
+provenance and must never be used as a current parameter, citation or instruction source.
 
-- **`docs/MODEL_PARAMETERS.md`** is the per-parameter source-of-truth for every constant in `lib/`: exact value, citation, and whether it is peer-reviewed (~35–40%) or a calibrated/modeling assumption. **Before changing any constant in `lib/calculations.ts` or `lib/process-templates.ts`, reconcile it here** and keep the two in sync.
-- **Honest-reframe invariant (load-bearing).** The model's framing is that *discretion* is the cost driver, not *rigidity* — `DISCRETION_FAVORITISM_PREMIUM` runs in that direction. An earlier inverted reading of Szucs (2024) (`RIGIDITY_PRICE_PREMIUM`, `RIGIDITY_PRODUCTIVITY_LOSS`) was **removed**; do not reintroduce rigidity-as-cost parameters. The model is **symmetric in structure but numerically weakly dominated**: the favoritism dimension genuinely subsidizes the rigid path per-dimension, yet ΔC_total > 0 in all 9 reference scenarios and across an 11,844-config input-space sweep (`npm run sweep`, 2026-07-05) — in low-corruption-risk operational contexts the gap approaches zero (min ≈ +0.4% CV) but never flips sign. Disclose this honestly; never claim rigid-wins as an observed net result (per the binding verdict in `docs/articles/doktorat/article-2-model-kosztu-PL.md` §4). Headline figures (e.g. rigid 100–400% over policy-only) are model **estimates** under documented assumptions, not measured facts; preserve that hedging in any user-facing copy.
+- **`docs/MODEL_PARAMETERS.md`** is the model-2.0 source of truth. Reconcile every formula or scenario-bound change there.
+- **Neutrality invariant (load-bearing).** Never tune parameters to preserve Tunnel–Field. Public comparisons must remain lawful under PZP. Always display scenario uncertainty, allow sign reversal, and distinguish empirical anchors from Grade-C path profiles. Szucs monetizes the price channel only; Beuve applies to contractual rigidity only; theory does not provide bypass probabilities.

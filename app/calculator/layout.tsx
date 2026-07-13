@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Kalkulator kosztów procedur zakupowych — ProcuraCost",
   description:
-    "Porównaj koszty procedury sztywnej z polityką zakupową w 7 wymiarach: czas, admin, opportunity, faworyzacja, renegocjacje, TCO, obejścia.",
+    "Porównaj formalną i adaptacyjną ścieżkę zakupu w 7 wymiarach wraz z zakresem scenariuszowym.",
 };
 
 export default function CalculatorLayout({ children }: { children: React.ReactNode }) {

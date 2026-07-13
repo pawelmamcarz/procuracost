@@ -1,5 +1,8 @@
 # Autoreferat
 
+> **WERSJA HISTORYCZNA — NIE DO ZŁOŻENIA.** Wymaga przepisania według modelu 2.0
+> i wiążącego `00-shared-foundation.md`.
+
 **Kandydat:** Paweł Mamcarz (ORCID: 0009-0002-3274-4226)
 **Uczelnia:** Uczelnia Łazarskiego w Warszawie
 **Tytuł rozprawy:** *Tunel czy pole? Konflacja polityki i procedury jako ukryta architektura kosztu i zarządzania w zamówieniach: ujęcie ekonomiczno-administracyjne.*

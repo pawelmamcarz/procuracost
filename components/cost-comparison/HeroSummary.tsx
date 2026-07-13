@@ -11,7 +11,7 @@ interface Props {
 
 export default function HeroSummary({ result, scenario, inputs, lang }: Props) {
   const tx = comparisonT[lang];
-  const { delta, deltaPercent, bypassProbability, rigidDays, flexibleDays } = result;
+  const { delta, deltaPercent, bypassProbability, rigidDays, flexibleDays, uncertainty } = result;
 
   const spendLabel = inputs.spendType
     ? (inputs.spendType === "direct" ? "Direct" : "Indirect")
@@ -30,6 +30,20 @@ export default function HeroSummary({ result, scenario, inputs, lang }: Props) {
       <p className="mt-1 text-lg opacity-90">
         {formatPercent(Math.abs(deltaPercent))} {deltaPercent >= 0 ? tx.higherThan : tx.lowerThan}
       </p>
+      <div className="mt-3 rounded-xl border border-white/20 bg-white/10 p-3 text-sm">
+        <p className="font-semibold">
+          {lang === "en" ? "Scenario range" : "Przedział scenariuszowy"}: {formatPLN(uncertainty.lowDelta)} – {formatPLN(uncertainty.highDelta)}
+        </p>
+        <p className="mt-1 text-xs text-white/70">
+          {uncertainty.crossesZero
+            ? (lang === "en"
+                ? "The sign changes across defensible assumptions; neither path is a universal winner."
+                : "Znak zmienia się przy dopuszczalnych założeniach; żadna ścieżka nie wygrywa uniwersalnie.")
+            : (lang === "en"
+                ? "The sign is stable within the declared scenario bounds, not statistically proven."
+                : "Znak jest stabilny w zadeklarowanym zakresie scenariuszy, ale nie stanowi dowodu statystycznego.")}
+        </p>
+      </div>
       <div className="mt-3 flex gap-4 text-sm">
         <span className="rounded-lg bg-white/10 px-3 py-1">
           {tx.rigidLabel}: <strong>{rigidDays}</strong> {lang === "en" ? "days" : "dni"}
@@ -89,7 +103,9 @@ export default function HeroSummary({ result, scenario, inputs, lang }: Props) {
             </div>
             <span className="text-sm font-bold">{Math.round(bypassProbability * 100)}%</span>
           </div>
-          <p className="mt-1 text-xs opacity-60">{tx.bypassNote}</p>
+          <p className="mt-1 text-xs opacity-60">
+            {tx.bypassNote} {lang === "en" ? "Scenario assumption, not a predicted probability." : "Założenie scenariuszowe, nie prognoza prawdopodobieństwa."}
+          </p>
         </div>
       </div>
       {scenario.caseStudy && (

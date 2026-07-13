@@ -45,6 +45,9 @@ const summaryRows = scenarios.map(({ scenarioId, scenarioName, context, results 
   flexibleTotalPLN: Math.round(results.flexible.total),
   deltaPLN: Math.round(results.delta),
   deltaPercent: Number(results.deltaPercent.toFixed(1)),
+  lowDeltaPLN: Math.round(results.uncertainty.lowDelta),
+  highDeltaPLN: Math.round(results.uncertainty.highDelta),
+  crossesZero: results.uncertainty.crossesZero,
 }));
 
 const csvHeader = Object.keys(summaryRows[0]).join(",");
@@ -56,15 +59,15 @@ writeFileSync(
 
 const markdownRows = summaryRows.map(
   (row) =>
-    `| ${row.scenarioId} | ${row.spendType} × ${row.processPhase} | ${row.rigidDays} | ${row.flexibleDays} | ${row.rigidTotalPLN} | ${row.flexibleTotalPLN} | ${row.deltaPercent}% |`,
+    `| ${row.scenarioId} | ${row.spendType} × ${row.processPhase} | ${row.rigidDays} | ${row.flexibleDays} | ${row.rigidTotalPLN} | ${row.flexibleTotalPLN} | ${row.deltaPercent}% | ${row.lowDeltaPLN} – ${row.highDeltaPLN} | ${row.crossesZero} |`,
 );
 const markdown = [
   `# Built-in Scenario Outputs (Model ${MODEL_VERSION})`,
   "",
   "> Deterministic model outputs under illustrative inputs. These are not empirical estimates of realized organizational effects.",
   "",
-  "| Scenario | Context | Rigid days | Flexible days | Rigid total (PLN) | Flexible total (PLN) | Delta |",
-  "|---|---|---:|---:|---:|---:|---:|",
+  "| Scenario | Context | Formal days | Adaptive days | Formal total (PLN) | Adaptive total (PLN) | Central delta | Scenario range (PLN) | Crosses zero |",
+  "|---|---|---:|---:|---:|---:|---:|---:|:---:|",
   ...markdownRows,
   "",
 ].join("\n");

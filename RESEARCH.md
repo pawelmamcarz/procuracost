@@ -1,541 +1,140 @@
-# The Hidden Cost of Procedural Compliance: Opportunity Costs of Rigid Procurement Rules vs. Policy-Based Procurement
+# Procedural Rigidity and Adaptive Procurement: A Transparent Decision Model
 
-**Working Paper — Draft for Review (living document, updated as the model evolves)**  
-Last updated: 2026-07-02  
-Target journal: *Journal of Public Procurement* (Emerald Publishing)
-
----
+**Working paper — draft for review**
+**Model:** ProcuraCost 2.0.0
+**Updated:** 13 July 2026
 
 ## Abstract
 
-Organizations routinely conflate procurement *policy*—a high-level framework of principles, authorization thresholds, and ethical standards—with procurement *procedure*, a specific operational workflow for executing a purchase. This conflation imposes a structural incentive: procurement officers adopt procedural compliance as a risk shield ("I followed the procedure, therefore I am safe"), which systematically displaces value-seeking judgment. We term this phenomenon **procedural compliance theater**.
+Procurement policy, procurement procedure, competition, and contract design are related but distinct. Earlier versions of ProcuraCost collapsed them into one rigidity index and therefore overstated what the cited literature could support. This paper presents a corrected seven-dimension decision model comparing a formal/sequential path with an adaptive/compliant path for the same purchase. Both paths must satisfy the same legal and governance boundary; in public procurement, flexibility means lawful design within PZP rather than a `policy-only` exemption.
 
-Drawing on empirical evidence from public procurement economics, we construct a seven-dimensional cost model quantifying the cost differential of procedural rigidity relative to policy-only compliance. The model is a transparent set of **estimates** under documented assumptions — not a claim of measured fact — and it is symmetric in structure: a discretionary (flexible) award carries its own favoritism/selection-quality cost, so the net differential is structurally capable of favoring the rigid path. Numerically that capability turns out to be inert — the rigid path is never net-cheaper in any reference scenario or across an 11,844-configuration input-space sweep; in low-corruption-risk operational contexts the gap approaches zero without flipping sign (see §5). Its dimensions draw on, among others: (1) discretion in public procurement raises prices (a structural effect of roughly 6 percent; reduced-form ~9%) and selects contractors of ~10% lower productivity, so competitive (rigid) tendering *averts* a favoritism premium — the governance value the model credits to formal procedures (Szucs 2024); (2) contractual rigidity is associated with a 7.7–10.5 percentage-point increase in renegotiation probability above a 22% baseline, an observational result (Beuve, Moszoro & Spiller 2021/2023); and (3) Total Cost of Ownership approaches yield savings of up to 30% over multiple years as a practitioner ceiling — an unattributed grey-literature heuristic, modeled as a discounted, capped annual stream rather than a flat per-year rate.
+The model monetizes staff effort, administrative overhead, delay, supplier-selection risk, incremental renegotiation risk, foregone lifecycle value, and bypass exposure. Empirical estimates are used only for the construct and population they actually measure. Weakly identified quantities—especially TCO capture and bypass rates—enter as broad scenarios rather than precise predictions. Results are reported as a central estimate plus a scenario interval that may cross zero. The Tunnel–Field proposition therefore survives as a conditional hypothesis: adaptive procurement is advantageous when avoidable workflow delay and adaptation costs exceed the governance value of formal competition and control. It is not a universal result.
 
-We operationalize the model in an open-source calculator (ProcuraCost) and demonstrate its application across four procurement archetypes: fleet acquisition, IT/ERP implementation, logistics contracting, and production materials sourcing. Under the model's baseline calibration, estimated rigid-procedure costs exceed policy-only costs by 100–400% — a model estimate under documented assumptions, not a measured fact — with the gap driven primarily by foregone TCO optimization, deployment delay costs, and — critically — bypass risk costs generated when rigid procedures are informally circumvented under operational pressure.
+## 1. Research question and claim boundary
 
-We introduce the **Tunnel vs. Field** model as the organizing metaphor: a procedure is a tunnel (single path, one direction, human as step-executor); a procurement policy enforced by modern information systems is a field (multiple paths, continuous compliance, human as value navigator). We demonstrate, drawing on Lipsky (1980), Vaughan (1996), Holmström & Milgrom (1991), Scott (1998), and Norman (1988), that the enforcement response to procedural bypass — "make the tunnel harder to exit" — is analytically predicted to fail across five independent theoretical traditions transferred by analogy to procurement. The correct response is not a better tunnel. It is a field. *A tunnel has walls. A field has a horizon.*
+The research question is:
 
-We argue that the policy/procedure distinction is not merely semantic but operationally critical: procurement policy defines *what* must be achieved, while procedure is only *one* method of achievement. Modern ERP and AI-powered procurement systems have absorbed the compliance enforcement function that procedures were designed to perform, rendering procedural gatekeeping structurally obsolete.
+> Under comparable governance and market conditions, when does a more prescribed procurement workflow create greater total cost than a more adaptive but fully compliant workflow?
 
-**Keywords:** procurement policy, procurement procedure, opportunity cost, procedural compliance, bypass cost, tunnel vs. field model, agile procurement, total cost of ownership, renegotiation risk, street-level bureaucracy, normalization of deviance
+ProcuraCost is a transparent decision model, not an estimator trained or validated on procurement outcomes. Its outputs are conditional calculations under declared assumptions. It cannot establish that one path causes lower cost in Poland or elsewhere.
 
----
+## 2. Conceptual framework
 
-## 1. Introduction
+A **policy** defines constraints and objectives: authority, competition, ethics, documentation, and value for money. A **procedure** orders activities used to satisfy those constraints. Multiple procedures may be lawful under the same policy, but discretion is not automatically beneficial: it can improve adaptation while weakening competition or enabling favoritism.
 
-### 1.1 The Compliance Theater Problem
+The Tunnel–Field metaphor describes workflow topology only:
 
-Consider two procurement officers facing an identical acquisition challenge: purchasing a fleet of 50 company vehicles worth €1.2 million. Officer A follows a rigid eight-step formal tender procedure: market analysis, RFI publication, RFQ issuance, bid evaluation committee, price negotiation, legal review, board approval, contract signature. The process takes 180 days.
+- a **tunnel** is sequential, gate-heavy, and difficult to resequence;
+- a **field** allows alternative paths inside continuously enforced boundaries.
 
-Officer B operates under the same procurement policy—requiring competitive price validation, documented supplier selection rationale, and board approval above €500,000—but chooses the method dynamically: a 30-day accelerated competitive dialogue with pre-qualified suppliers, a structured should-cost analysis, and direct negotiation with the top-ranked supplier. Same policy. Different procedure. 45 days.
+The metaphor does not imply that a field lacks controls or that a tunnel always performs worse. For public procurement, both alternatives must remain inside PZP. A counterfactual that compares an EU-threshold tender with an unlawful direct award is inadmissible.
 
-Officer A's comfort is procedural: "I did it by the book." Officer B's comfort is substantive: "I got the best value for money, within policy." When audited, both are compliant. But only Officer B has actually served the organization's interest. The difference—in time, in price, in opportunity—is the subject of this paper.
+Five constructs must not be conflated:
 
-This phenomenon is not idiosyncratic. The literature documents systematic rigidity in public and corporate procurement, typically attributed to accountability pressures (Beuve, Moszoro & Spiller 2021), institutional isomorphism (DiMaggio & Powell 1983), and principal-agent dynamics that reward compliance over performance (Kelman 1990). What has received less systematic treatment is the *quantification* of opportunity costs imposed by procedural rigidity, and whether a policy/procedure distinction can serve as an actionable reform mechanism.
+1. procedural workflow burden;
+2. intensity and effectiveness of competition;
+3. contractual rigidity and adaptability;
+4. technology-enabled controls;
+5. discretion and favoritism risk.
 
-### 1.2 Research Questions
+## 3. Evidence audit
 
-This paper addresses three questions:
+### 3.1 Supplier selection and discretion
 
-1. **What is the conceptual distinction** between procurement policy and procurement procedure, and why does it matter organizationally?
-2. **What are the quantifiable cost dimensions** of rigid-procedure compliance compared to policy-only compliance?
-3. **Can a practical model** capture these costs in a way useful to procurement professionals and their organizations?
+Szucs (2024) studies a Hungarian reform that made a high-discretion procedure available below a value threshold. Because contract values were manipulated around the threshold, the raw discontinuity is not a valid causal RDD. The paper uses policy timing and a structural selection correction. Its main corrected estimates indicate that discretion increased normalized prices by about **6 percentage points** and selected contractors with about **28% lower measured productivity**. Earlier ProcuraCost text incorrectly stated approximately 10% productivity and inconsistently described the price estimate.
 
-### 1.3 Contribution
+The revised model monetizes the price channel only. Productivity remains a separate observed outcome because converting it into contract-value loss would double count and require another unsupported mapping. Transfer from Hungarian public procurement to Polish or private procurement is represented by a 2–9% scenario range.
 
-We make three contributions. First, we provide a clear operational definition distinguishing procurement policy from procurement procedure, grounding it in the existing CIPS framework and extending it with an incentive-theoretic analysis. Second, we construct a seven-dimensional cost model synthesizing findings from public procurement economics and supply chain management with explicit, documented modeling assumptions. Third, we introduce ProcuraCost—an open-source calculator implementing the model—as a practical tool for procurement transformation initiatives.
+### 3.2 Contractual rigidity and renegotiation
 
----
+Beuve, Moszoro, and Spiller (2023) examine French car-park contracts. Their 7.7–10.5 percentage-point result comes from **2SLS/IV**, with contractual rigidity instrumented by political contestability. It is not a simple observational correlation, and it does not measure procurement workflow formality. ProcuraCost therefore applies the estimate only to a separate contract-rigidity profile. The sample's 22% unconditional renegotiation rate is not exported as a universal cross-sector baseline.
 
-## 2. Conceptual Framework
+### 3.3 Administrative cost, delay, TCO, and bypass
 
-### 2.1 Procurement Policy vs. Procurement Procedure: A Working Definition
+The European Commission's 2011 study estimates the total authority-and-supplier cost of EU procedures. It is useful as an external sanity-check, not as the incremental cost of rigidity.
 
-The Chartered Institute of Procurement & Supply (CIPS 2024) defines a **procurement policy** as a document that "sets the rules, guidelines, and framework governing procurement activities," specifying authorization thresholds, competitive requirements, and ethical standards. A **procurement procedure** describes "the step-by-step operational processes" employees must follow to execute policy principles.
+Coviello and Mariniello (2014) show in Italian public works that publicity increased participation and did not worsen delivery delay; this contradicts any blanket claim that competition itself causes delay. ProcuraCost attributes delay to modeled workflow duration, not to competition.
 
-The relationship is hierarchical: policy defines *constraints and objectives*; procedures define *one path* through those constraints. Policy says "achieve competitive pricing, document your rationale, obtain appropriate approvals." Procedure says "issue an RFQ to at least three suppliers, convene a five-person evaluation committee, wait 21 days for bids."
+No verified peer-reviewed source supports a universal 10% annual TCO saving or a 30% cumulative rule. Those values are removed from the baseline. The revised cumulative scenario range is 0–15% and is explicitly an assumption.
 
-We formalize this distinction as follows:
+Lipsky (1980), Vaughan (1996), and Holmström and Milgrom (1991) motivate possible workarounds and distorted incentives, but none provides a bypass probability. The former sigmoid predicting about 86% bypass is removed; broad observable-rate scenarios are used instead.
 
-> **Definition 1 (Procurement Policy):** A set of rules P = {r₁, r₂, ..., rₙ} defining authorization thresholds, competitive requirements, documentation standards, and ethical constraints that any procurement action must satisfy.
+## 4. Model
 
-> **Definition 2 (Procurement Procedure):** A specific ordered sequence of actions A = (a₁, a₂, ..., aₖ) that constitutes one sufficient method for satisfying policy P.
+For path \(j \in \{F,A\}\), where F is formal/sequential and A is adaptive/compliant:
 
-The critical implication is that for any policy P, there typically exists a family of valid procedures {A₁, A₂, ..., Aₘ} — multiple sufficient methods — with widely varying cost, duration, and outcome profiles. Procedural compliance theater occurs when organizations treat one procedure Aᵢ as if it were equivalent to policy P, eliminating the optimization space constituted by the procedure family.
+\[
+C_j = C_{staff,j}+C_{admin,j}+C_{delay,j}+C_{selection,j}+C_{reneg,j}+C_{TCO,j}+C_{bypass,j}
+\]
 
-### 2.2 The Compliance-First Incentive Structure
+and
 
-Why do procurement officers collapse the policy/procedure distinction? We identify three mechanisms:
+\[
+\Delta C = C_F-C_A.
+\]
 
-**Accountability asymmetry.** Procedural non-compliance is visible and auditable; suboptimal outcomes within procedure are rarely attributed to the procurement method. An officer who deviated from procedure will be asked "why?" An officer who followed procedure and paid 15% above market will be asked nothing—provided documentation is in order. This asymmetry creates a dominant strategy: follow procedure regardless of value consequences.
+A positive value favors the adaptive path; a negative value favors the formal path.
 
-**Rigidity as political protection.** Beuve, Moszoro & Spiller (2021) show that public contracts incorporate more rigidity clauses than comparable private contracts, and that rigidity is associated with political contestability. Rigid procedures reduce the attack surface for accusations of favoritism or corruption—a rational institutional response that, however, imposes economic costs on the contracting entity.
+- **Staff:** activity hours by role, headcount, and loaded rate. Retained adaptive steps use their own duration ratio.
+- **Admin:** coordination overhead plus equal tool cost when both paths use the same technology.
+- **Delay:** elapsed days times a user-supplied daily cost of inaction.
+- **Selection:** contract value times the discretion price scenario and residual competition risk.
+- **Renegotiation:** user-supplied event cost times the incremental contract-rigidity scenario.
+- **TCO:** a cumulative savings pool times the share each path fails to capture.
+- **Bypass:** user-supplied exposure times a scenario rate, scaled by system controls.
 
-**Institutional isomorphism.** Organizations in the same industry adopt similar procurement procedures not because these procedures are optimal but because doing otherwise invites legitimacy challenges. "Everyone does RFQ this way" is a powerful organizational norm, independent of whether "this way" produces superior outcomes.
+The low-delta scenario strengthens the governance case for formality: high discretion premium, no imported renegotiation effect, no TCO benefit, and a higher adaptive bypass rate. The high-delta scenario strengthens the adaptability case. These bounds are stress scenarios, not statistical intervals.
 
-### 2.3 The Policy Compliance Alternative
+## 5. Interpretation
 
-A policy-compliant but procedure-flexible approach retains all governance and accountability benefits of rigid procedures while restoring the optimization space:
+The central output is useful only together with the scenario interval and component breakdown. If the interval crosses zero, the model does not identify a robust winner. If it does not cross zero, the sign is stable only within the declared bounds.
 
-- Authorization thresholds: preserved (same approval matrix)
-- Competitive requirements: preserved (same minimum competitive validation)
-- Documentation standards: preserved (same audit trail requirements)
-- Ethical constraints: preserved (same conflict-of-interest rules)
+The Tunnel–Field hypothesis is most plausible where:
 
-What changes is the *method*: the specific sequence of actions, timelines, supplier engagement formats, and negotiation strategies are dynamically calibrated to the procurement context. A routine, low-complexity purchase uses a streamlined approach. A strategic, high-value, relationship-dependent acquisition uses a sophisticated multi-round engagement. Neither deviates from policy; both select the procedure appropriate to context.
+- delay has a material and evidenced cost;
+- the adaptive design preserves effective competition;
+- requirements or contracts must change as information arrives;
+- internal data show meaningful workflow effort or bypass exposure.
 
-### 2.4 The Tunnel vs. Field Model
+Formality may dominate where:
 
-The policy/procedure distinction can be captured in a spatial metaphor that is both intuitive and formally precise: the **tunnel** versus the **field**.
+- the cost of delay is low;
+- competition and auditability materially constrain favoritism;
+- requirements and lifecycle costs are stable;
+- adaptive governance capability is weak.
 
-> *"A tunnel has walls. A field has a horizon."*
+## 6. Case evidence
 
-**The Tunnel Model (procedure-first):** A procurement procedure defines a single ordered sequence of actions A = (a₁, a₂, ..., aₙ). The human actor is a step-executor: her role is to complete each action in sequence. Compliance is binary—she is either in the tunnel or outside it. When real-world conditions deviate from the assumptions embedded in the procedure design (time pressure, missing data, uncooperative suppliers, market discontinuities), the tunnel fails. The actor faces a binary choice: force reality into the tunnel at high cost, or exit the tunnel and proceed informally. This is the bypass.
+Ryanair's 2003 annual report documents a 100-aircraft Boeing order and price concessions. It does not identify a causal effect of procurement flexibility. Swiss Casinos and Air France KLM Martinair case reports describe rapid Lean Agile Procurement cycles, but they are practitioner case studies with selected comparators. Inditex reports a responsive supply-chain model, not an AI-procurement replacement of tenders. These cases motivate mechanisms only and are not evidence about PZP.
 
-```
-Tunnel:  a₁ → a₂ → a₃ → ··· → aₙ
-         (one path, sequential, human as executor)
-         ↓ under pressure:
-         a₁ → [BYPASS] → informal path (mail/phone/Excel)
-```
+## 7. Empirical agenda
 
-**The Field Model (policy-first):** A procurement policy defines a bounded space Φ ⊂ ℝⁿ of permissible actions. The boundaries are defined by constraints C = {c₁, c₂, ..., cₖ} — authorization thresholds, competitive requirements, documentation standards, ethical rules. Within Φ, any path is valid. The human actor is a navigator: her role is to find the path through the field that maximizes value, subject to staying within the boundary constraints.
-
-```
-Field:   ∂Φ defined by C = {authorization, competition, ethics, documentation}
-         Interior: infinite paths, all compliant
-         Human role: navigate toward maximum value
-         (no bypass possible — boundaries are everywhere and always active)
-```
-
-The critical structural difference: in the tunnel model, compliance is a momentary state (am I in the tunnel right now?). In the field model, compliance is continuous — the constraint set is evaluated at every point of movement, not only at predefined checkpoints. Modern procurement information systems (ERP, spend analytics, AI-assisted sourcing) make the field model operationally viable: they enforce boundary constraints automatically at every transaction, in real time, without procedural gatekeeping.
-
-> **Proposition 1:** Any procurement action that satisfies policy constraints C is fully compliant regardless of the path taken. The claim "she bypassed the process" conflates bypassing a *procedure* (one specific path) with bypassing *policy* (the boundary constraints). These are categorically different.
-
-> **Proposition 2:** As the number of compliant paths within Φ approaches infinity (as procedural constraints are relaxed to pure policy constraints), the bypass incentive approaches zero — because there is nothing to bypass.
-
-This model directly addresses the image diagnosed by Filipowski (2026): "if the user bypasses the process, the process doesn't work." Our response: the process shown is a tunnel. The fact that experienced practitioners exit it under pressure (mail, phone, Excel) is not evidence of poor process design or insufficient enforcement — it is evidence that the tunnel model is structurally inappropriate for the complexity and dynamism of procurement work. No tunnel, however well-designed, survives contact with procurement reality at scale.
-
----
-
-## 3. The Seven-Dimension Cost Model
-
-We model the cost differential between a rigid-procedure approach (R) and a policy-compliant flexible approach (F) across seven dimensions: (1) staff time, (2) administrative overhead, (3) opportunity / deployment-delay cost, (4) favoritism / selection-quality cost, (5) renegotiation risk, (6) foregone TCO savings, and (7) bypass risk. Two cautions apply throughout. First, every dimension produces a model **estimate** under the assumptions documented in `docs/MODEL_PARAMETERS.md`, not a measured fact. Second, the model is **symmetric in structure**: the favoritism/selection-quality and bypass dimensions can run *against* the flexible path, so ΔC_total is structurally capable of going negative; whether that capability realizes numerically is an empirical property of the calibration, resolved (negatively) in §5. The closed form for the total is given in §3.7.
-
-### 3.1 Dimension 1: Time Cost (C_time)
-
-Procurement staff time consumed by procedural execution.
-
-```
-C_time(R) = days_R × n_buyers × rate_daily
-C_time(F) = days_F × n_buyers × rate_daily
-ΔC_time = (days_R - days_F) × n_buyers × rate_daily
-```
-
-**Empirical anchors:** Agile procurement case studies report substantial time reductions — e.g. Swiss Casinos sourced and contracted an ERP system in ~6 weeks instead of a typical ~6 months (~75% faster; LAP Alliance / World Procurement Awards 2020). These are practitioner case reports, not peer-reviewed estimates.
-
-### 3.2 Dimension 2: Administrative Overhead (C_admin)
-
-Fixed costs of compliance infrastructure: documentation, audit trails, IT procurement systems, compliance staff.
-
-```
-ΔC_admin = admin_R - admin_F
-```
-
-**Empirical anchors:** E-procurement system design rigidity creates substantial implementation and maintenance costs (World Bank 2021). Administrative burden reduces supplier participation, reducing competition and increasing prices.
-
-### 3.3 Dimension 3: Opportunity Cost (C_opp)
-
-Deployment-delay cost: the value lost while the contract is being procured, charged to **both** paths over their own duration. There is no zero-friction baseline — the saving is reported honestly as the difference between two non-zero quantities.
-
-```
-C_opp(R) = days_R × rev_daily
-C_opp(F) = days_F × rev_daily
-ΔC_opp   = (days_R − days_F) × rev_daily
-```
-
-Where rev_daily = daily cost of inaction (value lost per day without the contract in place). Because days_R ≥ days_F in general, the delta is usually positive, but the quantity charged to the flexible path is not zero.
-
-### 3.4 Dimension 4: Favoritism / Selection-Quality Cost (C_fav)
-
-The expected price-dispersion and value loss from **discretion** in supplier selection. This is the dimension that makes the model symmetric: it is borne mainly by the **flexible (discretionary)** path, while competitive (rigid) tendering *averts* it — the governance value the model credits to formal procedures.
-
-```
-C_fav(R) = V × δ × (1 − ρ_R) × κ
-C_fav(F) = V × δ × (1 − ρ_F) × κ
-```
-
-Where V = contract value, δ = `DISCRETION_FAVORITISM_PREMIUM` = 0.06, ρ = the process rigidity index (so 1 − ρ is the degree of discretion), and κ = the context's corruption/favoritism-risk weight (`CORRUPTION_RISK_CONTEXT`, 1.0 for above-threshold public procurement down to 0.15 for automated MRP orders).
-
-**Empirical anchor for δ:** Szucs (2024) finds that **discretion** in public procurement *raises* prices (a structural effect of approximately **6 percent**; the plain fuzzy-RD reduced form is ~9%, the selection-corrected estimate ~8%) and selects contractors of about **10% lower productivity** (structural estimate) — the opposite direction to a naive reading in which formality is the cost. Competitive tendering is therefore what averts the favoritism premium; the cost of discretion falls on the path that exercises it. The model uses δ = 0.06 as the per-unit-discretion premium. **Identification caveat:** the structural estimates correct for selection into tenders (the uncorrected reduced-form productivity gap is far larger), so δ transfers Hungarian institutional conditions and should be read as a benchmark, not a clean causal coefficient for Poland. (An earlier draft of this paper inverted the direction of this finding — claiming rigidity raises prices ~2% and lowers contractor productivity ~1.6%. That reading was wrong and has been removed.)
-
-### 3.5 Dimension 5: Renegotiation Risk (C_reneg)
-
-Expected cost of contract renegotiations **associated with** rigidity (observational, not causal).
-
-```
-C_reneg(R) = P_R × cost_reneg
-C_reneg(F) = P_F × cost_reneg
-P_R = P_base + Δp_rigidity × ρ_R   (scaled by the process's actual rigidity)
-P_base ≈ 0.22 (public contracts baseline)
-Δp_rigidity ∈ [0.077, 0.105]
-```
-
-**Empirical anchor:** Beuve, Moszoro & Spiller (2021; NBER WP 28491, published in *JLEO* 2023) report that a one standard deviation increase in contractual rigidity is **associated with** a **7.7–10.5 percentage-point increase** in renegotiation probability, relative to an unconditional renegotiation rate of approximately 22% for public contracts. This is an observational range from a working paper, not a single point estimate or a causal effect; the model uses the lower bound (0.077) as the premium and scales it by the process rigidity index ρ.
-
-The paradox: rigidity is adopted to reduce accountability risk, yet it is associated with a higher probability of the very outcome (renegotiation) that imposes high reputational and financial cost.
-
-### 3.6 Dimension 6: Foregone TCO Savings (C_TCO)
-
-Optimization opportunities not captured due to inflexibility in supplier engagement, volume structuring, and lifecycle costing. The annual stream is **discounted to present value** and the cumulative figure is **capped** so it can never exceed the cited multi-year ceiling.
-
-```
-A(T, d) = Σ_{y=1..T} 1 / (1 + d)^y           (present-value annuity factor)
-C_TCO(R) = V × min( γ × A(T, d) × ρ_R , κ_TCO )
-C_TCO(F) = V × min( γ × A(T, d) × ρ_F , κ_TCO )
-```
-
-Where γ = `TCO_SAVINGS_RATE_PER_YEAR` = 0.10 (annual foregone-savings rate), d = `DISCOUNT_RATE` = 0.05, T = horizon years, ρ = process rigidity index, and κ_TCO = `TCO_CUMULATIVE_CAP` = 0.30 (the maximum cumulative share of contract value).
-
-**Practitioner heuristic (not peer-reviewed, unattributed):** grey literature circulates the claim that properly implemented TCO sourcing programs can reach savings of **up to 30% over multiple years** relative to price-only procurement. No verifiable ISM or peer-reviewed source for this figure exists (the circulating "ISM" attribution traces to a content farm on ISM's former domain), so the model treats it strictly as a practitioner **ceiling**, not a guaranteed flat ~10%-per-year empirical rate: the annual stream is discounted at 5% and the cumulative foregone figure is capped at 30% of contract value so it can never exceed the assumed bound. GEP (2024) provides corroborating should-cost evidence.
-
-### 3.7 Dimension 7: Bypass Risk (C_bypass)
-
-The expected audit/penalty cost of informal bypass — the behavioural hazard that arises when a rigid procedure is circumvented under operational pressure. Grounded in Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991).
-
-```
-p_bypass(R) = ceiling-bounded sigmoid of effective rigidity × tech-ease multiplier
-C_bypass(R) = p_bypass(R) × audit_exposure
-C_bypass(F) = (policy rigidity index × residual scale) × audit_exposure
-```
-
-The realized bypass probability is recalibrated (`BYPASS_SIGMOID_STEEPNESS` = 6, `BYPASS_THRESHOLD` = 0.9, `BYPASS_PROBABILITY_CEILING` = 0.95) so that a very rigid manual process lands at roughly **86%** — not the ~99% saturation an earlier calibration produced — and falls toward ~6% under end-to-end digital tooling. See `docs/MODEL_PARAMETERS.md` for the full calibration.
-
-### 3.8 Total Cost Differential
-
-```
-ΔC_total = ΔC_time + ΔC_admin + ΔC_opp + ΔC_fav + ΔC_reneg + ΔC_TCO + ΔC_bypass
-```
-
-Each ΔC is the rigid-minus-flexible difference of the corresponding dimension. Because C_fav and C_bypass can be larger on the **flexible** side in low-corruption-risk, competitive, operational contexts, ΔC_total is structurally capable of being negative there — the model is symmetric in structure. Under the current calibration that capability is numerically inert: ΔC_total remains positive in every reference scenario and across an 11,844-configuration input-space sweep (`scripts/symmetry-sweep.ts`; minimum observed ≈ +0.4% of contract value), because the rigid-favoring favoritism term is structurally bounded (≤ ~4.8% of CV) an order of magnitude below the TCO/opportunity penalties. The result is a model estimate under documented assumptions, not a measured fact.
-
----
-
-## 4. Case Studies
-
-### 4.1 Aviation Fleet Procurement: Ryanair
-
-Ryanair's fleet growth from ~50 to 400+ aircraft between 1990 and 2019 was achieved through strategic opportunistic procurement: large orders placed during industry crises (post-9/11: 100 Boeing 737s at depressed prices; post-Coronavirus: 75 MAX orders at negotiated terms). This approach was entirely incompatible with formal tender procedures—it required rapid decision-making, confidential negotiations, and flexibility to commit at the right market moment.
-
-The policy compliance is complete: board approval, competitive price benchmarking, financial modelling, legal due diligence. The procedure was entirely non-standard. The result: industry-leading CASK (Cost per Available Seat Kilometer) that no procedure-following competitor has matched (IJRAR 2019).
-
-LOT Polish Airlines' 2025 order for 40 Airbus A220 aircraft similarly proceeded through direct negotiation and relationship management—policy-compliant, procedure-flexible, and sensitive to competitive dynamics between Embraer and Airbus that a formal RFQ process would have foreclosed.
-
-### 4.2 ERP Implementation: Swiss Casinos
-
-Swiss Casinos sourced and contracted an enterprise ERP system in about **six weeks** using Lean Agile Procurement (LAP) — from business case to signed contract and delivered proof-of-concept — compared to a typical ~6 month formal RFP process. Policy compliance: competitive evaluation, structured scoring, executive approval. Procedure: intensive collaborative workshops with pre-qualified vendors, rapid prototype evaluation, direct negotiation (LAP Alliance case study; World Procurement Awards 2020 winner).
-
-Quantified benefit: ~75% time reduction translates directly to earlier ROI realization on a multi-million CHF investment.
-
-### 4.3 Cargo Logistics: Air France KLM Martinair
-
-Air France KLM Martinair Cargo needed a new cargo booking system delivered within a six-month deadline. Traditional RFP processes for a contract of this complexity usually lasted several months. The Lean Agile Procurement approach — a two-day "POCAthlon" workshop with four pre-selected vendors — closed vendor selection in ~6 weeks; the project launched a week later and delivered within the window (LAP Alliance / Agile Business Consortium 2021). The policy was unchanged; the procedure was adapted to the constraint.
-
-### 4.4 Production Materials: Zara (Inditex)
-
-Zara's 2-week collection cycle made traditional procurement procedures structurally incompatible with its operating model. AI-driven procurement analytics, dynamic supplier engagement, and agile sourcing replaced sequential RFQ-based approaches. The result is not just faster procurement but qualitatively different market responsiveness—a competitive advantage that procedurally-rigid competitors cannot replicate (Tradogram 2024).
-
----
-
-## 5. The ProcuraCost Calculator
-
-### 5.1 Design Philosophy
-
-ProcuraCost operationalizes the seven-dimension model as a web-based calculator. Design priorities:
-
-- **Documented assumptions, not blanket traceability:** the principal global parameters are documented with their source and type in `docs/MODEL_PARAMETERS.md`. Roughly **35–40% are peer-reviewed**; the remainder are calibrated from multiple credible sources or are explicit modeling assumptions. We do not claim that every output is traceable to a single academic source.
-- **Calibration:** baseline parameters reflect conservative estimates; users can override.
-- **Practical utility:** pre-configured scenarios for common procurement archetypes.
-- **Dual audience:** Polish-language interface for practitioners; English methodology for academic citation.
-
-### 5.2 Implementation
-
-Built on Next.js 16 (App Router), Tailwind CSS, and Recharts. Available at: [github.com/procuracost] (forthcoming). Scenarios: fleet acquisition, IT/ERP, logistics, production materials, custom.
-
-### 5.3 Illustrative Results (not empirical validation)
-
-The model produces directionally consistent **estimates** across the bundled scenarios: in high-value, high-corruption-risk, strategic contexts rigid-procedure total costs can exceed flexible-policy costs by a wide margin. The largest contributors are foregone TCO savings (driven by horizon length and contract value) and deployment-delay opportunity costs. The favoritism/selection-quality and bypass dimensions run symmetrically against the flexible path, but never enough to flip the net sign: in low-corruption-risk, competitive, operational contexts the gap shrinks to near-zero (≈ +0.3–3% of contract value) without the rigid path becoming net-cheaper — in 0 of 9 reference scenarios and 0 of 11,844 swept configurations does ΔC_total go negative. These outputs are illustrative of model behaviour; they are **not** an empirical validation, which remains the subject of the agenda in §8 and `docs/EMPIRICAL_VALIDATION_PLAN.md`.
-
----
-
-## 6. Discussion
-
-### 6.1 The Renegotiation Paradox
-
-Perhaps the most striking finding from the Beuve et al. (2021) analysis is what we term the **renegotiation paradox**: procedural rigidity is adopted precisely to reduce accountability risk, yet it significantly increases the probability of contract renegotiation—which is itself a major source of accountability risk, financial loss, and reputational damage. Organizations that embrace rigidity for safety pay for it twice: once in opportunity costs, and again in higher renegotiation rates.
-
-### 6.2 When Are Rigid Procedures Justified?
-
-We do not argue that rigid procedures are never appropriate. They may be justified when:
-- The procurement is highly routine and the procedure has been optimized over time
-- Political accountability demands visible procedural equality (public sector, regulated industries)
-- Supplier market is deep and highly competitive, minimizing opportunity cost
-- The buying organization lacks the procurement sophistication to exercise discretion well
-
-The policy/procedure framework does not argue for procedural anarchy—it argues for conscious, contextual procedure selection within a stable policy framework.
-
-### 6.3 Implementation Challenges
-
-The shift from procedure-compliance to policy-compliance requires organizational investment in three areas:
-
-1. **Procurement capability:** buyers must have the judgment, market knowledge, and negotiation skills to exercise discretion productively
-2. **Governance frameworks:** clear policy documentation must precede procedural flexibility; otherwise "flexible" becomes "arbitrary"
-3. **Cultural change:** audit functions and management must reward outcomes, not just compliance—a significant behavioral change in organizations conditioned to procedural accountability
-
-### 6.4 The Enforcement Fallacy: Why Better Tunnels Don't Work
-
-A common response to procedural failure is to strengthen enforcement: make procedures harder to bypass, increase audit frequency, implement technical lockouts. This response—which we term the **enforcement fallacy**—is analytically predicted to fail by five decades of organizational research, a deductive synthesis transferred by analogy from these traditions to procurement rather than a direct causal-empirical finding.
-
-**Street-Level Bureaucracy (Lipsky 1980).** Lipsky's foundational study of frontline workers in public organizations demonstrates that adaptation of formal rules to operational reality is not deviance—it is the *normal* condition of complex work. Workers exercise discretion not because they lack commitment to rules but because rules cannot anticipate all operational contingencies. Enforcement that eliminates formal bypasses does not eliminate the underlying adaptation; it drives it underground. What was visible mail-and-phone procurement becomes invisible undocumented procurement. The organization loses auditability without gaining compliance.
-
-**Normalization of Deviance (Vaughan 1996).** Diane Vaughan's analysis of the Space Shuttle *Challenger* disaster demonstrates the catastrophic endpoint of the enforcement fallacy. When operationally necessary workarounds are formally prohibited, they do not disappear—they normalize invisibly. Each successful bypass without consequence reduces the perceived risk of the next bypass. The organization accumulates hidden risk until a threshold failure event. Vaughan's finding applies directly: enforcing procurement procedures more tightly does not eliminate informal procurement; it makes informal procurement invisible and therefore unmanageable.
-
-**Multitask Principal-Agent Theory (Holmström & Milgrom 1991).** Bengt Holmström (Nobel Prize 2016) and Paul Milgrom demonstrate formally that when a principal can measure and enforce some tasks but not others, agents rationally allocate effort away from unmeasured tasks toward measured ones. Applied to procurement: when compliance with procedural steps is measured and enforced, and value creation is not, procurement officers rationally shift effort toward compliance documentation and away from market analysis, negotiation, and total cost optimization. Enforcement of procedural compliance *directly* crowds out value creation—not as a side effect, but as a structural outcome.
-
-**Goodhart's Law (Goodhart 1975; Strathern 1997).** "When a measure becomes a target, it ceases to be a good measure." When procedural compliance rate becomes the KPI for procurement performance, procedural compliance theater is the rational organizational response. Organizations achieve 100% procedural compliance while simultaneously failing to achieve competitive pricing, optimal supplier relationships, or value-for-money outcomes. The measure (compliance) crowds out the goal (value).
-
-**High-Modernist Planning Failure (Scott 1998).** James Scott's comparative analysis of large-scale state planning failures demonstrates a structural pattern: detailed procedural systems designed by central experts fail because they cannot capture *métis*—the local, practical, contextual knowledge that workers accumulate through experience. The procurement equivalent: procedures designed by process consultants in conference rooms (Filipowski's "sala projektowa") cannot encode the market knowledge, supplier relationships, and contextual judgment that experienced buyers (25+ years) bring to complex acquisitions. Better process design does not solve this problem; it remains a category error.
-
-**The Design Implication (Norman 1988).** Donald Norman's foundational work on human-centered design establishes that when users systematically bypass a system, the correct inference is a design failure—not a user failure. "Blame the user" is the designer's fallacy. When experienced procurement officers across organizations, industries, and geographies exit the formal process under time pressure in favor of mail, phone, and Excel, the correct interpretation is not "these professionals lack discipline." The correct interpretation is: the system was designed for a world that does not exist.
-
-**Synthesis.** The enforcement response to procedural bypass — "if users circumvent the process, the process doesn't work; therefore, make circumvention impossible" — is empirically wrong in five independent analytical traditions. Lipsky tells us circumvention is structurally inevitable. Vaughan tells us forcing it underground makes it dangerous. Holmström-Milgrom tells us enforcement crowds out the actual goal. Goodhart tells us the compliance measure will be gamed. Scott tells us the procedures can't encode what they need to encode. Norman tells us the system design is the problem.
-
-The correct response is not a better tunnel. It is a field. *A tunnel has walls. A field has a horizon.*
-
-### 6.5 Technology as the New Compliance Infrastructure: The Field Made Operational
-
-If the tunnel model was the pre-digital solution to the problem of compliance enforcement, it was a solution constrained by the technology of its time. In the absence of real-time information systems, procedural checkpoints were the only mechanism available to verify that policy constraints were being respected. A five-person evaluation committee, a 21-day bid period, a physical approval signature — these were not arbitrary bureaucratic inventions. They were the best available instruments for ensuring competitive validation and documented decision-making in a paper-based organizational world.
-
-That world no longer exists.
-
-Modern procurement information systems fundamentally change the compliance architecture:
-
-- **ERP systems** (SAP Ariba, Coupa, Oracle Procurement Cloud) enforce authorization thresholds at the transaction level, in real time, without requiring a procedural checkpoint. A purchase above €100,000 cannot be approved without the correct authorization level — not because a procedure says so, but because the system enforces the policy constraint automatically.
-
-- **AI-powered spend analytics** (GEP SMART, Jaggaer, Ivalua) detect policy violations, off-contract spend, and anomalous supplier selection in continuous monitoring mode — without requiring procedural audit trails generated by human actors.
-
-- **Automated audit trails** record every action, timestamp, and decision with cryptographic integrity, providing a compliance record that is more complete and tamper-resistant than any procedural documentation requirement could generate.
-
-- **Machine learning path optimization** (emerging) can model the space of procurement decisions and identify which paths through the policy field deliver optimal outcomes for a given procurement context — making the field model not merely permissive but actively prescriptive.
-
-The implication is straightforward: **procedures were a pre-digital compliance mechanism**. Their function — ensuring that policy constraints are respected — has been absorbed by information systems that perform this function better, faster, and more completely than procedural checkpoints ever could.
-
-The analogy is direct: a procedure is a security guard at a gate. A modern procurement system is AI-monitored perimeter surveillance of the entire facility. The question "how do we design a better security guard?" becomes irrelevant when the entire perimeter is monitored continuously.
-
-This does not mean governance disappears. Policy — the definition of the permissible field — remains essential and must be maintained with rigor. Authorization structures, competitive requirements, ethical constraints, conflict-of-interest rules — these are the boundary conditions of the field, and they must be precisely specified. What becomes obsolete is the human-executed sequential procedure as the primary mechanism for enforcing those boundaries.
-
-In the context of Polish public procurement law (*Prawo Zamówień Publicznych*, PZP), this distinction is already partially encoded: PZP specifies *what* must be achieved (competitive award, documentation, equal treatment of suppliers) without mandating a single operational procedure for achieving it. The field exists in the law; the pipe is an organizational choice layered on top of it. Organizations that mistake their pipe for the law misread both.
-
----
-
-## 7. Conclusions and Policy Implications
-
-Procurement procedures are useful—they encode institutional learning about how to execute purchases well. The pathology is not procedures themselves but their elevation to the status of policy: treating one method of procurement as if it were the purpose of procurement.
-
-Our seven-dimension cost model estimates that this pathology is expensive in the contexts where it bites hardest — high-value, high-corruption-risk, strategic sourcing — where rigid-procedure costs can exceed policy-only costs by multiples. The model is symmetric in structure, so this is not presented as a universal claim — yet the symmetry proves numerically inert: even in low-corruption-risk operational contexts the rigid path never becomes net-cheaper under the current calibration; the gap merely approaches zero. That negative result is disclosed rather than tuned away (see §5). The dominant cost drivers where the gap is large—foregone TCO optimization and deployment delay—are invisible to compliance-focused audits precisely because they are costs of inaction, not action.
-
-The policy implication is tractable: organizations should invest in distinguishing their procurement policy (governance framework, to be strictly enforced) from their procurement procedures (operational methods, to be contextually selected). This distinction preserves accountability while restoring the optimization space that procedural rigidity eliminates.
-
----
-
-## 8. Next Steps for Paper Development and Empirical Agenda (June–December 2026)
-
-This section provides a detailed, actionable expansion of the work required to transform the current demonstration tool and working paper into a submission-ready research article and a credible empirical program. The steps below are designed to directly address typical reviewer concerns around model transparency, parameter traceability, theoretical contribution, and identification strategy.
-
-### 8.1 Theoretical and Modeling Refinements (June–July 2026)
-
-#### 8.1.1 Formal Mathematical Specification (Appendix A)
-**Deliverable**: 8–12 page technical appendix titled “Formal Specification of the ProcuraCost Cost Model”.
-
-Concrete tasks:
-- Write closed-form expressions for all seven cost dimensions (time cost, administrative overhead, opportunity/deployment-delay cost, favoritism/selection-quality cost, renegotiation exposure, foregone TCO, bypass risk).
-- Explicitly model the effect of the 2×2 framework:
-  - Derive the step-level day multipliers for rigid and flexible paths under each of the four quadrants.
-  - Derive the role-specific staff-hour adjustment matrix (6 roles × key process steps) differentiated by Direct/Indirect and Upstream/Downstream.
-  - Specify the functional form of the dimension multipliers (currently implemented in `getDimensionMultipliers()`).
-- Document all calibration decisions with sensitivity ranges.
-- Version the model as **v1.1** and freeze the parameter set for the duration of the first empirical study.
-
-**App support needed**:
-- Add a “Model v1.1 Specification” export (PDF + JSON) directly from the Assumptions Explorer.
-
-#### 8.1.2 Hypothesis Development
-**Deliverable**: Document “Testable Propositions – ProcuraCost 2×2 Framework” (6–8 pages).
-
-Develop and justify 6–8 propositions, for example:
-- P1: The total opportunity cost gap (rigid vs. flexible) is at least 40% larger for Direct×Upstream spend than for Indirect×Downstream spend, ceteris paribus.
-- P2: Senior management time (executive + manager hours) as a share of total staff cost is significantly higher in Upstream phases than in Downstream phases, with the effect amplified for Direct spend.
-- P3: The probability of informal bypass is positively moderated by the interaction of high rigidity and high strategic importance (Direct×Upstream).
-- Distinguish clearly between propositions testable with secondary/archival data and those requiring primary data collection.
-
-### 8.2 Empirical Instruments and Pilot Design (July–September 2026)
-
-#### 8.2.1 Survey Instrument
-**Deliverable**: Validated survey questionnaire (≈35–45 items) + codebook.
-
-Required modules:
-- Module A: Procurement process characteristics (use of formal vs. policy-driven paths, typical lead times by category).
-- Module B: Role-level time allocation (hours spent by buyer, lawyer, manager, executive, etc. on different steps).
-- Module C: Perceived costs of delay and renegotiation (direct questions + scenario-based).
-- Module D: Frequency and nature of bypass behavior.
-- Module E: Organizational context (spend mix – % Direct vs Indirect, maturity of digital procurement systems).
-
-Pilot the survey with 15–25 respondents before full launch.
-
-#### 8.2.2 Interview Protocol
-**Deliverable**: Semi-structured interview guide (45–60 min) with procurement leaders, CFOs, and internal auditors.
-
-Core themes:
-- How organizations currently distinguish (or fail to distinguish) policy from procedure.
-- Real examples of high-stakes Direct vs. Indirect and Upstream vs. Downstream decisions.
-- Behavioral drivers of procedural compliance theater.
-- Conditions under which managers would accept more flexibility.
-
-#### 8.2.3 Pilot Case Studies
-**Deliverable**: 3–4 completed pilot cases using a standardized template that directly feeds into ProcuraCost parameters.
-
-Target mix:
-- One large public-sector organization
-- One multinational corporation
-- One mid-sized Polish company
-
-Each pilot should produce:
-- Completed ProcuraCost scenarios for 2–3 representative purchases
-- Qualitative description of actual decision processes
-- Identification of major data gaps for the full study
-
-### 8.3 Research Infrastructure and Replicability (July–August 2026)
-
-#### 8.3.1 Replication Package v1.0
-**Deliverable**: Public GitHub release tagged `paper-v1.0` containing:
-- Frozen model code (with exact version of `getDimensionMultipliers`, step templates, etc.)
-- Complete parameter table (Excel + Markdown) with source, type (Empirical/Calibrated/Assumption), sensitivity, and justification for every value used in the paper
-- Synthetic datasets that exactly reproduce the four case studies presented in the paper
-- R/Python scripts to regenerate all tables and figures from the paper
-
-#### 8.3.2 Researcher Export Functionality (in ProcuraCost)
-**Deliverable**: New “Export for Research” button in the calculator and Assumptions Explorer.
-
-Output should include:
-- Full input vector (including chosen spendType and processPhase)
-- All intermediate values (days, staff hours by role, each cost component)
-- Effective multipliers applied
-- Timestamp and model version
-- Option to export as JSON or CSV
-
-This feature turns the live tool into a legitimate data collection instrument.
-
-### 8.4 Paper Positioning and Writing (August–October 2026)
-
-#### 8.4.1 Journal Targeting
-Recommended order of submission:
-1. *Journal of Public Procurement* (best fit, practitioner-academic audience)
-2. *Journal of Purchasing and Supply Management*
-3. *Public Administration Review* (more ambitious, higher prestige)
-
-For each journal prepare a 1-page positioning statement explaining:
-- Why this paper belongs in that journal
-- How it differs from existing work in that outlet
-
-#### 8.4.2 Core Writing Tasks
-- Write a full “Measurement and Operationalization” section (≈4–5 pages) that treats ProcuraCost as a formal measurement model.
-- Expand the literature review with dedicated subsections on the behavioral mechanisms (especially the five traditions discussed in 6.4).
-- Strengthen the “Boundary Conditions” subsection in the Discussion (when rigid procedures may still be rational).
-- Produce a standalone 4–5 page “Research Agenda for Potential Supervisors / Co-authors” document (separate from the paper).
-
-### 8.5 Conference and Outreach Plan (September–December 2026)
-
-**Target events 2026/2027**:
-- IPSERA Conference (International Purchasing & Supply Education & Research Association)
-- EGPA (European Group for Public Administration) – Public Procurement track
-- Polish conferences (e.g. Forum Zamówień Publicznych, conferences at SGH or Lazarski)
-- Specialized workshops on behavioral public administration or digital governance
-
-**Materials to prepare**:
-- 10–12 slide academic presentation
-- One-page “Supervisor Pitch” (model + current evidence + validation plan + what collaboration is sought)
-- 2-page extended abstract for conference submissions
-
-### 8.6 Second Paper Pipeline (Planning starts July 2026)
-
-**Working title idea**: “From Model to Evidence: An Empirical Test of Opportunity Costs in Rigid vs. Flexible Procurement Using the ProcuraCost Framework”
-
-Key planning activities:
-- Pre-register core hypotheses on OSF or AsPredicted before data collection begins.
-- Design the identification strategy for the main study (difference-in-differences, matching, or multi-level modeling).
-- Define the minimum sample size and power analysis for the primary hypotheses.
-- Outline the structure of Paper 2 so that data collection instruments serve both papers efficiently.
-
----
-
-**Current Status (June 2026)**: The core seven-dimension model (including the 2×2 contextual dimensions) is implemented and its principal parameters are documented in `docs/MODEL_PARAMETERS.md`, where each is classified as peer-reviewed (~35–40%), calibrated, or a modeling assumption. The working paper provides the conceptual foundation and illustrative case evidence; empirical validation is still pending.
-
-A detailed, executable 8–10 week plan with week-by-week tasks and deliverables is available in:
-- `docs/RESEARCH_PAPER_ACTION_PLAN.md`
-
-Supporting templates:
-- `docs/research/survey_structure.md`
-- `docs/research/replication_package_spec.md`
-- `docs/research/supervisor_pitch_template.md`
-
-For public sector procurement specifically, the Szucs (2024) finding cuts the other way: **discretion** raises prices and selects less-productive contractors, so competitive validation has genuine governance value precisely in high-stakes public contexts. The policy/procedure argument is therefore not "drop competition" but "require competitive validation without mandating a single rigid competition *format*" — preserving the price discipline of competition while restoring method flexibility. The favoritism/selection-quality dimension of our model encodes this directly, which is why the model can favour the rigid path in high-corruption-risk public settings.
-
----
+Validation requires event-level observations within organizations. The primary outcome should be procurement-cycle days from auditable timestamps. Secondary outcomes should include effort hours by role, bidder participation, price benchmarks, amendments, renegotiation cost, bypass evidence, audit findings, and supplier performance. Estimate components separately before monetization. Use within-organization and category controls where possible; do not calibrate against ProcuraCost's own output.
 
 ## References
 
-Beuve, J., Moszoro, M., & Spiller, P. T. (2021). *Contractual Rigidity and Political Contestability: Revisiting Public Contract Renegotiations*. NBER Working Paper 28491. National Bureau of Economic Research. (Published in *Journal of Law, Economics, and Organization*, 2023.)
+Bajari, P., Houghton, S., & Tadelis, S. (2014). Bidding for incomplete contracts: An empirical analysis of adaptation costs. *American Economic Review, 104*(4), 1288–1319. https://doi.org/10.1257/aer.104.4.1288
 
-Goodhart, C. A. E. (1975). Problems of monetary management: The UK experience. *Papers in Monetary Economics*, 1. Reserve Bank of Australia. [Popularized as "Goodhart's Law" by Strathern 1997.]
+Beuve, J., Moszoro, M. W., & Spiller, P. T. (2023). Doing it by the book: Political contestability and public contract renegotiations. *Journal of Law, Economics, and Organization, 39*(1), 281–308. https://doi.org/10.1093/jleo/ewab039
 
-Holmström, B., & Milgrom, P. (1991). Multitask principal-agent analyses: Incentive contracts, asset ownership, and job design. *Journal of Law, Economics, & Organization*, 7, 24–52.
+Coviello, D., & Mariniello, M. (2014). Publicity requirements in public procurement: Evidence from a regression discontinuity design. *Journal of Public Economics, 109*, 76–100. https://doi.org/10.1016/j.jpubeco.2013.10.008
 
-Chartered Institute of Procurement & Supply (CIPS). (2024). *Procurement Policies & Procedures Explained*. CIPS Intelligence Hub.
+European Commission. (2011). *Public procurement in Europe: Cost and effectiveness* (PwC, London Economics, & Ecorys).
 
-DiMaggio, P. J., & Powell, W. W. (1983). The iron cage revisited: Institutional isomorphism and collective rationality in organizational fields. *American Sociological Review*, 48(2), 147–160.
+Fazekas, M., & Blum, J. R. (2021). *Improving public procurement outcomes: Review of tools and the state of the evidence base* (Policy Research Working Paper No. 9690). World Bank.
 
-Agile Business Consortium / LAP Alliance. (2021). *Air France Uses Lean Agile Procurement to Outsource a Critical Project*. agilebusiness.org / lap-alliance.org.
+Holmström, B., & Milgrom, P. (1991). Multitask principal–agent analyses: Incentive contracts, asset ownership, and job design. *Journal of Law, Economics, & Organization, 7*(Special Issue), 24–52. https://doi.org/10.1093/jleo/7.special_issue.24
 
-GEP. (2024). *Should-Cost Modeling: Because You Must Get the Cost Right*. GEP Blog.
+Lipsky, M. (1980). *Street-level bureaucracy*. Russell Sage Foundation.
 
-International Journal of Research and Analytical Reviews (IJRAR). (2019). *Ryanair Strategic Positioning and Fleet Management*. IJRAR, 6(2).
+Ryanair Holdings plc. (2003). *Annual report and financial statements 2003*.
 
-LAP Alliance (lean-agile-procurement.com). *Swiss Casinos — Is it possible to source an ERP System in just 4 Weeks?* Case study; World Procurement Awards 2020 winner.
+Szucs, F. (2024). Discretion and favoritism in public procurement. *Journal of the European Economic Association, 22*(1), 117–160. https://doi.org/10.1093/jeea/jvad017
 
-[Unattributed practitioner heuristic.] TCO savings ceiling of ~30% over multiple years — grey literature; no verifiable ISM or peer-reviewed source exists. Used in the model only as a conservative cap.
+Vaughan, D. (1996). *The Challenger launch decision*. University of Chicago Press.
 
-Kelman, S. (1990). *Procurement and Public Management: The Fear of Discretion and the Quality of Government Performance*. AEI Press.
+### Legal sources
 
-Lipsky, M. (1980). *Street-Level Bureaucracy: Dilemmas of the Individual in Public Services*. Russell Sage Foundation.
+Ustawa z dnia 11 września 2019 r. – Prawo zamówień publicznych, as amended through 2026. The application threshold is 170,000 PLN net from 1 January 2026.
 
-Norman, D. A. (1988). *The Design of Everyday Things*. Basic Books.
-
-Scott, J. C. (1998). *Seeing Like a State: How Certain Schemes to Improve the Human Condition Have Failed*. Yale University Press.
-
-Skylight Digital. (2024). *Agile Procurement Playbook — Appendix A: Case Studies*. U.S. Digital Service.
-
-Strathern, M. (1997). 'Improving ratings': Audit in the British University system. *European Review*, 5(3), 305–321.
-
-Szucs, F. (2024). Discretion and Favoritism in Public Procurement. *Journal of the European Economic Association*, 22(1), 117–160. https://doi.org/10.1093/jeea/jvad017
-
-Tradogram. (2024). *Agile Procurement Practices: A Comprehensive Guide*. Tradogram Blog.
-
-Vaughan, D. (1996). *The Challenger Launch Decision: Risky Technology, Culture, and Deviance at NASA*. University of Chicago Press.
-
-Fazekas, M., & Blum, J. R. (2021). *Improving Public Procurement Outcomes: Review of Tools and the State of the Evidence Base*. Policy Research Working Paper 9690. World Bank Group. (Concerns price/value-for-money effects; it does not measure project duration — an earlier draft's "42% longer duration" claim was unsupported and has been removed.)
-
----
-
-*Draft status: Phase 1 complete (structure, lit review, model). Phase 2 (empirical calibration, peer review) pending.*  
-*Contact: [pawel@mamcarz.com]*
+Obwieszczenie Prezesa Urzędu Zamówień Publicznych z dnia 8 grudnia 2025 r., M.P. 2025 poz. 1247 (EU thresholds for 2026–2027).

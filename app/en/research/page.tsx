@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
 
 export const metadata = {
-  title: "Research Paper — The Hidden Cost of Procedural Compliance | ProcuraCost",
+  title: "Research Paper — ProcuraCost 2.0",
   description:
-    "Methodological working paper on a transparent simulation of rigid and policy-based procurement paths, with empirical anchors separated from modeling assumptions.",
+    "Neutral decision model comparing formal/sequential and adaptive/compliant procurement paths with scenario uncertainty.",
 };
 
 // The research paper is written in English and lives at /research.
