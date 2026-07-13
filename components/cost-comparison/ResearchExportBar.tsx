@@ -6,7 +6,7 @@ import {
   COST_DIMENSION_KEYS,
 } from "@/lib/calculations";
 import { Scenario } from "@/lib/scenarios";
-import { researchExportT, Lang } from "@/lib/i18n";
+import { researchExportT, dimensionMultiplierLabelsT, Lang } from "@/lib/i18n";
 import { downloadTextFile, isoDateStamp } from "@/lib/research-export";
 import { MODEL_VERSION, VERSION } from "@/lib/version";
 
@@ -105,7 +105,7 @@ export default function ResearchExportBar({ result, scenario, inputs, lang }: Pr
       ``,
       `**Multipliers**: ${
         trace.multiplierDetails.length > 0
-          ? trace.multiplierDetails.map((d) => `${d.labelEn || d.label} ${d.value.toFixed(2)}x`).join(" • ")
+          ? trace.multiplierDetails.map((d) => `${dimensionMultiplierLabelsT.en[d.key]} ${d.value.toFixed(2)}x`).join(" • ")
           : "neutral context (all 1.00x)"
       }`,
       ``,

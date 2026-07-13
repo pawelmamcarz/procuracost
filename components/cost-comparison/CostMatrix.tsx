@@ -7,7 +7,7 @@ import {
   TechLevelId,
   getDimensionMultiplierDetails,
 } from "@/lib/calculations";
-import { comparisonT, Lang } from "@/lib/i18n";
+import { comparisonT, dimensionMultiplierLabelsT, Lang } from "@/lib/i18n";
 import { TECH_LEVELS } from "@/lib/process-templates";
 
 interface Props {
@@ -117,7 +117,7 @@ export default function CostMatrix({ inputs, lang }: Props) {
           <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-blue-700 tabular-nums">
             {getDimensionMultiplierDetails(inputs.spendType, inputs.processPhase).map((d) => (
               <span key={d.key}>
-                {lang === "en" ? d.labelEn : d.label}: <span className="font-semibold">{d.value.toFixed(2)}x</span>
+                {dimensionMultiplierLabelsT[lang][d.key]}: <span className="font-semibold">{d.value.toFixed(2)}x</span>
               </span>
             ))}
           </div>

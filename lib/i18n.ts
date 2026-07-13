@@ -616,3 +616,28 @@ const assessmentEn = {
 } satisfies AssessmentShape;
 
 export const assessmentT = { pl: assessmentPl, en: assessmentEn } as const;
+
+const dimensionMultiplierLabelsPl = {
+  tco: "Dźwignia TCO",
+  delay: "Koszt opóźnienia",
+  productivity: "Wpływ na jakość wyboru dostawcy",
+  bypass: "Ryzyko obejścia",
+  renegotiation: "Ryzyko renegocjacji",
+  coordination: "Intensywność koordynacji",
+} as const;
+
+type DimensionMultiplierLabelsShape = LangShape<typeof dimensionMultiplierLabelsPl>;
+
+const dimensionMultiplierLabelsEn = {
+  tco: "TCO leverage",
+  delay: "Delay penalty",
+  productivity: "Supplier selection-quality impact",
+  bypass: "Bypass risk",
+  renegotiation: "Renegotiation exposure",
+  coordination: "Coordination overhead",
+} satisfies DimensionMultiplierLabelsShape;
+
+export const dimensionMultiplierLabelsT = {
+  pl: dimensionMultiplierLabelsPl,
+  en: dimensionMultiplierLabelsEn,
+} as const;

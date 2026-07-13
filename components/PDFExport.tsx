@@ -4,7 +4,7 @@ import { useState } from "react";
 import jsPDF from "jspdf";
 import { ComparisonResult, formatPLN, getDimensionMultiplierDetails } from "@/lib/calculations";
 import { Scenario } from "@/lib/scenarios";
-import { comparisonT } from "@/lib/i18n";
+import { comparisonT, dimensionMultiplierLabelsT } from "@/lib/i18n";
 
 interface Props {
   result: ComparisonResult;
@@ -239,7 +239,7 @@ export default function PDFExport({ result, scenario, spendType, processPhase }:
       const col2 = margin + 95;
 
       details.slice(0, 6).forEach((d, idx) => {
-        const label = exportLang === "pl" ? d.label : d.labelEn;
+        const label = dimensionMultiplierLabelsT[exportLang][d.key];
         const val = `${d.value.toFixed(2)}x`;
         const x = idx % 2 === 0 ? col1 : col2;
         if (idx % 2 === 0 && idx > 0) my += 4.2;

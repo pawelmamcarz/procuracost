@@ -7,7 +7,7 @@ import {
   calculateCosts,
   ProcurementInputs,
 } from "@/lib/calculations";
-import { researchExportT } from "@/lib/i18n";
+import { dimensionMultiplierLabelsT, researchExportT } from "@/lib/i18n";
 import { downloadTextFile, isoDateStamp } from "@/lib/research-export";
 import { MODEL_VERSION, VERSION } from "@/lib/version";
 import Link from "next/link";
@@ -152,7 +152,7 @@ export default function AssumptionsExplorerEn() {
   function handleCopyMultipliersCsv() {
     const multRows = details.map((d) => {
       const key = DETAIL_KEY_TO_MULTIPLIER_KEY[d.key] ?? "coordinationIntensityMultiplier";
-      return `${d.labelEn || d.label},${effectiveMultipliers[key].toFixed(2)}x`;
+      return `${dimensionMultiplierLabelsT.en[d.key]},${effectiveMultipliers[key].toFixed(2)}x`;
     });
     const simRows = [
       `ExampleValue,${exampleValue}`,
@@ -263,7 +263,7 @@ export default function AssumptionsExplorerEn() {
                 const effVal = effectiveMultipliers[multKey];
                 return (
                   <div key={d.key} className="flex justify-between items-center border-b border-gray-100 pb-1.5">
-                    <span className="text-gray-700">{d.labelEn}</span>
+                    <span className="text-gray-700">{dimensionMultiplierLabelsT.en[d.key]}</span>
                     <span className="font-mono font-semibold tabular-nums text-blue-700">
                       {effVal.toFixed(2)}x {effVal !== baseVal && <span className="text-gray-500 text-xs ml-1">({baseVal.toFixed(2)}x)</span>}
                     </span>
