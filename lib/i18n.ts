@@ -295,6 +295,44 @@ const comparisonEn = {
 
 export const comparisonT = { pl: comparisonPl, en: comparisonEn } as const;
 
+const researchExportPl = {
+  forPaper: "Do artykułu / replikacji:",
+  exportJson: "Eksport JSON",
+  exportCsv: "Eksport CSV",
+  exportMarkdown: "Eksport Markdown",
+  liveTraceNote: "Używa aktywnych mnożników + pełnego śladu obliczeń",
+  jsonTitle: "Pobierz pełne wejścia, mnożniki, ślad obliczeń i wyniki jako JSON",
+  csvTitle: "Pobierz wymiary kosztów i mnożniki jako CSV",
+  markdownTitle: "Pobierz tabelę wyników i ślad jako Markdown",
+  jsonNote: "Pełny eksport wyników z CostComparison. Używaj razem z model_specification_draft.md.",
+  assumptionsExportJson: "Eksport badawczy (JSON: mnożniki + scenariusz)",
+  assumptionsJsonTitle: "Eksportuj bieżące mnożniki (bazowe + efektywne), szczegóły i pełny wyliczony scenariusz do pakietu replikacyjnego lub tabel w artykule",
+  assumptionsCopyCsv: "Kopiuj mnożniki (CSV)",
+  assumptionsCsvTitle: "Skopiuj mnożniki i wartości symulatora jako CSV do wklejenia w artykule lub arkuszu",
+  assumptionsJsonNote: "Aktywne mnożniki z getDimensionMultipliers + getDimensionMultiplierDetails. Pełny wynik używa calculateCosts z wyświetlanym kontekstem.",
+} as const;
+
+type ResearchExportShape = LangShape<typeof researchExportPl>;
+
+const researchExportEn = {
+  forPaper: "For the paper / replication:",
+  exportJson: "Export JSON",
+  exportCsv: "Export CSV",
+  exportMarkdown: "Export Markdown",
+  liveTraceNote: "Uses live multipliers + full result trace",
+  jsonTitle: "Download full inputs, multipliers, calculation trace and results as JSON",
+  csvTitle: "Download cost dimensions and multipliers as CSV",
+  markdownTitle: "Download the results table and trace as Markdown",
+  jsonNote: "Full result export from CostComparison. Use with model_specification_draft.md.",
+  assumptionsExportJson: "Export for Research (JSON: multipliers + scenario)",
+  assumptionsJsonTitle: "Export current multipliers (base + effective), details, and a full computed scenario for the replication package or paper tables",
+  assumptionsCopyCsv: "Copy multipliers CSV",
+  assumptionsCsvTitle: "Copy multipliers and simulator values as CSV for easy pasting into paper or spreadsheet",
+  assumptionsJsonNote: "Live multipliers from getDimensionMultipliers + getDimensionMultiplierDetails. Full result uses calculateCosts with the displayed context.",
+} satisfies ResearchExportShape;
+
+export const researchExportT = { pl: researchExportPl, en: researchExportEn } as const;
+
 const optimizerPl = {
   parametersTitle: "Parametry zakupu",
   contractValue: "Wartość kontraktu:",
