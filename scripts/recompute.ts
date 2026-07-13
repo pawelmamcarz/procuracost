@@ -3,9 +3,8 @@
 // plain Node type-stripping cannot resolve)
 //
 // Prints:
-//  (a) the per-dimension Δ table for all reference scenarios, in the exact column
-//      format used by docs/articles/doktorat/00-shared-foundation.md §5.1,
-//  (b) the symmetry test (sign of deltaC per scenario),
+//  (a) the per-dimension central Δ table for all reference scenarios,
+//  (b) sign and low/high scenario range,
 //  (c) the context-uplift audit: every (spendType × processPhase) combo re-run per
 //      scenario, reporting each dimension's total context uplift factor vs the unset
 //      baseline — invariant: no dimension's total uplift exceeds ~×1.5.
@@ -47,9 +46,9 @@ function fmtCV(v: number): string {
 }
 
 // ── (a) §5.1 table ────────────────────────────────────────────────────────────
-console.log("### 5.1 Per-dimension Δ (rigid − flexible), PLN. Δ > 0 means the rigid path costs more.\n");
-console.log("| scenario (type / tech) | CV | time | admin | opp | favor. | reneg | tco | bypass | TOT rigid | TOT flex | **deltaC** | **% CV** | dominant |");
-console.log("|--|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--|");
+console.log("### Central per-dimension Δ (formal − adaptive), PLN. Positive favours adaptive.\n");
+console.log("| scenario (type / tech) | CV | time | admin | opp | selection | reneg | tco | bypass | TOT formal | TOT adaptive | **central Δ** | **low…high Δ** | **% CV** | dominant |");
+console.log("|--|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--|");
 
 const results: Array<{ id: string; r: ComparisonResult; cv: number }> = [];
 
@@ -66,19 +65,22 @@ for (const s of SCENARIOS) {
   console.log(
     `| ${s.id} (${s.inputs.processType}/${s.inputs.techLevel}) | ${fmtCV(cv)} | ` +
     deltas.map(fmt).join(" | ") +
-    ` | ${fmt(r.rigid.total)} | ${fmt(r.flexible.total)} | **${deltaC >= 0 ? "+" : ""}${fmt(deltaC)}** | ${pctCV >= 0 ? "+" : ""}${pctCV.toFixed(2)}% | ${DIM_SHORT[DIMS[dominantIdx]]} |`
+    ` | ${fmt(r.rigid.total)} | ${fmt(r.flexible.total)} | **${deltaC >= 0 ? "+" : ""}${fmt(deltaC)}** | ${fmt(r.uncertainty.lowDelta)}…${fmt(r.uncertainty.highDelta)} | ${pctCV >= 0 ? "+" : ""}${pctCV.toFixed(2)}% | ${DIM_SHORT[DIMS[dominantIdx]]} |`
   );
 }
 
-// ── (b) symmetry test ─────────────────────────────────────────────────────────
+// ── (b) sign robustness ───────────────────────────────────────────────────────
 const negatives = results.filter(({ r }) => r.delta < 0);
 const favRigid = results.filter(({ r }) => r.rigid.productivityCost - r.flexible.productivityCost < 0);
-console.log(`\n### 5.2 Symmetry test: deltaC < 0 in ${negatives.length} of ${results.length} scenarios` +
+const crossing = results.filter(({ r }) => r.uncertainty.crossesZero);
+console.log(`\n### Sign test: central Δ < 0 in ${negatives.length} of ${results.length} scenarios` +
   (negatives.length ? ` (${negatives.map((n) => n.id).join(", ")})` : "") + ".");
-console.log(`Favoritism dimension favors the rigid path (Δfavor < 0) in ${favRigid.length}/${results.length} scenarios.`);
+console.log(`Scenario envelope crosses zero in ${crossing.length}/${results.length} scenarios` +
+  (crossing.length ? ` (${crossing.map((n) => n.id).join(", ")})` : "") + ".");
+console.log(`Selection dimension favours the formal path in ${favRigid.length}/${results.length} central scenarios.`);
 
 // ── (c) context-uplift audit ──────────────────────────────────────────────────
-console.log("\n### Context-uplift audit (rigid path): total per-dimension factor vs unset baseline");
+console.log("\n### Context-uplift audit (formal path): total per-dimension factor vs unset baseline");
 console.log("Invariant: no dimension's total context uplift exceeds ~×1.5.\n");
 
 const COMBOS: Array<{ label: string; spendType?: "direct" | "indirect"; processPhase?: "upstream" | "downstream" }> = [

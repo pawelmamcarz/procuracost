@@ -18,10 +18,10 @@ export default function EnOptimizerPage() {
           Procurement Path Optimizer
         </h1>
         <p className="mt-2 text-sm text-gray-500 max-w-2xl">
-          The model recommends a procurement method based on purchase parameters; public-sector
-          recommendations are hard-filtered to the lawful PZP procedures. It is a weighted scoring
-          function (not a trained ML model); the 30 runs are a sensitivity sweep showing how stable
-          the recommendation is. Illustrative tool.
+          The model compares procurement methods from purchase parameters and applies encoded PZP
+          threshold filters for public-sector cases. It is a weighted scoring function, not a trained
+          ML model; 30 runs show recommendation sensitivity. It is illustrative and does not replace
+          legal analysis or the authority&apos;s internal rules.
         </p>
       </div>
       <PathOptimizer lang="en" />

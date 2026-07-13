@@ -2,9 +2,9 @@ import Link from "next/link";
 import { EPISODES } from "@/lib/shortcasty";
 
 export const metadata = {
-  title: "Pole Rozmowy — Shortcasty ProcuraCost",
+  title: "ProcuraCost 2.0 — krótkie materiały metodologiczne",
   description:
-    "Seria 20 shortcastów o ukrytych kosztach procedur zakupowych. 10 minut, jeden wymiar kosztu, jeden dowód, jedna decyzja.",
+    "Krótka seria o źródłach, założeniach i niepewności neutralnego modelu ProcuraCost 2.0.",
 };
 
 const PLATFORMS = [
@@ -21,16 +21,15 @@ export default function ShortcastyPage() {
     <div className="mx-auto max-w-5xl px-6 py-12">
       <div className="mb-10 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-white">
         <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-blue-200">
-          Sezon 1 · 20 odcinków
+          Model 2.0 · {EPISODES.length} odcinki
         </p>
-        <h1 className="text-3xl font-bold leading-tight">Pole Rozmowy</h1>
+        <h1 className="text-3xl font-bold leading-tight">ProcuraCost: źródła i założenia</h1>
         <p className="mt-1 text-base text-blue-100 font-medium">
-          Krótko o tym, ile tracisz w rurze i jak wyjść na pole.
+          Krótko o tym, co model wie, czego nie wie i kiedy zmienia znak.
         </p>
         <p className="mt-4 text-sm text-blue-100 max-w-2xl leading-relaxed">
-          10 minut, jeden wymiar kosztu, jeden dowód z modelu ProcuraCost.
-          Rozmawiamy z kupcami, CPO, CFO, prawnikami i wdrożeniowcami o tym,
-          ile naprawdę kosztuje robienie wszystkiego zgodnie z procedurą.
+          Każdy odcinek oddziela ustalenie źródłowe od kalibracji modelowej.
+          Materiały nie przedstawiają wyników ProcuraCost jako zmierzonych efektów organizacyjnych.
         </p>
 
         <div className="mt-6 flex flex-wrap items-center gap-3">
@@ -107,7 +106,7 @@ export default function ShortcastyPage() {
 
       <div>
         <p className="mb-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-          {published.length > 0 ? "Nadchodzące odcinki" : "Plan sezonu — 20 odcinków"}
+          {published.length > 0 ? "Nadchodzące odcinki" : `Plan serii — ${EPISODES.length} odcinki`}
         </p>
         <div className="space-y-2">
           {upcoming.map((ep) => (

@@ -1,5 +1,8 @@
 # Testable Propositions – ProcuraCost 2×2 Framework (v1.0)
 
+> **SUPERSEDED.** Retained for provenance only. Reformulate propositions using
+> separate workflow, competition and contract-rigidity constructs from model 2.0.
+
 **Unit of analysis (approved 20 June 2026)**: a procurement event or contract. Organizations are grouping units containing multiple events; propositions must be tested at event level unless explicitly labeled organizational.
 
 **Primary exposure (approved 20 June 2026)**: a continuous `observed_rigidity_index` built from pre-outcome event records. Binary rigid/flexible labels are descriptive; ProcuraCost rigidity constants are not empirical measurements.

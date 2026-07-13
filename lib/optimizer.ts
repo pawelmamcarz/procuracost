@@ -24,6 +24,8 @@ export interface ProcurementFeatures {
   supplyRisk: number;          // 1–5: 1=commoditized, 5=single source
   strategicImportance: number; // 1–5
   marketMaturity: number;      // 1–5: 1=new market, 5=mature commodity
+  procurementObject?: "supplies_services" | "works";
+  authorityLevel?: "central" | "subcentral";
 
   // New contextual dimensions (aligned with cost model)
   spendType?: "direct" | "indirect";
@@ -159,18 +161,18 @@ export const PATHS: Record<PathId, ProcurementPath> = {
     nameEn: "Basic mode",
     pzpArticle: "PZP Art. 275",
     description:
-      "Domyślny krajowy tryb konkurencyjny dla zamówień poniżej progu unijnego (od 130 000 PLN). Trzy warianty: bez negocjacji, z fakultatywnymi negocjacjami oraz z obowiązkowymi negocjacjami. Krótsze terminy niż w trybach unijnych przy zachowaniu konkurencji i przejrzystości.",
+      "Domyślny krajowy tryb konkurencyjny dla zamówień poniżej progu unijnego (od 170 000 PLN od 1.01.2026). Trzy warianty: bez negocjacji, z fakultatywnymi negocjacjami oraz z obowiązkowymi negocjacjami.",
     descriptionEn:
-      "The default national competitive procedure for contracts below the EU threshold (from PLN 130,000). Three variants: without negotiations, with optional negotiations, and with mandatory negotiations. Shorter deadlines than EU procedures while preserving competition and transparency.",
+      "The default national competitive procedure below the EU threshold (from PLN 170,000 since 1 January 2026), with three statutory variants.",
     typicalDays: [30, 90],
     conditions: [
-      "Wartość między 130 000 PLN a progiem unijnym",
+      "Wartość między 170 000 PLN a progiem unijnym",
       "Sektor publiczny (postępowanie krajowe PZP)",
       "Standardowy zakup konkurencyjny",
       "Brak wyjątkowej pilności",
     ],
     conditionsEn: [
-      "Value between PLN 130,000 and the EU threshold",
+      "Value between PLN 170,000 and the EU threshold",
       "Public sector (national PZP procedure)",
       "Standard competitive purchase",
       "No exceptional urgency",
@@ -265,13 +267,13 @@ export const PATHS: Record<PathId, ProcurementPath> = {
       "Monopol techniczny lub prawny",
       "Awaria / zagrożenie ciągłości",
       "Wyjątkowa pilność nieprzewidywalna",
-      "Poniżej progu 130 000 PLN (bez PZP)",
+      "Poniżej progu 170 000 PLN (bez PZP)",
     ],
     conditionsEn: [
       "Technical or legal monopoly",
       "Emergency / continuity threat",
       "Exceptional unforeseeable urgency",
-      "Below 130,000 PLN threshold (no PZP required)",
+      "Below PLN 170,000 threshold (PZP does not apply)",
     ],
     risks: [
       "Najwyższe ryzyko audytowe",
@@ -345,10 +347,10 @@ const PATH_TERMS: Record<PathId, TermSpec[]> = {
   ],
   tryb_podstawowy: [
     // Default competitive Polish procedure below the EU threshold: public-sector,
-    // mid-value (130k–EU band), non-emergency, standard buys.
+    // mid-value (170k–applicable-EU-threshold band), non-emergency, standard buys.
     { w: 0, scale: 30, maxFactor: 1, factor: (f) => (f.isPublicSector ? 1 : 0) },
     { w: 1, scale: 30, maxFactor: 1, factor: (f) =>
-        f.contractValue >= PZP_EXEMPTION_PLN && f.contractValue < EU_THRESHOLD_SUPPLIES_SERVICES_PLN ? 1 : 0 },
+        f.contractValue >= PZP_EXEMPTION_PLN && f.contractValue < applicableEuThreshold(f) ? 1 : 0 },
     { w: 2, scale: 15, maxFactor: 1, factor: (f) => (f.urgencyDays >= 21 ? 1 : f.urgencyDays / 21) },
     { w: 3, scale: 15, maxFactor: 1, factor: (f) => (f.supplierCount >= 2 ? 1 : f.supplierCount / 2) },
     { w: 4, scale: 10, maxFactor: 1, factor: (f) => (6 - f.complexity) / 5 },
@@ -445,6 +447,8 @@ const FEATURE_LABELS_PL: Record<keyof ProcurementFeatures, string> = {
   marketMaturity: "Dojrzałość rynku",
   spendType: "Rodzaj wydatku (Direct/Indirect)",
   processPhase: "Faza procesu (Upstream/Downstream)",
+  procurementObject: "Przedmiot zamówienia",
+  authorityLevel: "Poziom zamawiającego",
 };
 
 const FEATURE_LABELS_EN: Record<keyof ProcurementFeatures, string> = {
@@ -459,6 +463,8 @@ const FEATURE_LABELS_EN: Record<keyof ProcurementFeatures, string> = {
   marketMaturity: "Market maturity",
   spendType: "Spend type (Direct/Indirect)",
   processPhase: "Process phase (Upstream/Downstream)",
+  procurementObject: "Procurement object",
+  authorityLevel: "Authority level",
 };
 
 const N_TREES = 30;
@@ -476,10 +482,17 @@ const PATH_IDS: PathId[] = [
 // Per Obwieszczenie Prezesa UZP z 8.12.2025 (M.P. 2025 poz. 1247): 1 EUR = 4.31 PLN,
 // valid 2026–2027. Supplies/services EU threshold for sub-central contracting
 // authorities = 216,000 EUR × 4.31 ≈ PLN 930,960; construction works ≈ PLN 23.3M.
-// The supplies/services threshold is the conservative default since the optimizer
-// does not capture the procurement object type.
-const PZP_EXEMPTION_PLN = 130_000;
+const PZP_EXEMPTION_PLN = 170_000;
+const EU_THRESHOLD_CENTRAL_SUPPLIES_SERVICES_PLN = 603_400;
 const EU_THRESHOLD_SUPPLIES_SERVICES_PLN = 930_960;
+const EU_THRESHOLD_WORKS_PLN = 23_291_240;
+
+function applicableEuThreshold(f: ProcurementFeatures): number {
+  if (f.procurementObject === "works") return EU_THRESHOLD_WORKS_PLN;
+  return f.authorityLevel === "central"
+    ? EU_THRESHOLD_CENTRAL_SUPPLIES_SERVICES_PLN
+    : EU_THRESHOLD_SUPPLIES_SERVICES_PLN;
+}
 
 // Lawful competitive trybów for public-sector procurement at/above the EU threshold
 // without documented statutory grounds for a negotiated / single-source award.
@@ -489,7 +502,7 @@ const PUBLIC_COMPETITIVE_PATHS: PathId[] = [
   "dialog_konkurencyjny",
 ];
 
-// Lawful paths for public-sector procurement in the 130k PLN–EU-threshold band: the national
+// Lawful paths for public-sector procurement in the 170k PLN–EU-threshold band: the national
 // 'tryb podstawowy' (Art. 275) is the default competitive procedure here. The ≥EU-threshold
 // trybów (open / restricted tender, competitive dialogue) remain available; a negotiated or
 // single-source award still requires documented przesłanki (Art. 275 ust. 2 / 305).
@@ -501,17 +514,17 @@ const PUBLIC_BELOW_EU_PATHS: PathId[] = [
 ];
 
 // Paths available where PZP's national 'tryb podstawowy' does not apply (private sector, or
-// public buys below the 130k PLN PZP exemption): every path except the band-specific tryb podstawowy.
+// public buys below the 170k PLN PZP exemption): every path except the band-specific tryb podstawowy.
 const GENERAL_PATHS: PathId[] = PATH_IDS.filter((p) => p !== "tryb_podstawowy");
 
 // Hard legal filter: the set of paths the tool is ALLOWED to recommend for these features,
 // so a recommendation can never contradict the legality note.
 function feasiblePathIds(f: ProcurementFeatures): PathId[] {
   if (!f.isPublicSector) return GENERAL_PATHS;                  // private sector: policy is the only constraint
-  if (f.contractValue < PZP_EXEMPTION_PLN) return GENERAL_PATHS; // below 130k PLN: PZP does not apply
-  // Public sector in the 130k PLN–EU band: the national tryb podstawowy (Art. 275) is the lawful
+  if (f.contractValue < PZP_EXEMPTION_PLN) return GENERAL_PATHS; // below 170k PLN: PZP does not apply
+  // Public sector in the 170k PLN–EU band: the national tryb podstawowy (Art. 275) is the lawful
   // default, alongside the competitive trybów. Negotiated / single-source awards require przesłanki.
-  if (f.contractValue < EU_THRESHOLD_SUPPLIES_SERVICES_PLN) return PUBLIC_BELOW_EU_PATHS;
+  if (f.contractValue < applicableEuThreshold(f)) return PUBLIC_BELOW_EU_PATHS;
   // Public sector at/above the EU threshold: only the full-procedure competitive trybów by default.
   // Negotiated and single-source awards require documented przesłanki (Art. 153 / 214) not modeled here.
   return PUBLIC_COMPETITIVE_PATHS;
@@ -531,6 +544,8 @@ const NEUTRAL_FEATURES: ProcurementFeatures = {
   marketMaturity: 3,
   spendType: undefined,
   processPhase: undefined,
+  procurementObject: "supplies_services",
+  authorityLevel: "subcentral",
 };
 
 const UNIT_WEIGHTS: number[] = Array.from({ length: N_WEIGHTS }, () => 1);
@@ -629,6 +644,10 @@ function describeFeatureValue(
       return `${pl ? "sektor publiczny" : "public sector"}: ${v ? (pl ? "tak" : "yes") : (pl ? "nie" : "no")}`;
     case "innovationRequired":
       return `${pl ? "innowacyjność wymagana" : "innovation required"}: ${v ? (pl ? "tak" : "yes") : (pl ? "nie" : "no")}`;
+    case "procurementObject":
+      return `${pl ? "przedmiot" : "object"}: ${v === "works" ? (pl ? "roboty budowlane" : "works") : (pl ? "dostawy/usługi" : "supplies/services")}`;
+    case "authorityLevel":
+      return `${pl ? "zamawiający" : "authority"}: ${v === "central" ? (pl ? "centralny" : "central") : (pl ? "subcentralny" : "sub-central")}`;
     default: {
       const n = v as number;
       const labels = pl
@@ -667,10 +686,10 @@ function generatePolicyNote(f: ProcurementFeatures, winner: PathId, lang: "pl" |
       return "Private sector: PZP thresholds do not apply. The organisation's procurement policy is the only constraint — all paths are available.";
     }
     if (f.contractValue < PZP_EXEMPTION_PLN) {
-      return "Below the PLN 130,000 net threshold: purchase without applying PZP. Only the contracting authority's internal procurement policy applies.";
+      return "Below the PLN 170,000 net threshold: PZP does not apply (threshold effective from 1 January 2026). Internal rules and public-spending principles still apply.";
     }
-    if (f.contractValue < EU_THRESHOLD_SUPPLIES_SERVICES_PLN) {
-      return "Between PLN 130,000 and the EU threshold (≈ PLN 600k–930k for supplies/services; ≈ PLN 23.3M for works): the national 'tryb podstawowy' applies (Art. 275, three variants), plus negotiations without notice or a single-source award where statutory grounds are documented.";
+    if (f.contractValue < applicableEuThreshold(f)) {
+      return "Between PLN 170,000 and the applicable EU threshold (PLN 603,400 or 930,960 for supplies/services; PLN 23,291,240 for works): the national 'tryb podstawowy' applies (Art. 275). Exceptional modes require documented statutory grounds.";
     }
     return "At/above the EU threshold: full procedure under PZP and Directive 2014/24/EU. Competitive trybów: open tender (Art. 132), restricted tender (Art. 140), competitive dialogue (Art. 169). A negotiated procedure with notice (Art. 153) or a single-source award (Art. 214) requires documented statutory grounds.";
   }
@@ -679,10 +698,10 @@ function generatePolicyNote(f: ProcurementFeatures, winner: PathId, lang: "pl" |
     return "Sektor prywatny: progi PZP nie mają zastosowania. Polityka zakupowa organizacji jest jedynym ograniczeniem — wszystkie ścieżki są dostępne.";
   }
   if (f.contractValue < PZP_EXEMPTION_PLN) {
-    return "Poniżej progu 130 000 PLN netto: zakup bez stosowania PZP. Obowiązuje wyłącznie wewnętrzna polityka zakupowa zamawiającego.";
+    return "Poniżej progu 170 000 PLN netto (od 1.01.2026): ustawy PZP nie stosuje się, lecz nadal obowiązują reguły wewnętrzne oraz zasady racjonalnego i przejrzystego wydatkowania.";
   }
-  if (f.contractValue < EU_THRESHOLD_SUPPLIES_SERVICES_PLN) {
-    return "Między 130 000 PLN a progiem UE (≈ 600 tys.–930 tys. PLN dla dostaw/usług; ≈ 23,3 mln PLN dla robót budowlanych): tryb podstawowy (Art. 275, trzy warianty), a także negocjacje bez ogłoszenia lub wolna ręka, gdy udokumentowane są ustawowe przesłanki.";
+  if (f.contractValue < applicableEuThreshold(f)) {
+    return "Między 170 000 PLN a właściwym progiem UE (603 400 lub 930 960 PLN dla dostaw/usług; 23 291 240 PLN dla robót): tryb podstawowy (art. 275). Tryby wyjątkowe wymagają udokumentowanych przesłanek ustawowych.";
   }
   return "Na/powyżej progu UE: pełne postępowanie zgodnie z PZP i Dyrektywą 2014/24/UE. Tryby konkurencyjne: przetarg nieograniczony (Art. 132), ograniczony (Art. 140), dialog konkurencyjny (Art. 169). Negocjacje z ogłoszeniem (Art. 153) lub wolna ręka (Art. 214) wymagają udokumentowanych przesłanek.";
 }

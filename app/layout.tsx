@@ -8,7 +8,7 @@ const geist = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 
 const title = "ProcuraCost — Kalkulator kosztów procedur zakupowych";
 const description =
-  "Oblicz koszty utracone przywiązania do procedur przetargowych versus elastycznej polityki zakupowej.";
+  "Porównaj formalną i adaptacyjną ścieżkę zakupu z jawnym zakresem niepewności modelu 2.0.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

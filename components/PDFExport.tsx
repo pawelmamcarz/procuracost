@@ -93,7 +93,7 @@ export default function PDFExport({ result, scenario, spendType, processPhase }:
 
     doc.setTextColor(30, 64, 175);
     doc.setFontSize(8);
-    doc.text(exportLang === "pl" ? "Koszt utracony przywiązania do procedur" : "Hidden cost of procedural compliance", margin + 8, y + 7);
+    doc.text(exportLang === "pl" ? "Centralna różnica kosztu (formalna − adaptacyjna)" : "Central cost difference (formal − adaptive)", margin + 8, y + 7);
 
     doc.setFontSize(20);
     doc.setTextColor(185, 28, 28); // red-700
@@ -102,7 +102,7 @@ export default function PDFExport({ result, scenario, spendType, processPhase }:
     doc.setFontSize(10);
     doc.setTextColor(55, 65, 81);
     doc.text(
-      `+${result.deltaPercent.toFixed(1)}% ${t.higherThan}`,
+      `${result.deltaPercent >= 0 ? "+" : ""}${result.deltaPercent.toFixed(1)}% | zakres ${formatPLN(result.uncertainty.lowDelta)} – ${formatPLN(result.uncertainty.highDelta)}`,
       pageWidth - margin - 8 - 75,
       y + 16
     );

@@ -7,13 +7,13 @@ import { calculateCosts } from "@/lib/calculations";
 export const metadata: Metadata = {
   title: "ProcuraCost — Procurement Cost Calculator",
   description:
-    "Cost calculator, path optimizer, and a free procurement maturity audit. See what your organisation is losing to rigid procedures.",
+    "Neutral procurement cost model with scenario uncertainty, path optimizer, and maturity audit.",
 };
 
 const stats = [
-  { value: "~6%", label: "favoritism premium under unchecked discretion (which competitive tendering averts)", source: "Szucs, JEEA 2024" },
-  { value: "+7.7–10.5pp", label: "increased renegotiation risk (observational)", source: "Beuve, Moszoro & Spiller, NBER 2021" },
-  { value: "30%", label: "potential TCO savings with flexibility (practitioner ceiling, multi-year)", source: "industry heuristic (unattributed)" },
+  { value: "~6 pp", label: "normalized-price increase under discretion; Hungarian-market transfer", source: "Szucs, JEEA 2024" },
+  { value: "0–10.5 pp", label: "contract-rigidity renegotiation scenario", source: "Beuve et al., JLEO 2023, 2SLS/IV" },
+  { value: "0–15%", label: "declared TCO-pool scenario, not an empirical finding", source: "model 2.0 assumption" },
 ];
 
 const howItWorks = [
@@ -25,7 +25,7 @@ const howItWorks = [
   {
     step: "02",
     title: "Calculate hidden costs",
-    body: "The model, grounded in the literature and practitioner benchmarks, computes 7 cost dimensions — staff time, delays, renegotiations, bypass risk — comparing tunnel to field.",
+    body: "The model computes seven dimensions and reports a central result with a broad scenario range that may favor either path.",
   },
   {
     step: "03",
@@ -75,11 +75,11 @@ const caseStudyPreviews = SCENARIOS.filter((s) => s.caseStudy)
 const principles = [
   {
     title: "Procedure ≠ Policy",
-    body: "A procurement policy sets the principles and boundaries. A procedure is just one of many ways to implement them. Conflating the two costs organisations millions.",
+    body: "Policy defines boundaries and procedure orders activities. Separating them lets us compare lawful paths without assuming the result.",
   },
   {
-    title: "The buyer as strategist",
-    body: "Rigid procedures absolve the buyer of thinking — 'I followed the procedure, I'm safe.' A procurement policy demands reflection and creativity.",
+    title: "Control and adaptation",
+    body: "Formalisation can protect competition and auditability; adaptation can reduce delay. The model represents both mechanisms.",
   },
   {
     title: "Costs are measurable",
@@ -95,17 +95,16 @@ export default function EnHomePage() {
           Research & Consulting Tool
         </span>
         <h1 className="mt-4 text-4xl font-bold text-gray-900">
-          Your procedures are a tunnel.
+          Tunnel or field?
           <br />
-          Procurement policy is a field.
+          It is an empirical question.
         </h1>
         <p className="mt-2 text-sm italic text-blue-600">
           A tunnel has walls. A field has a horizon.
         </p>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-500">
-          The model estimates that rigid procedures are often{" "}
-          <span className="font-semibold text-gray-700">materially more costly</span> than
-          policy-only procurement — check your own case.
+          The model tests when sequential formality costs more than the control value it creates—
+          <span className="font-semibold text-gray-700">without assuming the winner</span>.
         </p>
         <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link
@@ -203,7 +202,7 @@ export default function EnHomePage() {
       <div className="mt-12 rounded-2xl border border-blue-100 bg-blue-50 p-6">
         <h2 className="font-bold text-blue-900">The Tunnel vs. Field model</h2>
         <p className="mt-1 text-sm text-blue-700">
-          Same contract — same value — two worlds. The procedure locks one path and forces bypasses. The policy sets boundaries and grants freedom of choice.
+          The same purchase and compliance boundary, but two lawful paths. The model tests when formalisation protects value and when adaptation costs less.
         </p>
         <div className="mt-4">
           <PipeFieldDiagram lang="en" />
@@ -251,7 +250,7 @@ export default function EnHomePage() {
         <h2 className="text-2xl font-bold">See what your organisation is losing</h2>
         <p className="mt-2 text-blue-100">
           Cost calculator, path optimizer and a free procurement maturity audit —
-          all grounded in peer-reviewed research.
+          with empirical evidence separated from broad scenario assumptions.
         </p>
         <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link

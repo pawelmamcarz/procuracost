@@ -7,8 +7,7 @@ import {
 import { SCENARIOS } from "../lib/scenarios";
 import { PROCESS_RIGIDITY, type ProcessType, type TechLevelId } from "../lib/process-templates";
 
-// A base stakeholder map reused across cases (values are irrelevant to the
-// rigidity-driven invariants under test, which depend only on process/tech/context).
+// A base stakeholder map reused across cases.
 const STAKEHOLDERS: ProcurementInputs["stakeholders"] = {
   buyer: { count: 1, dailyRate: 800 },
   lawyer: { count: 1, dailyRate: 1200 },
@@ -32,18 +31,13 @@ function makeInputs(overrides: Partial<ProcurementInputs> = {}): ProcurementInpu
   };
 }
 
-// Mirrors the constants in lib/calculations.ts (not exported).
-const BASE_RENEGOTIATION_PROBABILITY = 0.22;
-const RENEGOTIATION_PREMIUM_MAX = 0.105;
-
-describe("(a) renegotiation premium is capped at RENEGOTIATION_PREMIUM_MAX", () => {
+describe("(a) renegotiation is an incremental contract-rigidity scenario", () => {
   const REN_COST = 1_000_000;
 
-  it("never exceeds the base + max-premium ceiling across all process/context combos", () => {
+  it("never universalizes the source sample's 22% baseline", () => {
     const processTypes = Object.keys(PROCESS_RIGIDITY) as ProcessType[];
     const spendTypes: Array<ProcurementInputs["spendType"]> = [undefined, "direct", "indirect"];
     const phases: Array<ProcurementInputs["processPhase"]> = [undefined, "upstream", "downstream"];
-    const ceiling = BASE_RENEGOTIATION_PROBABILITY + RENEGOTIATION_PREMIUM_MAX;
 
     for (const processType of processTypes) {
       for (const spendType of spendTypes) {
@@ -53,30 +47,20 @@ describe("(a) renegotiation premium is capped at RENEGOTIATION_PREMIUM_MAX", () 
           );
           const rigidProb = r.rigid.renegotiationCost / REN_COST;
           const flexProb = r.flexible.renegotiationCost / REN_COST;
-          expect(rigidProb).toBeLessThanOrEqual(ceiling + 1e-9);
-          expect(flexProb).toBeLessThanOrEqual(ceiling + 1e-9);
-          // premium itself never exceeds the hard cap
-          expect(rigidProb - BASE_RENEGOTIATION_PROBABILITY).toBeLessThanOrEqual(
-            RENEGOTIATION_PREMIUM_MAX + 1e-9,
-          );
+          expect(rigidProb).toBeLessThanOrEqual(0.105 + 1e-9);
+          expect(flexProb).toBeLessThanOrEqual(0.105 + 1e-9);
+          expect(rigidProb).toBeGreaterThanOrEqual(0);
+          expect(flexProb).toBeGreaterThanOrEqual(0);
         }
       }
     }
   });
 
-  it("actually binds the cap at max rigidity under the strongest context multiplier", () => {
-    // pzp_eu (rho=0.95) with direct+upstream (1.15*1.20*1.15 = 1.587) drives
-    // 0.077*0.95*1.587 = 0.116 > 0.105 -> clamped to exactly 0.105.
-    const r = calculateCosts(
-      makeInputs({
-        processType: "pzp_eu",
-        spendType: "direct",
-        processPhase: "upstream",
-        renegotiationCost: REN_COST,
-      }),
-    );
-    const rigidProb = r.rigid.renegotiationCost / REN_COST;
-    expect(rigidProb).toBeCloseTo(BASE_RENEGOTIATION_PROBABILITY + RENEGOTIATION_PREMIUM_MAX, 9);
+  it("uses separate contract profiles rather than PROCESS_RIGIDITY", () => {
+    const publicResult = calculateCosts(makeInputs({ processType: "pzp_eu", renegotiationCost: REN_COST }));
+    const operationalResult = calculateCosts(makeInputs({ processType: "mrp_order", renegotiationCost: REN_COST }));
+    expect(publicResult.rigid.renegotiationCost).toBeGreaterThan(operationalResult.rigid.renegotiationCost);
+    expect(publicResult.trace.probabilities.renegotiationRigid).toBeLessThan(0.22);
   });
 });
 
@@ -120,27 +104,25 @@ describe("(b) no dimension's total context uplift exceeds ~x1.5", () => {
   });
 });
 
-describe("(c) bypass-fix regression: flexible bypass never exceeds rigid bypass", () => {
-  const OPERATIONAL: ProcessType[] = ["catalog_order", "mrp_order"];
-  const TECHS: TechLevelId[] = ["manual", "sourcing_tool"];
-
-  for (const processType of OPERATIONAL) {
-    for (const techLevel of TECHS) {
-      it(`${processType} @ ${techLevel}: flexible <= rigid`, () => {
-        const r = calculateCosts(makeInputs({ processType, techLevel }));
-        expect(r.flexibleBypassProbability).toBeLessThanOrEqual(r.bypassProbability + 1e-12);
-      });
-    }
-  }
-
-  it("holds for every process type at every tech level (Tunnel/Field invariant)", () => {
+describe("(c) bypass and uncertainty remain scenario-based", () => {
+  it("uses the same neutral central bypass assumption for both paths", () => {
     const processTypes = Object.keys(PROCESS_RIGIDITY) as ProcessType[];
     const techs: TechLevelId[] = ["manual", "sourcing_tool", "partial_erp", "end_to_end"];
     for (const processType of processTypes) {
       for (const techLevel of techs) {
         const r = calculateCosts(makeInputs({ processType, techLevel }));
-        expect(r.flexibleBypassProbability).toBeLessThanOrEqual(r.bypassProbability + 1e-12);
+        expect(r.flexibleBypassProbability).toBeCloseTo(r.bypassProbability, 12);
       }
+    }
+  });
+
+  it("keeps a formal-path win inside the declared range for operational cases", () => {
+    for (const id of ["catalog", "mrp"]) {
+      const scenario = SCENARIOS.find((item) => item.id === id)!;
+      const result = calculateCosts(scenario.inputs);
+      expect(result.uncertainty.lowDelta).toBeLessThan(0);
+      expect(result.uncertainty.highDelta).toBeGreaterThan(0);
+      expect(result.uncertainty.crossesZero).toBe(true);
     }
   });
 });

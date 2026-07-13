@@ -1,5 +1,8 @@
 # Warstwa zgodności formalnej: Uczelnia Łazarskiego (tryb eksternistyczny)
 
+> **WYMAGA PONOWNEJ WERYFIKACJI.** Dokument powstał przy modelu 1.x. Wymogi
+> uczelni i stan prawny należy potwierdzić przed użyciem; nie traktować jako porady prawnej.
+
 **Kandydat:** Paweł Mamcarz (ORCID: 0009-0002-3274-4226)
 **Uczelnia:** Uczelnia Łazarskiego w Warszawie
 **Rozprawa:** cykl trzech powiązanych tematycznie artykułów + studium spajające (art. 187 ust. 3 PSWiN), interdyscyplinarna w *ekonomii i finansach* oraz *naukach o polityce i administracji*.

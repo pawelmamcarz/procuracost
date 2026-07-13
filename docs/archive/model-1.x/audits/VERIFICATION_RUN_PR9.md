@@ -1,5 +1,8 @@
 # Raport z niezależnej weryfikacji PR #9 (`fix/model-math-and-citation-audit`)
 
+> **ARTEFAKT HISTORYCZNY MODELU 1.x.** Zachowany jako ślad audytowy; nie jest
+> aktualnym źródłem parametrów, progów prawnych ani wniosków modelu 2.0.
+
 - **Weryfikowany commit:** `33d0b65` — „fix(model+docs): full math correction A-G + online citation verification"
 - **Data przebiegu:** 2026-07-02, niezależny przebieg w chmurze (kontynuacja pracy po wyłączeniu maszyny lokalnej)
 - **Zakres:** 7 kontroli zleconych przez właściciela repo (typecheck, lint vs main, build, determinizm `recompute`, zgodność tabel z dokumentacją, grep po wycofanych twierdzeniach, inwariant honest-reframe)

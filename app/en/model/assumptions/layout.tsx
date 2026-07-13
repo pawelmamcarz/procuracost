@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Model Assumptions Explorer — ProcuraCost",
+  title: "Model 2.0 assumptions — ProcuraCost",
   description:
-    "Adjust spend type and process phase live and see the exact multipliers the production cost model uses.",
+    "Evidence ranges, calibration assumptions and uncertainty in ProcuraCost 2.0.",
 };
 
 export default function EnModelAssumptionsLayout({ children }: { children: React.ReactNode }) {

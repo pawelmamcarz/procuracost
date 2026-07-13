@@ -10,12 +10,12 @@ const PIPE_STEPS = [
   { namePl: "Analiza potrzeb + SIWZ", nameEn: "Needs analysis + spec", days: "17", mandatory: false },
   { namePl: "Publikacja BZP/TED", nameEn: "Publication BZP/TED", days: "35+", mandatory: true },
   { namePl: "Ocena ofert + komisja", nameEn: "Bid evaluation + committee", days: "13", mandatory: false },
-  { namePl: "Standstill (art. 264 PZP)", nameEn: "Standstill period (art. 264)", days: "11+", mandatory: true },
+  { namePl: "Standstill (art. 264 PZP)", nameEn: "Standstill period (art. 264)", days: "10/15", mandatory: true },
   { namePl: "Podpisanie umowy", nameEn: "Contract signing", days: "5", mandatory: false },
 ];
 
-const FIELD_PATHS_PL = ["negocjacje", "agile/lean", "RFQ", "katalog", "bezpośrednie"];
-const FIELD_PATHS_EN = ["negotiation", "agile/lean", "RFQ", "catalog", "direct"];
+const FIELD_PATHS_PL = ["dialog", "warianty trybu", "umowa ramowa", "katalog", "negocjacje z przesłanką"];
+const FIELD_PATHS_EN = ["dialogue", "procedure variants", "framework", "catalog", "negotiation with grounds"];
 
 const CONSTRAINTS_PL = ["uprawnienia", "konkurencja", "etyka", "dokumentacja"];
 const CONSTRAINTS_EN = ["authorisation", "competition", "ethics", "documentation"];
@@ -28,7 +28,7 @@ export default function PipeFieldDiagram({ lang = "pl" }: Props) {
       <div className="flex flex-col rounded-xl border border-red-200 bg-red-50 p-4">
         <div>
           <p className="text-xs font-bold uppercase tracking-wide text-red-700">
-            {isPl ? "Procedura = Tunel" : "Procedure = Tunnel"}
+            {isPl ? "Ścieżka formalna = Tunel" : "Formal path = Tunnel"}
           </p>
           <p className="mt-0.5 font-mono text-xs text-red-400">a₁ → a₂ → a₃ → ··· → aₙ</p>
         </div>
@@ -66,13 +66,13 @@ export default function PipeFieldDiagram({ lang = "pl" }: Props) {
 
         <div className="mt-3 space-y-1.5 text-xs">
           <div className="flex justify-between rounded bg-red-100 px-3 py-1.5 text-red-800">
-            <span className="font-semibold">{isPl ? "Łącznie" : "Total"}: ~88 {isPl ? "dni" : "days"}</span>
-            <span className="text-red-600">46 {isPl ? "dni obowiązkowych" : "days mandatory"}</span>
+            <span className="font-semibold">{isPl ? "Czas zależy od kroków i danych" : "Timing depends on steps and inputs"}</span>
+            <span className="text-red-600">{isPl ? "wartość: konkurencja i audyt" : "value: competition and auditability"}</span>
           </div>
           <p className="leading-relaxed text-red-500">
             {isPl
-              ? "Pod presją kupiec wychodzi z tunelu nieformalnie (mail / Excel) → ryzyko audytowe kumuluje się niewidocznie."
-              : "Under pressure, buyers exit the tunnel informally (email / Excel) → audit risk accumulates invisibly."}
+              ? "Sekwencyjność może zwiększać czas. Obejście jest scenariuszowym ryzykiem do zmierzenia, nie automatycznym skutkiem."
+              : "Sequencing can increase timing. Bypass is a scenario risk to measure, not an automatic consequence."}
           </p>
         </div>
       </div>
@@ -80,7 +80,7 @@ export default function PipeFieldDiagram({ lang = "pl" }: Props) {
       <div className="flex flex-col rounded-xl border border-green-200 bg-green-50 p-4">
         <div>
           <p className="text-xs font-bold uppercase tracking-wide text-green-700">
-            {isPl ? "Polityka = Pole" : "Policy = Field"}
+            {isPl ? "Ścieżka adaptacyjna = Pole" : "Adaptive path = Field"}
           </p>
           <p className="mt-0.5 font-mono text-xs text-green-400">
             {PHI_SET[lang]}
@@ -119,13 +119,13 @@ export default function PipeFieldDiagram({ lang = "pl" }: Props) {
 
         <div className="mt-3 space-y-1.5 text-xs">
           <div className="flex justify-between rounded bg-green-100 px-3 py-1.5 text-green-800">
-            <span className="font-semibold">{isPl ? "Łącznie" : "Total"}: ~20 {isPl ? "dni" : "days"}</span>
-            <span className="text-green-600">{isPl ? "zero obowiązkowych" : "zero mandatory waits"}</span>
+            <span className="font-semibold">{isPl ? "Możliwe równoległe ścieżki" : "Parallel paths may be possible"}</span>
+            <span className="text-green-600">{isPl ? "ta sama granica prawna" : "the same legal boundary"}</span>
           </div>
           <p className="leading-relaxed text-green-600">
             {isPl
-              ? "Granice aktywne wszędzie. Nie ma co obchodzić — każda ścieżka wewnątrz pola jest zgodna."
-              : "Boundaries active everywhere. Nothing to bypass — every path inside the field is compliant."}
+              ? "Adaptacja nie gwarantuje zgodności ani niższego kosztu; wymaga skutecznej konkurencji, dokumentacji i kontroli."
+              : "Adaptation guarantees neither compliance nor lower cost; it requires effective competition, documentation and controls."}
           </p>
         </div>
       </div>

@@ -1,14 +1,14 @@
-# Built-in Scenario Outputs (Model 1.2.0)
+# Built-in Scenario Outputs (Model 2.0.0)
 
 > Deterministic model outputs under illustrative inputs. These are not empirical estimates of realized organizational effects.
 
-| Scenario | Context | Rigid days | Flexible days | Rigid total (PLN) | Flexible total (PLN) | Delta |
-|---|---|---:|---:|---:|---:|---:|
-| fleet | neutral × neutral | 44 | 20 | 940425 | 411632 | 128.5% |
-| erp | neutral × neutral | 51 | 23 | 1443264 | 640063 | 125.5% |
-| logistics | neutral × neutral | 44 | 20 | 2464454 | 1015804 | 142.6% |
-| production | neutral × neutral | 62 | 29 | 4342559 | 2038493 | 113% |
-| pipe_vs_field | neutral × neutral | 87 | 15 | 2471614 | 682514 | 262.1% |
-| catalog | neutral × neutral | 2 | 2 | 5031 | 3414 | 47.4% |
-| mrp | neutral × neutral | 1 | 1 | 24525 | 23109 | 6.1% |
-| capex_investment | neutral × neutral | 60 | 36 | 7019859 | 3539926 | 98.3% |
+| Scenario | Context | Formal days | Adaptive days | Formal total (PLN) | Adaptive total (PLN) | Central delta | Scenario range (PLN) | Crosses zero |
+|---|---|---:|---:|---:|---:|---:|---:|:---:|
+| fleet | neutral × neutral | 44 | 20 | 324343 | 193090 | 68% | 81038 – 240263 | false |
+| erp | neutral × neutral | 51 | 23 | 874035 | 429389 | 103.6% | 398416 – 539566 | false |
+| logistics | neutral × neutral | 44 | 20 | 1052880 | 557430 | 88.9% | 407410 – 687210 | false |
+| production | neutral × neutral | 62 | 29 | 3345513 | 1680659 | 99.1% | 1398903 – 2234253 | false |
+| pipe_vs_field | neutral × neutral | 87 | 15 | 1010425 | 264225 | 282.4% | 683680 – 883580 | false |
+| catalog | neutral × neutral | 2 | 2 | 3794 | 3784 | 0.3% | -130 – 340 | true |
+| mrp | neutral × neutral | 1 | 1 | 11978 | 11897 | 0.7% | -650 – 1742 | true |
+| capex_investment | neutral × neutral | 60 | 36 | 2167370 | 1428781 | 51.7% | 533009 – 1183109 | false |

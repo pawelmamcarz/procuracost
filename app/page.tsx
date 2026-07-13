@@ -7,13 +7,13 @@ import { calculateCosts } from "@/lib/calculations";
 export const metadata: Metadata = {
   title: "ProcuraCost — Kalkulator kosztów procedur zakupowych",
   description:
-    "Model kosztów, optymalizator ścieżki i bezpłatny audyt dojrzałości zakupowej. Sprawdź, ile Twoja organizacja traci na sztywnych procedurach.",
+    "Neutralny model kosztów z zakresem niepewności, optymalizator ścieżki i audyt dojrzałości zakupowej.",
 };
 
 const stats = [
-  { value: "~6%", label: "premia faworyzacji przy nadmiernej dyskrecji (której unika konkurencyjny przetarg)", source: "Szucs, JEEA 2024" },
-  { value: "+7.7–10.5pp", label: "wyższe ryzyko renegocjacji kontraktu (dane obserwacyjne)", source: "Beuve, Moszoro & Spiller, NBER 2021" },
-  { value: "30%", label: "potencjalne oszczędności TCO przy elastyczności (pułap praktyków, wieloletni)", source: "heurystyka branżowa (nieprzypisana)" },
+  { value: "~6 pp", label: "wzrost znormalizowanej ceny przy dyskrecji; transfer z rynku węgierskiego", source: "Szucs, JEEA 2024" },
+  { value: "0–10.5 pp", label: "scenariusz przyrostu renegocjacji od sztywności kontraktu", source: "Beuve et al., JLEO 2023, 2SLS/IV" },
+  { value: "0–15%", label: "jawny zakres scenariusza puli TCO, nie ustalenie empiryczne", source: "założenie modelu 2.0" },
 ];
 
 const howItWorks = [
@@ -25,7 +25,7 @@ const howItWorks = [
   {
     step: "02",
     title: "Oblicz koszty ukryte",
-    body: "Model oparty na literaturze i benchmarkach praktyków wylicza 7 wymiarów kosztów — czas kadry, opóźnienia, renegocjacje, ryzyko obejść — i porównuje tunel z polem.",
+    body: "Model wylicza 7 wymiarów i pokazuje wynik centralny wraz z szerokim zakresem scenariuszy, który może wskazać przewagę dowolnej ścieżki.",
   },
   {
     step: "03",
@@ -75,11 +75,11 @@ const caseStudyPreviews = SCENARIOS.filter((s) => s.caseStudy)
 const principles = [
   {
     title: "Procedura ≠ Polityka",
-    body: "Polityka zakupowa wyznacza ramy i zasady. Procedura to tylko jedna z wielu metod ich realizacji. Mylenie ich kosztuje organizacje miliony.",
+    body: "Polityka wyznacza granice, a procedura porządkuje działania. Ich rozdzielenie pozwala porównywać dopuszczalne ścieżki bez zakładania wyniku.",
   },
   {
-    title: "Kupiec jako strateg",
-    body: "Ścisłe procedury zwalniają kupca z myślenia — 'zrobiłem zgodnie z procedurą, jestem bezpieczny'. Polityka zakupowa wymaga refleksji i kreatywności.",
+    title: "Kontrola i adaptacja",
+    body: "Formalizacja może chronić konkurencję i audytowalność; adaptacja może ograniczać opóźnienia. Model pokazuje oba mechanizmy.",
   },
   {
     title: "Koszty są mierzalne",
@@ -95,17 +95,16 @@ export default function HomePage() {
           Narzędzie badawczo-konsultingowe
         </span>
         <h1 className="mt-4 text-4xl font-bold text-gray-900">
-          Twoje procedury to tunel.
+          Tunel czy pole?
           <br />
-          Polityka zakupowa to pole.
+          To pytanie empiryczne.
         </h1>
         <p className="mt-2 text-sm italic text-blue-600">
           Tunel ma ściany. Pole ma horyzont.
         </p>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-500">
-          Model szacuje, że w wielu kontekstach koszty procedur sztywnych są{" "}
-          <span className="font-semibold text-gray-700">istotnie wyższe</span> niż koszty polityki
-          zakupowej — sprawdź swój przypadek.
+          Model sprawdza, kiedy koszt sekwencyjnej formalności przewyższa jej wartość kontrolną —
+          <span className="font-semibold text-gray-700"> bez zakładania zwycięzcy z góry</span>.
         </p>
         <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link
@@ -203,7 +202,7 @@ export default function HomePage() {
       <div className="mt-12 rounded-2xl border border-blue-100 bg-blue-50 p-6">
         <h2 className="font-bold text-blue-900">Model tunelu i pola</h2>
         <p className="mt-1 text-sm text-blue-700">
-          Ten sam zakup — ta sama wartość — dwa światy. Procedura blokuje jedną ścieżkę i wymusza obejścia. Polityka wyznacza granice i daje wolność wyboru.
+          Ten sam zakup i ta sama granica zgodności, lecz dwie dopuszczalne ścieżki. Model sprawdza, kiedy formalizacja chroni wartość, a kiedy kosztuje więcej niż adaptacja.
         </p>
         <div className="mt-4">
           <PipeFieldDiagram lang="pl" />
@@ -250,7 +249,7 @@ export default function HomePage() {
         <h2 className="text-2xl font-bold">Sprawdź, ile traci Twoja organizacja</h2>
         <p className="mt-2 text-blue-100">
           Kalkulator kosztów, optymalizator ścieżki i bezpłatny audyt dojrzałości zakupowej —
-          wszystko oparte na recenzowanych badaniach naukowych.
+          z jawnym rozdzieleniem wyników badań od szerokich założeń scenariuszowych.
         </p>
         <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link

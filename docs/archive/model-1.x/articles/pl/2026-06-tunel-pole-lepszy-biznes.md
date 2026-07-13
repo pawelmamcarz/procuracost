@@ -6,6 +6,9 @@ data: 2026-06
 długość: ~1300 słów
 ---
 
+> **WYCOFANY SZKIC.** Zawiera nieaktualne liczby modelu 1.x i nie powinien być
+> publikowany. Aktualna, neutralna teza i bibliografia są w `RESEARCH.md`.
+
 # Tunel ma ściany. Pole ma horyzont.
 
 **Dlaczego wierne trzymanie się procedury bywa najdroższą decyzją zakupową w firmie**

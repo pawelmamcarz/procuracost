@@ -1,6 +1,6 @@
 # ProcuraCost Replication Package
 
-**Model version**: 1.2.0  
+**Model version**: 2.0.0
 **Evidence status**: deterministic simulation with illustrative inputs; external calibration pending
 
 This package supports computational reproduction of ProcuraCost outputs. It does not establish that the
@@ -47,8 +47,8 @@ not hidden changes to the main engine.
 - Company examples motivate archetypes only.
 - Financial inputs are not organization data.
 - Reproducing a number proves code-path consistency, not empirical validity.
-- Model v1.2 removes the former rigidity price/productivity penalties because they reversed Szucs (2024).
-- TCO uses an unvalidated 10% annual assumption with a 30% contract-value cap.
+- Model v2.0 separates workflow, competition, contract rigidity, TCO capture, and bypass controls.
+- TCO and bypass are broad scenario ranges; exports include low/central/high delta and whether the range crosses zero.
 
 ## Files
 
@@ -56,7 +56,7 @@ not hidden changes to the main engine.
 - `docs/research/model_specification_draft.md` — formulas and implementation rules.
 - `tests/` — regression tests.
 - `scripts/generate-replication.ts` — generated-output workflow.
-- `synthetic_data/case_fleet/example_research_export.json` — legacy illustrative export; use generated v1.2 outputs as the current reference.
+- `synthetic_data/case_fleet/example_research_export.json` — legacy illustrative export; use generated v2.0 outputs as the current reference.
 
 ## Freeze Checklist
 

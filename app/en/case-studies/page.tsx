@@ -6,7 +6,7 @@ import { PROCESS_TYPE_META, TECH_LEVELS } from "@/lib/process-templates";
 export const metadata: Metadata = {
   title: "Case Studies — ProcuraCost",
   description:
-    "8 real-world flexible-procurement cases — Ryanair, Swiss Casinos, Zara and more — with cost benchmarks.",
+    "Procurement-mechanism illustrations with sources kept separate from model outputs.",
 };
 
 export default function EnCaseStudiesPage() {
@@ -17,9 +17,8 @@ export default function EnCaseStudiesPage() {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900">Case Studies</h1>
         <p className="mt-1 text-sm text-gray-500">
-          Real-world examples of flexible procurement — from airlines to IT implementations.
-          Each calculator scenario is based on a documented case. These are mostly private-sector
-          efficiency cases, not evidence about public procurement law.
+          Illustrations of procurement mechanisms, not experiments or causal evidence. Calculator
+          values come from the model and are not outcomes reported by these organizations.
         </p>
       </div>
 
@@ -43,12 +42,12 @@ export default function EnCaseStudiesPage() {
 
               <div className="mt-4 grid grid-cols-2 gap-3 text-xs">
                 <div className="rounded-lg bg-red-50 p-3">
-                  <p className="font-medium text-red-600">Rigid procedure</p>
+                  <p className="font-medium text-red-600">Formal path</p>
                   <p className="mt-1 text-gray-600">{result.rigidDays} days</p>
                   <p className="text-gray-400">{processLabel}</p>
                 </div>
                 <div className="rounded-lg bg-green-50 p-3">
-                  <p className="font-medium text-green-600">Procurement policy</p>
+                  <p className="font-medium text-green-600">Adaptive path</p>
                   <p className="mt-1 text-gray-600">{result.flexibleDays} days</p>
                   <p className="text-gray-400">{techLabel}</p>
                 </div>
@@ -56,6 +55,9 @@ export default function EnCaseStudiesPage() {
 
               <p className="mt-3 text-xs text-gray-400 leading-relaxed">
                 Day figures are illustrative model output for a purchase of this size, not the figures from the cited case.
+              </p>
+              <p className="mt-1 text-xs text-gray-500">
+                ΔC range: {result.uncertainty.lowPercentOfContractValue.toFixed(1)}% to {result.uncertainty.highPercentOfContractValue.toFixed(1)}% of contract value.
               </p>
 
               <p className="mt-2 text-xs text-gray-400">
@@ -66,37 +68,14 @@ export default function EnCaseStudiesPage() {
         })}
       </div>
 
-      <div className="mt-10 rounded-2xl border border-blue-100 bg-blue-50 p-6">
-        <h2 className="font-bold text-blue-900">Why don&apos;t airlines use open tenders?</h2>
-        <p className="mt-2 text-sm text-blue-800">
-          Fleet procurement (e.g. LOT — 40 Airbus A220, Ryanair — 100× Boeing 737 post-9/11) is
-          conducted through direct manufacturer negotiations, often exploiting market crises to
-          achieve below-catalogue pricing. No public tender could match that level of timing and
-          negotiation flexibility. Result: Ryanair built a 400+ aircraft fleet with margins
-          competitors can only envy.
-        </p>
-        <p className="mt-2 text-xs text-blue-700">
-          Note: these are private-sector efficiency cases, not evidence about public procurement
-          law — the public sector operates under different constraints.
-        </p>
-        <p className="mt-3 text-xs text-blue-600">
-          Sources: Airfleets.net (LOT fleet 2026); IJRAR (2019) Ryanair Strategic Positioning;
-          ResearchGate — Low-Cost Strategy in Aviation
-        </p>
-      </div>
-
       {/* Enforcement Fallacy box */}
       <div className="mt-6 rounded-2xl border border-amber-100 bg-amber-50 p-6">
         <h2 className="font-bold text-amber-900">The Enforcement Fallacy</h2>
         <p className="mt-2 text-sm text-amber-800">
-          A common counter-argument: &ldquo;if users bypass the process, the process isn&apos;t
-          enforced well enough — just block the bypass.&rdquo; This misunderstands the dynamics.
-          Lipsky (1980) showed that frontline workers <em>always</em> adapt rules to operational
-          reality. Vaughan (1996) demonstrated that forced compliance without operational slack
-          creates &ldquo;normalization of deviance&rdquo; — invisible workarounds that accumulate
-          until catastrophic failure. Holmström &amp; Milgrom (1991) proved that enforcing
-          compliance on measurable steps crowds out value creation on unmeasured ones. Enforcement
-          does not fix the incentive structure — it hides the problem.
+          Organizational theory suggests mechanisms through which strict enforcement can displace
+          effort or hide workarounds. Lipsky (1980), Vaughan (1996), and Holmström &amp; Milgrom
+          (1991) concern different settings; their application to procurement is analogical and
+          does not establish a bypass probability or a universal causal effect.
         </p>
         <p className="mt-3 text-xs text-amber-600">
           Sources: Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) The Challenger Launch

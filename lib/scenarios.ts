@@ -160,8 +160,8 @@ export const SCENARIOS: Scenario[] = [
     id: "pipe_vs_field",
     name: "Tunel vs Pole",
     nameEn: "Tunnel vs Field",
-    description: "Ten sam kontrakt: pełny przetarg PZP-EU (tunel) vs elastyczna polityka zakupowa (pole). Maksymalny kontrast.",
-    descriptionEn: "Same contract: full EU-threshold public tender (tunnel) vs flexible procurement policy (field). Maximum contrast.",
+    description: "Ten sam kontrakt publiczny: sekwencyjny i adaptacyjny wariant zgodny z PZP.",
+    descriptionEn: "Same public contract: sequential and adaptive designs, both compliant with PZP.",
     inputs: {
       contractValue: 5_000_000,
       tcoHorizonYears: 3,
@@ -182,11 +182,11 @@ export const SCENARIOS: Scenario[] = [
     caseStudy: {
       title: "Tunel vs Pole — ten sam zakup, dwa światy",
       source:
-        "Szucs (JEEA 2024); Beuve, Moszoro & Spiller (NBER w.p. 2021, obserwacyjne); Lipsky (1980)",
+        "Szucs (JEEA 2024); Beuve, Moszoro & Spiller (JLEO 2023, 2SLS/IV); Lipsky (1980)",
       insight:
-        "Procedura PZP-EU to tunel: jeden zamknięty tor, kupiec jako executor. Polityka zakupowa to pole: granice uprawnień aktywne wszędzie, kupiec jako navigator. Renegocjacje w przetargach publicznych: Beuve, Moszoro & Spiller szacują efekt rzędu +7,7–10,5 pp (zakres z working paper, dane obserwacyjne). Ten sam kontrakt — wyższy koszt utracony po stronie tunelu.",
+        "Porównanie dwóch legalnych projektów tego samego postępowania: bardziej sekwencyjnego i bardziej adaptacyjnego. Wynik zależy od kosztu zwłoki, konkurencji i konstrukcji kontraktu; nie zakłada obejścia PZP.",
       insightEn:
-        "An EU-threshold public tender is a tunnel: one locked path, buyer as step-executor. A procurement policy is a field: authorisation boundaries active everywhere, buyer as value navigator. On renegotiation in public tenders, Beuve, Moszoro & Spiller estimate an effect of roughly +7.7–10.5pp (a range from a working paper, observational data). Same contract — higher opportunity cost on the tunnel side.",
+        "Two lawful designs for the same procedure: more sequential and more adaptive. The result depends on delay cost, competition, and contract design; it does not assume an exemption from PZP.",
     },
   },
   {
@@ -216,9 +216,9 @@ export const SCENARIOS: Scenario[] = [
       title: "Coupa Catalog — Amazon-like UX for B2B",
       source: "Coupa — State of Business Spend (2023) (vendor report, practitioner example)",
       insight:
-        "Firmy z katalogiem end-to-end redukują maverick spend o 60–80% i skracają czas zamówienia z dni do minut. Kupiec staje się kuratorem katalogu, nie procesorem faktur.",
+        "Raport dostawcy opisuje katalogi jako mechanizm kontroli zgodności i skracania obsługi zamówień. Nie wykorzystujemy jego liczb jako parametrów modelu.",
       insightEn:
-        "Companies with end-to-end catalogs reduce maverick spend by 60–80% and cut order time from days to minutes. The buyer becomes a catalog curator, not an invoice processor.",
+        "A vendor report presents catalogs as a compliance-control and ordering-efficiency mechanism. Its figures are not used as model parameters.",
     },
   },
   {

@@ -1,4 +1,9 @@
-# ProcuraCost — Substantive Verification Report (Weryfikacja merytoryczna)
+# ProcuraCost — Substantive Verification Report (historical v1 audit)
+
+> **SUPERSEDED on 2026-07-13.** This report preserves the model 1.x audit trail,
+> including claims later rejected. It is not a current source of parameters,
+> thresholds or bibliography. Use `docs/MODEL_PARAMETERS.md`, `RESEARCH.md` and
+> the model 2.0 replication output.
 
 **Deliverable:** comprehensive substantive verification of the ProcuraCost procurement-economics model underpinning a doctoral dissertation (Uczelnia Łazarskiego / Lazarski University).
 **Frozen commit:** `a1063f9` (HEAD at planning time) — *docs: re-ground cost-model parameters with verified empirical evidence*.
