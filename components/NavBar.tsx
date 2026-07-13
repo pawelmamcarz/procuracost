@@ -19,13 +19,13 @@ export default function NavBar({ brand, items, langSwitch }: NavBarProps) {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="border-b border-gray-100 bg-white px-6 py-4 shadow-sm">
-      <div className="mx-auto flex max-w-5xl items-center justify-between">
-        <Link href={brand.href} className="text-lg font-bold text-blue-700">
+    <nav className="border-b border-gray-200 bg-white px-4 py-3 shadow-sm sm:px-6">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-6">
+        <Link href={brand.href} className="shrink-0 text-xl font-bold tracking-tight text-blue-700">
           {brand.label}
         </Link>
 
-        <div className="hidden sm:flex items-center gap-6 text-sm text-gray-500">
+        <div className="hidden items-center gap-4 whitespace-nowrap text-sm text-gray-600 xl:flex">
           {items.map((item) => (
             <Link
               key={item.href}
@@ -50,7 +50,7 @@ export default function NavBar({ brand, items, langSwitch }: NavBarProps) {
         </div>
 
         <button
-          className="sm:hidden p-2 text-gray-500 hover:text-gray-700"
+          className="rounded-lg border border-gray-200 p-2 text-gray-600 hover:border-blue-300 hover:text-blue-700 xl:hidden"
           onClick={() => setOpen((v) => !v)}
           aria-label="Toggle menu"
           aria-expanded={open}
@@ -68,12 +68,16 @@ export default function NavBar({ brand, items, langSwitch }: NavBarProps) {
       </div>
 
       {open && (
-        <div className="sm:hidden mx-auto max-w-5xl mt-3 border-t border-gray-100 pt-3 pb-2 flex flex-col gap-4 text-sm text-gray-600">
+        <div className="mx-auto mt-3 grid max-w-7xl grid-cols-1 gap-1 border-t border-gray-100 pt-3 pb-2 text-sm text-gray-700 sm:grid-cols-2 xl:hidden">
           {items.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className={item.highlight ? "font-medium text-blue-600" : "hover:text-blue-600"}
+              className={
+                item.highlight
+                  ? "rounded-lg bg-blue-50 px-3 py-2 font-medium text-blue-700"
+                  : "rounded-lg px-3 py-2 hover:bg-gray-50 hover:text-blue-700"
+              }
               onClick={() => setOpen(false)}
             >
               {item.label}
@@ -82,7 +86,7 @@ export default function NavBar({ brand, items, langSwitch }: NavBarProps) {
           {langSwitch && (
             <Link
               href={langSwitch.href}
-              className="inline-block w-fit rounded-full border border-gray-200 px-2.5 py-0.5 text-xs font-semibold text-gray-500"
+              className="mx-3 mt-1 inline-block w-fit rounded-full border border-gray-200 px-2.5 py-1 text-xs font-semibold text-gray-600"
               onClick={() => setOpen(false)}
             >
               {langSwitch.label}
