@@ -89,53 +89,53 @@ const principles = [
 
 export default function HomePage() {
   return (
-    <div className="mx-auto max-w-5xl px-6 py-12">
+    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-16">
       <div className="text-center">
-        <span className="inline-block rounded-full bg-blue-50 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-blue-600">
+        <span className="inline-block rounded-full border border-blue-100 bg-blue-50 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-blue-700">
           Narzędzie badawczo-konsultingowe
         </span>
-        <h1 className="mt-4 text-4xl font-bold text-gray-900">
+        <h1 className="mt-5 text-4xl font-bold tracking-tight text-gray-950 sm:text-5xl">
           Tunel czy pole?
           <br />
           To pytanie empiryczne.
         </h1>
-        <p className="mt-2 text-sm italic text-blue-600">
+        <p className="mt-3 text-sm font-medium italic text-blue-700 sm:text-base">
           Tunel ma ściany. Pole ma horyzont.
         </p>
-        <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-500">
+        <p className="mx-auto mt-5 max-w-3xl text-base leading-relaxed text-gray-600 sm:text-lg">
           Model sprawdza, kiedy koszt sekwencyjnej formalności przewyższa jej wartość kontrolną —
           <span className="font-semibold text-gray-700"> bez zakładania zwycięzcy z góry</span>.
         </p>
-        <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+        <div className="mx-auto mt-8 flex max-w-md flex-col items-stretch gap-3 sm:max-w-none sm:flex-row sm:justify-center">
           <Link
             href="/calculator"
-            className="rounded-xl bg-blue-600 px-8 py-3 text-sm font-semibold text-white hover:bg-blue-700"
+            className="rounded-xl bg-blue-600 px-8 py-3.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 active:bg-blue-800"
           >
             Uruchom kalkulator →
           </Link>
           <Link
             href="/assessment"
-            className="rounded-xl border border-gray-200 bg-white px-8 py-3 text-sm font-semibold text-gray-600 hover:border-gray-300"
+            className="rounded-xl border border-gray-300 bg-white px-8 py-3.5 text-sm font-semibold text-gray-700 shadow-sm hover:border-blue-300 hover:text-blue-700"
           >
             Bezpłatny audyt →
           </Link>
           <Link
             href="/optimizer"
-            className="rounded-xl border border-gray-200 bg-white px-8 py-3 text-sm font-semibold text-gray-600 hover:border-gray-300"
+            className="rounded-xl border border-gray-300 bg-white px-8 py-3.5 text-sm font-semibold text-gray-700 shadow-sm hover:border-blue-300 hover:text-blue-700"
           >
             Optymalizator ścieżki →
           </Link>
         </div>
       </div>
 
-      <div className="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-3">
         {stats.map((s) => (
           <div
             key={s.label}
-            className="rounded-2xl border border-gray-100 bg-white p-5 text-center shadow-sm"
+            className="rounded-2xl border border-gray-200 bg-white p-6 text-center shadow-sm"
           >
-            <p className="text-3xl font-bold text-blue-700">{s.value}</p>
-            <p className="mt-1 text-xs text-gray-600">{s.label}</p>
+            <p className="text-3xl font-bold tracking-tight text-blue-700">{s.value}</p>
+            <p className="mt-2 text-sm leading-relaxed text-gray-600">{s.label}</p>
             <p className="mt-2 text-xs text-gray-400">{s.source}</p>
           </div>
         ))}

@@ -48,7 +48,7 @@ export default function SiteFooter({ lang }: { lang: Lang }) {
   return (
     <>
       <div className="border-t border-gray-100 bg-gray-50">
-        <div className="mx-auto flex max-w-5xl flex-col items-center gap-4 px-6 py-5 sm:flex-row sm:justify-between">
+        <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 px-4 py-5 sm:px-6 lg:flex-row lg:justify-between">
           <Link
             href={isEnglish ? "/en/team" : "/team"}
             className="flex items-center gap-3 opacity-80 hover:opacity-100"
@@ -70,8 +70,8 @@ export default function SiteFooter({ lang }: { lang: Lang }) {
             </span>
           </Link>
 
-          <div className="flex items-center gap-1 text-xs text-gray-400">
-            <span className="mr-2 hidden sm:inline">
+          <div className="flex max-w-full flex-wrap items-center justify-center gap-1.5 text-xs text-gray-400 lg:justify-end">
+            <span className="mr-1 hidden lg:inline">
               {isEnglish ? "Other projects:" : "Inne projekty:"}
             </span>
             {projects.map((p) => (
