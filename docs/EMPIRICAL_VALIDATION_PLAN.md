@@ -1,42 +1,102 @@
 # ProcuraCost – Empirical Validation Plan (Draft)
 
-**Version**: 0.1 (Super High Effort)  
-**Date**: May 2026  
-**Status**: Early draft for internal development and academic positioning
+**Version**: 0.2
+**Date**: 20 June 2026
+**Status**: Event-level design baseline; identification strategy still under review
 
 ---
 
 ## 1. Research Objective
 
-The core claim of ProcuraCost — currently a **model estimate, not an established empirical fact** — is:
+The empirical program tests the following open question:
 
-> In high-value, high-corruption-risk, strategic contexts, rigid procurement *procedures* impose significantly higher opportunity costs than flexible, policy-only approaches, even when both remain within the same formal policy constraints.
+> For comparable procurement events, how are procedural rigidity, bounded flexibility, governance controls, and observable outcomes related?
 
-This is the directional claim **to be tested**, not assumed. The model is **symmetric**: its favoritism/selection-quality and bypass dimensions can run against the flexible path, so in low-corruption-risk operational contexts the rigid path can be net-cheaper — and the empirical program must be able to detect that case, not only confirm the headline. The goal of the validation program is to test the claim, identify its boundary conditions, and quantify its magnitude using real organizational data.
+The goal is to estimate direction, magnitude, heterogeneity, and uncertainty using organizational data without treating model outputs as target effects.
+
+### Unit of analysis — approved 20 June 2026
+
+- **Primary unit**: one procurement event or contract.
+- **Grouping level**: organization; multiple events are nested within each organization.
+- **Contextual levels**: category, sector, buyer/team, jurisdiction, and period where available.
+- **Core record key**: anonymized `organization_id` + `procurement_event_id`.
+
+Organization-level maturity, governance, and technology describe context. They must not replace event-level exposure and outcome measurements. Analysis should use clustered uncertainty or multilevel models when the sample supports them.
+
+### Primary exposure — approved 20 June 2026
+
+The primary exposure is a continuous event-level `observed_rigidity_index`, not a binary rigid/flexible label. Candidate components are:
+
+- Number of prescribed sequential gates and non-waivable steps.
+- Number and hierarchy of required approvals.
+- Prescribed minimum waiting periods, separated from realized lead time.
+- Degree of permitted resequencing, parallelization, negotiation, and exception handling.
+- Required documentation and committee burden measured before outcomes are known.
+- Source of each constraint: statute, regulation, organization policy, local procedure, system configuration, or ad hoc decision.
+
+Code components from rules in force when the event began and from contemporaneous records where possible. Keep the binary path label only for description and matched-pair selection. Do not use `PROCESS_RIGIDITY` or another ProcuraCost output as the empirical exposure; those model constants become calibration targets after measurement.
+
+**Weighting decision — approved 20 June 2026**: normalize the preregistered components and use their equal-weight arithmetic mean as the primary index. Report components separately and test alternative weights only as outcome-blind sensitivity analyses. The working specification is `docs/research/observed_rigidity_codebook.md`.
+
+### Outcome hierarchy — approved 20 June 2026
+
+- **Primary outcome**: `observed_procurement_cycle_days`, calculated from auditable event timestamps.
+- **Secondary outcomes**: internal effort hours by role, renegotiation incidence and observed cost, commercial/TCO measures, bypass evidence, compliance or audit findings, and supplier-performance measures where definitions are comparable.
+- **Exploratory model output**: aggregate ProcuraCost cost in PLN and its component decomposition.
+
+The aggregate ProcuraCost total is not an empirical endpoint because it combines assumed rates and transformations from the model being evaluated. Report each observed outcome separately before any exploratory monetization.
+
+**Primary clock — approved 21 June 2026**: start when both the need and required budget are formally authorized; stop at the first binding external commitment to the supplier (for example, a signed contract or binding released PO). Pre-authorization and commitment-to-first-use durations are secondary. Preserve raw timestamps under `docs/research/procurement_cycle_outcome_codebook.md`.
+
+**Pause treatment — approved 21 June 2026**: primary cycle time includes every elapsed calendar day and subtracts no holds. Record pause intervals and causes separately. A preregistered `net_cycle_days` measure may subtract eligible external holds only as a secondary analysis.
+
+**Timestamp quality — approved 21 June 2026**: confirmatory primary analysis requires auditable exact start and end timestamps for both events in a pair. Auditable dates or bounded intervals use interval-censored secondary methods; respondent recall is secondary only. Point imputation and model-filled outcomes are prohibited.
+
+### Primary estimand — approved 21 June 2026
+
+Estimate the percentage difference in elapsed cycle time associated with a 0.10 increase in `observed_rigidity_index` within matched pairs:
+
+```text
+log(cycle_days) = matched_pair_fixed_effect + beta * observed_rigidity_index + error
+effect_10pp = 100 * (exp(0.10 * beta) - 1)
+```
+
+Interpret the coefficient as associational unless a later design supports causal identification. The pilot reports pair-level differences and ratios without p-values or definitive effect claims. See `docs/research/statistical_analysis_plan.md`.
 
 ---
 
 ## 2. Main Hypotheses (to be refined)
 
-**H1 (Conditional Cost Gap)**  
-In high-value, high-corruption-risk, strategic (Direct × Upstream) contexts, organizations using more rigid procedures experience materially higher total opportunity costs than policy-flexible approaches in comparable contexts. The model's illustrative 100–400% range is the magnitude to be tested, not a confirmed effect; H1 explicitly allows the gap to vanish or reverse in low-corruption-risk operational contexts.
+These are directional candidate hypotheses generated by the framework. They are not established findings and should not determine coding or exclusion decisions.
 
-**H2 (Direct vs Indirect)**  
+**H1 (Overall Cost Gap)**
+Procurement events using more rigid procedures have a different composition and level of opportunity costs than comparable events using bounded policy-flexible approaches. Direction and magnitude are empirical questions; the model must not supply the target effect size.
+
+**H2 (Direct vs Indirect)**
 The cost gap is significantly larger for Direct spend than for Indirect spend.
 
-**H3 (Upstream vs Downstream)**  
-Rigidity in Upstream activities generates higher bypass risk and foregone strategic value than equivalent rigidity in Downstream execution.
+**H3 (Upstream vs Downstream)**
+Rigidity in Upstream activities is associated with higher bypass exposure and foregone strategic value than comparable rigidity in Downstream execution.
 
-**H4 (Bypass as Mediator)**  
-A substantial portion of the opportunity cost arises from informal bypass behavior rather than from direct compliance costs.
+**H4 (Bypass as Mediator)**
+Informal bypass behavior mediates part of any relationship between procedural rigidity and observed outcomes.
 
 ---
 
 ## 3. Proposed Research Designs
 
-### Design A: Multi-Case Study (Recommended starting point)
+### Design A: Within-Organization Matched Event Pairs (Primary)
 
-**Approach**: Deep qualitative + quantitative case studies in 6–10 organizations.
+**Approach**: Deep qualitative + quantitative reconstruction of pairs of real procurement events from the same organization: one event with greater observed procedural rigidity and one with greater bounded flexibility.
+
+**Matching priorities**:
+- Same or closely related category and spend type.
+- Similar contract-value band, complexity, urgency, supply risk, and strategic importance.
+- Same legal regime and comparable technology environment where possible.
+- Similar time period to limit policy, market, and inflation changes.
+- Record a shared anonymized `matched_pair_id` in addition to event and organization identifiers.
+
+Both outcomes must be observed. A ProcuraCost counterfactual may diagnose assumptions or support sensitivity analysis, but it is not an observed outcome and must not be used as an empirical effect estimate.
 
 **Data Sources**:
 - Detailed process mapping (actual steps taken vs formal procedure)
@@ -44,24 +104,156 @@ A substantial portion of the opportunity cost arises from informal bypass behavi
 - Interviews with buyers, category managers, CFOs, internal audit
 - Analysis of bypassed cases (where they can be identified)
 
-**Strengths**: High internal validity, rich mechanism insight.
-**Weaknesses**: Limited generalizability.
+**Strengths**: Controls part of the organization-level heterogeneity and supports rich mechanism reconstruction.
+**Weaknesses**: Residual event-selection bias, imperfect matching, limited generalizability, and low power in the pilot.
 
-**Target**: 4–6 completed cases within 18–24 months.
+**Target**: at least one final eligible pair per confirmatory organization, with every additional pair retained under the frozen no-replacement algorithm. Final sample size prioritizes the number of independent organizations and follows power and identification requirements.
+
+### Pilot role — approved 21 June 2026
+
+The first 3–4-organization pilot is an instrument-development and feasibility study only. It evaluates:
+
+- Recruitment and event-pair availability.
+- Yield of Tier A timestamps and other archival evidence.
+- Match quality and reasons pairs fail eligibility.
+- Yield of candidate pairs above the provisional and alternative outcome-blind exposure-contrast thresholds.
+- Candidate-edge yield and covariate balance under the provisional and alternative outcome-blind calipers.
+- Outcome-blind inter-rater agreement for rigidity coding.
+- Missingness, floor/ceiling effects, component distributions, and respondent burden.
+- Variance and attrition inputs needed for confirmatory power analysis.
+
+The pilot does not estimate a substantive rigidity effect, test significance, or supply empirical evidence for Paper 1. Its outputs are revised and frozen codebooks, a feasibility report, a finalized data schema, and planning assumptions for the confirmatory Paper 2 study.
+
+**Sample separation — approved 21 June 2026**: every event used during pilot instrument development is excluded from the confirmatory primary analysis, even if it can be recoded under the final rules. Store `study_phase = pilot_development | confirmatory` at event level and keep phase datasets separately versioned. Pilot events may appear only in feasibility reporting or clearly labeled exploratory appendices.
+
+**Organization holdout — approved 21 June 2026**: confirmatory primary analysis uses organizations not involved in pilot instrument development. Maintain a restricted phase registry keyed by a stable pseudonymous organization identifier. Exclude the same legal entity and, by default, entities from the same controlled corporate group unless organizational independence is established under a preregistered rule. Pilot organizations may contribute later qualitative follow-up or explicitly external analyses, never the confirmatory primary coefficient.
+
+**Confirmatory population scope — approved 21 June 2026**: the first confirmatory study covers strategic procurement events in private-sector organizations operating in Poland, governed by internal corporate procurement rules and not subject to PZP for the focal event.
+
+Primary inclusion:
+- `target_country = PL`.
+- `target_legal_regime = private_internal_procurement`.
+- Upstream sourcing or contracting event with an actual supplier-selection or negotiation decision.
+- Direct and Indirect spend are both eligible.
+
+Primary exclusion:
+- Event subject to PZP, concession law, or a mandatory public/donor procurement regime.
+- Public contracting authority or private utility acting as a contracting authority for the focal event.
+- Routine catalog, MRP, invoice, or PO execution without an Upstream supplier-selection decision.
+
+Record regulatory and corporate-control constraints even when PZP does not apply. Public procurement, Downstream execution, and other countries are separate replication populations and cannot be pooled into the first primary coefficient.
+
+**Event sampling frame — approved 21 June 2026**: each confirmatory organization supplies the complete universe of qualifying events from one frozen archival window. CPOs, buyers, and researchers cannot nominate only memorable, successful, rigid, or flexible cases for primary analysis. Eligibility and matching use pre-outcome fields under a frozen algorithm.
+
+**Archival window — approved 21 June 2026**:
+- Freeze one study-level `extraction_cutoff_at` before organization-level extraction.
+- Set `window_start_at = extraction_cutoff_at - 24 calendar months`.
+- Include completed events whose `binding_commitment_at` falls in `[window_start_at, extraction_cutoff_at)`.
+- An event may start before `window_start_at`; retain its full cycle.
+- Do not extend or shift the window for an organization with too few events or pairs.
+- Export and report the count of still-open events at cutoff as a selection diagnostic, although they are not eligible for the completed-event primary analysis.
+
+Required audit fields:
+- `sampling_frame_id` and organization-specific source system/query.
+- Archival-window start and end.
+- Total event count before exclusions.
+- Event-level `eligibility_status` and standardized `exclusion_reason`.
+- Matching status and reason an eligible event remained unmatched.
+
+Publish a selection-flow table from source universe to eligible events, matched pairs, Tier A pairs, and final analysis population. Expert-nominated cases may support qualitative or pilot work only.
+
+**Matching method — approved 21 June 2026**: deterministic outcome-blind matching. First apply exact or coarsened-exact restrictions within organization, spend type, and category family; then nearest-neighbor matching on frozen pre-outcome value, complexity, urgency, supply risk, strategic importance, technology, and period variables. Expert review may reject an impossible algorithmic pair with a coded reason but cannot manually substitute a preferred match. See `docs/research/matching_protocol.md`.
+
+**Exposure contrast — approved 21 June 2026**: require a preregistered minimum absolute difference in `observed_rigidity_index` within a pair. Provisional threshold `0.20`; freeze the final threshold from outcome-blind pilot reliability, measurement error, distribution, and overlap diagnostics. Never tune it against cycle time or another outcome.
+
+**Mandatory calipers — approved 21 June 2026**: a candidate pair must satisfy all frozen calipers before global assignment. Provisional limits are absolute natural-log value difference `<= 0.50`; no more than one ordinal point for complexity, supply risk, or strategic importance; same or adjacent technology environment; and binding-commitment dates no more than 12 calendar months apart. Pilot revisions may use only outcome-blind overlap, edge-yield, and balance diagnostics; final limits are frozen before confirmatory recruitment.
+
+**Replacement rule — approved 21 June 2026**: primary matching is without replacement. Each event appears in at most one primary pair. Unmatched events remain in the selection flow; they are not duplicated to increase sample size. Matching with replacement is sensitivity-only.
+
+**Global assignment — approved 21 June 2026**: construct edges only within exact/coarsened strata, but solve one study-level assignment across all disjoint edge sets. Orient candidate edges from higher to lower ORI and freeze balance denominators from the complete eligible pre-match pool. Maximize the number of eligible no-replacement pairs subject to every global `|SMD| <= 0.10` constraint, then minimize their total frozen covariate distance. Resolve exact ties deterministically using hashed pseudonymous event IDs. Do not use greedy record-order matching.
+
+**Organization pair minimum — approved 21 June 2026**: one final eligible pair is sufficient for an organization to enter the primary analysis. Retain additional eligible pairs and account for their within-organization dependence. Organizations with no final pair remain in the selection flow; do not extend their windows or relax eligibility to include them. Confirmatory power planning prioritizes the number of independent organizations rather than imposing a three-pair minimum that would select mainly large procurement functions.
+
+**Global balance gate — approved 21 June 2026**: before outcome unblinding, require `|SMD| <= 0.10` for every frozen pre-outcome matching covariate across the complete matched sample. Evaluate each preregistered indicator level for categorical variables. Balance is a solver feasibility constraint, not a post hoc organization-exclusion tool. If no feasible solution reaches the preregistered powered sample-size floor, keep outcomes blinded and declare the matched design inadequate for the primary effect.
+
+**Sample-size method — approved 21 June 2026**: derive the confirmatory minimum through prospective simulation of the frozen primary estimator and its organization-level dependence structure. Simulate unequal pairs per organization, ORI contrast, log-cycle-time variance, within-organization correlation, Tier A evidence loss, matching yield, and recruitment attrition. Pilot data may estimate these nuisance and feasibility inputs but cannot provide the assumed effect. Freeze minimum organization and pair counts, the simulation code, and all assumptions before confirmatory recruitment.
+
+**Minimum substantively important effect — approved 21 June 2026**: power the confirmatory study for a 10% cycle-time difference per `+0.10` ORI, corresponding to `beta_MSI = ln(1.10) / 0.10` in the log-cycle-time model. This implies a 21% difference across a pair separated by the provisional `0.20` minimum ORI contrast. The threshold is justified prospectively and cannot be replaced by the pilot point estimate.
+
+**Power and type-I error — approved 21 June 2026**: require 90% prospective power for the minimum important effect under the preregistered conservative simulation scenario, using a two-sided primary test with `alpha = 0.05`. The direction is not restricted even though the theoretical expectation is a positive rigidity-time association.
+
+**Primary inference — approved 21 June 2026**: fit ordinary least squares on log cycle time with matched-pair fixed effects and the continuous ORI exposure. Use organization-clustered bias-reduced `CR2` variance with Satterthwaite degrees of freedom for the primary 95% confidence interval and two-sided test. Treat wild cluster bootstrap and multilevel models as sensitivity analyses only.
+
+**Primary covariate adjustment — approved 21 June 2026**: include no matching covariates in the primary outcome regression beyond matched-pair fixed effects and continuous ORI. The frozen matching design and global balance gate perform the primary confounding control. A fully prespecified model adding non-collinear within-pair matching covariates is sensitivity-only; no stepwise or significance-driven selection is allowed.
+
+**Primary weighting — approved 21 June 2026**: use unweighted event-level OLS, assigning weight 1 to every matched event. Organizations with more eligible no-replacement pairs therefore contribute more point-estimate information, while `CR2` handles within-organization dependence. Equal-total-organization weighting and leave-one-organization-out estimates are prespecified influence sensitivities, not competing primary results.
+
+**Spend-type pooling — approved 21 June 2026**: estimate one common primary ORI coefficient across Direct and Indirect Upstream events, while requiring pairs to match exactly on `spend_type`. Prespecify `ORI × spend_type` and stratum-specific estimates as heterogeneity analyses. Do not make separate confirmatory claims for a spend type unless that stratum independently meets a preregistered power requirement.
+
+**Primary functional form — approved 21 June 2026**: model ORI linearly in the primary log-cycle-time regression, preserving the effect interpretation per `+0.10` ORI. Use one prespecified three-knot restricted cubic spline as a nonlinearity sensitivity within the observed matched-sample ORI range. Freeze exposure-based knot locations before outcome unblinding and do not tune them against fit or significance.
+
+**Post-freeze outcome invalidation — approved 21 June 2026**: if either event in a frozen pair fails a preregistered Tier A endpoint or outcome-validity rule, exclude the full pair without outcome imputation, rematching, or a reserve partner. Publish the reason and attrition stage. Recheck balance and powered organization/pair floors on the surviving pairs; if either fails, do not report the primary effect.
+
+**ORI missing components — approved 21 June 2026**: all six frozen ORI components are mandatory for every primary-analysis event. Do not impute, prorate, average available components, or renormalize weights. A missing component makes the event and its full pair ineligible. A rubric-defined `not_applicable` category is allowed only with a prespecified score and must be reported separately from missingness.
+
+**ORI double coding — approved 21 June 2026**: two trained coders independently score all six components for every confirmatory event. Both are blinded to outcomes, pair membership, and each other's scores until lock. Preserve both raw coding records and compute reliability before any resolution; a 20% double-coded subset is insufficient for the primary exposure.
+
+**ORI adjudication — approved 21 June 2026**: a third trained, outcome-blind adjudicator independently codes every disputed component without seeing pair membership, coder identity, or either prior value. That valid rubric value becomes final; agreed components retain the common value. Compute reliability on the two raw records before adjudication, preserve all three records, and use only the completed final ORI for matching.
+
+**ORI reliability gate — approved 21 June 2026**: before final ORI values enter matching, require raw double-coded aggregate `ICC(A,1) >= 0.80` and reliability `>= 0.70` for every component. Use weighted kappa for ordinal rubrics and absolute-agreement `ICC(A,1)` for continuous rubrics. Calculate over all confirmatory events and report 95% confidence intervals; an aggregate pass cannot offset a failed component.
+
+**ORI reliability failure — approved 21 June 2026**: allow one outcome-blind remediation cycle under the unchanged frozen codebook: retrain, use a new coder pair without prior-score access, and independently recode all events. A second failure means no matching and no primary effect. Changing the rubric or scoring version converts the current sample to instrument-development use and requires a new organization-level confirmatory holdout.
+
+**ORI evidence minimum — approved 21 June 2026**: every component requires a contemporaneous, event-applicable artifact or system trace with source ID, effective dates, retrieval date, and source location. Interviews may locate or interpret evidence but cannot solely support a primary component, even with respondent agreement. No qualifying source means a missing component and full-pair exclusion.
+
+**ORI reference time — approved 21 June 2026**: set baseline exposure at the exact Tier A formal authorization of need and budget, identical to the primary outcome-clock start. Score constraints effective at that timestamp. Record later rule changes, exceptions, failures, escalations, and adaptations as time-varying descriptors; never use them to rewrite the primary ORI.
+
+**Exception-use separation — approved 21 June 2026**: `ORI_EXCEPTION` measures only the ex ante availability, authority, documentation, scope, and formal usability of exception routes at baseline. Actual exception use, bypass, noncompliance, escalation, or work-around is post-start and must be stored as a separate mechanism or secondary outcome, never as exposure or a matching variable.
+
+**Mechanism-analysis status — approved 21 June 2026**: analyze post-start bypass, exception use, escalation, and work-arounds descriptively and associationally, preserving timestamps and temporal order. Do not estimate or label causal mediation, natural direct effects, or natural indirect effects in the first confirmatory study because post-treatment confounding is not identified.
+
+**Secondary-outcome multiplicity — approved 22 June 2026**: the cycle-time estimand is the only confirmatory test at two-sided `alpha = 0.05`. Treat all secondary outcomes, subgroup estimates, mechanism analyses, and sensitivity models as exploratory. Report the complete prespecified set with estimates and 95% intervals, but make no significance declarations, multiplicity-adjusted confirmatory claims, or post hoc promotion to primary status.
+
+**Confidential-data reproducibility — approved 22 June 2026**: publish code, preregistration, codebooks, solver configuration, schema-identical synthetic data, disclosure-controlled aggregate outputs, and a keyed source-manifest digest. Keep raw artifacts, pseudonym keys, and restricted row-level data in a logged controlled environment. An independent auditor reruns the frozen pipeline there and publishes a signed report tied to code, configuration, manifest, and output hashes.
+
+**Preregistration timing — approved 22 June 2026**: deposit a public immutable timestamped registration before recruiting the first confirmatory organization and before extracting any confirmatory data. Register the SAP, codebooks, eligibility and evidence rules, power floors, solver/configuration, schema, analysis code, and immutable hashes. Preserve the original record; every change is an additive amendment stating rationale, affected hashes, data availability, and blinding status. Use `docs/research/confirmatory_preregistration_manifest.md`.
+
+**Recruitment stopping rule — approved 22 June 2026**: recruit in preregistered batches until the completed batches jointly meet both the powered minimum number of independent organizations and the powered minimum number of balance-feasible pairs. Finish every started batch and include all eligible organizations in it. Use exposure and pre-outcome fields only; interim matching is provisional and outcomes remain inaccessible. Freeze a maximum organization/time/resource cap. If either minimum is unmet at the cap, do not run the primary test.
+
+**Organization invitation order — approved 22 June 2026**: construct and hash a preregistered eligible-organization frame, stratify at minimum by sector and organization size, and randomize invitation order within strata using a registered seed. Log every contact, refusal, nonresponse, and exclusion. A declined or unreachable organization is replaced only by the next organization in the frozen order for that stratum; researcher contacts, known procedural rigidity, or expected outcomes cannot alter the order.
+
+**Organization nonresponse audit — approved 22 June 2026**: compare participants, refusals, and nonrespondents using frame variables available for all invitees, at minimum sector, organization size, and region. Publish standardized differences and a preregistered participation-probability model. Keep unit event weights in the primary analysis; use organization participation inverse-probability weights only as a labeled sensitivity analysis.
+
+**Net-cycle external holds — approved 22 June 2026**: the secondary `net_cycle_days` may subtract only exact auditable intervals for an unrelated binding court/regulatory suspension, documented force majeure, or independently verified shared critical-infrastructure outage outside both organization and supplier control. Merge overlapping eligible intervals. Internal, supplier, negotiation, information, market, logistics, mandatory-wait, own-system, disputed, and unknown delays remain included.
+
+**Sub-day cycle durations — approved 22 June 2026**: compute duration from full timestamps as elapsed seconds divided by 86,400. Retain every strictly positive same-day duration as a fractional day and round only for display. Zero or negative duration is invalid, removes the full pair, and is never clamped to one day.
+
+Confirmatory recruitment cannot begin until the following freeze gate is complete:
+
+- Rigidity and outcome codebooks versioned and frozen.
+- Matching and eligibility rules frozen.
+- Statistical analysis plan preregistered.
+- Data schema, evidence tiers, exclusions, and missingness rules frozen.
+- Prospective simulation code, assumptions, and minimum organization/pair counts approved.
+- Pilot-organization exclusion registry complete.
+- `target_country = PL` and `target_legal_regime = private_internal_procurement` encoded in eligibility checks.
 
 ### Design B: Survey + Archival Matching
 
-**Approach**: Large-scale survey of procurement professionals + matching with financial/procurement system data.
+**Approach**: Survey of procurement professionals anchored to one recent focal procurement event, matched where possible with financial and procurement-system data.
 
-**Sample target**: 200–400 organizations / category managers.
+**Sample target**: to be determined by power analysis after pilot variance estimates; count events and organizations separately.
 
 **Key Variables**:
-- Self-reported procedural rigidity (multi-item scale)
-- Perceived bypass frequency
-- Objective performance metrics (price variance, lead time, TCO outcomes, renegotiation rate)
+- Event-level observed rigidity index plus component scores
+- Respondent-rated rigidity retained as a separate perception measure
+- Primary: timestamp-derived procurement cycle days
+- Secondary: role effort, bypass evidence, price/TCO, renegotiation, compliance/audit, and supplier performance
 
 **Strengths**: Broader external validity.
 **Weaknesses**: Measurement error, endogeneity.
+
+Any broader survey must report regime-specific estimates. Cross-regime pooling is exploratory and requires explicit interactions rather than treating legal regimes as interchangeable.
 
 ### Design C: Quasi-Experimental (Longer-term)
 
@@ -76,18 +268,28 @@ Possible natural experiments:
 
 | Challenge | Mitigation Strategy |
 |---------|---------------------|
-| Endogeneity (worse processes in worse organizations) | Within-firm variation + category fixed effects; instrumental variables (e.g., legacy system constraints) |
+| Endogeneity (rigidity selected for harder events) | Pre-specified within-organization matched pairs; match on category, value, complexity, urgency, risk, regime, technology, and period; quasi-experiments where credible |
+| Dependence of events within organizations | Clustered standard errors or multilevel models; report event and organization counts separately |
+| Legal-regime confounding | Restrict the first confirmatory population to one country and regime; analyze other regimes separately |
 | Measurement of "bypass" | Confidential interviews + forensic analysis of purchase orders vs. actual communication |
 | Attribution of costs | Structured TCO decomposition workshops with finance + procurement teams |
 | Selection bias | Propensity score matching on observable category characteristics |
+| Case cherry-picking | Complete fixed-window event universe, outcome-blind eligibility/matching, coded exclusions, and published selection flow |
+| Subjective pair construction | Versioned exact/coarsened plus nearest-neighbor algorithm; outcome blinding; coded expert rejection without manual substitution |
+| Completed-event selection | Fixed commitment-date window plus count and characteristics of events still open at cutoff; acknowledge possible length bias |
+| Missing or low-quality timestamps | Evidence tiers; exact auditable endpoints for primary analysis; interval-censored secondary analysis; report pair exclusions |
 
 ---
 
 ## 5. Data Collection Priorities (Next 12 months)
 
 1. **Pilot Study** (3–4 organizations)
-   - Deep process reconstruction + cost estimation
+   - Reconstruct at least one matched pair of real events per organization
+   - Preserve separate event-level records with organization-level context
+   - Use model-generated counterfactuals only for diagnostics and sensitivity analysis
    - Test interview protocols and data extraction methods
+   - Assess feasibility and instrument quality; do not estimate or claim a substantive effect
+   - Mark all records `study_phase = pilot_development` and exclude them from confirmatory analysis
 
 2. **Survey Instrument Development**
    - Validated scale for "procedural rigidity"
@@ -95,7 +297,9 @@ Possible natural experiments:
    - Module on perceived cost drivers
 
 3. **Partnership Development**
-   - Identify 2–3 anchor organizations willing to provide deeper data access in exchange for internal analysis.
+   - Maintain separate pilot and confirmatory recruitment lists.
+   - Identify confirmatory organizations with no pilot or instrument-development involvement.
+   - Require ability to export the complete qualifying event universe for a fixed archival window.
 
 ---
 
@@ -104,7 +308,7 @@ Possible natural experiments:
 - [ ] Detailed Validation Protocol (methods + instruments)
 - [ ] Survey questionnaire (Polish + English)
 - [ ] Case study protocol + data collection templates
-- [ ] Pilot results paper / internal report
+- [ ] Pilot feasibility and instrument-development report (no substantive effect claim)
 - [ ] Public "Validation Dashboard" in the ProcuraCost application (showing progress)
 
 ---

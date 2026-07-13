@@ -1,6 +1,8 @@
 # ProcuraCost – Ambitious 4–5 Month Research Roadmap (Version A)
 
-**Goal**: By September/October 2026 have material strong enough to approach Professor Krzysztof Piech (or another academic) with a credible request for supervision or formal collaboration on a PhD / major research project.
+**Goal**: Secure academic supervision (promotor for an external-mode doctorate, *tryb eksternistyczny*) or formal collaboration on a major research project, by approaching a parallel shortlist of 3–5 academics whose work touches procurement economics, TCE, or public administration.
+
+**Re-baseline (13 July 2026)**: supervisor outreach moves from September/October to **now** — pitch to the first 3 shortlist targets and 2–3 warm pilot-organization calls happen in July; paper v1.5 goes to SSRN/OSF as a working paper by mid-August (journal submission deliberately held until after supervisor conversations); pilot fieldwork runs September–October 2026.
 
 This roadmap treats ProcuraCost as a potential **hybrid academic-consulting project** with clear scientific contribution.
 
@@ -117,7 +119,7 @@ By the end of this period you should be able to credibly say:
 3. "Here is working, versioned, open-source software that implements the model."
 4. "Here is a working paper that positions the contribution clearly."
 
-This package is what Professor Piech (and most serious academics) are asking for.
+This package is what most serious academics are asking for.
 
 ---
 

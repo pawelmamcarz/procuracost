@@ -1,8 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { getDimensionMultipliers, getDimensionMultiplierDetails } from "@/lib/calculations";
-import { dimensionMultiplierLabelsT } from "@/lib/i18n";
+import {
+  getDimensionMultipliers,
+  getDimensionMultiplierDetails,
+  calculateCosts,
+  ProcurementInputs,
+} from "@/lib/calculations";
+import { dimensionMultiplierLabelsT, researchExportT } from "@/lib/i18n";
+import { downloadTextFile, isoDateStamp } from "@/lib/research-export";
+import { MODEL_VERSION, VERSION } from "@/lib/version";
 import Link from "next/link";
 
 type DimensionMultipliers = ReturnType<typeof getDimensionMultipliers>;
@@ -72,6 +79,89 @@ export default function AssumptionsExplorerEn() {
 
   const gapChange = simulatedHiddenGap - baseGap;
   const gapChangePercent = baseGap > 0 ? ((simulatedHiddenGap / baseGap) - 1) * 100 : 0;
+
+  const txExport = researchExportT.en;
+
+  function handleResearchJsonExport() {
+    const repInputs: ProcurementInputs = {
+      contractValue: exampleValue,
+      tcoHorizonYears: 3,
+      processType: "pzp_eu",
+      techLevel: "partial_erp",
+      stakeholders: {
+        buyer: { count: 1, dailyRate: 1200 },
+        lawyer: { count: 1, dailyRate: 1400 },
+        finance: { count: 1, dailyRate: 1100 },
+        manager: { count: 1, dailyRate: 1500 },
+        executive: { count: 1, dailyRate: 2200 },
+        requestor: { count: 1, dailyRate: 900 },
+      },
+      dailyCostOfInaction: dailyInaction,
+      renegotiationCost: Math.round(exampleValue * 0.08),
+      bypassAuditExposure: Math.round(exampleValue * 0.05),
+      spendType,
+      processPhase,
+    };
+    const fullResult = calculateCosts(repInputs);
+    const payload = {
+      meta: {
+        model: "ProcuraCost",
+        modelVersion: MODEL_VERSION,
+        appVersion: VERSION,
+        exportedAt: new Date().toISOString(),
+        surface: "Assumptions Explorer (research tool)",
+        note: txExport.assumptionsJsonNote,
+      },
+      context: { spendType, processPhase },
+      multipliers: {
+        base: baseMultipliers,
+        effective: effectiveMultipliers,
+        details,
+      },
+      representativeScenario: {
+        inputs: repInputs,
+        results: {
+          rigidDays: fullResult.rigidDays,
+          flexibleDays: fullResult.flexibleDays,
+          delta: fullResult.delta,
+          deltaPercent: fullResult.deltaPercent,
+          bypassProbability: fullResult.bypassProbability,
+          flexibleBypassProbability: fullResult.flexibleBypassProbability,
+          rigid: fullResult.rigid,
+          flexible: fullResult.flexible,
+          trace: fullResult.trace,
+        },
+        sources: fullResult.sources,
+      },
+      simulator: {
+        exampleValue,
+        dailyInaction,
+        simulatedHiddenGap,
+        baseGap,
+        gapChange,
+        gapChangePercent,
+      },
+    };
+    downloadTextFile(
+      `procura-research-multipliers-${spendType}-${processPhase}-${isoDateStamp()}.json`,
+      JSON.stringify(payload, null, 2),
+      "application/json",
+    );
+  }
+
+  function handleCopyMultipliersCsv() {
+    const multRows = details.map((d) => {
+      const key = DETAIL_KEY_TO_MULTIPLIER_KEY[d.key] ?? "coordinationIntensityMultiplier";
+      return `${dimensionMultiplierLabelsT.en[d.key]},${effectiveMultipliers[key].toFixed(2)}x`;
+    });
+    const simRows = [
+      `ExampleValue,${exampleValue}`,
+      `DailyInaction,${dailyInaction}`,
+      `SimulatedGap,${Math.round(simulatedHiddenGap)}`,
+      `BaseGap,${Math.round(baseGap)}`,
+    ];
+    navigator.clipboard.writeText(["Key,Value", ...multRows, ...simRows].join("\n"));
+  }
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-12">
@@ -237,6 +327,24 @@ export default function AssumptionsExplorerEn() {
       <div className="mt-8 rounded-xl bg-amber-50 border border-amber-100 p-4 text-sm text-amber-800">
         <strong>Research note:</strong> These multipliers are calibrated modeling assumptions (2026). They are the primary target of the empirical validation plan.
         Overridden values above are for sensitivity analysis only.
+      </div>
+
+      <div className="mt-6 flex flex-wrap items-center justify-end gap-2 print:hidden">
+        <span className="mr-1 text-xs text-gray-500">{txExport.forPaper}</span>
+        <button
+          onClick={handleResearchJsonExport}
+          title={txExport.assumptionsJsonTitle}
+          className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 active:bg-blue-800"
+        >
+          {txExport.assumptionsExportJson}
+        </button>
+        <button
+          onClick={handleCopyMultipliersCsv}
+          title={txExport.assumptionsCsvTitle}
+          className="rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-600 hover:border-gray-300"
+        >
+          {txExport.assumptionsCopyCsv}
+        </button>
       </div>
     </div>
   );

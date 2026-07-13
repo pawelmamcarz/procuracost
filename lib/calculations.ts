@@ -36,6 +36,7 @@ import {
   deriveStaffCost,
   ProcessStep,
 } from "./process-templates";
+import { MODEL_VERSION } from "./version";
 
 export type { ProcessType, TechLevelId, StakeholderRole };
 
@@ -78,6 +79,54 @@ export interface CostBreakdown {
   toolCost: number;
 }
 
+// The 7 symmetric cost dimensions of the model (order matches CostBreakdown).
+export const COST_DIMENSION_KEYS = [
+  "timeCost",
+  "adminCost",
+  "opportunityCost",
+  "productivityCost",
+  "renegotiationCost",
+  "tcoCost",
+  "bypassCost",
+] as const;
+export type CostDimensionKey = (typeof COST_DIMENSION_KEYS)[number];
+
+// Full computation trace for researcher export / replication. Purely descriptive:
+// every value is copied from the same intermediates that produce the breakdowns,
+// so adding it never changes a numeric result.
+export interface CalculationTrace {
+  modelVersion: string;
+  sanitizedInputs: {
+    contractValue: number;
+    tcoHorizonYears: number;
+    dailyCostOfInaction: number;
+    renegotiationCost: number;
+    bypassAuditExposure: number;
+  };
+  context: {
+    spendType?: "direct" | "indirect";
+    processPhase?: "upstream" | "downstream";
+  };
+  process: {
+    processType: ProcessType;
+    techLevel: TechLevelId;
+    stepCount: number;
+    baseRigidity: number;
+    flexibleRigidity: number;
+    corruptionContext: number;
+  };
+  multipliers: DimensionMultipliers;
+  multiplierDetails: DimensionMultiplierDetail[];
+  days: { rigid: number; flexible: number };
+  probabilities: {
+    bypassRigid: number;
+    bypassFlexible: number;
+    renegotiationRigid: number;
+    renegotiationFlexible: number;
+  };
+  dimensions: Record<CostDimensionKey, { rigid: number; flexible: number }>;
+}
+
 export interface ComparisonResult {
   rigid: CostBreakdown;
   flexible: CostBreakdown;
@@ -87,6 +136,7 @@ export interface ComparisonResult {
   flexibleBypassProbability: number;
   rigidDays: number;
   flexibleDays: number;
+  trace: CalculationTrace;
   sources: {
     timeCost: string;
     opportunityCost: string;
@@ -228,6 +278,9 @@ export function getDimensionMultiplierDetails(
 
   return details;
 }
+
+export type DimensionMultipliers = ReturnType<typeof getDimensionMultipliers>;
+export type DimensionMultiplierDetail = ReturnType<typeof getDimensionMultiplierDetails>[number];
 
 // Bypass probability rises with rigidity but is bounded — recalibrated so that even the
 // most rigid process under manual tooling lands well below certainty (no 0.99 saturation).
@@ -446,6 +499,46 @@ export function calculateCosts(inputs: ProcurementInputs): ComparisonResult {
     flexibleBypassProbability: pBypassFlexible,
     rigidDays,
     flexibleDays,
+    trace: {
+      modelVersion: MODEL_VERSION,
+      sanitizedInputs: {
+        contractValue,
+        tcoHorizonYears,
+        dailyCostOfInaction,
+        renegotiationCost,
+        bypassAuditExposure,
+      },
+      context: {
+        spendType: inputs.spendType,
+        processPhase: inputs.processPhase,
+      },
+      process: {
+        processType,
+        techLevel,
+        stepCount: steps.length,
+        baseRigidity,
+        flexibleRigidity,
+        corruptionContext,
+      },
+      multipliers: dims,
+      multiplierDetails: getDimensionMultiplierDetails(inputs.spendType, inputs.processPhase),
+      days: { rigid: rigidDays, flexible: flexibleDays },
+      probabilities: {
+        bypassRigid: pBypassRigid,
+        bypassFlexible: pBypassFlexible,
+        renegotiationRigid: rigidRenegotiationProb,
+        renegotiationFlexible: flexibleRenegotiationProb,
+      },
+      dimensions: {
+        timeCost: { rigid: rigid.timeCost, flexible: flexible.timeCost },
+        adminCost: { rigid: rigid.adminCost, flexible: flexible.adminCost },
+        opportunityCost: { rigid: rigid.opportunityCost, flexible: flexible.opportunityCost },
+        productivityCost: { rigid: rigid.productivityCost, flexible: flexible.productivityCost },
+        renegotiationCost: { rigid: rigid.renegotiationCost, flexible: flexible.renegotiationCost },
+        tcoCost: { rigid: rigid.tcoCost, flexible: flexible.tcoCost },
+        bypassCost: { rigid: rigid.bypassCost, flexible: flexible.bypassCost },
+      },
+    },
     sources: {
       timeCost: "Step durations: legal minima (PZP 2019 + Dyrektywa 2014/24/UE) and practitioner benchmarks — not a single empirical source",
       opportunityCost: "Deployment-delay cost = procurement duration × daily cost of inaction (model construction)",

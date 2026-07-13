@@ -1,0 +1,678 @@
+{
+  "modelVersion": "1.2.0",
+  "evidenceStatus": "Deterministic model outputs under illustrative inputs; not empirical estimates of realized organizational effects.",
+  "scenarios": [
+    {
+      "scenarioId": "fleet",
+      "scenarioName": "Vehicle Fleet Procurement",
+      "context": {},
+      "inputs": {
+        "contractValue": 5000000,
+        "tcoHorizonYears": 2,
+        "processType": "private_formal",
+        "techLevel": "partial_erp",
+        "stakeholders": {
+          "requestor": {
+            "count": 1,
+            "dailyRate": 900
+          },
+          "buyer": {
+            "count": 3,
+            "dailyRate": 800
+          },
+          "lawyer": {
+            "count": 1,
+            "dailyRate": 1200
+          },
+          "finance": {
+            "count": 1,
+            "dailyRate": 900
+          },
+          "manager": {
+            "count": 1,
+            "dailyRate": 1500
+          },
+          "executive": {
+            "count": 1,
+            "dailyRate": 2500
+          }
+        },
+        "dailyCostOfInaction": 5000,
+        "renegotiationCost": 150000,
+        "bypassAuditExposure": 500000
+      },
+      "results": {
+        "rigid": {
+          "timeCost": 30062.5,
+          "adminCost": 5600,
+          "opportunityCost": 220000,
+          "productivityCost": 48000,
+          "renegotiationCost": 39930,
+          "tcoCost": 557823.1292517007,
+          "bypassCost": 39009.04284763414,
+          "total": 940424.6720993349,
+          "days": 44,
+          "staffCost": 30062.5,
+          "coordCost": 4400,
+          "toolCost": 1200
+        },
+        "flexible": {
+          "timeCost": 30062.5,
+          "adminCost": 2360,
+          "opportunityCost": 100000,
+          "productivityCost": 102000,
+          "renegotiationCost": 34732.5,
+          "tcoCost": 139455.78231292518,
+          "bypassCost": 3021.4092234131244,
+          "total": 411632.19153633836,
+          "days": 20,
+          "staffCost": 30062.5,
+          "coordCost": 2000,
+          "toolCost": 360
+        },
+        "delta": 528792.4805629966,
+        "deltaPercent": 128.46237282593955,
+        "bypassProbability": 0.07801808569526827,
+        "flexibleBypassProbability": 0.006042818446826249,
+        "rigidDays": 44,
+        "flexibleDays": 20,
+        "sources": {
+          "timeCost": "Step durations: legal minima (PZP 2019 + Dyrektywa 2014/24/UE) and practitioner benchmarks — not a single empirical source",
+          "opportunityCost": "Deployment-delay cost = procurement duration × daily cost of inaction (model construction)",
+          "productivityCost": "Szucs, F. (2024). Discretion and Favoritism in Public Procurement. JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017 — discretion raises prices and lowers supplier value; competitive tendering averts this favoritism premium",
+          "renegotiationCost": "Beuve, Moszoro & Spiller. Contractual Rigidity and Political Contestability. NBER wp28491 (publ. JLEO 2023) — 2SLS/IV (rigidity instrumented by political contestability; exclusion restriction load-bearing), French car-park sector, +7.7–10.5pp per-SD-dose. Applied with an explicit 0→1-index ≈ 1 SD mapping, anchored at the 7.7pp lower bound and hard-capped at 10.5pp",
+          "tcoCost": "Up to ~30% TCO reduction over multiple years — an unattributed practitioner heuristic from grey literature (no verifiable ISM or peer-reviewed source; Grade C), kept only as a conservative cap, discounted at 5%",
+          "bypassCost": "Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) The Challenger Launch Decision; Holmström & Milgrom (1991) Multitask Principal-Agent"
+        }
+      }
+    },
+    {
+      "scenarioId": "erp",
+      "scenarioName": "IT/ERP Contract",
+      "context": {},
+      "inputs": {
+        "contractValue": 3000000,
+        "tcoHorizonYears": 3,
+        "processType": "private_formal",
+        "techLevel": "sourcing_tool",
+        "stakeholders": {
+          "requestor": {
+            "count": 2,
+            "dailyRate": 1200
+          },
+          "buyer": {
+            "count": 2,
+            "dailyRate": 1200
+          },
+          "lawyer": {
+            "count": 1,
+            "dailyRate": 1500
+          },
+          "finance": {
+            "count": 1,
+            "dailyRate": 1000
+          },
+          "manager": {
+            "count": 2,
+            "dailyRate": 1800
+          },
+          "executive": {
+            "count": 1,
+            "dailyRate": 3000
+          }
+        },
+        "dailyCostOfInaction": 15000,
+        "renegotiationCost": 300000,
+        "bypassAuditExposure": 300000
+      },
+      "results": {
+        "rigid": {
+          "timeCost": 34375,
+          "adminCost": 11000,
+          "opportunityCost": 765000,
+          "productivityCost": 28800,
+          "renegotiationCost": 79860,
+          "tcoCost": 490184.64528668614,
+          "bypassCost": 34044.255576117066,
+          "total": 1443263.9008628032,
+          "days": 51,
+          "staffCost": 34375,
+          "coordCost": 10200,
+          "toolCost": 800
+        },
+        "flexible": {
+          "timeCost": 34375,
+          "adminCost": 4840,
+          "opportunityCost": 345000,
+          "productivityCost": 61200,
+          "renegotiationCost": 69465,
+          "tcoCost": 122546.16132167153,
+          "bypassCost": 2636.866231342363,
+          "total": 640063.0275530139,
+          "days": 23,
+          "staffCost": 34375,
+          "coordCost": 4600,
+          "toolCost": 240
+        },
+        "delta": 803200.8733097893,
+        "deltaPercent": 125.48777834902569,
+        "bypassProbability": 0.11348085192039022,
+        "flexibleBypassProbability": 0.008789554104474543,
+        "rigidDays": 51,
+        "flexibleDays": 23,
+        "sources": {
+          "timeCost": "Step durations: legal minima (PZP 2019 + Dyrektywa 2014/24/UE) and practitioner benchmarks — not a single empirical source",
+          "opportunityCost": "Deployment-delay cost = procurement duration × daily cost of inaction (model construction)",
+          "productivityCost": "Szucs, F. (2024). Discretion and Favoritism in Public Procurement. JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017 — discretion raises prices and lowers supplier value; competitive tendering averts this favoritism premium",
+          "renegotiationCost": "Beuve, Moszoro & Spiller. Contractual Rigidity and Political Contestability. NBER wp28491 (publ. JLEO 2023) — 2SLS/IV (rigidity instrumented by political contestability; exclusion restriction load-bearing), French car-park sector, +7.7–10.5pp per-SD-dose. Applied with an explicit 0→1-index ≈ 1 SD mapping, anchored at the 7.7pp lower bound and hard-capped at 10.5pp",
+          "tcoCost": "Up to ~30% TCO reduction over multiple years — an unattributed practitioner heuristic from grey literature (no verifiable ISM or peer-reviewed source; Grade C), kept only as a conservative cap, discounted at 5%",
+          "bypassCost": "Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) The Challenger Launch Decision; Holmström & Milgrom (1991) Multitask Principal-Agent"
+        }
+      }
+    },
+    {
+      "scenarioId": "logistics",
+      "scenarioName": "Logistics Services",
+      "context": {},
+      "inputs": {
+        "contractValue": 8000000,
+        "tcoHorizonYears": 3,
+        "processType": "private_formal",
+        "techLevel": "partial_erp",
+        "stakeholders": {
+          "requestor": {
+            "count": 1,
+            "dailyRate": 900
+          },
+          "buyer": {
+            "count": 2,
+            "dailyRate": 900
+          },
+          "lawyer": {
+            "count": 1,
+            "dailyRate": 1300
+          },
+          "finance": {
+            "count": 1,
+            "dailyRate": 1000
+          },
+          "manager": {
+            "count": 1,
+            "dailyRate": 1600
+          },
+          "executive": {
+            "count": 1,
+            "dailyRate": 2800
+          }
+        },
+        "dailyCostOfInaction": 20000,
+        "renegotiationCost": 400000,
+        "bypassAuditExposure": 800000
+      },
+      "results": {
+        "rigid": {
+          "timeCost": 26000,
+          "adminCost": 5600,
+          "opportunityCost": 880000,
+          "productivityCost": 76800,
+          "renegotiationCost": 106480,
+          "tcoCost": 1307159.0540978296,
+          "bypassCost": 62414.46855621462,
+          "total": 2464453.522654044,
+          "days": 44,
+          "staffCost": 26000,
+          "coordCost": 4400,
+          "toolCost": 1200
+        },
+        "flexible": {
+          "timeCost": 26000,
+          "adminCost": 2360,
+          "opportunityCost": 400000,
+          "productivityCost": 163200,
+          "renegotiationCost": 92620,
+          "tcoCost": 326789.7635244574,
+          "bypassCost": 4834.254757460999,
+          "total": 1015804.0182819184,
+          "days": 20,
+          "staffCost": 26000,
+          "coordCost": 2000,
+          "toolCost": 360
+        },
+        "delta": 1448649.5043721255,
+        "deltaPercent": 142.6111216632418,
+        "bypassProbability": 0.07801808569526827,
+        "flexibleBypassProbability": 0.006042818446826249,
+        "rigidDays": 44,
+        "flexibleDays": 20,
+        "sources": {
+          "timeCost": "Step durations: legal minima (PZP 2019 + Dyrektywa 2014/24/UE) and practitioner benchmarks — not a single empirical source",
+          "opportunityCost": "Deployment-delay cost = procurement duration × daily cost of inaction (model construction)",
+          "productivityCost": "Szucs, F. (2024). Discretion and Favoritism in Public Procurement. JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017 — discretion raises prices and lowers supplier value; competitive tendering averts this favoritism premium",
+          "renegotiationCost": "Beuve, Moszoro & Spiller. Contractual Rigidity and Political Contestability. NBER wp28491 (publ. JLEO 2023) — 2SLS/IV (rigidity instrumented by political contestability; exclusion restriction load-bearing), French car-park sector, +7.7–10.5pp per-SD-dose. Applied with an explicit 0→1-index ≈ 1 SD mapping, anchored at the 7.7pp lower bound and hard-capped at 10.5pp",
+          "tcoCost": "Up to ~30% TCO reduction over multiple years — an unattributed practitioner heuristic from grey literature (no verifiable ISM or peer-reviewed source; Grade C), kept only as a conservative cap, discounted at 5%",
+          "bypassCost": "Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) The Challenger Launch Decision; Holmström & Milgrom (1991) Multitask Principal-Agent"
+        }
+      }
+    },
+    {
+      "scenarioId": "production",
+      "scenarioName": "Production Materials",
+      "context": {},
+      "inputs": {
+        "contractValue": 12000000,
+        "tcoHorizonYears": 1,
+        "processType": "private_formal",
+        "techLevel": "manual",
+        "stakeholders": {
+          "requestor": {
+            "count": 2,
+            "dailyRate": 800
+          },
+          "buyer": {
+            "count": 2,
+            "dailyRate": 700
+          },
+          "lawyer": {
+            "count": 1,
+            "dailyRate": 1200
+          },
+          "finance": {
+            "count": 1,
+            "dailyRate": 800
+          },
+          "manager": {
+            "count": 1,
+            "dailyRate": 1400
+          },
+          "executive": {
+            "count": 1,
+            "dailyRate": 2500
+          }
+        },
+        "dailyCostOfInaction": 50000,
+        "renegotiationCost": 500000,
+        "bypassAuditExposure": 1200000
+      },
+      "results": {
+        "rigid": {
+          "timeCost": 22212.5,
+          "adminCost": 31000,
+          "opportunityCost": 3100000,
+          "productivityCost": 115200,
+          "renegotiationCost": 133100,
+          "tcoCost": 685714.2857142856,
+          "bypassCost": 255331.916820878,
+          "total": 4342558.702535164,
+          "days": 62,
+          "staffCost": 22212.5,
+          "coordCost": 31000,
+          "toolCost": 0
+        },
+        "flexible": {
+          "timeCost": 22212.5,
+          "adminCost": 14500,
+          "opportunityCost": 1450000,
+          "productivityCost": 244800,
+          "renegotiationCost": 115775,
+          "tcoCost": 171428.5714285714,
+          "bypassCost": 19776.49673506772,
+          "total": 2038492.5681636392,
+          "days": 29,
+          "staffCost": 22212.5,
+          "coordCost": 14500,
+          "toolCost": 0
+        },
+        "delta": 2304066.1343715247,
+        "deltaPercent": 113.02793889737481,
+        "bypassProbability": 0.21277659735073165,
+        "flexibleBypassProbability": 0.01648041394588977,
+        "rigidDays": 62,
+        "flexibleDays": 29,
+        "sources": {
+          "timeCost": "Step durations: legal minima (PZP 2019 + Dyrektywa 2014/24/UE) and practitioner benchmarks — not a single empirical source",
+          "opportunityCost": "Deployment-delay cost = procurement duration × daily cost of inaction (model construction)",
+          "productivityCost": "Szucs, F. (2024). Discretion and Favoritism in Public Procurement. JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017 — discretion raises prices and lowers supplier value; competitive tendering averts this favoritism premium",
+          "renegotiationCost": "Beuve, Moszoro & Spiller. Contractual Rigidity and Political Contestability. NBER wp28491 (publ. JLEO 2023) — 2SLS/IV (rigidity instrumented by political contestability; exclusion restriction load-bearing), French car-park sector, +7.7–10.5pp per-SD-dose. Applied with an explicit 0→1-index ≈ 1 SD mapping, anchored at the 7.7pp lower bound and hard-capped at 10.5pp",
+          "tcoCost": "Up to ~30% TCO reduction over multiple years — an unattributed practitioner heuristic from grey literature (no verifiable ISM or peer-reviewed source; Grade C), kept only as a conservative cap, discounted at 5%",
+          "bypassCost": "Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) The Challenger Launch Decision; Holmström & Milgrom (1991) Multitask Principal-Agent"
+        }
+      }
+    },
+    {
+      "scenarioId": "pipe_vs_field",
+      "scenarioName": "Tunnel vs Field",
+      "context": {},
+      "inputs": {
+        "contractValue": 5000000,
+        "tcoHorizonYears": 3,
+        "processType": "pzp_eu",
+        "techLevel": "partial_erp",
+        "stakeholders": {
+          "requestor": {
+            "count": 1,
+            "dailyRate": 900
+          },
+          "buyer": {
+            "count": 2,
+            "dailyRate": 900
+          },
+          "lawyer": {
+            "count": 1,
+            "dailyRate": 1300
+          },
+          "finance": {
+            "count": 1,
+            "dailyRate": 900
+          },
+          "manager": {
+            "count": 1,
+            "dailyRate": 1500
+          },
+          "executive": {
+            "count": 1,
+            "dailyRate": 2500
+          }
+        },
+        "dailyCostOfInaction": 10000,
+        "renegotiationCost": 200000,
+        "bypassAuditExposure": 600000
+      },
+      "results": {
+        "rigid": {
+          "timeCost": 34975,
+          "adminCost": 9900,
+          "opportunityCost": 870000,
+          "productivityCost": 15000.000000000013,
+          "renegotiationCost": 58630.00000000001,
+          "tcoCost": 1293542.8139509773,
+          "bypassCost": 189566.03054784748,
+          "total": 2471613.844498825,
+          "days": 87,
+          "staffCost": 34975,
+          "coordCost": 8700,
+          "toolCost": 1200
+        },
+        "flexible": {
+          "timeCost": 21475,
+          "adminCost": 1860,
+          "opportunityCost": 150000,
+          "productivityCost": 255000,
+          "renegotiationCost": 46310,
+          "tcoCost": 204243.6022027859,
+          "bypassCost": 3625.6910680957494,
+          "total": 682514.2932708816,
+          "days": 15,
+          "staffCost": 21475,
+          "coordCost": 1500,
+          "toolCost": 360
+        },
+        "delta": 1789099.551227943,
+        "deltaPercent": 262.13363864569953,
+        "bypassProbability": 0.31594338424641244,
+        "flexibleBypassProbability": 0.006042818446826249,
+        "rigidDays": 87,
+        "flexibleDays": 15,
+        "sources": {
+          "timeCost": "Step durations: legal minima (PZP 2019 + Dyrektywa 2014/24/UE) and practitioner benchmarks — not a single empirical source",
+          "opportunityCost": "Deployment-delay cost = procurement duration × daily cost of inaction (model construction)",
+          "productivityCost": "Szucs, F. (2024). Discretion and Favoritism in Public Procurement. JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017 — discretion raises prices and lowers supplier value; competitive tendering averts this favoritism premium",
+          "renegotiationCost": "Beuve, Moszoro & Spiller. Contractual Rigidity and Political Contestability. NBER wp28491 (publ. JLEO 2023) — 2SLS/IV (rigidity instrumented by political contestability; exclusion restriction load-bearing), French car-park sector, +7.7–10.5pp per-SD-dose. Applied with an explicit 0→1-index ≈ 1 SD mapping, anchored at the 7.7pp lower bound and hard-capped at 10.5pp",
+          "tcoCost": "Up to ~30% TCO reduction over multiple years — an unattributed practitioner heuristic from grey literature (no verifiable ISM or peer-reviewed source; Grade C), kept only as a conservative cap, discounted at 5%",
+          "bypassCost": "Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) The Challenger Launch Decision; Holmström & Milgrom (1991) Multitask Principal-Agent"
+        }
+      }
+    },
+    {
+      "scenarioId": "catalog",
+      "scenarioName": "Catalog Order",
+      "context": {},
+      "inputs": {
+        "contractValue": 50000,
+        "tcoHorizonYears": 1,
+        "processType": "catalog_order",
+        "techLevel": "end_to_end",
+        "stakeholders": {
+          "requestor": {
+            "count": 2,
+            "dailyRate": 800
+          },
+          "buyer": {
+            "count": 1,
+            "dailyRate": 800
+          },
+          "lawyer": {
+            "count": 0,
+            "dailyRate": 1200
+          },
+          "finance": {
+            "count": 0,
+            "dailyRate": 900
+          },
+          "manager": {
+            "count": 1,
+            "dailyRate": 1500
+          },
+          "executive": {
+            "count": 0,
+            "dailyRate": 2500
+          }
+        },
+        "dailyCostOfInaction": 500,
+        "renegotiationCost": 0,
+        "bypassAuditExposure": 10000
+      },
+      "results": {
+        "rigid": {
+          "timeCost": 543.75,
+          "adminCost": 2040,
+          "opportunityCost": 1000,
+          "productivityCost": 480,
+          "renegotiationCost": 0,
+          "tcoCost": 952.3809523809525,
+          "bypassCost": 14.77403169327307,
+          "total": 5030.9049840742255,
+          "days": 2,
+          "staffCost": 543.75,
+          "coordCost": 40,
+          "toolCost": 2000
+        },
+        "flexible": {
+          "timeCost": 543.75,
+          "adminCost": 640,
+          "opportunityCost": 1000,
+          "productivityCost": 510,
+          "renegotiationCost": 0,
+          "tcoCost": 714.2857142857142,
+          "bypassCost": 6.059801491584118,
+          "total": 3414.0955157772983,
+          "days": 2,
+          "staffCost": 543.75,
+          "coordCost": 40,
+          "toolCost": 600
+        },
+        "delta": 1616.8094682969272,
+        "deltaPercent": 47.35689030448297,
+        "bypassProbability": 0.001477403169327307,
+        "flexibleBypassProbability": 0.0006059801491584117,
+        "rigidDays": 2,
+        "flexibleDays": 2,
+        "sources": {
+          "timeCost": "Step durations: legal minima (PZP 2019 + Dyrektywa 2014/24/UE) and practitioner benchmarks — not a single empirical source",
+          "opportunityCost": "Deployment-delay cost = procurement duration × daily cost of inaction (model construction)",
+          "productivityCost": "Szucs, F. (2024). Discretion and Favoritism in Public Procurement. JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017 — discretion raises prices and lowers supplier value; competitive tendering averts this favoritism premium",
+          "renegotiationCost": "Beuve, Moszoro & Spiller. Contractual Rigidity and Political Contestability. NBER wp28491 (publ. JLEO 2023) — 2SLS/IV (rigidity instrumented by political contestability; exclusion restriction load-bearing), French car-park sector, +7.7–10.5pp per-SD-dose. Applied with an explicit 0→1-index ≈ 1 SD mapping, anchored at the 7.7pp lower bound and hard-capped at 10.5pp",
+          "tcoCost": "Up to ~30% TCO reduction over multiple years — an unattributed practitioner heuristic from grey literature (no verifiable ISM or peer-reviewed source; Grade C), kept only as a conservative cap, discounted at 5%",
+          "bypassCost": "Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) The Challenger Launch Decision; Holmström & Milgrom (1991) Multitask Principal-Agent"
+        }
+      }
+    },
+    {
+      "scenarioId": "mrp",
+      "scenarioName": "MRP Order",
+      "context": {},
+      "inputs": {
+        "contractValue": 500000,
+        "tcoHorizonYears": 1,
+        "processType": "mrp_order",
+        "techLevel": "end_to_end",
+        "stakeholders": {
+          "requestor": {
+            "count": 1,
+            "dailyRate": 800
+          },
+          "buyer": {
+            "count": 1,
+            "dailyRate": 800
+          },
+          "lawyer": {
+            "count": 0,
+            "dailyRate": 1200
+          },
+          "finance": {
+            "count": 0,
+            "dailyRate": 900
+          },
+          "manager": {
+            "count": 0,
+            "dailyRate": 1500
+          },
+          "executive": {
+            "count": 0,
+            "dailyRate": 2500
+          }
+        },
+        "dailyCostOfInaction": 8000,
+        "renegotiationCost": 20000,
+        "bypassAuditExposure": 50000
+      },
+      "results": {
+        "rigid": {
+          "timeCost": 200,
+          "adminCost": 2020,
+          "opportunityCost": 8000,
+          "productivityCost": 3960,
+          "renegotiationCost": 4584.8,
+          "tcoCost": 5714.285714285714,
+          "bypassCost": 45.968526836440475,
+          "total": 24525.054241122154,
+          "days": 1,
+          "staffCost": 200,
+          "coordCost": 20,
+          "toolCost": 2000
+        },
+        "flexible": {
+          "timeCost": 200,
+          "adminCost": 620,
+          "opportunityCost": 8000,
+          "productivityCost": 3960,
+          "renegotiationCost": 4584.8,
+          "tcoCost": 5714.285714285714,
+          "bypassCost": 30.299007457920588,
+          "total": 23109.384721743634,
+          "days": 1,
+          "staffCost": 200,
+          "coordCost": 20,
+          "toolCost": 600
+        },
+        "delta": 1415.66951937852,
+        "deltaPercent": 6.125950718395871,
+        "bypassProbability": 0.0009193705367288095,
+        "flexibleBypassProbability": 0.0006059801491584117,
+        "rigidDays": 1,
+        "flexibleDays": 1,
+        "sources": {
+          "timeCost": "Step durations: legal minima (PZP 2019 + Dyrektywa 2014/24/UE) and practitioner benchmarks — not a single empirical source",
+          "opportunityCost": "Deployment-delay cost = procurement duration × daily cost of inaction (model construction)",
+          "productivityCost": "Szucs, F. (2024). Discretion and Favoritism in Public Procurement. JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017 — discretion raises prices and lowers supplier value; competitive tendering averts this favoritism premium",
+          "renegotiationCost": "Beuve, Moszoro & Spiller. Contractual Rigidity and Political Contestability. NBER wp28491 (publ. JLEO 2023) — 2SLS/IV (rigidity instrumented by political contestability; exclusion restriction load-bearing), French car-park sector, +7.7–10.5pp per-SD-dose. Applied with an explicit 0→1-index ≈ 1 SD mapping, anchored at the 7.7pp lower bound and hard-capped at 10.5pp",
+          "tcoCost": "Up to ~30% TCO reduction over multiple years — an unattributed practitioner heuristic from grey literature (no verifiable ISM or peer-reviewed source; Grade C), kept only as a conservative cap, discounted at 5%",
+          "bypassCost": "Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) The Challenger Launch Decision; Holmström & Milgrom (1991) Multitask Principal-Agent"
+        }
+      }
+    },
+    {
+      "scenarioId": "capex_investment",
+      "scenarioName": "CAPEX Investment",
+      "context": {},
+      "inputs": {
+        "contractValue": 15000000,
+        "tcoHorizonYears": 10,
+        "processType": "capex",
+        "techLevel": "partial_erp",
+        "stakeholders": {
+          "requestor": {
+            "count": 2,
+            "dailyRate": 1000
+          },
+          "buyer": {
+            "count": 2,
+            "dailyRate": 900
+          },
+          "lawyer": {
+            "count": 1,
+            "dailyRate": 1500
+          },
+          "finance": {
+            "count": 2,
+            "dailyRate": 1000
+          },
+          "manager": {
+            "count": 2,
+            "dailyRate": 1600
+          },
+          "executive": {
+            "count": 1,
+            "dailyRate": 3000
+          }
+        },
+        "dailyCostOfInaction": 30000,
+        "renegotiationCost": 800000,
+        "bypassAuditExposure": 2000000
+      },
+      "results": {
+        "rigid": {
+          "timeCost": 62250,
+          "adminCost": 7200,
+          "opportunityCost": 1800000,
+          "productivityCost": 151200,
+          "renegotiationCost": 220352,
+          "tcoCost": 4500000,
+          "bypassCost": 278856.6183285716,
+          "total": 7019858.618328571,
+          "days": 60,
+          "staffCost": 62250,
+          "coordCost": 6000,
+          "toolCost": 1200
+        },
+        "flexible": {
+          "timeCost": 62250,
+          "adminCost": 3960,
+          "opportunityCost": 1080000,
+          "productivityCost": 459000,
+          "renegotiationCost": 185240,
+          "tcoCost": 1737390.3590665828,
+          "bypassCost": 12085.636893652498,
+          "total": 3539925.995960235,
+          "days": 36,
+          "staffCost": 62250,
+          "coordCost": 3600,
+          "toolCost": 360
+        },
+        "delta": 3479932.622368336,
+        "deltaPercent": 98.30523650323867,
+        "bypassProbability": 0.1394283091642858,
+        "flexibleBypassProbability": 0.006042818446826249,
+        "rigidDays": 60,
+        "flexibleDays": 36,
+        "sources": {
+          "timeCost": "Step durations: legal minima (PZP 2019 + Dyrektywa 2014/24/UE) and practitioner benchmarks — not a single empirical source",
+          "opportunityCost": "Deployment-delay cost = procurement duration × daily cost of inaction (model construction)",
+          "productivityCost": "Szucs, F. (2024). Discretion and Favoritism in Public Procurement. JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017 — discretion raises prices and lowers supplier value; competitive tendering averts this favoritism premium",
+          "renegotiationCost": "Beuve, Moszoro & Spiller. Contractual Rigidity and Political Contestability. NBER wp28491 (publ. JLEO 2023) — 2SLS/IV (rigidity instrumented by political contestability; exclusion restriction load-bearing), French car-park sector, +7.7–10.5pp per-SD-dose. Applied with an explicit 0→1-index ≈ 1 SD mapping, anchored at the 7.7pp lower bound and hard-capped at 10.5pp",
+          "tcoCost": "Up to ~30% TCO reduction over multiple years — an unattributed practitioner heuristic from grey literature (no verifiable ISM or peer-reviewed source; Grade C), kept only as a conservative cap, discounted at 5%",
+          "bypassCost": "Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) The Challenger Launch Decision; Holmström & Milgrom (1991) Multitask Principal-Agent"
+        }
+      }
+    }
+  ]
+}

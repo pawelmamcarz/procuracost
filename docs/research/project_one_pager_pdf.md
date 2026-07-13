@@ -7,30 +7,30 @@ The Hidden Cost of Procedural Compliance: Quantifying Opportunity Costs of Rigid
 
 ## Problem
 
-Organizacje mylą **politykę zakupową** (co musi być osiągnięte) z **procedurą zakupową** (jak to zrobić).  
-Efektem jest „compliance theater” – kupcy optymalizują się pod bezpieczeństwo proceduralne zamiast pod wartość dla organizacji.  
-Koszty (utracone oszczędności TCO, opóźnienia, renegocjacje, ryzyko obejścia) są realne, ale w dużej mierze niewidoczne dla audytów zgodności.
+Organizacje mogą mylić **politykę zakupową** (co musi być osiągnięte) z **procedurą zakupową** (jak to zrobić).
+Projekt testuje, czy sprzyja to „compliance theater” i przesuwa uwagę z wyniku na bezpieczeństwo proceduralne.
+TCO, opóźnienia, renegocjacje i obejścia są kandydatami do pomiaru, a nie potwierdzonymi efektami modelu.
 
 ---
 
 ## Rozwiązanie
 
-Stworzyliśmy otwarty, wielowymiarowy model kosztów (**ProcuraCost**), który kwantyfikuje różnicę między sztywną procedurą a elastycznym podejściem opartym na polityce.
+Stworzyliśmy otwarty model symulacyjny (**ProcuraCost**), który pokazuje różnicę wynikającą z podanych danych i jawnych założeń.
 
 **Kluczowe rozszerzenie modelu (2026):**
 - Rozróżnienie **Direct vs Indirect** spend
 - Rozróżnienie **Upstream vs Downstream** faz procesu
 
-Model integruje wyniki badań empirycznych (Szucs 2024, Beuve et al. 2021 i in.) i jest w pełni udokumentowany oraz otwarty.
+Beuve et al. (2021) dostarcza kotwicy empirycznej dla renegocjacji, a Szucs (2024) wyznacza ryzyko nadmiernej dyskrecji. Pozostałe efekty są jawnymi założeniami modelowymi wymagającymi kalibracji.
 
 ---
 
 ## Aktualny stan (czerwiec 2026)
 
-- W pełni zaimplementowany i wersjonowany model (v1.1) z nowymi wymiarami 2×2
+- Zaimplementowany model symulacyjny v1.2 z wymiarami 2×2, testami i jawnym rejestrem założeń
 - Publiczne narzędzie: [www.procuracost.com](https://www.procuracost.com)
 - Interaktywny Assumptions Explorer pokazujący na żywo mnożniki modelu
-- Roboczy draft artykułu naukowego z czterema studiami przypadków
+- Roboczy draft artykułu metodologicznego z ilustracyjnymi archetypami zakupów
 - Pełna dokumentacja parametrów ze źródłami i oceną wrażliwości
 
 ---
@@ -44,7 +44,7 @@ Krótkie, poufne badanie pilotażowe (łącznie **2–4 godziny** pracy po stron
 - Poufny raport dla organizacji
 - Pełna anonimizacja danych w publikacji
 
-Nie oceniamy Waszych procesów. Zbieramy realistyczne dane, żeby lepiej zrozumieć, kiedy sztywne procedury mają sens, a kiedy generują znaczące koszty alternatywne.
+Nie oceniamy Waszych procesów. Zbieramy dane, aby sprawdzić, kiedy procedury tworzą wartość, generują koszt albo chronią przed ryzykiem governance.
 
 ---
 

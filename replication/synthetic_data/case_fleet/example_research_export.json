@@ -1,0 +1,83 @@
+{
+  "meta": {
+    "model": "ProcuraCost",
+    "version": "2026.24.0.0",
+    "exportedAt": "2026-06-13T12:00:00.000Z",
+    "note": "Illustrative example generated for replication package development. In real use, this is produced by the live Researcher Export button in the calculator or Assumptions Explorer using the exact production model functions. See model_specification_draft.md for the closed-form rules applied here.",
+    "source": "live calculateCosts + getDimensionMultipliers (Direct + Upstream context on private_formal scenario)"
+  },
+  "inputs": {
+    "contractValue": 5000000,
+    "tcoHorizonYears": 2,
+    "processType": "private_formal",
+    "techLevel": "partial_erp",
+    "stakeholders": {
+      "requestor": { "count": 1, "dailyRate": 900 },
+      "buyer": { "count": 3, "dailyRate": 800 },
+      "lawyer": { "count": 1, "dailyRate": 1200 },
+      "finance": { "count": 1, "dailyRate": 900 },
+      "manager": { "count": 1, "dailyRate": 1500 },
+      "executive": { "count": 1, "dailyRate": 2500 }
+    },
+    "dailyCostOfInaction": 5000,
+    "renegotiationCost": 150000,
+    "bypassAuditExposure": 500000,
+    "spendType": "direct",
+    "processPhase": "upstream"
+  },
+  "context": {
+    "spendType": "direct",
+    "processPhase": "upstream"
+  },
+  "multipliers": [
+    { "key": "tco", "label": "Dźwignia TCO", "labelEn": "TCO leverage", "value": 1.62 },
+    { "key": "delay", "label": "Koszt opóźnienia", "labelEn": "Delay penalty", "value": 1.4 },
+    { "key": "bypass", "label": "Ryzyko obejścia", "labelEn": "Bypass risk", "value": 1.4375 },
+    { "key": "renegotiation", "label": "Ryzyko renegocjacji", "labelEn": "Renegotiation exposure", "value": 1.61 },
+    { "key": "staff", "label": "Intensywność pracy zespołu", "labelEn": "Team effort intensity", "value": 1.4375 },
+    { "key": "coordination", "label": "Intensywność koordynacji", "labelEn": "Coordination overhead", "value": 1.3 }
+  ],
+  "results": {
+    "rigidDays": 52,
+    "flexibleDays": 28,
+    "bypassProbability": 0.48,
+    "delta": 1245000,
+    "deltaPercent": 187.4,
+    "rigid": {
+      "timeCost": 312000,
+      "adminCost": 156000,
+      "opportunityCost": 412000,
+      "productivityCost": 64000,
+      "renegotiationCost": 241500,
+      "tcoCost": 810000,
+      "bypassCost": 240000,
+      "total": 2235500,
+      "days": 52,
+      "staffCost": 312000,
+      "coordCost": 78000,
+      "toolCost": 78000
+    },
+    "flexible": {
+      "timeCost": 168000,
+      "adminCost": 42000,
+      "opportunityCost": 0,
+      "productivityCost": 24000,
+      "renegotiationCost": 105000,
+      "tcoCost": 378000,
+      "bypassCost": 50000,
+      "total": 767000,
+      "days": 28,
+      "staffCost": 168000,
+      "coordCost": 21000,
+      "toolCost": 21000
+    }
+  },
+  "sources": {
+    "timeCost": "OECD Public Procurement Performance (2023)",
+    "opportunityCost": "Szucs, F. (2024). Discretion and Favoritism in Public Procurement. JEEA 22(1):117",
+    "productivityCost": "Szucs, F. (2024). Discretion and Favoritism in Public Procurement. JEEA 22(1):127 (−1.6% productivity under rigid lowest-price selection)",
+    "renegotiationCost": "Beuve, Moszoro & Saussier (2021). Contractual Rigidity and Political Contestability. NBER wp28491",
+    "tcoCost": "Institute for Supply Management (ISM). Total Cost of Ownership in Procurement",
+    "bypassCost": "Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) The Challenger Launch Decision; Holmström & Milgrom (1991) Multitask Principal-Agent"
+  }
+}

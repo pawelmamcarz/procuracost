@@ -12,32 +12,34 @@ The Hidden Cost of Procedural Compliance: Quantifying Opportunity Costs of Rigid
 
 ## One-sentence core claim
 
-Rigid procurement procedures impose substantial and measurable opportunity costs that significantly exceed those of policy-only compliance, and these costs can be systematically quantified using a transparent multi-dimensional model that distinguishes between Direct vs Indirect spend and Upstream vs Downstream process phases.
+ProcuraCost is a transparent simulation and candidate measurement instrument for studying when rigid procurement procedures create opportunity costs and when procedural controls protect procurement outcomes.
 
 ---
 
 ## The Problem (3–4 sentences)
 
-Organizations routinely treat procurement *procedure* as if it were procurement *policy*. This conflation creates a structural incentive for "compliance theater": procurement professionals optimize for procedural safety rather than value. The costs of this behavior (foregone TCO savings, deployment delays, higher renegotiation rates, and hidden bypass risk) are real but largely invisible to conventional compliance-focused audits.
+Organizations may treat procurement *procedure* as if it were procurement *policy*. We propose that this can favor procedural safety over less observable value creation. ProcuraCost turns that proposition into explicit constructs and assumptions for audit and calibration; prevalence and effect size remain untested.
 
 ---
 
 ## Our Contribution (what is new)
 
-1. **Conceptual**: Clear operational distinction between policy and procedure, extended with a 2×2 contextual framework (Direct/Indirect × Upstream/Downstream).
-2. **Theoretical**: Integration of five empirical regularities from the literature into a single cost model, with explicit behavioral mechanisms (compliance theater, enforcement fallacy, Goodhart dynamics, etc.).
-3. **Empirical/Methodological**: Open-source, transparent, and extensible measurement instrument (ProcuraCost) that makes the model usable both for practitioners and for structured data collection in research.
-4. **Evidence so far**: Consistent large effects across four very different procurement archetypes (demonstration, not yet full empirical test).
+1. **Methodological — primary**: An open-source candidate measurement instrument with auditable calculations, exports, tests, and calibration hooks.
+2. **Computational**: A reproducible 2×2 simulation framework whose assumptions can be varied and falsified.
+3. **Conceptual — secondary**: A policy/procedure distinction organized by the Tunnel vs. Field metaphor, treated as framing rather than validated theory.
+4. **Empirical agenda**: Instruments mapping constructs to pilot, survey, timestamp, contract, and transaction data.
+
+**Evidence status**: One encoded empirical anchor for renegotiation, a countervailing boundary condition from Szucs (2024), and explicit assumptions for the remaining components. Built-in archetypes demonstrate mechanics and sensitivity, not organizational effects.
 
 ---
 
 ## Current State (June 2026)
 
-- Fully documented and versioned cost model (v1.1) with the 2×2 extensions
+- Documented and versioned simulation model (v1.2) with the 2×2 extensions
 - Live public tool: [www.procuracost.com](https://www.procuracost.com) (including interactive Assumptions Explorer)
-- Working paper draft with four case studies and theoretical framing
-- Complete parameter documentation with sources and sensitivity ratings
-- Replication package in preparation
+- Methodological working-paper draft with illustrative procurement archetypes
+- Parameter register separating evidence, assumptions, and user inputs
+- Runnable tests, calculation traces, and generated replication outputs
 
 ---
 

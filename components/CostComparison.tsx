@@ -13,6 +13,7 @@ import SensitivityChart from "@/components/cost-comparison/SensitivityChart";
 import DetailTable from "@/components/cost-comparison/DetailTable";
 import BenchmarkChart from "@/components/cost-comparison/BenchmarkChart";
 import SourcesList from "@/components/cost-comparison/SourcesList";
+import ResearchExportBar from "@/components/cost-comparison/ResearchExportBar";
 
 interface Props {
   result: ComparisonResult;
@@ -32,6 +33,7 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
       <DimensionCharts result={result} lang={lang} />
       <SensitivityChart inputs={inputs} lang={lang} />
       <DetailTable result={result} lang={lang} />
+      <ResearchExportBar result={result} scenario={scenario} inputs={inputs} lang={lang} />
       <BenchmarkChart result={result} lang={lang} />
       <SourcesList result={result} lang={lang} />
     </div>

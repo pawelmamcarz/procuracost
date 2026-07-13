@@ -13,19 +13,20 @@ interface NavItem {
 
 const navItemsPl: NavItem[] = [
   { href: "/calculator", label: "Kalkulator" },
-  { href: "/optimizer", label: "Optymalizator RF", highlight: true },
-  { href: "/case-studies", label: "Case studies" },
+  { href: "/optimizer", label: "Optymalizator", highlight: true },
+  { href: "/case-studies", label: "Scenariusze" },
   { href: "/assessment", label: "Ocena dojrzałości" },
   { href: "/shortcasty", label: "Shortcasty" },
   { href: "/team", label: "Zespół" },
   { href: "/research", label: "Research paper" },
+  { href: "/research-agenda", label: "Agenda" },
   { href: "/methodology", label: "Methodology" },
 ];
 
 const navItemsEn: NavItem[] = [
   { href: "/en/calculator", label: "Calculator" },
-  { href: "/en/optimizer", label: "RF Optimizer", highlight: true },
-  { href: "/en/case-studies", label: "Case Studies" },
+  { href: "/en/optimizer", label: "Optimizer", highlight: true },
+  { href: "/en/case-studies", label: "Scenarios" },
   { href: "/en/assessment", label: "Maturity Assessment" },
   { href: "/en/team", label: "Team" },
   { href: "/en/model", label: "Model" },

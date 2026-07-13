@@ -1,6 +1,120 @@
 # Research Paper – 8–10 Week Action Plan (June – Mid-August 2026)
 
-**Goal**: By mid-August 2026 have a complete, submission-ready first draft of the working paper + all supporting research infrastructure (replication package, survey instrument, pilot protocol, Supervisor Pitch).
+**Goal**: By mid-August 2026 have an evidence-audited conceptual-methodological draft, a reproducible model package, and pilot-ready empirical instruments. Journal submission readiness requires external review and primary-data progress.
+
+**Positioning decision — approved 20 June 2026**: Paper 1 is conceptual-methodological and uses simulations only to demonstrate model mechanics and sensitivity. Paper 2 performs empirical validation with organizational data. Paper 1 must not present model outputs as estimated effects.
+
+**Contribution hierarchy — approved 20 June 2026**: the auditable candidate measurement instrument is the primary contribution. Tunnel vs. Field is secondary framing, not the main theoretical claim.
+
+**Unit of analysis — approved 20 June 2026**: one procurement event or contract. Organizations are grouping units with multiple nested events.
+
+**Primary comparison — approved 20 June 2026**: within-organization matched pairs of two real procurement events. Model-generated counterfactuals are diagnostic only and cannot serve as empirical outcomes.
+
+**Primary exposure — approved 20 June 2026**: continuous event-level `observed_rigidity_index`. Binary path labels are descriptive, and ProcuraCost rigidity constants cannot be reused as empirical measurements.
+
+**Index weighting — approved 20 June 2026**: equal weights across preregistered normalized components, with component reporting and outcome-blind sensitivity analyses. Codebook: `docs/research/observed_rigidity_codebook.md`.
+
+**Outcome hierarchy — approved 20 June 2026**: observed procurement cycle days is primary. Role effort, renegotiation, commercial/TCO, bypass, compliance/audit, and supplier performance are secondary. Aggregate ProcuraCost PLN is exploratory only.
+
+**Primary outcome clock — approved 21 June 2026**: formal authorization of need and budget to first binding supplier commitment. Pre-authorization and post-commitment implementation durations are secondary.
+
+**Pause treatment — approved 21 June 2026**: subtract no holds from primary elapsed calendar time. Code pauses separately; external-hold-adjusted net time is secondary and preregistered.
+
+**Timestamp quality — approved 21 June 2026**: primary analysis requires exact auditable endpoints for both events. Interval-censored dates and respondent recall are secondary; point/model imputation is prohibited.
+
+**Primary estimand — approved 21 June 2026**: percentage cycle-time difference per 0.10 higher observed rigidity, estimated within matched pairs on log cycle time. Pilot analysis is descriptive and makes no significance claims.
+
+**Pilot role — approved 21 June 2026**: instrument development and feasibility only. Outputs are frozen codebooks, data schema, reliability/missingness metrics, and power-planning inputs; no substantive effect estimate.
+
+**Sample separation — approved 21 June 2026**: pilot events are permanently excluded from confirmatory primary analysis. Confirmatory collection starts only after codebooks, schema, eligibility, SAP, and sample-size rationale are frozen.
+
+**Organization holdout — approved 21 June 2026**: confirmatory primary analysis recruits new organizations with no pilot instrument-development involvement. Pilot organizations and their controlled group entities are excluded by default.
+
+**Confirmatory population — approved 21 June 2026**: one country and one procurement/legal regime. Public/private/PZP and international observations are not pooled in the primary estimate.
+
+**Selected first population — approved 21 June 2026**: strategic private-sector procurement in Poland, governed by internal corporate rules and outside PZP for the focal event. Direct and Indirect Upstream events are eligible; Downstream and public procurement are later replications.
+
+**Event sampling — approved 21 June 2026**: complete universe of qualifying events from a frozen archival window in each organization. No CPO/researcher nomination for primary analysis; eligibility, exclusions, and matching are outcome-blind and auditable.
+
+**Archival window — approved 21 June 2026**: common 24-month window before one frozen extraction cutoff, membership by binding-commitment date. No organization-specific extension; open events are counted as a selection diagnostic.
+
+**Matching — approved 21 June 2026**: versioned outcome-blind exact/coarsened plus nearest-neighbor algorithm. Expert review may reject with a coded reason but cannot manually replace a pair. Protocol: `docs/research/matching_protocol.md`.
+
+**Exposure contrast — approved 21 June 2026**: matched pairs require a frozen minimum ORI difference. Provisional threshold 0.20; final value comes from outcome-blind pilot reliability and overlap diagnostics.
+
+**Matching replacement — approved 21 June 2026**: primary pairs are formed without replacement; one event may appear in at most one pair. With-replacement matching is sensitivity-only.
+
+**Pair assignment — approved 21 June 2026**: balance-constrained maximum-cardinality matching followed by minimum total covariate distance; deterministic hashed-ID tie-break. Greedy record-order matching is prohibited.
+
+**Mandatory calipers — approved 21 June 2026**: candidate pairs must pass provisional limits for log value (`<= 0.50`), complexity/supply risk/strategic importance (`<= 1` scale point), technology (same or adjacent), and commitment date (`<= 12` months). Final values are frozen from outcome-blind pilot overlap and balance diagnostics only.
+
+**Organization pair minimum — approved 21 June 2026**: one final eligible pair is sufficient for primary-analysis inclusion. Retain additional pairs with organization-aware uncertainty; prioritize the number of independent organizations in power planning rather than requiring three pairs per organization.
+
+**Global balance gate — approved 21 June 2026**: freeze SMD denominators from the eligible pre-match pool and enforce every `|SMD| <= 0.10` constraint inside the matching optimization. Do not remove individual organizations to chase balance. If no feasible solution reaches the preregistered powered sample-size floor, do not report a primary effect.
+
+**Sample-size method — approved 21 June 2026**: use prospective simulation of the frozen clustered estimator, including unequal pairs per organization, ORI contrast, variance, dependence, evidence/matching yield, missingness, and attrition. Pilot data inform nuisance ranges only; the simulated effect is justified independently. Freeze organization and pair floors before confirmatory recruitment.
+
+**Minimum important effect — approved 21 June 2026**: power the confirmatory study for a 10% cycle-time difference per `+0.10 ORI` (`beta_MSI = ln(1.10) / 0.10`), equivalent to 21% across a `0.20` ORI contrast. Pilot estimates cannot revise this threshold.
+
+**Power target — approved 21 June 2026**: require 90% power for the minimum important effect under the conservative simulation scenario, using a two-sided primary test with `alpha = 0.05`.
+
+**Primary inference — approved 21 June 2026**: OLS on log cycle time with pair fixed effects, organization-clustered bias-reduced `CR2`, and Satterthwaite degrees of freedom. Wild cluster bootstrap and multilevel models are sensitivity analyses only.
+
+**Primary covariate adjustment — approved 21 June 2026**: the primary regression contains only continuous ORI and pair fixed effects. A frozen model adding non-collinear within-pair matching covariates is sensitivity-only; stepwise or outcome-driven term selection is prohibited.
+
+**Primary weighting — approved 21 June 2026**: assign unit weight to each matched event. Use organization-clustered uncertainty; equal-total-organization weighting and leave-one-organization-out estimates are prespecified influence sensitivities only.
+
+**Spend-type pooling — approved 21 June 2026**: estimate one common primary ORI coefficient across Direct and Indirect Upstream events, with exact `spend_type` matching inside pairs. The interaction and stratum-specific estimates are heterogeneity analyses, not co-primary claims.
+
+**Primary functional form — approved 21 June 2026**: use a linear ORI term in the primary log-time model. A three-knot restricted cubic spline, frozen before outcome unblinding and restricted to observed support, is sensitivity-only.
+
+**Post-freeze outcome invalidation — approved 21 June 2026**: a failed Tier A endpoint removes the full pair, with no imputation, rematching, or reserve partner. Recheck balance and powered sample floors; failure means no primary effect report.
+
+**ORI missingness — approved 21 June 2026**: all six components are required. No imputation, prorating, available-component averaging, or weight renormalization; one missing component excludes the event and complete pair. Prescored rubric-defined `not_applicable` is reported separately.
+
+**ORI double coding — approved 21 June 2026**: independently code 100% of confirmatory events by two trained, outcome-blind coders who cannot see pair membership or each other's scores. Preserve raw records and measure reliability before resolution.
+
+**ORI adjudication — approved 21 June 2026**: a third blinded adjudicator independently resolves every component disagreement using the rubric and evidence, without seeing prior values. Preserve all raw records; use the completed final ORI for matching and never average disagreements.
+
+**ORI reliability gate — approved 21 June 2026**: require aggregate raw-score `ICC(A,1) >= 0.80` and each component reliability `>= 0.70`, using weighted kappa or `ICC(A,1)` as appropriate. Report 95% confidence intervals; every component must pass before matching.
+
+**ORI reliability failure — approved 21 June 2026**: permit one full blinded recoding by a new coder pair under the unchanged codebook. A second fail means no matching or primary effect; a rubric change requires a new confirmatory organization holdout.
+
+**ORI evidence minimum — approved 21 June 2026**: every component requires a contemporaneous artifact or system trace with auditable provenance. Interviews may clarify but cannot solely determine a primary score; interview-only support is missing and excludes the pair.
+
+**ORI reference time — approved 21 June 2026**: score constraints effective at formal need-and-budget authorization, the primary cycle start. Later changes are timestamped process descriptors and cannot rewrite baseline exposure.
+
+**Exception-use separation — approved 21 June 2026**: `ORI_EXCEPTION` covers only baseline route availability and restrictions. Actual exception use, bypass, escalation, or work-around is a post-start mechanism/secondary outcome and cannot enter ORI or matching.
+
+**Mechanism-analysis status — approved 21 June 2026**: analyze post-start exceptions, bypass, escalation, and work-arounds descriptively/as associational mechanisms only. No causal mediation or natural direct/indirect effect claims in the first confirmatory study.
+
+**Secondary-outcome multiplicity — approved 22 June 2026**: cycle time is the sole confirmatory test. All secondary, subgroup, mechanism, and sensitivity results remain exploratory, with complete estimates and 95% intervals but no significance labels or post hoc promotion.
+
+**Confidential-data reproducibility — approved 22 June 2026**: release code, frozen methods, schema-identical synthetic data, aggregate outputs, and keyed source-manifest digests. Keep sensitive records in a controlled environment and require an independent signed reproduction audit tied to code/data/output hashes.
+
+**Preregistration timing — approved 22 June 2026**: public immutable registration precedes the first confirmatory recruitment and extraction. Register every frozen artifact and hash; preserve the original and publish additive amendments with rationale, data state, and blinding state. Manifest: `docs/research/confirmatory_preregistration_manifest.md`.
+
+**Recruitment stopping — approved 22 June 2026**: recruit complete preregistered batches until both powered organization and balance-feasible pair floors are met, subject to a frozen maximum cap. Use no outcomes, finish the terminal batch, and run no primary test if either floor remains unmet at the cap.
+
+**Organization invitation order — approved 22 June 2026**: hash an eligible frame, stratify by sector and size, and randomize invitations within strata using a registered seed. Refusals/nonresponses advance only to the next frozen entry; log the full recruitment flow.
+
+**Organization nonresponse audit — approved 22 June 2026**: compare participation by sector, size, region, and other universally available frame fields; publish standardized differences and a preregistered response model. Participation weighting is sensitivity-only.
+
+**Net-cycle external holds — approved 22 June 2026**: subtract only exact auditable unrelated legal/regulatory suspensions, force majeure, or shared external critical-infrastructure outages. Merge overlaps; all ordinary internal, supplier, market, logistics, waiting, and disputed delays remain included.
+
+**Sub-day cycle durations — approved 22 June 2026**: retain every strictly positive elapsed duration as fractional days (`seconds / 86400`) with full precision. Zero/negative values invalidate the pair; no one-day floor or analytical rounding.
+
+**Doctoral mode — approved 13 July 2026**: tryb eksternistyczny (external-mode doctorate). The supervisor ask is promotorship of an external-mode dissertation; no doctoral-school recruitment deadline applies.
+
+**Supervisor strategy — approved 13 July 2026**: parallel shortlist of 3–5 academics (procurement economics / TCE / public administration), pitched in the same week. No single-target strategy. The pitch presents Paper 2 as a shovel-ready, preregistration-grade confirmatory design that requires an academic home and grant funding (blinded coders and adjudicator come from the supervisor's team or grant staff; doktorat wdrożeniowy is the upgrade path if a partner organization formalizes).
+
+**Paper 1 venue — approved 13 July 2026**: post v1.5 to SSRN/OSF as a working paper when ready (mid-August target) and submit one conference abstract. Journal submission is deliberately held until after supervisor conversations, so venue and co-authorship can be decided jointly.
+
+**Pilot recruitment — approved 13 July 2026**: warm network first; the current employer/main client is pilot #1 (the organization-holdout rule makes this costless for confirmatory work). Pilot feasibility question #1 is the primary-outcome start anchor (see `docs/research/pilot_case_study_protocol.md`).
+
+**Survey status — approved 13 July 2026**: demoted off the critical path. After the archival pivot it is a calibration and lead-generation instrument, run opportunistically after the SSRN posting. Paper 1 must not depend on its results; Weeks 5–6 survey tasks are re-scoped accordingly.
+
+**Timeline re-baseline — approved 13 July 2026**: supervisor pitch + pilot calls happen in July (immediately); paper v1.5 + SSRN posting by mid-August; pilot fieldwork September–October 2026. The binding constraint is protected daytime slots for outward-facing work: two 30-minute outreach blocks per week, calendar-protected.
 
 This plan assumes you can dedicate **15–25 hours per week** to the paper track.
 
@@ -11,13 +125,13 @@ This plan assumes you can dedicate **15–25 hours per week** to the paper track
 ### Week 1 (June 2026) – Foundations & Model Freeze
 
 **Primary Objectives**
-- Freeze model v1.1
+- Freeze model v1.2 after the evidence audit
 - Start formal mathematical appendix
 - Begin literature review expansion
 
 **Tasks**
 1. **Model Freeze**
-   - Tag current model as `v1.1` in GitHub
+   - Tag the reviewed model as `model-v1.2`
    - Export full parameter table from the app (use existing MODEL_PARAMETERS.md as base)
    - Document all changes introduced by the Direct/Indirect + Upstream/Downstream dimensions
 
@@ -33,7 +147,7 @@ This plan assumes you can dedicate **15–25 hours per week** to the paper track
    - Create a shared Zotero/Mendeley group or Notion database
 
 **Deliverables by end of Week 1**
-- Model v1.1 tagged
+- Model v1.2 reviewed and tagged
 - First 40% of mathematical appendix draft
 - Literature gap list (with priorities)
 
@@ -157,7 +271,7 @@ This plan assumes you can dedicate **15–25 hours per week** to the paper track
    - Discuss limitations of the current parameterization
 
 3. **Continue replication package**
-   - Add synthetic data for all four case studies from the paper
+   - Regenerate and review data for every built-in illustrative archetype
 
 **Deliverables**
 - Survey v0.9 (with pilot feedback summary)
@@ -266,7 +380,7 @@ This plan assumes you can dedicate **15–25 hours per week** to the paper track
 
 | Week | Focus Area                          | Main Deliverable                     | Status |
 |------|-------------------------------------|--------------------------------------|--------|
-| 1    | Model freeze + Math appendix start  | Model v1.1 + Appendix draft 40%      |        |
+| 1    | Model freeze + Math appendix start  | Model v1.2 + Appendix draft 40%      |        |
 | 2    | Hypotheses + Survey v0.1            | Propositions + Survey draft          |        |
 | 3    | Interview protocol + Pilots outreach| Interview guide + Outreach list      |        |
 | 4    | Replication package foundation      | Package skeleton + Parameter table   |        |

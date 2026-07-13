@@ -29,7 +29,7 @@ export default function ModelEnPage() {
         <div className="my-8 rounded-xl border border-green-200 bg-green-50 p-6">
           <p className="font-medium text-green-900">High-Effort Documentation in Progress</p>
           <p className="mt-2 text-sm text-green-800">
-            This is part of an ambitious academic strengthening effort (see <Link href="/en/PHD_ROADMAP" className="underline">PhD Research Roadmap – Version A</Link>).
+            This is part of an ambitious academic strengthening effort (see <Link href="/research-agenda" className="underline">Research Agenda</Link>).
             The current focus is on maximum transparency of every assumption in the model.
           </p>
         </div>
@@ -95,7 +95,7 @@ export default function ModelEnPage() {
           &ldquo;modeling assumption&rdquo; to &ldquo;empirically grounded&rdquo;.
         </p>
         <p>
-          See the <Link href="/en/PHD_ROADMAP" className="text-blue-600 underline">PhD Research Roadmap</Link> 
+          See the <Link href="/research-agenda" className="text-blue-600 underline">Research Agenda</Link> 
           for the detailed empirical validation strategy.
         </p>
       </div>
