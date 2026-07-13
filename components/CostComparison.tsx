@@ -38,6 +38,7 @@ import {
   PROCESS_TYPE_META,
   ProcessStep,
 } from "@/lib/process-templates";
+import { MODEL_VERSION, VERSION } from "@/lib/version";
 
 const SENSITIVITY_MULTIPLIERS = [0.1, 0.25, 0.5, 1, 2, 5, 10];
 
@@ -65,7 +66,18 @@ function matrixColor(cost: number, min: number, max: number): string {
 export default function CostComparison({ result, scenario, inputs, lang = "pl" }: Props) {
   const tx = comparisonT[lang];
   const COST_LABELS = tx.costLabels;
-  const { rigid, flexible, delta, deltaPercent, bypassProbability, sources, rigidDays, flexibleDays } = result;
+  const {
+    rigid,
+    flexible,
+    delta,
+    deltaPercent,
+    bypassProbability,
+    flexibleBypassProbability,
+    sources,
+    rigidDays,
+    flexibleDays,
+    trace,
+  } = result;
 
   // Steps for explanation table
   const steps = getSteps(inputs.processType, inputs.customSteps);
@@ -78,6 +90,105 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
   const phaseLabel = inputs.processPhase
     ? (inputs.processPhase === "upstream" ? (lang === "en" ? "Upstream" : "Upstream") : (lang === "en" ? "Downstream" : "Downstream"))
     : null;
+
+  // Researcher export handlers (defined early so researchBar can close over them)
+  const handleResearchJsonExport = () => {
+    const dims = getDimensionMultiplierDetails(inputs.spendType, inputs.processPhase);
+    const payload = {
+      meta: {
+        model: "ProcuraCost",
+        modelVersion: MODEL_VERSION,
+        appVersion: VERSION,
+        exportedAt: new Date().toISOString(),
+        note: "Full result export from CostComparison. Use with model_specification_draft.md.",
+      },
+      inputs,
+      context: { spendType: inputs.spendType, processPhase: inputs.processPhase },
+      multipliers: dims,
+      results: {
+        rigidDays,
+        flexibleDays,
+        bypassProbability,
+        flexibleBypassProbability,
+        delta,
+        deltaPercent,
+        rigid,
+        flexible,
+        trace,
+      },
+      sources,
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `procura-cost-research-${scenario.id || "scenario"}-${new Date().toISOString().slice(0,10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleCopyMarkdown = () => {
+    const dims = getDimensionMultiplierDetails(inputs.spendType, inputs.processPhase);
+    const md = [
+      `### ${scenario.name} (${inputs.spendType || '—'} / ${inputs.processPhase || '—'})`,
+      ``,
+      `**Model**: ${MODEL_VERSION} | App build: ${VERSION}`,
+      `| Metric | Rigid | Flexible |`,
+      `|--------|-------|----------|`,
+      `| Days | ${rigidDays} | ${flexibleDays} |`,
+      `| Bypass prob. | ${(bypassProbability * 100).toFixed(1)}% | — |`,
+      `| Total (PLN) | ${Math.round(rigid.total).toLocaleString('pl-PL')} | ${Math.round(flexible.total).toLocaleString('pl-PL')} |`,
+      `| Δ | ${Math.round(delta).toLocaleString('pl-PL')} (${deltaPercent.toFixed(1)}%) | — |`,
+      ``,
+      `**Multipliers**: ${dims.map(d => `${d.labelEn || d.label} ${d.value.toFixed(2)}x`).join(' • ')}`,
+      ``,
+      `_See model_specification_draft.md + researcher JSON export for full trace._`,
+    ].join('\n');
+    navigator.clipboard.writeText(md);
+  };
+
+  const handleCopyCSV = () => {
+    const dims = getDimensionMultiplierDetails(inputs.spendType, inputs.processPhase);
+    const header = 'Metric,Rigid,Flexible\n';
+    const rows = [
+      `Days,${rigidDays},${flexibleDays}`,
+      `BypassProb,${(bypassProbability * 100).toFixed(1)}%,—`,
+      `TotalPLN,${Math.round(rigid.total)},${Math.round(flexible.total)}`,
+      `DeltaPLN,${Math.round(delta)},—`,
+      `DeltaPercent,${deltaPercent.toFixed(1)}%,—`,
+    ];
+    const multRows = dims.map(d => `${d.labelEn || d.label},${d.value.toFixed(2)}x,${d.value.toFixed(2)}x`);
+    const csv = header + rows.join('\n') + '\n' + multRows.join('\n');
+    navigator.clipboard.writeText(csv);
+  };
+
+  // Research export bar (visible in detailed results view)
+  const researchBar = (
+    <div className="mb-4 flex flex-wrap items-center gap-2 print:hidden">
+      <span className="text-xs text-gray-500 mr-1">For the paper / replication:</span>
+      <button
+        onClick={handleResearchJsonExport}
+        className="rounded-lg border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100"
+      >
+        Export JSON
+      </button>
+      <button
+        onClick={handleCopyMarkdown}
+        className="rounded-lg border border-gray-200 bg-white px-3 py-1 text-xs font-medium text-gray-600 hover:bg-gray-50"
+      >
+        Copy Markdown table
+      </button>
+      <button
+        onClick={handleCopyCSV}
+        className="rounded-lg border border-gray-200 bg-white px-3 py-1 text-xs font-medium text-gray-600 hover:bg-gray-50"
+      >
+        Copy CSV
+      </button>
+      <span className="text-[10px] text-gray-400">Uses live multipliers + full result trace</span>
+    </div>
+  );
 
   // 2D matrix
   const matrix = calculateMatrix(inputs);
@@ -93,6 +204,9 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
 
   const sourcesEntries = Object.entries(sources);
 
+  // Note: handleResearchJsonExport and handleCopyMarkdown + researchBar are defined earlier in the component
+  // (after phase/spendLabel) so they are in scope for the early researchBar usage and the later {researchBar} reference.
+
   // Radar chart: 5 cost dimensions normalized to 100
   const radarDimensions = [
     { key: "timeCost", label: lang === "en" ? "Time" : "Czas" },
@@ -100,7 +214,7 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
     { key: "renegotiationCost", label: lang === "en" ? "Renegotiation" : "Renegocjacje" },
     { key: "tcoCost", label: "TCO" },
     { key: "bypassCost", label: lang === "en" ? "Bypass" : "Obejście" },
-    { key: "productivityCost", label: lang === "en" ? "Productivity" : "Produktywność" },
+    { key: "productivityCost", label: lang === "en" ? "Productivity (inactive)" : "Produktywność (wyłączona)" },
   ] as const;
 
   const radarData = radarDimensions.map(({ key, label }) => {
@@ -227,16 +341,22 @@ export default function CostComparison({ result, scenario, inputs, lang = "pl" }
         </div>
         {scenario.caseStudy && (
           <div className="mt-3 rounded-xl bg-white/10 p-3 text-sm">
-            <p className="font-semibold">{scenario.caseStudy.title}</p>
+            <p className="font-semibold">
+              {lang === "en" ? scenario.nameEn : scenario.caseStudy.title}
+            </p>
             <p className="mt-1 opacity-90">
               {lang === "en" ? scenario.caseStudy.insightEn : scenario.caseStudy.insight}
             </p>
             <p className="mt-1 text-xs opacity-60">
-              {lang === "en" ? "Source" : "Źródło"}: {scenario.caseStudy.source}
+              {lang === "en" ? "Source" : "Źródło"}: ProcuraCost model 1.2.0;
+              {" "}{lang === "en" ? "assumptions in" : "założenia w"} lib/scenarios.ts
             </p>
           </div>
         )}
       </div>
+
+      {/* Research export bar (visible with full results for paper/replication) */}
+      {researchBar}
 
       {/* Pipe vs Field interpretation */}
       <div>

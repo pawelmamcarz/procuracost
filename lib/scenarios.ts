@@ -34,6 +34,8 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 5_000_000,
       tcoHorizonYears: 2,
+      spendType: "direct",
+      processPhase: "upstream",
       processType: "private_formal",
       techLevel: "partial_erp",
       stakeholders: {
@@ -49,12 +51,12 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 500_000,
     },
     caseStudy: {
-      title: "Ryanair Fleet Procurement",
-      source: "IJRAR (2019). Ryanair Strategic Positioning and Fleet Management",
+      title: "Strategiczny zakup floty",
+      source: "Ilustracyjny scenariusz ProcuraCost; założenia w lib/scenarios.ts",
       insight:
-        "Ryanair zamawia masowo Boeing 737 po kryzysach (post-9/11: 100 samolotów), osiągając ceny poniżej rynkowych dzięki elastyczności negocjacyjnej — bez sztywnych procedur przetargowych.",
+        "Syntetyczny zakup floty testuje wpływ wysokiej wartości, długiego horyzontu TCO, timingu i zaangażowania kadry zarządzającej.",
       insightEn:
-        "Ryanair bulk-ordered Boeing 737s during crises (post-9/11: 100 aircraft), achieving below-market prices through negotiation flexibility — without rigid tender procedures.",
+        "This synthetic fleet acquisition tests high value, a long TCO horizon, timing, and senior-management involvement.",
     },
   },
   {
@@ -66,6 +68,8 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 3_000_000,
       tcoHorizonYears: 3,
+      spendType: "indirect",
+      processPhase: "upstream",
       processType: "private_formal",
       techLevel: "sourcing_tool",
       stakeholders: {
@@ -81,12 +85,12 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 300_000,
     },
     caseStudy: {
-      title: "Swiss Casinos ERP — Agile Procurement",
-      source: "Skylight Digital. Agile Procurement Playbook — Case Studies",
+      title: "Strategiczny zakup systemu ERP",
+      source: "Ilustracyjny scenariusz ProcuraCost; założenia w lib/scenarios.ts",
       insight:
-        "Swiss Casinos wdrożyło system ERP w 4 tygodnie dzięki agile procurement, zamiast standardowych 4–6 miesięcy procedur przetargowych. Oszczędność czasu: ~75%.",
+        "Syntetyczny zakup ERP testuje wpływ kosztu opóźnienia wdrożenia, horyzontu TCO i obciążenia ról w fazie Upstream.",
       insightEn:
-        "Swiss Casinos implemented an ERP system in 4 weeks through agile procurement, instead of the standard 4–6 months of tender procedures. Time savings: ~75%.",
+        "This synthetic ERP acquisition tests implementation delay, TCO horizon, and Upstream role-loading assumptions.",
     },
   },
   {
@@ -98,6 +102,8 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 8_000_000,
       tcoHorizonYears: 3,
+      spendType: "indirect",
+      processPhase: "upstream",
       processType: "private_formal",
       techLevel: "partial_erp",
       stakeholders: {
@@ -113,12 +119,12 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 800_000,
     },
     caseStudy: {
-      title: "Air France KLM Martinair Cargo — Lean Agile Procurement",
-      source: "EY Switzerland. Integrating Agile Practices into Procurement",
+      title: "Strategiczny kontrakt logistyczny",
+      source: "Ilustracyjny scenariusz ProcuraCost; założenia w lib/scenarios.ts",
       insight:
-        "Air France KLM zastosowało Lean Agile Procurement dla modernizacji cargo door-to-door w ścisłym oknie 6 miesięcy — niemożliwym do dotrzymania przy standardowych przetargach.",
+        "Syntetyczny kontrakt logistyczny testuje koszt okna operacyjnego oraz przyjęte mnożniki opóźnienia i obejścia procesu.",
       insightEn:
-        "Air France KLM applied Lean Agile Procurement for cargo door-to-door modernisation within a strict 6-month window — impossible to meet with standard tender procedures.",
+        "This synthetic logistics contract tests an operational window plus the assumed delay and bypass multipliers.",
     },
   },
   {
@@ -130,6 +136,8 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 12_000_000,
       tcoHorizonYears: 1,
+      spendType: "direct",
+      processPhase: "upstream",
       processType: "private_formal",
       techLevel: "manual",
       stakeholders: {
@@ -145,12 +153,12 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 1_200_000,
     },
     caseStudy: {
-      title: "Zara — Digital & Agile Procurement",
-      source: "Tradogram. Agile Procurement Practices (2024)",
+      title: "Zakup krytycznych materiałów produkcyjnych",
+      source: "Ilustracyjny scenariusz ProcuraCost; założenia w lib/scenarios.ts",
       insight:
-        "Zara wdrożyła AI-driven procurement dla szybkiej reakcji na trendy. Tradycyjne procedury przetargowe były zbyt wolne dla 2-tygodniowego cyklu kolekcji.",
+        "Syntetyczny scenariusz produkcyjny łączy wysoką wartość, koszt przestoju i mnożniki Direct+Upstream; skrajny wynik wymaga testów wrażliwości.",
       insightEn:
-        "Zara implemented AI-driven procurement for rapid trend response. Traditional tender procedures were too slow for their 2-week collection cycle.",
+        "This synthetic production scenario combines high value, inaction cost, and Direct+Upstream multipliers; its extreme output requires sensitivity testing.",
     },
   },
   {
@@ -162,6 +170,8 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 5_000_000,
       tcoHorizonYears: 3,
+      spendType: "direct",
+      processPhase: "upstream",
       processType: "pzp_eu",
       techLevel: "partial_erp",
       stakeholders: {
@@ -194,6 +204,8 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 50_000,
       tcoHorizonYears: 1,
+      spendType: "indirect",
+      processPhase: "downstream",
       processType: "catalog_order",
       techLevel: "end_to_end",
       stakeholders: {
@@ -226,6 +238,8 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 500_000,
       tcoHorizonYears: 1,
+      spendType: "direct",
+      processPhase: "downstream",
       processType: "mrp_order",
       techLevel: "end_to_end",
       stakeholders: {
@@ -241,12 +255,12 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 50_000,
     },
     caseStudy: {
-      title: "Zara MRP — 2-tygodniowy cykl kolekcji",
-      source: "Tradogram. Agile Procurement Practices (2024)",
+      title: "Automatyczne zlecenie MRP",
+      source: "Ilustracyjny scenariusz ProcuraCost; założenia w lib/scenarios.ts",
       insight:
-        "Zara wdrożyła MRP-driven procurement dla surowców — AI przewiduje zapotrzebowanie, system generuje zlecenia. Tradycyjna procedura przetargowa była zbyt wolna dla 2-tygodniowego cyklu produkcji.",
+        "Syntetyczny scenariusz testuje rutynowe zamówienie materiałowe generowane przez system MRP w kontekście Direct+Downstream.",
       insightEn:
-        "Zara implemented MRP-driven procurement for raw materials — AI forecasts demand, system generates orders. Traditional tender procedures were too slow for the 2-week production cycle.",
+        "This synthetic scenario tests a routine material order generated by an MRP system in a Direct+Downstream context.",
     },
   },
   {
@@ -258,6 +272,8 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 15_000_000,
       tcoHorizonYears: 10,
+      spendType: "direct",
+      processPhase: "upstream",
       processType: "capex",
       techLevel: "partial_erp",
       stakeholders: {
@@ -273,12 +289,12 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 2_000_000,
     },
     caseStudy: {
-      title: "Ryanair CAPEX — Boeing bulk order at crisis prices",
-      source: "IJRAR (2019). Ryanair Strategic Positioning and Fleet Management",
+      title: "Strategiczna inwestycja CAPEX",
+      source: "Ilustracyjny scenariusz ProcuraCost; założenia w lib/scenarios.ts",
       insight:
-        "Ryanair stosuje pełny CAPEX governance dla zakupów floty — ale skraca go o 30% dzięki pre-kwalifikacji Boeing jako jedynego dostawcy. Governance ma wartość; marnotrawstwo tkwi w krobach które można wyeliminować.",
+        "Syntetyczna inwestycja w linię produkcyjną testuje długi horyzont, wysoki koszt renegocjacji i rozbudowany nadzór CAPEX.",
       insightEn:
-        "Ryanair applies full CAPEX governance for fleet purchases — but cuts it 30% via Boeing pre-qualification as sole supplier. Governance has value; waste lies in steps that can be eliminated.",
+        "This synthetic production-line investment tests a long horizon, high renegotiation cost, and extensive CAPEX governance.",
     },
   },
   {
@@ -290,6 +306,8 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 1_000_000,
       tcoHorizonYears: 2,
+      spendType: "indirect",
+      processPhase: "upstream",
       processType: "private_formal",
       techLevel: "partial_erp",
       stakeholders: { ...DEFAULT_STAKEHOLDERS },

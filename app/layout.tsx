@@ -1,28 +1,25 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
 import { VERSION } from "@/lib/version";
 
-const geist = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-
 export const metadata: Metadata = {
   title: "ProcuraCost — Kalkulator kosztów procedur zakupowych",
   description:
-    "Oblicz koszty utracone przywiązania do procedur przetargowych versus elastycznej polityki zakupowej.",
+    "Symuluj koszty sztywnych procedur zakupowych i elastycznego podejścia opartego na polityce.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pl" className={`${geist.variable} h-full antialiased`}>
+    <html lang="pl" className="h-full antialiased">
       <body className="flex min-h-full flex-col">
         <NavBar
           brand={{ href: "/", label: "ProcuraCost" }}
           items={[
             { href: "/calculator", label: "Kalkulator" },
-            { href: "/optimizer", label: "Optymalizator RF", highlight: true },
-            { href: "/case-studies", label: "Case studies" },
+            { href: "/optimizer", label: "Optymalizator", highlight: true },
+            { href: "/case-studies", label: "Scenariusze" },
             { href: "/assessment", label: "Ocena dojrzałości" },
             { href: "/shortcasty", label: "Shortcasty" },
             { href: "/team", label: "Zespół" },

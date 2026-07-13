@@ -1,7 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { getDimensionMultipliers, getDimensionMultiplierDetails } from "@/lib/calculations";
+import {
+  calculateCosts,
+  DIMENSION_DETAIL_TO_MULTIPLIER,
+  DimensionMultiplierKey,
+  getDimensionMultiplierDetails,
+  getDimensionMultipliers,
+  ProcurementInputs,
+} from "@/lib/calculations";
+import { MODEL_VERSION, VERSION } from "@/lib/version";
 import Link from "next/link";
 
 export default function AssumptionsExplorer() {
@@ -14,18 +22,13 @@ export default function AssumptionsExplorer() {
   const details = getDimensionMultiplierDetails(spendType, processPhase);
 
   // === Manual overrides (for sensitivity analysis) ===
-  const [overrides, setOverrides] = useState<Record<string, number>>({});
+  const [overrides, setOverrides] = useState<Partial<Record<DimensionMultiplierKey, number>>>({});
 
-  const effectiveMultipliers = { ...baseMultipliers };
-  Object.keys(overrides).forEach(key => {
-    if (overrides[key] !== undefined) {
-      (effectiveMultipliers as any)[key] = overrides[key];
-    }
-  });
+  const effectiveMultipliers = { ...baseMultipliers, ...overrides };
 
   const hasOverrides = Object.keys(overrides).length > 0;
 
-  function setOverride(key: string, value: number) {
+  function setOverride(key: DimensionMultiplierKey, value: number) {
     setOverrides(prev => ({ ...prev, [key]: value }));
   }
 
@@ -37,8 +40,7 @@ export default function AssumptionsExplorer() {
   const [exampleValue, setExampleValue] = useState(2_000_000); // 2M PLN contract
   const [dailyInaction, setDailyInaction] = useState(15_000);   // daily cost of delay
 
-  // Rough simulation of hidden cost gap using the effective multipliers
-  // This is simplified but directionally useful for sensitivity testing
+  // Simplified assumption-sensitivity simulator; separate from calculateCosts.
   const rigidDaysBase = 85;
   const flexibleDaysBase = 42;
   const delayDays = Math.max(0, rigidDaysBase - flexibleDaysBase);
@@ -46,16 +48,13 @@ export default function AssumptionsExplorer() {
   const tcoImpact = exampleValue * 0.10 * (effectiveMultipliers.tcoMultiplier - 1) * 3; // 3 years rough
   const delayImpact = delayDays * dailyInaction * effectiveMultipliers.delayMultiplier;
   const renegotiationImpact = exampleValue * 0.03 * (effectiveMultipliers.renegotiationMultiplier - 1);
-  const productivityImpact = exampleValue * 0.016 * (effectiveMultipliers.productivityMultiplier - 1);
-
-  const simulatedHiddenGap = Math.max(0, tcoImpact + delayImpact + renegotiationImpact + productivityImpact);
+  const simulatedHiddenGap = Math.max(0, tcoImpact + delayImpact + renegotiationImpact);
   const baseGap = (() => {
     const b = baseMultipliers;
     return Math.max(0,
       exampleValue * 0.10 * (b.tcoMultiplier - 1) * 3 +
       delayDays * dailyInaction * b.delayMultiplier +
-      exampleValue * 0.03 * (b.renegotiationMultiplier - 1) +
-      exampleValue * 0.016 * (b.productivityMultiplier - 1)
+      exampleValue * 0.03 * (b.renegotiationMultiplier - 1)
     );
   })();
 
@@ -127,16 +126,15 @@ export default function AssumptionsExplorer() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5">
-          {[
+          {([
             { key: "tcoMultiplier", label: "Dźwignia TCO", min: 0.8, max: 2.2, step: 0.05 },
             { key: "delayMultiplier", label: "Koszt opóźnienia", min: 0.5, max: 2.5, step: 0.05 },
             { key: "renegotiationMultiplier", label: "Ryzyko renegocjacji", min: 0.5, max: 2.5, step: 0.05 },
-            { key: "productivityMultiplier", label: "Wpływ na produktywność", min: 0.5, max: 1.5, step: 0.05 },
             { key: "staffIntensityMultiplier", label: "Intensywność pracy zespołu", min: 0.6, max: 2.0, step: 0.05 },
             { key: "coordinationIntensityMultiplier", label: "Intensywność koordynacji", min: 0.6, max: 2.0, step: 0.05 },
-          ].map(({ key, label, min, max, step }) => {
-            const baseVal = (baseMultipliers as any)[key] ?? 1;
-            const effVal = (effectiveMultipliers as any)[key] ?? baseVal;
+          ] as const).map(({ key, label, min, max, step }) => {
+            const baseVal = baseMultipliers[key];
+            const effVal = effectiveMultipliers[key];
             return (
               <div key={key}>
                 <div className="flex justify-between text-sm mb-1">
@@ -171,16 +169,9 @@ export default function AssumptionsExplorer() {
           <div className="space-y-2 text-sm">
             {details.length > 0 ? (
               details.map((d) => {
-                const baseVal = (baseMultipliers as any)[d.key === "tco" ? "tcoMultiplier" : 
-                  d.key === "delay" ? "delayMultiplier" :
-                  d.key === "renegotiation" ? "renegotiationMultiplier" :
-                  d.key === "productivity" ? "productivityMultiplier" :
-                  d.key === "staff" ? "staffIntensityMultiplier" : "coordinationIntensityMultiplier"] ?? 1;
-                const effVal = (effectiveMultipliers as any)[d.key === "tco" ? "tcoMultiplier" : 
-                  d.key === "delay" ? "delayMultiplier" :
-                  d.key === "renegotiation" ? "renegotiationMultiplier" :
-                  d.key === "productivity" ? "productivityMultiplier" :
-                  d.key === "staff" ? "staffIntensityMultiplier" : "coordinationIntensityMultiplier"] ?? baseVal;
+                const multiplierKey = DIMENSION_DETAIL_TO_MULTIPLIER[d.key];
+                const baseVal = baseMultipliers[multiplierKey];
+                const effVal = effectiveMultipliers[multiplierKey];
 
                 return (
                   <div key={d.key} className="flex justify-between items-center border-b border-gray-100 pb-1.5">
@@ -228,7 +219,7 @@ export default function AssumptionsExplorer() {
           </div>
 
           <div className="text-center py-4 border-y">
-            <div className="text-xs text-gray-500">Szacowana ukryta luka kosztowa (sztywna ścieżka)</div>
+            <div className="text-xs text-gray-500">Uproszczona modelowana różnica (sztywna ścieżka)</div>
             <div className="mt-1 text-4xl font-bold tabular-nums text-red-600">
               {simulatedHiddenGap.toLocaleString("pl-PL")} zł
             </div>
@@ -251,15 +242,15 @@ export default function AssumptionsExplorer() {
       <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6">
         <h3 className="font-semibold text-blue-900 mb-2">Użyj tych ustawień w kalkulatorze</h3>
         <p className="text-sm text-blue-800 mb-4">
-          Chcesz zobaczyć jak wybrane (lub nadpisane) mnożniki wpływają na Twój konkretny scenariusz zakupowy?
+          Otwórz kalkulator z wybranym kontekstem. Ręczne nadpisania powyżej dotyczą wyłącznie uproszczonej analizy wrażliwości.
         </p>
         
         <div className="flex flex-wrap gap-3">
           <Link 
-            href={`/calculator?spendType=${spendType}&processPhase=${processPhase}`}
+            href="/calculator"
             className="inline-flex items-center px-5 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition"
           >
-            Otwórz kalkulator z tym kontekstem
+            Otwórz kalkulator i wybierz ten kontekst
           </Link>
           
           <Link 
@@ -271,13 +262,118 @@ export default function AssumptionsExplorer() {
         </div>
         
         <p className="mt-3 text-xs text-blue-700">
-          W kalkulatorze możesz ręcznie wybrać Spend Type i Process Phase — wtedy wszystkie obliczenia (koszty, macierz, PDF, optimizer) będą używać dokładnie tych mnożników, które widzisz powyżej.
+          Kalkulator użyje bazowych mnożników modelu dla wybranego Spend Type i Process Phase. Nadpisania nie są przekazywane do głównego silnika obliczeń.
         </p>
       </div>
 
       <div className="mt-8 rounded-xl bg-amber-50 border border-amber-100 p-4 text-sm text-amber-800">
         <strong>Uwaga badawcza:</strong> Te mnożniki to obecnie kalibrowane założenia modelowe (2026). Są one głównym obiektem planu walidacji empirycznej (patrz docs/EMPIRICAL_VALIDATION_PLAN.md). 
         Nadpisane wartości powyżej służą wyłącznie analizie wrażliwości.
+      </div>
+
+      {/* Researcher Export – directly supports replication package and paper */}
+      <div className="mt-6 flex justify-end print:hidden">
+        <button
+          onClick={() => {
+            const dims = getDimensionMultiplierDetails(spendType, processPhase);
+            const effective = effectiveMultipliers;
+
+            // Build a representative full scenario using the explorer controls + sensible defaults
+            // (researcher can override in their own runs; this captures the exact context + multipliers)
+            const repInputs: ProcurementInputs = {
+              contractValue: exampleValue,
+              tcoHorizonYears: 3,
+              processType: "pzp_eu",
+              techLevel: "partial_erp",
+              stakeholders: {
+                buyer: { count: 1, dailyRate: 1200 },
+                lawyer: { count: 1, dailyRate: 1400 },
+                finance: { count: 1, dailyRate: 1100 },
+                manager: { count: 1, dailyRate: 1500 },
+                executive: { count: 1, dailyRate: 2200 },
+                requestor: { count: 1, dailyRate: 900 },
+              },
+              dailyCostOfInaction: dailyInaction,
+              renegotiationCost: Math.round(exampleValue * 0.08),
+              bypassAuditExposure: Math.round(exampleValue * 0.05),
+              spendType,
+              processPhase,
+            };
+
+            const fullResult = calculateCosts(repInputs);
+
+            const payload = {
+              meta: {
+                model: "ProcuraCost",
+                modelVersion: MODEL_VERSION,
+                appVersion: VERSION,
+                exportedAt: new Date().toISOString(),
+                surface: "Assumptions Explorer (research tool)",
+                note: "Live multipliers from getDimensionMultipliers + getDimensionMultiplierDetails. Full result uses calculateCosts with the displayed context. See model_specification_draft.md for exact adjustment rules.",
+              },
+              context: { spendType, processPhase },
+              multipliers: {
+                base: baseMultipliers,
+                effective,
+                details: dims,
+              },
+              representativeScenario: {
+                inputs: repInputs,
+                results: {
+                  rigidDays: fullResult.rigidDays,
+                  flexibleDays: fullResult.flexibleDays,
+                  delta: fullResult.delta,
+                  deltaPercent: fullResult.deltaPercent,
+                  bypassProbability: fullResult.bypassProbability,
+                  flexibleBypassProbability: fullResult.flexibleBypassProbability,
+                  rigid: fullResult.rigid,
+                  flexible: fullResult.flexible,
+                  trace: fullResult.trace,
+                },
+                sources: fullResult.sources,
+              },
+              simulator: {
+                exampleValue,
+                dailyInaction,
+                simulatedHiddenGap,
+                baseGap,
+                gapChange,
+                gapChangePercent,
+              },
+            };
+
+            const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `procura-research-multipliers-${spendType}-${processPhase}-${new Date().toISOString().slice(0,10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+          }}
+          className="rounded-xl border border-purple-300 bg-purple-50 px-4 py-2 text-sm font-medium text-purple-700 hover:bg-purple-100"
+          title="Export current multipliers (base + effective), details, and a full computed scenario for the replication package or paper tables"
+        >
+          Export for Research (JSON + multipliers + scenario)
+        </button>
+        <button
+          onClick={() => {
+            const dims = getDimensionMultiplierDetails(spendType, processPhase);
+            const csvHeader = 'Key,Value\n';
+            const multRows = dims.map((d) => {
+              const key = DIMENSION_DETAIL_TO_MULTIPLIER[d.key];
+              return `${d.labelEn || d.label},${effectiveMultipliers[key].toFixed(2)}x`;
+            }).join('\n');
+            const simRows = `ExampleValue,${exampleValue}\nDailyInaction,${dailyInaction}\nSimulatedGap,${simulatedHiddenGap}\nBaseGap,${baseGap}`;
+            const csv = csvHeader + multRows + '\n' + simRows;
+            navigator.clipboard.writeText(csv);
+          }}
+          className="ml-2 rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          title="Copy multipliers and simulator values as CSV for easy pasting into paper or spreadsheet"
+        >
+          Copy multipliers CSV
+        </button>
       </div>
     </div>
   );

@@ -6,8 +6,13 @@ export function generateStaticParams() {
   return EPISODES.map((e) => ({ slug: e.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }) {
-  const ep = getEpisode(params.slug);
+type EpisodePageProps = {
+  params: Promise<{ slug: string }>;
+};
+
+export async function generateMetadata({ params }: EpisodePageProps) {
+  const { slug } = await params;
+  const ep = getEpisode(slug);
   if (!ep) return {};
   return {
     title: `Odc. ${ep.number}: ${ep.title} — Pole Rozmowy`,
@@ -15,8 +20,9 @@ export function generateMetadata({ params }: { params: { slug: string } }) {
   };
 }
 
-export default function EpisodePage({ params }: { params: { slug: string } }) {
-  const ep = getEpisode(params.slug);
+export default async function EpisodePage({ params }: EpisodePageProps) {
+  const { slug } = await params;
+  const ep = getEpisode(slug);
   if (!ep) notFound();
 
   const prev = EPISODES.find((e) => e.number === ep.number - 1);
@@ -85,12 +91,12 @@ export default function EpisodePage({ params }: { params: { slug: string } }) {
           <p className="mt-1 text-xs text-amber-600">
             Zapisz się na powiadomienia, żeby nie przegapić premiery.
           </p>
-          <a
+          <Link
             href="/shortcasty"
             className="mt-4 inline-block rounded-lg bg-blue-600 px-5 py-2 text-sm font-semibold text-white hover:bg-blue-700"
           >
             Zapisz się
-          </a>
+          </Link>
         </div>
       )}
 

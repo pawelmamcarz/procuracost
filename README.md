@@ -2,27 +2,27 @@
 
 > **A tunnel has walls. A field has a horizon.**
 
-ProcuraCost is an open-source research and consulting tool that quantifies the hidden opportunity costs of rigid procurement procedures compared to policy-based procurement. Built on peer-reviewed empirical studies, it demonstrates that rigid-procedure costs exceed policy-only costs by **100–400%**.
+ProcuraCost is an open-source research prototype for exploring the opportunity costs of rigid procurement procedures compared with policy-based procurement. It combines selected empirical findings with explicit modeling assumptions. Its outputs are deterministic scenario simulations, not empirically validated estimates of realized organizational effects.
 
 ## The Model
 
-Procurement *policy* defines principles and boundaries. Procurement *procedure* is just one of many ways to implement them. Conflating the two—treating one rigid workflow as if it were the policy itself—costs organizations millions through:
+Procurement *policy* defines principles and boundaries. Procurement *procedure* is one way to implement them. ProcuraCost explores the hypothesis that conflating the two may create costs through:
 
 - Extended timelines and staff hours
-- 2% price premium under rigid auctions (Szucs, JEEA 2024)
-- 7.7–10.5 pp higher renegotiation probability (Beuve et al., NBER 2021)
-- 42% longer project delivery (World Bank 2023)
-- Up to 30% foregone TCO savings (ISM)
+- A countervailing risk from poorly governed discretion: higher prices and less productive suppliers (Szucs, JEEA 2024)
+- 7.7–10.5 pp higher renegotiation probability per SD of contractual rigidity (Beuve et al., NBER 2021)
+- Procurement time and competition effects documented in public-sector evidence reviews
+- Explicit, sensitivity-testable assumptions for TCO, bypass, technology, and the 2×2 context
 
 **The Tunnel vs. Field model:** a procedure is a tunnel — one path, binary compliance, human as step-executor. A procurement policy is a field — multiple compliant paths, human as value navigator.
 
 ## Features
 
-- **Cost Calculator** — 7-dimension cost model (time, admin, opportunity, productivity, renegotiation, TCO, bypass) comparing rigid procedures vs. policy-based approaches across 7 process types
-- **Path Optimizer** — Random Forest classifier (30 trees, deterministic) recommending the optimal procurement path for your context, with natural-language explanation of the recommendation
+- **Cost Calculator** — auditable model of active time, admin, opportunity, renegotiation, TCO, and bypass components; the legacy productivity field is inactive in v1.2
+- **Path Optimizer** — transparent decision-support heuristic using 30 deterministic scoring variants and explicit expert rules; it is not a trained ML classifier or legal compliance check
 - **Maturity Assessment** — 10-question free audit placing your organization on the Tunnel→Field spectrum
-- **Case Studies** — Fleet (Ryanair), ERP (Swiss Casinos), Logistics (Air France KLM), Production (Zara) with empirical benchmarks
-- **Industry Benchmark** — See where your scenario sits relative to 8 reference cases
+- **Illustrative Archetypes** — fleet, ERP, logistics, and production scenarios inspired by public practice descriptions; financial inputs are model assumptions
+- **Scenario Benchmark** — compare a result with 8 illustrative reference scenarios
 - **Bilingual** — Full Polish and English interfaces
 
 ## Team
@@ -49,14 +49,14 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) for the Polish interface or [http://localhost:3000/en](http://localhost:3000/en) for English.
 
-## Academic Foundation
+## Evidence Status
 
-The cost model integrates four empirical studies:
+The model separates external evidence from modeling assumptions:
 
-1. **Szucs (2024)** — *Journal of the European Economic Association* 22(1): ~2% price premium under rigid auction requirements
+1. **Szucs (2024)** — *Journal of the European Economic Association* 22(1): high discretion can increase prices and select less productive suppliers. ProcuraCost treats this as a boundary condition, not a rigidity penalty.
 2. **Beuve, Moszoro & Saussier (2021)** — *NBER WP 28491*: 7.7–10.5 pp renegotiation risk increase per SD of contractual rigidity
-3. **World Bank (2021)** — Policy Research Paper 9690: 42% longer project delivery under rigid public rules
-4. **ISM** — Up to 30% TCO savings over 3 years with flexible sourcing
+3. **World Bank (2021)** — Policy Research Paper 9690: the evidence base for procurement interventions is uneven and context-dependent.
+4. **Model assumptions** — TCO opportunity, bypass sigmoid, technology effects, step durations, and 2×2 multipliers require external calibration. TCO is capped at 30% of contract value in model v1.2.
 
 Theoretical grounding: Lipsky (1980) Street-Level Bureaucracy · Vaughan (1996) Challenger · Holmström & Milgrom (1991) Multitask Principal-Agent
 
@@ -67,20 +67,20 @@ Full working paper: [`RESEARCH.md`](./RESEARCH.md) | Methodology page: `/methodo
 ```
 app/                    Next.js pages (PL + /en subtree)
   calculator/           Cost calculator
-  optimizer/            RF path optimizer
+  optimizer/            Heuristic path optimizer
   assessment/           Maturity quiz
-  case-studies/         Case study browser
+  case-studies/         Illustrative scenario browser
   research/             Research paper viewer
   methodology/          Academic methodology (EN)
 components/             React components
   CostComparison.tsx    Results with benchmark chart
-  PathOptimizer.tsx     RF optimizer with explainability
+  PathOptimizer.tsx     Heuristic optimizer with explainability
   AssessmentQuiz.tsx    10-question maturity assessment
   PipeFieldDiagram.tsx  Tunnel vs. Field visual
 lib/
-  calculations.ts       7-dimension cost model
-  optimizer.ts          Random Forest (30 trees)
-  scenarios.ts          8 reference case studies
+  calculations.ts       Auditable cost simulation
+  optimizer.ts          Deterministic heuristic scoring ensemble
+  scenarios.ts          8 illustrative reference scenarios
   i18n.ts               All user-facing strings (PL + EN)
 ```
 

@@ -21,13 +21,11 @@ export default function MethodologyPage() {
             This paper argues that the conflation of procurement <em>policy</em> and procurement{" "}
             <em>procedure</em> imposes measurable opportunity costs on organizations. Strict procedural
             compliance—often adopted as a risk shield by procurement officers—limits negotiation
-            discretion, extends timelines, and forecloses value-creating options. Drawing on empirical
-            studies from public procurement economics, we construct a five-dimensional cost model
-            comparing rigid-procedure and policy-only approaches. We demonstrate that rigid procedures
-            increase effective contract prices by approximately 2% (Szucs 2024), raise renegotiation
-            risk by 7.7–10.5 percentage points (Beuve et al. 2021), and forego up to 30% of achievable
-            Total Cost of Ownership savings (ISM). The ProcuraCost calculator operationalizes this model
-            for consulting and educational use.
+            discretion, extends timelines, and can foreclose value-creating options. We construct a
+            transparent simulation model comparing rigid-procedure and policy-only approaches. Beuve et
+            al. (2021) anchor the renegotiation relationship; the remaining TCO, bypass, technology,
+            process, and 2×2 parameters are explicit assumptions. Szucs (2024) is a boundary condition:
+            high discretion can increase prices and select less productive suppliers.
           </p>
         </section>
 
@@ -48,14 +46,14 @@ export default function MethodologyPage() {
           </p>
           <p className="mt-2">
             The pathology we identify is the elevation of procedure to the status of policy: when
-            "following the procedure" becomes the primary success criterion rather than achieving
+            &quot;following the procedure&quot; becomes the primary success criterion rather than achieving
             value, procurement officers are effectively absolved of strategic judgment. This produces
             what we term <strong>procedural compliance theater</strong>—full documentation, zero
             optimization.
           </p>
           <blockquote className="mt-4 rounded-xl border border-blue-100 bg-blue-50 px-5 py-3">
             <p className="text-sm italic text-blue-800">
-              "A tunnel has walls. A field has a horizon."
+              &quot;A tunnel has walls. A field has a horizon.&quot;
             </p>
             <p className="mt-1 text-xs text-blue-600">
               The <strong>Tunnel vs. Field</strong> model: a procedure locks one path (tunnel);
@@ -66,7 +64,7 @@ export default function MethodologyPage() {
 
         {/* Cost Model */}
         <section>
-          <h2 className="text-base font-bold text-gray-900">2. Five-Dimension Cost Model</h2>
+          <h2 className="text-base font-bold text-gray-900">2. Cost Model Components</h2>
 
           <div className="mt-3 space-y-4">
             <div className="rounded-xl border border-gray-100 bg-gray-50 p-4">
@@ -75,9 +73,8 @@ export default function MethodologyPage() {
                 <code>= days_rigid × buyer_count × daily_rate</code>
               </p>
               <p className="mt-1 text-xs text-gray-500">
-                OECD (2023) documents average procurement durations of 554 days (OECD countries) to
-                836 days (Sub-Saharan Africa). Rigid procedures add significant administrative time
-                versus policy-guided flexible approaches.
+                ProcuraCost step durations and role hours are modeling assumptions awaiting calibration
+                from organizational timestamps and time-use data.
               </p>
             </div>
 
@@ -100,15 +97,13 @@ export default function MethodologyPage() {
               </h3>
               <p className="mt-1 text-xs text-gray-600">
                 <code>
-                  = contract_value × 0.02 + delay_days × daily_project_revenue
+                  = delay_days × daily_project_value × delay_multiplier
                 </code>
               </p>
               <p className="mt-1 text-xs text-gray-500">
-                <strong>Source:</strong> Szucs, F. (2024). Discretion and Favoritism in Public
-                Procurement. <em>Journal of the European Economic Association</em> 22(1):117–151.
-                Hungarian reform study: removing mandatory open auctions redistributes ~2% of
-                contract value from taxpayers to firms (price premium under rigidity). Procurement
-                delay also defers deployment value.
+                <strong>Evidence status:</strong> The delay value is supplied by the user. Model v1.2
+                removes the former 2% rigidity premium because Szucs (2024) finds adverse effects from
+                high discretion, not from rigid auctions.
               </p>
             </div>
 
@@ -125,9 +120,9 @@ export default function MethodologyPage() {
                 <strong>Source:</strong> Beuve, J., Moszoro, M., & Saussier, S. (2021). Contractual
                 Rigidity and Political Contestability: Revisiting Public Contract Renegotiations.{" "}
                 <em>NBER Working Paper 28491</em>. One standard deviation increase in contractual
-                rigidity increases renegotiation frequency by 7.7–10.5 percentage points (vs. 22%
-                unconditional average). Public contracts are renegotiated significantly more than
-                private ones.
+                rigidity is associated with 7.7–10.5 percentage points higher renegotiation
+                probability (vs. a 22% unconditional average). ProcuraCost uses the lower bound;
+                contextual and flexible-path factors are modeling assumptions.
               </p>
             </div>
 
@@ -137,14 +132,12 @@ export default function MethodologyPage() {
               </h3>
               <p className="mt-1 text-xs text-gray-600">
                 <code>
-                  = contract_value × 0.10/yr × horizon × (1 − flexibility_index)
+                  = contract_value × min(0.30, 0.10 × years × rigidity × tco_multiplier)
                 </code>
               </p>
               <p className="mt-1 text-xs text-gray-500">
-                <strong>Source:</strong> Institute for Supply Management (ISM). Total Cost of
-                Ownership in Procurement. TCO sourcing programs can save up to 30% over three years
-                (≈10%/yr). Rigid procedures limit the flexibility required to capture TCO savings
-                through supplier development, volume optimization, and lifecycle costing.
+                <strong>Evidence status:</strong> The 10% annual rate, 30% cap, rigidity scaling, and
+                contextual multiplier are modeling assumptions exposed for sensitivity analysis.
               </p>
             </div>
           </div>
@@ -156,7 +149,7 @@ export default function MethodologyPage() {
           <ul className="mt-2 space-y-2 text-xs text-gray-600">
             <li>
               Szucs, F. (2024). Discretion and Favoritism in Public Procurement.{" "}
-              <em>Journal of the European Economic Association</em>, 22(1), 117–151.
+              <em>Journal of the European Economic Association</em>, 22(1), 117–160.
             </li>
             <li>
               Beuve, J., Moszoro, M., & Saussier, S. (2021). Contractual Rigidity and Political

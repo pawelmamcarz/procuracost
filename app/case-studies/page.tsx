@@ -8,10 +8,11 @@ export default function CaseStudiesPage() {
   return (
     <div className="mx-auto max-w-5xl px-6 py-10">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Case Studies</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Archetypy ilustracyjne</h1>
         <p className="mt-1 text-sm text-gray-500">
-          Rzeczywiste przykłady elastycznych zakupów — od linii lotniczych do wdrożeń IT.
-          Każdy scenariusz w kalkulatorze bazuje na udokumentowanym przypadku.
+          Syntetyczne scenariusze testują różne ustawienia modelu. Ich parametry i wyniki są
+          założeniami ProcuraCost, a nie danymi organizacji, benchmarkami zewnętrznymi ani
+          oszacowaniem rzeczywistych oszczędności.
         </p>
       </div>
 
@@ -54,19 +55,16 @@ export default function CaseStudiesPage() {
         })}
       </div>
 
-      {/* Additional context */}
+      {/* Reading guidance */}
       <div className="mt-10 rounded-2xl border border-blue-100 bg-blue-50 p-6">
-        <h2 className="font-bold text-blue-900">Dlaczego linie lotnicze nie używają przetargów?</h2>
+        <h2 className="font-bold text-blue-900">Jak czytać te scenariusze?</h2>
         <p className="mt-2 text-sm text-blue-800">
-          Zakup floty samolotów (np. LOT — 40 Airbus A220, Ryanair — 100× Boeing 737 post-9/11)
-          odbywa się przez bezpośrednie negocjacje z producentami, często wykorzystując kryzysy
-          rynkowe do uzyskania cen poniżej katalogowych. Żaden przetarg publiczny nie pozwoliłby
-          na taką elastyczność czasową i negocjacyjną. Rezultat: Ryanair zbudował flotę 400+
-          samolotów z marżami, których konkurenci mogą tylko pozazdrościć.
+          Wyniki pokazują wyłącznie konsekwencje podanych parametrów. Wysoki procent nie dowodzi,
+          że elastyczna ścieżka przyniesie takie oszczędności w organizacji; wskazuje, które
+          założenia trzeba sprawdzić na danych o czasie, pracy ról, renegocjacjach i kosztach opóźnienia.
         </p>
         <p className="mt-3 text-xs text-blue-600">
-          Źródła: Airfleets.net (LOT fleet 2026); IJRAR (2019) Ryanair Strategic Positioning;
-          ResearchGate — Low-Cost Strategy in Aviation
+          Źródło parametrów: lib/scenarios.ts. Pełny ślad obliczeń: npm run replicate.
         </p>
       </div>
     </div>

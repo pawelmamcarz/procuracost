@@ -42,6 +42,14 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
     setInputs((prev) => ({ ...prev, techLevel: tl }));
   }
 
+  function setSpendType(spendType: NonNullable<ProcurementInputs["spendType"]>) {
+    setInputs((prev) => ({ ...prev, spendType }));
+  }
+
+  function setProcessPhase(processPhase: NonNullable<ProcurementInputs["processPhase"]>) {
+    setInputs((prev) => ({ ...prev, processPhase }));
+  }
+
   function setStakeholder(role: StakeholderRole, field: "count" | "dailyRate", value: number) {
     setInputs((prev) => ({
       ...prev,
@@ -65,8 +73,18 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
   // Derived preview of days based on current selections
   const steps = getSteps(inputs.processType, inputs.customSteps);
   const tech = TECH_LEVELS[inputs.techLevel];
-  const previewRigidDays = deriveRigidDays(steps, tech.timeMultiplier);
-  const previewFlexDays = deriveFlexibleDays(steps, tech.timeMultiplier);
+  const previewRigidDays = deriveRigidDays(
+    steps,
+    tech.timeMultiplier,
+    inputs.processPhase,
+    inputs.spendType,
+  );
+  const previewFlexDays = deriveFlexibleDays(
+    steps,
+    tech.timeMultiplier,
+    inputs.processPhase,
+    inputs.spendType,
+  );
 
   const inputClass =
     "w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500";
@@ -98,6 +116,48 @@ export default function CostCalculator({ onCalculate, lang = "pl" }: Props) {
         <p className="mt-1 text-xs text-gray-400">
           {SCENARIOS.find((s) => s.id === selectedScenarioId)?.[lang === "en" ? "descriptionEn" : "description"]}
         </p>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className={sectionClass}>
+          <p className={sectionTitleClass}>{lang === "en" ? "Spend type" : "Rodzaj wydatku"}</p>
+          <div className="grid grid-cols-2 gap-2">
+            {(["direct", "indirect"] as const).map((spendType) => (
+              <button
+                key={spendType}
+                type="button"
+                onClick={() => setSpendType(spendType)}
+                className={`rounded-lg border px-3 py-2 text-sm font-medium ${
+                  inputs.spendType === spendType
+                    ? "border-blue-500 bg-blue-50 text-blue-700"
+                    : "border-gray-200 bg-white text-gray-600"
+                }`}
+              >
+                {spendType === "direct" ? "Direct" : "Indirect"}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className={sectionClass}>
+          <p className={sectionTitleClass}>{lang === "en" ? "Process phase" : "Faza procesu"}</p>
+          <div className="grid grid-cols-2 gap-2">
+            {(["upstream", "downstream"] as const).map((processPhase) => (
+              <button
+                key={processPhase}
+                type="button"
+                onClick={() => setProcessPhase(processPhase)}
+                className={`rounded-lg border px-3 py-2 text-sm font-medium ${
+                  inputs.processPhase === processPhase
+                    ? "border-blue-500 bg-blue-50 text-blue-700"
+                    : "border-gray-200 bg-white text-gray-600"
+                }`}
+              >
+                {processPhase === "upstream" ? "Upstream" : "Downstream"}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Section 1: Process type */}

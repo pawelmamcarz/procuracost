@@ -7,21 +7,21 @@ The Hidden Cost of Procedural Compliance: Quantifying Opportunity Costs of Rigid
 
 ## Problem
 
-Organizacje mylą **politykę zakupową** (co musi być osiągnięte) z **procedurą zakupową** (jak to zrobić).  
-W efekcie kupcy optymalizują się pod „bezpieczeństwo proceduralne” zamiast pod wartość dla organizacji.  
-Koszty tego zjawiska (utracone oszczędności TCO, opóźnienia, renegocjacje, ryzyko obejścia) są realne, ale w dużej mierze niewidoczne dla klasycznych audytów zgodności.
+Organizacje mogą mylić **politykę zakupową** (co musi być osiągnięte) z **procedurą zakupową** (jak to zrobić).
+Projekt testuje, czy kupcy optymalizują się wtedy pod „bezpieczeństwo proceduralne” zamiast pod wartość.
+TCO, opóźnienia, renegocjacje i obejścia są kandydatami do pomiaru, a nie potwierdzonymi kosztami organizacji.
 
 ---
 
 ## Nasze podejście
 
-Stworzyliśmy przejrzysty, wielowymiarowy model kosztów (ProcuraCost), który kwantyfikuje różnicę między sztywną procedurą a elastycznym podejściem opartym na polityce.
+Stworzyliśmy przejrzysty, wielowymiarowy model symulacyjny (ProcuraCost), który pokazuje, jak przy zadanych założeniach zmienia się różnica kosztów między sztywną procedurą a elastycznym podejściem opartym na polityce.
 
 Kluczowe rozszerzenie modelu (2026):
 - Rozróżnienie **Direct vs Indirect** spend
 - Rozróżnienie **Upstream vs Downstream** faz procesu
 
-Model integruje wyniki badań empirycznych (m.in. Szucs 2024, Beuve et al. 2021, ISM) i jest w pełni otwarty.
+Beuve et al. (2021) stanowi kotwicę empiryczną dla ryzyka renegocjacji. Szucs (2024) wyznacza warunek brzegowy: wysoka dyskrecja może pogarszać wyniki, dlatego elastyczność nie oznacza braku kontroli. Pozostałe efekty są jawnie opisanymi założeniami wymagającymi kalibracji.
 
 ---
 
@@ -30,8 +30,9 @@ Model integruje wyniki badań empirycznych (m.in. Szucs 2024, Beuve et al. 2021,
 - W pełni zaimplementowany i udokumentowany model z nowymi wymiarami 2×2
 - Publiczne narzędzie: [www.procuracost.com](https://www.procuracost.com)
 - Interaktywny Assumptions Explorer pokazujący na żywo mnożniki modelu
-- Roboczy draft artykułu naukowego z czterema studiami przypadków
-- Pełna dokumentacja parametrów z źródłami
+- Roboczy draft artykułu metodologicznego z ilustracyjnymi archetypami zakupów
+- Dokumentacja parametrów rozdzielająca źródła, założenia i dane wejściowe
+- Testy automatyczne i generowany pakiet wyników replikacyjnych modelu v1.2
 
 ---
 

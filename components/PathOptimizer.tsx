@@ -2,10 +2,6 @@
 
 import { useState } from "react";
 import {
-  RadarChart,
-  Radar,
-  PolarGrid,
-  PolarAngleAxis,
   ResponsiveContainer,
   BarChart,
   Bar,
@@ -19,7 +15,6 @@ import {
   ProcurementFeatures,
   optimize,
   OptimizationResult,
-  PATHS,
 } from "@/lib/optimizer";
 import { optimizerT, Lang } from "@/lib/i18n";
 import { formatCompact } from "@/lib/calculations";
@@ -204,7 +199,7 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
             </label>
             <select
               value={features.spendType || "indirect"}
-              onChange={(e) => handleChange("spendType", e.target.value as any)}
+              onChange={(e) => handleChange("spendType", e.target.value as "direct" | "indirect")}
               className={inputClass}
             >
               <option value="direct">{lang === "en" ? "Direct (production)" : "Direct (produkcyjny)"}</option>
@@ -217,7 +212,7 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
             </label>
             <select
               value={features.processPhase || "upstream"}
-              onChange={(e) => handleChange("processPhase", e.target.value as any)}
+              onChange={(e) => handleChange("processPhase", e.target.value as "upstream" | "downstream")}
               className={inputClass}
             >
               <option value="upstream">{lang === "en" ? "Upstream (strategic)" : "Upstream (strategiczny)"}</option>

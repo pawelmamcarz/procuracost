@@ -1,0 +1,9 @@
+scenarioId,scenarioName,spendType,processPhase,rigidDays,flexibleDays,rigidTotalPLN,flexibleTotalPLN,deltaPLN,deltaPercent
+"fleet","Vehicle Fleet Procurement","direct","upstream",47,17,1507996,325383,1182613,363.5
+"erp","IT/ERP Contract","indirect","upstream",51,20,1562625,237767,1324858,557.2
+"logistics","Logistics Services","indirect","upstream",44,18,2569434,470482,2098952,446.1
+"production","Production Materials","direct","upstream",65,24,5482215,466697,5015518,1074.7
+"pipe_vs_field","Tunnel vs Field","direct","upstream",107,12,3535251,444607,3090644,695.1
+"catalog","Catalog Order","indirect","downstream",2,2,4022,2340,1682,71.8
+"mrp","MRP Order","direct","downstream",1,1,16957,14357,2600,18.1
+"capex_investment","CAPEX Investment","direct","upstream",64,30,7679564,3937699,3741865,95

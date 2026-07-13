@@ -4,27 +4,27 @@ import { SCENARIOS } from "@/lib/scenarios";
 import { calculateCosts } from "@/lib/calculations";
 
 const stats = [
-  { value: "+2%", label: "wyższe ceny przy sztywnych procedurach", source: "Szucs, JEEA 2024" },
-  { value: "+7.7%", label: "wyższe ryzyko renegocjacji kontraktu", source: "Beuve et al., NBER 2021" },
-  { value: "42%", label: "dłuższy czas realizacji projektów", source: "World Bank, 2023" },
-  { value: "30%", label: "potencjalne oszczędności TCO przy elastyczności", source: "ISM" },
+  { value: "+2.3%", label: "wzrost średniej ceny po rozszerzeniu dyskrecji w badanym systemie", source: "Szucs, JEEA 2024" },
+  { value: "+7.7–10.5 pp", label: "różnica renegocjacji na 1 SD większej sztywności umowy", source: "Beuve et al., NBER 2021" },
+  { value: "−7%/rok", label: "spadek mediany czasu po reformie fit-for-purpose", source: "World Bank, 2022" },
+  { value: "Jawne", label: "założenia TCO i 2×2 dostępne do analizy wrażliwości", source: "Model v1.2" },
 ];
 
 const howItWorks = [
   {
     step: "01",
     title: "Opisz swój zakup",
-    body: "Wybierz scenariusz (Ryanair, Swiss Casinos, Zara…) lub wpisz własne dane: wartość kontraktu, typ procesu, zespół i stawki. Nie wymaga rejestracji.",
+    body: "Wybierz syntetyczny scenariusz lub wpisz własne dane: wartość kontraktu, typ procesu, zespół i stawki. Nie wymaga rejestracji.",
   },
   {
     step: "02",
-    title: "Oblicz koszty ukryte",
-    body: "Model na bazie 4 badań naukowych wylicza 7 wymiarów kosztów — czas kadry, opóźnienia, renegocjacje, ryzyko obejść — i porównuje tunel z polem.",
+    title: "Oblicz koszty modelowe",
+    body: "Model łączy wyniki badań z jawnymi założeniami i porównuje czas kadry, opóźnienia, renegocjacje, TCO oraz ryzyko obejść dla tunelu i pola.",
   },
   {
     step: "03",
     title: "Porównaj i działaj",
-    body: "Wynik to benchmark branżowy, rekomendacja ścieżki zakupowej (Random Forest, 30 drzew) i raport PDF z cytowaniami akademickimi.",
+    body: "Wynik obejmuje porównanie z ilustracyjnymi scenariuszami, heurystyczny ranking ścieżek oparty na jawnych regułach i raport PDF z adnotacjami źródeł oraz założeń.",
   },
 ];
 
@@ -69,7 +69,7 @@ const caseStudyPreviews = SCENARIOS.filter((s) => s.caseStudy)
 const principles = [
   {
     title: "Procedura ≠ Polityka",
-    body: "Polityka zakupowa wyznacza ramy i zasady. Procedura to tylko jedna z wielu metod ich realizacji. Mylenie ich kosztuje organizacje miliony.",
+    body: "Polityka zakupowa wyznacza ramy i zasady. Procedura jest jedną z metod ich realizacji. Model testuje hipotezę, że ich mylenie może tworzyć koszty alternatywne.",
   },
   {
     title: "Kupiec jako strateg",
@@ -98,10 +98,9 @@ export default function HomePage() {
           Tunel ma ściany. Pole ma horyzont.
         </p>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-500">
-          Empiryczny model oparty na recenzowanych badaniach pokazuje: koszty procedur sztywnych
-          przewyższają koszty polityki zakupowej o{" "}
-          <span className="font-semibold text-gray-700">100–400%</span>. Sprawdź, ile traci Twoja
-          organizacja.
+          Jawny model symulacyjny łączy wyniki badań z kalibrowanymi założeniami. Sprawdź,
+          jak zmieniają się koszty Twojego scenariusza. Wynik nie jest jeszcze empirycznym
+          oszacowaniem efektu dla organizacji.
         </p>
         <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link
@@ -171,7 +170,7 @@ export default function HomePage() {
       {/* Case Studies Preview */}
       <div className="mt-16">
         <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-5">
-          Case studies — elastyczne zakupy w praktyce
+          Archetypy ilustracyjne — elastyczne zakupy w praktyce
         </p>
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
           {caseStudyPreviews.map((cs) => (
@@ -192,7 +191,7 @@ export default function HomePage() {
         </div>
         <div className="mt-4 text-right">
           <Link href="/case-studies" className="text-xs text-blue-600 hover:underline">
-            Zobacz wszystkie case studies →
+            Zobacz wszystkie archetypy →
           </Link>
         </div>
       </div>
@@ -250,7 +249,7 @@ export default function HomePage() {
         <h2 className="text-2xl font-bold">Sprawdź, ile traci Twoja organizacja</h2>
         <p className="mt-2 text-blue-100">
           Kalkulator kosztów, optymalizator ścieżki i bezpłatny audyt dojrzałości zakupowej —
-          wszystko oparte na recenzowanych badaniach naukowych.
+          z pełnym rozdzieleniem źródeł empirycznych i założeń modelowych.
         </p>
         <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link

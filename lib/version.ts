@@ -23,3 +23,7 @@ function generateTeslaVersion(): string {
 
 export const VERSION =
   process.env.NEXT_PUBLIC_VERSION || generateTeslaVersion();
+
+// Semantic version of the quantitative model. Bump whenever formulas,
+// parameters, or interpretation of outputs change.
+export const MODEL_VERSION = "1.2.0";

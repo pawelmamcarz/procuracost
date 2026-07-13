@@ -1,111 +1,167 @@
-# ProcuraCost Model — Full Parameter Documentation
+# ProcuraCost Model Parameter Register
 
-**Version**: 0.9 (Super High Effort)  
-**Date**: May 2026  
-**Status**: Work in progress — intended for academic review and replication
-
----
-
-## Purpose of This Document
-
-This document provides complete transparency on every quantitative input in the ProcuraCost model. For each parameter we specify:
-
-- Exact value used in the code
-- Type of parameter (Empirical / Calibrated / Modeling Assumption)
-- Primary literature or data source
-- Justification and limitations
-- Sensitivity (how much the overall results depend on this parameter)
+**Model version**: 1.2.0
+**Date**: June 2026
+**Status**: Evidence-audit baseline; external calibration pending
 
 ---
 
-## 1. Global Behavioral & Economic Parameters
+## Purpose
 
-| Parameter | Code Constant | Value | Type | Source | Justification & Limitations | Sensitivity |
-|---------|---------------|-------|------|--------|-----------------------------|-------------|
-| Price premium from rigid lowest-price selection | `RIGIDITY_PRICE_PREMIUM` | 0.02 (2%) | Empirical | Szucs, F. (2024). "Discretion and Favoritism in Public Procurement". *Journal of the European Economic Association*, 22(1), 117–145. | Based on regression discontinuity around scoring rules in Hungarian public procurement. One of the cleanest causal estimates available. | High |
-| Supplier productivity loss from rigid selection | `RIGIDITY_PRODUCTIVITY_LOSS` | 0.016 (1.6%) | Empirical | Szucs (2024), p. 127 | Same paper as above. Effect of awarding to lowest price instead of best value on subsequent supplier performance. | High |
-| Base annual renegotiation probability | `BASE_RENEGOTIATION_PROBABILITY` | 0.22 (22%) | Empirical | Beuve, Moszoro & Saussier (2021). "Contractual Rigidity and Political Contestability". NBER Working Paper 28491. | Baseline renegotiation rate in their French public procurement sample. | Medium-High |
-| Renegotiation premium from contractual rigidity | `RIGIDITY_RENEGOTIATION_PREMIUM` | +0.077 | Empirical | Beuve et al. (2021) | 7.7 percentage points increase in renegotiation probability per standard deviation increase in rigidity. | High |
-| Annual TCO savings potential from flexible sourcing | `TCO_SAVINGS_RATE_PER_YEAR` | 0.10 (10%) | Calibrated | Multiple sources (ISM, CAPS Research, consulting benchmarks 2015–2024) | Conservative estimate of achievable TCO reduction through better supplier selection, specification, and relationship management. Widely cited range is 8–15%. | High |
-| Sigmoid steepness for bypass probability | `BYPASS_SIGMOID_STEEPNESS` | 10 | Modeling Assumption | Internal | Controls how sharply bypass probability rises with rigidity. Calibrated so that very rigid processes (PZP EU) produce ~45–55% bypass probability under manual conditions. | Medium |
-| Rigidity threshold for bypass acceleration | `BYPASS_THRESHOLD` | 0.5 | Modeling Assumption | Internal | Point on the rigidity scale (0–1) at which bypass risk begins to accelerate significantly. | Medium |
+This register separates three categories that must not be conflated:
 
----
+- **Empirical anchor**: an external estimate that directly supports the stated relationship.
+- **Modeling assumption**: an author-chosen value used to generate a scenario output.
+- **User input**: a value supplied for a specific scenario and not claimed to be generalizable.
 
-## 2. Technology Level Parameters
-
-These are relative multipliers and cost estimates derived from industry benchmarks and consulting data.
-
-| Tech Level | Time Multiplier | Coordination Cost per Day | Tool Cost per Process | Bypass Probability Multiplier | Policy Rigidity Index | Type | Basis |
-|------------|-----------------|---------------------------|-----------------------|-------------------------------|-----------------------|------|-------|
-| Manual | 1.40 | 500 PLN | 0 PLN | 1.50 | 0.35 | Calibrated | OECD (2023), EY & Deloitte sourcing transformation studies, multiple Polish consulting projects |
-| Sourcing Tool | 1.15 | 200 PLN | 800 PLN | 0.80 | 0.22 | Calibrated | Industry benchmarks (Ariba, Jaggaer, Ivalua implementations) |
-| Partial ERP | 1.00 | 100 PLN | 1,200 PLN | 0.55 | 0.15 | Calibrated | Common configuration in mid-sized Polish and CEE companies |
-| End-to-End (Ariba/Coupa) | 0.70 | 20 PLN | 2,000 PLN | 0.10 | 0.05 | Calibrated | Best-in-class implementations observed in large multinationals |
-
-**Important note**: These values represent relative differences and typical costs in the Polish/Central European context as of 2023–2025. They are not taken from a single peer-reviewed study.
+Computational reproducibility does not validate an assumption. The executable source of truth is
+`lib/calculations.ts` and `lib/process-templates.ts`; this document records provenance and gaps.
 
 ---
 
-## 3. Flexible Path Adjustments
+## 1. Economic and Behavioral Parameters
 
-| Parameter | Code Constant | Value | Type | Justification |
-|---------|---------------|-------|------|---------------|
-| Additional time compression in flexible path | `FLEXIBLE_PATH_TIME_COMPRESSION` | 0.85 | Modeling Assumption | Reflects the assumption that even at the same technology level, a policy-based approach allows ~15% faster execution due to elimination of mandatory formal steps and reduced coordination overhead. |
-| Flexible tool utilization rate | `FLEXIBLE_TOOL_UTILIZATION_RATE` | 0.30 | Modeling Assumption | Flexible (policy-only) processes typically use only a fraction of full platform capabilities. |
-| Flexible renegotiation probability factor | `FLEXIBLE_RENEGOTIATION_PROBABILITY_FACTOR` | 0.70 | Modeling Assumption | Policy-based procurement materially reduces renegotiation risk. |
-| Flexible bypass probability scale | `FLEXIBLE_BYPASS_PROBABILITY_SCALE` | 0.10 | Modeling Assumption | Even in a well-designed "field", some residual bypass risk remains due to ethical boundaries and documentation requirements. |
+| Parameter | Code | Value | Status | Evidence and limitation | Sensitivity |
+|---|---|---:|---|---|---|
+| Base renegotiation probability | `BASE_RENEGOTIATION_PROBABILITY` | 0.22 | Empirical anchor | Unconditional average reported by Beuve, Moszoro & Saussier (2021) for their sample; transportability is untested. | High |
+| Rigidity renegotiation increment | `RIGIDITY_RENEGOTIATION_PREMIUM` | 0.077 | Empirical anchor + model mapping | Paper reports 7.7–10.5 percentage points for higher rigidity. ProcuraCost uses the lower bound and multiplies it by contextual factors, which is a modeling choice. | High |
+| Annual TCO opportunity | `TCO_SAVINGS_RATE_PER_YEAR` | 0.10 | Modeling assumption | No sufficiently specific primary source was identified for the former ISM attribution. | Very high |
+| Maximum TCO opportunity | `MAX_TCO_SAVINGS_RATE` | 0.30 of contract value | Modeling guardrail | Prevents long horizons and multipliers from implying unbounded savings; requires empirical calibration. | Very high |
+| Bypass sigmoid steepness | `BYPASS_SIGMOID_STEEPNESS` | 10 | Modeling assumption | Controls the shape of an unvalidated behavioral function. | High |
+| Bypass sigmoid threshold | `BYPASS_THRESHOLD` | 0.5 | Modeling assumption | Sets the inflection point of the bypass function. | High |
+| Flexible tool utilization | `FLEXIBLE_TOOL_UTILIZATION_RATE` | 0.30 | Modeling assumption | Share of tool cost allocated to the flexible path. | Low-Medium |
+| Flexible renegotiation factor | `FLEXIBLE_RENEGOTIATION_PROBABILITY_FACTOR` | 0.70 | Modeling assumption | Not directly estimated by Beuve et al. | High |
+| Flexible bypass scale | `FLEXIBLE_BYPASS_PROBABILITY_SCALE` | 0.10 | Modeling assumption | Residual bypass probability under the flexible path. | Medium |
+| Rigid price premium | removed in v1.2 | 0 | Disabled | Earlier versions reversed Szucs (2024). That paper finds adverse effects from high discretion, not a rigidity premium. | High |
+| Productivity adjustment | `productivityCost` | 0 | Disabled | Retained in the output schema only. A future governance-risk model must distinguish bounded flexibility from uncontrolled discretion. | High |
 
----
+### Boundary evidence: Szucs (2024)
 
-## 4. Direct / Indirect + Upstream / Downstream Adjustments (Added 2026)
-
-Introduced following academic feedback.
-
-| Parameter | Value | Applies to | Type | Rationale |
-|---------|-------|------------|------|---------|
-| Direct TCO multiplier | 1.35 | `spendType === "direct"` | Modeling Assumption (literature-informed) | Direct spend typically has significantly higher Total Cost of Ownership optimization potential than Indirect spend. |
-| Upstream bypass risk multiplier | 1.25 | `processPhase === "upstream"` | Modeling Assumption | Strategic decisions made under high rigidity create stronger incentives for informal workarounds than operational execution. |
-| Downstream productivity multiplier | 0.85 | `processPhase === "downstream"` | Modeling Assumption | Rigidity in operational P2P processes has a somewhat lower negative effect on supplier productivity/innovation than rigidity in upstream decisions. |
-
-These three multipliers are the most explicit "modeling judgment" parameters in the current version and are priority candidates for future empirical calibration.
-
----
-
-## 5. Process Step Data
-
-Detailed step-level data (duration in rigid vs flexible mode, mandatory waits, participation by role) are defined per process type in `lib/process-templates.ts`.
-
-These values combine:
-- Legal minimum durations (PZP, EU Directive 2014/24)
-- OECD Public Procurement Performance data (2023)
-- Practitioner benchmarks collected 2018–2025
-
-They are treated as **Calibrated** with a significant modeling component.
+Szucs finds that high discretion increased prices and selected less productive, more politically connected
+suppliers in the studied Hungarian system. ProcuraCost therefore treats this paper as a boundary condition
+for field-like governance, not as a cost assigned to rigid procedures.
 
 ---
 
-## Classification Summary (Current State)
+## 2. Technology-Level Parameters
 
-| Category | Approximate Share | Status |
-|----------|-------------------|--------|
-| Directly from peer-reviewed empirical studies | ~35–40% | Good |
-| Calibrated from multiple credible sources | ~35–40% | Acceptable |
-| Explicit modeling assumptions (literature-informed) | ~20–25% | Needs improvement / validation |
+Every value in this table is currently a **modeling assumption**. Vendor examples describe product classes;
+they do not validate the multipliers.
 
-The three adjustment multipliers introduced in 2026 currently belong to the last category and are the highest priority for future empirical work.
+| Technology level | Time multiplier | Coordination PLN/day | Tool PLN/process | Bypass multiplier | Policy rigidity index |
+|---|---:|---:|---:|---:|---:|
+| Manual | 1.40 | 500 | 0 | 1.50 | 0.35 |
+| Sourcing tool | 1.15 | 200 | 800 | 0.80 | 0.22 |
+| Partial ERP | 1.00 | 100 | 1,200 | 0.55 | 0.15 |
+| End-to-end | 0.70 | 20 | 2,000 | 0.10 | 0.05 |
 
----
-
-## Next Steps (as per PHD_ROADMAP)
-
-- Full sensitivity analysis module in the application
-- Public replication package
-- Empirical validation plan with specific identification strategies
+**Validation target**: system timestamps, license allocation data, coordination time, and observed off-system
+transactions before and after technology adoption.
 
 ---
 
-**Maintained by**: Paweł Mamcarz  
-**Last major update**: May 2026
+## 3. Process Rigidity Indices
 
-This document is version-controlled and intended to become the canonical reference for all quantitative assumptions in ProcuraCost.
+All indices are modeling assumptions used in TCO and bypass calculations.
+
+| Process type | Rigidity index |
+|---|---:|
+| PZP EU | 0.95 |
+| PZP national | 0.80 |
+| Private formal | 0.60 |
+| Policy only | 0.15 |
+| Catalog order | 0.20 |
+| MRP order | 0.12 |
+| CAPEX | 0.72 |
+| Custom default | 0.50 |
+
+The labels do not establish legal compliance or actual rigidity in a specific organization.
+
+---
+
+## 4. Direct/Indirect x Upstream/Downstream Multipliers
+
+All values below are modeling assumptions and the highest-priority calibration targets.
+
+| Context rule | Parameter | Factor |
+|---|---|---:|
+| Direct | TCO | 1.35 |
+| Direct | Bypass | 1.15 |
+| Direct | Renegotiation | 1.15 |
+| Upstream | Delay | 1.40 |
+| Upstream | Bypass | 1.25 |
+| Upstream | Renegotiation | 1.20 |
+| Upstream | Staff intensity | 1.25 |
+| Upstream | Coordination | 1.30 |
+| Downstream | Delay | 0.90 |
+| Downstream | Coordination | 0.85 |
+| Direct x Upstream interaction | TCO | 1.20 additional; combined 1.62 |
+| Direct x Upstream interaction | Renegotiation | 1.15 additional; combined 1.587 |
+| Direct x Upstream interaction | Staff intensity | 1.15 additional; combined 1.4375 |
+
+The implementation also applies role-level and step-level assumptions, including upstream executive effort
+of 1.85x, selected Direct x Upstream rigid-step boosts of 1.22, and flexible-step compression factors of
+0.82 or 0.90. Exact rules are in `lib/process-templates.ts`.
+
+---
+
+## 5. Process Templates and Role Hours
+
+Rigid/flexible durations, mandatory-wait flags, and role participation hours are defined per step in
+`lib/process-templates.ts`. They are currently modeling assumptions. Legal waiting periods have not been
+audited as a complete current PZP compliance table and must not be used as legal advice.
+
+**Validation target**:
+
+1. Extract requisition, sourcing, award, signature, PO, and receipt timestamps.
+2. Collect role-level time-use data for matched processes.
+3. Estimate distributions by process type and 2x2 quadrant.
+4. Replace point assumptions with estimates and uncertainty intervals.
+
+---
+
+## 6. User Inputs
+
+The following values are scenario-specific and must not be presented as literature estimates:
+
+- Contract value and TCO horizon
+- Daily cost of inaction
+- Renegotiation event cost
+- Bypass/audit exposure
+- Stakeholder counts and rates
+- Custom process steps
+- Spend type and process phase classification
+
+Built-in scenario inputs are illustrative. Named organizations motivate archetypes only; the inputs are not
+their financial or process data.
+
+---
+
+## 7. Current Evidence Summary
+
+| Area | Current status |
+|---|---|
+| Rigidity and renegotiation | One external empirical anchor; contextual mapping unvalidated |
+| Discretion and supplier outcomes | Countervailing external evidence; not encoded as a path penalty |
+| TCO | Modeling assumption with a 30% guardrail |
+| Bypass | Conceptually motivated, quantitatively unvalidated |
+| Technology effects | Modeling assumptions |
+| Process durations and role hours | Modeling assumptions |
+| 2x2 interactions | Modeling assumptions |
+| Primary organizational data | None collected as of June 2026 |
+
+No percentage split between "empirical", "calibrated", and "assumed" parameters is reported because such a
+split would be arbitrary and would obscure the leverage of a small number of high-sensitivity assumptions.
+
+---
+
+## 8. Required Before Empirical Submission
+
+- Complete source-to-parameter audit with page/table references.
+- Global sensitivity analysis and uncertainty intervals.
+- Pilot survey and interview evidence.
+- Organizational timestamp and outcome data for at least one calibration sample.
+- Pre-registered primary propositions and identification strategy.
+- Regenerated paper tables via `npm run replicate`.
+
+**Maintained by**: Paweł Mamcarz

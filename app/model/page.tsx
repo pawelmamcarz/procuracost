@@ -38,17 +38,15 @@ export default function ModelPage() {
 
         <h3>1. Rigidity and Behavioral Effects</h3>
         <ul>
-          <li><strong>Price premium</strong> under rigid auctions: ~2% (Szucs, JEEA 2024)</li>
-          <li><strong>Productivity loss</strong> from lowest-price selection: ~1.6%</li>
-          <li><strong>Renegotiation risk</strong> increase from contractual rigidity: 7.7–10.5 pp (Beuve et al., NBER 2021)</li>
+          <li><strong>Discretion boundary condition</strong>: high discretion increased prices and selected less productive suppliers in Szucs (JEEA 2024); no rigidity price/productivity penalty is active in v1.2</li>
+          <li><strong>Renegotiation association</strong>: +7.7–10.5 pp per SD of contractual rigidity; contextual mapping is an assumption (Beuve et al., NBER 2021)</li>
           <li><strong>Bypass probability</strong> modeled via sigmoid function (calibrated)</li>
         </ul>
 
         <h3>2. Technology Level Impacts</h3>
         <p>
-          Time multipliers, coordination costs, and tool amortization costs are derived from 
-          a synthesis of OECD procurement performance data and consulting benchmarks
-          (EY, Deloitte sourcing transformation studies).
+          Time multipliers, coordination costs, and tool amortization costs are currently modeling
+          assumptions. External calibration is pending.
         </p>
 
         <div className="my-6 p-4 border border-blue-200 bg-blue-50 rounded-xl">
@@ -92,7 +90,7 @@ export default function ModelPage() {
         <h2 className="mt-12">Validation Agenda</h2>
         <p>
           A major objective for 2026 is to move as many parameters as possible from 
-          "modeling assumption" to "empirically grounded".
+          &quot;modeling assumption&quot; to &quot;empirically grounded&quot;.
         </p>
         <p>
           See the <Link href="/PHD_ROADMAP" className="text-blue-600 underline">PhD Research Roadmap</Link> 

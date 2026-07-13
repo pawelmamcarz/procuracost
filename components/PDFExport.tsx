@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import jsPDF from "jspdf";
-import { ComparisonResult, formatPLN, getDimensionMultipliers, getDimensionMultiplierDetails } from "@/lib/calculations";
+import { ComparisonResult, formatPLN, getDimensionMultiplierDetails } from "@/lib/calculations";
 import { Scenario } from "@/lib/scenarios";
 import { comparisonT } from "@/lib/i18n";
 
@@ -14,7 +14,7 @@ interface Props {
   processPhase?: "upstream" | "downstream";
 }
 
-export default function PDFExport({ result, scenario, lang = "pl", spendType, processPhase }: Props) {
+export default function PDFExport({ result, scenario, spendType, processPhase }: Props) {
   const [generating, setGenerating] = useState<"pl" | "en" | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -75,7 +75,7 @@ export default function PDFExport({ result, scenario, lang = "pl", spendType, pr
     doc.setFontSize(11);
     doc.setTextColor(55, 65, 81);
     doc.text(
-      exportLang === "pl" ? "Raport: Koszty utracone procedur zakupowych" : "Report: Hidden Cost of Procurement Procedures",
+      exportLang === "pl" ? "Raport: Modelowane koszty ścieżek zakupowych" : "Report: Modeled Procurement Path Costs",
       margin,
       22
     );
@@ -94,7 +94,7 @@ export default function PDFExport({ result, scenario, lang = "pl", spendType, pr
 
     doc.setTextColor(30, 64, 175);
     doc.setFontSize(8);
-    doc.text(exportLang === "pl" ? "Koszt utracony przywiązania do procedur" : "Hidden cost of procedural compliance", margin + 8, y + 7);
+    doc.text(exportLang === "pl" ? "Modelowana różnica kosztów ścieżek" : "Modeled path cost difference", margin + 8, y + 7);
 
     doc.setFontSize(20);
     doc.setTextColor(185, 28, 28); // red-700
@@ -143,15 +143,18 @@ export default function PDFExport({ result, scenario, lang = "pl", spendType, pr
       doc.roundedRect(margin, y, pageWidth - margin * 2, 22, 2, 2, "FD");
       doc.setTextColor(30, 64, 175);
       doc.setFontSize(9);
-      doc.text(scenario.caseStudy.title, margin + 6, y + 7);
+      doc.text(exportLang === "pl" ? scenario.caseStudy.title : scenario.nameEn, margin + 6, y + 7);
       doc.setTextColor(55, 65, 81);
       doc.setFontSize(8);
-      const insight = scenario.caseStudy.insight.length > 140
-        ? scenario.caseStudy.insight.slice(0, 137) + "…"
-        : scenario.caseStudy.insight;
+      const caseInsight = exportLang === "pl"
+        ? scenario.caseStudy.insight
+        : scenario.caseStudy.insightEn;
+      const insight = caseInsight.length > 140
+        ? caseInsight.slice(0, 137) + "…"
+        : caseInsight;
       doc.text(insight, margin + 6, y + 13);
       doc.setTextColor(107, 114, 128);
-      doc.text(`${exportLang === "pl" ? "Źródło" : "Source"}: ${scenario.caseStudy.source}`, margin + 6, y + 19);
+      doc.text(`${exportLang === "pl" ? "Źródło" : "Source"}: ProcuraCost model 1.2.0; lib/scenarios.ts`, margin + 6, y + 19);
       y += 26;
     }
 
@@ -215,7 +218,6 @@ export default function PDFExport({ result, scenario, lang = "pl", spendType, pr
     // Model Context Adjustments section — numeric multipliers (deepened)
     if (spendType || processPhase) {
       y += 4;
-      const dims = getDimensionMultipliers(spendType, processPhase);
       const details = getDimensionMultiplierDetails(spendType, processPhase);
 
       const boxHeight = 38 + Math.max(0, (details.length - 3) * 4);
@@ -238,8 +240,6 @@ export default function PDFExport({ result, scenario, lang = "pl", spendType, pr
       let my = y + 17;
       const col1 = margin + 4;
       const col2 = margin + 95;
-      const col3 = margin + 145;
-
       details.slice(0, 6).forEach((d, idx) => {
         const label = exportLang === "pl" ? d.label : d.labelEn;
         const val = `${d.value.toFixed(2)}x`;

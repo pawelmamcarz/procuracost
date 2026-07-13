@@ -10,7 +10,7 @@
 ## Tydzień 1 – Freeze modelu + start appendixu matematycznego
 
 ### Dzień 1–2 (najwyższy priorytet)
-- [ ] Zablokuj aktualny model jako **v1.1** (tag w GitHub)
+- [ ] Po przeglądzie zewnętrznym zablokuj aktualny model jako **v1.2** (tag w GitHub)
 - [ ] Wyeksportuj pełną tabelę parametrów (wszystko co jest używane w paperze)
 - [ ] Stwórz folder `replication/parameters/` i wrzuć tam tabelę
 
@@ -25,7 +25,7 @@
 - [ ] Zrób listę 8–10 kluczowych papierów, które musisz jeszcze przeczytać/dodać do literatury
 - [ ] Utwórz prostą bazę (Notion / Excel / Zotero) z tymi pozycjami
 
-**Cel tygodnia:** Model v1.1 zamrożony + pierwszy szkic appendixu matematycznego (min. 30–40%)
+**Cel tygodnia:** Model v1.2 gotowy do zamrożenia po przeglądzie + pierwszy szkic appendixu matematycznego (min. 30–40%)
 
 ---
 
@@ -102,4 +102,4 @@
 
 ---
 
-**Chcesz wersję tego planu w formie prostego tabelarycznego Google Sheet / Notion template? Mogę przygotować gotową strukturę do skopiowania.**
+Plan roboczy należy aktualizować po każdym zamrożeniu modelu i pilotażu instrumentów.

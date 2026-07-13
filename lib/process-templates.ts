@@ -1,13 +1,22 @@
 // Procurement process step templates and technology level definitions.
 //
-// Academic basis:
-// - Mandatory wait times: PZP (Dz.U. 2019 poz. 2019) + EU Directive 2014/24/UE
-// - Stakeholder hours: benchmarked from OECD (2023) procurement function surveys
-// - Tech level impacts: derived from EY / Deloitte sourcing transformation studies
+// Evidence status:
+// - Mandatory waits should be checked against the current PZP/EU rules before legal use.
+// - Step durations, stakeholder hours, rigidity indices, and technology effects are
+//   explicit modeling assumptions pending organizational calibration.
 
 export type ProcessType = "pzp_eu" | "pzp_krajowy" | "private_formal" | "policy_only" | "catalog_order" | "mrp_order" | "capex" | "custom";
 export type TechLevelId = "manual" | "sourcing_tool" | "partial_erp" | "end_to_end";
 export type StakeholderRole = "buyer" | "lawyer" | "finance" | "manager" | "executive" | "requestor";
+
+export const STAKEHOLDER_ROLES: StakeholderRole[] = [
+  "buyer",
+  "lawyer",
+  "finance",
+  "manager",
+  "executive",
+  "requestor",
+];
 
 export interface ProcessStep {
   id: string;
@@ -594,8 +603,8 @@ export const PROCESS_TYPE_META: Record<Exclude<ProcessType, "custom">, { categor
     category: "strategic",
     name: "Strategiczna inwestycja CAPEX (uzasadnione zarządzanie)",
     nameEn: "Strategic CAPEX investment (justified governance)",
-    description: "Zakup środków trwałych. Procedury CAPEX są uzasadnione — wysoka wartość, długi horyzont, governance to tu wartość, nie koszt. Jednak nawet tu można skrócić o 30%.",
-    descriptionEn: "Fixed asset procurement. CAPEX procedures are justified — high value, long horizon, governance is value here, not overhead. Yet even here 30% reduction is achievable.",
+    description: "Zakup środków trwałych. Procedury CAPEX mogą być uzasadnione przez wysoką wartość, długi horyzont i wymagania governance; potencjał skrócenia wymaga danych.",
+    descriptionEn: "Fixed asset procurement. CAPEX procedures may be justified by high value, long horizon, and governance needs; any compression potential requires evidence.",
   },
   catalog_order: {
     category: "operational",
@@ -650,9 +659,6 @@ export function deriveRigidDays(
   processPhase?: "upstream" | "downstream",
   spendType?: "direct" | "indirect"
 ): number {
-  // Base sum of template days
-  let total = steps.reduce((sum, s) => sum + s.rigidDays, 0);
-
   // Deepened per-step contextual adjustment (pogłębienie modelu)
   // In Upstream + Direct the most strategic/risky steps require materially more calendar time:
   // more alignment rounds, legal reviews, board-level prep, risk workshops, supplier iterations.
@@ -689,10 +695,6 @@ export function deriveFlexibleDays(
   processPhase?: "upstream" | "downstream",
   spendType?: "direct" | "indirect"
 ): number {
-  let base = steps
-    .filter((s) => s.flexibleDays !== null)
-    .reduce((sum, s) => sum + (s.flexibleDays ?? 0), 0);
-
   const compression = getFlexibleTimeCompression(processPhase);
 
   // Deepened: in flexible path, Upstream+Direct benefits from the largest time compression
@@ -744,9 +746,9 @@ export function deriveStaffCost(
 
         // === Deepened contextual adjustments (Direct/Indirect + Upstream/Downstream) ===
         // Academic justification (for paper):
-        // These multipliers are calibrated based on practitioner interviews and observed behavior in
-        // procurement organizations. In Upstream + Direct contexts, C-level and legal spend dramatically
-        // more time due to risk, governance, and strategic importance.
+        // These multipliers are unvalidated modeling assumptions derived from the conceptual framework.
+        // They are exposed for sensitivity analysis and require calibration with organizational data.
+        // In Upstream + Direct contexts, the model assumes materially more senior and legal effort.
         // In Downstream + Indirect, the work is much more transactional and buyer-driven.
 
         // Upstream = strategic work: heavy involvement of seniors, legal, risk management
@@ -807,10 +809,44 @@ export function deriveStaffCost(
           }
         }
 
-        return stepTotal + (effectiveHours * rate.count * rate.dailyRate) / 8;
+        const count = Math.max(0, rate.count);
+        const dailyRate = Math.max(0, rate.dailyRate);
+        return stepTotal + (effectiveHours * count * dailyRate) / 8;
       },
       0
     );
     return total + stepCost;
   }, 0);
+}
+
+export function deriveStaffCostByRole(
+  steps: ProcessStep[],
+  flexible: boolean,
+  stakeholders: Record<StakeholderRole, { count: number; dailyRate: number }>,
+  processPhase?: "upstream" | "downstream",
+  spendType?: "direct" | "indirect"
+): Record<StakeholderRole, number> {
+  return Object.fromEntries(
+    STAKEHOLDER_ROLES.map((selectedRole) => {
+      const isolatedStakeholders = Object.fromEntries(
+        STAKEHOLDER_ROLES.map((role) => [
+          role,
+          role === selectedRole
+            ? stakeholders[role]
+            : { count: 0, dailyRate: stakeholders[role].dailyRate },
+        ]),
+      ) as Record<StakeholderRole, { count: number; dailyRate: number }>;
+
+      return [
+        selectedRole,
+        deriveStaffCost(
+          steps,
+          flexible,
+          isolatedStakeholders,
+          processPhase,
+          spendType,
+        ),
+      ];
+    }),
+  ) as Record<StakeholderRole, number>;
 }

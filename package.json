@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "tsc -p tsconfig.test.json && node --test .test-dist/tests/calculations.test.js .test-dist/tests/optimizer.test.js",
+    "replicate": "tsc -p tsconfig.test.json && node .test-dist/scripts/generate-replication.js"
   },
   "dependencies": {
     "@radix-ui/react-select": "^2.2.6",

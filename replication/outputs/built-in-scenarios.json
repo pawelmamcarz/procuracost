@@ -1,0 +1,1366 @@
+{
+  "modelVersion": "1.2.0",
+  "evidenceStatus": "Deterministic model outputs under illustrative inputs; not empirical estimates of realized organizational effects.",
+  "scenarios": [
+    {
+      "scenarioId": "fleet",
+      "scenarioName": "Vehicle Fleet Procurement",
+      "context": {
+        "spendType": "direct",
+        "processPhase": "upstream"
+      },
+      "inputs": {
+        "contractValue": 5000000,
+        "tcoHorizonYears": 2,
+        "spendType": "direct",
+        "processPhase": "upstream",
+        "processType": "private_formal",
+        "techLevel": "partial_erp",
+        "stakeholders": {
+          "requestor": {
+            "count": 1,
+            "dailyRate": 900
+          },
+          "buyer": {
+            "count": 3,
+            "dailyRate": 800
+          },
+          "lawyer": {
+            "count": 1,
+            "dailyRate": 1200
+          },
+          "finance": {
+            "count": 1,
+            "dailyRate": 900
+          },
+          "manager": {
+            "count": 1,
+            "dailyRate": 1500
+          },
+          "executive": {
+            "count": 1,
+            "dailyRate": 2500
+          }
+        },
+        "dailyCostOfInaction": 5000,
+        "renegotiationCost": 150000,
+        "bypassAuditExposure": 500000
+      },
+      "results": {
+        "rigid": {
+          "timeCost": 49213.08203125,
+          "adminCost": 7310,
+          "opportunityCost": 210000,
+          "productivityCost": 0,
+          "renegotiationCost": 51329.85,
+          "tcoCost": 972000.0000000001,
+          "bypassCost": 218142.88183577245,
+          "total": 1507995.8138670225,
+          "days": 47,
+          "staffCost": 49213.08203125,
+          "coordCost": 6110,
+          "toolCost": 1200
+        },
+        "flexible": {
+          "timeCost": 49213.08203125,
+          "adminCost": 2570,
+          "opportunityCost": 0,
+          "productivityCost": 0,
+          "renegotiationCost": 23100,
+          "tcoCost": 243000.00000000003,
+          "bypassCost": 7500,
+          "total": 325383.08203125,
+          "days": 17,
+          "staffCost": 49213.08203125,
+          "coordCost": 2210,
+          "toolCost": 360
+        },
+        "delta": 1182612.7318357725,
+        "deltaPercent": 363.45243411339794,
+        "bypassProbability": 0.4362857636715449,
+        "flexibleBypassProbability": 0.015,
+        "rigidDays": 47,
+        "flexibleDays": 17,
+        "trace": {
+          "sanitizedInputs": {
+            "contractValue": 5000000,
+            "tcoHorizonYears": 2,
+            "dailyCostOfInaction": 5000,
+            "renegotiationCost": 150000,
+            "bypassAuditExposure": 500000
+          },
+          "dimensions": {
+            "tcoMultiplier": 1.62,
+            "delayMultiplier": 1.4,
+            "bypassMultiplier": 1.4375,
+            "renegotiationMultiplier": 1.5869999999999997,
+            "staffIntensityMultiplier": 1.4375,
+            "coordinationIntensityMultiplier": 1.3
+          },
+          "process": {
+            "processType": "private_formal",
+            "techLevel": "partial_erp",
+            "stepCount": 6,
+            "baseRigidity": 0.6
+          },
+          "days": {
+            "rigid": 47,
+            "flexible": 17,
+            "delay": 30
+          },
+          "staffCostsByRole": {
+            "rigid": {
+              "buyer": 21346.875,
+              "lawyer": 12834,
+              "finance": 6112.96875,
+              "manager": 2223.6328125,
+              "executive": 5401.855468750001,
+              "requestor": 1293.75
+            },
+            "flexible": {
+              "buyer": 21346.875,
+              "lawyer": 12834,
+              "finance": 6112.96875,
+              "manager": 2223.6328125,
+              "executive": 5401.855468750001,
+              "requestor": 1293.75
+            }
+          },
+          "coordinationCosts": {
+            "rigid": 6110,
+            "flexible": 2210
+          },
+          "toolCosts": {
+            "rigid": 1200,
+            "flexible": 360
+          },
+          "opportunity": {
+            "rigidPricePremium": 0,
+            "rigidDelayCost": 210000
+          },
+          "productivityCosts": {
+            "rigid": 0,
+            "flexible": 0
+          },
+          "renegotiation": {
+            "rigidProbability": 0.342199,
+            "flexibleProbability": 0.154,
+            "rigidExpectedCost": 51329.85,
+            "flexibleExpectedCost": 23100
+          },
+          "tcoForegone": {
+            "rigidRate": 0.19440000000000002,
+            "flexibleRate": 0.048600000000000004,
+            "rigid": 972000.0000000001,
+            "flexible": 243000.00000000003
+          },
+          "bypass": {
+            "effectiveRigidity": 0.47437500000000005,
+            "rigidProbability": 0.4362857636715449,
+            "flexibleProbability": 0.015,
+            "rigidExpectedCost": 218142.88183577245,
+            "flexibleExpectedCost": 7500
+          }
+        },
+        "sources": {
+          "timeCost": "OECD Public Procurement Performance (2023)",
+          "opportunityCost": "User-supplied daily cost of inaction × model-derived delay days; no exogenous price premium is assigned.",
+          "productivityCost": "Inactive in v1.2. Szucs (2024) finds adverse effects from high discretion, so it cannot support a rigidity penalty without a separate governance-risk model.",
+          "renegotiationCost": "Beuve, Moszoro & Saussier (2021). Contractual Rigidity and Political Contestability. NBER wp28491",
+          "tcoCost": "Modeling assumption: 10% annual TCO opportunity, exposed for sensitivity analysis; external calibration pending.",
+          "bypassCost": "Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) The Challenger Launch Decision; Holmström & Milgrom (1991) Multitask Principal-Agent"
+        }
+      }
+    },
+    {
+      "scenarioId": "erp",
+      "scenarioName": "IT/ERP Contract",
+      "context": {
+        "spendType": "indirect",
+        "processPhase": "upstream"
+      },
+      "inputs": {
+        "contractValue": 3000000,
+        "tcoHorizonYears": 3,
+        "spendType": "indirect",
+        "processPhase": "upstream",
+        "processType": "private_formal",
+        "techLevel": "sourcing_tool",
+        "stakeholders": {
+          "requestor": {
+            "count": 2,
+            "dailyRate": 1200
+          },
+          "buyer": {
+            "count": 2,
+            "dailyRate": 1200
+          },
+          "lawyer": {
+            "count": 1,
+            "dailyRate": 1500
+          },
+          "finance": {
+            "count": 1,
+            "dailyRate": 1000
+          },
+          "manager": {
+            "count": 2,
+            "dailyRate": 1800
+          },
+          "executive": {
+            "count": 1,
+            "dailyRate": 3000
+          }
+        },
+        "dailyCostOfInaction": 15000,
+        "renegotiationCost": 300000,
+        "bypassAuditExposure": 300000
+      },
+      "results": {
+        "rigid": {
+          "timeCost": 44526.953125,
+          "adminCost": 14060,
+          "opportunityCost": 651000,
+          "productivityCost": 0,
+          "renegotiationCost": 93720,
+          "tcoCost": 540000.0000000001,
+          "bypassCost": 219317.57358900146,
+          "total": 1562624.5267140015,
+          "days": 51,
+          "staffCost": 44526.953125,
+          "coordCost": 13260,
+          "toolCost": 800
+        },
+        "flexible": {
+          "timeCost": 44526.953125,
+          "adminCost": 5440,
+          "opportunityCost": 0,
+          "productivityCost": 0,
+          "renegotiationCost": 46200,
+          "tcoCost": 135000.00000000003,
+          "bypassCost": 6600.000000000001,
+          "total": 237766.95312500003,
+          "days": 20,
+          "staffCost": 44526.953125,
+          "coordCost": 5200,
+          "toolCost": 240
+        },
+        "delta": 1324857.5735890015,
+        "deltaPercent": 557.2084581882541,
+        "bypassProbability": 0.7310585786300049,
+        "flexibleBypassProbability": 0.022000000000000002,
+        "rigidDays": 51,
+        "flexibleDays": 20,
+        "trace": {
+          "sanitizedInputs": {
+            "contractValue": 3000000,
+            "tcoHorizonYears": 3,
+            "dailyCostOfInaction": 15000,
+            "renegotiationCost": 300000,
+            "bypassAuditExposure": 300000
+          },
+          "dimensions": {
+            "tcoMultiplier": 1,
+            "delayMultiplier": 1.4,
+            "bypassMultiplier": 1.25,
+            "renegotiationMultiplier": 1.2,
+            "staffIntensityMultiplier": 1.25,
+            "coordinationIntensityMultiplier": 1.3
+          },
+          "process": {
+            "processType": "private_formal",
+            "techLevel": "sourcing_tool",
+            "stepCount": 6,
+            "baseRigidity": 0.6
+          },
+          "days": {
+            "rigid": 51,
+            "flexible": 20,
+            "delay": 31
+          },
+          "staffCostsByRole": {
+            "rigid": {
+              "buyer": 18562.5,
+              "lawyer": 11625,
+              "finance": 4375,
+              "manager": 3712.5,
+              "executive": 3251.9531250000005,
+              "requestor": 3000
+            },
+            "flexible": {
+              "buyer": 18562.5,
+              "lawyer": 11625,
+              "finance": 4375,
+              "manager": 3712.5,
+              "executive": 3251.9531250000005,
+              "requestor": 3000
+            }
+          },
+          "coordinationCosts": {
+            "rigid": 13260,
+            "flexible": 5200
+          },
+          "toolCosts": {
+            "rigid": 800,
+            "flexible": 240
+          },
+          "opportunity": {
+            "rigidPricePremium": 0,
+            "rigidDelayCost": 651000
+          },
+          "productivityCosts": {
+            "rigid": 0,
+            "flexible": 0
+          },
+          "renegotiation": {
+            "rigidProbability": 0.3124,
+            "flexibleProbability": 0.154,
+            "rigidExpectedCost": 93720,
+            "flexibleExpectedCost": 46200
+          },
+          "tcoForegone": {
+            "rigidRate": 0.18000000000000002,
+            "flexibleRate": 0.045000000000000005,
+            "rigid": 540000.0000000001,
+            "flexible": 135000.00000000003
+          },
+          "bypass": {
+            "effectiveRigidity": 0.6,
+            "rigidProbability": 0.7310585786300049,
+            "flexibleProbability": 0.022000000000000002,
+            "rigidExpectedCost": 219317.57358900146,
+            "flexibleExpectedCost": 6600.000000000001
+          }
+        },
+        "sources": {
+          "timeCost": "OECD Public Procurement Performance (2023)",
+          "opportunityCost": "User-supplied daily cost of inaction × model-derived delay days; no exogenous price premium is assigned.",
+          "productivityCost": "Inactive in v1.2. Szucs (2024) finds adverse effects from high discretion, so it cannot support a rigidity penalty without a separate governance-risk model.",
+          "renegotiationCost": "Beuve, Moszoro & Saussier (2021). Contractual Rigidity and Political Contestability. NBER wp28491",
+          "tcoCost": "Modeling assumption: 10% annual TCO opportunity, exposed for sensitivity analysis; external calibration pending.",
+          "bypassCost": "Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) The Challenger Launch Decision; Holmström & Milgrom (1991) Multitask Principal-Agent"
+        }
+      }
+    },
+    {
+      "scenarioId": "logistics",
+      "scenarioName": "Logistics Services",
+      "context": {
+        "spendType": "indirect",
+        "processPhase": "upstream"
+      },
+      "inputs": {
+        "contractValue": 8000000,
+        "tcoHorizonYears": 3,
+        "spendType": "indirect",
+        "processPhase": "upstream",
+        "processType": "private_formal",
+        "techLevel": "partial_erp",
+        "stakeholders": {
+          "requestor": {
+            "count": 1,
+            "dailyRate": 900
+          },
+          "buyer": {
+            "count": 2,
+            "dailyRate": 900
+          },
+          "lawyer": {
+            "count": 1,
+            "dailyRate": 1300
+          },
+          "finance": {
+            "count": 1,
+            "dailyRate": 1000
+          },
+          "manager": {
+            "count": 1,
+            "dailyRate": 1600
+          },
+          "executive": {
+            "count": 1,
+            "dailyRate": 2800
+          }
+        },
+        "dailyCostOfInaction": 20000,
+        "renegotiationCost": 400000,
+        "bypassAuditExposure": 800000
+      },
+      "results": {
+        "rigid": {
+          "timeCost": 34182.03125,
+          "adminCost": 6920,
+          "opportunityCost": 728000,
+          "productivityCost": 0,
+          "renegotiationCost": 124960,
+          "tcoCost": 1440000.0000000002,
+          "bypassCost": 235371.97773039108,
+          "total": 2569434.008980391,
+          "days": 44,
+          "staffCost": 34182.03125,
+          "coordCost": 5720,
+          "toolCost": 1200
+        },
+        "flexible": {
+          "timeCost": 34182.03125,
+          "adminCost": 2700,
+          "opportunityCost": 0,
+          "productivityCost": 0,
+          "renegotiationCost": 61600,
+          "tcoCost": 360000.00000000006,
+          "bypassCost": 12000,
+          "total": 470482.03125000006,
+          "days": 18,
+          "staffCost": 34182.03125,
+          "coordCost": 2340,
+          "toolCost": 360
+        },
+        "delta": 2098951.977730391,
+        "deltaPercent": 446.12797903328874,
+        "bypassProbability": 0.29421497216298886,
+        "flexibleBypassProbability": 0.015,
+        "rigidDays": 44,
+        "flexibleDays": 18,
+        "trace": {
+          "sanitizedInputs": {
+            "contractValue": 8000000,
+            "tcoHorizonYears": 3,
+            "dailyCostOfInaction": 20000,
+            "renegotiationCost": 400000,
+            "bypassAuditExposure": 800000
+          },
+          "dimensions": {
+            "tcoMultiplier": 1,
+            "delayMultiplier": 1.4,
+            "bypassMultiplier": 1.25,
+            "renegotiationMultiplier": 1.2,
+            "staffIntensityMultiplier": 1.25,
+            "coordinationIntensityMultiplier": 1.3
+          },
+          "process": {
+            "processType": "private_formal",
+            "techLevel": "partial_erp",
+            "stepCount": 6,
+            "baseRigidity": 0.6
+          },
+          "days": {
+            "rigid": 44,
+            "flexible": 18,
+            "delay": 26
+          },
+          "staffCostsByRole": {
+            "rigid": {
+              "buyer": 13921.875,
+              "lawyer": 10075,
+              "finance": 4375,
+              "manager": 1650,
+              "executive": 3035.1562500000005,
+              "requestor": 1125
+            },
+            "flexible": {
+              "buyer": 13921.875,
+              "lawyer": 10075,
+              "finance": 4375,
+              "manager": 1650,
+              "executive": 3035.1562500000005,
+              "requestor": 1125
+            }
+          },
+          "coordinationCosts": {
+            "rigid": 5720,
+            "flexible": 2340
+          },
+          "toolCosts": {
+            "rigid": 1200,
+            "flexible": 360
+          },
+          "opportunity": {
+            "rigidPricePremium": 0,
+            "rigidDelayCost": 728000
+          },
+          "productivityCosts": {
+            "rigid": 0,
+            "flexible": 0
+          },
+          "renegotiation": {
+            "rigidProbability": 0.3124,
+            "flexibleProbability": 0.154,
+            "rigidExpectedCost": 124960,
+            "flexibleExpectedCost": 61600
+          },
+          "tcoForegone": {
+            "rigidRate": 0.18000000000000002,
+            "flexibleRate": 0.045000000000000005,
+            "rigid": 1440000.0000000002,
+            "flexible": 360000.00000000006
+          },
+          "bypass": {
+            "effectiveRigidity": 0.41250000000000003,
+            "rigidProbability": 0.29421497216298886,
+            "flexibleProbability": 0.015,
+            "rigidExpectedCost": 235371.97773039108,
+            "flexibleExpectedCost": 12000
+          }
+        },
+        "sources": {
+          "timeCost": "OECD Public Procurement Performance (2023)",
+          "opportunityCost": "User-supplied daily cost of inaction × model-derived delay days; no exogenous price premium is assigned.",
+          "productivityCost": "Inactive in v1.2. Szucs (2024) finds adverse effects from high discretion, so it cannot support a rigidity penalty without a separate governance-risk model.",
+          "renegotiationCost": "Beuve, Moszoro & Saussier (2021). Contractual Rigidity and Political Contestability. NBER wp28491",
+          "tcoCost": "Modeling assumption: 10% annual TCO opportunity, exposed for sensitivity analysis; external calibration pending.",
+          "bypassCost": "Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) The Challenger Launch Decision; Holmström & Milgrom (1991) Multitask Principal-Agent"
+        }
+      }
+    },
+    {
+      "scenarioId": "production",
+      "scenarioName": "Production Materials",
+      "context": {
+        "spendType": "direct",
+        "processPhase": "upstream"
+      },
+      "inputs": {
+        "contractValue": 12000000,
+        "tcoHorizonYears": 1,
+        "spendType": "direct",
+        "processPhase": "upstream",
+        "processType": "private_formal",
+        "techLevel": "manual",
+        "stakeholders": {
+          "requestor": {
+            "count": 2,
+            "dailyRate": 800
+          },
+          "buyer": {
+            "count": 2,
+            "dailyRate": 700
+          },
+          "lawyer": {
+            "count": 1,
+            "dailyRate": 1200
+          },
+          "finance": {
+            "count": 1,
+            "dailyRate": 800
+          },
+          "manager": {
+            "count": 1,
+            "dailyRate": 1400
+          },
+          "executive": {
+            "count": 1,
+            "dailyRate": 2500
+          }
+        },
+        "dailyCostOfInaction": 50000,
+        "renegotiationCost": 500000,
+        "bypassAuditExposure": 1200000
+      },
+      "results": {
+        "rigid": {
+          "timeCost": 40497.33984375,
+          "adminCost": 42250,
+          "opportunityCost": 2870000,
+          "productivityCost": 0,
+          "renegotiationCost": 171099.5,
+          "tcoCost": 1166400,
+          "bypassCost": 1191968.5788908582,
+          "total": 5482215.418734608,
+          "days": 65,
+          "staffCost": 40497.33984375,
+          "coordCost": 42250,
+          "toolCost": 0
+        },
+        "flexible": {
+          "timeCost": 40497.33984375,
+          "adminCost": 15600,
+          "opportunityCost": 0,
+          "productivityCost": 0,
+          "renegotiationCost": 77000,
+          "tcoCost": 291600,
+          "bypassCost": 41999.99999999999,
+          "total": 466697.33984375,
+          "days": 24,
+          "staffCost": 40497.33984375,
+          "coordCost": 15600,
+          "toolCost": 0
+        },
+        "delta": 5015518.078890858,
+        "deltaPercent": 1074.683237013961,
+        "bypassProbability": 0.9933071490757153,
+        "flexibleBypassProbability": 0.034999999999999996,
+        "rigidDays": 65,
+        "flexibleDays": 24,
+        "trace": {
+          "sanitizedInputs": {
+            "contractValue": 12000000,
+            "tcoHorizonYears": 1,
+            "dailyCostOfInaction": 50000,
+            "renegotiationCost": 500000,
+            "bypassAuditExposure": 1200000
+          },
+          "dimensions": {
+            "tcoMultiplier": 1.62,
+            "delayMultiplier": 1.4,
+            "bypassMultiplier": 1.4375,
+            "renegotiationMultiplier": 1.5869999999999997,
+            "staffIntensityMultiplier": 1.4375,
+            "coordinationIntensityMultiplier": 1.3
+          },
+          "process": {
+            "processType": "private_formal",
+            "techLevel": "manual",
+            "stepCount": 6,
+            "baseRigidity": 0.6
+          },
+          "days": {
+            "rigid": 65,
+            "flexible": 24,
+            "delay": 41
+          },
+          "staffCostsByRole": {
+            "rigid": {
+              "buyer": 12452.34375,
+              "lawyer": 12834,
+              "finance": 5433.75,
+              "manager": 2075.390625,
+              "executive": 5401.855468750001,
+              "requestor": 2300
+            },
+            "flexible": {
+              "buyer": 12452.34375,
+              "lawyer": 12834,
+              "finance": 5433.75,
+              "manager": 2075.390625,
+              "executive": 5401.855468750001,
+              "requestor": 2300
+            }
+          },
+          "coordinationCosts": {
+            "rigid": 42250,
+            "flexible": 15600
+          },
+          "toolCosts": {
+            "rigid": 0,
+            "flexible": 0
+          },
+          "opportunity": {
+            "rigidPricePremium": 0,
+            "rigidDelayCost": 2870000
+          },
+          "productivityCosts": {
+            "rigid": 0,
+            "flexible": 0
+          },
+          "renegotiation": {
+            "rigidProbability": 0.342199,
+            "flexibleProbability": 0.154,
+            "rigidExpectedCost": 171099.5,
+            "flexibleExpectedCost": 77000
+          },
+          "tcoForegone": {
+            "rigidRate": 0.09720000000000001,
+            "flexibleRate": 0.024300000000000002,
+            "rigid": 1166400,
+            "flexible": 291600
+          },
+          "bypass": {
+            "effectiveRigidity": 1,
+            "rigidProbability": 0.9933071490757153,
+            "flexibleProbability": 0.034999999999999996,
+            "rigidExpectedCost": 1191968.5788908582,
+            "flexibleExpectedCost": 41999.99999999999
+          }
+        },
+        "sources": {
+          "timeCost": "OECD Public Procurement Performance (2023)",
+          "opportunityCost": "User-supplied daily cost of inaction × model-derived delay days; no exogenous price premium is assigned.",
+          "productivityCost": "Inactive in v1.2. Szucs (2024) finds adverse effects from high discretion, so it cannot support a rigidity penalty without a separate governance-risk model.",
+          "renegotiationCost": "Beuve, Moszoro & Saussier (2021). Contractual Rigidity and Political Contestability. NBER wp28491",
+          "tcoCost": "Modeling assumption: 10% annual TCO opportunity, exposed for sensitivity analysis; external calibration pending.",
+          "bypassCost": "Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) The Challenger Launch Decision; Holmström & Milgrom (1991) Multitask Principal-Agent"
+        }
+      }
+    },
+    {
+      "scenarioId": "pipe_vs_field",
+      "scenarioName": "Tunnel vs Field",
+      "context": {
+        "spendType": "direct",
+        "processPhase": "upstream"
+      },
+      "inputs": {
+        "contractValue": 5000000,
+        "tcoHorizonYears": 3,
+        "spendType": "direct",
+        "processPhase": "upstream",
+        "processType": "pzp_eu",
+        "techLevel": "partial_erp",
+        "stakeholders": {
+          "requestor": {
+            "count": 1,
+            "dailyRate": 900
+          },
+          "buyer": {
+            "count": 2,
+            "dailyRate": 900
+          },
+          "lawyer": {
+            "count": 1,
+            "dailyRate": 1300
+          },
+          "finance": {
+            "count": 1,
+            "dailyRate": 900
+          },
+          "manager": {
+            "count": 1,
+            "dailyRate": 1500
+          },
+          "executive": {
+            "count": 1,
+            "dailyRate": 2500
+          }
+        },
+        "dailyCostOfInaction": 10000,
+        "renegotiationCost": 200000,
+        "bypassAuditExposure": 600000
+      },
+      "results": {
+        "rigid": {
+          "timeCost": 66757.958203125,
+          "adminCost": 15110,
+          "opportunityCost": 1330000,
+          "productivityCost": 0,
+          "renegotiationCost": 68439.79999999999,
+          "tcoCost": 1500000,
+          "bypassCost": 554943.0187164616,
+          "total": 3535250.7769195866,
+          "days": 107,
+          "staffCost": 66757.958203125,
+          "coordCost": 13910,
+          "toolCost": 1200
+        },
+        "flexible": {
+          "timeCost": 38386.577734375,
+          "adminCost": 1920,
+          "opportunityCost": 0,
+          "productivityCost": 0,
+          "renegotiationCost": 30800,
+          "tcoCost": 364500.00000000006,
+          "bypassCost": 9000,
+          "total": 444606.577734375,
+          "days": 12,
+          "staffCost": 38386.577734375,
+          "coordCost": 1560,
+          "toolCost": 360
+        },
+        "delta": 3090644.1991852117,
+        "deltaPercent": 695.1413573174082,
+        "bypassProbability": 0.9249050311941027,
+        "flexibleBypassProbability": 0.015,
+        "rigidDays": 107,
+        "flexibleDays": 12,
+        "trace": {
+          "sanitizedInputs": {
+            "contractValue": 5000000,
+            "tcoHorizonYears": 3,
+            "dailyCostOfInaction": 10000,
+            "renegotiationCost": 200000,
+            "bypassAuditExposure": 600000
+          },
+          "dimensions": {
+            "tcoMultiplier": 1.62,
+            "delayMultiplier": 1.4,
+            "bypassMultiplier": 1.4375,
+            "renegotiationMultiplier": 1.5869999999999997,
+            "staffIntensityMultiplier": 1.4375,
+            "coordinationIntensityMultiplier": 1.3
+          },
+          "process": {
+            "processType": "pzp_eu",
+            "techLevel": "partial_erp",
+            "stepCount": 8,
+            "baseRigidity": 0.95
+          },
+          "days": {
+            "rigid": 107,
+            "flexible": 12,
+            "delay": 95
+          },
+          "staffCostsByRole": {
+            "rigid": {
+              "buyer": 21346.875,
+              "lawyer": 23722.846875,
+              "finance": 4890.375,
+              "manager": 2223.6328125,
+              "executive": 9399.228515625002,
+              "requestor": 5175
+            },
+            "flexible": {
+              "buyer": 12614.0625,
+              "lawyer": 11644.18125,
+              "finance": 4890.375,
+              "manager": 2223.6328125,
+              "executive": 3133.0761718750005,
+              "requestor": 3881.25
+            }
+          },
+          "coordinationCosts": {
+            "rigid": 13910,
+            "flexible": 1560
+          },
+          "toolCosts": {
+            "rigid": 1200,
+            "flexible": 360
+          },
+          "opportunity": {
+            "rigidPricePremium": 0,
+            "rigidDelayCost": 1330000
+          },
+          "productivityCosts": {
+            "rigid": 0,
+            "flexible": 0
+          },
+          "renegotiation": {
+            "rigidProbability": 0.342199,
+            "flexibleProbability": 0.154,
+            "rigidExpectedCost": 68439.79999999999,
+            "flexibleExpectedCost": 30800
+          },
+          "tcoForegone": {
+            "rigidRate": 0.3,
+            "flexibleRate": 0.0729,
+            "rigid": 1500000,
+            "flexible": 364500.00000000006
+          },
+          "bypass": {
+            "effectiveRigidity": 0.7510937499999999,
+            "rigidProbability": 0.9249050311941027,
+            "flexibleProbability": 0.015,
+            "rigidExpectedCost": 554943.0187164616,
+            "flexibleExpectedCost": 9000
+          }
+        },
+        "sources": {
+          "timeCost": "OECD Public Procurement Performance (2023)",
+          "opportunityCost": "User-supplied daily cost of inaction × model-derived delay days; no exogenous price premium is assigned.",
+          "productivityCost": "Inactive in v1.2. Szucs (2024) finds adverse effects from high discretion, so it cannot support a rigidity penalty without a separate governance-risk model.",
+          "renegotiationCost": "Beuve, Moszoro & Saussier (2021). Contractual Rigidity and Political Contestability. NBER wp28491",
+          "tcoCost": "Modeling assumption: 10% annual TCO opportunity, exposed for sensitivity analysis; external calibration pending.",
+          "bypassCost": "Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) The Challenger Launch Decision; Holmström & Milgrom (1991) Multitask Principal-Agent"
+        }
+      }
+    },
+    {
+      "scenarioId": "catalog",
+      "scenarioName": "Catalog Order",
+      "context": {
+        "spendType": "indirect",
+        "processPhase": "downstream"
+      },
+      "inputs": {
+        "contractValue": 50000,
+        "tcoHorizonYears": 1,
+        "spendType": "indirect",
+        "processPhase": "downstream",
+        "processType": "catalog_order",
+        "techLevel": "end_to_end",
+        "stakeholders": {
+          "requestor": {
+            "count": 2,
+            "dailyRate": 800
+          },
+          "buyer": {
+            "count": 1,
+            "dailyRate": 800
+          },
+          "lawyer": {
+            "count": 0,
+            "dailyRate": 1200
+          },
+          "finance": {
+            "count": 0,
+            "dailyRate": 900
+          },
+          "manager": {
+            "count": 1,
+            "dailyRate": 1500
+          },
+          "executive": {
+            "count": 0,
+            "dailyRate": 2500
+          }
+        },
+        "dailyCostOfInaction": 500,
+        "renegotiationCost": 0,
+        "bypassAuditExposure": 10000
+      },
+      "results": {
+        "rigid": {
+          "timeCost": 906.46875,
+          "adminCost": 2034,
+          "opportunityCost": 0,
+          "productivityCost": 0,
+          "renegotiationCost": 0,
+          "tcoCost": 1000.0000000000002,
+          "bypassCost": 81.62571153159897,
+          "total": 4022.094461531599,
+          "days": 2,
+          "staffCost": 906.46875,
+          "coordCost": 34,
+          "toolCost": 2000
+        },
+        "flexible": {
+          "timeCost": 906.46875,
+          "adminCost": 634,
+          "opportunityCost": 0,
+          "productivityCost": 0,
+          "renegotiationCost": 0,
+          "tcoCost": 750,
+          "bypassCost": 50.00000000000001,
+          "total": 2340.46875,
+          "days": 2,
+          "staffCost": 906.46875,
+          "coordCost": 34,
+          "toolCost": 600
+        },
+        "delta": 1681.6257115315989,
+        "deltaPercent": 71.84995362709282,
+        "bypassProbability": 0.008162571153159897,
+        "flexibleBypassProbability": 0.005000000000000001,
+        "rigidDays": 2,
+        "flexibleDays": 2,
+        "trace": {
+          "sanitizedInputs": {
+            "contractValue": 50000,
+            "tcoHorizonYears": 1,
+            "dailyCostOfInaction": 500,
+            "renegotiationCost": 0,
+            "bypassAuditExposure": 10000
+          },
+          "dimensions": {
+            "tcoMultiplier": 1,
+            "delayMultiplier": 0.9,
+            "bypassMultiplier": 1,
+            "renegotiationMultiplier": 1,
+            "staffIntensityMultiplier": 1,
+            "coordinationIntensityMultiplier": 0.85
+          },
+          "process": {
+            "processType": "catalog_order",
+            "techLevel": "end_to_end",
+            "stepCount": 3,
+            "baseRigidity": 0.2
+          },
+          "days": {
+            "rigid": 2,
+            "flexible": 2,
+            "delay": 0
+          },
+          "staffCostsByRole": {
+            "rigid": {
+              "buyer": 120.00000000000001,
+              "lawyer": 0,
+              "finance": 0,
+              "manager": 30.46875,
+              "executive": 0,
+              "requestor": 756
+            },
+            "flexible": {
+              "buyer": 120.00000000000001,
+              "lawyer": 0,
+              "finance": 0,
+              "manager": 30.46875,
+              "executive": 0,
+              "requestor": 756
+            }
+          },
+          "coordinationCosts": {
+            "rigid": 34,
+            "flexible": 34
+          },
+          "toolCosts": {
+            "rigid": 2000,
+            "flexible": 600
+          },
+          "opportunity": {
+            "rigidPricePremium": 0,
+            "rigidDelayCost": 0
+          },
+          "productivityCosts": {
+            "rigid": 0,
+            "flexible": 0
+          },
+          "renegotiation": {
+            "rigidProbability": 0.297,
+            "flexibleProbability": 0.154,
+            "rigidExpectedCost": 0,
+            "flexibleExpectedCost": 0
+          },
+          "tcoForegone": {
+            "rigidRate": 0.020000000000000004,
+            "flexibleRate": 0.015,
+            "rigid": 1000.0000000000002,
+            "flexible": 750
+          },
+          "bypass": {
+            "effectiveRigidity": 0.020000000000000004,
+            "rigidProbability": 0.008162571153159897,
+            "flexibleProbability": 0.005000000000000001,
+            "rigidExpectedCost": 81.62571153159897,
+            "flexibleExpectedCost": 50.00000000000001
+          }
+        },
+        "sources": {
+          "timeCost": "OECD Public Procurement Performance (2023)",
+          "opportunityCost": "User-supplied daily cost of inaction × model-derived delay days; no exogenous price premium is assigned.",
+          "productivityCost": "Inactive in v1.2. Szucs (2024) finds adverse effects from high discretion, so it cannot support a rigidity penalty without a separate governance-risk model.",
+          "renegotiationCost": "Beuve, Moszoro & Saussier (2021). Contractual Rigidity and Political Contestability. NBER wp28491",
+          "tcoCost": "Modeling assumption: 10% annual TCO opportunity, exposed for sensitivity analysis; external calibration pending.",
+          "bypassCost": "Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) The Challenger Launch Decision; Holmström & Milgrom (1991) Multitask Principal-Agent"
+        }
+      }
+    },
+    {
+      "scenarioId": "mrp",
+      "scenarioName": "MRP Order",
+      "context": {
+        "spendType": "direct",
+        "processPhase": "downstream"
+      },
+      "inputs": {
+        "contractValue": 500000,
+        "tcoHorizonYears": 1,
+        "spendType": "direct",
+        "processPhase": "downstream",
+        "processType": "mrp_order",
+        "techLevel": "end_to_end",
+        "stakeholders": {
+          "requestor": {
+            "count": 1,
+            "dailyRate": 800
+          },
+          "buyer": {
+            "count": 1,
+            "dailyRate": 800
+          },
+          "lawyer": {
+            "count": 0,
+            "dailyRate": 1200
+          },
+          "finance": {
+            "count": 0,
+            "dailyRate": 900
+          },
+          "manager": {
+            "count": 0,
+            "dailyRate": 1500
+          },
+          "executive": {
+            "count": 0,
+            "dailyRate": 2500
+          }
+        },
+        "dailyCostOfInaction": 8000,
+        "renegotiationCost": 20000,
+        "bypassAuditExposure": 50000
+      },
+      "results": {
+        "rigid": {
+          "timeCost": 285,
+          "adminCost": 2017,
+          "opportunityCost": 0,
+          "productivityCost": 0,
+          "renegotiationCost": 6171,
+          "tcoCost": 8100.000000000001,
+          "bypassCost": 383.78137239289026,
+          "total": 16956.781372392892,
+          "days": 1,
+          "staffCost": 285,
+          "coordCost": 17,
+          "toolCost": 2000
+        },
+        "flexible": {
+          "timeCost": 285,
+          "adminCost": 617,
+          "opportunityCost": 0,
+          "productivityCost": 0,
+          "renegotiationCost": 3080,
+          "tcoCost": 10125,
+          "bypassCost": 250.00000000000006,
+          "total": 14357,
+          "days": 1,
+          "staffCost": 285,
+          "coordCost": 17,
+          "toolCost": 600
+        },
+        "delta": 2599.781372392892,
+        "deltaPercent": 18.108110137165788,
+        "bypassProbability": 0.0076756274478578055,
+        "flexibleBypassProbability": 0.005000000000000001,
+        "rigidDays": 1,
+        "flexibleDays": 1,
+        "trace": {
+          "sanitizedInputs": {
+            "contractValue": 500000,
+            "tcoHorizonYears": 1,
+            "dailyCostOfInaction": 8000,
+            "renegotiationCost": 20000,
+            "bypassAuditExposure": 50000
+          },
+          "dimensions": {
+            "tcoMultiplier": 1.35,
+            "delayMultiplier": 0.9,
+            "bypassMultiplier": 1.15,
+            "renegotiationMultiplier": 1.15,
+            "staffIntensityMultiplier": 1,
+            "coordinationIntensityMultiplier": 0.85
+          },
+          "process": {
+            "processType": "mrp_order",
+            "techLevel": "end_to_end",
+            "stepCount": 3,
+            "baseRigidity": 0.12
+          },
+          "days": {
+            "rigid": 1,
+            "flexible": 1,
+            "delay": 0
+          },
+          "staffCostsByRole": {
+            "rigid": {
+              "buyer": 150,
+              "lawyer": 0,
+              "finance": 0,
+              "manager": 0,
+              "executive": 0,
+              "requestor": 135
+            },
+            "flexible": {
+              "buyer": 150,
+              "lawyer": 0,
+              "finance": 0,
+              "manager": 0,
+              "executive": 0,
+              "requestor": 135
+            }
+          },
+          "coordinationCosts": {
+            "rigid": 17,
+            "flexible": 17
+          },
+          "toolCosts": {
+            "rigid": 2000,
+            "flexible": 600
+          },
+          "opportunity": {
+            "rigidPricePremium": 0,
+            "rigidDelayCost": 0
+          },
+          "productivityCosts": {
+            "rigid": 0,
+            "flexible": 0
+          },
+          "renegotiation": {
+            "rigidProbability": 0.30855,
+            "flexibleProbability": 0.154,
+            "rigidExpectedCost": 6171,
+            "flexibleExpectedCost": 3080
+          },
+          "tcoForegone": {
+            "rigidRate": 0.016200000000000003,
+            "flexibleRate": 0.02025,
+            "rigid": 8100.000000000001,
+            "flexible": 10125
+          },
+          "bypass": {
+            "effectiveRigidity": 0.0138,
+            "rigidProbability": 0.0076756274478578055,
+            "flexibleProbability": 0.005000000000000001,
+            "rigidExpectedCost": 383.78137239289026,
+            "flexibleExpectedCost": 250.00000000000006
+          }
+        },
+        "sources": {
+          "timeCost": "OECD Public Procurement Performance (2023)",
+          "opportunityCost": "User-supplied daily cost of inaction × model-derived delay days; no exogenous price premium is assigned.",
+          "productivityCost": "Inactive in v1.2. Szucs (2024) finds adverse effects from high discretion, so it cannot support a rigidity penalty without a separate governance-risk model.",
+          "renegotiationCost": "Beuve, Moszoro & Saussier (2021). Contractual Rigidity and Political Contestability. NBER wp28491",
+          "tcoCost": "Modeling assumption: 10% annual TCO opportunity, exposed for sensitivity analysis; external calibration pending.",
+          "bypassCost": "Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) The Challenger Launch Decision; Holmström & Milgrom (1991) Multitask Principal-Agent"
+        }
+      }
+    },
+    {
+      "scenarioId": "capex_investment",
+      "scenarioName": "CAPEX Investment",
+      "context": {
+        "spendType": "direct",
+        "processPhase": "upstream"
+      },
+      "inputs": {
+        "contractValue": 15000000,
+        "tcoHorizonYears": 10,
+        "spendType": "direct",
+        "processPhase": "upstream",
+        "processType": "capex",
+        "techLevel": "partial_erp",
+        "stakeholders": {
+          "requestor": {
+            "count": 2,
+            "dailyRate": 1000
+          },
+          "buyer": {
+            "count": 2,
+            "dailyRate": 900
+          },
+          "lawyer": {
+            "count": 1,
+            "dailyRate": 1500
+          },
+          "finance": {
+            "count": 2,
+            "dailyRate": 1000
+          },
+          "manager": {
+            "count": 2,
+            "dailyRate": 1600
+          },
+          "executive": {
+            "count": 1,
+            "dailyRate": 3000
+          }
+        },
+        "dailyCostOfInaction": 30000,
+        "renegotiationCost": 800000,
+        "bypassAuditExposure": 2000000
+      },
+      "results": {
+        "rigid": {
+          "timeCost": 135239.19140625,
+          "adminCost": 9520,
+          "opportunityCost": 1428000,
+          "productivityCost": 0,
+          "renegotiationCost": 273759.19999999995,
+          "tcoCost": 4500000,
+          "bypassCost": 1333045.6665102246,
+          "total": 7679564.0579164745,
+          "days": 64,
+          "staffCost": 135239.19140625,
+          "coordCost": 8320,
+          "toolCost": 1200
+        },
+        "flexible": {
+          "timeCost": 135239.19140625,
+          "adminCost": 4260,
+          "opportunityCost": 0,
+          "productivityCost": 0,
+          "renegotiationCost": 123200,
+          "tcoCost": 3645000,
+          "bypassCost": 30000,
+          "total": 3937699.19140625,
+          "days": 30,
+          "staffCost": 135239.19140625,
+          "coordCost": 3900,
+          "toolCost": 360
+        },
+        "delta": 3741864.8665102245,
+        "deltaPercent": 95.02668143561041,
+        "bypassProbability": 0.6665228332551123,
+        "flexibleBypassProbability": 0.015,
+        "rigidDays": 64,
+        "flexibleDays": 30,
+        "trace": {
+          "sanitizedInputs": {
+            "contractValue": 15000000,
+            "tcoHorizonYears": 10,
+            "dailyCostOfInaction": 30000,
+            "renegotiationCost": 800000,
+            "bypassAuditExposure": 2000000
+          },
+          "dimensions": {
+            "tcoMultiplier": 1.62,
+            "delayMultiplier": 1.4,
+            "bypassMultiplier": 1.4375,
+            "renegotiationMultiplier": 1.5869999999999997,
+            "staffIntensityMultiplier": 1.4375,
+            "coordinationIntensityMultiplier": 1.3
+          },
+          "process": {
+            "processType": "capex",
+            "techLevel": "partial_erp",
+            "stepCount": 7,
+            "baseRigidity": 0.72
+          },
+          "days": {
+            "rigid": 64,
+            "flexible": 30,
+            "delay": 34
+          },
+          "staffCostsByRole": {
+            "rigid": {
+              "buyer": 12614.0625,
+              "lawyer": 21456.84375,
+              "finance": 29885.625,
+              "manager": 26090.625,
+              "executive": 19317.035156250004,
+              "requestor": 25875
+            },
+            "flexible": {
+              "buyer": 12614.0625,
+              "lawyer": 21456.84375,
+              "finance": 29885.625,
+              "manager": 26090.625,
+              "executive": 19317.035156250004,
+              "requestor": 25875
+            }
+          },
+          "coordinationCosts": {
+            "rigid": 8320,
+            "flexible": 3900
+          },
+          "toolCosts": {
+            "rigid": 1200,
+            "flexible": 360
+          },
+          "opportunity": {
+            "rigidPricePremium": 0,
+            "rigidDelayCost": 1428000
+          },
+          "productivityCosts": {
+            "rigid": 0,
+            "flexible": 0
+          },
+          "renegotiation": {
+            "rigidProbability": 0.342199,
+            "flexibleProbability": 0.154,
+            "rigidExpectedCost": 273759.19999999995,
+            "flexibleExpectedCost": 123200
+          },
+          "tcoForegone": {
+            "rigidRate": 0.3,
+            "flexibleRate": 0.243,
+            "rigid": 4500000,
+            "flexible": 3645000
+          },
+          "bypass": {
+            "effectiveRigidity": 0.56925,
+            "rigidProbability": 0.6665228332551123,
+            "flexibleProbability": 0.015,
+            "rigidExpectedCost": 1333045.6665102246,
+            "flexibleExpectedCost": 30000
+          }
+        },
+        "sources": {
+          "timeCost": "OECD Public Procurement Performance (2023)",
+          "opportunityCost": "User-supplied daily cost of inaction × model-derived delay days; no exogenous price premium is assigned.",
+          "productivityCost": "Inactive in v1.2. Szucs (2024) finds adverse effects from high discretion, so it cannot support a rigidity penalty without a separate governance-risk model.",
+          "renegotiationCost": "Beuve, Moszoro & Saussier (2021). Contractual Rigidity and Political Contestability. NBER wp28491",
+          "tcoCost": "Modeling assumption: 10% annual TCO opportunity, exposed for sensitivity analysis; external calibration pending.",
+          "bypassCost": "Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) The Challenger Launch Decision; Holmström & Milgrom (1991) Multitask Principal-Agent"
+        }
+      }
+    }
+  ]
+}

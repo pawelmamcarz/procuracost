@@ -1,10 +1,10 @@
-// Procurement Path Optimizer — Random Forest model
+// Procurement Path Optimizer — deterministic heuristic scoring ensemble
 //
 // Recommends optimal procurement path (field route) based on purchase parameters.
-// Compatible with Polish Public Procurement Law (PZP) and private sector.
+// Includes non-binding orientation for Polish Public Procurement Law (PZP) thresholds.
 //
-// Model: ensemble of 30 synthetic decision trees, each using random feature subsets.
-// Theoretical basis: Breiman (2001) Random Forests; Holmström & Milgrom (1991) multitask model.
+// Model: 30 reproducible scoring variants over transparent expert-authored rules.
+// This is a decision-support heuristic, not a trained machine-learning classifier.
 
 export interface ProcurementFeatures {
   contractValue: number;       // PLN
@@ -184,9 +184,9 @@ export const PATHS: Record<PathId, ProcurementPath> = {
     nameEn: "Agile Procurement",
     pzpArticle: "Sektor prywatny / pilotaż publiczny",
     description:
-      "Iteracyjny, wieloetapowy proces zakupowy z krótkimi cyklami decyzyjnymi, warsztatami z dostawcami i szybką selekcją. Swiss Casinos: 4 tygodnie vs. 6 miesięcy.",
+      "Iteracyjny, wieloetapowy proces zakupowy z krótkimi cyklami decyzyjnymi, warsztatami z dostawcami i szybką selekcją.",
     descriptionEn:
-      "Iterative, multi-stage procurement process with short decision cycles, supplier workshops and rapid selection. Swiss Casinos: 4 weeks vs. 6 months.",
+      "Iterative, multi-stage procurement process with short decision cycles, supplier workshops and rapid selection.",
     typicalDays: [14, 60],
     conditions: [
       "Wysoka innowacyjność lub presja czasu",
@@ -224,13 +224,13 @@ export const PATHS: Record<PathId, ProcurementPath> = {
       "Monopol techniczny lub prawny",
       "Awaria / zagrożenie ciągłości",
       "Wyjątkowa pilność nieprzewidywalna",
-      "Poniżej progu 130 000 PLN (bez PZP)",
+      "Poniżej progu 170 000 PLN (bez PZP od 1.01.2026)",
     ],
     conditionsEn: [
       "Technical or legal monopoly",
       "Emergency / continuity threat",
       "Exceptional unforeseeable urgency",
-      "Below 130,000 PLN threshold (no PZP required)",
+      "Below the 170,000 PLN threshold (no PZP required from 1 Jan 2026)",
     ],
     risks: [
       "Najwyższe ryzyko audytowe",
@@ -246,7 +246,7 @@ export const PATHS: Record<PathId, ProcurementPath> = {
   },
 };
 
-// ─── Random Forest implementation ─────────────────────────────────────────────
+// ─── Deterministic scoring ensemble ───────────────────────────────────────────
 
 // LCG pseudo-random (deterministic, reproducible)
 function lcg(seed: number): () => number {
@@ -260,7 +260,9 @@ function lcg(seed: number): () => number {
 // Score a single path from features (continuous score 0–100)
 function scorePath(path: PathId, f: ProcurementFeatures, weights: number[]): number {
   const v = f.contractValue / 1_000_000; // normalize to millions
-  const [w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10] = weights;
+  const [w0, w1, w2, w3, w4] = weights;
+  const w9 = weights[9];
+  const w10 = weights[10];
 
   const isDirect = f.spendType === "direct";
   const isUpstream = f.processPhase === "upstream";
@@ -327,7 +329,7 @@ function scorePath(path: PathId, f: ProcurementFeatures, weights: number[]): num
       return (
         w0 * (f.urgencyDays < 21 ? (21 - f.urgencyDays) / 21 : 0) * 35 +
         w1 * (f.supplyRisk >= 5 ? 1 : 0) * 30 +
-        w2 * (f.contractValue < 130_000 ? 1 : 0) * 20 +
+        w2 * (f.contractValue < 170_000 ? 1 : 0) * 20 +
         w3 * (!f.isPublicSector ? 0.5 : 0) * 15 +
         // Direct + Upstream almost never fits single-source without justification; Downstream+Indirect often does
         w9 * (isDirect && isUpstream ? 0.25 : isDownstream ? 1.4 : 1.0) * 10 +
@@ -336,8 +338,8 @@ function scorePath(path: PathId, f: ProcurementFeatures, weights: number[]): num
   }
 }
 
-// Generate one tree's weight vector (random feature subset weighting)
-function treeWeights(rand: () => number): number[] {
+// Generate one scoring variant's deterministic rule-weight vector.
+function voterWeights(rand: () => number): number[] {
   // 11 weights now (added spendType + processPhase)
   const active = Array.from({ length: 11 }, () => (rand() > 0.4 ? 1 : 0));
   // ensure at least 3 active
@@ -351,7 +353,7 @@ function treeWeights(rand: () => number): number[] {
 export interface PathResult {
   path: ProcurementPath;
   score: number;        // 0–100
-  votes: number;        // out of 30 trees
+  votes: number;        // out of 30 scoring variants
   confidence: number;   // votes / 30
   featureContributions: Record<string, number>; // % contribution
 }
@@ -368,7 +370,7 @@ export interface OptimizationResult {
 export interface FeatureImportance {
   feature: string;
   label: string;
-  importance: number; // 0–1
+  importance: number; // 0–1, normalized local sensitivity
 }
 
 const FEATURE_LABELS_PL: Record<keyof ProcurementFeatures, string> = {
@@ -399,7 +401,10 @@ const FEATURE_LABELS_EN: Record<keyof ProcurementFeatures, string> = {
   processPhase: "Process phase (Upstream/Downstream)",
 };
 
-const N_TREES = 30;
+const N_VOTERS = 30;
+const PZP_APPLICATION_THRESHOLD_PLN = 170_000;
+const EU_CENTRAL_SUPPLIES_SERVICES_THRESHOLD_PLN = 603_400;
+const EU_SUBCENTRAL_SUPPLIES_SERVICES_THRESHOLD_PLN = 930_960;
 const PATH_IDS: PathId[] = [
   "przetarg_otwarty",
   "przetarg_ograniczony",
@@ -409,71 +414,82 @@ const PATH_IDS: PathId[] = [
   "bezposrednie",
 ];
 
-export function optimize(features: ProcurementFeatures, lang: "pl" | "en" = "pl"): OptimizationResult {
-  const votes: Record<PathId, number> = {
-    przetarg_otwarty: 0,
-    przetarg_ograniczony: 0,
-    dialog_konkurencyjny: 0,
-    negocjacje: 0,
-    agile: 0,
-    bezposrednie: 0,
-  };
-  const scores: Record<PathId, number> = { ...votes };
-  const FEATURE_LABELS = lang === "en" ? FEATURE_LABELS_EN : FEATURE_LABELS_PL;
-  const featureHits: Record<string, number> = {};
-  Object.keys(FEATURE_LABELS).forEach((k) => (featureHits[k] = 0));
+const REFERENCE_FEATURES: ProcurementFeatures = {
+  contractValue: 1_000_000,
+  supplierCount: 5,
+  complexity: 3,
+  urgencyDays: 90,
+  isPublicSector: false,
+  innovationRequired: false,
+  supplyRisk: 3,
+  strategicImportance: 3,
+  marketMaturity: 3,
+  spendType: "indirect",
+  processPhase: "downstream",
+};
 
-  for (let t = 0; t < N_TREES; t++) {
-    const rand = lcg(t * 31337 + 42);
-    const weights = treeWeights(rand);
+function evaluateEnsemble(features: ProcurementFeatures) {
+  const votes = Object.fromEntries(PATH_IDS.map((path) => [path, 0])) as Record<PathId, number>;
+  const scores = Object.fromEntries(PATH_IDS.map((path) => [path, 0])) as Record<PathId, number>;
 
-    // Score all paths with this tree's weights
-    const treeScores = PATH_IDS.map((pid) => ({
-      pid,
-      s: scorePath(pid, features, weights),
+  for (let voter = 0; voter < N_VOTERS; voter++) {
+    const rand = lcg(voter * 31337 + 42);
+    const weights = voterWeights(rand);
+    const voterScores = PATH_IDS.map((path) => ({
+      path,
+      score: scorePath(path, features, weights),
     }));
 
-    // Winner of this tree
-    treeScores.sort((a, b) => b.s - a.s);
-    const winner = treeScores[0];
-    votes[winner.pid]++;
-    scores[winner.pid] += winner.s;
-
-    // Track which features were most active in this tree (weight > 0.5)
-    weights.forEach((w, i) => {
-      if (w > 0.5) {
-        const key = Object.keys(FEATURE_LABELS)[i];
-        if (key) featureHits[key] = (featureHits[key] || 0) + 1;
-      }
-    });
+    for (const result of voterScores) scores[result.path] += result.score;
+    voterScores.sort((a, b) => b.score - a.score);
+    votes[voterScores[0].path]++;
   }
+
+  return { votes, scores };
+}
+
+export function optimize(features: ProcurementFeatures, lang: "pl" | "en" = "pl"): OptimizationResult {
+  const { votes, scores } = evaluateEnsemble(features);
+  const FEATURE_LABELS = lang === "en" ? FEATURE_LABELS_EN : FEATURE_LABELS_PL;
 
   // Build ranked results
   const ranked: PathResult[] = PATH_IDS.map((pid) => {
-    const rawScore = scores[pid] / Math.max(votes[pid], 1);
+    const rawScore = scores[pid] / N_VOTERS;
     return {
       path: PATHS[pid],
       score: Math.round(Math.min(rawScore, 100)),
       votes: votes[pid],
-      confidence: votes[pid] / N_TREES,
+      confidence: votes[pid] / N_VOTERS,
       featureContributions: {},
     };
   }).sort((a, b) => b.votes - a.votes || b.score - a.score);
 
-  // Feature importances (normalized hit frequency)
-  const maxHits = Math.max(...Object.values(featureHits));
-  const featureImportance: FeatureImportance[] = Object.entries(FEATURE_LABELS)
-    .map(([key, label]) => ({
-      feature: key,
-      label,
-      importance: maxHits > 0 ? featureHits[key] / maxHits : 0,
+  const topPath = ranked[0];
+  const topPathId = topPath.path.id;
+  const originalSupport = votes[topPathId] / N_VOTERS;
+  const originalScore = scores[topPathId] / N_VOTERS;
+  const featureKeys = Object.keys(FEATURE_LABELS) as Array<keyof ProcurementFeatures>;
+  const rawSensitivity = featureKeys.map((feature) => {
+    const comparisonFeatures = {
+      ...features,
+      [feature]: REFERENCE_FEATURES[feature],
+    } as ProcurementFeatures;
+    const comparison = evaluateEnsemble(comparisonFeatures);
+    const supportChange = Math.abs(originalSupport - comparison.votes[topPathId] / N_VOTERS);
+    const scoreChange = Math.abs(originalScore - comparison.scores[topPathId] / N_VOTERS) / 100;
+    return { feature, value: supportChange + scoreChange };
+  });
+  const maxSensitivity = Math.max(...rawSensitivity.map(({ value }) => value));
+  const featureImportance: FeatureImportance[] = rawSensitivity
+    .map(({ feature, value }) => ({
+      feature,
+      label: FEATURE_LABELS[feature],
+      importance: maxSensitivity > 0 ? value / maxSensitivity : 0,
     }))
     .sort((a, b) => b.importance - a.importance);
 
-  const topPath = ranked[0];
-
   // PZP policy note
-  const policyNote = generatePolicyNote(features, topPath.path.id, lang);
+  const policyNote = generatePolicyNote(features, lang);
   const explanation = generateExplanation(features, topPath, featureImportance, lang);
 
   return { ranked, featureImportance, topPath, policyNote, lang, explanation };
@@ -512,6 +528,10 @@ function describeFeatureValue(
       return `${pl ? "sektor publiczny" : "public sector"}: ${v ? (pl ? "tak" : "yes") : (pl ? "nie" : "no")}`;
     case "innovationRequired":
       return `${pl ? "innowacyjność wymagana" : "innovation required"}: ${v ? (pl ? "tak" : "yes") : (pl ? "nie" : "no")}`;
+    case "spendType":
+      return `${pl ? "rodzaj wydatku" : "spend type"}: ${v === "direct" ? "Direct" : "Indirect"}`;
+    case "processPhase":
+      return `${pl ? "faza procesu" : "process phase"}: ${v === "upstream" ? "Upstream" : "Downstream"}`;
     default: {
       const n = v as number;
       const labels = pl
@@ -534,38 +554,49 @@ function generateExplanation(
   const pathName = lang === "en" ? topPath.path.nameEn : topPath.path.name;
   const pct = Math.round(topPath.confidence * 100);
   const votes = topPath.votes;
-  const top = featureImportance.slice(0, 2);
+  const top = featureImportance.filter(({ importance }) => importance > 0).slice(0, 2);
+  if (top.length === 0) {
+    return lang === "en"
+      ? `The heuristic ensemble recommends "${pathName}" in ${votes}/30 scoring variants (agreement: ${pct}%). Local neutralization of individual inputs did not change its support.`
+      : `Heurystyczny ensemble rekomenduje „${pathName}” w ${votes}/30 wariantach scoringu (zgodność: ${pct}%). Lokalna neutralizacja pojedynczych parametrów nie zmieniła poparcia dla tej ścieżki.`;
+  }
   const f1 = describeFeatureValue(top[0]?.feature as keyof ProcurementFeatures, features, lang);
   const f2 = top[1] ? describeFeatureValue(top[1].feature as keyof ProcurementFeatures, features, lang) : null;
 
   if (lang === "en") {
-    return `The model recommends "${pathName}" primarily because of: ${f1}${f2 ? ` and ${f2}` : ""}. This combination was decisive in ${votes}/30 decision trees (confidence: ${pct}%).`;
+    return `The heuristic ensemble recommends "${pathName}" primarily because of: ${f1}${f2 ? ` and ${f2}` : ""}. The path won ${votes}/30 scoring variants (agreement: ${pct}%).`;
   }
-  return `Model rekomenduje "${pathName}" przede wszystkim ze względu na: ${f1}${f2 ? ` oraz ${f2}` : ""}. Ta kombinacja zadecydowała w ${votes}/30 drzewach decyzyjnych (pewność: ${pct}%).`;
+  return `Heurystyczny ensemble rekomenduje „${pathName}” przede wszystkim ze względu na: ${f1}${f2 ? ` oraz ${f2}` : ""}. Ścieżka wygrała w ${votes}/30 wariantach scoringu (zgodność: ${pct}%).`;
 }
 
-function generatePolicyNote(f: ProcurementFeatures, winner: PathId, lang: "pl" | "en" = "pl"): string {
+function generatePolicyNote(f: ProcurementFeatures, lang: "pl" | "en" = "pl"): string {
   if (lang === "en") {
     if (!f.isPublicSector) {
-      return "Private sector: no mandatory PZP thresholds. The organisation's procurement policy is the only constraint — all paths are available.";
+      return "Private sector: PZP thresholds generally do not apply, but internal policy and sector-specific rules may constrain the route. This heuristic is not legal advice.";
     }
-    if (f.contractValue < 130_000) {
-      return "Below the 130,000 PLN net threshold: purchase without applying PZP. Only the contracting authority's internal procurement policy applies.";
+    if (f.contractValue < PZP_APPLICATION_THRESHOLD_PLN) {
+      return "Below the 170,000 PLN net threshold effective from 1 January 2026: PZP generally does not apply. Internal rules still apply; verify exceptions.";
     }
-    if (f.contractValue < 5_382_000) {
-      return "National PZP thresholds (130,000 – 5,382,000 PLN for supplies/services): national procedures. Available: open tender, restricted tender, price inquiry, negotiations without notice (Art. 275).";
+    if (f.contractValue < EU_CENTRAL_SUPPLIES_SERVICES_THRESHOLD_PLN) {
+      return "Between 170,000 and 603,400 PLN net: below the lowest standard EU threshold for classic supplies/services in 2026–2027. National PZP rules apply; verify the lawful procedure and procurement category.";
     }
-    return "Above EU thresholds: full procedure under PZP and Directive 2014/24/EU. Available: open tender (Art. 129), restricted tender (Art. 145), competitive dialogue (Art. 172), negotiated procedure with notice (Art. 160).";
+    if (f.contractValue < EU_SUBCENTRAL_SUPPLIES_SERVICES_THRESHOLD_PLN) {
+      return "603,400–930,960 PLN net: the EU threshold applies to central-government authorities, while the standard sub-central supplies/services threshold is 930,960 PLN for 2026–2027. Verify authority and contract type.";
+    }
+    return "At or above 930,960 PLN net: above the 2026–2027 standard EU threshold for classic supplies/services for sub-central authorities. Exact rules depend on authority and contract type. This heuristic does not verify legal compliance.";
   }
 
   if (!f.isPublicSector) {
-    return "Sektor prywatny: brak obligatoryjnych progów PZP. Polityka zakupowa organizacji jest jedynym ograniczeniem — wszystkie ścieżki są dostępne.";
+    return "Sektor prywatny: progi PZP co do zasady nie obowiązują, ale ścieżkę mogą ograniczać polityka wewnętrzna i regulacje sektorowe. Ta heurystyka nie jest poradą prawną.";
   }
-  if (f.contractValue < 130_000) {
-    return "Poniżej progu 130 000 PLN netto: zakup bez stosowania PZP. Obowiązuje wyłącznie wewnętrzna polityka zakupowa zamawiającego.";
+  if (f.contractValue < PZP_APPLICATION_THRESHOLD_PLN) {
+    return "Poniżej progu 170 000 PLN netto obowiązującego od 1 stycznia 2026 r.: PZP co do zasady nie ma zastosowania. Nadal obowiązują reguły wewnętrzne; sprawdź wyjątki.";
   }
-  if (f.contractValue < 5_382_000) {
-    return "Progi krajowe PZP (130 000 – 5 382 000 PLN dla dostaw/usług): tryby krajowe. Dostępne: przetarg nieograniczony, ograniczony, zapytanie o cenę, negocjacje bez ogłoszenia (Art. 275).";
+  if (f.contractValue < EU_CENTRAL_SUPPLIES_SERVICES_THRESHOLD_PLN) {
+    return "170 000–603 400 PLN netto: poniżej najniższego standardowego progu unijnego dla klasycznych dostaw i usług w latach 2026–2027. Stosuje się reguły krajowe PZP; zweryfikuj właściwy tryb i kategorię zamówienia.";
   }
-  return "Powyżej progów unijnych: pełne postępowanie zgodnie z PZP i Dyrektywą 2014/24/UE. Możliwe tryby: przetarg nieograniczony (Art. 129), ograniczony (Art. 145), dialog konkurencyjny (Art. 172), negocjacje z ogłoszeniem (Art. 160).";
+  if (f.contractValue < EU_SUBCENTRAL_SUPPLIES_SERVICES_THRESHOLD_PLN) {
+    return "603 400–930 960 PLN netto: próg unijny obowiązuje centralne instytucje rządowe, a standardowy próg dla dostaw/usług zamawiających poniżej szczebla centralnego wynosi 930 960 PLN w latach 2026–2027. Zweryfikuj typ zamawiającego i zamówienia.";
+  }
+  return "Od 930 960 PLN netto: powyżej standardowego progu unijnego 2026–2027 dla klasycznych dostaw/usług zamawiających poniżej szczebla centralnego. Właściwe reguły zależą od typu zamawiającego i zamówienia. Heurystyka nie weryfikuje zgodności prawnej.";
 }

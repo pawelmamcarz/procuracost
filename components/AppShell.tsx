@@ -14,8 +14,8 @@ interface NavItem {
 
 const navItemsPl: NavItem[] = [
   { href: "/calculator", label: "Kalkulator" },
-  { href: "/optimizer", label: "Optymalizator RF", highlight: true },
-  { href: "/case-studies", label: "Case studies" },
+  { href: "/optimizer", label: "Optymalizator", highlight: true },
+  { href: "/case-studies", label: "Scenariusze" },
   { href: "/assessment", label: "Ocena dojrzałości" },
   { href: "/model", label: "Model & Założenia" },
   { href: "/model/assumptions", label: "Założenia (Explorer)" },
@@ -27,8 +27,8 @@ const navItemsPl: NavItem[] = [
 
 const navItemsEn: NavItem[] = [
   { href: "/en/calculator", label: "Calculator" },
-  { href: "/en/optimizer", label: "RF Optimizer", highlight: true },
-  { href: "/en/case-studies", label: "Case Studies" },
+  { href: "/en/optimizer", label: "Optimizer", highlight: true },
+  { href: "/en/case-studies", label: "Scenarios" },
   { href: "/en/assessment", label: "Maturity Assessment" },
   { href: "/en/model", label: "Model & Assumptions" },
   { href: "/en/model/assumptions", label: "Assumptions Explorer" },

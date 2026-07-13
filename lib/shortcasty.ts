@@ -27,57 +27,57 @@ export const EPISODES: Episode[] = [
   {
     number: 2,
     slug: "paradoks-szucsa",
-    title: "Paradoks Szucsa: 2% taniej w aukcji, 30% drożej w cyklu życia",
+    title: "Paradoks Szucsa: elastyczność potrzebuje granic",
     dimension: "C_opp · C_TCO",
     guest: "Ekspert TCO z branży motoryzacyjnej",
     thesis:
-      "Sztywny przetarg wygrywa bitwę o cenę zakupu i przegrywa wojnę o całkowity koszt.",
+      "Dyskrecja bez kontroli może podnosić ceny; pytanie brzmi, jak zachować elastyczność i audytowalne granice.",
     recommendation:
-      "Zmień kryterium wyboru oferty z ceny jednostkowej na koszt całkowity. W jednym pilotażu. Jutro.",
+      "Zaprojektuj pilotaż TCO z udokumentowanymi kryteriami, danymi i kontrolą zgodności.",
   },
   {
     number: 3,
     slug: "renegocjacja-dlaczego-sztywne-umowy-koncza-sie-w-sadzie",
-    title: "Renegocjacja: Dlaczego sztywne umowy kończą się w sądzie?",
+    title: "Renegocjacja: jak sztywność umowy wiąże się z ryzykiem?",
     dimension: "C_reneg",
     guest: "Prawnik kontraktowy",
     thesis:
-      "Każdy punkt sztywności w umowie zwiększa ryzyko renegocjacji o 7–10 p.p. (Beuve et al. 2021).",
+      "Beuve et al. (2021) wiążą wzrost sztywności umowy o jedno odchylenie standardowe ze wzrostem prawdopodobieństwa renegocjacji o 7,7–10,5 p.p.",
     recommendation:
-      "Zastąp dwa najsztywniejsze zapisy w waszym wzorcu umowy klauzulami przeglądowymi.",
+      "Przejrzyj z prawnikiem zapisy o największym koszcie adaptacji i oceń, czy wymagają klauzul przeglądowych.",
   },
   {
     number: 4,
     slug: "flota-jak-ryanair-i-lot-kupuja-bez-przetargu",
-    title: "Flota: Jak Ryanair i LOT kupują bez przetargu?",
+    title: "Flota: kiedy timing zmienia strategię zakupu?",
     dimension: "Archetyp: Flota",
     guest: "Ekspert rynku lotniczego",
     thesis:
-      "Największe transakcje flotowe świata nie znoszą procedur. Robi się je zgodnie z polityką, nie z instrukcją.",
+      "Zakup floty pozwala zbadać, kiedy koszt okna rynkowego uzasadnia wybór innej legalnej ścieżki.",
     recommendation:
-      "Zidentyfikuj jeden zakup strategiczny w roku, gdzie timing znaczy więcej niż format zapytania.",
+      "Zidentyfikuj zakup, w którym timing ma znaczenie, i porównaj dostępne legalne ścieżki oraz ich zabezpieczenia.",
   },
   {
     number: 5,
     slug: "it-erp-4-tygodnie-zamiast-6-miesiecy",
-    title: "IT/ERP: 4 tygodnie zamiast 6 miesięcy",
+    title: "IT/ERP: jak zmierzyć koszt opóźnienia wdrożenia?",
     dimension: "Archetyp: IT/ERP",
     guest: "Praktyk Lean Agile Procurement",
     thesis:
-      "LAP pozwala zamknąć sourcing systemu ERP w 4 tygodnie, trzymając się polityki.",
+      "Iteracyjne podejście może skrócić sourcing IT, ale skalę efektu trzeba mierzyć na danych projektowych.",
     recommendation:
-      "Następnego dużego dostawcę IT zaproś na warsztaty, zanim wyślesz zapytanie ofertowe.",
+      "Sprawdź, czy prawo i polityka dopuszczają dialog lub warsztaty rynkowe, a następnie udokumentuj zasady równego dostępu.",
   },
   {
     number: 6,
     slug: "produkcja-dlaczego-zara-nie-robi-przetargow",
-    title: "Produkcja: Dlaczego Zara nie robi przetargów?",
+    title: "Produkcja: gdy cykl rynkowy jest krótszy niż sourcing",
     dimension: "Archetyp: Produkcja",
     guest: "Menedżer łańcucha dostaw z FMCG",
     thesis:
-      "Cykl 2-tygodniowy nie znosi tradycyjnego RFQ. Elastyczność to warunek konkurencyjności.",
+      "Krótki cykl popytu może zwiększać koszt opóźnienia, ale nie usuwa wymogów konkurencji i kontroli.",
     recommendation:
-      "Jeśli twój rynek zmienia się szybciej niż proces zakupowy — procedura cię nie chroni, tylko zabija.",
+      "Porównaj czas cyklu rynkowego z czasem procesu i sprawdź, które bramki są prawnie lub kontrolnie konieczne.",
   },
   {
     number: 7,
@@ -86,7 +86,7 @@ export const EPISODES: Episode[] = [
     dimension: "Archetyp: Logistyka",
     guest: "Ekspert logistyki kontraktowej",
     thesis:
-      "Procedura trwała 12–18 miesięcy, okno biznesowe było 6-miesięczne. LAP zamknął sourcing w oknie.",
+      "Kontrakty z twardym oknem operacyjnym pozwalają testować, jak czas procesu przekłada się na koszt opóźnienia.",
     recommendation:
       "Sprawdź, które kontrakty mają twarde okno czasowe — i zaplanuj je od celu, nie od procesu.",
   },
@@ -97,20 +97,20 @@ export const EPISODES: Episode[] = [
     dimension: "Technologia",
     guest: "Architekt systemów zakupowych",
     thesis:
-      "Procedury były pre-cyfrowym mechanizmem compliance. Dziś systemy IT pilnują granic polityki — lepiej i taniej.",
+      "Systemy IT mogą automatyzować wybrane kontrole, ale ich skuteczność i koszt zależą od konfiguracji, danych i użycia.",
     recommendation:
-      "Zainwestuj w system, który pilnuje polityki w tle. Pracownik ma myśleć o wartości, nie o checkboxach.",
+      "Zmierz pokrycie kontroli, wyjątki i pracę ręczną przed decyzją o inwestycji w system.",
   },
   {
     number: 9,
     slug: "normalizacja-dewiacji",
-    title: `Normalizacja Dewiacji: Dlaczego „lepsza rura" zawsze prowadzi do katastrofy?`,
+    title: `Normalizacja dewiacji: kiedy mocniejsza kontrola ukrywa problem?`,
     dimension: "Psychologia organizacji",
     guest: "Psycholog organizacji / badacz bezpieczeństwa systemów",
     thesis:
-      "Egzekwowanie procedur nie likwiduje obejść — czyni je niewidzialnymi, kumulując ryzyko.",
+      "Silniejsze egzekwowanie może ograniczyć obejścia albo przesunąć je poza system; kierunek efektu trzeba obserwować.",
     recommendation:
-      "Jeśli widzisz nieformalne ścieżki zakupowe — nie buduj ściany, tylko zapytaj, czego twój system nie ogarnia.",
+      "Klasyfikuj nieformalne ścieżki: błąd projektu, luka kontroli, brak kompetencji czy nadużycie wymagają innych reakcji.",
   },
   {
     number: 10,
@@ -119,29 +119,29 @@ export const EPISODES: Episode[] = [
     dimension: "Implementacja",
     guest: "Paweł Mamcarz (solo)",
     thesis:
-      "Każda organizacja może przejść na model Pola w 3 krokach: rozróżnienie polityki od procedury, pomiar kosztów sztywności, pilotaż.",
+      "Trzy kroki tworzą plan testu: rozróżnienie wymagań, pomiar stanu bazowego i kontrolowany pilotaż.",
     recommendation:
-      "Nie czekaj na zgodę zarządu na rewolucję. Zrób jeden zakup w modelu Pola i porównaj wynik.",
+      "Uzgodnij właściciela ryzyka, kryteria sukcesu i zgodę na jeden kontrolowany pilotaż.",
   },
   {
     number: 11,
     slug: "pole-a-prawo-co-pzp-rzeczywiscie-nakazuje",
-    title: "Pole a Prawo: Co PZP rzeczywiście nakazuje?",
+    title: "Pole a prawo: jak oddzielić ustawę od regulaminu?",
     dimension: "Prawo zamówień publicznych",
     guest: "Prawnik specjalizujący się w PZP",
     thesis:
-      "PZP specyfikuje *co*, nie *jak*. Większość sztywnych procedur to wybór organizacji, nie wymóg ustawy.",
+      "PZP przewiduje różne tryby i warunki ich użycia; rozdzielenie ustawy, kontroli i reguł wewnętrznych wymaga analizy prawnej.",
     recommendation:
-      "Przejrzyj regulamin udzielania zamówień — zaznacz na czerwono miejsca, które dodaliście ponad ustawę.",
+      "Przejrzyj regulamin z prawnikiem i właścicielem kontroli, oznaczając źródło oraz cel każdego wymagania.",
   },
   {
     number: 12,
     slug: "tco-w-praktyce",
-    title: "TCO w praktyce: Case study polskiej firmy",
+    title: "TCO w praktyce: jak zaprojektować pilotaż?",
     dimension: "C_TCO",
     guest: "CPO firmy produkcyjnej",
     thesis:
-      "Przejście z kryterium ceny na TCO nie wymaga rewolucji — wymaga jednej decyzji i jednego pilotażu.",
+      "Pilotaż TCO wymaga definicji horyzontu, danych kosztowych, reguł porównania i kontroli jakości pomiaru.",
     recommendation:
       "Wybierz jedną kategorię wydatków, gdzie serwis kosztuje więcej niż zakup — i zrób pilotaż TCO.",
   },
@@ -152,9 +152,9 @@ export const EPISODES: Episode[] = [
     dimension: "Administracja publiczna",
     guest: "Praktyk innowacji w administracji",
     thesis:
-      "Sektor publiczny też może być elastyczny. Przykłady z USA (Skylight Digital) i Europy.",
+      "Zakres elastyczności w sektorze publicznym zależy od podstawy prawnej, wartości, przedmiotu i warunków konkretnego postępowania.",
     recommendation:
-      "Znajdź jedną procedurę w regulaminie, która jest dodana 'na wyrost' — i usuń ją w ramach pilotażu.",
+      "Zidentyfikuj wymaganie wewnętrzne do przeglądu i oceń z prawnikiem oraz audytem, czy można je bezpiecznie zmienić.",
   },
   {
     number: 14,
@@ -163,9 +163,9 @@ export const EPISODES: Episode[] = [
     dimension: "Behawioralne aspekty zakupów",
     guest: "Psycholog organizacji",
     thesis:
-      "Strach przed kontrolą i audytem jest głównym hamulcowym zmiany — nawet jeśli kosztuje firmę miliony.",
+      "Postrzegane ryzyko audytu może wpływać na wybór ścieżki; siłę tego mechanizmu trzeba zbadać.",
     recommendation:
-      `Przestań pytać „czy to jest zgodne z procedurą", zacznij pytać „czy to jest najlepsze dla organizacji".`,
+      `Pytaj równolegle: „czy to jest legalne i kontrolowane?" oraz „jaki wynik tworzy dla organizacji?".`,
   },
   {
     number: 15,
@@ -174,20 +174,20 @@ export const EPISODES: Episode[] = [
     dimension: "Leadership",
     guest: "CPO dużej organizacji",
     thesis:
-      "Zmiana zaczyna się od języka, którym mówi CPO do CFO i CEO. Trzeba mówić liczbami, nie procesami.",
+      "Rozmowa CPO z CFO powinna łączyć wynik, ryzyko, proces i jawne założenia pomiaru.",
     recommendation:
-      "Przygotuj jedną stronę A4 z wyliczeniem ProcuraCost dla waszej firmy i pokaż CFO na następnym spotkaniu.",
+      "Przygotuj stronę z wynikiem ProcuraCost, zakresem niepewności i listą danych potrzebnych do kalibracji.",
   },
   {
     number: 16,
     slug: "case-study-polska-firma-ktora-wyszla-z-rury",
-    title: "Case study: Polska firma, która wyszła z rury",
+    title: "Pilotaż: jak polska firma może przetestować model?",
     dimension: "Transformacja w praktyce",
     guest: "Szef zakupów lub CEO firmy",
     thesis:
-      "Pokazujemy konkretny przypadek polskiej organizacji, która uprościła procedury, zachowując politykę.",
+      "Odcinek powinien powstać dopiero po udokumentowanym pilotażu z zatwierdzonym sposobem anonimizacji i interpretacji wyników.",
     recommendation:
-      "Zróbcie audyt waszych 10 najdroższych procedur i wytnijcie jedną, która nie wynika z polityki.",
+      "Zmapujcie wymagania i koszty dziesięciu procesów, a zmianę wybierzcie po ocenie prawa, kontroli i ryzyka.",
   },
   {
     number: 17,
@@ -196,7 +196,7 @@ export const EPISODES: Episode[] = [
     dimension: "Metryki · Goodhart",
     guest: "Ekspert controllingu zakupowego",
     thesis:
-      "Gdy celem staje się wskaźnik zgodności, przestaje on mierzyć cokolwiek wartościowego.",
+      "Gdy wskaźnik zgodności staje się celem, może tracić wartość informacyjną i wymagać równoważenia metrykami wyniku.",
     recommendation:
       "Wprowadź jeden wskaźnik wartości do raportu zarządu — np. oszczędność TCO lub skrócenie czasu do podpisania umowy.",
   },
@@ -207,7 +207,7 @@ export const EPISODES: Episode[] = [
     dimension: "Supply chain · Ryzyko",
     guest: "Menedżer ryzyka w łańcuchu dostaw",
     thesis:
-      "Sztywne procedury zmniejszają zdolność adaptacji w kryzysie. Pole daje resilience.",
+      "Proceduralna sztywność może ograniczać adaptację, ale elastyczność bez kontroli może zwiększać inne ryzyka.",
     recommendation:
       "Zróbcie przegląd kontraktów pod kątem klauzul awaryjnych — czy procedura pozwala działać szybko, czy blokuje?",
   },
@@ -218,7 +218,7 @@ export const EPISODES: Episode[] = [
     dimension: "Technologia · Wizja",
     guest: "Strateg AI w zakupach",
     thesis:
-      "Za 5 lat compliance będzie w pełni automatyczny, a człowiek zajmie się tylko decyzjami strategicznymi.",
+      "Automatyzacja może przejąć część kontroli, lecz tempo adopcji i zakres odpowiedzialności człowieka pozostają niepewne.",
     recommendation:
       "Zainwestuj godzinę w przetestowanie narzędzia AI do analizy wydatków — zobaczysz, co jest możliwe.",
   },
@@ -240,9 +240,9 @@ export const EPISODES: Episode[] = [
     dimension: "Archetyp: Zamówienia operacyjne",
     guest: "Menedżer P2P w firmie produkcyjnej",
     thesis:
-      "Obieg zamówień to nie procedura — to infrastruktura. Gdy każde PO wymaga 4 zatwierdzeń, firma płaci za własną nieefektywność.",
+      "Liczba zatwierdzeń może zwiększać koszt obsługi, ale jej zasadność zależy od wartości, ryzyka i jakości kontroli.",
     recommendation:
-      "Policz, ile zatwierdzeń mają wasze zamówienia poniżej 5 000 PLN. Jeśli więcej niż jedno — masz problem.",
+      "Porównaj liczbę zatwierdzeń, czas cyklu i częstość wyjątków według wartości oraz ryzyka zamówienia.",
   },
   {
     number: 22,
@@ -251,9 +251,9 @@ export const EPISODES: Episode[] = [
     dimension: "Archetyp: Katalogi · Zapotrzebowanie",
     guest: "Ekspert wdrożeń Coupa / Ariba",
     thesis:
-      "Katalog to nie lista produktów — to system granic polityki w modelu pola. Zamawiający klika, system egzekwuje cenę, kupiec zajmuje się wyjątkami.",
+      "Katalog może automatyzować wybrane granice polityki, jeśli dane, ceny i uprawnienia są aktualne.",
     recommendation:
-      "Zmierz maverick spend w jednej kategorii MRO. Jeśli przekracza 20% — wdrożenie katalogu zwróci się w 3 miesiące.",
+      "Zmierz maverick spend, koszt obsługi i jakość danych w jednej kategorii MRO przed oszacowaniem zwrotu z katalogu.",
   },
   {
     number: 23,
@@ -262,9 +262,9 @@ export const EPISODES: Episode[] = [
     dimension: "Archetyp: MRP · Supply chain",
     guest: "Kierownik planowania produkcji",
     thesis:
-      "Czyste pole operacyjne to MRP: system generuje zlecenie, kupiec reaguje tylko na wyjątki. Zero dyskrecji — i to jest zaleta, nie wada.",
+      "MRP może automatyzować rutynowe zlecenia, pozostawiając człowiekowi wyjątki; jakość zależy od danych i reguł planowania.",
     recommendation:
-      "Sprawdź, jaki procent zleceń zakupu pochodzi z automatycznego MRP. Poniżej 60% oznacza, że planowanie nie jest zintegrowane z zakupami.",
+      "Sprawdź udział zleceń z MRP oraz przyczyny wyjątków, bez przyjmowania arbitralnego progu dojrzałości.",
   },
   {
     number: 24,
@@ -273,9 +273,9 @@ export const EPISODES: Episode[] = [
     dimension: "Archetyp: Fakturowanie · P2P",
     guest: "Dyrektor finansowy i szef AP",
     thesis:
-      "Faktura to lustro zakupów: jeśli masz 8% wyjątków na fakturach, masz 8% błędów w zamówieniach. Operacyjna doskonałość zaczyna się od PO, kończy na fakturze.",
+      "Wyjątki fakturowe mogą wskazywać problemy w zamówieniach, odbiorze, danych lub fakturze; wymagają analizy przyczyn.",
     recommendation:
-      "Zmierz match rate swoich faktur (2-way i 3-way match). Poniżej 90% automatic match — szukaj przyczyny w procesie zamówień, nie w AP.",
+      "Zmierz 2-way i 3-way match oraz zakoduj przyczyny wyjątków przed przypisaniem odpowiedzialności do zakupów lub AP.",
   },
 ];
 

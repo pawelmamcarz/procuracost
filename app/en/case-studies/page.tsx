@@ -8,10 +8,10 @@ export default function EnCaseStudiesPage() {
   return (
     <div className="mx-auto max-w-5xl px-6 py-10">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Case Studies</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Illustrative Archetypes</h1>
         <p className="mt-1 text-sm text-gray-500">
-          Real-world examples of flexible procurement — from airlines to IT implementations.
-          Each calculator scenario is based on a documented case.
+          Synthetic scenarios exercise different model settings. Their inputs and outputs are
+          ProcuraCost assumptions, not organization data, external benchmarks, or realized savings.
         </p>
       </div>
 
@@ -30,7 +30,7 @@ export default function EnCaseStudiesPage() {
               <span className="inline-block rounded-full bg-blue-50 px-3 py-0.5 text-xs font-medium text-blue-600">
                 {s.nameEn}
               </span>
-              <h2 className="mt-3 text-lg font-bold text-gray-900">{s.caseStudy!.title}</h2>
+              <h2 className="mt-3 text-lg font-bold text-gray-900">{s.nameEn}</h2>
               <p className="mt-2 text-sm text-gray-600">{s.caseStudy!.insightEn}</p>
 
               <div className="mt-4 grid grid-cols-2 gap-3 text-xs">
@@ -47,41 +47,34 @@ export default function EnCaseStudiesPage() {
               </div>
 
               <p className="mt-4 text-xs text-gray-400">
-                Source: {s.caseStudy!.source}
+                Source: ProcuraCost model 1.2.0; assumptions in lib/scenarios.ts
               </p>
             </div>
           );
         })}
       </div>
 
-      {/* Airlines box */}
+      {/* Reading guidance */}
       <div className="mt-10 rounded-2xl border border-blue-100 bg-blue-50 p-6">
-        <h2 className="font-bold text-blue-900">Why don&apos;t airlines use open tenders?</h2>
+        <h2 className="font-bold text-blue-900">How should these scenarios be read?</h2>
         <p className="mt-2 text-sm text-blue-800">
-          Fleet procurement (e.g. LOT — 40 Airbus A220, Ryanair — 100× Boeing 737 post-9/11) is
-          conducted through direct manufacturer negotiations, often exploiting market crises to
-          achieve below-catalogue pricing. No public tender could match that level of timing and
-          negotiation flexibility. Result: Ryanair built a 400+ aircraft fleet with margins
-          competitors can only envy.
+          Results show only the consequences of the entered parameters. A high percentage does not
+          establish that a flexible route will realize those savings; it identifies assumptions to
+          test with timing, role-effort, renegotiation, and delay-cost data.
         </p>
         <p className="mt-3 text-xs text-blue-600">
-          Sources: Airfleets.net (LOT fleet 2026); IJRAR (2019) Ryanair Strategic Positioning;
-          ResearchGate — Low-Cost Strategy in Aviation
+          Parameter source: lib/scenarios.ts. Full calculation trace: npm run replicate.
         </p>
       </div>
 
       {/* Enforcement Fallacy box */}
       <div className="mt-6 rounded-2xl border border-amber-100 bg-amber-50 p-6">
-        <h2 className="font-bold text-amber-900">The Enforcement Fallacy</h2>
+        <h2 className="font-bold text-amber-900">Enforcement-Only Responses</h2>
         <p className="mt-2 text-sm text-amber-800">
-          A common counter-argument: &ldquo;if users bypass the process, the process isn&apos;t
-          enforced well enough — just block the bypass.&rdquo; This misunderstands the dynamics.
-          Lipsky (1980) showed that frontline workers <em>always</em> adapt rules to operational
-          reality. Vaughan (1996) demonstrated that forced compliance without operational slack
-          creates &ldquo;normalization of deviance&rdquo; — invisible workarounds that accumulate
-          until catastrophic failure. Holmström &amp; Milgrom (1991) proved that enforcing
-          compliance on measurable steps crowds out value creation on unmeasured ones. Enforcement
-          does not fix the incentive structure — it hides the problem.
+          Lipsky (1980), Vaughan (1996), and Holmström &amp; Milgrom (1991) motivate hypotheses
+          about adaptation, hidden deviation, and multitask incentives. They do not prove that
+          procurement enforcement generally fails. Pilots must distinguish path mismatch from
+          misconduct, weak capability, and inadequate control.
         </p>
         <p className="mt-3 text-xs text-amber-600">
           Sources: Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) The Challenger Launch

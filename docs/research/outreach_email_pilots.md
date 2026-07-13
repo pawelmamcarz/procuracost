@@ -12,9 +12,9 @@
 
 Szanowni Państwo,
 
-nazywam się [Twoje imię] i prowadzę projekt badawczy dotyczący rzeczywistych kosztów sztywnych procedur zakupowych w porównaniu do bardziej elastycznych podejść opartych na polityce zakupowej.
+nazywam się [Twoje imię] i prowadzę projekt badawczy sprawdzający, jak mierzyć koszty i korzyści sztywnych oraz bardziej elastycznych ścieżek zakupowych.
 
-W ramach tego projektu stworzyliśmy narzędzie **ProcuraCost** (www.procuracost.com), które pozwala w przejrzysty sposób oszacować ukryte koszty (m.in. utracone oszczędności TCO, koszty opóźnień, ryzyko renegocjacji) wynikające z nadmiernego formalizmu w zakupach.
+W ramach projektu stworzyliśmy prototyp **ProcuraCost** (www.procuracost.com). Symuluje on TCO, opóźnienia, renegocjacje i ekspozycję na obejścia na podstawie jawnych założeń, które chcemy skalibrować danymi z pilotażu.
 
 Obecnie szukamy 3–5 organizacji, które zgodziłyby się na krótkie, poufne pilotażowe badanie (łącznie ok. 2–4 godziny pracy po stronie organizacji). W ramach pilotażu:
 
@@ -23,7 +23,7 @@ Obecnie szukamy 3–5 organizacji, które zgodziłyby się na krótkie, poufne p
 - Otrzymacie Państwo raport z wynikami dla Waszej organizacji (poufny)
 - Wasze dane będą w pełni zanonimizowane w publikacji naukowej
 
-Celem nie jest ocena Waszych procesów, lecz zebranie realistycznych danych, które pomogą nam lepiej zrozumieć, kiedy sztywne procedury mają sens, a kiedy generują znaczące koszty alternatywne.
+Celem nie jest ocena Waszych procesów, lecz zebranie danych, które pozwolą sprawdzić, kiedy formalne procedury tworzą wartość, generują koszt albo chronią przed ryzykiem governance.
 
 Czy byliby Państwo otwarci na krótką, 20–30 minutową rozmowę wstępną w najbliższych tygodniach?
 
@@ -41,9 +41,9 @@ Subject: Short collaboration on the real costs of rigid procurement procedures
 
 Dear [Name / Team],
 
-My name is [Your Name] and I am conducting academic research on the hidden opportunity costs of overly rigid procurement procedures compared to more flexible, policy-based approaches.
+My name is [Your Name] and I am conducting academic research on how to measure the costs and benefits of rigid and more flexible procurement paths.
 
-As part of this project we have developed **ProcuraCost** (www.procuracost.com), an open tool that quantifies costs such as foregone TCO savings, delay costs, renegotiation risk, and bypass exposure.
+We have developed **ProcuraCost** (www.procuracost.com), an open prototype that simulates TCO, delay, renegotiation, and bypass exposure using explicit assumptions that the pilot is intended to calibrate.
 
 We are currently looking for 3–5 organizations willing to participate in a short, confidential pilot study (estimated 2–4 hours of effort from your side). In the pilot we would:
 
@@ -52,7 +52,7 @@ We are currently looking for 3–5 organizations willing to participate in a sho
 - Provide you with a confidential summary report for your internal use
 - Use only fully anonymized data in any academic publications
 
-The goal is not to audit or judge your processes, but to collect realistic data that helps understand when formal procedures create real value and when they generate significant hidden costs.
+The goal is not to audit or judge your processes, but to collect data that can test when formal procedures create value, create cost, or protect against governance risk.
 
 Would you be open to a short 20–30 minute introductory call in the coming weeks?
 
