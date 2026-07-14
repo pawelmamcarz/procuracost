@@ -1,4 +1,4 @@
-// Model 2.0 sign-robustness sweep. Run: npm run sweep.
+// Model 2.1 sign-robustness sweep. Run: npm run sweep.
 // Each configuration is evaluated at the low/central/high evidence cases embedded
 // in calculateCosts(). The envelope is a scenario range, not a confidence interval.
 import { calculateCosts, type ProcurementInputs } from "../lib/calculations.ts";
@@ -17,6 +17,7 @@ let robustFormal = 0;
 let robustAdaptive = 0;
 let crossesZero = 0;
 let lowest: { key: string; delta: number; pct: number } | undefined;
+let lowestCentral: { key: string; delta: number } | undefined;
 
 for (const processType of types)
   for (const techLevel of techs)
@@ -27,6 +28,7 @@ for (const processType of types)
             const result = calculateCosts({
               contractValue,
               tcoHorizonYears: 3,
+              contractDurationYears: 3,
               processType,
               techLevel,
               stakeholders,
@@ -41,6 +43,12 @@ for (const processType of types)
             if (result.uncertainty.highDelta < 0) robustFormal++;
             if (result.uncertainty.lowDelta > 0) robustAdaptive++;
             if (result.uncertainty.crossesZero) crossesZero++;
+            if (!lowestCentral || result.delta < lowestCentral.delta) {
+              lowestCentral = {
+                key: `${processType}/${techLevel} cv=${contractValue} delay=${delayFactor} ${spendType ?? "-"}/${processPhase ?? "-"}`,
+                delta: result.delta,
+              };
+            }
             const pct = (result.uncertainty.lowDelta / contractValue) * 100;
             if (!lowest || pct < lowest.pct) {
               lowest = {
@@ -57,3 +65,4 @@ console.log(`scenario range robustly favours formal: ${robustFormal}`);
 console.log(`scenario range robustly favours adaptive: ${robustAdaptive}`);
 console.log(`scenario range crosses zero: ${crossesZero}`);
 if (lowest) console.log(`lowest low-case delta: ${Math.round(lowest.delta)} (${lowest.pct.toFixed(2)}% CV), ${lowest.key}`);
+if (lowestCentral) console.log(`lowest central delta: ${Math.round(lowestCentral.delta)}, ${lowestCentral.key}`);

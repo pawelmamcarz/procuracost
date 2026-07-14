@@ -2,9 +2,9 @@ import Link from "next/link";
 import { EPISODES } from "@/lib/shortcasty";
 
 export const metadata = {
-  title: "ProcuraCost 2.0 — krótkie materiały metodologiczne",
+  title: "ProcuraCost 2.1 — krótkie materiały metodologiczne",
   description:
-    "Krótka seria o źródłach, założeniach i niepewności neutralnego modelu ProcuraCost 2.0.",
+    "Krótka seria o źródłach, założeniach i niepewności neutralnego modelu ProcuraCost 2.1.",
 };
 
 const PLATFORMS = [
@@ -21,7 +21,7 @@ export default function ShortcastyPage() {
     <div className="mx-auto max-w-5xl px-6 py-12">
       <div className="mb-10 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-white">
         <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-blue-200">
-          Model 2.0 · {EPISODES.length} odcinki
+          Model 2.1 · {EPISODES.length} odcinki
         </p>
         <h1 className="text-3xl font-bold leading-tight">ProcuraCost: źródła i założenia</h1>
         <p className="mt-1 text-base text-blue-100 font-medium">

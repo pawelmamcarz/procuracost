@@ -12,8 +12,8 @@ export const metadata: Metadata = {
 
 const stats = [
   { value: "~6 pp", label: "normalized-price increase under discretion; Hungarian-market transfer", source: "Szucs, JEEA 2024" },
-  { value: "0–10.5 pp", label: "contract-rigidity renegotiation scenario", source: "Beuve et al., JLEO 2023, 2SLS/IV" },
-  { value: "0–15%", label: "declared TCO-pool scenario, not an empirical finding", source: "model 2.0 assumption" },
+  { value: "0–0.105/year", label: "contract-rigidity increase in formal-amendment frequency", source: "Beuve et al., JLEO 2023, 2SLS/IV" },
+  { value: "0–15%", label: "declared TCO stress test; central scenario is zero", source: "model 2.1 assumption" },
 ];
 
 const howItWorks = [
@@ -83,7 +83,7 @@ const principles = [
   },
   {
     title: "Costs are measurable",
-    body: "Every day of delay, every renegotiation, every missed opportunity has a price. This calculator helps you see it.",
+    body: "Each day of delay and each formal amendment can carry a cost. The calculator shows the components and the threshold at which the recommendation changes.",
   },
 ];
 

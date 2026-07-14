@@ -5,7 +5,14 @@ import {
   type CostBreakdown,
 } from "../lib/calculations";
 import { SCENARIOS } from "../lib/scenarios";
-import { PROCESS_RIGIDITY, type ProcessType, type TechLevelId } from "../lib/process-templates";
+import {
+  PROCESS_RIGIDITY,
+  PROCESS_TEMPLATES,
+  TECH_LEVELS,
+  deriveStepTimings,
+  type ProcessType,
+  type TechLevelId,
+} from "../lib/process-templates";
 
 // A base stakeholder map reused across cases.
 const STAKEHOLDERS: ProcurementInputs["stakeholders"] = {
@@ -21,6 +28,7 @@ function makeInputs(overrides: Partial<ProcurementInputs> = {}): ProcurementInpu
   return {
     contractValue: 5_000_000,
     tcoHorizonYears: 5,
+    contractDurationYears: 5,
     processType: "pzp_eu",
     techLevel: "manual",
     stakeholders: STAKEHOLDERS,
@@ -31,10 +39,10 @@ function makeInputs(overrides: Partial<ProcurementInputs> = {}): ProcurementInpu
   };
 }
 
-describe("(a) renegotiation is an incremental contract-rigidity scenario", () => {
+describe("(a) renegotiation is an annual contract-amendment frequency", () => {
   const REN_COST = 1_000_000;
 
-  it("never universalizes the source sample's 22% baseline", () => {
+  it("uses annual frequency rather than an event probability", () => {
     const processTypes = Object.keys(PROCESS_RIGIDITY) as ProcessType[];
     const spendTypes: Array<ProcurementInputs["spendType"]> = [undefined, "direct", "indirect"];
     const phases: Array<ProcurementInputs["processPhase"]> = [undefined, "upstream", "downstream"];
@@ -45,12 +53,17 @@ describe("(a) renegotiation is an incremental contract-rigidity scenario", () =>
           const r = calculateCosts(
             makeInputs({ processType, spendType, processPhase, renegotiationCost: REN_COST }),
           );
-          const rigidProb = r.rigid.renegotiationCost / REN_COST;
-          const flexProb = r.flexible.renegotiationCost / REN_COST;
-          expect(rigidProb).toBeLessThanOrEqual(0.105 + 1e-9);
-          expect(flexProb).toBeLessThanOrEqual(0.105 + 1e-9);
-          expect(rigidProb).toBeGreaterThanOrEqual(0);
-          expect(flexProb).toBeGreaterThanOrEqual(0);
+          const { renegotiation } = r.trace;
+          expect(renegotiation.annualFrequencyRigid).toBeLessThanOrEqual(0.105 + 1e-9);
+          expect(renegotiation.annualFrequencyFlexible).toBeLessThanOrEqual(0.105 + 1e-9);
+          expect(renegotiation.expectedCountRigid).toBeCloseTo(
+            renegotiation.annualFrequencyRigid * 5,
+            12,
+          );
+          expect(r.rigid.renegotiationCost).toBeCloseTo(
+            renegotiation.expectedCountRigid * REN_COST,
+            8,
+          );
         }
       }
     }
@@ -60,11 +73,42 @@ describe("(a) renegotiation is an incremental contract-rigidity scenario", () =>
     const publicResult = calculateCosts(makeInputs({ processType: "pzp_eu", renegotiationCost: REN_COST }));
     const operationalResult = calculateCosts(makeInputs({ processType: "mrp_order", renegotiationCost: REN_COST }));
     expect(publicResult.rigid.renegotiationCost).toBeGreaterThan(operationalResult.rigid.renegotiationCost);
-    expect(publicResult.trace.probabilities.renegotiationRigid).toBeLessThan(0.22);
+    expect(publicResult.trace.renegotiation.annualFrequencyRigid).toBeLessThan(0.22);
   });
 });
 
-describe("(b) no dimension's total context uplift exceeds ~x1.5", () => {
+describe("(b) mandatory legal waits are invariant", () => {
+  it("retains PZP publication and standstill in both paths at every tech level", () => {
+    for (const processType of ["pzp_eu", "pzp_krajowy"] as const) {
+      for (const tech of Object.values(TECH_LEVELS)) {
+        const timing = deriveStepTimings(PROCESS_TEMPLATES[processType], tech.timeMultiplier);
+        for (const item of timing.steps.filter(({ step }) => step.mandatoryWait)) {
+          expect(item.flexibleDays).toBe(item.rigidDays);
+          expect(item.rigidDays).toBe(item.step.rigidDays);
+        }
+        if (processType === "pzp_krajowy") {
+          const standstill = timing.steps.find(({ step }) => step.id === "standstill");
+          expect(standstill?.rigidDays).toBe(5);
+          expect(standstill?.flexibleDays).toBe(5);
+        }
+      }
+    }
+  });
+});
+
+describe("(c) central break-even threshold", () => {
+  it("reconstructs the central delta from non-delay costs and the delay slope", () => {
+    const result = calculateCosts(makeInputs({ dailyCostOfInaction: 4_321 }));
+    const threshold = result.decisionThreshold;
+    const reconstructed = threshold.nonDelayDelta + threshold.effectiveDayDifference * 4_321;
+    expect(reconstructed).toBeCloseTo(result.delta, 8);
+    if (threshold.breakEvenDailyCostOfInaction !== null) {
+      expect(threshold.breakEvenDailyCostOfInaction).toBeGreaterThanOrEqual(0);
+    }
+  });
+});
+
+describe("(d) no dimension's total context uplift exceeds ~x1.5", () => {
   // Mirrors the audit in scripts/recompute.ts.
   const DIMS: Array<keyof CostBreakdown> = [
     "timeCost",
@@ -86,7 +130,11 @@ describe("(b) no dimension's total context uplift exceeds ~x1.5", () => {
   it("holds for the rigid path across every scenario x combo x dimension", () => {
     let worst = 0;
     for (const s of SCENARIOS) {
-      const base = calculateCosts(s.inputs).rigid;
+      const base = calculateCosts({
+        ...s.inputs,
+        spendType: undefined,
+        processPhase: undefined,
+      }).rigid;
       for (const combo of COMBOS) {
         const ctx = calculateCosts({ ...s.inputs, ...combo }).rigid;
         for (const d of DIMS) {
@@ -99,12 +147,12 @@ describe("(b) no dimension's total context uplift exceeds ~x1.5", () => {
         }
       }
     }
-    // Sanity: the audit actually exercised meaningful uplift (documented max ~1.483).
+    // Sanity: the audit actually exercised the declared combined ×1.265 staff factor.
     expect(worst).toBeGreaterThan(1.2);
   });
 });
 
-describe("(c) bypass and uncertainty remain scenario-based", () => {
+describe("(e) bypass and uncertainty remain scenario-based", () => {
   it("uses the same neutral central bypass assumption for both paths", () => {
     const processTypes = Object.keys(PROCESS_RIGIDITY) as ProcessType[];
     const techs: TechLevelId[] = ["manual", "sourcing_tool", "partial_erp", "end_to_end"];
@@ -127,7 +175,7 @@ describe("(c) bypass and uncertainty remain scenario-based", () => {
   });
 });
 
-describe("(d) calculateCosts returns finite numbers with a zero-total deltaPercent guard", () => {
+describe("(f) calculateCosts returns finite numbers with a zero-total deltaPercent guard", () => {
   it("produces only finite numeric outputs for the reference scenarios", () => {
     for (const s of SCENARIOS) {
       const r = calculateCosts(s.inputs);
@@ -158,6 +206,7 @@ describe("(d) calculateCosts returns finite numbers with a zero-total deltaPerce
       makeInputs({
         contractValue: 0,
         tcoHorizonYears: 0,
+        contractDurationYears: 0,
         processType: "custom",
         customSteps: [],
         techLevel: "manual",
@@ -179,6 +228,7 @@ describe("(d) calculateCosts returns finite numbers with a zero-total deltaPerce
       makeInputs({
         contractValue: -1_000_000,
         tcoHorizonYears: -5,
+        contractDurationYears: -5,
         dailyCostOfInaction: -100,
         renegotiationCost: -10,
         bypassAuditExposure: -10,
@@ -187,5 +237,21 @@ describe("(d) calculateCosts returns finite numbers with a zero-total deltaPerce
     expect(Number.isFinite(r.deltaPercent)).toBe(true);
     expect(Number.isFinite(r.rigid.total)).toBe(true);
     expect(r.rigid.total).toBeGreaterThanOrEqual(0);
+  });
+
+  it("sanitizes non-finite financial and stakeholder inputs", () => {
+    const r = calculateCosts(
+      makeInputs({
+        contractValue: Number.POSITIVE_INFINITY,
+        dailyCostOfInaction: Number.NaN,
+        stakeholders: {
+          ...STAKEHOLDERS,
+          buyer: { count: -2, dailyRate: Number.POSITIVE_INFINITY },
+        },
+      }),
+    );
+    expect(Number.isFinite(r.rigid.total)).toBe(true);
+    expect(Number.isFinite(r.flexible.total)).toBe(true);
+    expect(Number.isFinite(r.delta)).toBe(true);
   });
 });

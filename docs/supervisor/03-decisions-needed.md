@@ -30,7 +30,7 @@ koderów i konsultację statystyczną?
 ## 5. Publikacja
 
 Należy ustalić kolejność czasopism i kryterium „gotowości do wysłania”. Obecne
-teksty są pełnymi szkicami 2.0 do rozwinięcia po decyzjach metodologicznych, nie
+teksty są pełnymi szkicami 2.1 do rozwinięcia po decyzjach metodologicznych, nie
 manuskryptami po recenzji wewnętrznej.
 
 ## 6. Decyzja go/no-go

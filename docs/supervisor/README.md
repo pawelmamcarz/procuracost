@@ -1,17 +1,17 @@
-# Pakiet dla promotora — ProcuraCost 2.0
+# Pakiet dla promotora — ProcuraCost 2.1
 
-**Stan na:** 13 lipca 2026
+**Stan na:** 14 lipca 2026
 
-**Wersja modelu:** 2.0.0
+**Wersja modelu:** 2.1.0
 
-**Wersja strony:** 2026.29.1.1
+**Wersja strony:** 2026.29.1.2
 
 ## Cel spotkania
 
 Uzyskać ocenę, czy warunkowa teza Tunnel–Field, siedmiowymiarowy model
 decyzyjny i proponowany projekt empiryczny tworzą spójny rdzeń cyklu
 doktorskiego. Spotkanie nie ma zatwierdzać gotowych wyników empirycznych:
-ProcuraCost 2.0 jest obecnie modelem transparentnych scenariuszy.
+ProcuraCost 2.1 jest obecnie modelem transparentnych scenariuszy.
 
 ## Zalecana kolejność lektury
 

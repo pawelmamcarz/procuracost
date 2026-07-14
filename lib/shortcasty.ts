@@ -12,12 +12,12 @@ export type Episode = {
   publishedAt?: string;
 };
 
-// Model-2.0 editorial set. Only current, source-bounded claims belong here.
+// Model-2.1 editorial set. Only current, source-bounded claims belong here.
 export const EPISODES: Episode[] = [
   {
     number: 1,
-    slug: "model-2-0-co-sie-zmienilo",
-    title: "ProcuraCost 2.0: co naprawdę porównujemy?",
+    slug: "model-2-1-co-sie-zmienilo",
+    title: "ProcuraCost 2.1: co naprawdę porównujemy?",
     dimension: "Metodologia",
     guest: "Odcinek metodologiczny",
     thesis:
@@ -40,10 +40,10 @@ export const EPISODES: Episode[] = [
     number: 3,
     slug: "beuve-sztywnosc-kontraktu",
     title: "Beuve: kontrakt to nie workflow",
-    dimension: "Kontrakt · Renegocjacja",
+    dimension: "Kontrakt · Formalne aneksy",
     guest: "Przegląd źródła",
     thesis:
-      "Estymacja 7,7–10,5 pp dotyczy wzrostu sztywności kontraktowej o jedno odchylenie standardowe w sektorze francuskich parkingów. Nie jest efektem formalności procesu zakupowego.",
+      "Estymacja 0,077–0,105 dotyczy dodatkowych formalnych aneksów na rok kontraktu przy wzroście sztywności o jedno odchylenie standardowe w sektorze francuskich parkingów. To częstość, nie prawdopodobieństwo zdarzenia ani efekt formalności workflow.",
     recommendation:
       "Koduj klauzule kontraktowe osobno od liczby kroków i czasu postępowania.",
   },

@@ -4,15 +4,16 @@
 // Compatible with Polish Public Procurement Law (PZP) and the private sector.
 //
 // HONEST DESCRIPTION OF THE METHOD: this is NOT a trained machine-learning model. It is a
-// hand-authored scoring function (one closed-form formula per path). The 30 "trees" are a
+// hand-authored scoring function (one common-criteria profile per path). The 30 runs are a
 // sensitivity sweep — the same formula re-evaluated with reweighted coefficients — used to
-// report how stable the recommendation is, not independent learners. The scoring weights are
-// modeling assumptions, not parameters fitted to real procurement outcomes. Feature importances
-// are computed by genuine ablation (neutralize a feature, measure the change in the top score).
+// report how stable the recommendation is, not independent learners. Every path is evaluated
+// on the same criteria and denominator. The weights are modeling assumptions, not parameters
+// fitted to real procurement outcomes. Feature importance is a ranking-margin ablation.
 // Theoretical grounding for the path logic: Holmström & Milgrom (1991) multitask model; Kraljic (1983).
 //
-// Above-threshold public-sector recommendations are hard-filtered to the lawful PZP trybów so the
-// tool can never recommend a legally-impossible path.
+// Above-threshold public-sector recommendations are hard-filtered to the two procedures available
+// without additional statutory grounds. Special procedures are not recommended unless the model
+// collects and verifies their legal conditions.
 
 export interface ProcurementFeatures {
   contractValue: number;       // PLN
@@ -68,13 +69,13 @@ export const PATHS: Record<PathId, ProcurementPath> = {
       "Classic open tender — offers submitted by an unlimited number of entities. Maximum competition, full transparency, longest timeline.",
     typicalDays: [60, 180],
     conditions: [
-      "Wartość powyżej progów unijnych lub krajowych",
+      "Wartość na poziomie lub powyżej właściwego progu unijnego",
       "Rynek dojrzały, wielu dostawców",
       "Specyfikacja dobrze znana",
       "Czas nie jest presją",
     ],
     conditionsEn: [
-      "Value above EU or national thresholds",
+      "Value at or above the applicable EU threshold",
       "Mature market, many suppliers",
       "Well-defined specification",
       "Time is not a constraint",
@@ -227,9 +228,9 @@ export const PATHS: Record<PathId, ProcurementPath> = {
     nameEn: "Agile Procurement",
     pzpArticle: "Sektor prywatny / pilotaż publiczny",
     description:
-      "Iteracyjny, wieloetapowy proces zakupowy z krótkimi cyklami decyzyjnymi, warsztatami z dostawcami i szybką selekcją. Swiss Casinos: wybór dostawcy ERP w ok. 6 tygodni zamiast 6 miesięcy (LAP Alliance, 2020).",
+      "Iteracyjny, wieloetapowy proces zakupowy z krótkimi cyklami decyzyjnymi, warsztatami z dostawcami i szybką selekcją. Raport praktyczny Agile Business Consortium opisuje czterotygodniowy sourcing ERP w Swiss Casinos; nie jest to niezależne badanie.",
     descriptionEn:
-      "Iterative, multi-stage procurement process with short decision cycles, supplier workshops and rapid selection. Swiss Casinos: ERP supplier sourced in ~6 weeks instead of 6 months (LAP Alliance, 2020).",
+      "Iterative, multi-stage procurement with short decision cycles and supplier workshops. An Agile Business Consortium practitioner report describes a four-week ERP sourcing cycle at Swiss Casinos; it is not an independent study.",
     typicalDays: [14, 60],
     conditions: [
       "Wysoka innowacyjność lub presja czasu",
@@ -300,124 +301,167 @@ function lcg(seed: number): () => number {
   };
 }
 
-// Each path is a declarative list of scoring terms. A term's factor(f) is bounded by
-// maxFactor, so the per-run score can be normalized to a TRUE 0–100 scale for every
-// path ("share of this path's achievable maximum under the run's weights"). This removes
-// the structural bias where paths with dimension bonuses had higher raw ceilings
-// (~164 vs 100) and were systematically favored in vote-based winner selection.
-type TermSpec = {
-  w: number;                              // weight index (0–6)
-  scale: number;                          // path-specific term scale
-  maxFactor: number;                      // largest value factor() can return
-  factor: (f: ProcurementFeatures) => number;
+// Every path is scored on the SAME criteria. A weight index therefore always means
+// the same feature, and the denominator is common across candidates. This is a
+// transparent multi-criteria suitability model, not an outcome prediction.
+type ScoringFeature =
+  | "contractValue"
+  | "supplierCount"
+  | "complexity"
+  | "urgencyDays"
+  | "isPublicSector"
+  | "innovationRequired"
+  | "supplyRisk"
+  | "strategicImportance"
+  | "marketMaturity"
+  | "spendType"
+  | "processPhase";
+
+const SCORING_FEATURES: ScoringFeature[] = [
+  "contractValue",
+  "supplierCount",
+  "complexity",
+  "urgencyDays",
+  "isPublicSector",
+  "innovationRequired",
+  "supplyRisk",
+  "strategicImportance",
+  "marketMaturity",
+  "spendType",
+  "processPhase",
+];
+
+type SuitabilityProfile = Record<ScoringFeature, (f: ProcurementFeatures) => number>;
+
+const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
+const highRating = (value: number) => clamp01((value - 1) / 4);
+const lowRating = (value: number) => clamp01((5 - value) / 4);
+const nearRating = (value: number, target: number) => clamp01(1 - Math.abs(value - target) / 4);
+const highValue = (f: ProcurementFeatures, target: number) => clamp01(f.contractValue / target);
+const manySuppliers = (f: ProcurementFeatures, target: number) => clamp01(f.supplierCount / target);
+const fewSuppliers = (f: ProcurementFeatures, target: number) => clamp01(target / Math.max(1, f.supplierCount));
+const timeAvailable = (f: ProcurementFeatures, target: number) => clamp01(f.urgencyDays / target);
+const timePressure = (f: ProcurementFeatures, target: number) => clamp01((target - f.urgencyDays) / target);
+const categoryFit = (actual: string | undefined, preferred: string, neutral = 0.5) =>
+  actual === undefined ? neutral : actual === preferred ? 1 : 0.25;
+
+const PATH_SUITABILITY: Record<PathId, SuitabilityProfile> = {
+  przetarg_otwarty: {
+    contractValue: (f) => highValue(f, 10_000_000),
+    supplierCount: (f) => manySuppliers(f, 8),
+    complexity: (f) => lowRating(f.complexity),
+    urgencyDays: (f) => timeAvailable(f, 120),
+    isPublicSector: (f) => (f.isPublicSector ? 1 : 0.55),
+    innovationRequired: (f) => (f.innovationRequired ? 0.25 : 1),
+    supplyRisk: (f) => lowRating(f.supplyRisk),
+    strategicImportance: (f) => nearRating(f.strategicImportance, 3),
+    marketMaturity: (f) => highRating(f.marketMaturity),
+    spendType: (f) => categoryFit(f.spendType, "indirect"),
+    processPhase: (f) => categoryFit(f.processPhase, "downstream"),
+  },
+  przetarg_ograniczony: {
+    contractValue: (f) => highValue(f, 5_000_000),
+    supplierCount: (f) => nearRating(clamp01(f.supplierCount / 2) * 5, 3),
+    complexity: (f) => highRating(f.complexity),
+    urgencyDays: (f) => timeAvailable(f, 90),
+    isPublicSector: (f) => (f.isPublicSector ? 1 : 0.55),
+    innovationRequired: (f) => (f.innovationRequired ? 0.55 : 0.8),
+    supplyRisk: (f) => nearRating(f.supplyRisk, 3),
+    strategicImportance: (f) => highRating(f.strategicImportance),
+    marketMaturity: (f) => nearRating(f.marketMaturity, 3),
+    spendType: (f) => categoryFit(f.spendType, "direct"),
+    processPhase: (f) => categoryFit(f.processPhase, "upstream"),
+  },
+  dialog_konkurencyjny: {
+    contractValue: (f) => highValue(f, 3_000_000),
+    supplierCount: (f) => nearRating(clamp01(f.supplierCount / 2) * 5, 3),
+    complexity: (f) => highRating(f.complexity),
+    urgencyDays: (f) => timeAvailable(f, 150),
+    isPublicSector: (f) => (f.isPublicSector ? 1 : 0.65),
+    innovationRequired: (f) => (f.innovationRequired ? 1 : 0.35),
+    supplyRisk: (f) => nearRating(f.supplyRisk, 3),
+    strategicImportance: (f) => highRating(f.strategicImportance),
+    marketMaturity: (f) => lowRating(f.marketMaturity),
+    spendType: (f) => categoryFit(f.spendType, "direct"),
+    processPhase: (f) => categoryFit(f.processPhase, "upstream"),
+  },
+  tryb_podstawowy: {
+    contractValue: (f) =>
+      f.contractValue >= PZP_EXEMPTION_PLN && f.contractValue < applicableEuThreshold(f) ? 1 : 0,
+    supplierCount: (f) => manySuppliers(f, 4),
+    complexity: (f) => lowRating(f.complexity),
+    urgencyDays: (f) => timeAvailable(f, 45),
+    isPublicSector: (f) => (f.isPublicSector ? 1 : 0),
+    innovationRequired: (f) => (f.innovationRequired ? 0.4 : 1),
+    supplyRisk: (f) => lowRating(f.supplyRisk),
+    strategicImportance: (f) => nearRating(f.strategicImportance, 3),
+    marketMaturity: (f) => highRating(f.marketMaturity),
+    spendType: (f) => categoryFit(f.spendType, "indirect"),
+    processPhase: (f) => categoryFit(f.processPhase, "downstream"),
+  },
+  negocjacje: {
+    contractValue: (f) => highValue(f, 2_000_000),
+    supplierCount: (f) => fewSuppliers(f, 4),
+    complexity: (f) => highRating(f.complexity),
+    urgencyDays: (f) => timePressure(f, 120),
+    isPublicSector: (f) => (f.isPublicSector ? 0.2 : 1),
+    innovationRequired: (f) => (f.innovationRequired ? 0.8 : 0.55),
+    supplyRisk: (f) => highRating(f.supplyRisk),
+    strategicImportance: (f) => highRating(f.strategicImportance),
+    marketMaturity: (f) => lowRating(f.marketMaturity),
+    spendType: (f) => categoryFit(f.spendType, "direct"),
+    processPhase: (f) => categoryFit(f.processPhase, "upstream"),
+  },
+  agile: {
+    contractValue: (f) => nearRating(clamp01(f.contractValue / 2_000_000) * 5, 3),
+    supplierCount: (f) => nearRating(clamp01(f.supplierCount / 3) * 5, 3),
+    complexity: (f) => highRating(f.complexity),
+    urgencyDays: (f) => timePressure(f, 90),
+    isPublicSector: (f) => (f.isPublicSector ? 0.15 : 1),
+    innovationRequired: (f) => (f.innovationRequired ? 1 : 0.35),
+    supplyRisk: (f) => nearRating(f.supplyRisk, 3),
+    strategicImportance: (f) => highRating(f.strategicImportance),
+    marketMaturity: (f) => lowRating(f.marketMaturity),
+    spendType: (f) => categoryFit(f.spendType, "indirect", 0.6),
+    processPhase: (f) => categoryFit(f.processPhase, "downstream", 0.6),
+  },
+  bezposrednie: {
+    contractValue: (f) => clamp01(1 - f.contractValue / PZP_EXEMPTION_PLN),
+    supplierCount: (f) => fewSuppliers(f, 1),
+    complexity: (f) => lowRating(f.complexity),
+    urgencyDays: (f) => timePressure(f, 30),
+    isPublicSector: (f) => (f.isPublicSector ? 0.2 : 0.8),
+    innovationRequired: (f) => (f.innovationRequired ? 0.15 : 0.8),
+    supplyRisk: (f) => highRating(f.supplyRisk),
+    strategicImportance: (f) => lowRating(f.strategicImportance),
+    marketMaturity: (f) => highRating(f.marketMaturity),
+    spendType: (f) => categoryFit(f.spendType, "indirect"),
+    processPhase: (f) => categoryFit(f.processPhase, "downstream"),
+  },
 };
 
-const N_WEIGHTS = 7; // w0–w4 base terms + w5/w6 spendType & processPhase dimension terms
-
-const isDirect = (f: ProcurementFeatures) => f.spendType === "direct";
-const isUpstream = (f: ProcurementFeatures) => f.processPhase === "upstream";
-const isDownstream = (f: ProcurementFeatures) => f.processPhase === "downstream";
-const vMln = (f: ProcurementFeatures) => f.contractValue / 1_000_000;
-
-const PATH_TERMS: Record<PathId, TermSpec[]> = {
-  przetarg_otwarty: [
-    { w: 0, scale: 25, maxFactor: 1, factor: (f) => Math.min(vMln(f) / 10, 1) },                       // large value → open tender
-    { w: 1, scale: 25, maxFactor: 1, factor: (f) => (f.supplierCount >= 5 ? 1 : f.supplierCount / 5) }, // many suppliers
-    { w: 2, scale: 20, maxFactor: 1, factor: (f) => (6 - f.complexity) / 5 },                           // low complexity
-    { w: 3, scale: 15, maxFactor: 1, factor: (f) => (f.urgencyDays > 90 ? 1 : f.urgencyDays / 90) },    // time available
-    { w: 4, scale: 15, maxFactor: 1, factor: (f) => (f.isPublicSector ? 1 : 0) },                       // public sector
-  ],
-  przetarg_ograniczony: [
-    { w: 0, scale: 20, maxFactor: 1, factor: (f) => Math.min(vMln(f) / 5, 1) },
-    { w: 1, scale: 30, maxFactor: 1, factor: (f) => (f.supplierCount >= 2 && f.supplierCount <= 6 ? 1 : 0) },
-    { w: 2, scale: 20, maxFactor: 1, factor: (f) => (f.isPublicSector ? 1 : 0) },
-    { w: 3, scale: 20, maxFactor: 1, factor: (f) => (f.complexity >= 3 ? f.complexity / 5 : 0) },
-    { w: 4, scale: 10, maxFactor: 1, factor: (f) => (f.marketMaturity <= 3 ? 1 : 0) },
-  ],
-  dialog_konkurencyjny: [
-    { w: 0, scale: 30, maxFactor: 1, factor: (f) => f.complexity / 5 },
-    { w: 1, scale: 25, maxFactor: 1, factor: (f) => (f.innovationRequired ? 1 : 0) },
-    { w: 2, scale: 15, maxFactor: 1, factor: (f) => (f.isPublicSector ? 1 : 0) },
-    { w: 3, scale: 15, maxFactor: 1, factor: (f) => Math.min(vMln(f) / 3, 1) },
-    { w: 4, scale: 15, maxFactor: 1, factor: (f) => (f.marketMaturity <= 2 ? 1 : 0.3) },
-    // Dialog/competitive negotiation is the natural fit for complex, high-stakes
-    // Direct + Upstream sourcing where relationship and risk allocation matter.
-    { w: 5, scale: 14, maxFactor: 1.35, factor: (f) => (isUpstream(f) ? 1.35 : 0.65) },
-    { w: 6, scale: 12, maxFactor: 1.6, factor: (f) => (isDirect(f) && isUpstream(f) ? 1.6 : isDirect(f) ? 1.1 : 0.7) },
-  ],
-  tryb_podstawowy: [
-    // Default competitive Polish procedure below the EU threshold: public-sector,
-    // mid-value (170k–applicable-EU-threshold band), non-emergency, standard buys.
-    { w: 0, scale: 30, maxFactor: 1, factor: (f) => (f.isPublicSector ? 1 : 0) },
-    { w: 1, scale: 30, maxFactor: 1, factor: (f) =>
-        f.contractValue >= PZP_EXEMPTION_PLN && f.contractValue < applicableEuThreshold(f) ? 1 : 0 },
-    { w: 2, scale: 15, maxFactor: 1, factor: (f) => (f.urgencyDays >= 21 ? 1 : f.urgencyDays / 21) },
-    { w: 3, scale: 15, maxFactor: 1, factor: (f) => (f.supplierCount >= 2 ? 1 : f.supplierCount / 2) },
-    { w: 4, scale: 10, maxFactor: 1, factor: (f) => (6 - f.complexity) / 5 },
-  ],
-  negocjacje: [
-    { w: 0, scale: 25, maxFactor: 1, factor: (f) => f.strategicImportance / 5 },
-    { w: 1, scale: 20, maxFactor: 1, factor: (f) => (f.supplierCount <= 4 ? 1 : 2 / f.supplierCount) },
-    { w: 2, scale: 20, maxFactor: 1, factor: (f) => (!f.isPublicSector ? 1 : 0.4) },
-    { w: 3, scale: 20, maxFactor: 1, factor: (f) => (f.urgencyDays < 90 ? (90 - f.urgencyDays) / 90 : 0) },
-    { w: 4, scale: 15, maxFactor: 1, factor: (f) => (f.supplyRisk >= 3 ? f.supplyRisk / 5 : 0) },
-    // Direct + Upstream → strong preference for flexible, relationship-heavy paths;
-    // Downstream → more tolerance for simpler, operational paths.
-    { w: 5, scale: 25, maxFactor: 1.8, factor: (f) => (isUpstream(f) && isDirect(f) ? 1.8 : 0.4) },
-    { w: 6, scale: 15, maxFactor: 1.25, factor: (f) => (isDownstream(f) ? 0.45 : 1.25) },
-  ],
-  agile: [
-    { w: 0, scale: 25, maxFactor: 1, factor: (f) => (f.innovationRequired ? 1 : 0.3) },
-    { w: 1, scale: 30, maxFactor: 1, factor: (f) => (f.urgencyDays < 60 ? (60 - f.urgencyDays) / 60 : 0) },
-    { w: 2, scale: 25, maxFactor: 1, factor: (f) => (!f.isPublicSector ? 1 : 0.2) },
-    { w: 3, scale: 20, maxFactor: 1, factor: (f) => (f.complexity >= 3 ? f.complexity / 5 : 0) },
-    // Downstream + Indirect favors faster, lighter execution paths
-    { w: 5, scale: 8, maxFactor: 1.25, factor: (f) => (isDownstream(f) ? 1.25 : 0.85) },
-    { w: 6, scale: 6, maxFactor: 1.15, factor: (f) => (isDirect(f) ? 0.9 : 1.15) },
-  ],
-  bezposrednie: [
-    { w: 0, scale: 35, maxFactor: 1, factor: (f) => (f.urgencyDays < 21 ? (21 - f.urgencyDays) / 21 : 0) },
-    { w: 1, scale: 30, maxFactor: 1, factor: (f) => (f.supplyRisk >= 5 ? 1 : 0) },
-    { w: 2, scale: 20, maxFactor: 1, factor: (f) => (f.contractValue < PZP_EXEMPTION_PLN ? 1 : 0) },
-    { w: 3, scale: 15, maxFactor: 0.5, factor: (f) => (!f.isPublicSector ? 0.5 : 0) },
-    // Direct + Upstream almost never fits single-source without justification; Downstream+Indirect often does
-    { w: 5, scale: 10, maxFactor: 1.4, factor: (f) => (isDirect(f) && isUpstream(f) ? 0.25 : isDownstream(f) ? 1.4 : 1.0) },
-    { w: 6, scale: 6, maxFactor: 1.3, factor: (f) => (isDownstream(f) && !isDirect(f) ? 1.3 : 0.9) },
-  ],
-};
-
-// Score a single path from features. Normalized per run to a true 0–100 scale: the
-// achieved weighted sum divided by this path's achievable maximum under the same
-// weights, so every path competes on an equal ceiling.
 function scorePath(path: PathId, f: ProcurementFeatures, weights: number[]): number {
-  let achieved = 0;
-  let achievable = 0;
-  for (const term of PATH_TERMS[path]) {
-    const w = weights[term.w];
-    achieved += w * term.factor(f) * term.scale;
-    achievable += w * term.maxFactor * term.scale;
-  }
-  return achievable > 0 ? (100 * achieved) / achievable : 0;
+  const denominator = weights.reduce((sum, weight) => sum + weight, 0);
+  if (denominator <= 0) return 0;
+  const achieved = SCORING_FEATURES.reduce((sum, feature, index) => {
+    const suitability = clamp01(PATH_SUITABILITY[path][feature](f));
+    return sum + weights[index] * suitability;
+  }, 0);
+  return (100 * achieved) / denominator;
 }
 
-// Generate one sweep run's weight vector (random feature subset weighting).
-// Exactly N_WEIGHTS weights — every generated weight is read by at least one path.
-function treeWeights(rand: () => number): number[] {
-  const active = Array.from({ length: N_WEIGHTS }, () => (rand() > 0.4 ? 1 : 0));
-  // ensure at least 3 active
-  while (active.filter(Boolean).length < 3) {
-    active[Math.floor(rand() * N_WEIGHTS)] = 1;
-  }
-  // scale with random importance
-  return active.map((a) => (a ? 0.5 + rand() * 0.5 : 0));
+// All criteria remain active. Each run varies every common weight by ±25% so the
+// result measures local weight sensitivity without silently dropping information.
+function runWeights(rand: () => number): number[] {
+  return SCORING_FEATURES.map(() => 0.75 + rand() * 0.5);
 }
 
 export interface PathResult {
   path: ProcurementPath;
   score: number;        // 0–100
-  votes: number;        // out of 30 trees
-  confidence: number;   // votes / 30
-  featureContributions: Record<string, number>; // % contribution
+  votes: number;        // winning sensitivity runs out of 30
+  confidence: number;   // winning-run share, not statistical confidence
+  featureContributions: Record<string, number>; // suitability by common criterion
 }
 
 export interface OptimizationResult {
@@ -467,7 +511,7 @@ const FEATURE_LABELS_EN: Record<keyof ProcurementFeatures, string> = {
   authorityLevel: "Authority level",
 };
 
-const N_TREES = 30;
+const N_SENSITIVITY_RUNS = 30;
 const PATH_IDS: PathId[] = [
   "przetarg_otwarty",
   "przetarg_ograniczony",
@@ -494,24 +538,18 @@ function applicableEuThreshold(f: ProcurementFeatures): number {
     : EU_THRESHOLD_SUPPLIES_SERVICES_PLN;
 }
 
-// Lawful competitive trybów for public-sector procurement at/above the EU threshold
-// without documented statutory grounds for a negotiated / single-source award.
-const PUBLIC_COMPETITIVE_PATHS: PathId[] = [
+// Art. 129(2): only open and restricted procedures are available without additional
+// statutory grounds. Competitive dialogue also requires an Art. 153 condition, which
+// this form does not collect or verify.
+const PUBLIC_DEFAULT_EU_PATHS: PathId[] = [
   "przetarg_otwarty",
   "przetarg_ograniczony",
-  "dialog_konkurencyjny",
 ];
 
-// Lawful paths for public-sector procurement in the 170k PLN–EU-threshold band: the national
-// 'tryb podstawowy' (Art. 275) is the default competitive procedure here. The ≥EU-threshold
-// trybów (open / restricted tender, competitive dialogue) remain available; a negotiated or
-// single-source award still requires documented przesłanki (Art. 275 ust. 2 / 305).
-const PUBLIC_BELOW_EU_PATHS: PathId[] = [
-  "tryb_podstawowy",
-  "przetarg_otwarty",
-  "przetarg_ograniczony",
-  "dialog_konkurencyjny",
-];
+// Art. 266 excludes the EU-threshold procedures in this band; Art. 275 provides
+// the national basic mode. Exceptional modes require separate statutory grounds,
+// which this input form does not collect.
+const PUBLIC_BELOW_EU_PATHS: PathId[] = ["tryb_podstawowy"];
 
 // Paths available where PZP's national 'tryb podstawowy' does not apply (private sector, or
 // public buys below the 170k PLN PZP exemption): every path except the band-specific tryb podstawowy.
@@ -522,12 +560,12 @@ const GENERAL_PATHS: PathId[] = PATH_IDS.filter((p) => p !== "tryb_podstawowy");
 function feasiblePathIds(f: ProcurementFeatures): PathId[] {
   if (!f.isPublicSector) return GENERAL_PATHS;                  // private sector: policy is the only constraint
   if (f.contractValue < PZP_EXEMPTION_PLN) return GENERAL_PATHS; // below 170k PLN: PZP does not apply
-  // Public sector in the 170k PLN–EU band: the national tryb podstawowy (Art. 275) is the lawful
-  // default, alongside the competitive trybów. Negotiated / single-source awards require przesłanki.
+  // Public sector in the 170k PLN–EU band: use the national basic mode (Art. 275).
   if (f.contractValue < applicableEuThreshold(f)) return PUBLIC_BELOW_EU_PATHS;
-  // Public sector at/above the EU threshold: only the full-procedure competitive trybów by default.
-  // Negotiated and single-source awards require documented przesłanki (Art. 153 / 214) not modeled here.
-  return PUBLIC_COMPETITIVE_PATHS;
+  // Public sector at/above the EU threshold: only procedures available without
+  // additional grounds. Dialogue, negotiated and single-source procedures require
+  // statutory conditions that are not modeled here.
+  return PUBLIC_DEFAULT_EU_PATHS;
 }
 
 // Neutral baseline used for ablation feature importance. "Unset" is the documented
@@ -548,21 +586,65 @@ const NEUTRAL_FEATURES: ProcurementFeatures = {
   authorityLevel: "subcentral",
 };
 
-const UNIT_WEIGHTS: number[] = Array.from({ length: N_WEIGHTS }, () => 1);
+function finiteOr(value: number, fallback: number): number {
+  return Number.isFinite(value) ? value : fallback;
+}
 
-// Genuine ablation importance: neutralize each feature, measure |Δ score| of the top path
-// using the full unbagged scorer. Input-dependent and deterministic (no RNG).
-// Paths whose term list contains no spendType/processPhase term (the three competitive
-// tender modes) correctly report 0 importance for those features by construction.
+function rating(value: number): number {
+  return Math.min(5, Math.max(1, finiteOr(value, 3)));
+}
+
+function sanitizeFeatures(features: ProcurementFeatures): ProcurementFeatures {
+  return {
+    contractValue: Math.max(0, finiteOr(features.contractValue, NEUTRAL_FEATURES.contractValue)),
+    supplierCount: Math.max(0, finiteOr(features.supplierCount, NEUTRAL_FEATURES.supplierCount)),
+    complexity: rating(features.complexity),
+    urgencyDays: Math.max(0, finiteOr(features.urgencyDays, NEUTRAL_FEATURES.urgencyDays)),
+    isPublicSector: Boolean(features.isPublicSector),
+    innovationRequired: Boolean(features.innovationRequired),
+    supplyRisk: rating(features.supplyRisk),
+    strategicImportance: rating(features.strategicImportance),
+    marketMaturity: rating(features.marketMaturity),
+    procurementObject: features.procurementObject === "works" ? "works" : "supplies_services",
+    authorityLevel: features.authorityLevel === "central" ? "central" : "subcentral",
+    spendType: features.spendType === "direct" || features.spendType === "indirect"
+      ? features.spendType
+      : undefined,
+    processPhase: features.processPhase === "upstream" || features.processPhase === "downstream"
+      ? features.processPhase
+      : undefined,
+  };
+}
+
+const UNIT_WEIGHTS: number[] = SCORING_FEATURES.map(() => 1);
+
+function rankingMargin(
+  path: PathId,
+  features: ProcurementFeatures,
+  candidates: PathId[],
+): number {
+  const pathScore = scorePath(path, features, UNIT_WEIGHTS);
+  const competitorScore = Math.max(
+    ...candidates.filter((candidate) => candidate !== path).map((candidate) =>
+      scorePath(candidate, features, UNIT_WEIGHTS)),
+    0,
+  );
+  return pathScore - competitorScore;
+}
+
+// Neutralize one common criterion and measure the change in the winner's margin over
+// its strongest feasible competitor. This captures ranking sensitivity rather than a
+// path's isolated score and remains deterministic.
 function ablationImportance(
   features: ProcurementFeatures,
   topPathId: PathId,
-  labels: Record<keyof ProcurementFeatures, string>
+  candidates: PathId[],
+  labels: Record<keyof ProcurementFeatures, string>,
 ): FeatureImportance[] {
-  const base = scorePath(topPathId, features, UNIT_WEIGHTS);
-  const raw = (Object.keys(labels) as (keyof ProcurementFeatures)[]).map((key) => {
+  const base = rankingMargin(topPathId, features, candidates);
+  const raw = SCORING_FEATURES.map((key) => {
     const perturbed = { ...features, [key]: NEUTRAL_FEATURES[key] };
-    const delta = Math.abs(base - scorePath(topPathId, perturbed, UNIT_WEIGHTS));
+    const delta = Math.abs(base - rankingMargin(topPathId, perturbed, candidates));
     return { feature: key as string, label: labels[key], importance: delta };
   });
   const max = Math.max(...raw.map((r) => r.importance), 0);
@@ -572,7 +654,8 @@ function ablationImportance(
 }
 
 export function optimize(features: ProcurementFeatures, lang: "pl" | "en" = "pl"): OptimizationResult {
-  const candidates = feasiblePathIds(features);
+  const safeFeatures = sanitizeFeatures(features);
+  const candidates = feasiblePathIds(safeFeatures);
   const FEATURE_LABELS = lang === "en" ? FEATURE_LABELS_EN : FEATURE_LABELS_PL;
 
   const votes: Record<string, number> = {};
@@ -581,10 +664,10 @@ export function optimize(features: ProcurementFeatures, lang: "pl" | "en" = "pl"
 
   // Sensitivity sweep: re-evaluate the scoring formula with reweighted coefficients to
   // measure how STABLE the winner is. These are not independent learners.
-  for (let t = 0; t < N_TREES; t++) {
+  for (let t = 0; t < N_SENSITIVITY_RUNS; t++) {
     const rand = lcg(t * 31337 + 42);
-    const weights = treeWeights(rand);
-    const runScores = candidates.map((pid) => ({ pid, s: scorePath(pid, features, weights) }));
+    const weights = runWeights(rand);
+    const runScores = candidates.map((pid) => ({ pid, s: scorePath(pid, safeFeatures, weights) }));
     runScores.forEach(({ pid, s }) => { scoreSum[pid] += s; });
     runScores.sort((a, b) => b.s - a.s);
     votes[runScores[0].pid]++;
@@ -595,18 +678,33 @@ export function optimize(features: ProcurementFeatures, lang: "pl" | "en" = "pl"
   const ranked: PathResult[] = candidates
     .map((pid) => ({
       path: PATHS[pid],
-      score: Math.round(scoreSum[pid] / N_TREES),
+      score: Math.round(scoreSum[pid] / N_SENSITIVITY_RUNS),
       votes: votes[pid],
-      confidence: votes[pid] / N_TREES, // share of sweep runs where this path won (ensemble agreement)
-      featureContributions: {},
+      confidence: votes[pid] / N_SENSITIVITY_RUNS, // share of weight-sensitivity runs where this path won
+      featureContributions: Object.fromEntries(
+        SCORING_FEATURES.map((feature) => [
+          feature,
+          Math.round(100 * clamp01(PATH_SUITABILITY[pid][feature](safeFeatures))),
+        ]),
+      ),
     }))
     .sort((a, b) => b.votes - a.votes || b.score - a.score);
 
   const topPath = ranked[0];
-  const featureImportance = ablationImportance(features, topPath.path.id, FEATURE_LABELS);
+  const featureImportance = candidates.length > 1
+    ? ablationImportance(safeFeatures, topPath.path.id, candidates, FEATURE_LABELS)
+    : SCORING_FEATURES.map((feature) => ({
+        feature,
+        label: FEATURE_LABELS[feature],
+        importance: 0,
+      }));
 
-  const policyNote = generatePolicyNote(features, topPath.path.id, lang);
-  const explanation = generateExplanation(features, topPath, featureImportance, lang);
+  const policyNote = generatePolicyNote(safeFeatures, lang);
+  const explanation = candidates.length > 1
+    ? generateExplanation(safeFeatures, topPath, featureImportance, lang)
+    : lang === "en"
+      ? `"${topPath.path.nameEn}" is the only default procedure represented for this legal band. The 30/30 result reflects the legal filter, not statistical confidence or comparative superiority.`
+      : `„${topPath.path.name}” jest jedynym domyślnym trybem ujętym dla tego pasma prawnego. Wynik 30/30 odzwierciedla filtr prawny, a nie pewność statystyczną ani porównawczą wyższość.`;
 
   return { ranked, featureImportance, topPath, policyNote, lang, explanation };
 }
@@ -675,15 +773,15 @@ function generateExplanation(
   const f2 = top[1] ? describeFeatureValue(top[1].feature as keyof ProcurementFeatures, features, lang) : null;
 
   if (lang === "en") {
-    return `The model recommends "${pathName}" mainly because of: ${f1}${f2 ? ` and ${f2}` : ""} (largest sensitivity of the score). The winner held in ${votes}/30 sensitivity runs (ensemble agreement: ${pct}%).`;
+    return `The model recommends "${pathName}" mainly because of: ${f1}${f2 ? ` and ${f2}` : ""} (largest sensitivity of the ranking margin). The winner held in ${votes}/30 weight-sensitivity runs (stability: ${pct}%).`;
   }
-  return `Model rekomenduje "${pathName}" przede wszystkim ze względu na: ${f1}${f2 ? ` oraz ${f2}` : ""} (największy wpływ na wynik). Rekomendacja utrzymała się w ${votes}/30 przebiegach analizy wrażliwości (zgodność: ${pct}%).`;
+  return `Model rekomenduje "${pathName}" przede wszystkim ze względu na: ${f1}${f2 ? ` oraz ${f2}` : ""} (największy wpływ na margines rankingu). Rekomendacja utrzymała się w ${votes}/30 przebiegach wrażliwości wag (stabilność: ${pct}%).`;
 }
 
-function generatePolicyNote(f: ProcurementFeatures, winner: PathId, lang: "pl" | "en" = "pl"): string {
+function generatePolicyNote(f: ProcurementFeatures, lang: "pl" | "en" = "pl"): string {
   if (lang === "en") {
     if (!f.isPublicSector) {
-      return "Private sector: PZP thresholds do not apply. The organisation's procurement policy is the only constraint — all paths are available.";
+      return "Private sector: PZP thresholds do not apply. The scorer compares the represented non-PZP organisational paths subject to internal policy.";
     }
     if (f.contractValue < PZP_EXEMPTION_PLN) {
       return "Below the PLN 170,000 net threshold: PZP does not apply (threshold effective from 1 January 2026). Internal rules and public-spending principles still apply.";
@@ -691,11 +789,11 @@ function generatePolicyNote(f: ProcurementFeatures, winner: PathId, lang: "pl" |
     if (f.contractValue < applicableEuThreshold(f)) {
       return "Between PLN 170,000 and the applicable EU threshold (PLN 603,400 or 930,960 for supplies/services; PLN 23,291,240 for works): the national 'tryb podstawowy' applies (Art. 275). Exceptional modes require documented statutory grounds.";
     }
-    return "At/above the EU threshold: full procedure under PZP and Directive 2014/24/EU. Competitive trybów: open tender (Art. 132), restricted tender (Art. 140), competitive dialogue (Art. 169). A negotiated procedure with notice (Art. 153) or a single-source award (Art. 214) requires documented statutory grounds.";
+    return "At/above the EU threshold, the default filter offers open tender (Art. 132) and restricted tender (Art. 140), which Art. 129(2) permits without additional grounds. Competitive dialogue, negotiated procedures and single-source awards are outside this recommendation because they require separately documented statutory conditions.";
   }
 
   if (!f.isPublicSector) {
-    return "Sektor prywatny: progi PZP nie mają zastosowania. Polityka zakupowa organizacji jest jedynym ograniczeniem — wszystkie ścieżki są dostępne.";
+    return "Sektor prywatny: progi PZP nie mają zastosowania. Scorer porównuje ujęte ścieżki organizacyjne poza PZP, z zastrzeżeniem polityki wewnętrznej.";
   }
   if (f.contractValue < PZP_EXEMPTION_PLN) {
     return "Poniżej progu 170 000 PLN netto (od 1.01.2026): ustawy PZP nie stosuje się, lecz nadal obowiązują reguły wewnętrzne oraz zasady racjonalnego i przejrzystego wydatkowania.";
@@ -703,5 +801,5 @@ function generatePolicyNote(f: ProcurementFeatures, winner: PathId, lang: "pl" |
   if (f.contractValue < applicableEuThreshold(f)) {
     return "Między 170 000 PLN a właściwym progiem UE (603 400 lub 930 960 PLN dla dostaw/usług; 23 291 240 PLN dla robót): tryb podstawowy (art. 275). Tryby wyjątkowe wymagają udokumentowanych przesłanek ustawowych.";
   }
-  return "Na/powyżej progu UE: pełne postępowanie zgodnie z PZP i Dyrektywą 2014/24/UE. Tryby konkurencyjne: przetarg nieograniczony (Art. 132), ograniczony (Art. 140), dialog konkurencyjny (Art. 169). Negocjacje z ogłoszeniem (Art. 153) lub wolna ręka (Art. 214) wymagają udokumentowanych przesłanek.";
+  return "Na/powyżej progu UE filtr domyślnie oferuje przetarg nieograniczony (art. 132) i ograniczony (art. 140), które art. 129 ust. 2 dopuszcza bez dodatkowych przesłanek. Dialog konkurencyjny, tryby negocjacyjne i wolna ręka pozostają poza rekomendacją, ponieważ wymagają osobno udokumentowanych przesłanek ustawowych.";
 }

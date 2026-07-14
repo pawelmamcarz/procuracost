@@ -40,13 +40,13 @@ describe("(f) getISOWeek at year boundaries (Dec 29 – Jan 4)", () => {
 });
 
 describe("Tesla-style site version", () => {
-  it("uses ISO week and defaults to release.patch 1.1", () => {
-    expect(generateSiteVersion(new Date(2026, 6, 13))).toBe("2026.29.1.1");
+  it("uses ISO week and the current release.patch default", () => {
+    expect(generateSiteVersion(new Date(2026, 6, 13))).toBe("2026.29.1.2");
   });
 
   it("uses the ISO week-year at calendar-year boundaries", () => {
     expect(getISOWeekParts(new Date(2019, 11, 30))).toEqual({ year: 2020, week: 1 });
-    expect(generateSiteVersion(new Date(2021, 0, 1))).toBe("2020.53.1.1");
+    expect(generateSiteVersion(new Date(2021, 0, 1))).toBe("2020.53.1.2");
   });
 
   it("accepts a valid build override", () => {

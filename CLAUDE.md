@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## What this is
 
 ProcuraCost is a bilingual (PL/EN) Next.js 16 site for a procurement-economics
-research project. Model 2.0 compares formal/sequential and adaptive/compliant paths
+research project. Model 2.1 compares formal/sequential and adaptive/compliant paths
 under the same governance boundary. The interactive tools are driven by a
 self-contained model layer in `lib/`; there is no backend, database or API.
 
@@ -31,10 +31,10 @@ Vitest covers calculations, optimizer legality, formatting, and versioning. Veri
 
 The cost model is a layered pipeline of pure functions and constants. Changes to procurement economics happen here, not in components:
 
-- **`lib/process-templates.ts`** — the foundational data layer. Defines the 7 `ProcessType`s (grouped into strategic / policy-driven / operational layers), 4 `TechLevelId`s, 6 `StakeholderRole`s, per-process `ProcessStep[]` templates (rigid vs. flexible day counts, mandatory-wait flags, per-role participation hours), and the `PROCESS_RIGIDITY` index. The `derive*` functions (`deriveRigidDays`, `deriveFlexibleDays`, `deriveStaffCost`) apply contextual multipliers based on the Direct/Indirect × Upstream/Downstream dimensions. **All business-logic constants belong here — never inline magic numbers in components.**
-- **`lib/calculations.ts`** — neutral 7-dimension model 2.0. Competition, contract rigidity, TCO capture, workflow, and bypass are separate. `calculateCosts` returns a central point plus a low/high scenario interval; TCO and bypass ranges are assumptions, not sourced probabilities.
-- **`lib/optimizer.ts`** — the weighted rule-based path optimizer (`optimize`): one closed-form scoring formula per path with a 30-run sensitivity sweep, recommending one of 6 `PathId`s (mapped to Polish PZP articles). Returns scored paths + feature importances for explainability. Deterministic by design — no randomness at inference.
-- **`lib/scenarios.ts`** — 8 reference case studies (Ryanair fleet, Swiss Casinos ERP, Zara, etc.), each a pre-filled `ProcurementInputs` + citation. Used for the calculator presets and the industry benchmark chart.
+- **`lib/process-templates.ts`** — the foundational data layer. Defines 8 `ProcessType`s (including `custom`), 4 `TechLevelId`s, 6 `StakeholderRole`s, and the canonical per-step timing/staff derivation. Mandatory legal waits must remain invariant between paths and technologies. **All business-logic constants belong here — never inline magic numbers in components.**
+- **`lib/calculations.ts`** — neutral 7-dimension model 2.1. Competition, contract rigidity, TCO capture, workflow, and bypass are separate. `calculateCosts` returns a central point, low/high scenario interval, and daily-cost-of-inaction break-even threshold. Beuve is an annual formal-amendment frequency; TCO is zero centrally.
+- **`lib/optimizer.ts`** — common-criteria rule-based path optimizer (`optimize`) with 7 `PathId`s and 30 ±25% weight-sensitivity runs. Every path uses the same criteria and denominator; public candidates are hard-filtered by PZP. Deterministic by design.
+- **`lib/scenarios.ts`** — reference scenarios, each a pre-filled `ProcurementInputs` + citation. Used for calculator presets and benchmark charts.
 - **`lib/i18n.ts`** — every user-facing string, keyed by `pl` / `en` (`calculatorT`, `comparisonT`, etc.). See i18n rule below.
 - **`lib/shortcasty.ts`** — podcast episode metadata. **`lib/version.ts`** — Tesla-style version string.
 
@@ -52,7 +52,7 @@ Chrome (NavBar + footer + projects bar) is rendered **once** by `components/AppS
 
 - **i18n**: never hardcode Polish/English strings in components — route them through `lib/i18n.ts` (`tx = calculatorT[lang]`). Short label ternaries (`lang === "en" ? "days" : "dni"`) are the only allowed exception. See `CLAUDE_DESIGN.md`.
 - **Design system**: `CLAUDE_DESIGN.md` is authoritative for color semantics, typography, card/button patterns, and the Tunnel-vs-Field metaphor vocabulary. The canonical tagline and the `∂Φ` notation must be used verbatim where referenced.
-- **Site versioning**: the version is Tesla-style `ISO-week-year.ISO-week.release.patch`, computed at build time with `release.patch` defaulting to `1.1` (for example `2026.29.1.1` on 13 July 2026). `lib/version-core.ts` is the single generator; `next.config.ts` injects its result as `NEXT_PUBLIC_VERSION`. To pin a later release in the same week, run `NEXT_PUBLIC_VERSION=2026.29.2.1 npm run build`. The quantitative model has a separate semantic version in `lib/version.ts`.
+- **Site versioning**: the version is Tesla-style `ISO-week-year.ISO-week.release.patch`, computed at build time with `release.patch` defaulting to `1.2` (for example `2026.29.1.2` on 14 July 2026). `lib/version-core.ts` is the single generator; `next.config.ts` injects its result as `NEXT_PUBLIC_VERSION`. To pin a later release in the same week, run `NEXT_PUBLIC_VERSION=2026.29.2.1 npm run build`. The quantitative model has a separate semantic version in `lib/version.ts`.
 - **No JSX comments** (`{/* */}`) in returned markup, no `useEffect` for derived values, no new chart libraries — see the Anti-patterns section of `CLAUDE_DESIGN.md`.
 
 ## Repo sync (machine-specific)
@@ -66,5 +66,5 @@ This working copy lives in an iCloud-synced folder shared with another machine (
 active academic materials. Everything under `docs/archive/model-1.x/` is historical
 provenance and must never be used as a current parameter, citation or instruction source.
 
-- **`docs/MODEL_PARAMETERS.md`** is the model-2.0 source of truth. Reconcile every formula or scenario-bound change there.
-- **Neutrality invariant (load-bearing).** Never tune parameters to preserve Tunnel–Field. Public comparisons must remain lawful under PZP. Always display scenario uncertainty, allow sign reversal, and distinguish empirical anchors from Grade-C path profiles. Szucs monetizes the price channel only; Beuve applies to contractual rigidity only; theory does not provide bypass probabilities.
+- **`docs/MODEL_PARAMETERS.md`** is the model-2.1 source of truth. Reconcile every formula or scenario-bound change there.
+- **Neutrality invariant (load-bearing).** Never tune parameters to preserve Tunnel–Field. Public comparisons must remain lawful under PZP and mandatory waits must not be compressed. Always display scenario uncertainty, allow sign reversal, and distinguish empirical anchors from Grade-C path profiles. Szucs monetizes price only; Beuve is an annual contractual-rigidity frequency; theory does not provide bypass probabilities.

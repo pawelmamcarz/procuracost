@@ -1,6 +1,6 @@
 /** Tesla-style site version: ISO week-year.ISO week.release.patch. */
 export const DEFAULT_RELEASE = 1;
-export const DEFAULT_PATCH = 1;
+export const DEFAULT_PATCH = 2;
 
 export interface ISOWeek {
   year: number;

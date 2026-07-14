@@ -1,14 +1,14 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Research Agenda 2.0 — ProcuraCost",
-  description: "Empirical validation agenda for the neutral ProcuraCost 2.0 model.",
+  title: "Research Agenda 2.1 — ProcuraCost",
+  description: "Empirical validation agenda for the neutral ProcuraCost 2.1 model.",
 };
 
 export default function ResearchAgendaPage() {
   return (
     <main className="mx-auto max-w-3xl px-6 py-12">
-      <p className="text-sm font-semibold text-blue-700">Research Agenda · Model 2.0</p>
+      <p className="text-sm font-semibold text-blue-700">Research Agenda · Model 2.1</p>
       <h1 className="mt-2 text-3xl font-bold">Validate mechanisms before monetizing them</h1>
       <p className="mt-4 text-gray-700">
         ProcuraCost is a transparent decision model, not a measured effect. The
@@ -40,7 +40,7 @@ export default function ResearchAgendaPage() {
         <div className="rounded-xl border border-amber-200 bg-amber-50 p-5">
           <h2 className="font-semibold text-amber-950">Current status</h2>
           <p className="mt-2 text-sm text-amber-900">
-            No model-2.0 survey, preregistration or confirmatory protocol is currently
+            No model-2.1 survey, preregistration or confirmatory protocol is currently
             approved. New instruments must be derived from the separated constructs
             and reviewed before recruitment or data extraction.
           </p>

@@ -11,7 +11,15 @@ interface Props {
 
 export default function HeroSummary({ result, scenario, inputs, lang }: Props) {
   const tx = comparisonT[lang];
-  const { delta, deltaPercent, bypassProbability, rigidDays, flexibleDays, uncertainty } = result;
+  const {
+    delta,
+    deltaPercent,
+    bypassProbability,
+    rigidDays,
+    flexibleDays,
+    uncertainty,
+    decisionThreshold,
+  } = result;
 
   const spendLabel = inputs.spendType
     ? (inputs.spendType === "direct" ? "Direct" : "Indirect")
@@ -52,6 +60,15 @@ export default function HeroSummary({ result, scenario, inputs, lang }: Props) {
           {tx.flexibleLabel}: <strong>{flexibleDays}</strong> {lang === "en" ? "days" : "dni"}
         </span>
       </div>
+      {decisionThreshold.breakEvenDailyCostOfInaction !== null && (
+        <p className="mt-2 text-xs text-white/75">
+          {lang === "en" ? "Central break-even" : "Próg równowagi w scenariuszu centralnym"}:{" "}
+          <strong>{formatPLN(decisionThreshold.breakEvenDailyCostOfInaction)}/{lang === "en" ? "day" : "dzień"}</strong>.
+          {" "}{lang === "en"
+            ? "Above this daily inaction cost, the adaptive path has the lower modeled total."
+            : "Powyżej tego dziennego kosztu bezczynności niższy modelowany koszt ma ścieżka adaptacyjna."}
+        </p>
+      )}
 
       {(spendLabel || phaseLabel) && (
         <div className="mt-3 flex flex-wrap gap-2 text-xs">

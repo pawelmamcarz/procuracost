@@ -8,7 +8,7 @@ export default function AssumptionsPage() {
 
   return (
     <main className="mx-auto max-w-4xl px-6 py-12">
-      <p className="text-sm font-semibold text-blue-700">ProcuraCost 2.0</p>
+      <p className="text-sm font-semibold text-blue-700">ProcuraCost 2.1</p>
       <h1 className="mt-2 text-3xl font-bold">Założenia i niepewność modelu</h1>
       <p className="mt-4 text-gray-600">
         Model porównuje formalną/sekwencyjną i adaptacyjną/zgodną ścieżkę tego
@@ -18,9 +18,9 @@ export default function AssumptionsPage() {
 
       <section className="mt-8 grid gap-4 md:grid-cols-3">
         {[
-          ["Dobór dostawcy", "0,02–0,09 wartości; Szucs wyznacza kierunek i punkt 0,06."],
-          ["Renegocjacja", "0–10,5 pp; tylko różnica wynikająca ze sztywności kontraktu."],
-          ["TCO i obejścia", "TCO 0–15%; obejścia 1–30%. Oba zakresy są założeniami."],
+          ["Dobór dostawcy", "Premia cenowa 2–9%; koszt mnoży ją jeszcze przez resztkowe ryzyko konkurencji i kontekst. Szucs kotwiczy punkt 6%."],
+          ["Formalne aneksy", "0–0,105 aneksu na rok kontraktu; częstość zależna wyłącznie od profilu sztywności kontraktu."],
+          ["TCO i obejścia", "TCO: centralnie 0%, trzyletni stres-test do 15%. Bazowe stopy obejść 1–30% są dalej skalowane kontrolą systemową. To założenia."],
         ].map(([title, body]) => (
           <div key={title} className="rounded-xl border border-gray-200 p-5">
             <h2 className="font-semibold">{title}</h2>

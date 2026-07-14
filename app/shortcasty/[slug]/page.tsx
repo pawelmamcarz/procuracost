@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const ep = getEpisode(slug);
   if (!ep) return {};
   return {
-    title: `Odc. ${ep.number}: ${ep.title} — ProcuraCost 2.0`,
+    title: `Odc. ${ep.number}: ${ep.title} — ProcuraCost 2.1`,
     description: ep.thesis,
   };
 }
@@ -30,7 +30,7 @@ export default async function EpisodePage({ params }: { params: Promise<{ slug: 
         href="/shortcasty"
         className="mb-6 inline-flex items-center gap-1.5 text-xs text-gray-400 hover:text-blue-600"
       >
-        ← Materiały ProcuraCost 2.0
+        ← Materiały ProcuraCost 2.1
       </Link>
 
       <div className="mb-8 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-white">

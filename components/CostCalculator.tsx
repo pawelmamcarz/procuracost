@@ -73,8 +73,18 @@ export default function CostCalculator({ onCalculate, lang = "pl", initialInputs
   // Derived preview of days based on current selections
   const steps = getSteps(inputs.processType, inputs.customSteps);
   const tech = TECH_LEVELS[inputs.techLevel];
-  const previewRigidDays = deriveRigidDays(steps, tech.timeMultiplier);
-  const previewFlexDays = deriveFlexibleDays(steps, tech.timeMultiplier);
+  const previewRigidDays = deriveRigidDays(
+    steps,
+    tech.timeMultiplier,
+    inputs.processPhase,
+    inputs.spendType,
+  );
+  const previewFlexDays = deriveFlexibleDays(
+    steps,
+    tech.timeMultiplier,
+    inputs.processPhase,
+    inputs.spendType,
+  );
 
   const inputClass =
     "w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500";
@@ -295,6 +305,19 @@ export default function CostCalculator({ onCalculate, lang = "pl", initialInputs
             />
           </div>
           <div>
+            <label className={labelClass} htmlFor="cc-contract-duration">{tx.contractDuration}</label>
+            <input
+              id="cc-contract-duration"
+              type="number"
+              className={inputClass}
+              value={inputs.contractDurationYears}
+              onChange={(e) => setField("contractDurationYears", +e.target.value)}
+              min={0}
+              max={50}
+              step={0.5}
+            />
+          </div>
+          <div>
             <div className="flex items-center gap-1 mb-1">
               <label className="text-xs font-medium text-gray-600" htmlFor="cc-bypass-exposure">{tx.bypassExposure}</label>
               <button
@@ -317,14 +340,24 @@ export default function CostCalculator({ onCalculate, lang = "pl", initialInputs
             />
           </div>
           <div>
-            <label className={labelClass} htmlFor="cc-tco-horizon">{tx.tcoHorizon}</label>
+            <div className="flex items-center gap-1">
+              <label className={labelClass} htmlFor="cc-tco-horizon">{tx.tcoHorizon}</label>
+              <button
+                type="button"
+                className="cursor-help text-gray-400"
+                title={tx.tcoHorizonTooltip}
+                aria-label={tx.tcoHorizonTooltip}
+              >
+                ⓘ
+              </button>
+            </div>
             <input
               id="cc-tco-horizon"
               type="number"
               className={inputClass}
               value={inputs.tcoHorizonYears}
               onChange={(e) => setField("tcoHorizonYears", +e.target.value)}
-              min={1}
+              min={0}
               max={10}
             />
           </div>

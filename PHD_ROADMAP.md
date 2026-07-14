@@ -2,7 +2,7 @@
 
 **Goal**: Secure academic supervision (promotor for an external-mode doctorate, *tryb eksternistyczny*) or formal collaboration on a major research project, by approaching a parallel shortlist of 3–5 academics whose work touches procurement economics, TCE, or public administration.
 
-**Re-baseline (13 July 2026)**: model 1.x materials are archived. Supervisor outreach, the article cycle and any pilot fieldwork must use the model 2.0 foundation; historical v1.x pitches and protocols are not reusable without redesign.
+**Re-baseline (14 July 2026)**: model 1.x materials are archived. Supervisor outreach, the article cycle and any pilot fieldwork must use the model 2.1 foundation; historical v1.x pitches and protocols are not reusable without redesign.
 
 This roadmap treats ProcuraCost as a potential **hybrid academic-consulting project** with clear scientific contribution.
 
@@ -86,7 +86,7 @@ This is the part the professor cares about most.
 **Objective**: Turn the calculator from a demonstration tool into a proper research instrument.
 
 **Key Deliverables**:
-- [x] Versioned model 2.0 with frozen, generated replication outputs
+- [x] Versioned model 2.1 with frozen, generated replication outputs
 - [ ] Export functionality for researchers (full parameter set + results in structured format)
 - [ ] Optional: Simple "Research Mode" that logs (anonymized) inputs for future validation studies (with clear consent)
 - [ ] Public technical documentation (how the model works, all formulas)
@@ -123,9 +123,9 @@ This package is what most serious academics are asking for.
 
 ---
 
-## Immediate Next Actions (Model 2.0)
+## Immediate Next Actions (Model 2.1)
 
-1. Rewrite the three-article cycle from the binding 2.0 foundation; do not restore
+1. Review the three-article cycle against the binding 2.1 foundation; do not restore
    or rename archived 1.x drafts.
 2. Design a new empirical protocol that separately measures workflow,
    competition and contractual rigidity before collecting data.

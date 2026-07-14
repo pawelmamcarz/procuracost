@@ -1,14 +1,14 @@
 # Procedural Rigidity and Adaptive Procurement: A Transparent Decision Model
 
 **Working paper — draft for review**
-**Model:** ProcuraCost 2.0.0
-**Updated:** 13 July 2026
+**Model:** ProcuraCost 2.1.0
+**Updated:** 14 July 2026
 
 ## Abstract
 
 Procurement policy, procurement procedure, competition, and contract design are related but distinct. Earlier versions of ProcuraCost collapsed them into one rigidity index and therefore overstated what the cited literature could support. This paper presents a corrected seven-dimension decision model comparing a formal/sequential path with an adaptive/compliant path for the same purchase. Both paths must satisfy the same legal and governance boundary; in public procurement, flexibility means lawful design within PZP rather than a `policy-only` exemption.
 
-The model monetizes staff effort, administrative overhead, delay, supplier-selection risk, incremental renegotiation risk, foregone lifecycle value, and bypass exposure. Empirical estimates are used only for the construct and population they actually measure. Weakly identified quantities—especially TCO capture and bypass rates—enter as broad scenarios rather than precise predictions. Results are reported as a central estimate plus a scenario interval that may cross zero. The Tunnel–Field proposition therefore survives as a conditional hypothesis: adaptive procurement is advantageous when avoidable workflow delay and adaptation costs exceed the governance value of formal competition and control. It is not a universal result.
+The model monetizes staff effort, administrative overhead, delay, supplier-selection risk, incremental formal-amendment cost, foregone lifecycle value, and bypass exposure. Empirical estimates are used only for the construct and population they actually measure. Weakly identified quantities—especially TCO capture and bypass rates—enter as broad scenarios rather than precise predictions. Results are reported as a central estimate plus a scenario interval that may cross zero. The Tunnel–Field proposition therefore survives as a conditional hypothesis: adaptive procurement is advantageous when avoidable workflow delay and adaptation costs exceed the governance value of formal competition and control. It is not a universal result.
 
 ## 1. Research question and claim boundary
 
@@ -47,7 +47,7 @@ The revised model monetizes the price channel only. Productivity remains a separ
 
 ### 3.2 Contractual rigidity and renegotiation
 
-Beuve, Moszoro, and Spiller (2023) examine French car-park contracts. Their 7.7–10.5 percentage-point result comes from **2SLS/IV**, with contractual rigidity instrumented by political contestability. It is not a simple observational correlation, and it does not measure procurement workflow formality. ProcuraCost therefore applies the estimate only to a separate contract-rigidity profile. The sample's 22% unconditional renegotiation rate is not exported as a universal cross-sector baseline.
+Beuve, Moszoro, and Spiller (2023) examine French car-park contracts. Their 2SLS/IV result is an increase of **0.077–0.105 formal amendments per contract-year** for a one-standard-deviation increase in the reported rigidity categories, with rigidity instrumented by political contestability. It is a frequency, not a percentage-point event probability, and it does not measure procurement workflow formality. ProcuraCost therefore applies it only to a separate contract-rigidity profile, multiplies the frequency by contract duration, and excludes the sample mean as a universal cross-sector baseline.
 
 ### 3.3 Administrative cost, delay, TCO, and bypass
 
@@ -64,7 +64,7 @@ Lipsky (1980), Vaughan (1996), and Holmström and Milgrom (1991) motivate possib
 For path \(j \in \{F,A\}\), where F is formal/sequential and A is adaptive/compliant:
 
 \[
-C_j = C_{staff,j}+C_{admin,j}+C_{delay,j}+C_{selection,j}+C_{reneg,j}+C_{TCO,j}+C_{bypass,j}
+C_j = C_{staff,j}+C_{admin,j}+d_jc_d+B\pi_j+H\lambda_jc_{amend}+B\tau_j+p_jE_j
 \]
 
 and
@@ -75,13 +75,15 @@ and
 
 A positive value favors the adaptive path; a negative value favors the formal path.
 
-- **Staff:** activity hours by role, headcount, and loaded rate. Retained adaptive steps use their own duration ratio.
-- **Admin:** coordination overhead plus equal tool cost when both paths use the same technology.
+- **Staff:** activity hours by role, headcount, loaded rate, and three declared broad context factors. Mandatory legal waits do not disappear and are not compressed by technology.
+- **Admin:** non-labor administrative overhead plus equal tool cost when both paths use the same technology; it excludes role hours already counted under staff.
 - **Delay:** elapsed days times a user-supplied daily cost of inaction.
 - **Selection:** contract value times the discretion price scenario and residual competition risk.
-- **Renegotiation:** user-supplied event cost times the incremental contract-rigidity scenario.
-- **TCO:** a cumulative savings pool times the share each path fails to capture.
+- **Amendments:** annual formal-amendment frequency \(\lambda_j\) times contract duration \(H\) and a user-supplied cost per amendment.
+- **TCO:** a declared three-year cumulative savings-pool scenario, scaled by `min(horizon years / 3, 1)`, times the share each path fails to capture; the central scenario is zero because no transferable estimate was identified.
 - **Bypass:** user-supplied exposure times a scenario rate, scaled by system controls.
+
+The shared baseline acquisition price is not added to either side: only modeled incremental selection loss enters the comparison. The central break-even daily inaction cost is \(-\Delta C_{non-delay}/(d_F-d_A)\) when the adaptive path is faster. Above that threshold, the central modeled total favors the adaptive path.
 
 The low-delta scenario strengthens the governance case for formality: high discretion premium, no imported renegotiation effect, no TCO benefit, and a higher adaptive bypass rate. The high-delta scenario strengthens the adaptability case. These bounds are stress scenarios, not statistical intervals.
 
@@ -105,13 +107,17 @@ Formality may dominate where:
 
 ## 6. Case evidence
 
-Ryanair's 2003 annual report documents a 100-aircraft Boeing order and price concessions. It does not identify a causal effect of procurement flexibility. Swiss Casinos and Air France KLM Martinair case reports describe rapid Lean Agile Procurement cycles, but they are practitioner case studies with selected comparators. Inditex reports a responsive supply-chain model, not an AI-procurement replacement of tenders. These cases motivate mechanisms only and are not evidence about PZP.
+Ryanair's 2003 annual report documents a 100-aircraft Boeing order and price concessions. It does not identify a causal effect of procurement flexibility. Swiss Casinos and Air France KLM Martinair reports describe rapid Lean Agile Procurement cycles, but they are practitioner cases, not independent comparative studies. Ferdows, Lewis, and Machuca describe Zara's responsive supply network, not an AI-procurement replacement of tenders. These cases motivate mechanisms only and are not evidence about PZP.
 
 ## 7. Empirical agenda
 
 Validation requires event-level observations within organizations. The primary outcome should be procurement-cycle days from auditable timestamps. Secondary outcomes should include effort hours by role, bidder participation, price benchmarks, amendments, renegotiation cost, bypass evidence, audit findings, and supplier performance. Estimate components separately before monetization. Use within-organization and category controls where possible; do not calibrate against ProcuraCost's own output.
 
 ## References
+
+Agile Business Consortium. (n.d.). *Case study: Swiss Casinos* [Practitioner case]. Accessed 14 July 2026. https://www.agilebusiness.org/resource/case-study-swiss-casinos.html
+
+Agile Business Consortium. (2021). *Air France uses Lean Agile Procurement to outsource a critical project* [Practitioner case]. https://www.agilebusiness.org/resource/air-france-uses-lean-agile-procurement-to-outsource-a-critical-project/
 
 Bajari, P., Houghton, S., & Tadelis, S. (2014). Bidding for incomplete contracts: An empirical analysis of adaptation costs. *American Economic Review, 104*(4), 1288–1319. https://doi.org/10.1257/aer.104.4.1288
 
@@ -121,13 +127,15 @@ Coviello, D., & Mariniello, M. (2014). Publicity requirements in public procurem
 
 European Commission. (2011). *Public procurement in Europe: Cost and effectiveness* (PwC, London Economics, & Ecorys).
 
+Ferdows, K., Lewis, M. A., & Machuca, J. A. D. (2004, November). Rapid-fire fulfillment. *Harvard Business Review* (Reprint R0411G). https://hbr.org/2004/11/rapid-fire-fulfillment
+
 Fazekas, M., & Blum, J. R. (2021). *Improving public procurement outcomes: Review of tools and the state of the evidence base* (Policy Research Working Paper No. 9690). World Bank.
 
 Holmström, B., & Milgrom, P. (1991). Multitask principal–agent analyses: Incentive contracts, asset ownership, and job design. *Journal of Law, Economics, & Organization, 7*(Special Issue), 24–52. https://doi.org/10.1093/jleo/7.special_issue.24
 
 Lipsky, M. (1980). *Street-level bureaucracy*. Russell Sage Foundation.
 
-Ryanair Holdings plc. (2003). *Annual report and financial statements 2003*.
+Ryanair Holdings plc. (2003). *Annual report and financial statements 2003*. https://www.ryanair.com/doc/investor/2003/2003annualreport.pdf
 
 Szucs, F. (2024). Discretion and favoritism in public procurement. *Journal of the European Economic Association, 22*(1), 117–160. https://doi.org/10.1093/jeea/jvad017
 

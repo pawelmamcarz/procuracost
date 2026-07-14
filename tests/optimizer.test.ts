@@ -6,17 +6,11 @@ const PZP_EXEMPTION_PLN = 170_000;
 const EU_THRESHOLD_CENTRAL_SUPPLIES_SERVICES_PLN = 603_400;
 const EU_THRESHOLD_SUBCENTRAL_SUPPLIES_SERVICES_PLN = 930_960;
 const EU_THRESHOLD_WORKS_PLN = 23_291_240;
-const PUBLIC_COMPETITIVE: PathId[] = [
+const PUBLIC_DEFAULT_EU: PathId[] = [
   "przetarg_otwarty",
   "przetarg_ograniczony",
-  "dialog_konkurencyjny",
 ];
-const PUBLIC_BELOW_EU: PathId[] = [
-  "tryb_podstawowy",
-  "przetarg_otwarty",
-  "przetarg_ograniczony",
-  "dialog_konkurencyjny",
-];
+const PUBLIC_BELOW_EU: PathId[] = ["tryb_podstawowy"];
 const ALL_PATHS: PathId[] = [
   "przetarg_otwarty",
   "przetarg_ograniczony",
@@ -37,7 +31,7 @@ function expectedFeasible(f: ProcurementFeatures): PathId[] {
       ? EU_THRESHOLD_CENTRAL_SUPPLIES_SERVICES_PLN
       : EU_THRESHOLD_SUBCENTRAL_SUPPLIES_SERVICES_PLN;
   if (f.contractValue < euThreshold) return PUBLIC_BELOW_EU;
-  return PUBLIC_COMPETITIVE;
+  return PUBLIC_DEFAULT_EU;
 }
 
 function base(overrides: Partial<ProcurementFeatures> = {}): ProcurementFeatures {
@@ -83,22 +77,25 @@ describe("(e) optimize() never recommends a legally filtered-out path", () => {
     }
   });
 
-  it("above the EU threshold (public), only competitive trybów are offered", () => {
+  it("above the EU threshold (public), only procedures without extra grounds are offered", () => {
     const f = base({ contractValue: 5_000_000, isPublicSector: true, supplyRisk: 5, complexity: 5 });
     const rec = optimize(f, "pl").topPath.path.id;
-    expect(PUBLIC_COMPETITIVE).toContain(rec);
-    expect(["bezposrednie", "negocjacje", "tryb_podstawowy", "agile"]).not.toContain(rec);
+    expect(PUBLIC_DEFAULT_EU).toContain(rec);
+    expect(["bezposrednie", "negocjacje", "dialog_konkurencyjny", "tryb_podstawowy", "agile"]).not.toContain(rec);
     // every ranked candidate is also within the lawful set
     for (const r of optimize(f, "pl").ranked) {
-      expect(PUBLIC_COMPETITIVE).toContain(r.path.id);
+      expect(PUBLIC_DEFAULT_EU).toContain(r.path.id);
     }
   });
 
   it("in the 170k–EU band (public), single-source/negotiated/agile are excluded", () => {
     const f = base({ contractValue: 300_000, isPublicSector: true, urgencyDays: 10, supplyRisk: 5 });
-    const rec = optimize(f, "pl").topPath.path.id;
+    const result = optimize(f, "pl");
+    const rec = result.topPath.path.id;
     expect(PUBLIC_BELOW_EU).toContain(rec);
-    expect(["bezposrednie", "negocjacje", "agile"]).not.toContain(rec);
+    expect(result.ranked.map((entry) => entry.path.id)).toEqual(["tryb_podstawowy"]);
+    expect(result.featureImportance.every((entry) => entry.importance === 0)).toBe(true);
+    expect(result.explanation).toMatch(/filtr prawny/);
   });
 
   it("below 170k (public), the national tryb podstawowy is not offered", () => {
@@ -111,5 +108,28 @@ describe("(e) optimize() never recommends a legally filtered-out path", () => {
   it("uses the works threshold instead of misclassifying all public contracts as services", () => {
     const f = base({ contractValue: 5_000_000, procurementObject: "works" });
     expect(optimize(f, "pl").ranked.map((r) => r.path.id)).toContain("tryb_podstawowy");
+  });
+
+  it("is deterministic and keeps every score and importance finite", () => {
+    const f = base({
+      contractValue: Number.POSITIVE_INFINITY,
+      supplierCount: Number.NaN,
+      complexity: -10,
+      urgencyDays: Number.NEGATIVE_INFINITY,
+      supplyRisk: 99,
+    });
+    const first = optimize(f, "pl");
+    const second = optimize(f, "pl");
+    expect(second).toEqual(first);
+    for (const entry of first.ranked) {
+      expect(Number.isFinite(entry.score)).toBe(true);
+      expect(entry.score).toBeGreaterThanOrEqual(0);
+      expect(entry.score).toBeLessThanOrEqual(100);
+      expect(entry.confidence).toBeGreaterThanOrEqual(0);
+      expect(entry.confidence).toBeLessThanOrEqual(1);
+    }
+    for (const feature of first.featureImportance) {
+      expect(Number.isFinite(feature.importance)).toBe(true);
+    }
   });
 });

@@ -4,7 +4,7 @@
 
 ## Streszczenie
 
-Artykuł przekłada model ProcuraCost 2.0 na falsyfikowalny projekt badania
+Artykuł przekłada model ProcuraCost 2.1 na falsyfikowalny projekt badania
 polskich zamówień publicznych. Nie przedstawia nieistniejących wyników. Dane BZP,
 TED i e-Zamówień mogą opisać konkurencję, czas oraz zmiany umów, lecz nie mierzą
 wiarygodnie pracy wewnętrznej, kosztu zwłoki, TCO ani nieformalnych obejść. Dlatego
@@ -24,6 +24,9 @@ ustawowego z bezprawnym zleceniem bez konkurencji. Od 1 stycznia 2026 r. próg
 stosowania PZP wynosi 170 000 zł netto; progi unijne zależą od przedmiotu i typu
 zamawiającego. Próg jest granicą prawną, nie automatycznym instrumentem dla
 każdego efektu.
+W paśmie od 170 000 zł do właściwego progu unijnego art. 266 wyłącza tryby
+unijne, a art. 275 ustanawia tryb podstawowy; warianty nie są zamienne z trybami
+ponadprogowymi.
 
 ## 2. Hipotezy
 
@@ -112,7 +115,7 @@ Testy odporności zmieniają definicje czasu, wyłączają tryby wyjątkowe, sto
 alternatywne miary konkurencji i pokazują wyniki bez monetyzacji. Test placebo na
 progu, który nie zmienia obowiązków, może ujawnić trend mylony z efektem prawa.
 
-## 6. Test modelu 2.0
+## 6. Test modelu 2.1
 
 Walidacja nie polega na sprawdzeniu, czy kalkulator przewidział własne założenia.
 Dla każdego zdarzenia najpierw oblicza się niezależnie obserwowane składniki.

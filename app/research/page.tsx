@@ -2,7 +2,7 @@ import PrintButton from "./PrintButton";
 
 export const metadata = {
   title: "Procedural Rigidity and Adaptive Procurement | ProcuraCost",
-  description: "Corrected working paper for the neutral ProcuraCost 2.0 decision model.",
+  description: "Corrected working paper for the neutral ProcuraCost 2.1 decision model.",
 };
 
 const references = [
@@ -22,9 +22,9 @@ export default function ResearchPage() {
       <div className="mb-8 flex items-center justify-between print:hidden">
         <div>
           <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
-            Working paper · ProcuraCost 2.0
+            Working paper · ProcuraCost 2.1
           </span>
-          <p className="mt-2 text-xs text-gray-500">Corrected evidence and model specification · 13 July 2026</p>
+          <p className="mt-2 text-xs text-gray-500">Corrected evidence and model specification · 14 July 2026</p>
         </div>
         <PrintButton />
       </div>
@@ -35,7 +35,7 @@ export default function ResearchPage() {
         <h2>Abstract</h2>
         <p>
           Procurement policy, workflow, competition, and contract design are related but distinct.
-          ProcuraCost 2.0 corrects an earlier model that collapsed them into one rigidity index and
+          ProcuraCost 2.1 corrects an earlier model that collapsed them into one rigidity index and
           therefore overstated what the cited literature supported. The revised model compares a
           formal/sequential path with an adaptive/compliant path under the same legal and governance
           boundary. It reports a central estimate and a wide scenario interval that may favor either path.
@@ -52,6 +52,7 @@ export default function ResearchPage() {
           <li>Public-sector comparisons stay inside PZP; an adaptive path is not a lawful-exemption shortcut.</li>
           <li>The unsupported 10%-per-year / 30% TCO rule and invented bypass sigmoid are removed.</li>
           <li>Tool cost is equal when both paths use the same technology.</li>
+          <li>Mandatory PZP publication and standstill periods remain identical in both paths.</li>
           <li>Weak quantities appear as broad scenarios, not precise predictions or confidence intervals.</li>
         </ul>
 
@@ -65,8 +66,9 @@ export default function ResearchPage() {
         </p>
         <p>
           <strong>Beuve, Moszoro, and Spiller (2023)</strong> estimate contractual—not procedural—rigidity
-          using 2SLS/IV in French car-park contracts. Their 7.7–10.5 percentage-point result is used only as
-          an incremental scenario slope. The sample&apos;s 22% renegotiation mean is not treated as a universal baseline.
+          using 2SLS/IV in French car-park contracts. Their 0.077–0.105 result is an increase in formal
+          amendments per contract-year, not an event probability. The model multiplies that frequency by
+          contract duration; the sample mean is not treated as a universal baseline.
         </p>
         <p>
           Theory from Lipsky, Vaughan, and Holmström–Milgrom supports possible workaround mechanisms but
@@ -78,11 +80,11 @@ export default function ResearchPage() {
         <p><code>ΔC = C_formal − C_adaptive = Σ ΔC_i</code></p>
         <ol>
           <li><strong>Staff effort:</strong> activity hours by role, headcount, and loaded rate.</li>
-          <li><strong>Administration:</strong> coordination overhead plus equal technology cost.</li>
+          <li><strong>Administration:</strong> non-labor overhead plus equal technology cost.</li>
           <li><strong>Delay:</strong> elapsed days times user-supplied cost of inaction.</li>
           <li><strong>Selection risk:</strong> price-premium scenario times residual competition risk.</li>
-          <li><strong>Renegotiation:</strong> incremental contract-rigidity scenario times event cost.</li>
-          <li><strong>TCO:</strong> cumulative savings pool times the share not captured by each path.</li>
+          <li><strong>Formal amendments:</strong> annual contract-rigidity frequency times contract duration and event cost.</li>
+          <li><strong>TCO:</strong> cumulative savings pool times the share not captured; central pool is zero.</li>
           <li><strong>Bypass:</strong> observed-rate scenario times user-supplied exposure and system controls.</li>
         </ol>
 
@@ -91,6 +93,10 @@ export default function ResearchPage() {
           A positive ΔC favors the adaptive path; a negative value favors the formal path. If the displayed
           scenario interval crosses zero, assumptions determine the winner. If it does not, the sign is stable
           only within the declared bounds—not statistically proven.
+        </p>
+        <p>
+          The calculator also reports the central break-even daily cost of inaction. This is the threshold
+          above which the adaptive path&apos;s time advantage outweighs its non-delay cost difference.
         </p>
         <p>
           Formality can dominate when delay is cheap, competition materially constrains favoritism, requirements
@@ -102,7 +108,10 @@ export default function ResearchPage() {
         <p>
           From 1 January 2026, the Polish PZP application threshold is 170,000 PLN net. The optimizer uses the
           applicable 2026–2027 EU threshold according to procurement object and authority level: 603,400 PLN,
-          930,960 PLN, or 23,291,240 PLN. The tool is illustrative and is not legal advice.
+          930,960 PLN, or 23,291,240 PLN. In the national band, Arts. 266 and 275 restrict the default
+          recommendation to the basic mode. At or above the EU threshold, the default filter offers only
+          open and restricted tender under Art. 129(2); special procedures require a separate assessment
+          of statutory grounds. The tool is illustrative and is not legal advice.
         </p>
 
         <h2>References</h2>

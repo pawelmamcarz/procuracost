@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
 export const metadata = {
-  title: "Research Paper — ProcuraCost 2.0",
+  title: "Research Paper — ProcuraCost 2.1",
   description:
     "Neutral decision model comparing formal/sequential and adaptive/compliant procurement paths with scenario uncertainty.",
 };

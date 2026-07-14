@@ -1,12 +1,23 @@
 # Nota o dowodach i integralności
 
-## Najważniejsze korekty w modelu 2.0
+## Najważniejsze korekty w modelu 2.1
 
 - Usunięto wspólny indeks „sztywności” z formuł ekonomicznych.
 - Konkurencja, workflow, kontrakt, TCO i obejścia są osobnymi konstruktami.
 - Usunięto nieudokumentowaną regułę 10% TCO rocznie / 30% łącznie.
 - Usunięto sigmoid przedstawiany jako empiryczne prawdopodobieństwo obejścia.
 - Ten sam system informatyczny ma taki sam koszt w obu ścieżkach.
+- Przywrócono obowiązkowe okresy publikacji i standstill w ścieżce adaptacyjnej PZP.
+- Wynik Beuve’a jest roczną częstością formalnych aneksów (0,077–0,105), a nie
+  prawdopodobieństwem wyrażonym w punktach procentowych.
+- Centralny scenariusz TCO wynosi zero; zakres do 15% jest wyłącznie stres-testem.
+- Uproszczono kontekst Direct/Indirect × Upstream/Downstream do trzech jawnych,
+  szerokich mnożników pracy i dwóch mnożników koordynacji; usunięto pozornie
+  precyzyjne profile ról i nakładające się kompresje czasu.
+- Optymalizator ocenia ścieżki na tych samych kryteriach i w paśmie krajowym
+  stosuje art. 266 i 275, oferując tryb podstawowy. Powyżej progu UE domyślnie
+  oferuje wyłącznie tryby bez dodatkowych przesłanek z art. 129 ust. 2; dialog
+  konkurencyjny i tryby szczególne wymagają odrębnej oceny prawnej.
 - Studia przypadków dostawców i firm są ilustracją mechanizmu, nie dowodem
   przyczynowym ani podstawą parametrów.
 

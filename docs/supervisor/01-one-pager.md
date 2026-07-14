@@ -1,4 +1,4 @@
-# ProcuraCost 2.0 — nota koncepcyjna
+# ProcuraCost 2.1 — nota koncepcyjna
 
 ## Problem
 
@@ -17,7 +17,7 @@ legalne i podlegać tej samej granicy governance.
 ## Model
 
 `ΔC = C_formal − C_adaptive` jest sumą siedmiu różnic: pracy ludzi,
-administracji, opóźnienia, selekcji dostawcy, renegocjacji, TCO oraz obejść.
+administracji, opóźnienia, selekcji dostawcy, formalnych aneksów, TCO oraz obejść.
 Dodatni wynik sprzyja adaptacji, ujemny formalności. Model raportuje scenariusz
 niski, centralny i wysoki; nie są to przedziały ufności.
 
@@ -32,7 +32,8 @@ niski, centralny i wysoki; nie są to przedziały ufności.
 ## Stan dowodów
 
 Szucs (2024) kotwiczy ryzyko dyskrecji w wyborze wykonawcy. Beuve, Moszoro i
-Spiller (2023) dotyczą sztywności kontraktu i formalnej renegocjacji. Literatura
+Spiller (2023) dotyczą sztywności kontraktu i rocznej częstości formalnych aneksów,
+nie prawdopodobieństwa zdarzenia. Literatura
 nie dostarcza uniwersalnej stopy TCO ani prawdopodobieństwa obejścia; te wartości
 są jawnymi scenariuszami.
 
@@ -41,3 +42,7 @@ są jawnymi scenariuszami.
 Model nie dowodzi, że adaptacyjne zakupy są przeciętnie tańsze w Polsce. Nie
 zastępuje analizy prawnej. Wartość naukowa zależy od poprawnego pomiaru
 mechanizmów i projektu identyfikacyjnego zaakceptowanego przed zebraniem danych.
+
+Model zachowuje obowiązkowe terminy PZP w obu ścieżkach i podaje próg kosztu
+dnia bezczynności, przy którym centralny wynik zmienia znak. TCO wynosi centralnie
+zero i jest wyłącznie stres-testowane.
