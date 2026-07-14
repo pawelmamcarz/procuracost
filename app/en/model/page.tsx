@@ -2,13 +2,13 @@ import Link from "next/link";
 
 export const metadata = {
   title: "Model & assumptions — ProcuraCost",
-  description: "Parameters, sources and limits of the neutral ProcuraCost 2.0 model.",
+  description: "Parameters, sources and limits of the neutral ProcuraCost 2.1 model.",
 };
 
 export default function ModelPageEn() {
   return (
     <main className="mx-auto max-w-4xl px-6 py-12">
-      <p className="text-sm font-semibold text-blue-700">ProcuraCost 2.0</p>
+      <p className="text-sm font-semibold text-blue-700">ProcuraCost 2.1</p>
       <h1 className="mt-2 text-3xl font-bold">Model and assumptions</h1>
       <p className="mt-4 text-lg text-gray-600">
         The model compares a formal/sequential path with an adaptive/compliant
@@ -20,14 +20,16 @@ export default function ModelPageEn() {
         <p>
           Szucs (2024) estimates about a 6 pp increase in normalized price and 28%
           lower measured productivity of selected contractors under discretion.
-          Beuve, Moszoro and Spiller (2023) estimate a 7.7–10.5 pp renegotiation
-          increase per standard deviation of contractual rigidity in one sector.
+          Beuve, Moszoro and Spiller (2023) estimate 0.077–0.105 additional formal
+          amendments per contract-year for a one-standard-deviation increase in
+          rigidity in French car-park contracts. This is not an event probability.
         </p>
         <h2 className="text-xl font-semibold text-gray-900">What the model assumes</h2>
         <p>
-          Competition, contract and TCO-capture profiles, effort, technology and
+          Competition and contract profiles, effort, technology and
           bypass rates are scenario calibrations. They are not measurements of
-          Polish organizations. Read every result with its low/central/high range;
+          Polish organizations. TCO is zero centrally and stress-tested at 0–15%.
+          Read every result with its low/central/high range;
           that range is not a confidence interval.
         </p>
       </section>

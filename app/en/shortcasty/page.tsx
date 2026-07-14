@@ -2,9 +2,9 @@ import Link from "next/link";
 import { EPISODES } from "@/lib/shortcasty";
 
 export const metadata = {
-  title: "ProcuraCost 2.0 — methodology shorts",
+  title: "ProcuraCost 2.1 — methodology shorts",
   description:
-    "A short series about evidence, assumptions and uncertainty in the neutral ProcuraCost 2.0 model.",
+    "A short series about evidence, assumptions and uncertainty in the neutral ProcuraCost 2.1 model.",
 };
 
 const PLATFORMS = [
@@ -22,7 +22,7 @@ export default function ShortcastyEnPage() {
       {/* Hero */}
       <div className="mb-10 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-white">
         <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-blue-200">
-          Model 2.0 · {EPISODES.length} episodes
+          Model 2.1 · {EPISODES.length} episodes
         </p>
         <h1 className="text-3xl font-bold leading-tight">ProcuraCost: evidence and assumptions</h1>
         <p className="mt-1 text-base text-blue-100 font-medium">

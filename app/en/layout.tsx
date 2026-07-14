@@ -1,6 +1,6 @@
 const title = "ProcuraCost — Procurement Cost Calculator";
 const description =
-  "Compare formal and adaptive procurement paths with the explicit uncertainty range of model 2.0.";
+  "Compare formal and adaptive procurement paths with the explicit uncertainty range of model 2.1.";
 
 export const metadata = {
   title,

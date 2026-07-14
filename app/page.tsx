@@ -12,8 +12,8 @@ export const metadata: Metadata = {
 
 const stats = [
   { value: "~6 pp", label: "wzrost znormalizowanej ceny przy dyskrecji; transfer z rynku węgierskiego", source: "Szucs, JEEA 2024" },
-  { value: "0–10.5 pp", label: "scenariusz przyrostu renegocjacji od sztywności kontraktu", source: "Beuve et al., JLEO 2023, 2SLS/IV" },
-  { value: "0–15%", label: "jawny zakres scenariusza puli TCO, nie ustalenie empiryczne", source: "założenie modelu 2.0" },
+  { value: "0–0,105/rok", label: "przyrost częstości formalnych aneksów od sztywności kontraktu", source: "Beuve et al., JLEO 2023, 2SLS/IV" },
+  { value: "0–15%", label: "jawny stres-test puli TCO; scenariusz centralny wynosi zero", source: "założenie modelu 2.1" },
 ];
 
 const howItWorks = [
@@ -83,7 +83,7 @@ const principles = [
   },
   {
     title: "Koszty są mierzalne",
-    body: "Każdy dzień opóźnienia, każda renegocjacja, każda utracona okazja ma cenę. Ten kalkulator pomaga ją zobaczyć.",
+    body: "Każdy dzień opóźnienia i każdy formalny aneks może mieć cenę. Kalkulator pokazuje składniki wyniku oraz próg, przy którym zmienia się rekomendacja.",
   },
 ];
 

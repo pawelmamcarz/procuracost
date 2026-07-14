@@ -4,7 +4,7 @@
 
 - Jednozdaniowe przedstawienie tezy warunkowej.
 - Dlaczego zrezygnowano z jednego indeksu sztywności.
-- Co model 2.0 porównuje, a czego nie porównuje.
+- Co model 2.1 porównuje, a czego nie porównuje.
 
 ## 10–25 min — wkład i cykl artykułów
 
@@ -16,6 +16,7 @@
 ## 25–40 min — identyfikacja i wykonalność
 
 - Główny wynik: audytowalny czas cyklu zakupowego.
+- Próg równowagi: dzienny koszt bezczynności zmieniający znak centralnego wyniku.
 - Osobne wyniki: konkurencja, aneksy, wykonanie i ustalenia audytu.
 - Ryzyka: endogeniczny wybór procedury, manipulacja przy progach, brak danych o
   pracy wewnętrznej, TCO i obejściach.

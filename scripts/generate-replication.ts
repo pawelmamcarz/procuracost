@@ -44,10 +44,13 @@ const summaryRows = scenarios.map(({ scenarioId, scenarioName, context, results 
   rigidTotalPLN: Math.round(results.rigid.total),
   flexibleTotalPLN: Math.round(results.flexible.total),
   deltaPLN: Math.round(results.delta),
-  deltaPercent: Number(results.deltaPercent.toFixed(1)),
+  deltaPercentOfAdaptiveTotal: Number(results.deltaPercent.toFixed(1)),
   lowDeltaPLN: Math.round(results.uncertainty.lowDelta),
   highDeltaPLN: Math.round(results.uncertainty.highDelta),
   crossesZero: results.uncertainty.crossesZero,
+  breakEvenDailyInactionPLN: results.decisionThreshold.breakEvenDailyCostOfInaction === null
+    ? "not-applicable"
+    : Math.round(results.decisionThreshold.breakEvenDailyCostOfInaction),
 }));
 
 const csvHeader = Object.keys(summaryRows[0]).join(",");
@@ -59,15 +62,15 @@ writeFileSync(
 
 const markdownRows = summaryRows.map(
   (row) =>
-    `| ${row.scenarioId} | ${row.spendType} × ${row.processPhase} | ${row.rigidDays} | ${row.flexibleDays} | ${row.rigidTotalPLN} | ${row.flexibleTotalPLN} | ${row.deltaPercent}% | ${row.lowDeltaPLN} – ${row.highDeltaPLN} | ${row.crossesZero} |`,
+    `| ${row.scenarioId} | ${row.spendType} × ${row.processPhase} | ${row.rigidDays} | ${row.flexibleDays} | ${row.rigidTotalPLN} | ${row.flexibleTotalPLN} | ${row.deltaPLN} | ${row.deltaPercentOfAdaptiveTotal}% | ${row.lowDeltaPLN} – ${row.highDeltaPLN} | ${row.crossesZero} | ${row.breakEvenDailyInactionPLN} |`,
 );
 const markdown = [
   `# Built-in Scenario Outputs (Model ${MODEL_VERSION})`,
   "",
   "> Deterministic model outputs under illustrative inputs. These are not empirical estimates of realized organizational effects.",
   "",
-  "| Scenario | Context | Formal days | Adaptive days | Formal total (PLN) | Adaptive total (PLN) | Central delta | Scenario range (PLN) | Crosses zero |",
-  "|---|---|---:|---:|---:|---:|---:|---:|:---:|",
+  "| Scenario | Context | Formal days | Adaptive days | Formal total (PLN) | Adaptive total (PLN) | Central delta (PLN) | Delta (% adaptive total) | Scenario range (PLN) | Crosses zero | Break-even PLN/day |",
+  "|---|---|---:|---:|---:|---:|---:|---:|---:|:---:|---:|",
   ...markdownRows,
   "",
 ].join("\n");

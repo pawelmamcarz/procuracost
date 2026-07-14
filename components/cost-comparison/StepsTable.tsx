@@ -1,6 +1,6 @@
 import { ProcurementInputs } from "@/lib/calculations";
 import { comparisonT, Lang } from "@/lib/i18n";
-import { getSteps, TECH_LEVELS, PROCESS_TYPE_META, ProcessStep } from "@/lib/process-templates";
+import { deriveStepTimings, getSteps, TECH_LEVELS, PROCESS_TYPE_META } from "@/lib/process-templates";
 
 interface Props {
   inputs: ProcurementInputs;
@@ -12,6 +12,14 @@ interface Props {
 export default function StepsTable({ inputs, rigidDays, flexibleDays, lang }: Props) {
   const tx = comparisonT[lang];
   const steps = getSteps(inputs.processType, inputs.customSteps);
+  const timing = deriveStepTimings(
+    steps,
+    TECH_LEVELS[inputs.techLevel].timeMultiplier,
+    inputs.processPhase,
+    inputs.spendType,
+  );
+  const formatDays = (value: number) =>
+    Number.isInteger(value) ? String(value) : value.toFixed(1);
 
   const processLabel = inputs.processType !== "custom"
     ? (lang === "en" ? PROCESS_TYPE_META[inputs.processType].nameEn : PROCESS_TYPE_META[inputs.processType].name)
@@ -35,7 +43,7 @@ export default function StepsTable({ inputs, rigidDays, flexibleDays, lang }: Pr
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-50">
-            {steps.map((step: ProcessStep) => (
+            {timing.steps.map(({ step, rigidDays: stepRigidDays, flexibleDays: stepFlexibleDays }) => (
               <tr key={step.id} className={step.mandatoryWait ? "bg-amber-50" : "hover:bg-gray-50"}>
                 <td className="px-3 py-2 font-medium text-gray-700">
                   {lang === "en" ? step.nameEn : step.name}
@@ -46,14 +54,14 @@ export default function StepsTable({ inputs, rigidDays, flexibleDays, lang }: Pr
                   )}
                 </td>
                 <td className="px-3 py-2 text-right tabular-nums text-red-600">
-                  {Math.round(step.rigidDays * TECH_LEVELS[inputs.techLevel].timeMultiplier)}
+                  {formatDays(stepRigidDays)}
                 </td>
                 <td className="px-3 py-2 text-right tabular-nums">
-                  {step.flexibleDays === null ? (
+                  {stepFlexibleDays === null ? (
                     <span className="italic text-gray-300">{tx.stepsEliminated}</span>
                   ) : (
                     <span className="text-green-600">
-                      {Math.round(step.flexibleDays * TECH_LEVELS[inputs.techLevel].timeMultiplier * 0.85)}
+                      {formatDays(stepFlexibleDays)}
                     </span>
                   )}
                 </td>

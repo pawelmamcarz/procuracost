@@ -1,6 +1,6 @@
 # Tunnel or Field: Separating Governance Boundaries from Procurement Workflow
 
-**Doctoral-cycle article 1 · conceptual paper · ProcuraCost 2.0 · draft**
+**Doctoral-cycle article 1 · conceptual paper · ProcuraCost 2.1 · draft**
 
 ## Abstract
 
@@ -29,7 +29,7 @@ Earlier versions of the Tunnel–Field thesis treated these properties as one
 latent continuum. That move made the story simple and the inference invalid.
 Evidence about discretion was presented as evidence about workflow; evidence
 about contractual clauses was mapped onto process gates; theory about informal
-workarounds was converted into a numerical bypass probability. Version 2.0
+workarounds was converted into a numerical bypass probability. Version 2.1
 removes those mappings.
 
 The relevant question is narrower:
@@ -85,11 +85,11 @@ of competition.
 
 Incomplete contracts create adaptation costs when relevant contingencies cannot
 be specified ex ante (Bajari, Houghton, and Tadelis 2014). Beuve, Moszoro, and
-Spiller (2023) distinguish contractual flexibility from tolerance for deviation
-and show that public-to-private contracts are renegotiated more often than
-comparable private contracts, particularly under political contestability. Their
-empirical object is contractual rigidity and formal renegotiation, not the number
-of sourcing approvals.
+Spiller (2023) distinguish contractual flexibility from tolerance for deviation.
+Their 2SLS/IV estimates associate a one-standard-deviation increase in rigidity
+categories with 0.077–0.105 additional formal amendments per contract-year in
+French car-park contracts. Their empirical object is contractual rigidity and an
+annual amendment frequency—not an event probability or the number of sourcing approvals.
 
 This distinction matters. Workflow can be redesigned without changing the
 contract, and contractual adaptation can be improved without eliminating formal
@@ -134,7 +134,9 @@ change mechanisms where uncertainty is genuine. Measure timestamps, effort,
 bids, amendments, and audit outcomes before monetizing them.
 
 The framework has not been causally validated as an integrated model. Its TCO
-capture and bypass ranges are scenarios. Estimates from Hungary, France, and
+stress test (zero centrally) and bypass ranges are scenarios. Mandatory PZP
+publication and standstill periods cannot be compressed by an adaptive workflow.
+Estimates from Hungary, France, and
 Italy do not automatically transport to Poland or to private procurement. The
 Tunnel–Field thesis therefore survives only in conditional form: prescribed
 sequence can destroy value, but formality can also protect value.

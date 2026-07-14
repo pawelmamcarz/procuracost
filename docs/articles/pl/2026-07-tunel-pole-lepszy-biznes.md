@@ -2,7 +2,7 @@
 tytuł: "Tunel czy pole? Procedura ma chronić wynik, a nie zastępować myślenie"
 magazyn: "Lepszy Biznes (All for One)"
 data: 2026-07
-model: "ProcuraCost 2.0"
+model: "ProcuraCost 2.1"
 status: "wersja do redakcji"
 ---
 
@@ -23,10 +23,10 @@ PZP. „Elastyczny” nie znaczy „bez przetargu”.
 
 ## Siedem rachunków zamiast jednego wskaźnika
 
-ProcuraCost 2.0 nie przypisuje procedurze magicznego współczynnika sztywności.
+ProcuraCost 2.1 nie przypisuje procedurze magicznego współczynnika sztywności.
 Porównuje dwie legalne konfiguracje tego samego zakupu w siedmiu wymiarach:
 czasie pracy ludzi, administracji, koszcie opóźnienia, jakości selekcji
-dostawcy, ryzyku renegocjacji, wartości w całym cyklu życia oraz ekspozycji na
+dostawcy, koszcie formalnych aneksów, wartości w całym cyklu życia oraz ekspozycji na
 obejścia. Wynik jest różnicą kosztów ścieżki formalnej i adaptacyjnej.
 
 Każdy składnik wymaga własnych danych. Godziny pracy można zebrać z kart czasu
@@ -50,10 +50,12 @@ pracy zespołu czy iteracyjnego doprecyzowania potrzeb przy zachowaniu
 konkurencji. Jest za to mocnym ostrzeżeniem: adaptacyjność bez konkurencji i
 kontroli może być droższa od formalizmu.
 
-Podobnie renegocjacja ma związek z konstrukcją kontraktu, a nie automatycznie z
+Podobnie formalny aneks ma związek z konstrukcją kontraktu, a nie automatycznie z
 liczbą kroków zakupowych. Beuve, Moszoro i Spiller pokazują na umowach parkingów
-we Francji, że sztywne kontrakty publiczne częściej wymagają formalnej
-renegocjacji. To ważny mechanizm, ale nie uniwersalna stawka dla każdej branży.
+we Francji, że wzrost sztywności kontraktu o jedno odchylenie standardowe wiązał
+się w estymacji 2SLS/IV z dodatkowymi 0,077–0,105 formalnego aneksu na rok umowy.
+To częstość, nie prawdopodobieństwo pojedynczego zdarzenia ani uniwersalna stawka
+dla każdej branży.
 
 ## Kiedy warto otworzyć pole
 
@@ -64,9 +66,15 @@ warunkowe akceptacje, projektować umowę z mechanizmem zmian oraz rejestrować
 decyzje w systemie.
 
 Technologia pomaga tylko wtedy, gdy faktycznie wykonuje kontrolę. Sam zakup ERP,
-SRM czy platformy sourcingowej nie obniża kosztu procesu. W modelu 2.0 ten sam
+SRM czy platformy sourcingowej nie obniża kosztu procesu. W modelu 2.1 ten sam
 system kosztuje obie porównywane ścieżki tyle samo. Korzyść trzeba wykazać przez
 krótszy czas, mniej pracy albo lepszy ślad audytowy.
+
+W zamówieniach publicznych „krótszy czas” nie oznacza skracania terminów
+ustawowych. Okres publikacji i standstill przyjęty dla danego scenariusza
+pozostaje taki sam w ścieżce formalnej i adaptacyjnej; ustawowe wyjątki trzeba
+modelować osobno. Pole można otwierać w przygotowaniu, przepływie informacji i
+równoległej pracy, nie przez usunięcie obowiązków PZP.
 
 ## Jak przebudować proces bez utraty kontroli
 
@@ -127,3 +135,5 @@ szkodliwa, gdy z góry wskazuje zwycięzcę.
 
 ProcuraCost jest modelem decyzyjnym. Jego wartości TCO i obejść są założeniami
 scenariuszowymi, a nie wynikami przywołanych badań ani prognozą dla organizacji.
+TCO wynosi centralnie zero i jest wyłącznie stres-testowane do 15% jako
+trzyletnia pula skumulowana, a nie 15% rocznie.

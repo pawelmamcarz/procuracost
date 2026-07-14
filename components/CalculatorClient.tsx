@@ -64,7 +64,7 @@ export default function CalculatorClient() {
             <h2 className="text-lg font-bold text-gray-900">
               Wyniki: {activeScenario.name}
             </h2>
-            <PDFExport result={result} scenario={activeScenario} />
+            <PDFExport result={result} scenario={activeScenario} inputs={activeInputs} />
           </div>
           <CostComparison result={result} scenario={activeScenario} inputs={activeInputs} />
         </div>

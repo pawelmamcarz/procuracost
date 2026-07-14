@@ -34,6 +34,7 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 5_000_000,
       tcoHorizonYears: 2,
+      contractDurationYears: 2,
       processType: "private_formal",
       techLevel: "partial_erp",
       stakeholders: {
@@ -53,9 +54,9 @@ export const SCENARIOS: Scenario[] = [
       source:
         "Ryanair 2002/2003 Annual Report / SEC Form 20-F (Boeing price concessions)",
       insight:
-        "Prywatny przewoźnik: Ryanair zamawiał masowo Boeing 737 po kryzysach (post-9/11), uzyskując znaczne upusty cenowe dzięki elastyczności negocjacyjnej. To efektywność zakupowa sektora prywatnego — nie dowód dotyczący prawa zamówień publicznych.",
+        "Raport roczny dokumentuje duże zamówienie Boeingów 737 i ustępstwa cenowe producenta. Nie opisuje jednak porównywalnego procesu zakupowego ani nie identyfikuje skutku elastyczności; liczby scenariusza są niezależnymi założeniami modelu.",
       insightEn:
-        "Private-sector case: Ryanair bulk-ordered Boeing 737s after crises (post-9/11), securing substantial price concessions through negotiation flexibility. This is private-sector purchasing efficiency — not evidence about public-procurement law.",
+        "The annual report documents a large Boeing 737 order and manufacturer price concessions. It does not describe a comparable procurement workflow or identify an effect of flexibility; the scenario values are independent model assumptions.",
     },
   },
   {
@@ -67,6 +68,7 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 3_000_000,
       tcoHorizonYears: 3,
+      contractDurationYears: 0.5,
       processType: "private_formal",
       techLevel: "sourcing_tool",
       stakeholders: {
@@ -83,11 +85,11 @@ export const SCENARIOS: Scenario[] = [
     },
     caseStudy: {
       title: "Swiss Casinos ERP — Agile Sourcing (private-sector example)",
-      source: "LAP Alliance / World Procurement Awards 2020",
+      source: "Agile Business Consortium — Case Study: Swiss Casinos (practitioner report)",
       insight:
-        "Prywatna firma: Swiss Casinos wybrało dostawcę ERP / przeprowadziło sourcing (od selekcji dostawców do podpisanej umowy) w ~6 tygodni dzięki agile sourcing, zamiast standardowych miesięcy procedur. Dotyczy fazy sourcingu, nie pełnego wdrożenia systemu — i jest to efektywność sektora prywatnego, nie wniosek o prawie zamówień publicznych.",
+        "Raport praktyczny Agile Business Consortium podaje, że Swiss Casinos przeprowadziło sourcing ERP w cztery tygodnie. To deklaracja opisana przez organizację promującą metodę, nie niezależne badanie ani czas pełnego wdrożenia.",
       insightEn:
-        "Private-sector case: Swiss Casinos sourced / selected its ERP supplier (from supplier selection to signed contract) in ~6 weeks through agile sourcing, instead of the usual months. This covers the sourcing phase, not full system implementation — and reflects private-sector efficiency, not a conclusion about public-procurement law.",
+        "An Agile Business Consortium practitioner report states that Swiss Casinos sourced its ERP in four weeks. This is a claim reported by an organisation promoting the method, not an independent study or the full implementation time.",
     },
   },
   {
@@ -99,6 +101,7 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 8_000_000,
       tcoHorizonYears: 3,
+      contractDurationYears: 3,
       processType: "private_formal",
       techLevel: "partial_erp",
       stakeholders: {
@@ -132,6 +135,7 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 12_000_000,
       tcoHorizonYears: 1,
+      contractDurationYears: 1,
       processType: "private_formal",
       techLevel: "manual",
       stakeholders: {
@@ -151,9 +155,9 @@ export const SCENARIOS: Scenario[] = [
       source:
         "Ferdows, Lewis & Machuca, HBR (2004) — Rapid-Fire Fulfillment (illustrative example)",
       insight:
-        "Ilustracyjny przykład: model Zary opiera się na krótkich cyklach uzupełnień i szybkiej reakcji łańcucha dostaw na trendy. Przykład ilustruje wartość szybkości w zaopatrzeniu sektora prywatnego — nie udokumentowano tu zastąpienia przetargów zakupami opartymi na AI.",
+        "Ferdows, Lewis i Machuca opisują responsywną sieć dostaw Zary. To materiał o operacjach i łańcuchu dostaw, nie dowód na konkretną metodę zakupową ani zastąpienie przetargów przez AI.",
       insightEn:
-        "Illustrative example: Zara's model relies on short replenishment cycles and a supply chain that reacts quickly to trends. It illustrates the value of speed in private-sector sourcing — no documented replacement of tenders with AI-driven procurement is claimed here.",
+        "Ferdows, Lewis and Machuca describe Zara's responsive supply network. This is an operations and supply-chain case, not evidence for a procurement method or for replacing tenders with AI.",
     },
   },
   {
@@ -165,6 +169,7 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 5_000_000,
       tcoHorizonYears: 3,
+      contractDurationYears: 3,
       processType: "pzp_eu",
       techLevel: "partial_erp",
       stakeholders: {
@@ -198,6 +203,7 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 50_000,
       tcoHorizonYears: 1,
+      contractDurationYears: 1,
       processType: "catalog_order",
       techLevel: "end_to_end",
       stakeholders: {
@@ -212,14 +218,6 @@ export const SCENARIOS: Scenario[] = [
       renegotiationCost: 0,
       bypassAuditExposure: 10_000,
     },
-    caseStudy: {
-      title: "Coupa Catalog — Amazon-like UX for B2B",
-      source: "Coupa — State of Business Spend (2023) (vendor report, practitioner example)",
-      insight:
-        "Raport dostawcy opisuje katalogi jako mechanizm kontroli zgodności i skracania obsługi zamówień. Nie wykorzystujemy jego liczb jako parametrów modelu.",
-      insightEn:
-        "A vendor report presents catalogs as a compliance-control and ordering-efficiency mechanism. Its figures are not used as model parameters.",
-    },
   },
   {
     id: "mrp",
@@ -230,6 +228,7 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 500_000,
       tcoHorizonYears: 1,
+      contractDurationYears: 1,
       processType: "mrp_order",
       techLevel: "end_to_end",
       stakeholders: {
@@ -244,15 +243,6 @@ export const SCENARIOS: Scenario[] = [
       renegotiationCost: 20_000,
       bypassAuditExposure: 50_000,
     },
-    caseStudy: {
-      title: "MRP-driven replenishment — short collection cycles (illustrative)",
-      source:
-        "Ferdows, Lewis & Machuca, HBR (2004) — Rapid-Fire Fulfillment (illustrative example)",
-      insight:
-        "Ilustracyjny przykład: w modelu szybkiej mody zlecenia uzupełnień surowców generowane są automatycznie przez system (MRP) na podstawie prognoz popytu, co skraca cykl reakcji. Przykład ilustruje wartość automatyzacji operacyjnej w sektorze prywatnym — nie udokumentowano tu zastąpienia przetargów zakupami opartymi na AI.",
-      insightEn:
-        "Illustrative example: in a fast-fashion model, raw-material replenishment orders are auto-generated by the system (MRP) from demand forecasts, shortening the reaction cycle. It illustrates the value of operational automation in the private sector — no documented replacement of tenders with AI-driven procurement is claimed here.",
-    },
   },
   {
     id: "capex_investment",
@@ -263,6 +253,7 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 15_000_000,
       tcoHorizonYears: 10,
+      contractDurationYears: 10,
       processType: "capex",
       techLevel: "partial_erp",
       stakeholders: {
@@ -282,9 +273,37 @@ export const SCENARIOS: Scenario[] = [
       source:
         "Ryanair 2002/2003 Annual Report / SEC Form 20-F (Boeing price concessions)",
       insight:
-        "Prywatny przewoźnik: Ryanair stosuje pełny CAPEX governance dla zakupów floty, ale skraca proces dzięki pre-kwalifikacji Boeinga jako jedynego dostawcy. Governance ma wartość; marnotrawstwo tkwi w krokach, które można wyeliminować. To efektywność sektora prywatnego — nie wniosek o prawie zamówień publicznych.",
+        "Raport dokumentuje duże zamówienie Boeingów i ustępstwa cenowe, ale nie opisuje wewnętrznych bramek CAPEX, prekwalifikacji ani czasu procesu. Scenariusz ilustruje rachunek kosztów i nie jest rekonstrukcją postępowania Ryanaira.",
       insightEn:
-        "Private-sector case: Ryanair applies full CAPEX governance for fleet purchases but shortens the process via Boeing pre-qualification as sole supplier. Governance has value; waste lies in steps that can be eliminated. This is private-sector efficiency — not a conclusion about public-procurement law.",
+        "The report documents a large Boeing order and price concessions, but not Ryanair's internal CAPEX gates, pre-qualification, or procurement-cycle time. This scenario illustrates the cost calculation and is not a reconstruction of Ryanair's process.",
+    },
+  },
+  {
+    id: "governance_control",
+    name: "Stabilny zakup — scenariusz kontrolny",
+    nameEn: "Stable purchase — control scenario",
+    description: "Dojrzały rynek, niski koszt zwłoki i zachowana przewaga konkurencji formalnej",
+    descriptionEn: "Mature market, negligible delay cost, and a retained formal-competition advantage",
+    inputs: {
+      contractValue: 5_000_000,
+      tcoHorizonYears: 0,
+      contractDurationYears: 1,
+      processType: "policy_only",
+      techLevel: "end_to_end",
+      stakeholders: { ...DEFAULT_STAKEHOLDERS },
+      dailyCostOfInaction: 0,
+      renegotiationCost: 25_000,
+      bypassAuditExposure: 500_000,
+      spendType: "indirect",
+      processPhase: "downstream",
+    },
+    caseStudy: {
+      title: "Scenariusz kontrolny: formalność może wygrać",
+      source: "Założenia scenariuszowe ProcuraCost 2.1 — nie obserwacja empiryczna",
+      insight:
+        "Gdy koszt zwłoki jest pomijalny, rynek stabilny, a bardziej formalna ścieżka zachowuje przewagę konkurencyjną, centralny wynik może sprzyjać formalności. Szeroki stres-test nadal może zmienić znak.",
+      insightEn:
+        "When delay cost is negligible, the market is stable, and the formal path retains a competition advantage, the central result can favor formality. The broad stress test may still reverse the sign.",
     },
   },
   {
@@ -296,6 +315,7 @@ export const SCENARIOS: Scenario[] = [
     inputs: {
       contractValue: 1_000_000,
       tcoHorizonYears: 2,
+      contractDurationYears: 2,
       processType: "private_formal",
       techLevel: "partial_erp",
       stakeholders: { ...DEFAULT_STAKEHOLDERS },

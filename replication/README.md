@@ -1,6 +1,6 @@
 # ProcuraCost Replication Package
 
-**Model version**: 2.0.0
+**Model version**: 2.1.0
 **Evidence status**: deterministic simulation with illustrative inputs; external calibration pending
 
 This package supports computational reproduction of ProcuraCost outputs. It does not establish that the
@@ -15,8 +15,8 @@ npm test
 npm run replicate
 ```
 
-`npm test` verifies multiplier composition, additive totals, input sanitization, scenario finiteness,
-bypass-probability consistency, and deterministic optimizer behavior.
+`npm test` verifies mandatory legal waits, annual amendment-frequency units, the
+break-even identity, multiplier bounds, input sanitization, and deterministic optimizer behavior.
 
 `npm run replicate` regenerates:
 
@@ -29,17 +29,14 @@ bypass-probability consistency, and deterministic optimizer behavior.
 Calculator JSON exports include:
 
 - `modelVersion` and separate `appVersion`
-- Full `ProcurementInputs`, including `spendType` and `processPhase`
+- Full `ProcurementInputs`, including contract duration, `spendType`, and `processPhase`
 - Full active multiplier vector
 - Rigid and flexible days
 - Rigid and flexible bypass probabilities
 - Rigid and flexible cost breakdowns
-- Calculation trace with role-level staff costs, rates, probabilities, and intermediate costs
+- Calculation trace with sanitized inputs, annual formal-amendment frequencies and expected counts, scenario rates, and component costs
+- Central break-even daily cost of inaction
 - Source or assumption annotations
-
-The Assumptions Explorer also exports manually overridden multiplier values, but its representative
-`calculateCosts` result continues to use the production model baseline. Overrides are sensitivity inputs,
-not hidden changes to the main engine.
 
 ## Evidence Boundary
 
@@ -47,7 +44,7 @@ not hidden changes to the main engine.
 - Company examples motivate archetypes only.
 - Financial inputs are not organization data.
 - Reproducing a number proves code-path consistency, not empirical validity.
-- Model v2.0 separates workflow, competition, contract rigidity, TCO capture, and bypass controls.
+- Model v2.1 separates workflow, competition, contract rigidity, TCO capture, and bypass controls.
 - TCO and bypass are broad scenario ranges; exports include low/central/high delta and whether the range crosses zero.
 
 ## Files
@@ -56,7 +53,6 @@ not hidden changes to the main engine.
 - `docs/research/model_specification_draft.md` — formulas and implementation rules.
 - `tests/` — regression tests.
 - `scripts/generate-replication.ts` — generated-output workflow.
-- `synthetic_data/case_fleet/example_research_export.json` — legacy illustrative export; use generated v2.0 outputs as the current reference.
 
 ## Freeze Checklist
 

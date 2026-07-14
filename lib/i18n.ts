@@ -12,15 +12,18 @@ type LangShape<T> = T extends (...args: infer A) => infer R
 
 const calculatorPl = {
   scenarioLabel: "Scenariusz zakupowy",
-  contractValue: "Wartość kontraktu (PLN)",
+  contractValue: "Bazowa wartość zakupu (PLN)",
   dailyCostOfInaction: "Dzienny koszt zaniechania (PLN/dzień)",
   dailyCostOfInactionTooltip:
     "Wartość tracona każdego dnia bez podpisanego kontraktu — zatrzymana produkcja, nieosiągalny przychód, koszt alternatywny.",
-  renegotiationCost: "Koszt renegocjacji (PLN)",
+  renegotiationCost: "Koszt jednego formalnego aneksu (PLN)",
+  contractDuration: "Czas trwania kontraktu (lata)",
   bypassExposure: "Ryzyko audytowe przy obejściu (PLN)",
   bypassTooltip:
     "Szacowany koszt audytu, kary regulacyjne lub reputacyjne jeśli nieformalne obejście procedury zostanie odkryte. Źródło: Lipsky (1980), Vaughan (1996)",
   tcoHorizon: "Horyzont TCO (lata)",
+  tcoHorizonTooltip:
+    "Jawny stres-test skaluje pulę TCO liniowo do 3 lat i nie zwiększa jej powyżej tego horyzontu. W scenariuszu centralnym pula TCO wynosi 0%.",
   // Process type section
   processTypeLabel: "Typ procesu zakupowego",
   processCategoryLabels: {
@@ -74,15 +77,18 @@ type CalculatorShape = LangShape<typeof calculatorPl>;
 
 const calculatorEn = {
   scenarioLabel: "Procurement scenario",
-  contractValue: "Contract value (PLN)",
+  contractValue: "Baseline purchase value (PLN)",
   dailyCostOfInaction: "Daily cost of inaction (PLN/day)",
   dailyCostOfInactionTooltip:
     "Value lost every day without a signed contract — halted production, unrealised revenue, opportunity cost.",
-  renegotiationCost: "Renegotiation cost (PLN)",
+  renegotiationCost: "Cost per formal amendment (PLN)",
+  contractDuration: "Contract duration (years)",
   bypassExposure: "Audit exposure on bypass (PLN)",
   bypassTooltip:
     "Estimated audit cost, regulatory or reputational penalties if an informal procedure bypass is discovered. Source: Lipsky (1980), Vaughan (1996)",
   tcoHorizon: "TCO horizon (years)",
+  tcoHorizonTooltip:
+    "The declared stress test scales the TCO pool linearly up to 3 years and does not increase it beyond that horizon. The central TCO pool is 0%.",
   processTypeLabel: "Procurement process type",
   processCategoryLabels: {
     strategic: "Strategic procurement — supplier selection, negotiation, CAPEX",
@@ -142,7 +148,7 @@ const comparisonPl = {
     adminCost: "Koszty admin. (koordynacja + narzędzie)",
     opportunityCost: "Utracone okazje",
     productivityCost: "Koszt jakości wyboru (dyskrecja/faworytyzm)",
-    renegotiationCost: "Renegocjacje",
+    renegotiationCost: "Formalne aneksy",
     tcoCost: "Utracone oszczędności TCO",
     bypassCost: "Ekspozycja na obejścia",
   },
@@ -151,10 +157,10 @@ const comparisonPl = {
   lowerThan: "mniej dla ścieżki formalnej niż adaptacyjnej",
   modelAdjustContext: "model dostosowany do kontekstu",
   modelAdjustTitle: "Zastosowane korekty modelu:",
-  modelAdjustDirectTco: "Korekta obsady ról dla wydatku Direct (założenie)",
-  modelAdjustUpstreamBypass: "Korekta czasu i koordynacji Upstream (założenie)",
-  modelAdjustDownstreamProd: "Niższy koszt opóźnienia i koordynacji Downstream (założenie)",
-  modelAdjustStrongest: "Łączna korekta czasu i obsady dla Direct × Upstream",
+  modelAdjustDirectTco: "Szeroka korekta nakładu pracy Direct: ×1,10 (założenie)",
+  modelAdjustUpstreamBypass: "Nakład pracy i koordynacja Upstream: ×1,15 (założenie)",
+  modelAdjustDownstreamProd: "Nakład pracy ×0,90 i koordynacja Downstream ×0,85 (założenie)",
+  modelAdjustStrongest: "Łączna korekta pracy Direct × Upstream: ×1,265",
   bypassLabel: "Centralna scenariuszowa stopa obejść",
   bypassNote:
     "Założenie modelowe skalowane przez kontrolę systemową; teoria nie dostarcza prawdopodobieństwa",
@@ -185,14 +191,14 @@ const comparisonPl = {
   matrixContextIndirect: "Wydatki Indirect",
   matrixContextUpstream: "Upstream (strategiczny)",
   matrixContextDownstream: "Downstream (operacyjny)",
-  matrixContextDetail: "jawne korekty czasu, obsady ról, opóźnienia i koordynacji; TCO, kontrakt i obejścia mają osobne profile scenariuszowe.",
+  matrixContextDetail: "jawne, szerokie korekty nakładu pracy i koordynacji; czas kroków i dzienny koszt bezczynności nie mają ukrytej korekty kontekstowej.",
   matrixNoContextNote: "Macierz pokazuje wszystkie kombinacje technologii × trybu procesu dla wybranego typu zakupu.",
   matrixColorLegend: "Gradient kolorów: zielony = najniższy koszt, czerwony = najwyższy. Wiersz podświetlony = aktualne ustawienie. Wartości uwzględniają efekty Spend Type × Process Phase.",
   appliedMultipliersTitle: "Zastosowane mnożniki kontekstu",
-  appliedMultipliersNote: "Model 2.0 stosuje mnożniki kontekstu do czasu, opóźnienia i koordynacji. Pozostałe mechanizmy mają odrębne profile ścieżek i zakresy scenariuszowe; wartość 1,00 oznacza brak korekty kontekstowej.",
+  appliedMultipliersNote: "Model 2.1 stosuje szerokie mnożniki kontekstu wyłącznie do nakładu pracy i niepracowniczego narzutu koordynacyjnego. Pozostałe mechanizmy mają odrębne profile; 1,00 oznacza brak korekty.",
   // Sub-breakdown
   staffCost: "Kadra (godziny × stawki)",
-  coordCost: "Koordynacja (email/telefon)",
+  coordCost: "Narzut administracyjny (bez pracy ról)",
   toolCost: "Licencja narzędzia",
   pipeFieldTitle: "Dlaczego ta różnica istnieje? Model tunelu i pola.",
   pipeLabel: "Ścieżka formalna = topologia tunelu",
@@ -223,7 +229,7 @@ const comparisonEn = {
     adminCost: "Admin overhead (coordination + tool)",
     opportunityCost: "Opportunity cost",
     productivityCost: "Selection-quality cost (discretion)",
-    renegotiationCost: "Renegotiation",
+    renegotiationCost: "Formal amendments",
     tcoCost: "Foregone TCO savings",
     bypassCost: "Bypass exposure",
   },
@@ -232,10 +238,10 @@ const comparisonEn = {
   lowerThan: "less for the formal path than the adaptive path",
   modelAdjustContext: "model adjusted for context",
   modelAdjustTitle: "Model adjustments applied:",
-  modelAdjustDirectTco: "Role-mix adjustment for Direct spend (assumption)",
-  modelAdjustUpstreamBypass: "Upstream timing and coordination adjustment (assumption)",
-  modelAdjustDownstreamProd: "Lower Downstream delay and coordination costs (assumption)",
-  modelAdjustStrongest: "Combined timing and role-mix adjustment for Direct × Upstream",
+  modelAdjustDirectTco: "Broad Direct staff-effort factor: ×1.10 (assumption)",
+  modelAdjustUpstreamBypass: "Upstream staff effort and coordination: ×1.15 (assumption)",
+  modelAdjustDownstreamProd: "Downstream staff effort ×0.90 and coordination ×0.85 (assumption)",
+  modelAdjustStrongest: "Combined Direct × Upstream staff factor: ×1.265",
   bypassLabel: "Central scenario bypass rate",
   bypassNote:
     "Model assumption scaled by system controls; the cited theory does not provide a probability",
@@ -264,13 +270,13 @@ const comparisonEn = {
   matrixContextIndirect: "Indirect spend",
   matrixContextUpstream: "Upstream (strategic)",
   matrixContextDownstream: "Downstream (operational)",
-  matrixContextDetail: "explicit timing, role-mix, delay and coordination adjustments; TCO, contract and bypass use separate scenario profiles.",
+  matrixContextDetail: "explicit broad staff-effort and coordination factors; step timing and daily inaction cost have no hidden context adjustment.",
   matrixNoContextNote: "Matrix shows all technology × process mode combinations for the selected procurement type.",
   matrixColorLegend: "Color gradient: green = lowest cost, red = highest. Row highlighted = current selection. Numbers already incorporate Spend Type × Process Phase effects.",
   appliedMultipliersTitle: "Applied context multipliers",
-  appliedMultipliersNote: "Model 2.0 applies context multipliers to timing, delay and coordination. Other mechanisms use separate path profiles and scenario ranges; 1.00 means no contextual adjustment.",
+  appliedMultipliersNote: "Model 2.1 applies broad context multipliers only to staff effort and non-labor coordination overhead. Other mechanisms use separate profiles; 1.00 means no adjustment.",
   staffCost: "Staff (hours × rates)",
-  coordCost: "Coordination (email/phone)",
+  coordCost: "Administrative overhead (excluding role labor)",
   toolCost: "Tool license",
   pipeFieldTitle: "Why does this gap exist? The Tunnel and Field model.",
   pipeLabel: "Formal path = tunnel topology",
@@ -351,14 +357,14 @@ const optimizerPl = {
   innovationRequired: "Wymagana innowacyjność",
   findPath: "Znajdź optymalną ścieżkę →",
   recommended: "Rekomendowana ścieżka zakupowa",
-  modelConfidence: "Zgodność modelu",
+  modelConfidence: "Stabilność wag",
   treeVotes: "Zgodne przebiegi (z 30)",
   typicalTime: "Typowy czas",
   pzpNote: "Nota PZP",
-  rankingTitle: "Ranking ścieżek (średni wynik, 30 przebiegów wrażliwości)",
-  importanceTitle: "Ważność cech — co decyduje (ablacja)",
+  rankingTitle: "Ranking ścieżek (wspólne kryteria, 30 przebiegów wrażliwości wag)",
+  importanceTitle: "Ważność kryteriów — co zmienia ranking",
   importanceNote:
-    "Zmiana wyniku rekomendowanej ścieżki po wyzerowaniu danej cechy (ablacja, deterministyczna — bez losowości).",
+    "Zmiana marginesu lidera nad najlepszą alternatywą po ustawieniu kryterium na wartość neutralną (ablacja deterministyczna).",
   whenToUse: "Kiedy stosować",
   risks: "Ryzyka",
   sliderLevels: {
@@ -369,17 +375,17 @@ const optimizerPl = {
     5: "Bardzo wysoki",
   } as Record<number, string>,
   modelNote:
-    "Model: ważona funkcja oceny (jedna formuła na ścieżkę) — NIE jest to trenowana sieć ML ani prawdziwy las losowy. 30 „przebiegów” to analiza wrażliwości (te same reguły z przeważonymi współczynnikami) pokazująca stabilność rekomendacji, a nie niezależne klasyfikatory. Wagi to założenia modelowe, nie parametry dopasowane do rzeczywistych wyników zamówień. Narzędzie ilustracyjne — niewalidowane na realnych danych zakupowych. Rekomendacje dla sektora publicznego są twardo filtrowane do dopuszczalnych trybów PZP.",
+    "Model: każda ścieżka jest oceniana na tych samych kryteriach i wspólnym mianowniku — NIE jest to ML ani prognoza wyniku zamówienia. 30 przebiegów zmienia wszystkie wagi o ±25% i pokazuje lokalną stabilność rankingu. Wagi i profile dopasowania są jawnymi założeniami, nie parametrami uczonymi. Narzędzie ilustracyjne, niewalidowane na realnych danych; rekomendacje publiczne są twardo filtrowane do dopuszczalnych trybów PZP.",
   importanceUnit: "%",
   importance: "Ważność",
   explanationTitle: "Dlaczego ta rekomendacja?",
   scoringContextLabel: "Kontekst scoringu:",
   contextUpstreamLabel: "Upstream (strategiczny)",
   contextDownstreamLabel: "Downstream (operacyjny)",
-  scoringContextDirectUpstream: "Bardzo silna preferencja dla elastycznych ścieżek strategicznych (dialog konkurencyjny / negocjacje) — wysoka dźwignia TCO, intensywność relacji i alokacja ryzyka.",
-  scoringContextIndirectDownstream: "Wyższa tolerancja dla prostych, transakcyjnych ścieżek wykonawczych — mniejsze narzuty koordynacyjne i ograniczona wartość strategiczna złożonych procedur.",
-  scoringContextOther: "Kontekst zmienia względną atrakcyjność ścieżek negocjacyjnych vs. wykonawczych oraz wagę czasu kadry wyższej.",
-  scoringContextWeightsNote: "W scoringu: ścieżki negocjacyjne i dialog są preferowane dla Direct+Upstream, a bezpośredni wybór i proste ścieżki wykonawcze są obniżone. To ręcznie ustawione wagi modelowe, nie parametry uczone z danych.",
+  scoringContextDirectUpstream: "Profil Direct × Upstream zwiększa dopasowanie ścieżek przeznaczonych dla złożonych i strategicznych zakupów; nadal konkurują one na tych samych kryteriach.",
+  scoringContextIndirectDownstream: "Profil Indirect × Downstream zwiększa dopasowanie prostszych ścieżek wykonawczych, jeśli pozwalają na to sektor i progi prawne.",
+  scoringContextOther: "Rodzaj wydatku i faza procesu są dwoma z jedenastu wspólnych kryteriów dopasowania.",
+  scoringContextWeightsNote: "Każde kryterium ma tę samą wagę bazową; analiza wrażliwości zmienia wszystkie wagi o ±25%. Profile dopasowania są ręcznie zdefiniowane i niewalidowane empirycznie.",
   theoryNote: "Logika ścieżek opiera się koncepcyjnie na teorii zakupów: Williamson (1985) TCE, Kraljic (1983) portfolio.",
 } as const;
 
@@ -403,14 +409,14 @@ const optimizerEn = {
   innovationRequired: "Innovation required",
   findPath: "Find optimal path →",
   recommended: "Recommended procurement path",
-  modelConfidence: "Ensemble agreement",
+  modelConfidence: "Weight stability",
   treeVotes: "Agreeing runs (of 30)",
   typicalTime: "Typical time",
   pzpNote: "PZP note",
-  rankingTitle: "All paths ranked (mean score, 30 sensitivity runs)",
-  importanceTitle: "Feature importance — what decides (ablation)",
+  rankingTitle: "All paths ranked (common criteria, 30 weight-sensitivity runs)",
+  importanceTitle: "Criterion importance — what changes the ranking",
   importanceNote:
-    "Change in the recommended path's score when each feature is neutralized (deterministic ablation — no randomness).",
+    "Change in the leader's margin over the best alternative when a criterion is set to its neutral value (deterministic ablation).",
   whenToUse: "When to use",
   risks: "Risks",
   sliderLevels: {
@@ -421,17 +427,17 @@ const optimizerEn = {
     5: "Very high",
   } as Record<number, string>,
   modelNote:
-    "Model: a weighted scoring function (one formula per path) — NOT a trained ML model or a real random forest. The 30 \"runs\" are a sensitivity sweep (the same rules with reweighted coefficients) that shows how stable the recommendation is, not independent learners. The weights are modeling assumptions, not parameters fitted to real procurement outcomes. Illustrative tool — not validated against real procurement data. Public-sector recommendations are hard-filtered to the lawful PZP procedures.",
+    "Model: every path is evaluated on the same criteria and denominator — this is NOT ML or an outcome prediction. The 30 runs vary all weights by ±25% and show local ranking stability. Weights and suitability profiles are explicit assumptions, not learned parameters. The tool is illustrative and unvalidated on real procurement data; public recommendations are hard-filtered to lawful PZP procedures.",
   importanceUnit: "%",
   importance: "Importance",
   explanationTitle: "Why this recommendation?",
   scoringContextLabel: "Scoring context:",
   contextUpstreamLabel: "Upstream (strategic)",
   contextDownstreamLabel: "Downstream (operational)",
-  scoringContextDirectUpstream: "Strong preference for flexible strategic paths (competitive dialogue / negotiations) due to high TCO leverage, relationship intensity and risk allocation needs.",
-  scoringContextIndirectDownstream: "Higher tolerance for simple, transactional execution paths — lower coordination overhead and limited strategic upside from complex procedures.",
-  scoringContextOther: "Context shifts the relative attractiveness of negotiation-heavy vs. execution-heavy paths and the weight of senior stakeholder time.",
-  scoringContextWeightsNote: "In scoring: negotiation and dialogue paths are favoured for Direct+Upstream, while direct award and simple execution paths are down-weighted. These are hand-set modeling weights, not learned parameters.",
+  scoringContextDirectUpstream: "Direct × Upstream increases the fit of paths designed for complex strategic purchases; they still compete on the same criteria.",
+  scoringContextIndirectDownstream: "Indirect × Downstream increases the fit of simpler execution paths where sector and legal thresholds allow them.",
+  scoringContextOther: "Spend type and process phase are two of eleven common suitability criteria.",
+  scoringContextWeightsNote: "Every criterion has the same baseline weight; sensitivity runs vary all weights by ±25%. Suitability profiles are hand-authored and empirically unvalidated.",
   theoryNote: "Path logic is grounded conceptually in procurement theory: Williamson (1985) TCE, Kraljic (1983) portfolio.",
 } satisfies OptimizerShape;
 
@@ -440,7 +446,7 @@ export const optimizerT = { pl: optimizerPl, en: optimizerEn } as const;
 const assessmentPl = {
   title: "Profil projektowania zakupów",
   subtitle: "10 pytań o sekwencyjność, kontrolę i adaptację. To samoocena, nie walidowany audyt.",
-  badge: "Samoocena 2.0",
+  badge: "Samoocena 2.1",
   questionOf: (n: number, total: number) => `Pytanie ${n} z ${total}`,
   never: "Nigdy",
   sometimes: "Zależy / czasem",
@@ -530,7 +536,7 @@ type AssessmentShape = LangShape<typeof assessmentPl>;
 const assessmentEn = {
   title: "Procurement Design Profile",
   subtitle: "10 questions about sequencing, control and adaptability. This is a self-assessment, not a validated audit.",
-  badge: "Model 2.0 self-assessment",
+  badge: "Model 2.1 self-assessment",
   questionOf: (n: number, total: number) => `Question ${n} of ${total}`,
   never: "Never",
   sometimes: "Sometimes / depends",
@@ -618,22 +624,24 @@ const assessmentEn = {
 export const assessmentT = { pl: assessmentPl, en: assessmentEn } as const;
 
 const dimensionMultiplierLabelsPl = {
+  staff: "Nakład pracy ról",
   tco: "Dźwignia TCO",
   delay: "Koszt opóźnienia",
   productivity: "Wpływ na jakość wyboru dostawcy",
   bypass: "Ryzyko obejścia",
-  renegotiation: "Ryzyko renegocjacji",
+  renegotiation: "Częstość formalnych aneksów",
   coordination: "Intensywność koordynacji",
 } as const;
 
 type DimensionMultiplierLabelsShape = LangShape<typeof dimensionMultiplierLabelsPl>;
 
 const dimensionMultiplierLabelsEn = {
+  staff: "Role effort",
   tco: "TCO leverage",
   delay: "Delay penalty",
   productivity: "Supplier selection-quality impact",
   bypass: "Bypass risk",
-  renegotiation: "Renegotiation exposure",
+  renegotiation: "Formal-amendment frequency",
   coordination: "Coordination overhead",
 } satisfies DimensionMultiplierLabelsShape;
 

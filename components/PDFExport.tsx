@@ -2,20 +2,26 @@
 
 import { useState } from "react";
 import jsPDF from "jspdf";
-import { ComparisonResult, formatPLN, getDimensionMultiplierDetails } from "@/lib/calculations";
+import {
+  ComparisonResult,
+  ProcurementInputs,
+  formatPLN,
+  getDimensionMultiplierDetails,
+} from "@/lib/calculations";
 import { Scenario } from "@/lib/scenarios";
 import { comparisonT, dimensionMultiplierLabelsT } from "@/lib/i18n";
+import { MODEL_VERSION, VERSION } from "@/lib/version";
 
 interface Props {
   result: ComparisonResult;
   scenario: Scenario;
-  spendType?: "direct" | "indirect";
-  processPhase?: "upstream" | "downstream";
+  inputs: ProcurementInputs;
 }
 
-export default function PDFExport({ result, scenario, spendType, processPhase }: Props) {
+export default function PDFExport({ result, scenario, inputs }: Props) {
   const [generating, setGenerating] = useState<"pl" | "en" | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const { spendType, processPhase } = inputs;
 
   async function generatePDF(exportLang: "pl" | "en") {
     setGenerating(exportLang);
@@ -85,11 +91,20 @@ export default function PDFExport({ result, scenario, spendType, processPhase }:
     doc.setTextColor(107, 114, 128);
     doc.text(`${exportLang === "pl" ? "Scenariusz" : "Scenario"}: ${exportLang === "en" ? scenario.nameEn : scenario.name}`, margin, y);
     doc.text(`${exportLang === "pl" ? "Data" : "Date"}: ${now}`, pageWidth - margin - 55, y);
-    y += 12;
+    y += 5;
+    doc.text(`Model ${MODEL_VERSION} · Site ${VERSION}`, margin, y);
+    y += 5;
+    doc.text(
+      `${exportLang === "pl" ? "Umowa" : "Contract"}: ${inputs.contractDurationYears} ${exportLang === "pl" ? "lat(a)" : "year(s)"} · ` +
+      `${exportLang === "pl" ? "koszt bezczynności" : "inaction cost"}: ${formatPLN(inputs.dailyCostOfInaction)}/${exportLang === "pl" ? "dzień" : "day"}`,
+      margin,
+      y,
+    );
+    y += 9;
 
     // Big delta highlight box
     doc.setFillColor(239, 246, 255); // blue-50
-    doc.roundedRect(margin, y, pageWidth - margin * 2, 24, 4, 4, "F");
+    doc.roundedRect(margin, y, pageWidth - margin * 2, 31, 4, 4, "F");
 
     doc.setTextColor(30, 64, 175);
     doc.setFontSize(8);
@@ -102,12 +117,23 @@ export default function PDFExport({ result, scenario, spendType, processPhase }:
     doc.setFontSize(10);
     doc.setTextColor(55, 65, 81);
     doc.text(
-      `${result.deltaPercent >= 0 ? "+" : ""}${result.deltaPercent.toFixed(1)}% | zakres ${formatPLN(result.uncertainty.lowDelta)} – ${formatPLN(result.uncertainty.highDelta)}`,
+      `${result.deltaPercent >= 0 ? "+" : ""}${result.deltaPercent.toFixed(1)}% | ${exportLang === "pl" ? "zakres" : "range"} ${formatPLN(result.uncertainty.lowDelta)} – ${formatPLN(result.uncertainty.highDelta)}`,
       pageWidth - margin - 8 - 75,
       y + 16
     );
 
-    y += 32;
+    doc.setFontSize(7);
+    doc.setTextColor(75, 85, 99);
+    const threshold = result.decisionThreshold.breakEvenDailyCostOfInaction;
+    doc.text(
+      threshold === null
+        ? (exportLang === "pl" ? "Próg równowagi: nie dotyczy" : "Break-even threshold: not applicable")
+        : `${exportLang === "pl" ? "Próg równowagi" : "Break-even threshold"}: ${formatPLN(threshold)}/${exportLang === "pl" ? "dzień" : "day"}`,
+      margin + 8,
+      y + 26,
+    );
+
+    y += 39;
 
     checkNewPage(50);
 
@@ -252,8 +278,8 @@ export default function PDFExport({ result, scenario, spendType, processPhase }:
       doc.setFontSize(5.5);
       doc.setTextColor(120, 113, 108);
       doc.text(exportLang === "pl"
-        ? "Mnożniki wynikają z różnic w intensywności pracy kadry, ryzyku i dźwigni TCO. Szczegóły: /model/assumptions"
-        : "Multipliers reflect differences in senior effort, risk exposure and TCO leverage. Details: /model/assumptions",
+        ? "Jawne korekty pracy ról i narzutu koordynacyjnego. Szczegóły: /model/assumptions"
+        : "Explicit role-effort and coordination-overhead factors. Details: /model/assumptions",
         margin + 4, y + boxHeight - 5);
 
       y += boxHeight + 4;

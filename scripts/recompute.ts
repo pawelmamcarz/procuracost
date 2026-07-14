@@ -99,10 +99,16 @@ console.log("|--|" + DIMS.map(() => "--:").join("|") + "|--|");
 for (const combo of COMBOS) {
   const upliftPerDim = DIMS.map((d) => {
     let worst = 0;
+    let observed = false;
     for (const s of SCENARIOS) {
-      const base = calculateCosts(s.inputs).rigid[d];
+      const base = calculateCosts({
+        ...s.inputs,
+        spendType: undefined,
+        processPhase: undefined,
+      }).rigid[d];
       const ctx = calculateCosts({ ...s.inputs, spendType: combo.spendType, processPhase: combo.processPhase }).rigid[d];
       if (base > 0) {
+        observed = true;
         const factor = ctx / base;
         if (factor > worst) worst = factor;
         if (factor > maxUplift) {
@@ -111,9 +117,9 @@ for (const combo of COMBOS) {
         }
       }
     }
-    return worst;
+    return observed ? worst : null;
   });
-  console.log(`| ${combo.label} | ` + upliftPerDim.map((u) => `×${u.toFixed(2)}`).join(" | ") + " | |");
+  console.log(`| ${combo.label} | ` + upliftPerDim.map((u) => u === null ? "—" : `×${u.toFixed(2)}`).join(" | ") + " | |");
 }
 
 console.log(`\nMax observed uplift: ×${maxUplift.toFixed(3)} (${maxUpliftDesc}) — invariant ${maxUplift <= 1.5 ? "HOLDS (≤ ×1.5)" : "VIOLATED (> ×1.5)"}.`);

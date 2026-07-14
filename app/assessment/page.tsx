@@ -3,7 +3,7 @@ import { assessmentT } from "@/lib/i18n";
 import AssessmentQuiz from "@/components/AssessmentQuiz";
 
 export const metadata: Metadata = {
-  title: "Profil projektowania zakupów — ProcuraCost 2.0",
+  title: "Profil projektowania zakupów — ProcuraCost 2.1",
   description:
     "Opisowy profil sekwencyjności i adaptacyjności procesu; nie jest walidowanym testem dojrzałości.",
 };

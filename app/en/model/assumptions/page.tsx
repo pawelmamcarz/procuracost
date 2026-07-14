@@ -8,7 +8,7 @@ export default function AssumptionsPageEn() {
 
   return (
     <main className="mx-auto max-w-4xl px-6 py-12">
-      <p className="text-sm font-semibold text-blue-700">ProcuraCost 2.0</p>
+      <p className="text-sm font-semibold text-blue-700">ProcuraCost 2.1</p>
       <h1 className="mt-2 text-3xl font-bold">Model assumptions and uncertainty</h1>
       <p className="mt-4 text-gray-600">
         The model compares a formal/sequential path with an adaptive/compliant
@@ -18,9 +18,9 @@ export default function AssumptionsPageEn() {
 
       <section className="mt-8 grid gap-4 md:grid-cols-3">
         {[
-          ["Supplier selection", "0.02–0.09 of value; Szucs anchors direction and the 0.06 point."],
-          ["Renegotiation", "0–10.5 pp; only the incremental contract-rigidity effect."],
-          ["TCO and bypass", "TCO 0–15%; bypass 1–30%. Both ranges are assumptions."],
+          ["Supplier selection", "A 2–9% price-premium scenario is further scaled by residual competition risk and context. Szucs anchors the 6% point."],
+          ["Formal amendments", "0–0.105 amendment per contract-year; frequency depends only on the contract-rigidity profile."],
+          ["TCO and bypass", "TCO: 0% centrally, with a three-year stress test to 15%. Base bypass rates of 1–30% are further scaled by system controls. These are assumptions."],
         ].map(([title, body]) => (
           <div key={title} className="rounded-xl border border-gray-200 p-5">
             <h2 className="font-semibold">{title}</h2>

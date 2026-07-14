@@ -1,14 +1,15 @@
-# Built-in Scenario Outputs (Model 2.0.0)
+# Built-in Scenario Outputs (Model 2.1.0)
 
 > Deterministic model outputs under illustrative inputs. These are not empirical estimates of realized organizational effects.
 
-| Scenario | Context | Formal days | Adaptive days | Formal total (PLN) | Adaptive total (PLN) | Central delta | Scenario range (PLN) | Crosses zero |
-|---|---|---:|---:|---:|---:|---:|---:|:---:|
-| fleet | neutral × neutral | 44 | 20 | 324343 | 193090 | 68% | 81038 – 240263 | false |
-| erp | neutral × neutral | 51 | 23 | 874035 | 429389 | 103.6% | 398416 – 539566 | false |
-| logistics | neutral × neutral | 44 | 20 | 1052880 | 557430 | 88.9% | 407410 – 687210 | false |
-| production | neutral × neutral | 62 | 29 | 3345513 | 1680659 | 99.1% | 1398903 – 2234253 | false |
-| pipe_vs_field | neutral × neutral | 87 | 15 | 1010425 | 264225 | 282.4% | 683680 – 883580 | false |
-| catalog | neutral × neutral | 2 | 2 | 3794 | 3784 | 0.3% | -130 – 340 | true |
-| mrp | neutral × neutral | 1 | 1 | 11978 | 11897 | 0.7% | -650 – 1742 | true |
-| capex_investment | neutral × neutral | 60 | 36 | 2167370 | 1428781 | 51.7% | 533009 – 1183109 | false |
+| Scenario | Context | Formal days | Adaptive days | Formal total (PLN) | Adaptive total (PLN) | Central delta (PLN) | Delta (% adaptive total) | Scenario range (PLN) | Crosses zero | Break-even PLN/day |
+|---|---|---:|---:|---:|---:|---:|---:|---:|:---:|---:|
+| fleet | neutral × neutral | 44 | 24 | 301273 | 191955 | 109318 | 56.9% | 60638 – 224588 | false | 0 |
+| erp | neutral × neutral | 51 | 28 | 840105 | 479424 | 360681 | 75.2% | 322416 – 458841 | false | 0 |
+| logistics | neutral × neutral | 44 | 24 | 1017840 | 596310 | 421530 | 70.7% | 327010 – 632010 | false | 0 |
+| production | neutral × neutral | 62 | 34 | 3309513 | 1903159 | 1406353 | 73.9% | 1146403 – 1981753 | false | 0 |
+| pipe_vs_field | neutral × neutral | 87 | 71 | 981025 | 807048 | 173977 | 21.6% | 109717 – 322217 | false | 0 |
+| catalog | neutral × neutral | 2 | 2 | 3694 | 3694 | 0 | 0% | -130 – 340 | true | not-applicable |
+| mrp | neutral × neutral | 1 | 1 | 11228 | 11197 | 31 | 0.3% | -650 – 1742 | true | not-applicable |
+| capex_investment | neutral × neutral | 60 | 42 | 2420450 | 1718641 | 701809 | 40.8% | 352409 – 1229309 | false | 0 |
+| governance_control | indirect × downstream | 14 | 14 | 45079 | 51637 | -6558 | -12.7% | -16625 – 12513 | true | not-applicable |

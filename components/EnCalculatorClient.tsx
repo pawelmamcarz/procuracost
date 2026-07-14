@@ -65,7 +65,7 @@ export default function EnCalculatorClient() {
             <h2 className="text-lg font-bold text-gray-900">
               Results: {activeScenario.nameEn}
             </h2>
-            <PDFExport result={result} scenario={activeScenario} />
+            <PDFExport result={result} scenario={activeScenario} inputs={activeInputs} />
           </div>
           <CostComparison result={result} scenario={activeScenario} inputs={activeInputs} lang="en" />
         </div>

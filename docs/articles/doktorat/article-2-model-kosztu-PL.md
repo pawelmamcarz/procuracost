@@ -1,4 +1,4 @@
-# Ile kosztuje projekt procesu? Siedmiowymiarowy model decyzyjny ProcuraCost 2.0
+# Ile kosztuje projekt procesu? Siedmiowymiarowy model decyzyjny ProcuraCost 2.1
 
 **Artykuł 2 cyklu doktorskiego · ekonomia i finanse · szkic metodologiczny**
 
@@ -7,7 +7,7 @@
 Artykuł przedstawia transparentny model porównujący formalną, sekwencyjną
 ścieżkę zakupu z adaptacyjną, lecz zgodną ścieżką dla tego samego przedmiotu i
 tej samej granicy prawnej. Model rozdziela siedem kanałów kosztu: pracę ludzi,
-administrację, opóźnienie, selekcję dostawcy, renegocjację, wartość cyklu życia i
+administrację, opóźnienie, selekcję dostawcy, formalne aneksy, wartość cyklu życia i
 obejścia. Nie jest estymatorem ani wynikiem badania polskich zakupów. Parametry o
 słabym oparciu empirycznym są szerokimi scenariuszami. Wynik może wskazać każdą
 ze ścieżek albo pozostać nierozstrzygający.
@@ -18,7 +18,7 @@ Niech `F` oznacza ścieżkę formalną/sekwencyjną, a `A` ścieżkę
 adaptacyjną/zgodną. Obie dotyczą tego samego zakupu, rynku, progu prawnego i
 obowiązków konkurencyjnych. Dla ścieżki `j`:
 
-`C_j = C_staff,j + C_admin,j + C_delay,j + C_selection,j + C_reneg,j + C_TCO,j + C_bypass,j`
+`C_j = C_staff,j + C_admin,j + d_j × c_d + B × π_j + H × λ_j × c_aneks + B × τ_j + p_j × E_j`
 
 oraz `ΔC = C_F − C_A`. Dodatnie `ΔC` sprzyja `A`, ujemne `F`. Jest to rachunek
 warunkowy: mówi, co wynika z danych i założeń, a nie co spowodowałaby reforma.
@@ -27,11 +27,13 @@ warunkowy: mówi, co wynika z danych i założeń, a nie co spowodowałaby refor
 
 **Praca ludzi.** Koszt jest sumą godzin uczestnictwa według roli, liczby osób i
 stawki obciążonej. Czas kalendarzowy i roboczogodziny pozostają różnymi
-wielkościami.
+wielkościami. Kontekst ma wyłącznie trzy szerokie mnożniki pracy: Upstream ×1,15,
+Downstream ×0,90 i Direct ×1,10. Model nie przypisuje pozornie precyzyjnych
+mnożników poszczególnym stanowiskom.
 
-**Administracja.** Obejmuje koszt koordynacji na dzień oraz koszt narzędzia.
+**Administracja.** Obejmuje niepracowniczy narzut administracyjny na dzień oraz koszt narzędzia.
 Jeżeli obie ścieżki korzystają z tej samej technologii, koszt narzędzia jest
-równy. Model nie przypisuje adaptacyjności fikcyjnej ulgi licencyjnej.
+równy. Narzut nie obejmuje godzin ról policzonych już jako praca ludzi.
 
 **Opóźnienie.** `C_delay,j = days_j × daily_cost_of_inaction`. Koszt dnia podaje
 użytkownik. Powinien wynikać z utraconej marży, przestoju albo innego możliwego
@@ -43,14 +45,16 @@ dla ryzyka dyskrecji i osłabionej konkurencji. Centralny scenariusz ceny wynosi
 6%, a zakres 2–9% reprezentuje niepewność transferu. Efekt produktywności
 wykonawcy nie jest monetyzowany drugi raz.
 
-**Renegocjacja.** Koszt zdarzenia podaje użytkownik. Przyrost prawdopodobieństwa
-jest funkcją sztywności kontraktu, nie sztywności obiegu. Zakres 0–10,5 punktu
-procentowego wykorzystuje badanie Beuve’a, Moszoro i Spillera (2023) jako
-zewnętrzną kotwicę scenariusza. Średnia z ich próby nie staje się bazą dla każdej
-branży.
+**Formalne aneksy.** Koszt jednego aneksu oraz czas trwania umowy podaje użytkownik.
+Roczna częstość jest funkcją sztywności kontraktu, nie sztywności obiegu. Zakres
+0–0,105 dodatkowego aneksu na rok wykorzystuje badanie Beuve’a, Moszoro i Spillera
+(2023) jako zewnętrzną kotwicę scenariusza. To nie jest prawdopodobieństwo pojedynczego
+zdarzenia, a średnia z ich próby nie staje się bazą dla każdej branży.
 
 **TCO.** Model tworzy pulę możliwej wartości cyklu życia i mnoży ją przez część
-niewychwyconą przez daną ścieżkę. Zakres 0–15% jest założeniem. Nie istnieje tu
+niewychwyconą przez daną ścieżkę. Scenariusz centralny wynosi 0%, a stres-test
+sięga 15% jako trzyletnia pula skumulowana; krótszy horyzont skaluje ją przez
+`min(horyzont/3, 1)`. Nie istnieje tu
 reguła „10% rocznie” ani automatyczny limit 30%.
 
 **Obejście.** Koszt to ekspozycja audytowa użytkownika razy scenariusz częstości
@@ -79,9 +83,17 @@ są dane o ofertach, klauzulach i wynikach cyklu życia, powinny zastąpić wart
 domyślne bez automatycznej zmiany pozostałych konstruktów.
 
 Implementacja waliduje wejścia, traktuje koszt technologii symetrycznie,
-ogranicza przyrost scenariusza renegocjacji do 10,5 pp i zapisuje ślad wszystkich
+ogranicza przyrost rocznej częstości formalnych aneksów do 0,105 i zapisuje ślad wszystkich
 składników. Nie gwarantuje to trafności, ale ogranicza arbitralność oraz ułatwia
 wykrycie podwójnego liczenia.
+
+W postępowaniach PZP okresy publikacji i standstill wybrane w szablonie pozostają
+takie same w obu ścieżkach i nie są kompresowane przez technologię. Szablon UE
+używa standardowych 35 dni i 10 dni; ustawowe skrócenia oraz wyjątki wymagają
+osobnego scenariusza. Wspólna bazowa cena
+zakupu nie jest dodawana do żadnej strony; porównanie obejmuje jedynie przyrostową
+stratę selekcyjną. Model raportuje także próg kosztu dnia bezczynności, powyżej
+którego centralna przewaga czasowa zmienia znak wyniku.
 
 ## 4. Pochodzenie parametrów
 
@@ -119,7 +131,7 @@ przedział zawsze wygląda bezpiecznie. Potrzebne jest porównanie z prostą baz
 np. medianą kategorii.
 
 Minimalna analiza wrażliwości zmienia kolejno koszt dnia zwłoki, premię
-dyskrecji, koszt renegocjacji, pulę TCO i ekspozycję obejścia. Raport wskazuje
+dyskrecji, koszt aneksu, pulę TCO i ekspozycję obejścia. Raport wskazuje
 próg zmiany znaku. Losowanie z jawnych zakresów nie staje się analizą
 probabilistyczną bez uzasadnionych rozkładów.
 

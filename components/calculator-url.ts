@@ -36,6 +36,7 @@ export function encodeInputsToParams(inputs: ProcurementInputs, scenarioId: stri
   params.set("tl", inputs.techLevel);
   params.set("cv", String(inputs.contractValue));
   params.set("tco", String(inputs.tcoHorizonYears));
+  params.set("dur", String(inputs.contractDurationYears));
   params.set("dci", String(inputs.dailyCostOfInaction));
   params.set("rc", String(inputs.renegotiationCost));
   params.set("bae", String(inputs.bypassAuditExposure));
@@ -71,6 +72,9 @@ export function inputsFromSearchParams(
 
   const tco = parseNumber(params.get("tco"));
   if (tco !== null) next.tcoHorizonYears = tco;
+
+  const duration = parseNumber(params.get("dur"));
+  if (duration !== null) next.contractDurationYears = duration;
 
   const dci = parseNumber(params.get("dci"));
   if (dci !== null) next.dailyCostOfInaction = dci;

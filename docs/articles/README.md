@@ -1,6 +1,6 @@
 # Article Status
 
-## Current model 2.0 material
+## Current model 2.1 material
 
 The binding foundation is
 [`doktorat/00-shared-foundation.md`](doktorat/00-shared-foundation.md). The current
@@ -23,3 +23,4 @@ Any new article draft must:
 3. report low/central/high scenario results and allow sign reversal;
 4. cite Szucs and Beuve only for their matching constructs and populations;
 5. label TCO and bypass magnitudes as assumptions.
+6. treat Beuve's result as an annual formal-amendment frequency and preserve mandatory PZP waits.
