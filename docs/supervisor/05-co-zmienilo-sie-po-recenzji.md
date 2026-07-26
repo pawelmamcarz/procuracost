@@ -1,7 +1,7 @@
 # Co zmieniło się od poprzedniej recenzji
 
 **Adresat:** prof. Krzysztof Piech
-**Stan na:** 26 lipca 2026 · model 2.2.0
+**Stan na:** 26 lipca 2026 · model 2.2.1
 **Poprzednia recenzja dotyczyła:** modelu 1.x (czerwiec 2026)
 
 Ta nota istnieje po to, żeby nie musiał Pan rekonstruować historii zmian z repozytorium.
@@ -105,12 +105,12 @@ który model importuje od Szucsa.
 
 To nie jest błąd cytowania, tylko konstrukcji, i uważam go za najważniejszą rzecz w tej nocie.
 
-Model 2.1 raportował jedną liczbę ΔC. Rozłożenie jej pokazuje, że **od 77,7% do 99,5%**
+Model 2.1 raportował jedną liczbę ΔC. Rozłożenie jej pokazuje, że **od 80,5% do 99,6%**
 każdej opublikowanej delty to iloczyn dwóch wielkości, których model nie mierzy:
 
 > (różnica dni z własnego szablonu) × (koszt dnia bezczynności podany przez użytkownika)
 
-W scenariuszu `production` to 1 400 000 z 1 406 589 zł, czyli 99,5%. Nagłówek „Δ = 73,9%
+W scenariuszu `production` to 1 400 000 z 1 406 145 zł, czyli 99,6%. Nagłówek „Δ = 73,9%
 kosztu ścieżki adaptacyjnej" był więc komunikatem o wielkości założenia użytkownika, a nie
 o kosztowności procedury.
 
@@ -119,7 +119,7 @@ dowodowym: proces, opóźnienie, cykl życia. Kanał opóźnienia jest jawnie oz
 tożsamość rachunkowa.
 
 Skutek jest ciekawszy, niż się spodziewałem: **po odjęciu tożsamości opóźnienia ścieżka
-formalna jest tańsza na koszcie procesu w 6 z 9 scenariuszy wbudowanych.** Teza Tunnel–Field
+formalna jest tańsza na koszcie procesu w 7 z 10 scenariuszy wbudowanych.** Teza Tunnel–Field
 w tej parametryzacji jest opowieścią o zwłoce, nie o koszcie procesu. To twierdzenie węższe,
 ale sprawdzalne — i odwrotne do tego, co sugerował nagłówek 2.1.
 
@@ -130,20 +130,76 @@ usunięte; próg raportuje teraz wartość surową wraz ze statusem.
 
 ---
 
-## 4. Uczciwe postawienie sprawy neutralności
+## 4. Neutralność: z deklaracji na demonstrację, i co z tego wyszło
 
-Dodałem do working papera sekcję 4.1, która mówi wprost coś, czego wcześniej nie mówił żaden
-dokument: **architektura modelu nie jest symetryczna.**
+Working paper ma teraz sekcję 4.1, która mówi wprost coś, czego wcześniej nie mówił żaden
+dokument: **architektura modelu nie jest symetryczna.** W większości typów procesu kanały są
+z konstrukcji uporządkowane na korzyść adaptacji; jedyny kanał mogący sprzyjać formalności —
+selekcja — jest ograniczony do ok. 0,3% wartości kontraktu dla `pzp_eu`, podczas gdy kanał
+opóźnienia jest nieograniczony. Centralnie dwa z siedmiu wymiarów są tożsamościowo zerowe.
 
-- Sześć z siedmiu kanałów jest z konstrukcji uporządkowanych na korzyść ścieżki adaptacyjnej.
-- Jedyny kanał mogący sprzyjać formalności — selekcja — jest ograniczony do ok. 0,3% wartości
-  kontraktu dla `pzp_eu`, podczas gdy kanał opóźnienia jest nieograniczony.
-- Centralnie dwa z siedmiu wymiarów są tożsamościowo zerowe. Działa pięć, nie siedem.
+Ale przyczyna leżała głębiej, niż w parametrach, i warto ją nazwać dokładnie.
 
-Zmiana znaku jest osiągalna — scenariusz kontrolny ją pokazuje, trzy z dziewięciu scenariuszy
-przechodzą przez zero — ale **nie jest osiągalna symetrycznie**. Wniosek dla kalibracji:
-pierwszorzędnymi obiektami pomiaru są szablony dni i profile ścieżek, bo to one, a nie
-kotwice empiryczne, niosą założenie kierunkowe.
+### 4.1. Szablony przesądzały wynik
+
+**W każdym kroku każdego szablonu zachodziło `flexibleDays ≤ rigidDays`.** „Adaptacja jest
+szybsza" nie było więc wynikiem, tylko tożsamością wpisaną w dane wejściowe. Dodatkowo
+ułamek nakładu pracy był ucięty do 1, więc wolniejsza adaptacja była niewyrażalna nawet
+w zasadzie. Przegląd wrażliwości zwracał **0 wyników odpornie pro-formalnych na 11 340
+konfiguracji** — liczba opisująca szablony, nie zamówienia.
+
+Model 2.2 dodaje typ **zakupu odkrywczego**: wymaganie powstaje w trakcie, adaptacja kupuje
+uczenie się czasem (współprojektowanie, runda przeprojektowania, czasem porzucona runda
+negocjacyjna), a formalność zamraża wymaganie wcześnie i płaci gorszą specyfikacją oraz
+słabszym wychwyceniem wartości cyklu życia. To jedyny wiersz tabeli profili z szeroką różnicą
+konkurencji (0,82 / 0,62), bo współprojektowanie z wąskim gronem dostawców realnie ją
+osłabia. Test może teraz zawieść w obie strony.
+
+### 4.2. Przedział niepewności obejmował niewłaściwe wielkości
+
+Drugi, poważniejszy problem: przedział zmieniał **pięć skalarów z literatury**, a trzymał
+nieruchomo **koszt dnia bezczynności i czasy etapów** — czyli dokładnie te dwa wejścia, które
+niosą 80–99% wyniku. Model raportował najwęższą niepewność tam, gdzie jest najsłabszy.
+
+Model 2.2.1 dokłada **oś strukturalną**: koszt dnia ×0,25 … ×4, czasy etapów nieobowiązkowych
+×0,7 … ×1,3. Ustawowe terminy PZP pozostają nienaruszone w obu osiach. Obie osie są
+raportowane osobno, żeby było widać, która niesie szerokość — i w każdym scenariuszu
+z różnicą dni niesie ją strukturalna.
+
+**Wynik działa przeciwko tezie i to jest najważniejsza liczba w tej nocie:**
+
+| | tylko oś dowodowa | obie osie |
+|---|---:|---:|
+| scenariusze przechodzące przez zero | 4 z 10 | **9 z 10** |
+| przegląd: odpornie pro-formalne | 1 221 z 12 960 | 1 045 |
+| przegląd: odpornie pro-adaptacyjne | 5 834 z 12 960 | 5 357 |
+
+**W dziewięciu z dziesięciu scenariuszy wbudowanych model nie wskazuje odpornie żadnej
+ścieżki.** Obie liczby odporności spadły, nie tylko jedna — przedział jest szerszy uczciwie,
+a nie przechylony.
+
+Zdaję sobie sprawę, że to najsłabsze twierdzenie, jakie ten projekt kiedykolwiek postawił.
+Uważam je za mocniejsze pozycyjnie niż poprzednie: pytanie przestaje brzmieć „czy Pan
+przesadził", a zaczyna „co trzeba zmierzyć, żeby model rozstrzygał" — i na to odpowiada
+`EMPIRICAL_VALIDATION_PLAN.md`.
+
+Mnożniki ×0,25–×4 i ×0,7–×1,3 są jawnymi sądami o tym, jak bardzo można się mylić co do
+niezmierzonego wejścia, a nie przedziałami estymowanymi. To jedyne miejsce, w którym ta
+konstrukcja jest podatna na zarzut, i wolę je wskazać sam.
+
+---
+
+## 4a. Baza czasowa
+
+Model 2.1 nie miał bazy czasowej. Mnożył roczną częstość aneksów przez czas trwania umowy
+bez dyskontowania, jednocześnie ograniczając pulę TCO do trzech lat — dziesięcioletni CAPEX
+wnosił więc dziesięć pełnowartościowych lat aneksów przeciwko trzyletniej puli, a `total`
+sumował koszt zdarzenia z niedyskontowanym strumieniem wieloletnim.
+
+Wszystkie raportowane wielkości są teraz **wartością bieżącą na moment udzielenia
+zamówienia**. Oba kanały cyklu życia używają jednego czynnika annuitetowego. Stopa 0
+odtwarza arytmetykę 2.1 co do grosza — i to jest asercja testowa, nie deklaracja. Domyślnie
+4% realnie, jako jawne wejście kalkulatora, obecne w linkach i w śladzie replikacyjnym.
 
 ---
 
@@ -181,5 +237,5 @@ Nie proszę o ocenę wyników empirycznych, bo ich nie ma. Proszę o ocenę trze
    realnie zorganizować.
 
 Materiały weryfikacyjne: `RESEARCH.md`, `docs/MODEL_PARAMETERS.md`, `CHANGELOG.md`
-(sekcja 2.2.0), `replication/outputs/`. Wszystkie liczby w tekstach są generowane przez
+(sekcje 2.2.1 i 2.2.0), `replication/outputs/`. Wszystkie liczby w tekstach są generowane przez
 `npm run replicate` z tego samego kodu, który stoi za kalkulatorem.

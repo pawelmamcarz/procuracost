@@ -1,6 +1,6 @@
 # Plan walidacji empirycznej ProcuraCost
 
-**Wersja:** 1.0 dla modelu 2.2.0 · 26 lipca 2026
+**Wersja:** 1.0 dla modelu 2.2.1 · 26 lipca 2026
 **Status:** projekt do oceny promotora. **Nie zawiera wyników — żadne dane nie zostały zebrane.**
 **Zastępuje:** materiały z `docs/archive/model-1.x/planning/`, napisane pod model 1.x i nieprzenośne.
 
@@ -260,7 +260,7 @@ albo późniejszego okresu.
 
 ### 8.1 Czego ten test nie rozstrzygnie
 
-`dailyCostOfInaction` — parametr niosący 77,7–99,5% wyniku modelu — **nie jest odzyskiwalny
+`dailyCostOfInaction` — parametr niosący 80,5–99,6% wyniku modelu — **nie jest odzyskiwalny
 z żadnej z dwóch warstw danych.** Żadna z siedmiu kategorii kodowania go nie mierzy.
 
 To jest najpoważniejsze ograniczenie całego projektu i wymaga osobnego rozwiązania:

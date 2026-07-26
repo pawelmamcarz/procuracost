@@ -1,6 +1,6 @@
 # Syntetyczny zestaw testowy
 
-**Wersja:** 1.0 dla modelu 2.2.0 · 26 lipca 2026
+**Wersja:** 1.0 dla modelu 2.2.1 · 26 lipca 2026
 
 ## Czym to jest
 

@@ -2,7 +2,7 @@
 
 **Stan na:** 26 lipca 2026
 
-**Wersja modelu:** 2.2.0
+**Wersja modelu:** 2.2.1
 
 **Adresat:** prof. Krzysztof Piech (powtórna recenzja po modelu 1.x)
 
@@ -43,7 +43,7 @@ zostały zebrane.
 
 Materiały techniczne do weryfikacji: [`../../RESEARCH.md`](../../RESEARCH.md)
 (zwłaszcza §4.1 o asymetrii konstrukcyjnej), [`../MODEL_PARAMETERS.md`](../MODEL_PARAMETERS.md),
-[`../../CHANGELOG.md`](../../CHANGELOG.md) (sekcja 2.2.0) i
+[`../../CHANGELOG.md`](../../CHANGELOG.md) (sekcje 2.2.1 i 2.2.0) i
 [`../../replication/outputs/`](../../replication/outputs/).
 
 ## Status publikacyjny

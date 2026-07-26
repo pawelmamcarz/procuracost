@@ -1,6 +1,6 @@
 # Tożsamość formalna przewodu
 
-**Stan na:** 26 lipca 2026 · model 2.2.0
+**Stan na:** 26 lipca 2026 · model 2.2.1
 
 Ten dokument istnieje, bo pakiet 2.1 nie podawał uczelni, dyscypliny ani formatu rozprawy.
 Promotor nie może ocenić, czy chce objąć opiekę, jeżeli nie wie, w jakim trybie i w jakiej
