@@ -94,28 +94,26 @@ for (const mode of EXPOSURE_MODES) {
   console.log(`| ${mode.label} | ${m.n} | ${m.centralFormal} | ${m.robustFormal} |`);
 }
 console.log(
-  "\nWHAT THIS TEST DOES AND DOES NOT SHOW.\n" +
+  "\nHOW TO READ THIS.\n" +
   "\n" +
-  "Decoupling the exposures moves the central count (540 → 298 → 644) but leaves\n" +
-  "'robustly favours formal' at zero in every mode. That is not evidence that the formal\n" +
-  "path never wins; it is evidence that the statistic is not symmetric with its mirror.\n" +
+  "'Robustly favours adaptive' asks whether the LOW evidence case still favours adaptive.\n" +
+  "'Robustly favours formal' asks whether the HIGH case still favours formal. EVIDENCE_CASES\n" +
+  "varies five scalars — the discretion premium, the rigidity slope, the TCO pool and the two\n" +
+  "bypass rates — and does NOT perturb the step-day templates or the daily cost of inaction.\n" +
+  "So both questions are asked from whatever process baseline the template supplies.\n" +
   "\n" +
-  "'Robustly favours adaptive' asks whether the LOW case still favours adaptive.\n" +
-  "'Robustly favours formal' asks whether the HIGH case still favours formal.\n" +
-  "But the three channels that carry most of the result — elapsed days, staff effort and\n" +
-  "coordination — are pro-adaptive by construction and are NOT perturbed by either case.\n" +
-  "EVIDENCE_CASES varies five scalars: the discretion premium, the rigidity slope, the TCO\n" +
-  "pool and the two bypass rates. The step-day templates and the daily cost of inaction are\n" +
-  "held fixed in every published sensitivity run in this repository.\n" +
+  "Through model 2.1 every template had flexibleDays <= rigidDays in every step, which made\n" +
+  "that baseline pro-adaptive by construction: the sweep returned 0 robustly-formal results\n" +
+  "out of 11,340 configurations, and decoupling the exposures did not change that. The zero\n" +
+  "was a property of the templates, not a finding about procurement.\n" +
   "\n" +
-  "So the low case starts from a pro-adaptive process baseline and merely fails to overturn\n" +
-  "it, while the high case starts from the same baseline and adds a 15% TCO pool on top.\n" +
-  "The two questions are not equally hard, and the zero should be read as a property of the\n" +
-  "uncertainty design, not as a result about procurement.\n" +
+  "Model 2.2 adds the `discovery` process type, where the requirement emerges in flight and\n" +
+  "adaptive execution is genuinely slower and more effortful (co-design, a re-scoping round).\n" +
+  "The test can now fail in both directions, which is the minimum a symmetry claim requires.\n" +
   "\n" +
-  "A genuine symmetry test needs a second axis over the daily cost of inaction and over\n" +
-  "non-mandatory step durations, plus at least one process template in which adaptive\n" +
-  "execution is slower (rework, re-scoping, abandoned negotiation). None exists yet."
+  "Still missing, and still worth building: a second sensitivity axis over the daily cost of\n" +
+  "inaction and over non-mandatory step durations. Until it exists, the envelope brackets the\n" +
+  "evidence parameters only, not the two inputs that carry most of the result."
 );
 if (lowest) console.log(`lowest low-case delta: ${Math.round(lowest.delta)} (${lowest.pct.toFixed(2)}% CV), ${lowest.key}`);
 if (lowestCentral) console.log(`lowest central delta: ${Math.round(lowestCentral.delta)}, ${lowestCentral.key}`);

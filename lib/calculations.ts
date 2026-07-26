@@ -52,6 +52,11 @@ export interface ProcurementInputs {
   dailyCostOfInaction: number; // PLN/day — value lost per day without the contract
   renegotiationCost: number;   // PLN — cost if contract requires renegotiation
   bypassAuditExposure: number; // PLN — audit/penalty cost if informal bypass discovered
+  // Annual real discount rate, in percent. Optional; DEFAULT_DISCOUNT_RATE_PCT applies.
+  // Model 2.1 had no discount rate at all and summed a per-event cost with an
+  // undiscounted whole-of-contract-life amendment stream — for a ten-year CAPEX that
+  // overstated the lifecycle side by roughly a quarter and left `total` with no time base.
+  discountRatePct?: number;
   customSteps?: ProcessStep[];
 
   // Context dimensions. Their numeric multipliers are transparent assumptions.
@@ -108,6 +113,7 @@ export interface CalculationTrace {
     dailyCostOfInaction: number;
     renegotiationCost: number;
     bypassAuditExposure: number;
+    discountRatePct: number;
   };
   context: {
     spendType?: "direct" | "indirect";
@@ -234,6 +240,11 @@ const PATH_PROFILES: Record<ProcessType, {
   pzp_krajowy: { formalCompetition: 0.90, adaptiveCompetition: 0.85, formalContractRigidity: 0.65, adaptiveContractRigidity: 0.40, formalTcoCapture: 0.67, adaptiveTcoCapture: 0.72 },
   private_formal: { formalCompetition: 0.85, adaptiveCompetition: 0.75, formalContractRigidity: 0.60, adaptiveContractRigidity: 0.30, formalTcoCapture: 0.70, adaptiveTcoCapture: 0.75 },
   policy_only: { formalCompetition: 0.75, adaptiveCompetition: 0.70, formalContractRigidity: 0.35, adaptiveContractRigidity: 0.25, formalTcoCapture: 0.73, adaptiveTcoCapture: 0.78 },
+  // Discovery: the formal path forces an early requirement freeze, so it captures LESS
+  // lifecycle value than the adaptive one by a wide margin — but co-design with a small
+  // set of suppliers genuinely weakens competition, which is the trade the type exists to
+  // represent. This is the one profile row where the competition gap is large.
+  discovery: { formalCompetition: 0.82, adaptiveCompetition: 0.62, formalContractRigidity: 0.55, adaptiveContractRigidity: 0.30, formalTcoCapture: 0.60, adaptiveTcoCapture: 0.78 },
   catalog_order: { formalCompetition: 0.90, adaptiveCompetition: 0.90, formalContractRigidity: 0.25, adaptiveContractRigidity: 0.20, formalTcoCapture: 0.80, adaptiveTcoCapture: 0.82 },
   mrp_order: { formalCompetition: 0.90, adaptiveCompetition: 0.90, formalContractRigidity: 0.20, adaptiveContractRigidity: 0.18, formalTcoCapture: 0.85, adaptiveTcoCapture: 0.86 },
   capex: { formalCompetition: 0.88, adaptiveCompetition: 0.80, formalContractRigidity: 0.70, adaptiveContractRigidity: 0.40, formalTcoCapture: 0.70, adaptiveTcoCapture: 0.75 },
@@ -328,6 +339,29 @@ function nonNegativeFinite(value: number): number {
   return Number.isFinite(value) ? Math.max(0, value) : 0;
 }
 
+/**
+ * Annual real discount rate applied to lifecycle flows. 4% is the conventional real
+ * social discount rate used in Polish and EU public-investment appraisal; it is a
+ * declared assumption, not an estimate, and the user can override it.
+ */
+export const DEFAULT_DISCOUNT_RATE_PCT = 4;
+
+/** Years over which the TCO savings pool is defined. The pool is a cumulative figure. */
+const TCO_POOL_YEARS = 3;
+
+/**
+ * Present value of one unit received annually for `years`, at annual rate `rate`.
+ * Reduces to `years` when the rate is zero, so a zero-rate run reproduces the
+ * undiscounted model exactly.
+ */
+function annuityFactor(years: number, rate: number): number {
+  const n = nonNegativeFinite(years);
+  const r = Number.isFinite(rate) ? Math.max(0, rate) : 0;
+  if (n === 0) return 0;
+  if (r === 0) return n;
+  return (1 - Math.pow(1 + r, -n)) / r;
+}
+
 function buildBreakdown(
   days: number,
   staffCost: number,
@@ -374,6 +408,10 @@ function calculateCostsForEvidenceCase(inputs: ProcurementInputs, evidenceCase: 
   const dailyCostOfInaction = nonNegativeFinite(inputs.dailyCostOfInaction);
   const renegotiationCost = nonNegativeFinite(inputs.renegotiationCost);
   const bypassAuditExposure = nonNegativeFinite(inputs.bypassAuditExposure);
+  const discountRatePct = Number.isFinite(inputs.discountRatePct as number)
+    ? Math.max(0, inputs.discountRatePct as number)
+    : DEFAULT_DISCOUNT_RATE_PCT;
+  const discountRate = discountRatePct / 100;
 
   const {
     processType,
@@ -456,16 +494,27 @@ function calculateCostsForEvidenceCase(inputs: ProcurementInputs, evidenceCase: 
   const flexibleRenegotiationFrequency = renegotiationAnnualFrequency(
     profile.adaptiveContractRigidity, evidence.renegotiationSlope,
   );
+  // Lifecycle flows are discounted to present value at award — the single time base for
+  // the whole model. Model 2.1 multiplied the annual frequency by contract duration with
+  // no discounting, so a ten-year contract contributed ten full-value amendment years.
+  const contractAnnuity = annuityFactor(contractDurationYears, discountRate);
   const rigidExpectedAmendments = rigidRenegotiationFrequency * contractDurationYears;
   const flexibleExpectedAmendments = flexibleRenegotiationFrequency * contractDurationYears;
-  const rigidRenegotiationExpected = rigidExpectedAmendments * renegotiationCost;
-  const flexibleRenegotiationExpected = flexibleExpectedAmendments * renegotiationCost;
+  const rigidRenegotiationExpected = rigidRenegotiationFrequency * renegotiationCost * contractAnnuity;
+  const flexibleRenegotiationExpected = flexibleRenegotiationFrequency * renegotiationCost * contractAnnuity;
 
   // TCO is a cumulative scenario potential over the user-selected horizon, not an
   // invented annual law. The evidence range is 0–15%; the old unsupported 30% headline
   // no longer drives the default result.
-  const horizonScale = clamp(tcoHorizonYears / 3, 0, 1);
-  const tcoPool = contractValue * evidence.tcoSavingsPotential * horizonScale;
+  // The pool is a cumulative figure defined over TCO_POOL_YEARS, so it enters as an
+  // annual flow discounted over whichever is shorter — the pool window or the user's
+  // horizon. This gives both lifecycle channels the same treatment: model 2.1 scaled
+  // amendments linearly and without bound in contract duration while capping TCO at
+  // three years, so the same purchase was driven in two directions by two horizons.
+  // At a zero discount rate this reproduces the 2.1 value exactly.
+  const tcoYears = Math.min(nonNegativeFinite(tcoHorizonYears), TCO_POOL_YEARS);
+  const tcoAnnualPool = (contractValue * evidence.tcoSavingsPotential) / TCO_POOL_YEARS;
+  const tcoPool = tcoAnnualPool * annuityFactor(tcoYears, discountRate);
   const rigidTCOForgone = tcoPool * (1 - profile.formalTcoCapture);
   const flexibleTCOForgone = tcoPool * (1 - profile.adaptiveTcoCapture);
 
@@ -510,6 +559,7 @@ function calculateCostsForEvidenceCase(inputs: ProcurementInputs, evidenceCase: 
         dailyCostOfInaction,
         renegotiationCost,
         bypassAuditExposure,
+        discountRatePct,
       },
       context: {
         spendType: inputs.spendType,

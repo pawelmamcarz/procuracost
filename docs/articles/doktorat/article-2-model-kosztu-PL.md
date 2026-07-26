@@ -1,4 +1,4 @@
-# Ile kosztuje projekt procesu? Siedmiowymiarowy model decyzyjny ProcuraCost 2.1
+# Ile kosztuje projekt procesu? Siedmiowymiarowy model decyzyjny ProcuraCost 2.2
 
 **Artykuł 2 cyklu doktorskiego · ekonomia i finanse · szkic metodologiczny**
 
@@ -46,7 +46,7 @@ procent.
 Ten wymiar wymaga osobnego ostrzeżenia, bo jest największy. Jego różnica między ścieżkami
 to iloczyn liczby dni z własnego szablonu modelu i ceny dnia podanej z zewnątrz — czyli
 **tożsamość rachunkowa, a nie wynik modelowania**. W scenariuszach wbudowanych niesie
-77,7–99,5% całej ΔC wszędzie tam, gdzie ścieżki różnią się czasem trwania. Dlatego model 2.2
+80,5–99,6% całej ΔC wszędzie tam, gdzie ścieżki różnią się czasem trwania. Dlatego model 2.2
 raportuje ΔC rozbite na trzy kubełki (proces, opóźnienie, cykl życia) zamiast jednej sumy:
 jedna liczba pozwalała czytać założenie użytkownika jako ustalenie badawcze.
 
@@ -72,9 +72,16 @@ poziom żadnej z nich, bo estymata jest przyrostowa, a model nie podaje bazy.
 
 **TCO.** Model tworzy pulę możliwej wartości cyklu życia i mnoży ją przez część
 niewychwyconą przez daną ścieżkę. Scenariusz centralny wynosi 0%, a stres-test
-sięga 15% jako trzyletnia pula skumulowana; krótszy horyzont skaluje ją przez
-`min(horyzont/3, 1)`. Nie istnieje tu
-reguła „10% rocznie” ani automatyczny limit 30%.
+sięga 15% jako trzyletnia pula skumulowana. Nie istnieje tu reguła „10% rocznie”
+ani automatyczny limit 30%.
+
+**Baza czasowa.** Model 2.2 sprowadza oba przepływy cyklu życia — aneksy i TCO — do
+wartości bieżącej na moment udzielenia zamówienia, przy jawnej stopie dyskontowej
+(domyślnie 4% realnie). To jedyna baza czasowa całego rachunku. Model 2.1 mnożył roczną
+częstość aneksów przez czas trwania umowy bez dyskontowania, jednocześnie ograniczając TCO
+do trzech lat — ten sam zakup był więc ciągnięty w dwie strony przez dwa różne horyzonty,
+a `total` sumował koszt zdarzenia z niedyskontowanym strumieniem wieloletnim. Wpisanie
+stopy 0 odtwarza dokładnie arytmetykę 2.1.
 
 **Obejście.** Koszt to ekspozycja audytowa użytkownika razy scenariusz częstości
 i działanie kontroli systemowych. Zakresy 1–30% nie pochodzą z literatury; służą
@@ -111,20 +118,31 @@ trafności, ale ogranicza arbitralność oraz ułatwia wykrycie podwójnego licz
 ### 3.2 Asymetria konstrukcyjna
 
 Model dopuszcza obie ścieżki, ale nie jest wobec nich symetryczny i artykuł musi to
-powiedzieć przed recenzentem. Sześć z siedmiu kanałów jest z konstrukcji uporządkowanych na
-korzyść ścieżki adaptacyjnej: ma ona w każdym szablonie nie więcej dni, a w każdym wierszu
-tabeli profili niższą sztywność kontraktu i wyższe wychwycenie TCO. Jedyny kanał mogący
-sprzyjać formalności — selekcja — jest ograniczony iloczynem premii dyskrecji i różnicy
-skuteczności konkurencji, co dla `pzp_eu` daje pułap rzędu 0,3% wartości kontraktu, podczas
-gdy kanał opóźnienia jest nieograniczony.
+powiedzieć przed recenzentem. W większości typów procesu kanały są z konstrukcji
+uporządkowane na korzyść ścieżki adaptacyjnej: ma ona nie więcej dni, a w tabeli profili
+niższą sztywność kontraktu i wyższe wychwycenie TCO. Jedyny kanał mogący sprzyjać
+formalności — selekcja — jest ograniczony iloczynem premii dyskrecji i różnicy skuteczności
+konkurencji, co dla `pzp_eu` daje pułap rzędu 0,3% wartości kontraktu, podczas gdy kanał
+opóźnienia jest nieograniczony.
 
-Konsekwencja dla interpretacji przeglądu wrażliwości: w 11 340 konfiguracjach wynik centralny
-sprzyja formalności w 1 482, ale **żadna nie sprzyja jej odpornie**. To nie jest wynik
-o zamówieniach, tylko własność konstrukcji przedziału — scenariusze niski i wysoki zmieniają
-pięć skalarów dowodowych, natomiast szablony dni i koszt dnia zwłoki pozostają nieruszone
-w każdym opublikowanym przebiegu. Rzetelny test symetrii wymaga drugiej osi wrażliwości po
-koszcie dnia i po czasach trwania etapów nieobowiązkowych oraz co najmniej jednego szablonu,
-w którym wykonanie adaptacyjne jest **wolniejsze**. Takiego szablonu jeszcze nie ma.
+Do modelu 2.1 miało to konsekwencję, której nie ujawniano: w 11 340 konfiguracjach wynik
+centralny sprzyjał formalności w 1 482, ale **żadna nie sprzyjała jej odpornie**. Przyczyną
+były szablony, nie dowody — w każdym kroku każdego szablonu zachodziło
+`flexibleDays ≤ rigidDays`, więc oba warianty przedziału pytano z tej samej,
+proadaptacyjnej bazy.
+
+Model 2.2 dodaje typ **zakupu odkrywczego**, w którym wymaganie powstaje w trakcie,
+a wykonanie adaptacyjne jest realnie **wolniejsze i bardziej pracochłonne**:
+współprojektowanie z dostawcami, runda przeprojektowania, czasem porzucona runda
+negocjacyjna. Ścieżka formalna zamraża wymaganie wcześnie i płaci gorszą specyfikacją oraz
+słabszym wychwyceniem wartości cyklu życia. W 12 960 konfiguracjach przegląd zwraca teraz
+**1 221 wyników odpornie pro-formalnych** obok 5 834 odpornie pro-adaptacyjnych. Twierdzenie,
+że wygrać może każda ze ścieżek, jest więc pokazane, a nie tylko zadeklarowane.
+
+Dwa zastrzeżenia zostają. Zakup odkrywczy sam jest założeniem modelowym, a nie obserwacją.
+Przedział niepewności nadal obejmuje wyłącznie pięć parametrów dowodowych — pełny test
+symetrii wymaga drugiej osi wrażliwości po koszcie dnia zwłoki i po czasach trwania etapów
+nieobowiązkowych, której jeszcze nie ma.
 
 W postępowaniach PZP okresy publikacji i standstill wybrane w szablonie pozostają
 takie same w obu ścieżkach i nie są kompresowane przez technologię. Szablon UE
@@ -194,7 +212,7 @@ poradą prawną.
 Jest nim **audytowalna dekompozycja, która rozdziela to, co model wie, od tego, co zakłada,
 i pokazuje, że dominujący składnik popularnego argumentu o kosztach procedury jest
 tożsamością rachunkową, a nie ustaleniem.** Po odjęciu tej tożsamości ścieżka formalna jest
-tańsza na koszcie procesu w sześciu z dziewięciu scenariuszy wbudowanych — wynik węższy niż
+tańsza na koszcie procesu w siedmiu z dziesięciu scenariuszy wbudowanych — wynik węższy niż
 teza wyjściowa, ale sprawdzalny i przeciwny do intuicji, którą sam projekt wcześniej
 komunikował.
 

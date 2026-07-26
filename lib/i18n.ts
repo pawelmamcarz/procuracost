@@ -18,6 +18,9 @@ const calculatorPl = {
     "Wartość tracona każdego dnia bez podpisanego kontraktu — zatrzymana produkcja, nieosiągalny przychód, koszt alternatywny.",
   renegotiationCost: "Koszt jednego formalnego aneksu (PLN)",
   contractDuration: "Czas trwania kontraktu (lata)",
+  discountRate: "Stopa dyskontowa (% rocznie)",
+  discountRateTooltip:
+    "Realna roczna stopa dyskontowa dla przepływów cyklu życia (aneksy, TCO). Model sprowadza je do wartości bieżącej na moment udzielenia zamówienia — to jedyna baza czasowa całego rachunku. Domyślne 4% to konwencjonalna społeczna stopa dyskontowa, czyli jawne założenie, a nie oszacowanie. Wpisanie 0 odtwarza niedyskontowany model 2.1.",
   bypassExposure: "Ryzyko audytowe przy obejściu (PLN)",
   bypassTooltip:
     "Szacowany koszt audytu, kary regulacyjne lub reputacyjne jeśli nieformalne obejście procedury zostanie odkryte. Wartość podaje użytkownik. Lipsky (1980) i Vaughan (1996) uzasadniają sam mechanizm obejścia, ale nie dostarczają ani jego kosztu, ani częstości.",
@@ -38,6 +41,7 @@ const calculatorPl = {
     pzp_krajowy: "Strategiczne PZP — postępowanie krajowe",
     private_formal: "Strategiczny przetarg prywatny (RFQ/RFP)",
     policy_only: "Strategiczna ścieżka adaptacyjna i zgodna",
+    discovery: "Strategiczny zakup odkrywczy (wymaganie nieznane)",
     catalog_order: "Operacyjne zamówienie z katalogu",
     mrp_order: "Operacyjne zlecenie MRP / cykl produkcyjny",
     capex: "Strategiczna inwestycja CAPEX",
@@ -83,6 +87,9 @@ const calculatorEn = {
     "Value lost every day without a signed contract — halted production, unrealised revenue, opportunity cost.",
   renegotiationCost: "Cost per formal amendment (PLN)",
   contractDuration: "Contract duration (years)",
+  discountRate: "Discount rate (% per year)",
+  discountRateTooltip:
+    "Real annual discount rate for lifecycle flows (amendments, TCO). The model brings them to present value at award — the single time base for the whole calculation. The 4% default is the conventional social discount rate: a declared assumption, not an estimate. Entering 0 reproduces the undiscounted 2.1 model.",
   bypassExposure: "Audit exposure on bypass (PLN)",
   bypassTooltip:
     "Estimated audit cost, regulatory or reputational penalties if an informal procedure bypass is discovered. User-supplied. Lipsky (1980) and Vaughan (1996) motivate the bypass mechanism; neither supplies its cost or its rate.",
@@ -102,6 +109,7 @@ const calculatorEn = {
     pzp_krajowy: "Strategic PZP — national procedure",
     private_formal: "Strategic private tender (RFQ/RFP)",
     policy_only: "Strategic adaptive and compliant path",
+    discovery: "Strategic discovery purchase (requirement unknown)",
     catalog_order: "Operational catalog order",
     mrp_order: "Operational MRP / production cycle",
     capex: "Strategic CAPEX investment",

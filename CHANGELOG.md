@@ -35,13 +35,41 @@ mathematics, the citation base and the legal layer. Headline numbers change.
   Relabelled the illustrative `pipe_vs_field` scenario, which cited three
   journal articles as the "source" of a constructed example.
 
+### Neutrality: from a claim to a demonstration
+
+- **Added the `discovery` process type**, in which the requirement emerges during the
+  procurement and adaptive execution is genuinely slower and more effortful (supplier
+  co-design, a re-scoping round, sometimes an abandoned negotiation), while the formal
+  path freezes the requirement early and pays with a worse specification.
+
+  Through 2.1 every step of every template had `flexibleDays ≤ rigidDays`, so "the
+  adaptive path is faster" was an identity and the sweep returned **0 robustly-formal
+  results out of 11,340**. With `discovery` the sweep returns **1,221 out of 12,960**,
+  alongside 5,834 robustly adaptive. The symmetry claim is now demonstrated, not asserted.
+- The adaptive effort ratio is no longer capped at 1, so a step where adaptive execution
+  takes longer now costs more staff hours and not only more calendar days.
+- Added the `discovery_rd` scenario, whose central ΔC is negative. Two of the ten exported
+  scenarios now favour the formal path centrally, and four cross zero.
+
+### Time base and discounting
+
+- **Every reported figure is now a present value at award** — the model's single time base.
+  2.1 multiplied the annual amendment frequency by contract duration without discounting
+  while capping TCO at three years, so one purchase was driven by two incompatible
+  horizons and `total` had no time base at all.
+- Both lifecycle channels use the same annuity factor. A zero rate reproduces the 2.1
+  arithmetic exactly, which is how the change is tested.
+- Added `discountRatePct` as an optional input, default 4% real, exposed in the calculator,
+  carried in shared links and recorded in the replication trace. At 4% over ten years the
+  CAPEX amendment stream falls by roughly 19%.
+
 ### Model mathematics
 
 - **ΔC is now reported decomposed** into process / delay / lifecycle buckets.
   The delay bucket is an accounting identity — (template day difference) × (a
-  daily cost the user supplies) — and it carried 77.7–99.5% of |ΔC| in the
+  daily cost the user supplies) — and it carried 80.5–99.6% of |ΔC| in the
   built-in scenarios. Excluding it, the formal path is cheaper on process cost
-  in 6 of 9 scenarios.
+  in 7 of 10 scenarios.
 - **Break-even daily cost of inaction is no longer clamped at zero.** It returned
   0 or `null` in every 2.1 scenario while being described to reviewers as a live
   feature. It now reports the raw solution plus a status distinguishing "the
@@ -74,11 +102,22 @@ mathematics, the citation base and the legal layer. Headline numbers change.
 - `confidence` renamed `weightStability`; it is suppressed entirely where the
   legal filter leaves a single candidate and the figure is 1.0 by construction.
 
+### PDF export
+
+- **Embedded a Unicode font.** jsPDF's built-in Helvetica is WinAnsi, which has no Polish
+  diacritics, so every ą ć ę ł ń ó ś ź ż and every "zł" in the exported report rendered as
+  mojibake — "1 234 567 zB", "Zcielka formalna" — in the one artifact that leaves the site.
+  Noto Sans is subsetted to Latin + Latin Extended-A (~23 KB per weight) and fetched only
+  when an export runs, so it never enters the page bundle.
+- The TOTAL row no longer hardcodes a leading `+`, which printed `+-6 558 zł` on the one
+  scenario built to show that the formal path can win.
+
 ### Tests
 
 - Added value-pinning tests for the decomposition, the break-even statuses, the
-  optimizer suitability bands and both legal corrections. Model 2.1 had no test
-  that pinned any dimension to a numeric value.
+  optimizer suitability bands, the discounting (including the zero-rate identity with 2.1)
+  and both legal corrections. Model 2.1 had no test that pinned any dimension to a
+  numeric value. 47 tests pass.
 
 ## 2026-07-14 — Site 2026.29.1.2 / model 2.1.0
 

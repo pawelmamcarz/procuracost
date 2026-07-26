@@ -21,25 +21,34 @@ dyscyplinie miałby to robić.
 |---|---|
 | Tryb | **eksternistyczny** (bez szkoły doktorskiej) |
 | Podstawa | art. 187 ust. 3 ustawy Prawo o szkolnictwie wyższym i nauce — rozprawa jako **cykl powiązanych tematycznie artykułów** |
-| Uczelnia | Uczelnia Łazarskiego w Warszawie — **do potwierdzenia** |
-| Dyscypliny | ekonomia i finanse · nauki o polityce i administracji |
+| Uczelnia | **Uczelnia Łazarskiego w Warszawie**, Wydział Ekonomii i Zarządzania |
+| Dyscyplina wiodąca | **ekonomia i finanse** |
+| Dyscyplina dodatkowa | nauki o polityce i administracji (artykuł 3) |
 
-> **Uwaga o statusie.** Uczelnia i dyscyplina wiodąca są zapisane jako kierunek, a nie jako
-> fakt dokonany. Materiał instytucjonalny pochodzi ze wcześniejszej wersji projektu i wymaga
-> ponownego potwierdzenia przed złożeniem czegokolwiek. Nie należy go traktować jako
-> uzgodnionego z jednostką.
+## Dlaczego ta uczelnia i ten promotor
 
-## Charakter interdyscyplinarny
+Prof. Krzysztof Piech jest doktorem habilitowanym **nauk ekonomicznych** (specjalność:
+polityka gospodarcza) i od 2016 roku profesorem **Uczelni Łazarskiego na Wydziale Ekonomii
+i Zarządzania**. Wcześniej, w latach 1996–2016, był związany ze Szkołą Główną Handlową, gdzie
+uzyskał doktorat (2002) i habilitację (2016).
 
-Cykl leży na styku dwóch dyscyplin i to jest świadomy wybór, nie niezdecydowanie:
+To ma znaczenie dla dopasowania tematu, nie tylko dla formalności:
 
-- **ekonomia i finanse** — model kosztowy, dekompozycja, identyfikacja efektów (artykuł 2);
-- **nauki o polityce i administracji** — reżim PZP, pomiar organizacyjny, dane rejestrowe
-  (artykuł 3);
-- artykuł 1 jest konceptualny i wiąże obie perspektywy.
+- Jego habilitacja — *Pomiary innowacyjności i gospodarki opartej na wiedzy* — dotyczy
+  **problemu pomiaru**, a wkład tego cyklu jest właśnie pomiarowy: rozdzielenie konstruktów,
+  które literatura zakupowa mierzy łącznie, i pokazanie, ile z popularnego argumentu
+  o „koszcie procedury" po tym rozdzieleniu zostaje.
+- Jego obszary badawcze — konkurencyjność, innowacje, polityka gospodarcza — obejmują
+  pytanie, czy projekt procedury administracyjnej ma mierzalny koszt ekonomiczny.
+- Afiliacja przy Wydziale Ekonomii i Zarządzania odpowiada deklarowanej dyscyplinie wiodącej.
 
-**Dyscyplina wiodąca jest do rozstrzygnięcia z promotorem.** Ma to konsekwencje dla wyboru
-recenzentów i czasopism, więc powinno zapaść wcześnie.
+**Dyscyplina wiodąca: ekonomia i finanse.** Artykuły 1 i 2 należą do niej w całości.
+Artykuł 3 sięga do nauk o polityce i administracji, bo dotyczy reżimu PZP i pomiaru
+organizacyjnego — to świadomy wybór interdyscyplinarny, nie niezdecydowanie.
+
+> **Co pozostaje do potwierdzenia z jednostką:** zgoda na przewód w trybie eksternistycznym,
+> forma rozprawy pod art. 187 ust. 3 oraz wymóg posiadania artykułu przyjętego do druku
+> przed wszczęciem. Nic z tego nie było jeszcze uzgadniane.
 
 ## Cykl trzech artykułów
 
@@ -60,7 +69,7 @@ Nie należy ich oznaczać jako przyjętych, recenzowanych ani potwierdzonych.
 | Artykuł | Kierunek | Uwaga |
 |---|---|---|
 | 1 | *Journal of Public Procurement* lub pokrewne międzynarodowe | konceptualny, EN |
-| 2 | czasopismo z listy MEiN, ekonomia i finanse | wymaga decyzji, czy artykuł ma zawierać pełną estymację |
+| 2 | czasopismo z listy MEiN, ekonomia i finanse (dyscyplina wiodąca) | wymaga decyzji, czy artykuł ma zawierać pełną estymację |
 | 3 | czasopismo z listy MEiN, nauki o polityce i administracji | możliwy *registered report*, jeśli czasopismo taki format prowadzi |
 
 Lista jest propozycją, nie ustaleniem. Kolejność publikacji i kryterium „gotowe do wysłania"

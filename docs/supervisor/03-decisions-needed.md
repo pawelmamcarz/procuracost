@@ -19,7 +19,7 @@ Wkłady poszczególnych artykułów:
 | 3 | Falsyfikowalny protokół pomiaru sekwencyjności *ex ante* na polskich zamówieniach, z deklarowanym MIE, rachunkiem mocy i strategią identyfikacji. |
 
 **Twierdzenie, które uważam za najmocniejsze i które chcę obronić:** po odjęciu tożsamości
-opóźnienia ścieżka formalna jest tańsza na koszcie procesu w sześciu z dziewięciu
+opóźnienia ścieżka formalna jest tańsza na koszcie procesu w siedmiu z dziesięciu
 scenariuszy wbudowanych. Teza Tunnel–Field w tej parametryzacji jest opowieścią o zwłoce,
 nie o koszcie procesu. To jest węższe i mniej efektowne niż to, od czego zaczynałem,
 ale sprawdzalne.

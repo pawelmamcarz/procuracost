@@ -884,8 +884,6 @@ function describeFeatureValue(
       return `${pl ? "sektor publiczny" : "public sector"}: ${v ? (pl ? "tak" : "yes") : (pl ? "nie" : "no")}`;
     case "innovationRequired":
       return `${pl ? "innowacyjność wymagana" : "innovation required"}: ${v ? (pl ? "tak" : "yes") : (pl ? "nie" : "no")}`;
-    case "procurementObject":
-      return `${pl ? "przedmiot" : "object"}: ${v === "works" ? (pl ? "roboty budowlane" : "works") : (pl ? "dostawy/usługi" : "supplies/services")}`;
     case "authorityLevel":
       return `${pl ? "zamawiający" : "authority"}: ${v === "central" ? (pl ? "centralny" : "central") : (pl ? "subcentralny" : "sub-central")}`;
     // Without these two the flagship justification panel printed raw code identifiers:

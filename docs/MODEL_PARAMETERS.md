@@ -74,12 +74,36 @@ capture respectively.
 | PZP national | .90 / .85 | .65 / .40 | .67 / .72 |
 | Private formal | .85 / .75 | .60 / .30 | .70 / .75 |
 | Policy-compatible private | .75 / .70 | .35 / .25 | .73 / .78 |
+| **Discovery (new in 2.2)** | **.82 / .62** | .55 / .30 | **.60 / .78** |
 | Catalog | .90 / .90 | .25 / .20 | .80 / .82 |
 | MRP | .90 / .90 | .20 / .18 | .85 / .86 |
 | CAPEX | .88 / .80 | .70 / .40 | .70 / .75 |
 
 They should be replaced by observed bidder, clause and lifecycle data during
 calibration. They must not be interpreted as scores measured for an organization.
+
+### The `discovery` process type (new in 2.2)
+
+Through model 2.1, **every step of every template had `flexibleDays ≤ rigidDays`**. That
+made "the adaptive path is faster" an identity rather than a finding, and it meant the
+sensitivity sweep could not fail in the pro-formal direction: 0 robustly-formal results out
+of 11,340 configurations, a number that reflected the templates and not procurement.
+
+`discovery` models a purchase whose requirement emerges in flight. The adaptive path buys
+learning with time — co-design with suppliers, a re-scoping round, sometimes an abandoned
+negotiation — so it is **slower and more effortful** than the formal path, which freezes
+the requirement early and lives with a worse specification. Its profile row is the one place
+where the competition gap is wide (.82 / .62): co-designing with a small supplier set
+genuinely weakens competition, and that is the trade the type exists to represent.
+
+With it in the grid the sweep returns **1,221 robustly formal** results out of 12,960,
+alongside 5,834 robustly adaptive. The two-sidedness the model claims is now demonstrated.
+`discovery` is nonetheless a modelling assumption like every other template, not an
+observation, and calibration should treat the day tables as a primary object of measurement.
+
+Related fix: the adaptive effort ratio is no longer capped at 1. Model 2.1 capped it, so a
+step where adaptive execution takes longer could cost more calendar days but never more
+staff hours.
 
 ## Workflow, technology, and context assumptions
 
@@ -112,6 +136,28 @@ had no context sensitivity while the API and this table implied otherwise. They 
 mechanism, not a constant. The maximum combined uplift is ×1.265 (direct × upstream) against an
 audited invariant of ×1.5; `direct + downstream` nets to ×0.99, i.e. no effect.
 
+## Time base and discounting (new in 2.2)
+
+**Every figure the model reports is a present value at award.** That is the single time
+base, and model 2.1 did not have one: it multiplied the annual amendment frequency by
+contract duration with no discounting, while capping the TCO pool at three years. A ten-year
+CAPEX therefore contributed ten full-value amendment years against a three-year lifecycle
+pool — two horizons pulling the same purchase in opposite directions — and `total` summed a
+per-event cost with an undiscounted multi-year stream.
+
+Both lifecycle channels now use the same annuity machinery:
+
+- amendments: `λ_j × cost_per_amendment × af(r, contract duration)`
+- TCO: `(pool / 3) × af(r, min(horizon, 3)) × (1 − capture_j)`
+
+where `af(n, r) = n` at `r = 0` and `(1 − (1+r)^−n) / r` otherwise. **A zero rate reproduces
+the 2.1 arithmetic exactly**, which is how the change is verified in `tests/`.
+
+The default rate is **4% real**, the conventional social discount rate in Polish and EU
+public-investment appraisal. It is a declared assumption, exposed as a calculator input and
+carried in shared links and the replication trace. At 4% over ten years the CAPEX amendment
+stream falls by about 19%.
+
 ## ΔC decomposition (new in 2.2)
 
 ΔC is reported in three buckets rather than one number, because they have different time bases
@@ -123,11 +169,11 @@ and very different evidential standing:
 | **Delay** | (formal days − adaptive days) × daily cost of inaction | per procurement event | **accounting identity** between a template and a user input |
 | **Lifecycle** | expected formal amendments, foregone lifecycle value | over the contract life | modeled, weakly anchored |
 
-This matters because in the built-in scenarios the delay bucket carries **77.7–99.5%** of |ΔC|
+This matters because in the built-in scenarios the delay bucket carries **80.5–99.6%** of |ΔC|
 wherever the two paths differ in duration. Reporting only the sum let an identity between the
 model's own step templates and a number the user supplies read as a modeled finding.
 
-Excluding that identity, the formal path is **cheaper on process cost in 6 of 9** built-in
+Excluding that identity, the formal path is **cheaper on process cost in 7 of 10** built-in
 scenarios. The Tunnel–Field advantage in this parameterisation is a delay story, not a
 process-cost story — and saying so is a stronger and more checkable claim than the headline
 percentages model 2.1 reported.

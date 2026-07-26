@@ -60,13 +60,46 @@ describe("(a) renegotiation is an annual contract-amendment frequency", () => {
             renegotiation.annualFrequencyRigid * 5,
             12,
           );
-          expect(r.rigid.renegotiationCost).toBeCloseTo(
-            renegotiation.expectedCountRigid * REN_COST,
-            8,
-          );
+          // The reported cost is the PRESENT VALUE of the amendment stream, so it must
+          // be strictly below the undiscounted expectation whenever the frequency and
+          // the duration are both non-zero.
+          const undiscounted = renegotiation.expectedCountRigid * REN_COST;
+          if (undiscounted > 0) {
+            expect(r.rigid.renegotiationCost).toBeLessThan(undiscounted);
+          }
         }
       }
     }
+  });
+
+  // Model 2.1 had no discount rate and multiplied the annual frequency by contract
+  // duration, so a ten-year contract contributed ten full-value amendment years and
+  // `total` mixed a per-event cost with an undiscounted lifetime stream.
+  it("discounts the amendment stream to present value at award", () => {
+    const undiscounted = calculateCosts(
+      makeInputs({ renegotiationCost: REN_COST, contractDurationYears: 10, discountRatePct: 0 }),
+    );
+    const discounted = calculateCosts(
+      makeInputs({ renegotiationCost: REN_COST, contractDurationYears: 10, discountRatePct: 4 }),
+    );
+
+    // At a zero rate the model reproduces the undiscounted 2.1 arithmetic exactly.
+    expect(undiscounted.rigid.renegotiationCost).toBeCloseTo(
+      undiscounted.trace.renegotiation.expectedCountRigid * REN_COST,
+      6,
+    );
+
+    // A 4% real rate over ten years is worth roughly a fifth of the stream.
+    const ratio = discounted.rigid.renegotiationCost / undiscounted.rigid.renegotiationCost;
+    expect(ratio).toBeGreaterThan(0.75);
+    expect(ratio).toBeLessThan(0.85);
+  });
+
+  it("gives both lifecycle channels the same discount treatment", () => {
+    // TCO only bites in the high evidence case, so compare the full high-case delta.
+    const undiscounted = calculateCosts(makeInputs({ tcoHorizonYears: 3, discountRatePct: 0 }));
+    const discounted = calculateCosts(makeInputs({ tcoHorizonYears: 3, discountRatePct: 8 }));
+    expect(discounted.uncertainty.highDelta).toBeLessThan(undiscounted.uncertainty.highDelta);
   });
 
   it("uses separate contract profiles rather than PROCESS_RIGIDITY", () => {

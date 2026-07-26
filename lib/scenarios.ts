@@ -307,6 +307,40 @@ export const SCENARIOS: Scenario[] = [
     },
   },
   {
+    id: "discovery_rd",
+    name: "Zakup odkrywczy — wymaganie nieznane",
+    nameEn: "Discovery purchase — requirement unknown",
+    description: "Rozwiązanie projektowane wspólnie z dostawcami; adaptacja kupuje uczenie się kosztem czasu",
+    descriptionEn: "Solution co-designed with suppliers; adaptation buys learning at the cost of time",
+    inputs: {
+      contractValue: 3_000_000,
+      tcoHorizonYears: 3,
+      contractDurationYears: 3,
+      processType: "discovery",
+      techLevel: "partial_erp",
+      stakeholders: {
+        requestor: { count: 1, dailyRate: 900 },
+        buyer:     { count: 1, dailyRate: 900 },
+        lawyer:    { count: 1, dailyRate: 1300 },
+        finance:   { count: 1, dailyRate: 1000 },
+        manager:   { count: 1, dailyRate: 1600 },
+        executive: { count: 1, dailyRate: 2800 },
+      },
+      dailyCostOfInaction: 8_000,
+      renegotiationCost: 200_000,
+      bypassAuditExposure: 300_000,
+    },
+    caseStudy: {
+      title: "Scenariusz kontrolny II: adaptacja bywa droższa",
+      source:
+        "Konstrukcja modelu 2.2 — scenariusz ilustracyjny bez źródła zewnętrznego. Wartości wejściowe są założeniami, a nie danymi z badania.",
+      insight:
+        "Kiedy wymaganie powstaje w trakcie, ścieżka adaptacyjna kupuje uczenie się czasem: współprojektowanie i runda przeprojektowania wydłużają kalendarz i zwiększają pracę. Formalna zamraża wymaganie wcześnie i wychodzi szybciej, płacąc gorszym dopasowaniem i słabszym wychwyceniem wartości cyklu życia. Ten scenariusz istnieje po to, żeby teza modelu dała się obalić, a nie tylko potwierdzić.",
+      insightEn:
+        "When the requirement emerges in flight, the adaptive path buys learning with time: co-design and a re-scoping round lengthen the calendar and raise effort. The formal path freezes the requirement early and finishes sooner, paying with a worse fit and weaker lifecycle capture. This scenario exists so the model's thesis can be refuted, not only confirmed.",
+    },
+  },
+  {
     id: "custom",
     name: "Własny scenariusz",
     nameEn: "Custom Scenario",

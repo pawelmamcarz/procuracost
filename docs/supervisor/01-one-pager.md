@@ -50,7 +50,7 @@ i jest wyłącznie stres-testowane.
 
 ΔC jest raportowane **rozbite na trzy kubełki** — proces, opóźnienie, cykl życia — bo
 kubełek opóźnienia jest tożsamością rachunkową między liczbą dni z szablonu a ceną dnia
-podaną przez użytkownika, i niósł 77,7–99,5% dawnej liczby nagłówkowej.
+podaną przez użytkownika, i niósł 80,5–99,6% dawnej liczby nagłówkowej.
 
 **Po odjęciu tej tożsamości ścieżka formalna jest tańsza na koszcie procesu w sześciu
 z dziewięciu scenariuszy wbudowanych.**

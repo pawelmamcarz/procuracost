@@ -48,13 +48,13 @@
           "adminCost": 5600,
           "opportunityCost": 220000,
           "productivityCost": 18000.000000000004,
-          "renegotiationCost": 13860,
+          "renegotiationCost": 13070.636094674575,
           "tcoCost": 0,
           "bypassCost": 13750.000000000002,
-          "total": 288072.5,
+          "total": 287283.1360946746,
           "processCost": 54212.5,
           "delayCost": 220000,
-          "lifecycleCost": 13860,
+          "lifecycleCost": 13070.636094674575,
           "days": 44,
           "staffCost": 16862.5,
           "coordCost": 4400,
@@ -65,20 +65,20 @@
           "adminCost": 3600,
           "opportunityCost": 120000,
           "productivityCost": 30000,
-          "renegotiationCost": 6930,
+          "renegotiationCost": 6535.318047337288,
           "tcoCost": 0,
           "bypassCost": 13750.000000000002,
-          "total": 183596.42857142858,
+          "total": 183201.74661876587,
           "processCost": 56666.42857142857,
           "delayCost": 120000,
-          "lifecycleCost": 6930,
+          "lifecycleCost": 6535.318047337288,
           "days": 24,
           "staffCost": 9316.42857142857,
           "coordCost": 2400,
           "toolCost": 1200
         },
-        "delta": 104476.07142857142,
-        "deltaPercent": 56.9052852724337,
+        "delta": 104081.38947590871,
+        "deltaPercent": 56.812443875056026,
         "bypassProbability": 0.027500000000000004,
         "flexibleBypassProbability": 0.027500000000000004,
         "rigidDays": 44,
@@ -91,7 +91,8 @@
             "contractDurationYears": 2,
             "dailyCostOfInaction": 5000,
             "renegotiationCost": 150000,
-            "bypassAuditExposure": 500000
+            "bypassAuditExposure": 500000,
+            "discountRatePct": 4
           },
           "context": {},
           "process": {
@@ -139,8 +140,8 @@
               "flexible": 30000
             },
             "renegotiationCost": {
-              "rigid": 13860,
-              "flexible": 6930
+              "rigid": 13070.636094674575,
+              "flexible": 6535.318047337288
             },
             "tcoCost": {
               "rigid": 0,
@@ -162,22 +163,22 @@
         },
         "uncertainty": {
           "lowDelta": 55796.07142857142,
-          "centralDelta": 104476.07142857142,
-          "highDelta": 219746.07142857142,
+          "centralDelta": 104081.38947590871,
+          "highDelta": 217784.0521978023,
           "lowPercentOfContractValue": 1.1159214285714285,
-          "highPercentOfContractValue": 4.394921428571428,
+          "highPercentOfContractValue": 4.355681043956046,
           "crossesZero": false
         },
         "deltaDecomposition": {
           "process": -2453.9285714285725,
           "delay": 100000,
-          "lifecycle": 6930,
-          "delayShareOfDeltaPercent": 95.71569703247155
+          "lifecycle": 6535.318047337288,
+          "delayShareOfDeltaPercent": 96.07865585148302
         },
         "decisionThreshold": {
           "effectiveDayDifference": 20,
-          "nonDelayDelta": 4476.0714285714275,
-          "breakEvenDailyCostOfInaction": -223.8035714285714,
+          "nonDelayDelta": 4081.389475908715,
+          "breakEvenDailyCostOfInaction": -204.06947379543575,
           "status": "formal_costlier_at_zero_delay"
         }
       }
@@ -228,13 +229,13 @@
           "adminCost": 10919.999999999998,
           "opportunityCost": 758999.9999999999,
           "productivityCost": 10800.000000000002,
-          "renegotiationCost": 6930,
+          "renegotiationCost": 6728.795873096181,
           "tcoCost": 0,
           "bypassCost": 12000.000000000002,
-          "total": 825381.2499999999,
+          "total": 825180.0458730961,
           "processCost": 59451.25,
           "delayCost": 758999.9999999999,
-          "lifecycleCost": 6930,
+          "lifecycleCost": 6728.795873096181,
           "days": 50.599999999999994,
           "staffCost": 25731.25,
           "coordCost": 10119.999999999998,
@@ -245,20 +246,20 @@
           "adminCost": 6319.999999999999,
           "opportunityCost": 413999.99999999994,
           "productivityCost": 18000,
-          "renegotiationCost": 3465,
+          "renegotiationCost": 3364.3979365480905,
           "tcoCost": 0,
           "bypassCost": 12000.000000000002,
-          "total": 468181.3571428571,
+          "total": 468080.7550794052,
           "processCost": 50716.357142857145,
           "delayCost": 413999.99999999994,
-          "lifecycleCost": 3465,
+          "lifecycleCost": 3364.3979365480905,
           "days": 27.599999999999994,
           "staffCost": 14396.357142857141,
           "coordCost": 5519.999999999999,
           "toolCost": 800
         },
-        "delta": 357199.8928571428,
-        "deltaPercent": 76.29519787737932,
+        "delta": 357099.2907936909,
+        "deltaPercent": 76.2901031325487,
         "bypassProbability": 0.04000000000000001,
         "flexibleBypassProbability": 0.04000000000000001,
         "rigidDays": 50.599999999999994,
@@ -271,7 +272,8 @@
             "contractDurationYears": 0.5,
             "dailyCostOfInaction": 15000,
             "renegotiationCost": 300000,
-            "bypassAuditExposure": 300000
+            "bypassAuditExposure": 300000,
+            "discountRatePct": 4
           },
           "context": {},
           "process": {
@@ -319,8 +321,8 @@
               "flexible": 18000
             },
             "renegotiationCost": {
-              "rigid": 6930,
-              "flexible": 3465
+              "rigid": 6728.795873096181,
+              "flexible": 3364.3979365480905
             },
             "tcoCost": {
               "rigid": 0,
@@ -342,22 +344,22 @@
         },
         "uncertainty": {
           "lowDelta": 318934.8928571428,
-          "centralDelta": 357199.8928571428,
-          "highDelta": 455359.89285714284,
+          "centralDelta": 357099.2907936909,
+          "highDelta": 453535.89097436646,
           "lowPercentOfContractValue": 10.631163095238092,
-          "highPercentOfContractValue": 15.178663095238095,
+          "highPercentOfContractValue": 15.117863032478882,
           "crossesZero": false
         },
         "deltaDecomposition": {
           "process": 8734.892857142855,
           "delay": 344999.99999999994,
-          "lifecycle": 3465,
-          "delayShareOfDeltaPercent": 96.58457544330172
+          "lifecycle": 3364.3979365480905,
+          "delayShareOfDeltaPercent": 96.61178526375703
         },
         "decisionThreshold": {
           "effectiveDayDifference": 23,
-          "nonDelayDelta": 12199.892857142855,
-          "breakEvenDailyCostOfInaction": -530.4301242236024,
+          "nonDelayDelta": 12099.290793690945,
+          "breakEvenDailyCostOfInaction": -526.0561214648237,
           "status": "formal_costlier_at_zero_delay"
         }
       }
@@ -408,13 +410,13 @@
           "adminCost": 5600,
           "opportunityCost": 880000,
           "productivityCost": 28800.000000000007,
-          "renegotiationCost": 55440,
+          "renegotiationCost": 51283.68229403738,
           "tcoCost": 0,
           "bypassCost": 22000.000000000004,
-          "total": 1010415,
+          "total": 1006258.6822940374,
           "processCost": 74975.00000000001,
           "delayCost": 880000,
-          "lifecycleCost": 55440,
+          "lifecycleCost": 51283.68229403738,
           "days": 44,
           "staffCost": 18575,
           "coordCost": 4400,
@@ -425,20 +427,20 @@
           "adminCost": 3600,
           "opportunityCost": 480000,
           "productivityCost": 48000,
-          "renegotiationCost": 27720,
+          "renegotiationCost": 25641.84114701869,
           "tcoCost": 0,
           "bypassCost": 22000.000000000004,
-          "total": 591608.0952380953,
+          "total": 589529.936385114,
           "processCost": 83888.09523809524,
           "delayCost": 480000,
-          "lifecycleCost": 27720,
+          "lifecycleCost": 25641.84114701869,
           "days": 24,
           "staffCost": 10288.095238095235,
           "coordCost": 2400,
           "toolCost": 1200
         },
-        "delta": 418806.90476190473,
-        "deltaPercent": 70.79127350232658,
+        "delta": 416728.74590892345,
+        "deltaPercent": 70.68830947996047,
         "bypassProbability": 0.027500000000000004,
         "flexibleBypassProbability": 0.027500000000000004,
         "rigidDays": 44,
@@ -451,7 +453,8 @@
             "contractDurationYears": 3,
             "dailyCostOfInaction": 20000,
             "renegotiationCost": 400000,
-            "bypassAuditExposure": 800000
+            "bypassAuditExposure": 800000,
+            "discountRatePct": 4
           },
           "context": {},
           "process": {
@@ -499,8 +502,8 @@
               "flexible": 48000
             },
             "renegotiationCost": {
-              "rigid": 55440,
-              "flexible": 27720
+              "rigid": 51283.68229403738,
+              "flexible": 25641.84114701869
             },
             "tcoCost": {
               "rigid": 0,
@@ -522,22 +525,22 @@
         },
         "uncertainty": {
           "lowDelta": 324286.90476190473,
-          "centralDelta": 418806.90476190473,
-          "highDelta": 629286.9047619047,
+          "centralDelta": 416728.74590892345,
+          "highDelta": 621954.8724451091,
           "lowPercentOfContractValue": 4.053586309523809,
-          "highPercentOfContractValue": 7.866086309523809,
+          "highPercentOfContractValue": 7.774435905563863,
           "crossesZero": false
         },
         "deltaDecomposition": {
           "process": -8913.095238095222,
           "delay": 400000,
-          "lifecycle": 27720,
-          "delayShareOfDeltaPercent": 95.50940909806714
+          "lifecycle": 25641.84114701869,
+          "delayShareOfDeltaPercent": 95.98569907328171
         },
         "decisionThreshold": {
           "effectiveDayDifference": 20,
-          "nonDelayDelta": 18806.904761904778,
-          "breakEvenDailyCostOfInaction": -940.3452380952389,
+          "nonDelayDelta": 16728.74590892347,
+          "breakEvenDailyCostOfInaction": -836.4372954461735,
           "status": "formal_costlier_at_zero_delay"
         }
       }
@@ -588,13 +591,13 @@
           "adminCost": 30799.999999999996,
           "opportunityCost": 3079999.9999999995,
           "productivityCost": 43200.00000000001,
-          "renegotiationCost": 23100,
+          "renegotiationCost": 22211.538461538512,
           "tcoCost": 0,
           "bypassCost": 90000.00000000001,
-          "total": 3288992.4999999995,
+          "total": 3288104.038461538,
           "processCost": 185892.5,
           "delayCost": 3079999.9999999995,
-          "lifecycleCost": 23100,
+          "lifecycleCost": 22211.538461538512,
           "days": 61.599999999999994,
           "staffCost": 21892.5,
           "coordCost": 30799.999999999996,
@@ -605,20 +608,20 @@
           "adminCost": 16799.999999999996,
           "opportunityCost": 1679999.9999999998,
           "productivityCost": 72000,
-          "renegotiationCost": 11550,
+          "renegotiationCost": 11105.769230769256,
           "tcoCost": 0,
           "bypassCost": 90000.00000000001,
-          "total": 1882403.6666666665,
+          "total": 1881959.4358974358,
           "processCost": 190853.6666666667,
           "delayCost": 1679999.9999999998,
-          "lifecycleCost": 11550,
+          "lifecycleCost": 11105.769230769256,
           "days": 33.599999999999994,
           "staffCost": 12053.666666666666,
           "coordCost": 16799.999999999996,
           "toolCost": 0
         },
-        "delta": 1406588.833333333,
-        "deltaPercent": 74.72301814116737,
+        "delta": 1406144.6025641023,
+        "deltaPercent": 74.7170515869044,
         "bypassProbability": 0.07500000000000001,
         "flexibleBypassProbability": 0.07500000000000001,
         "rigidDays": 61.599999999999994,
@@ -631,7 +634,8 @@
             "contractDurationYears": 1,
             "dailyCostOfInaction": 50000,
             "renegotiationCost": 500000,
-            "bypassAuditExposure": 1200000
+            "bypassAuditExposure": 1200000,
+            "discountRatePct": 4
           },
           "context": {},
           "process": {
@@ -679,8 +683,8 @@
               "flexible": 72000
             },
             "renegotiationCost": {
-              "rigid": 23100,
-              "flexible": 11550
+              "rigid": 22211.538461538512,
+              "flexible": 11105.769230769256
             },
             "tcoCost": {
               "rigid": 0,
@@ -702,22 +706,22 @@
         },
         "uncertainty": {
           "lowDelta": 1146638.833333333,
-          "centralDelta": 1406588.833333333,
-          "highDelta": 1981988.833333333,
+          "centralDelta": 1406144.6025641023,
+          "highDelta": 1980229.2179487175,
           "lowPercentOfContractValue": 9.555323611111108,
-          "highPercentOfContractValue": 16.516573611111106,
+          "highPercentOfContractValue": 16.501910149572645,
           "crossesZero": false
         },
         "deltaDecomposition": {
           "process": -4961.166666666686,
           "delay": 1399999.9999999998,
-          "lifecycle": 11550,
-          "delayShareOfDeltaPercent": 99.53157360721264
+          "lifecycle": 11105.769230769256,
+          "delayShareOfDeltaPercent": 99.5630177328208
         },
         "decisionThreshold": {
           "effectiveDayDifference": 28,
-          "nonDelayDelta": 6588.833333333314,
-          "breakEvenDailyCostOfInaction": -235.3154761904755,
+          "nonDelayDelta": 6144.60256410257,
+          "breakEvenDailyCostOfInaction": -219.4500915750918,
           "status": "formal_costlier_at_zero_delay"
         }
       }
@@ -768,13 +772,13 @@
           "adminCost": 8900,
           "opportunityCost": 870000,
           "productivityCost": 15000.000000000013,
-          "renegotiationCost": 34650,
+          "renegotiationCost": 32052.301433773362,
           "tcoCost": 0,
           "bypassCost": 16500.000000000004,
-          "total": 970125,
+          "total": 967527.3014337734,
           "processCost": 65475.000000000015,
           "delayCost": 870000,
-          "lifecycleCost": 34650,
+          "lifecycleCost": 32052.301433773362,
           "days": 87,
           "staffCost": 25075,
           "coordCost": 7700,
@@ -785,20 +789,20 @@
           "adminCost": 7300,
           "opportunityCost": 710000,
           "productivityCost": 29999.999999999993,
-          "renegotiationCost": 20790,
+          "renegotiationCost": 19231.380860264017,
           "tcoCost": 0,
           "bypassCost": 16500.000000000004,
-          "total": 799602.619047619,
+          "total": 798043.9999078831,
           "processCost": 68812.61904761904,
           "delayCost": 710000,
-          "lifecycleCost": 20790,
+          "lifecycleCost": 19231.380860264017,
           "days": 71,
           "staffCost": 15012.619047619048,
           "coordCost": 6100,
           "toolCost": 1200
         },
-        "delta": 170522.38095238095,
-        "deltaPercent": 21.325890747517143,
+        "delta": 169483.30152589025,
+        "deltaPercent": 21.23733798455391,
         "bypassProbability": 0.027500000000000004,
         "flexibleBypassProbability": 0.027500000000000004,
         "rigidDays": 87,
@@ -811,7 +815,8 @@
             "contractDurationYears": 3,
             "dailyCostOfInaction": 10000,
             "renegotiationCost": 200000,
-            "bypassAuditExposure": 600000
+            "bypassAuditExposure": 600000,
+            "discountRatePct": 4
           },
           "context": {},
           "process": {
@@ -859,8 +864,8 @@
               "flexible": 29999.999999999993
             },
             "renegotiationCost": {
-              "rigid": 34650,
-              "flexible": 20790
+              "rigid": 32052.301433773362,
+              "flexible": 19231.380860264017
             },
             "tcoCost": {
               "rigid": 0,
@@ -882,22 +887,22 @@
         },
         "uncertainty": {
           "lowDelta": 106262.38095238095,
-          "centralDelta": 170522.38095238095,
-          "highDelta": 318762.38095238095,
+          "centralDelta": 169483.30152589025,
+          "highDelta": 314534.0923770509,
           "lowPercentOfContractValue": 2.125247619047619,
-          "highPercentOfContractValue": 6.375247619047619,
+          "highPercentOfContractValue": 6.290681847541017,
           "crossesZero": false
         },
         "deltaDecomposition": {
           "process": -3337.619047619024,
           "delay": 160000,
-          "lifecycle": 13860,
-          "delayShareOfDeltaPercent": 93.82932557379705
+          "lifecycle": 12820.920573509346,
+          "delayShareOfDeltaPercent": 94.40458060439566
         },
         "decisionThreshold": {
           "effectiveDayDifference": 16,
-          "nonDelayDelta": 10522.380952380976,
-          "breakEvenDailyCostOfInaction": -657.648809523811,
+          "nonDelayDelta": 9483.301525890321,
+          "breakEvenDailyCostOfInaction": -592.7063453681451,
           "status": "formal_costlier_at_zero_delay"
         }
       }
@@ -991,7 +996,8 @@
             "contractDurationYears": 1,
             "dailyCostOfInaction": 500,
             "renegotiationCost": 0,
-            "bypassAuditExposure": 10000
+            "bypassAuditExposure": 10000,
+            "discountRatePct": 4
           },
           "context": {},
           "process": {
@@ -1063,9 +1069,9 @@
         "uncertainty": {
           "lowDelta": -130,
           "centralDelta": 0,
-          "highDelta": 340,
+          "highDelta": 338.07692307692287,
           "lowPercentOfContractValue": -0.26,
-          "highPercentOfContractValue": 0.6799999999999999,
+          "highPercentOfContractValue": 0.6761538461538458,
           "crossesZero": true
         },
         "deltaDecomposition": {
@@ -1128,13 +1134,13 @@
           "adminCost": 2028,
           "opportunityCost": 11200,
           "productivityCost": 449.99999999999994,
-          "renegotiationCost": 308,
+          "renegotiationCost": 296.1538461538468,
           "tcoCost": 0,
           "bypassCost": 250.00000000000006,
-          "total": 14376,
+          "total": 14364.153846153848,
           "processCost": 2868,
           "delayCost": 11200,
-          "lifecycleCost": 308,
+          "lifecycleCost": 296.1538461538468,
           "days": 1.4,
           "staffCost": 140,
           "coordCost": 28,
@@ -1145,20 +1151,20 @@
           "adminCost": 2028,
           "opportunityCost": 11200,
           "productivityCost": 449.99999999999994,
-          "renegotiationCost": 277.2,
+          "renegotiationCost": 266.5384615384621,
           "tcoCost": 0,
           "bypassCost": 250.00000000000006,
-          "total": 14345.2,
+          "total": 14334.538461538463,
           "processCost": 2868,
           "delayCost": 11200,
-          "lifecycleCost": 277.2,
+          "lifecycleCost": 266.5384615384621,
           "days": 1.4,
           "staffCost": 140,
           "coordCost": 28,
           "toolCost": 2000
         },
-        "delta": 30.799999999999272,
-        "deltaPercent": 0.2147059643643816,
+        "delta": 29.615384615384755,
+        "deltaPercent": 0.20660159163719782,
         "bypassProbability": 0.005000000000000001,
         "flexibleBypassProbability": 0.005000000000000001,
         "rigidDays": 1.4,
@@ -1171,7 +1177,8 @@
             "contractDurationYears": 1,
             "dailyCostOfInaction": 8000,
             "renegotiationCost": 20000,
-            "bypassAuditExposure": 50000
+            "bypassAuditExposure": 50000,
+            "discountRatePct": 4
           },
           "context": {},
           "process": {
@@ -1219,8 +1226,8 @@
               "flexible": 449.99999999999994
             },
             "renegotiationCost": {
-              "rigid": 308,
-              "flexible": 277.2
+              "rigid": 296.1538461538468,
+              "flexible": 266.5384615384621
             },
             "tcoCost": {
               "rigid": 0,
@@ -1242,21 +1249,21 @@
         },
         "uncertainty": {
           "lowDelta": -650,
-          "centralDelta": 30.799999999999272,
-          "highDelta": 1742,
+          "centralDelta": 29.615384615384755,
+          "highDelta": 1730.7692307692305,
           "lowPercentOfContractValue": -0.13,
-          "highPercentOfContractValue": 0.3484,
+          "highPercentOfContractValue": 0.3461538461538461,
           "crossesZero": true
         },
         "deltaDecomposition": {
           "process": 0,
           "delay": 0,
-          "lifecycle": 30.80000000000001,
+          "lifecycle": 29.6153846153847,
           "delayShareOfDeltaPercent": 0
         },
         "decisionThreshold": {
           "effectiveDayDifference": 0,
-          "nonDelayDelta": 30.80000000000001,
+          "nonDelayDelta": 29.6153846153847,
           "breakEvenDailyCostOfInaction": null,
           "status": "no_day_difference"
         }
@@ -1308,13 +1315,13 @@
           "adminCost": 7200,
           "opportunityCost": 1800000,
           "productivityCost": 64800,
-          "renegotiationCost": 431199.99999999994,
+          "renegotiationCost": 349741.8260057891,
           "tcoCost": 0,
           "bypassCost": 55000.00000000001,
-          "total": 2395700,
+          "total": 2314241.826005789,
           "processCost": 164500,
           "delayCost": 1800000,
-          "lifecycleCost": 431199.99999999994,
+          "lifecycleCost": 349741.8260057891,
           "days": 60,
           "staffCost": 37500,
           "coordCost": 6000,
@@ -1325,20 +1332,20 @@
           "adminCost": 5400,
           "opportunityCost": 1260000,
           "productivityCost": 107999.99999999999,
-          "renegotiationCost": 246400,
+          "renegotiationCost": 199852.47200330807,
           "tcoCost": 0,
           "bypassCost": 55000.00000000001,
-          "total": 1701124.2857142857,
+          "total": 1654576.7577175938,
           "processCost": 194724.2857142857,
           "delayCost": 1260000,
-          "lifecycleCost": 246400,
+          "lifecycleCost": 199852.47200330807,
           "days": 42,
           "staffCost": 26324.285714285714,
           "coordCost": 4200,
           "toolCost": 1200
         },
-        "delta": 694575.7142857143,
-        "deltaPercent": 40.830392001256314,
+        "delta": 659665.0682881952,
+        "deltaPercent": 39.8691124610121,
         "bypassProbability": 0.027500000000000004,
         "flexibleBypassProbability": 0.027500000000000004,
         "rigidDays": 60,
@@ -1351,7 +1358,8 @@
             "contractDurationYears": 10,
             "dailyCostOfInaction": 30000,
             "renegotiationCost": 800000,
-            "bypassAuditExposure": 2000000
+            "bypassAuditExposure": 2000000,
+            "discountRatePct": 4
           },
           "context": {},
           "process": {
@@ -1399,8 +1407,8 @@
               "flexible": 107999.99999999999
             },
             "renegotiationCost": {
-              "rigid": 431199.99999999994,
-              "flexible": 246400
+              "rigid": 349741.8260057891,
+              "flexible": 199852.47200330807
             },
             "tcoCost": {
               "rigid": 0,
@@ -1422,22 +1430,22 @@
         },
         "uncertainty": {
           "lowDelta": 345175.7142857143,
-          "centralDelta": 694575.7142857143,
-          "highDelta": 1222075.7142857146,
+          "centralDelta": 659665.0682881952,
+          "highDelta": 1166036.2016714788,
           "lowPercentOfContractValue": 2.3011714285714286,
-          "highPercentOfContractValue": 8.14717142857143,
+          "highPercentOfContractValue": 7.773574677809858,
           "crossesZero": false
         },
         "deltaDecomposition": {
           "process": -30224.28571428571,
           "delay": 540000,
-          "lifecycle": 184799.99999999994,
-          "delayShareOfDeltaPercent": 77.74530391626543
+          "lifecycle": 149889.35400248104,
+          "delayShareOfDeltaPercent": 81.85972335950404
         },
         "decisionThreshold": {
           "effectiveDayDifference": 18,
-          "nonDelayDelta": 154575.71428571423,
-          "breakEvenDailyCostOfInaction": -8587.53968253968,
+          "nonDelayDelta": 119665.06828819533,
+          "breakEvenDailyCostOfInaction": -6648.059349344185,
           "status": "formal_costlier_at_zero_delay"
         }
       }
@@ -1493,13 +1501,13 @@
           "adminCost": 2238,
           "opportunityCost": 0,
           "productivityCost": 33750,
-          "renegotiationCost": 673.75,
+          "renegotiationCost": 647.8365384615399,
           "tcoCost": 0,
           "bypassCost": 2500.0000000000005,
-          "total": 43304,
+          "total": 43278.08653846154,
           "processCost": 42630.25,
           "delayCost": 0,
-          "lifecycleCost": 673.75,
+          "lifecycleCost": 647.8365384615399,
           "days": 13.999999999999998,
           "staffCost": 4142.25,
           "coordCost": 237.99999999999994,
@@ -1510,20 +1518,20 @@
           "adminCost": 2238,
           "opportunityCost": 0,
           "productivityCost": 40500.00000000001,
-          "renegotiationCost": 481.25,
+          "renegotiationCost": 462.74038461538566,
           "tcoCost": 0,
           "bypassCost": 2500.0000000000005,
-          "total": 49861.50000000001,
+          "total": 49842.99038461539,
           "processCost": 49380.25000000001,
           "delayCost": 0,
-          "lifecycleCost": 481.25,
+          "lifecycleCost": 462.74038461538566,
           "days": 13.999999999999998,
           "staffCost": 4142.25,
           "coordCost": 237.99999999999994,
           "toolCost": 2000
         },
-        "delta": -6557.500000000007,
-        "deltaPercent": -13.151429459603115,
+        "delta": -6564.903846153851,
+        "deltaPercent": -13.171167691776745,
         "bypassProbability": 0.005000000000000001,
         "flexibleBypassProbability": 0.005000000000000001,
         "rigidDays": 13.999999999999998,
@@ -1536,7 +1544,8 @@
             "contractDurationYears": 1,
             "dailyCostOfInaction": 0,
             "renegotiationCost": 25000,
-            "bypassAuditExposure": 500000
+            "bypassAuditExposure": 500000,
+            "discountRatePct": 4
           },
           "context": {
             "spendType": "indirect",
@@ -1596,8 +1605,8 @@
               "flexible": 40500.00000000001
             },
             "renegotiationCost": {
-              "rigid": 673.75,
-              "flexible": 481.25
+              "rigid": 647.8365384615399,
+              "flexible": 462.74038461538566
             },
             "tcoCost": {
               "rigid": 0,
@@ -1619,23 +1628,204 @@
         },
         "uncertainty": {
           "lowDelta": -16625.000000000015,
-          "centralDelta": -6557.500000000007,
-          "highDelta": 12512.5,
+          "centralDelta": -6564.903846153851,
+          "highDelta": 12502.403846153844,
           "lowPercentOfContractValue": -0.3325000000000003,
-          "highPercentOfContractValue": 0.25025,
+          "highPercentOfContractValue": 0.25004807692307685,
           "crossesZero": true
         },
         "deltaDecomposition": {
           "process": -6750.000000000007,
           "delay": 0,
-          "lifecycle": 192.5,
+          "lifecycle": 185.09615384615427,
           "delayShareOfDeltaPercent": 0
         },
         "decisionThreshold": {
           "effectiveDayDifference": 0,
-          "nonDelayDelta": -6557.500000000007,
+          "nonDelayDelta": -6564.903846153853,
           "breakEvenDailyCostOfInaction": null,
           "status": "no_day_difference"
+        }
+      }
+    },
+    {
+      "scenarioId": "discovery_rd",
+      "scenarioName": "Discovery purchase — requirement unknown",
+      "context": {},
+      "inputs": {
+        "contractValue": 3000000,
+        "tcoHorizonYears": 3,
+        "contractDurationYears": 3,
+        "processType": "discovery",
+        "techLevel": "partial_erp",
+        "stakeholders": {
+          "requestor": {
+            "count": 1,
+            "dailyRate": 900
+          },
+          "buyer": {
+            "count": 1,
+            "dailyRate": 900
+          },
+          "lawyer": {
+            "count": 1,
+            "dailyRate": 1300
+          },
+          "finance": {
+            "count": 1,
+            "dailyRate": 1000
+          },
+          "manager": {
+            "count": 1,
+            "dailyRate": 1600
+          },
+          "executive": {
+            "count": 1,
+            "dailyRate": 2800
+          }
+        },
+        "dailyCostOfInaction": 8000,
+        "renegotiationCost": 200000,
+        "bypassAuditExposure": 300000
+      },
+      "results": {
+        "rigid": {
+          "timeCost": 20700,
+          "adminCost": 4600,
+          "opportunityCost": 272000,
+          "productivityCost": 13608.000000000002,
+          "renegotiationCost": 23505.021051433803,
+          "tcoCost": 0,
+          "bypassCost": 8250.000000000002,
+          "total": 342663.0210514338,
+          "processCost": 47158,
+          "delayCost": 272000,
+          "lifecycleCost": 23505.021051433803,
+          "days": 34,
+          "staffCost": 20700,
+          "coordCost": 3400,
+          "toolCost": 1200
+        },
+        "flexible": {
+          "timeCost": 40124.166666666664,
+          "adminCost": 5900,
+          "opportunityCost": 376000,
+          "productivityCost": 28728,
+          "renegotiationCost": 12820.920573509346,
+          "tcoCost": 0,
+          "bypassCost": 8250.000000000002,
+          "total": 471823.087240176,
+          "processCost": 83002.16666666666,
+          "delayCost": 376000,
+          "lifecycleCost": 12820.920573509346,
+          "days": 47,
+          "staffCost": 40124.166666666664,
+          "coordCost": 4700,
+          "toolCost": 1200
+        },
+        "delta": -129160.06618874217,
+        "deltaPercent": -27.37468124848133,
+        "bypassProbability": 0.027500000000000004,
+        "flexibleBypassProbability": 0.027500000000000004,
+        "rigidDays": 34,
+        "flexibleDays": 47,
+        "trace": {
+          "modelVersion": "2.2.0",
+          "sanitizedInputs": {
+            "contractValue": 3000000,
+            "tcoHorizonYears": 3,
+            "contractDurationYears": 3,
+            "dailyCostOfInaction": 8000,
+            "renegotiationCost": 200000,
+            "bypassAuditExposure": 300000,
+            "discountRatePct": 4
+          },
+          "context": {},
+          "process": {
+            "processType": "discovery",
+            "techLevel": "partial_erp",
+            "stepCount": 6,
+            "baseRigidity": 0.3,
+            "flexibleRigidity": 0.3,
+            "corruptionContext": 0.42
+          },
+          "multipliers": {
+            "staffMultiplier": 1,
+            "coordinationIntensityMultiplier": 1
+          },
+          "multiplierDetails": [],
+          "days": {
+            "rigid": 34,
+            "flexible": 47
+          },
+          "probabilities": {
+            "bypassRigid": 0.027500000000000004,
+            "bypassFlexible": 0.027500000000000004
+          },
+          "renegotiation": {
+            "annualFrequencyRigid": 0.042350000000000006,
+            "annualFrequencyFlexible": 0.0231,
+            "expectedCountRigid": 0.12705000000000002,
+            "expectedCountFlexible": 0.0693
+          },
+          "dimensions": {
+            "timeCost": {
+              "rigid": 20700,
+              "flexible": 40124.166666666664
+            },
+            "adminCost": {
+              "rigid": 4600,
+              "flexible": 5900
+            },
+            "opportunityCost": {
+              "rigid": 272000,
+              "flexible": 376000
+            },
+            "productivityCost": {
+              "rigid": 13608.000000000002,
+              "flexible": 28728
+            },
+            "renegotiationCost": {
+              "rigid": 23505.021051433803,
+              "flexible": 12820.920573509346
+            },
+            "tcoCost": {
+              "rigid": 0,
+              "flexible": 0
+            },
+            "bypassCost": {
+              "rigid": 8250.000000000002,
+              "flexible": 8250.000000000002
+            }
+          }
+        },
+        "sources": {
+          "timeCost": "Step durations: legal minima (PZP 2019 + Dyrektywa 2014/24/UE) and practitioner benchmarks — not a single empirical source",
+          "opportunityCost": "Deployment-delay cost = procurement duration × daily cost of inaction. This is an accounting identity between a template-derived day count and a user-supplied price per day; it is not a modeled or measured effect, and it is reported as its own bucket for that reason",
+          "productivityCost": "Szucs (2024), JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017, structural estimates: discretion increases prices by about 6% and lowers average contractor total factor productivity by about 10%. (The invalid raw discontinuity reports roughly 32%.) The model monetizes price only and stress-tests 2–9%. Identified on Hungarian contracts below the ~25m HUF / ~90k USD invitational threshold, so transfer to Polish EU-threshold or private procurement is a scenario, not a measurement",
+          "renegotiationCost": "Scenario assumption with an external order-of-magnitude anchor. Beuve, Moszoro & Spiller (2023), JLEO 39(1):281–308, DOI 10.1093/jleo/ewab039 report +0.077–0.105 formal amendments per contract-year per ONE STANDARD DEVIATION of a rigidity index, by 2SLS/IV, in French car-park contracts. ProcuraCost multiplies that slope by a 0–1 calibration profile that is not a z-score, so the product is not a transferred estimate. Only the difference between the two paths is interpretable; neither reported level is",
+          "tcoCost": "Scenario assumption only: a three-year cumulative non-acquisition lifecycle savings pool is stress-tested at 0–15%, scaled by min(horizon years / 3, 1), and multiplied by path-specific capture rates. The central case is zero because no transferable empirical estimate is available",
+          "bypassCost": "Scenario assumption only: illustrative bypass-rate range, scaled by system controls. Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991) support mechanisms, not probabilities"
+        },
+        "uncertainty": {
+          "lowDelta": -168854.16666666663,
+          "centralDelta": -129160.06618874217,
+          "highDelta": 7582.519154908252,
+          "lowPercentOfContractValue": -5.6284722222222205,
+          "highPercentOfContractValue": 0.25275063849694174,
+          "crossesZero": true
+        },
+        "deltaDecomposition": {
+          "process": -35844.16666666666,
+          "delay": -104000,
+          "lifecycle": 10684.100477924458,
+          "delayShareOfDeltaPercent": 80.52024365489588
+        },
+        "decisionThreshold": {
+          "effectiveDayDifference": -13,
+          "nonDelayDelta": -25160.0661887422,
+          "breakEvenDailyCostOfInaction": -1935.389706826323,
+          "status": "adaptive_costlier_at_zero_delay"
         }
       }
     }
