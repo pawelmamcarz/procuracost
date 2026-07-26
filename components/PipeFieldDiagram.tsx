@@ -8,7 +8,7 @@ interface Props {
 
 const PIPE_STEPS = [
   { namePl: "Analiza potrzeb + SIWZ", nameEn: "Needs analysis + spec", days: "17", mandatory: false },
-  { namePl: "Publikacja BZP/TED", nameEn: "Publication BZP/TED", days: "35+", mandatory: true },
+  { namePl: "Publikacja w TED (Dz.Urz. UE)", nameEn: "Publication in TED (OJ EU)", days: "35+", mandatory: true },
   { namePl: "Ocena ofert + komisja", nameEn: "Bid evaluation + committee", days: "13", mandatory: false },
   { namePl: "Standstill (art. 264 PZP)", nameEn: "Standstill period (art. 264)", days: "10/15", mandatory: true },
   { namePl: "Podpisanie umowy", nameEn: "Contract signing", days: "5", mandatory: false },

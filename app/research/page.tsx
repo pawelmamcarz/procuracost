@@ -59,10 +59,12 @@ export default function ResearchPage() {
         <h2>Evidence corrections</h2>
         <p>
           <strong>Szucs (2024)</strong> studies Hungarian public procurement with substantial sorting
-          around a value threshold. The corrected main specification reports about a 6 percentage-point
-          normalized-price effect and approximately 28% lower measured contractor productivity under
-          discretion. The model monetizes price only; adding productivity again would require an unsupported
-          conversion and risk double counting.
+          around a value threshold of about 25 million HUF. The structural estimates report roughly a 6%
+          price effect and about 10% lower average contractor total factor productivity under discretion;
+          the invalid raw discontinuity reports roughly 32%. The model monetizes price only; adding
+          productivity again would require an unsupported conversion and risk double counting. Because the
+          effect is identified below that threshold, transferring it to EU-threshold procurement is a
+          scenario rather than a measurement.
         </p>
         <p>
           <strong>Beuve, Moszoro, and Spiller (2023)</strong> estimate contractual—not procedural—rigidity

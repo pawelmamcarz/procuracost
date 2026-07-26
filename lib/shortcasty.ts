@@ -32,7 +32,7 @@ export const EPISODES: Episode[] = [
     dimension: "Konkurencja · Selekcja",
     guest: "Przegląd źródła",
     thesis:
-      "W badanym rynku węgierskim dyskrecja zwiększała znormalizowaną cenę o około 6 pp i prowadziła do wyboru wykonawców o 28% niższej mierzonej produktywności. Transfer poza ten rynek wymaga ostrożności.",
+      "W badanym rynku węgierskim dyskrecja zwiększała cenę o około 6% i prowadziła do wyboru wykonawców o około 10% niższej mierzonej produktywności (estymaty strukturalne). Efekt zidentyfikowano na zamówieniach poniżej progu ok. 25 mln HUF, więc transfer poza ten rynek wymaga ostrożności.",
     recommendation:
       "Mierz efektywną konkurencję; nie utożsamiaj adaptacyjnej pracy z niekonkurencyjnym wyborem.",
   },

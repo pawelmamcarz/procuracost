@@ -125,7 +125,26 @@ to be observed, not an automatic benefit assigned to the field.
 These propositions permit either path to dominate. They also permit a null
 result: many routine purchases may show no material workflow difference.
 
-## 7. Implications and limitations
+P1–P5 are operationalisations of the canonical H1–H5 in
+`00-shared-foundation.md`, which governs where the two diverge.
+
+### 6.1 Contribution of this article
+
+The cycle combines a governance argument, a cost model and an empirical design, and each
+article must carry its own contribution rather than borrowing the cycle's. This one
+contributes **a decomposition of "procedural rigidity" into five separately measurable
+constructs, and a demonstration that the procurement literature's principal empirical
+anchors do not license claims about the construct they are routinely used to support.**
+
+Evidence about *bidder-selection discretion* (Szucs) and about *contractual clause rigidity*
+(Beuve et al.) has been read as evidence about *workflow formality*. It is not. Neither study
+observes workflow topology; neither varies it; neither reports it. This article states the
+non-equivalence, shows what each construct would require to be measured, and derives
+propositions that are falsifiable separately — which is the precondition for the cost model
+of article 2 and the protocol of article 3 to mean anything.
+
+The contribution is therefore conceptual and negative-clearing: it removes a class of
+inference the field makes casually. It does not claim an effect, and it is not validated.
 
 For managers, the framework recommends component diagnosis rather than wholesale
 process ideology. Remove a gate only after identifying the risk it controls.

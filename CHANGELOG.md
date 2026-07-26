@@ -1,5 +1,85 @@
 # Changelog
 
+## 2026-07-26 — model 2.2.0
+
+Model 2.2 is a correction release following an adversarial audit of the model
+mathematics, the citation base and the legal layer. Headline numbers change.
+
+### Corrections to errors introduced or missed in 2.1
+
+- **Szucs (2024) productivity effect restated as ~10%, not 28%.** The structural
+  estimates report about a 6% price effect and about a 10% reduction in average
+  contractor total factor productivity. The figure 28 is a different quantity in
+  the same paper — the increase in a politically connected firm's probability of
+  winning under a high-discretion procedure. Model 2.1 substituted it *and*
+  asserted that the correct figure had been the earlier error. The mistake had
+  propagated to `00-shared-foundation.md`, `MODEL_PARAMETERS.md`, `RESEARCH.md`,
+  the README, three public pages, the podcast metadata and the live export
+  strings. This release corrects all of them and records that 2.1 introduced it.
+- **Removed the unsourced "OECD" warrant** from `CORRUPTION_RISK_CONTEXT`. No
+  OECD publication was ever named. Also removed the claim that its `pzp_eu = 1.0`
+  anchor came from Szucs: he identifies his effect *below* a ~25m HUF threshold,
+  the opposite end of the value distribution from EU-threshold tenders. The
+  vector is now labelled a Grade-C ordinal assumption with no external warrant.
+- **Beuve slope reclassified and its unit stated.** The estimate is per one
+  standard deviation in *each* of seven z-scored categories; several documents
+  dropped "each". The model multiplies it by a 0–1 profile that is not a z-score,
+  so it is a calibration assumption with an external order-of-magnitude anchor,
+  not a transferred estimate. Only the between-path difference is interpretable.
+- **EC (2011) downgraded from "external sanity-check" to context only** — the
+  comparison it was said to provide was never performed. Its own finding that
+  restrictions on discretion associate with higher prices is now reported.
+- Removed `Źródło: Lipsky/Vaughan` from the bypass-exposure input tooltip; those
+  works motivate the mechanism and supply neither a cost nor a rate. Removed
+  Williamson and Holmström–Milgrom from the optimizer's claimed grounding.
+  Relabelled the illustrative `pipe_vs_field` scenario, which cited three
+  journal articles as the "source" of a constructed example.
+
+### Model mathematics
+
+- **ΔC is now reported decomposed** into process / delay / lifecycle buckets.
+  The delay bucket is an accounting identity — (template day difference) × (a
+  daily cost the user supplies) — and it carried 77.7–99.5% of |ΔC| in the
+  built-in scenarios. Excluding it, the formal path is cheaper on process cost
+  in 6 of 9 scenarios.
+- **Break-even daily cost of inaction is no longer clamped at zero.** It returned
+  0 or `null` in every 2.1 scenario while being described to reviewers as a live
+  feature. It now reports the raw solution plus a status distinguishing "the
+  delay bucket decides" from "the formal path already costs more without it".
+- Participation hours are a whole-role total; role headcount no longer multiplies
+  them. Declaring three buyers previously tripled the cost of the same workflow.
+- Non-labour coordination overhead accrues over active days only, not across
+  statutory publication and standstill periods.
+- The technology multiplier now scales non-mandatory effort as well as duration.
+- Day counts are no longer rounded before monetisation.
+- Removed five context multipliers that were hardcoded to 1, so four of seven
+  dimensions had no context sensitivity while the API implied otherwise.
+- Removed two unreachable clamps and replaced them with structural bounds.
+- Added `RESEARCH.md` §4.1 stating the model's structural asymmetry explicitly.
+
+### Legal layer
+
+- **Added the art. 359 social-services EU threshold (3,232,500 PLN).** Its
+  absence pushed sub-threshold social-services contracts above the EU threshold
+  and foreclosed `tryb podstawowy` — over-restrictive advice on a large share of
+  local-government spend.
+- **The tool now declines to advise sectoral and defence/security buyers**
+  instead of running them through the classic threshold ladder, which produced a
+  confidently wrong band.
+- PZP article citations are suppressed where the Act does not apply.
+- Lawful procedures withheld by the filter are now named in the UI.
+- Corrected the duration ordering of restricted vs open tender (70 vs 45 statutory
+  days); 2.1 showed the restricted procedure as the faster of the two.
+- The EU-threshold publication step is labelled TED (OJ EU), not "BZP/TED".
+- `confidence` renamed `weightStability`; it is suppressed entirely where the
+  legal filter leaves a single candidate and the figure is 1.0 by construction.
+
+### Tests
+
+- Added value-pinning tests for the decomposition, the break-even statuses, the
+  optimizer suitability bands and both legal corrections. Model 2.1 had no test
+  that pinned any dimension to a numeric value.
+
 ## 2026-07-14 — Site 2026.29.1.2 / model 2.1.0
 
 - Preserved mandatory PZP publication and standstill periods in both paths.

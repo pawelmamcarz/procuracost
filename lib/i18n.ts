@@ -20,7 +20,7 @@ const calculatorPl = {
   contractDuration: "Czas trwania kontraktu (lata)",
   bypassExposure: "Ryzyko audytowe przy obejściu (PLN)",
   bypassTooltip:
-    "Szacowany koszt audytu, kary regulacyjne lub reputacyjne jeśli nieformalne obejście procedury zostanie odkryte. Źródło: Lipsky (1980), Vaughan (1996)",
+    "Szacowany koszt audytu, kary regulacyjne lub reputacyjne jeśli nieformalne obejście procedury zostanie odkryte. Wartość podaje użytkownik. Lipsky (1980) i Vaughan (1996) uzasadniają sam mechanizm obejścia, ale nie dostarczają ani jego kosztu, ani częstości.",
   tcoHorizon: "Horyzont TCO (lata)",
   tcoHorizonTooltip:
     "Jawny stres-test skaluje pulę TCO liniowo do 3 lat i nie zwiększa jej powyżej tego horyzontu. W scenariuszu centralnym pula TCO wynosi 0%.",
@@ -85,7 +85,7 @@ const calculatorEn = {
   contractDuration: "Contract duration (years)",
   bypassExposure: "Audit exposure on bypass (PLN)",
   bypassTooltip:
-    "Estimated audit cost, regulatory or reputational penalties if an informal procedure bypass is discovered. Source: Lipsky (1980), Vaughan (1996)",
+    "Estimated audit cost, regulatory or reputational penalties if an informal procedure bypass is discovered. User-supplied. Lipsky (1980) and Vaughan (1996) motivate the bypass mechanism; neither supplies its cost or its rate.",
   tcoHorizon: "TCO horizon (years)",
   tcoHorizonTooltip:
     "The declared stress test scales the TCO pool linearly up to 3 years and does not increase it beyond that horizon. The central TCO pool is 0%.",
@@ -161,6 +161,21 @@ const comparisonPl = {
   modelAdjustUpstreamBypass: "Nakład pracy i koordynacja Upstream: ×1,15 (założenie)",
   modelAdjustDownstreamProd: "Nakład pracy ×0,90 i koordynacja Downstream ×0,85 (założenie)",
   modelAdjustStrongest: "Łączna korekta pracy Direct × Upstream: ×1,265",
+  decompositionTitle: "Z czego składa się ta różnica",
+  decompositionProcess: "Proces (praca, administracja, selekcja, obejścia)",
+  decompositionDelay: "Opóźnienie (dni × Twój koszt dnia)",
+  decompositionLifecycle: "Cykl życia (aneksy, TCO)",
+  decompositionNote:
+    "Kubełek opóźnienia to iloczyn różnicy dni z szablonu i ceny dnia, którą podałeś — tożsamość rachunkowa, nie wynik modelowania. Czytaj go osobno od pozostałych dwóch.",
+  breakEvenLabel: "Próg kosztu dnia bezczynności",
+  breakEvenAboveZero:
+    "Powyżej tego dziennego kosztu bezczynności niższy modelowany koszt ma ścieżka adaptacyjna.",
+  breakEvenFormalLoses:
+    "ścieżka formalna kosztuje więcej już przy zerowym koszcie zwłoki — kanał opóźnienia nie jest potrzebny do tego wyniku.",
+  breakEvenAdaptiveLoses:
+    "ścieżka adaptacyjna kosztuje więcej już przy zerowym koszcie zwłoki.",
+  breakEvenNoDayDifference:
+    "obie ścieżki trwają tyle samo, więc próg nie istnieje — o wyniku decydują wyłącznie koszty procesu i cyklu życia.",
   bypassLabel: "Centralna scenariuszowa stopa obejść",
   bypassNote:
     "Założenie modelowe skalowane przez kontrolę systemową; teoria nie dostarcza prawdopodobieństwa",
@@ -242,6 +257,21 @@ const comparisonEn = {
   modelAdjustUpstreamBypass: "Upstream staff effort and coordination: ×1.15 (assumption)",
   modelAdjustDownstreamProd: "Downstream staff effort ×0.90 and coordination ×0.85 (assumption)",
   modelAdjustStrongest: "Combined Direct × Upstream staff factor: ×1.265",
+  decompositionTitle: "What this difference is made of",
+  decompositionProcess: "Process (staff, admin, selection, bypass)",
+  decompositionDelay: "Delay (days × your daily cost)",
+  decompositionLifecycle: "Lifecycle (amendments, TCO)",
+  decompositionNote:
+    "The delay bucket is the template day difference multiplied by the daily cost you supplied — an accounting identity, not a modeled result. Read it separately from the other two.",
+  breakEvenLabel: "Break-even daily cost of inaction",
+  breakEvenAboveZero:
+    "Above this daily inaction cost, the adaptive path has the lower modeled total.",
+  breakEvenFormalLoses:
+    "the formal path already costs more at zero delay cost — the delay channel is not needed for this result.",
+  breakEvenAdaptiveLoses:
+    "the adaptive path already costs more at zero delay cost.",
+  breakEvenNoDayDifference:
+    "both paths take the same time, so no threshold exists — process and lifecycle costs decide the result on their own.",
   bypassLabel: "Central scenario bypass rate",
   bypassNote:
     "Model assumption scaled by system controls; the cited theory does not provide a probability",
@@ -359,6 +389,13 @@ const optimizerPl = {
   recommended: "Rekomendowana ścieżka zakupowa",
   modelConfidence: "Stabilność wag",
   treeVotes: "Zgodne przebiegi (z 30)",
+  singleCandidateLabel: "Zbiór wyboru",
+  singleCandidateValue: "Jedyny tryb bez dodatkowych przesłanek",
+  outsidePzpLabel: "Ścieżka organizacyjna — poza reżimem PZP",
+  outOfScopeTitle: "Poza zakresem narzędzia",
+  withheldTitle: "Tryby pominięte przez filtr",
+  withheldBody:
+    "Filtr ogranicza się do trybów dostępnych bez odrębnej oceny przesłanek ustawowych. Poniższe tryby mogą być w Twojej sprawie zgodne z prawem, ale wymagają oceny przesłanek, których ten formularz nie zbiera. Brak trybu na liście rekomendacji nie oznacza, że jest niedopuszczalny.",
   typicalTime: "Typowy czas",
   pzpNote: "Nota PZP",
   rankingTitle: "Ranking ścieżek (wspólne kryteria, 30 przebiegów wrażliwości wag)",
@@ -386,7 +423,7 @@ const optimizerPl = {
   scoringContextIndirectDownstream: "Profil Indirect × Downstream zwiększa dopasowanie prostszych ścieżek wykonawczych, jeśli pozwalają na to sektor i progi prawne.",
   scoringContextOther: "Rodzaj wydatku i faza procesu są dwoma z jedenastu wspólnych kryteriów dopasowania.",
   scoringContextWeightsNote: "Każde kryterium ma tę samą wagę bazową; analiza wrażliwości zmienia wszystkie wagi o ±25%. Profile dopasowania są ręcznie zdefiniowane i niewalidowane empirycznie.",
-  theoryNote: "Logika ścieżek opiera się koncepcyjnie na teorii zakupów: Williamson (1985) TCE, Kraljic (1983) portfolio.",
+  theoryNote: "Kryteria ryzyka dostaw i znaczenia strategicznego nawiązują koncepcyjnie do macierzy portfelowej Kraljica (1983, Harvard Business Review 61(5), 109–117). Wagi i profile są autorskimi założeniami, nie wynikiem estymacji.",
 } as const;
 
 type OptimizerShape = LangShape<typeof optimizerPl>;
@@ -411,6 +448,13 @@ const optimizerEn = {
   recommended: "Recommended procurement path",
   modelConfidence: "Weight stability",
   treeVotes: "Agreeing runs (of 30)",
+  singleCandidateLabel: "Choice set",
+  singleCandidateValue: "Only procedure available without additional grounds",
+  outsidePzpLabel: "Organisational path — outside the PZP regime",
+  outOfScopeTitle: "Outside this tool's scope",
+  withheldTitle: "Procedures withheld by the filter",
+  withheldBody:
+    "The filter is limited to procedures available without a separate assessment of statutory grounds. The procedures below may well be lawful in your case, but they require grounds this form does not collect. Absence from the ranking does not mean a procedure is unavailable to you.",
   typicalTime: "Typical time",
   pzpNote: "PZP note",
   rankingTitle: "All paths ranked (common criteria, 30 weight-sensitivity runs)",
@@ -438,7 +482,7 @@ const optimizerEn = {
   scoringContextIndirectDownstream: "Indirect × Downstream increases the fit of simpler execution paths where sector and legal thresholds allow them.",
   scoringContextOther: "Spend type and process phase are two of eleven common suitability criteria.",
   scoringContextWeightsNote: "Every criterion has the same baseline weight; sensitivity runs vary all weights by ±25%. Suitability profiles are hand-authored and empirically unvalidated.",
-  theoryNote: "Path logic is grounded conceptually in procurement theory: Williamson (1985) TCE, Kraljic (1983) portfolio.",
+  theoryNote: "The supply-risk and strategic-importance criteria refer conceptually to Kraljic's portfolio matrix (1983, Harvard Business Review 61(5), 109–117). The weights and profiles are authored assumptions, not estimated parameters.",
 } satisfies OptimizerShape;
 
 export const optimizerT = { pl: optimizerPl, en: optimizerEn } as const;

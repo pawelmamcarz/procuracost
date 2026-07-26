@@ -187,7 +187,7 @@ export const SCENARIOS: Scenario[] = [
     caseStudy: {
       title: "Tunel vs Pole — ten sam zakup, dwa światy",
       source:
-        "Szucs (JEEA 2024); Beuve, Moszoro & Spiller (JLEO 2023, 2SLS/IV); Lipsky (1980)",
+        "Konstrukcja modelu 2.2 — scenariusz ilustracyjny bez źródła zewnętrznego. Wartości wejściowe są założeniami, a nie danymi z żadnego badania.",
       insight:
         "Porównanie dwóch legalnych projektów tego samego postępowania: bardziej sekwencyjnego i bardziej adaptacyjnego. Wynik zależy od kosztu zwłoki, konkurencji i konstrukcji kontraktu; nie zakłada obejścia PZP.",
       insightEn:

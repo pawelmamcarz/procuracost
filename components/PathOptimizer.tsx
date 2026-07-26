@@ -261,7 +261,14 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
         </button>
       </div>
 
-      {result && (
+      {result?.outOfScope && (
+        <div id="optimizer-results" ref={resultsRef} className="rounded-2xl border border-amber-400 bg-amber-50 p-6">
+          <p className="text-xs font-bold uppercase tracking-wide text-amber-700">{tx.outOfScopeTitle}</p>
+          <p className="mt-2 text-sm leading-relaxed text-gray-700">{result.policyNote}</p>
+        </div>
+      )}
+
+      {result && result.topPath && !result.outOfScope && (
         <div id="optimizer-results" ref={resultsRef} className="space-y-6">
           <div
             className="rounded-2xl p-6 text-white"
@@ -273,24 +280,37 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
             <p className="mt-2 text-3xl font-bold">
               {lang === "en" ? result.topPath.path.nameEn : result.topPath.path.name}
             </p>
-            {result.topPath.path.pzpArticle && (
-              <p className="mt-1 text-sm opacity-80">{result.topPath.path.pzpArticle}</p>
+            {result.pzpApplies ? (
+              result.topPath.path.pzpArticle && (
+                <p className="mt-1 text-sm opacity-80">{result.topPath.path.pzpArticle}</p>
+              )
+            ) : (
+              <p className="mt-1 text-sm opacity-80">{tx.outsidePzpLabel}</p>
             )}
             <p className="mt-3 opacity-90">
               {lang === "en" ? result.topPath.path.descriptionEn : result.topPath.path.description}
             </p>
 
             <div className="mt-4 flex gap-4">
-              <div className="rounded-xl bg-white/15 px-4 py-2 text-center">
-                <p className="text-xs opacity-70">{tx.modelConfidence}</p>
-                <p className="text-xl font-bold">
-                  {Math.round(result.topPath.confidence * 100)}%
-                </p>
-              </div>
-              <div className="rounded-xl bg-white/15 px-4 py-2 text-center">
-                <p className="text-xs opacity-70">{tx.treeVotes}</p>
-                <p className="text-xl font-bold">{result.topPath.votes}/30</p>
-              </div>
+              {result.ranked.length > 1 ? (
+                <>
+                  <div className="rounded-xl bg-white/15 px-4 py-2 text-center">
+                    <p className="text-xs opacity-70">{tx.modelConfidence}</p>
+                    <p className="text-xl font-bold">
+                      {Math.round(result.topPath.weightStability * 100)}%
+                    </p>
+                  </div>
+                  <div className="rounded-xl bg-white/15 px-4 py-2 text-center">
+                    <p className="text-xs opacity-70">{tx.treeVotes}</p>
+                    <p className="text-xl font-bold">{result.topPath.votes}/30</p>
+                  </div>
+                </>
+              ) : (
+                <div className="rounded-xl bg-white/15 px-4 py-2 text-center">
+                  <p className="text-xs opacity-70">{tx.singleCandidateLabel}</p>
+                  <p className="text-sm font-semibold">{tx.singleCandidateValue}</p>
+                </div>
+              )}
               <div className="rounded-xl bg-white/15 px-4 py-2 text-center">
                 <p className="text-xs opacity-70">{tx.typicalTime}</p>
                 <p className="text-xl font-bold">
@@ -325,6 +345,22 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
             </div>
           </div>
 
+          {result.withheldProcedures.length > 0 && (
+            <div className="rounded-xl border border-amber-400 bg-amber-50 p-4">
+              <p className="text-xs font-bold uppercase tracking-wide text-amber-700 mb-2">
+                {tx.withheldTitle}
+              </p>
+              <p className="text-sm text-gray-700 leading-relaxed">
+                {tx.withheldBody}
+              </p>
+              <ul className="mt-2 list-disc pl-5 text-sm text-gray-700">
+                {result.withheldProcedures.map((name) => (
+                  <li key={name}>{name}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           <div className="rounded-xl border border-blue-100 bg-blue-50 p-4">
             <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 mb-2">
               {tx.explanationTitle}
@@ -344,7 +380,7 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
                     <p className="text-xs font-medium text-gray-700">
                       {lang === "en" ? r.path.nameEn : r.path.name}
                     </p>
-                    {r.path.pzpArticle && (
+                    {result.pzpApplies && r.path.pzpArticle && (
                       <p className="text-xs text-gray-400">{r.path.pzpArticle}</p>
                     )}
                   </div>
@@ -366,7 +402,7 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
                     className="w-14 rounded-full px-2 py-0.5 text-center text-xs font-bold text-white"
                     style={{ background: r.path.color }}
                   >
-                    {Math.round(r.confidence * 100)}%
+                    {Math.round(r.weightStability * 100)}%
                   </span>
                 </div>
               ))}

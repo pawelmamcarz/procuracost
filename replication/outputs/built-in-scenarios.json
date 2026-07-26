@@ -1,5 +1,5 @@
 {
-  "modelVersion": "2.1.0",
+  "modelVersion": "2.2.0",
   "evidenceStatus": "Deterministic model outputs under illustrative inputs; not empirical estimates of realized organizational effects.",
   "scenarios": [
     {
@@ -44,41 +44,47 @@
       },
       "results": {
         "rigid": {
-          "timeCost": 30062.5,
+          "timeCost": 16862.5,
           "adminCost": 5600,
           "opportunityCost": 220000,
           "productivityCost": 18000.000000000004,
           "renegotiationCost": 13860,
           "tcoCost": 0,
           "bypassCost": 13750.000000000002,
-          "total": 301272.5,
+          "total": 288072.5,
+          "processCost": 54212.5,
+          "delayCost": 220000,
+          "lifecycleCost": 13860,
           "days": 44,
-          "staffCost": 30062.5,
+          "staffCost": 16862.5,
           "coordCost": 4400,
           "toolCost": 1200
         },
         "flexible": {
-          "timeCost": 17674.52380952381,
+          "timeCost": 9316.42857142857,
           "adminCost": 3600,
           "opportunityCost": 120000,
           "productivityCost": 30000,
           "renegotiationCost": 6930,
           "tcoCost": 0,
           "bypassCost": 13750.000000000002,
-          "total": 191954.52380952382,
+          "total": 183596.42857142858,
+          "processCost": 56666.42857142857,
+          "delayCost": 120000,
+          "lifecycleCost": 6930,
           "days": 24,
-          "staffCost": 17674.52380952381,
+          "staffCost": 9316.42857142857,
           "coordCost": 2400,
           "toolCost": 1200
         },
-        "delta": 109317.97619047618,
-        "deltaPercent": 56.94993481839076,
+        "delta": 104476.07142857142,
+        "deltaPercent": 56.9052852724337,
         "bypassProbability": 0.027500000000000004,
         "flexibleBypassProbability": 0.027500000000000004,
         "rigidDays": 44,
         "flexibleDays": 24,
         "trace": {
-          "modelVersion": "2.1.0",
+          "modelVersion": "2.2.0",
           "sanitizedInputs": {
             "contractValue": 5000000,
             "tcoHorizonYears": 2,
@@ -98,11 +104,6 @@
           },
           "multipliers": {
             "staffMultiplier": 1,
-            "tcoMultiplier": 1,
-            "delayMultiplier": 1,
-            "productivityMultiplier": 1,
-            "bypassMultiplier": 1,
-            "renegotiationMultiplier": 1,
             "coordinationIntensityMultiplier": 1
           },
           "multiplierDetails": [],
@@ -122,8 +123,8 @@
           },
           "dimensions": {
             "timeCost": {
-              "rigid": 30062.5,
-              "flexible": 17674.52380952381
+              "rigid": 16862.5,
+              "flexible": 9316.42857142857
             },
             "adminCost": {
               "rigid": 5600,
@@ -153,24 +154,31 @@
         },
         "sources": {
           "timeCost": "Step durations: legal minima (PZP 2019 + Dyrektywa 2014/24/UE) and practitioner benchmarks — not a single empirical source",
-          "opportunityCost": "Deployment-delay cost = procurement duration × daily cost of inaction (model construction)",
-          "productivityCost": "Szucs (2024), JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017: discretion increased normalized prices by about 6 percentage points and selected firms with about 28% lower measured productivity in the corrected main specification. The model monetizes price only and stress-tests 2–9%; Hungarian public-procurement transfer caveat applies",
-          "renegotiationCost": "Beuve, Moszoro & Spiller (2023), JLEO 39(1):281–308, DOI 10.1093/jleo/ewab039: 2SLS/IV estimate for annual formal-amendment frequency, not event probability, in French car-park contracts. The model maps 0–0.105 additional amendments per contract-year to a separate contract-rigidity profile and multiplies by contract duration and user-supplied per-amendment cost",
+          "opportunityCost": "Deployment-delay cost = procurement duration × daily cost of inaction. This is an accounting identity between a template-derived day count and a user-supplied price per day; it is not a modeled or measured effect, and it is reported as its own bucket for that reason",
+          "productivityCost": "Szucs (2024), JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017, structural estimates: discretion increases prices by about 6% and lowers average contractor total factor productivity by about 10%. (The invalid raw discontinuity reports roughly 32%.) The model monetizes price only and stress-tests 2–9%. Identified on Hungarian contracts below the ~25m HUF / ~90k USD invitational threshold, so transfer to Polish EU-threshold or private procurement is a scenario, not a measurement",
+          "renegotiationCost": "Scenario assumption with an external order-of-magnitude anchor. Beuve, Moszoro & Spiller (2023), JLEO 39(1):281–308, DOI 10.1093/jleo/ewab039 report +0.077–0.105 formal amendments per contract-year per ONE STANDARD DEVIATION of a rigidity index, by 2SLS/IV, in French car-park contracts. ProcuraCost multiplies that slope by a 0–1 calibration profile that is not a z-score, so the product is not a transferred estimate. Only the difference between the two paths is interpretable; neither reported level is",
           "tcoCost": "Scenario assumption only: a three-year cumulative non-acquisition lifecycle savings pool is stress-tested at 0–15%, scaled by min(horizon years / 3, 1), and multiplied by path-specific capture rates. The central case is zero because no transferable empirical estimate is available",
           "bypassCost": "Scenario assumption only: illustrative bypass-rate range, scaled by system controls. Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991) support mechanisms, not probabilities"
         },
         "uncertainty": {
-          "lowDelta": 60637.97619047618,
-          "centralDelta": 109317.97619047618,
-          "highDelta": 224587.9761904762,
-          "lowPercentOfContractValue": 1.2127595238095237,
-          "highPercentOfContractValue": 4.491759523809524,
+          "lowDelta": 55796.07142857142,
+          "centralDelta": 104476.07142857142,
+          "highDelta": 219746.07142857142,
+          "lowPercentOfContractValue": 1.1159214285714285,
+          "highPercentOfContractValue": 4.394921428571428,
           "crossesZero": false
+        },
+        "deltaDecomposition": {
+          "process": -2453.9285714285725,
+          "delay": 100000,
+          "lifecycle": 6930,
+          "delayShareOfDeltaPercent": 95.71569703247155
         },
         "decisionThreshold": {
           "effectiveDayDifference": 20,
-          "nonDelayDelta": 9317.976190476184,
-          "breakEvenDailyCostOfInaction": 0
+          "nonDelayDelta": 4476.0714285714275,
+          "breakEvenDailyCostOfInaction": -223.8035714285714,
+          "status": "formal_costlier_at_zero_delay"
         }
       }
     },
@@ -216,41 +224,47 @@
       },
       "results": {
         "rigid": {
-          "timeCost": 34375,
-          "adminCost": 11000,
-          "opportunityCost": 765000,
+          "timeCost": 25731.25,
+          "adminCost": 10919.999999999998,
+          "opportunityCost": 758999.9999999999,
           "productivityCost": 10800.000000000002,
           "renegotiationCost": 6930,
           "tcoCost": 0,
           "bypassCost": 12000.000000000002,
-          "total": 840105,
-          "days": 51,
-          "staffCost": 34375,
-          "coordCost": 10200,
+          "total": 825381.2499999999,
+          "processCost": 59451.25,
+          "delayCost": 758999.9999999999,
+          "lifecycleCost": 6930,
+          "days": 50.599999999999994,
+          "staffCost": 25731.25,
+          "coordCost": 10119.999999999998,
           "toolCost": 800
         },
         "flexible": {
-          "timeCost": 19558.571428571428,
-          "adminCost": 6400,
-          "opportunityCost": 420000,
+          "timeCost": 14396.357142857141,
+          "adminCost": 6319.999999999999,
+          "opportunityCost": 413999.99999999994,
           "productivityCost": 18000,
           "renegotiationCost": 3465,
           "tcoCost": 0,
           "bypassCost": 12000.000000000002,
-          "total": 479423.5714285714,
-          "days": 28,
-          "staffCost": 19558.571428571428,
-          "coordCost": 5600,
+          "total": 468181.3571428571,
+          "processCost": 50716.357142857145,
+          "delayCost": 413999.99999999994,
+          "lifecycleCost": 3465,
+          "days": 27.599999999999994,
+          "staffCost": 14396.357142857141,
+          "coordCost": 5519.999999999999,
           "toolCost": 800
         },
-        "delta": 360681.4285714286,
-        "deltaPercent": 75.23231022969549,
+        "delta": 357199.8928571428,
+        "deltaPercent": 76.29519787737932,
         "bypassProbability": 0.04000000000000001,
         "flexibleBypassProbability": 0.04000000000000001,
-        "rigidDays": 51,
-        "flexibleDays": 28,
+        "rigidDays": 50.599999999999994,
+        "flexibleDays": 27.599999999999994,
         "trace": {
-          "modelVersion": "2.1.0",
+          "modelVersion": "2.2.0",
           "sanitizedInputs": {
             "contractValue": 3000000,
             "tcoHorizonYears": 3,
@@ -270,17 +284,12 @@
           },
           "multipliers": {
             "staffMultiplier": 1,
-            "tcoMultiplier": 1,
-            "delayMultiplier": 1,
-            "productivityMultiplier": 1,
-            "bypassMultiplier": 1,
-            "renegotiationMultiplier": 1,
             "coordinationIntensityMultiplier": 1
           },
           "multiplierDetails": [],
           "days": {
-            "rigid": 51,
-            "flexible": 28
+            "rigid": 50.599999999999994,
+            "flexible": 27.599999999999994
           },
           "probabilities": {
             "bypassRigid": 0.04000000000000001,
@@ -294,16 +303,16 @@
           },
           "dimensions": {
             "timeCost": {
-              "rigid": 34375,
-              "flexible": 19558.571428571428
+              "rigid": 25731.25,
+              "flexible": 14396.357142857141
             },
             "adminCost": {
-              "rigid": 11000,
-              "flexible": 6400
+              "rigid": 10919.999999999998,
+              "flexible": 6319.999999999999
             },
             "opportunityCost": {
-              "rigid": 765000,
-              "flexible": 420000
+              "rigid": 758999.9999999999,
+              "flexible": 413999.99999999994
             },
             "productivityCost": {
               "rigid": 10800.000000000002,
@@ -325,24 +334,31 @@
         },
         "sources": {
           "timeCost": "Step durations: legal minima (PZP 2019 + Dyrektywa 2014/24/UE) and practitioner benchmarks — not a single empirical source",
-          "opportunityCost": "Deployment-delay cost = procurement duration × daily cost of inaction (model construction)",
-          "productivityCost": "Szucs (2024), JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017: discretion increased normalized prices by about 6 percentage points and selected firms with about 28% lower measured productivity in the corrected main specification. The model monetizes price only and stress-tests 2–9%; Hungarian public-procurement transfer caveat applies",
-          "renegotiationCost": "Beuve, Moszoro & Spiller (2023), JLEO 39(1):281–308, DOI 10.1093/jleo/ewab039: 2SLS/IV estimate for annual formal-amendment frequency, not event probability, in French car-park contracts. The model maps 0–0.105 additional amendments per contract-year to a separate contract-rigidity profile and multiplies by contract duration and user-supplied per-amendment cost",
+          "opportunityCost": "Deployment-delay cost = procurement duration × daily cost of inaction. This is an accounting identity between a template-derived day count and a user-supplied price per day; it is not a modeled or measured effect, and it is reported as its own bucket for that reason",
+          "productivityCost": "Szucs (2024), JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017, structural estimates: discretion increases prices by about 6% and lowers average contractor total factor productivity by about 10%. (The invalid raw discontinuity reports roughly 32%.) The model monetizes price only and stress-tests 2–9%. Identified on Hungarian contracts below the ~25m HUF / ~90k USD invitational threshold, so transfer to Polish EU-threshold or private procurement is a scenario, not a measurement",
+          "renegotiationCost": "Scenario assumption with an external order-of-magnitude anchor. Beuve, Moszoro & Spiller (2023), JLEO 39(1):281–308, DOI 10.1093/jleo/ewab039 report +0.077–0.105 formal amendments per contract-year per ONE STANDARD DEVIATION of a rigidity index, by 2SLS/IV, in French car-park contracts. ProcuraCost multiplies that slope by a 0–1 calibration profile that is not a z-score, so the product is not a transferred estimate. Only the difference between the two paths is interpretable; neither reported level is",
           "tcoCost": "Scenario assumption only: a three-year cumulative non-acquisition lifecycle savings pool is stress-tested at 0–15%, scaled by min(horizon years / 3, 1), and multiplied by path-specific capture rates. The central case is zero because no transferable empirical estimate is available",
           "bypassCost": "Scenario assumption only: illustrative bypass-rate range, scaled by system controls. Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991) support mechanisms, not probabilities"
         },
         "uncertainty": {
-          "lowDelta": 322416.4285714286,
-          "centralDelta": 360681.4285714286,
-          "highDelta": 458841.42857142864,
-          "lowPercentOfContractValue": 10.747214285714286,
-          "highPercentOfContractValue": 15.294714285714289,
+          "lowDelta": 318934.8928571428,
+          "centralDelta": 357199.8928571428,
+          "highDelta": 455359.89285714284,
+          "lowPercentOfContractValue": 10.631163095238092,
+          "highPercentOfContractValue": 15.178663095238095,
           "crossesZero": false
+        },
+        "deltaDecomposition": {
+          "process": 8734.892857142855,
+          "delay": 344999.99999999994,
+          "lifecycle": 3465,
+          "delayShareOfDeltaPercent": 96.58457544330172
         },
         "decisionThreshold": {
           "effectiveDayDifference": 23,
-          "nonDelayDelta": 15681.42857142858,
-          "breakEvenDailyCostOfInaction": 0
+          "nonDelayDelta": 12199.892857142855,
+          "breakEvenDailyCostOfInaction": -530.4301242236024,
+          "status": "formal_costlier_at_zero_delay"
         }
       }
     },
@@ -388,41 +404,47 @@
       },
       "results": {
         "rigid": {
-          "timeCost": 26000,
+          "timeCost": 18575,
           "adminCost": 5600,
           "opportunityCost": 880000,
           "productivityCost": 28800.000000000007,
           "renegotiationCost": 55440,
           "tcoCost": 0,
           "bypassCost": 22000.000000000004,
-          "total": 1017840,
+          "total": 1010415,
+          "processCost": 74975.00000000001,
+          "delayCost": 880000,
+          "lifecycleCost": 55440,
           "days": 44,
-          "staffCost": 26000,
+          "staffCost": 18575,
           "coordCost": 4400,
           "toolCost": 1200
         },
         "flexible": {
-          "timeCost": 14989.523809523807,
+          "timeCost": 10288.095238095235,
           "adminCost": 3600,
           "opportunityCost": 480000,
           "productivityCost": 48000,
           "renegotiationCost": 27720,
           "tcoCost": 0,
           "bypassCost": 22000.000000000004,
-          "total": 596309.5238095238,
+          "total": 591608.0952380953,
+          "processCost": 83888.09523809524,
+          "delayCost": 480000,
+          "lifecycleCost": 27720,
           "days": 24,
-          "staffCost": 14989.523809523807,
+          "staffCost": 10288.095238095235,
           "coordCost": 2400,
           "toolCost": 1200
         },
-        "delta": 421530.4761904762,
-        "deltaPercent": 70.68987821920544,
+        "delta": 418806.90476190473,
+        "deltaPercent": 70.79127350232658,
         "bypassProbability": 0.027500000000000004,
         "flexibleBypassProbability": 0.027500000000000004,
         "rigidDays": 44,
         "flexibleDays": 24,
         "trace": {
-          "modelVersion": "2.1.0",
+          "modelVersion": "2.2.0",
           "sanitizedInputs": {
             "contractValue": 8000000,
             "tcoHorizonYears": 3,
@@ -442,11 +464,6 @@
           },
           "multipliers": {
             "staffMultiplier": 1,
-            "tcoMultiplier": 1,
-            "delayMultiplier": 1,
-            "productivityMultiplier": 1,
-            "bypassMultiplier": 1,
-            "renegotiationMultiplier": 1,
             "coordinationIntensityMultiplier": 1
           },
           "multiplierDetails": [],
@@ -466,8 +483,8 @@
           },
           "dimensions": {
             "timeCost": {
-              "rigid": 26000,
-              "flexible": 14989.523809523807
+              "rigid": 18575,
+              "flexible": 10288.095238095235
             },
             "adminCost": {
               "rigid": 5600,
@@ -497,24 +514,31 @@
         },
         "sources": {
           "timeCost": "Step durations: legal minima (PZP 2019 + Dyrektywa 2014/24/UE) and practitioner benchmarks — not a single empirical source",
-          "opportunityCost": "Deployment-delay cost = procurement duration × daily cost of inaction (model construction)",
-          "productivityCost": "Szucs (2024), JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017: discretion increased normalized prices by about 6 percentage points and selected firms with about 28% lower measured productivity in the corrected main specification. The model monetizes price only and stress-tests 2–9%; Hungarian public-procurement transfer caveat applies",
-          "renegotiationCost": "Beuve, Moszoro & Spiller (2023), JLEO 39(1):281–308, DOI 10.1093/jleo/ewab039: 2SLS/IV estimate for annual formal-amendment frequency, not event probability, in French car-park contracts. The model maps 0–0.105 additional amendments per contract-year to a separate contract-rigidity profile and multiplies by contract duration and user-supplied per-amendment cost",
+          "opportunityCost": "Deployment-delay cost = procurement duration × daily cost of inaction. This is an accounting identity between a template-derived day count and a user-supplied price per day; it is not a modeled or measured effect, and it is reported as its own bucket for that reason",
+          "productivityCost": "Szucs (2024), JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017, structural estimates: discretion increases prices by about 6% and lowers average contractor total factor productivity by about 10%. (The invalid raw discontinuity reports roughly 32%.) The model monetizes price only and stress-tests 2–9%. Identified on Hungarian contracts below the ~25m HUF / ~90k USD invitational threshold, so transfer to Polish EU-threshold or private procurement is a scenario, not a measurement",
+          "renegotiationCost": "Scenario assumption with an external order-of-magnitude anchor. Beuve, Moszoro & Spiller (2023), JLEO 39(1):281–308, DOI 10.1093/jleo/ewab039 report +0.077–0.105 formal amendments per contract-year per ONE STANDARD DEVIATION of a rigidity index, by 2SLS/IV, in French car-park contracts. ProcuraCost multiplies that slope by a 0–1 calibration profile that is not a z-score, so the product is not a transferred estimate. Only the difference between the two paths is interpretable; neither reported level is",
           "tcoCost": "Scenario assumption only: a three-year cumulative non-acquisition lifecycle savings pool is stress-tested at 0–15%, scaled by min(horizon years / 3, 1), and multiplied by path-specific capture rates. The central case is zero because no transferable empirical estimate is available",
           "bypassCost": "Scenario assumption only: illustrative bypass-rate range, scaled by system controls. Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991) support mechanisms, not probabilities"
         },
         "uncertainty": {
-          "lowDelta": 327010.4761904762,
-          "centralDelta": 421530.4761904762,
-          "highDelta": 632010.4761904762,
-          "lowPercentOfContractValue": 4.087630952380953,
-          "highPercentOfContractValue": 7.900130952380953,
+          "lowDelta": 324286.90476190473,
+          "centralDelta": 418806.90476190473,
+          "highDelta": 629286.9047619047,
+          "lowPercentOfContractValue": 4.053586309523809,
+          "highPercentOfContractValue": 7.866086309523809,
           "crossesZero": false
+        },
+        "deltaDecomposition": {
+          "process": -8913.095238095222,
+          "delay": 400000,
+          "lifecycle": 27720,
+          "delayShareOfDeltaPercent": 95.50940909806714
         },
         "decisionThreshold": {
           "effectiveDayDifference": 20,
-          "nonDelayDelta": 21530.476190476213,
-          "breakEvenDailyCostOfInaction": 0
+          "nonDelayDelta": 18806.904761904778,
+          "breakEvenDailyCostOfInaction": -940.3452380952389,
+          "status": "formal_costlier_at_zero_delay"
         }
       }
     },
@@ -560,41 +584,47 @@
       },
       "results": {
         "rigid": {
-          "timeCost": 22212.5,
-          "adminCost": 31000,
-          "opportunityCost": 3100000,
+          "timeCost": 21892.5,
+          "adminCost": 30799.999999999996,
+          "opportunityCost": 3079999.9999999995,
           "productivityCost": 43200.00000000001,
           "renegotiationCost": 23100,
           "tcoCost": 0,
           "bypassCost": 90000.00000000001,
-          "total": 3309512.5,
-          "days": 62,
-          "staffCost": 22212.5,
-          "coordCost": 31000,
+          "total": 3288992.4999999995,
+          "processCost": 185892.5,
+          "delayCost": 3079999.9999999995,
+          "lifecycleCost": 23100,
+          "days": 61.599999999999994,
+          "staffCost": 21892.5,
+          "coordCost": 30799.999999999996,
           "toolCost": 0
         },
         "flexible": {
-          "timeCost": 12609.285714285714,
-          "adminCost": 17000,
-          "opportunityCost": 1700000,
+          "timeCost": 12053.666666666666,
+          "adminCost": 16799.999999999996,
+          "opportunityCost": 1679999.9999999998,
           "productivityCost": 72000,
           "renegotiationCost": 11550,
           "tcoCost": 0,
           "bypassCost": 90000.00000000001,
-          "total": 1903159.2857142857,
-          "days": 34,
-          "staffCost": 12609.285714285714,
-          "coordCost": 17000,
+          "total": 1882403.6666666665,
+          "processCost": 190853.6666666667,
+          "delayCost": 1679999.9999999998,
+          "lifecycleCost": 11550,
+          "days": 33.599999999999994,
+          "staffCost": 12053.666666666666,
+          "coordCost": 16799.999999999996,
           "toolCost": 0
         },
-        "delta": 1406353.2142857143,
-        "deltaPercent": 73.89571775952993,
+        "delta": 1406588.833333333,
+        "deltaPercent": 74.72301814116737,
         "bypassProbability": 0.07500000000000001,
         "flexibleBypassProbability": 0.07500000000000001,
-        "rigidDays": 62,
-        "flexibleDays": 34,
+        "rigidDays": 61.599999999999994,
+        "flexibleDays": 33.599999999999994,
         "trace": {
-          "modelVersion": "2.1.0",
+          "modelVersion": "2.2.0",
           "sanitizedInputs": {
             "contractValue": 12000000,
             "tcoHorizonYears": 1,
@@ -614,17 +644,12 @@
           },
           "multipliers": {
             "staffMultiplier": 1,
-            "tcoMultiplier": 1,
-            "delayMultiplier": 1,
-            "productivityMultiplier": 1,
-            "bypassMultiplier": 1,
-            "renegotiationMultiplier": 1,
             "coordinationIntensityMultiplier": 1
           },
           "multiplierDetails": [],
           "days": {
-            "rigid": 62,
-            "flexible": 34
+            "rigid": 61.599999999999994,
+            "flexible": 33.599999999999994
           },
           "probabilities": {
             "bypassRigid": 0.07500000000000001,
@@ -638,16 +663,16 @@
           },
           "dimensions": {
             "timeCost": {
-              "rigid": 22212.5,
-              "flexible": 12609.285714285714
+              "rigid": 21892.5,
+              "flexible": 12053.666666666666
             },
             "adminCost": {
-              "rigid": 31000,
-              "flexible": 17000
+              "rigid": 30799.999999999996,
+              "flexible": 16799.999999999996
             },
             "opportunityCost": {
-              "rigid": 3100000,
-              "flexible": 1700000
+              "rigid": 3079999.9999999995,
+              "flexible": 1679999.9999999998
             },
             "productivityCost": {
               "rigid": 43200.00000000001,
@@ -669,24 +694,31 @@
         },
         "sources": {
           "timeCost": "Step durations: legal minima (PZP 2019 + Dyrektywa 2014/24/UE) and practitioner benchmarks — not a single empirical source",
-          "opportunityCost": "Deployment-delay cost = procurement duration × daily cost of inaction (model construction)",
-          "productivityCost": "Szucs (2024), JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017: discretion increased normalized prices by about 6 percentage points and selected firms with about 28% lower measured productivity in the corrected main specification. The model monetizes price only and stress-tests 2–9%; Hungarian public-procurement transfer caveat applies",
-          "renegotiationCost": "Beuve, Moszoro & Spiller (2023), JLEO 39(1):281–308, DOI 10.1093/jleo/ewab039: 2SLS/IV estimate for annual formal-amendment frequency, not event probability, in French car-park contracts. The model maps 0–0.105 additional amendments per contract-year to a separate contract-rigidity profile and multiplies by contract duration and user-supplied per-amendment cost",
+          "opportunityCost": "Deployment-delay cost = procurement duration × daily cost of inaction. This is an accounting identity between a template-derived day count and a user-supplied price per day; it is not a modeled or measured effect, and it is reported as its own bucket for that reason",
+          "productivityCost": "Szucs (2024), JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017, structural estimates: discretion increases prices by about 6% and lowers average contractor total factor productivity by about 10%. (The invalid raw discontinuity reports roughly 32%.) The model monetizes price only and stress-tests 2–9%. Identified on Hungarian contracts below the ~25m HUF / ~90k USD invitational threshold, so transfer to Polish EU-threshold or private procurement is a scenario, not a measurement",
+          "renegotiationCost": "Scenario assumption with an external order-of-magnitude anchor. Beuve, Moszoro & Spiller (2023), JLEO 39(1):281–308, DOI 10.1093/jleo/ewab039 report +0.077–0.105 formal amendments per contract-year per ONE STANDARD DEVIATION of a rigidity index, by 2SLS/IV, in French car-park contracts. ProcuraCost multiplies that slope by a 0–1 calibration profile that is not a z-score, so the product is not a transferred estimate. Only the difference between the two paths is interpretable; neither reported level is",
           "tcoCost": "Scenario assumption only: a three-year cumulative non-acquisition lifecycle savings pool is stress-tested at 0–15%, scaled by min(horizon years / 3, 1), and multiplied by path-specific capture rates. The central case is zero because no transferable empirical estimate is available",
           "bypassCost": "Scenario assumption only: illustrative bypass-rate range, scaled by system controls. Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991) support mechanisms, not probabilities"
         },
         "uncertainty": {
-          "lowDelta": 1146403.2142857146,
-          "centralDelta": 1406353.2142857143,
-          "highDelta": 1981753.2142857143,
-          "lowPercentOfContractValue": 9.553360119047621,
-          "highPercentOfContractValue": 16.514610119047617,
+          "lowDelta": 1146638.833333333,
+          "centralDelta": 1406588.833333333,
+          "highDelta": 1981988.833333333,
+          "lowPercentOfContractValue": 9.555323611111108,
+          "highPercentOfContractValue": 16.516573611111106,
           "crossesZero": false
+        },
+        "deltaDecomposition": {
+          "process": -4961.166666666686,
+          "delay": 1399999.9999999998,
+          "lifecycle": 11550,
+          "delayShareOfDeltaPercent": 99.53157360721264
         },
         "decisionThreshold": {
           "effectiveDayDifference": 28,
-          "nonDelayDelta": 6353.214285714319,
-          "breakEvenDailyCostOfInaction": 0
+          "nonDelayDelta": 6588.833333333314,
+          "breakEvenDailyCostOfInaction": -235.3154761904755,
+          "status": "formal_costlier_at_zero_delay"
         }
       }
     },
@@ -732,41 +764,47 @@
       },
       "results": {
         "rigid": {
-          "timeCost": 34975,
-          "adminCost": 9900,
+          "timeCost": 25075,
+          "adminCost": 8900,
           "opportunityCost": 870000,
           "productivityCost": 15000.000000000013,
           "renegotiationCost": 34650,
           "tcoCost": 0,
           "bypassCost": 16500.000000000004,
-          "total": 981025,
+          "total": 970125,
+          "processCost": 65475.000000000015,
+          "delayCost": 870000,
+          "lifecycleCost": 34650,
           "days": 87,
-          "staffCost": 34975,
-          "coordCost": 8700,
+          "staffCost": 25075,
+          "coordCost": 7700,
           "toolCost": 1200
         },
         "flexible": {
-          "timeCost": 21458.333333333332,
-          "adminCost": 8300,
+          "timeCost": 15012.619047619048,
+          "adminCost": 7300,
           "opportunityCost": 710000,
           "productivityCost": 29999.999999999993,
           "renegotiationCost": 20790,
           "tcoCost": 0,
           "bypassCost": 16500.000000000004,
-          "total": 807048.3333333334,
+          "total": 799602.619047619,
+          "processCost": 68812.61904761904,
+          "delayCost": 710000,
+          "lifecycleCost": 20790,
           "days": 71,
-          "staffCost": 21458.333333333332,
-          "coordCost": 7100,
+          "staffCost": 15012.619047619048,
+          "coordCost": 6100,
           "toolCost": 1200
         },
-        "delta": 173976.66666666663,
-        "deltaPercent": 21.557155808512082,
+        "delta": 170522.38095238095,
+        "deltaPercent": 21.325890747517143,
         "bypassProbability": 0.027500000000000004,
         "flexibleBypassProbability": 0.027500000000000004,
         "rigidDays": 87,
         "flexibleDays": 71,
         "trace": {
-          "modelVersion": "2.1.0",
+          "modelVersion": "2.2.0",
           "sanitizedInputs": {
             "contractValue": 5000000,
             "tcoHorizonYears": 3,
@@ -786,11 +824,6 @@
           },
           "multipliers": {
             "staffMultiplier": 1,
-            "tcoMultiplier": 1,
-            "delayMultiplier": 1,
-            "productivityMultiplier": 1,
-            "bypassMultiplier": 1,
-            "renegotiationMultiplier": 1,
             "coordinationIntensityMultiplier": 1
           },
           "multiplierDetails": [],
@@ -810,12 +843,12 @@
           },
           "dimensions": {
             "timeCost": {
-              "rigid": 34975,
-              "flexible": 21458.333333333332
+              "rigid": 25075,
+              "flexible": 15012.619047619048
             },
             "adminCost": {
-              "rigid": 9900,
-              "flexible": 8300
+              "rigid": 8900,
+              "flexible": 7300
             },
             "opportunityCost": {
               "rigid": 870000,
@@ -841,24 +874,31 @@
         },
         "sources": {
           "timeCost": "Step durations: legal minima (PZP 2019 + Dyrektywa 2014/24/UE) and practitioner benchmarks — not a single empirical source",
-          "opportunityCost": "Deployment-delay cost = procurement duration × daily cost of inaction (model construction)",
-          "productivityCost": "Szucs (2024), JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017: discretion increased normalized prices by about 6 percentage points and selected firms with about 28% lower measured productivity in the corrected main specification. The model monetizes price only and stress-tests 2–9%; Hungarian public-procurement transfer caveat applies",
-          "renegotiationCost": "Beuve, Moszoro & Spiller (2023), JLEO 39(1):281–308, DOI 10.1093/jleo/ewab039: 2SLS/IV estimate for annual formal-amendment frequency, not event probability, in French car-park contracts. The model maps 0–0.105 additional amendments per contract-year to a separate contract-rigidity profile and multiplies by contract duration and user-supplied per-amendment cost",
+          "opportunityCost": "Deployment-delay cost = procurement duration × daily cost of inaction. This is an accounting identity between a template-derived day count and a user-supplied price per day; it is not a modeled or measured effect, and it is reported as its own bucket for that reason",
+          "productivityCost": "Szucs (2024), JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017, structural estimates: discretion increases prices by about 6% and lowers average contractor total factor productivity by about 10%. (The invalid raw discontinuity reports roughly 32%.) The model monetizes price only and stress-tests 2–9%. Identified on Hungarian contracts below the ~25m HUF / ~90k USD invitational threshold, so transfer to Polish EU-threshold or private procurement is a scenario, not a measurement",
+          "renegotiationCost": "Scenario assumption with an external order-of-magnitude anchor. Beuve, Moszoro & Spiller (2023), JLEO 39(1):281–308, DOI 10.1093/jleo/ewab039 report +0.077–0.105 formal amendments per contract-year per ONE STANDARD DEVIATION of a rigidity index, by 2SLS/IV, in French car-park contracts. ProcuraCost multiplies that slope by a 0–1 calibration profile that is not a z-score, so the product is not a transferred estimate. Only the difference between the two paths is interpretable; neither reported level is",
           "tcoCost": "Scenario assumption only: a three-year cumulative non-acquisition lifecycle savings pool is stress-tested at 0–15%, scaled by min(horizon years / 3, 1), and multiplied by path-specific capture rates. The central case is zero because no transferable empirical estimate is available",
           "bypassCost": "Scenario assumption only: illustrative bypass-rate range, scaled by system controls. Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991) support mechanisms, not probabilities"
         },
         "uncertainty": {
-          "lowDelta": 109716.66666666663,
-          "centralDelta": 173976.66666666663,
-          "highDelta": 322216.6666666666,
-          "lowPercentOfContractValue": 2.1943333333333324,
-          "highPercentOfContractValue": 6.444333333333333,
+          "lowDelta": 106262.38095238095,
+          "centralDelta": 170522.38095238095,
+          "highDelta": 318762.38095238095,
+          "lowPercentOfContractValue": 2.125247619047619,
+          "highPercentOfContractValue": 6.375247619047619,
           "crossesZero": false
+        },
+        "deltaDecomposition": {
+          "process": -3337.619047619024,
+          "delay": 160000,
+          "lifecycle": 13860,
+          "delayShareOfDeltaPercent": 93.82932557379705
         },
         "decisionThreshold": {
           "effectiveDayDifference": 16,
-          "nonDelayDelta": 13976.666666666628,
-          "breakEvenDailyCostOfInaction": 0
+          "nonDelayDelta": 10522.380952380976,
+          "breakEvenDailyCostOfInaction": -657.648809523811,
+          "status": "formal_costlier_at_zero_delay"
         }
       }
     },
@@ -904,41 +944,47 @@
       },
       "results": {
         "rigid": {
-          "timeCost": 543.75,
-          "adminCost": 2040,
-          "opportunityCost": 1000,
+          "timeCost": 240.625,
+          "adminCost": 2042,
+          "opportunityCost": 1049.9999999999998,
           "productivityCost": 59.99999999999999,
           "renegotiationCost": 0,
           "tcoCost": 0,
           "bypassCost": 50.00000000000001,
-          "total": 3693.75,
-          "days": 2,
-          "staffCost": 543.75,
-          "coordCost": 40,
+          "total": 3442.625,
+          "processCost": 2392.625,
+          "delayCost": 1049.9999999999998,
+          "lifecycleCost": 0,
+          "days": 2.0999999999999996,
+          "staffCost": 240.625,
+          "coordCost": 41.99999999999999,
           "toolCost": 2000
         },
         "flexible": {
-          "timeCost": 543.75,
-          "adminCost": 2040,
-          "opportunityCost": 1000,
+          "timeCost": 240.625,
+          "adminCost": 2042,
+          "opportunityCost": 1049.9999999999998,
           "productivityCost": 59.99999999999999,
           "renegotiationCost": 0,
           "tcoCost": 0,
           "bypassCost": 50.00000000000001,
-          "total": 3693.75,
-          "days": 2,
-          "staffCost": 543.75,
-          "coordCost": 40,
+          "total": 3442.625,
+          "processCost": 2392.625,
+          "delayCost": 1049.9999999999998,
+          "lifecycleCost": 0,
+          "days": 2.0999999999999996,
+          "staffCost": 240.625,
+          "coordCost": 41.99999999999999,
           "toolCost": 2000
         },
         "delta": 0,
         "deltaPercent": 0,
         "bypassProbability": 0.005000000000000001,
         "flexibleBypassProbability": 0.005000000000000001,
-        "rigidDays": 2,
-        "flexibleDays": 2,
+        "rigidDays": 2.0999999999999996,
+        "flexibleDays": 2.0999999999999996,
         "trace": {
-          "modelVersion": "2.1.0",
+          "modelVersion": "2.2.0",
           "sanitizedInputs": {
             "contractValue": 50000,
             "tcoHorizonYears": 1,
@@ -958,17 +1004,12 @@
           },
           "multipliers": {
             "staffMultiplier": 1,
-            "tcoMultiplier": 1,
-            "delayMultiplier": 1,
-            "productivityMultiplier": 1,
-            "bypassMultiplier": 1,
-            "renegotiationMultiplier": 1,
             "coordinationIntensityMultiplier": 1
           },
           "multiplierDetails": [],
           "days": {
-            "rigid": 2,
-            "flexible": 2
+            "rigid": 2.0999999999999996,
+            "flexible": 2.0999999999999996
           },
           "probabilities": {
             "bypassRigid": 0.005000000000000001,
@@ -982,16 +1023,16 @@
           },
           "dimensions": {
             "timeCost": {
-              "rigid": 543.75,
-              "flexible": 543.75
+              "rigid": 240.625,
+              "flexible": 240.625
             },
             "adminCost": {
-              "rigid": 2040,
-              "flexible": 2040
+              "rigid": 2042,
+              "flexible": 2042
             },
             "opportunityCost": {
-              "rigid": 1000,
-              "flexible": 1000
+              "rigid": 1049.9999999999998,
+              "flexible": 1049.9999999999998
             },
             "productivityCost": {
               "rigid": 59.99999999999999,
@@ -1013,9 +1054,9 @@
         },
         "sources": {
           "timeCost": "Step durations: legal minima (PZP 2019 + Dyrektywa 2014/24/UE) and practitioner benchmarks — not a single empirical source",
-          "opportunityCost": "Deployment-delay cost = procurement duration × daily cost of inaction (model construction)",
-          "productivityCost": "Szucs (2024), JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017: discretion increased normalized prices by about 6 percentage points and selected firms with about 28% lower measured productivity in the corrected main specification. The model monetizes price only and stress-tests 2–9%; Hungarian public-procurement transfer caveat applies",
-          "renegotiationCost": "Beuve, Moszoro & Spiller (2023), JLEO 39(1):281–308, DOI 10.1093/jleo/ewab039: 2SLS/IV estimate for annual formal-amendment frequency, not event probability, in French car-park contracts. The model maps 0–0.105 additional amendments per contract-year to a separate contract-rigidity profile and multiplies by contract duration and user-supplied per-amendment cost",
+          "opportunityCost": "Deployment-delay cost = procurement duration × daily cost of inaction. This is an accounting identity between a template-derived day count and a user-supplied price per day; it is not a modeled or measured effect, and it is reported as its own bucket for that reason",
+          "productivityCost": "Szucs (2024), JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017, structural estimates: discretion increases prices by about 6% and lowers average contractor total factor productivity by about 10%. (The invalid raw discontinuity reports roughly 32%.) The model monetizes price only and stress-tests 2–9%. Identified on Hungarian contracts below the ~25m HUF / ~90k USD invitational threshold, so transfer to Polish EU-threshold or private procurement is a scenario, not a measurement",
+          "renegotiationCost": "Scenario assumption with an external order-of-magnitude anchor. Beuve, Moszoro & Spiller (2023), JLEO 39(1):281–308, DOI 10.1093/jleo/ewab039 report +0.077–0.105 formal amendments per contract-year per ONE STANDARD DEVIATION of a rigidity index, by 2SLS/IV, in French car-park contracts. ProcuraCost multiplies that slope by a 0–1 calibration profile that is not a z-score, so the product is not a transferred estimate. Only the difference between the two paths is interpretable; neither reported level is",
           "tcoCost": "Scenario assumption only: a three-year cumulative non-acquisition lifecycle savings pool is stress-tested at 0–15%, scaled by min(horizon years / 3, 1), and multiplied by path-specific capture rates. The central case is zero because no transferable empirical estimate is available",
           "bypassCost": "Scenario assumption only: illustrative bypass-rate range, scaled by system controls. Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991) support mechanisms, not probabilities"
         },
@@ -1027,10 +1068,17 @@
           "highPercentOfContractValue": 0.6799999999999999,
           "crossesZero": true
         },
+        "deltaDecomposition": {
+          "process": 0,
+          "delay": 0,
+          "lifecycle": 0,
+          "delayShareOfDeltaPercent": 0
+        },
         "decisionThreshold": {
           "effectiveDayDifference": 0,
           "nonDelayDelta": 0,
-          "breakEvenDailyCostOfInaction": null
+          "breakEvenDailyCostOfInaction": null,
+          "status": "no_day_difference"
         }
       }
     },
@@ -1076,41 +1124,47 @@
       },
       "results": {
         "rigid": {
-          "timeCost": 200,
-          "adminCost": 2020,
-          "opportunityCost": 8000,
+          "timeCost": 140,
+          "adminCost": 2028,
+          "opportunityCost": 11200,
           "productivityCost": 449.99999999999994,
           "renegotiationCost": 308,
           "tcoCost": 0,
           "bypassCost": 250.00000000000006,
-          "total": 11228,
-          "days": 1,
-          "staffCost": 200,
-          "coordCost": 20,
+          "total": 14376,
+          "processCost": 2868,
+          "delayCost": 11200,
+          "lifecycleCost": 308,
+          "days": 1.4,
+          "staffCost": 140,
+          "coordCost": 28,
           "toolCost": 2000
         },
         "flexible": {
-          "timeCost": 200,
-          "adminCost": 2020,
-          "opportunityCost": 8000,
+          "timeCost": 140,
+          "adminCost": 2028,
+          "opportunityCost": 11200,
           "productivityCost": 449.99999999999994,
           "renegotiationCost": 277.2,
           "tcoCost": 0,
           "bypassCost": 250.00000000000006,
-          "total": 11197.2,
-          "days": 1,
-          "staffCost": 200,
-          "coordCost": 20,
+          "total": 14345.2,
+          "processCost": 2868,
+          "delayCost": 11200,
+          "lifecycleCost": 277.2,
+          "days": 1.4,
+          "staffCost": 140,
+          "coordCost": 28,
           "toolCost": 2000
         },
         "delta": 30.799999999999272,
-        "deltaPercent": 0.27506876719179146,
+        "deltaPercent": 0.2147059643643816,
         "bypassProbability": 0.005000000000000001,
         "flexibleBypassProbability": 0.005000000000000001,
-        "rigidDays": 1,
-        "flexibleDays": 1,
+        "rigidDays": 1.4,
+        "flexibleDays": 1.4,
         "trace": {
-          "modelVersion": "2.1.0",
+          "modelVersion": "2.2.0",
           "sanitizedInputs": {
             "contractValue": 500000,
             "tcoHorizonYears": 1,
@@ -1130,17 +1184,12 @@
           },
           "multipliers": {
             "staffMultiplier": 1,
-            "tcoMultiplier": 1,
-            "delayMultiplier": 1,
-            "productivityMultiplier": 1,
-            "bypassMultiplier": 1,
-            "renegotiationMultiplier": 1,
             "coordinationIntensityMultiplier": 1
           },
           "multiplierDetails": [],
           "days": {
-            "rigid": 1,
-            "flexible": 1
+            "rigid": 1.4,
+            "flexible": 1.4
           },
           "probabilities": {
             "bypassRigid": 0.005000000000000001,
@@ -1154,16 +1203,16 @@
           },
           "dimensions": {
             "timeCost": {
-              "rigid": 200,
-              "flexible": 200
+              "rigid": 140,
+              "flexible": 140
             },
             "adminCost": {
-              "rigid": 2020,
-              "flexible": 2020
+              "rigid": 2028,
+              "flexible": 2028
             },
             "opportunityCost": {
-              "rigid": 8000,
-              "flexible": 8000
+              "rigid": 11200,
+              "flexible": 11200
             },
             "productivityCost": {
               "rigid": 449.99999999999994,
@@ -1185,9 +1234,9 @@
         },
         "sources": {
           "timeCost": "Step durations: legal minima (PZP 2019 + Dyrektywa 2014/24/UE) and practitioner benchmarks — not a single empirical source",
-          "opportunityCost": "Deployment-delay cost = procurement duration × daily cost of inaction (model construction)",
-          "productivityCost": "Szucs (2024), JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017: discretion increased normalized prices by about 6 percentage points and selected firms with about 28% lower measured productivity in the corrected main specification. The model monetizes price only and stress-tests 2–9%; Hungarian public-procurement transfer caveat applies",
-          "renegotiationCost": "Beuve, Moszoro & Spiller (2023), JLEO 39(1):281–308, DOI 10.1093/jleo/ewab039: 2SLS/IV estimate for annual formal-amendment frequency, not event probability, in French car-park contracts. The model maps 0–0.105 additional amendments per contract-year to a separate contract-rigidity profile and multiplies by contract duration and user-supplied per-amendment cost",
+          "opportunityCost": "Deployment-delay cost = procurement duration × daily cost of inaction. This is an accounting identity between a template-derived day count and a user-supplied price per day; it is not a modeled or measured effect, and it is reported as its own bucket for that reason",
+          "productivityCost": "Szucs (2024), JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017, structural estimates: discretion increases prices by about 6% and lowers average contractor total factor productivity by about 10%. (The invalid raw discontinuity reports roughly 32%.) The model monetizes price only and stress-tests 2–9%. Identified on Hungarian contracts below the ~25m HUF / ~90k USD invitational threshold, so transfer to Polish EU-threshold or private procurement is a scenario, not a measurement",
+          "renegotiationCost": "Scenario assumption with an external order-of-magnitude anchor. Beuve, Moszoro & Spiller (2023), JLEO 39(1):281–308, DOI 10.1093/jleo/ewab039 report +0.077–0.105 formal amendments per contract-year per ONE STANDARD DEVIATION of a rigidity index, by 2SLS/IV, in French car-park contracts. ProcuraCost multiplies that slope by a 0–1 calibration profile that is not a z-score, so the product is not a transferred estimate. Only the difference between the two paths is interpretable; neither reported level is",
           "tcoCost": "Scenario assumption only: a three-year cumulative non-acquisition lifecycle savings pool is stress-tested at 0–15%, scaled by min(horizon years / 3, 1), and multiplied by path-specific capture rates. The central case is zero because no transferable empirical estimate is available",
           "bypassCost": "Scenario assumption only: illustrative bypass-rate range, scaled by system controls. Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991) support mechanisms, not probabilities"
         },
@@ -1199,10 +1248,17 @@
           "highPercentOfContractValue": 0.3484,
           "crossesZero": true
         },
+        "deltaDecomposition": {
+          "process": 0,
+          "delay": 0,
+          "lifecycle": 30.80000000000001,
+          "delayShareOfDeltaPercent": 0
+        },
         "decisionThreshold": {
           "effectiveDayDifference": 0,
-          "nonDelayDelta": 30.799999999999272,
-          "breakEvenDailyCostOfInaction": null
+          "nonDelayDelta": 30.80000000000001,
+          "breakEvenDailyCostOfInaction": null,
+          "status": "no_day_difference"
         }
       }
     },
@@ -1248,41 +1304,47 @@
       },
       "results": {
         "rigid": {
-          "timeCost": 62250,
+          "timeCost": 37500,
           "adminCost": 7200,
           "opportunityCost": 1800000,
           "productivityCost": 64800,
           "renegotiationCost": 431199.99999999994,
           "tcoCost": 0,
           "bypassCost": 55000.00000000001,
-          "total": 2420450,
+          "total": 2395700,
+          "processCost": 164500,
+          "delayCost": 1800000,
+          "lifecycleCost": 431199.99999999994,
           "days": 60,
-          "staffCost": 62250,
+          "staffCost": 37500,
           "coordCost": 6000,
           "toolCost": 1200
         },
         "flexible": {
-          "timeCost": 43841.42857142857,
+          "timeCost": 26324.285714285714,
           "adminCost": 5400,
           "opportunityCost": 1260000,
           "productivityCost": 107999.99999999999,
           "renegotiationCost": 246400,
           "tcoCost": 0,
           "bypassCost": 55000.00000000001,
-          "total": 1718641.4285714286,
+          "total": 1701124.2857142857,
+          "processCost": 194724.2857142857,
+          "delayCost": 1260000,
+          "lifecycleCost": 246400,
           "days": 42,
-          "staffCost": 43841.42857142857,
+          "staffCost": 26324.285714285714,
           "coordCost": 4200,
           "toolCost": 1200
         },
-        "delta": 701808.5714285714,
-        "deltaPercent": 40.835078205459624,
+        "delta": 694575.7142857143,
+        "deltaPercent": 40.830392001256314,
         "bypassProbability": 0.027500000000000004,
         "flexibleBypassProbability": 0.027500000000000004,
         "rigidDays": 60,
         "flexibleDays": 42,
         "trace": {
-          "modelVersion": "2.1.0",
+          "modelVersion": "2.2.0",
           "sanitizedInputs": {
             "contractValue": 15000000,
             "tcoHorizonYears": 10,
@@ -1302,11 +1364,6 @@
           },
           "multipliers": {
             "staffMultiplier": 1,
-            "tcoMultiplier": 1,
-            "delayMultiplier": 1,
-            "productivityMultiplier": 1,
-            "bypassMultiplier": 1,
-            "renegotiationMultiplier": 1,
             "coordinationIntensityMultiplier": 1
           },
           "multiplierDetails": [],
@@ -1326,8 +1383,8 @@
           },
           "dimensions": {
             "timeCost": {
-              "rigid": 62250,
-              "flexible": 43841.42857142857
+              "rigid": 37500,
+              "flexible": 26324.285714285714
             },
             "adminCost": {
               "rigid": 7200,
@@ -1357,24 +1414,31 @@
         },
         "sources": {
           "timeCost": "Step durations: legal minima (PZP 2019 + Dyrektywa 2014/24/UE) and practitioner benchmarks — not a single empirical source",
-          "opportunityCost": "Deployment-delay cost = procurement duration × daily cost of inaction (model construction)",
-          "productivityCost": "Szucs (2024), JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017: discretion increased normalized prices by about 6 percentage points and selected firms with about 28% lower measured productivity in the corrected main specification. The model monetizes price only and stress-tests 2–9%; Hungarian public-procurement transfer caveat applies",
-          "renegotiationCost": "Beuve, Moszoro & Spiller (2023), JLEO 39(1):281–308, DOI 10.1093/jleo/ewab039: 2SLS/IV estimate for annual formal-amendment frequency, not event probability, in French car-park contracts. The model maps 0–0.105 additional amendments per contract-year to a separate contract-rigidity profile and multiplies by contract duration and user-supplied per-amendment cost",
+          "opportunityCost": "Deployment-delay cost = procurement duration × daily cost of inaction. This is an accounting identity between a template-derived day count and a user-supplied price per day; it is not a modeled or measured effect, and it is reported as its own bucket for that reason",
+          "productivityCost": "Szucs (2024), JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017, structural estimates: discretion increases prices by about 6% and lowers average contractor total factor productivity by about 10%. (The invalid raw discontinuity reports roughly 32%.) The model monetizes price only and stress-tests 2–9%. Identified on Hungarian contracts below the ~25m HUF / ~90k USD invitational threshold, so transfer to Polish EU-threshold or private procurement is a scenario, not a measurement",
+          "renegotiationCost": "Scenario assumption with an external order-of-magnitude anchor. Beuve, Moszoro & Spiller (2023), JLEO 39(1):281–308, DOI 10.1093/jleo/ewab039 report +0.077–0.105 formal amendments per contract-year per ONE STANDARD DEVIATION of a rigidity index, by 2SLS/IV, in French car-park contracts. ProcuraCost multiplies that slope by a 0–1 calibration profile that is not a z-score, so the product is not a transferred estimate. Only the difference between the two paths is interpretable; neither reported level is",
           "tcoCost": "Scenario assumption only: a three-year cumulative non-acquisition lifecycle savings pool is stress-tested at 0–15%, scaled by min(horizon years / 3, 1), and multiplied by path-specific capture rates. The central case is zero because no transferable empirical estimate is available",
           "bypassCost": "Scenario assumption only: illustrative bypass-rate range, scaled by system controls. Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991) support mechanisms, not probabilities"
         },
         "uncertainty": {
-          "lowDelta": 352408.57142857136,
-          "centralDelta": 701808.5714285714,
-          "highDelta": 1229308.5714285714,
-          "lowPercentOfContractValue": 2.3493904761904756,
-          "highPercentOfContractValue": 8.195390476190475,
+          "lowDelta": 345175.7142857143,
+          "centralDelta": 694575.7142857143,
+          "highDelta": 1222075.7142857146,
+          "lowPercentOfContractValue": 2.3011714285714286,
+          "highPercentOfContractValue": 8.14717142857143,
           "crossesZero": false
+        },
+        "deltaDecomposition": {
+          "process": -30224.28571428571,
+          "delay": 540000,
+          "lifecycle": 184799.99999999994,
+          "delayShareOfDeltaPercent": 77.74530391626543
         },
         "decisionThreshold": {
           "effectiveDayDifference": 18,
-          "nonDelayDelta": 161808.57142857136,
-          "breakEvenDailyCostOfInaction": 0
+          "nonDelayDelta": 154575.71428571423,
+          "breakEvenDailyCostOfInaction": -8587.53968253968,
+          "status": "formal_costlier_at_zero_delay"
         }
       }
     },
@@ -1425,41 +1489,47 @@
       },
       "results": {
         "rigid": {
-          "timeCost": 5917.5,
+          "timeCost": 4142.25,
           "adminCost": 2238,
           "opportunityCost": 0,
           "productivityCost": 33750,
           "renegotiationCost": 673.75,
           "tcoCost": 0,
           "bypassCost": 2500.0000000000005,
-          "total": 45079.25,
-          "days": 14,
-          "staffCost": 5917.5,
-          "coordCost": 238,
+          "total": 43304,
+          "processCost": 42630.25,
+          "delayCost": 0,
+          "lifecycleCost": 673.75,
+          "days": 13.999999999999998,
+          "staffCost": 4142.25,
+          "coordCost": 237.99999999999994,
           "toolCost": 2000
         },
         "flexible": {
-          "timeCost": 5917.5,
+          "timeCost": 4142.25,
           "adminCost": 2238,
           "opportunityCost": 0,
           "productivityCost": 40500.00000000001,
           "renegotiationCost": 481.25,
           "tcoCost": 0,
           "bypassCost": 2500.0000000000005,
-          "total": 51636.75000000001,
-          "days": 14,
-          "staffCost": 5917.5,
-          "coordCost": 238,
+          "total": 49861.50000000001,
+          "processCost": 49380.25000000001,
+          "delayCost": 0,
+          "lifecycleCost": 481.25,
+          "days": 13.999999999999998,
+          "staffCost": 4142.25,
+          "coordCost": 237.99999999999994,
           "toolCost": 2000
         },
         "delta": -6557.500000000007,
-        "deltaPercent": -12.699288781730079,
+        "deltaPercent": -13.151429459603115,
         "bypassProbability": 0.005000000000000001,
         "flexibleBypassProbability": 0.005000000000000001,
-        "rigidDays": 14,
-        "flexibleDays": 14,
+        "rigidDays": 13.999999999999998,
+        "flexibleDays": 13.999999999999998,
         "trace": {
-          "modelVersion": "2.1.0",
+          "modelVersion": "2.2.0",
           "sanitizedInputs": {
             "contractValue": 5000000,
             "tcoHorizonYears": 0,
@@ -1482,11 +1552,6 @@
           },
           "multipliers": {
             "staffMultiplier": 0.9,
-            "tcoMultiplier": 1,
-            "delayMultiplier": 1,
-            "productivityMultiplier": 1,
-            "bypassMultiplier": 1,
-            "renegotiationMultiplier": 1,
             "coordinationIntensityMultiplier": 0.85
           },
           "multiplierDetails": [
@@ -1500,8 +1565,8 @@
             }
           ],
           "days": {
-            "rigid": 14,
-            "flexible": 14
+            "rigid": 13.999999999999998,
+            "flexible": 13.999999999999998
           },
           "probabilities": {
             "bypassRigid": 0.005000000000000001,
@@ -1515,8 +1580,8 @@
           },
           "dimensions": {
             "timeCost": {
-              "rigid": 5917.5,
-              "flexible": 5917.5
+              "rigid": 4142.25,
+              "flexible": 4142.25
             },
             "adminCost": {
               "rigid": 2238,
@@ -1546,9 +1611,9 @@
         },
         "sources": {
           "timeCost": "Step durations: legal minima (PZP 2019 + Dyrektywa 2014/24/UE) and practitioner benchmarks — not a single empirical source",
-          "opportunityCost": "Deployment-delay cost = procurement duration × daily cost of inaction (model construction)",
-          "productivityCost": "Szucs (2024), JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017: discretion increased normalized prices by about 6 percentage points and selected firms with about 28% lower measured productivity in the corrected main specification. The model monetizes price only and stress-tests 2–9%; Hungarian public-procurement transfer caveat applies",
-          "renegotiationCost": "Beuve, Moszoro & Spiller (2023), JLEO 39(1):281–308, DOI 10.1093/jleo/ewab039: 2SLS/IV estimate for annual formal-amendment frequency, not event probability, in French car-park contracts. The model maps 0–0.105 additional amendments per contract-year to a separate contract-rigidity profile and multiplies by contract duration and user-supplied per-amendment cost",
+          "opportunityCost": "Deployment-delay cost = procurement duration × daily cost of inaction. This is an accounting identity between a template-derived day count and a user-supplied price per day; it is not a modeled or measured effect, and it is reported as its own bucket for that reason",
+          "productivityCost": "Szucs (2024), JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017, structural estimates: discretion increases prices by about 6% and lowers average contractor total factor productivity by about 10%. (The invalid raw discontinuity reports roughly 32%.) The model monetizes price only and stress-tests 2–9%. Identified on Hungarian contracts below the ~25m HUF / ~90k USD invitational threshold, so transfer to Polish EU-threshold or private procurement is a scenario, not a measurement",
+          "renegotiationCost": "Scenario assumption with an external order-of-magnitude anchor. Beuve, Moszoro & Spiller (2023), JLEO 39(1):281–308, DOI 10.1093/jleo/ewab039 report +0.077–0.105 formal amendments per contract-year per ONE STANDARD DEVIATION of a rigidity index, by 2SLS/IV, in French car-park contracts. ProcuraCost multiplies that slope by a 0–1 calibration profile that is not a z-score, so the product is not a transferred estimate. Only the difference between the two paths is interpretable; neither reported level is",
           "tcoCost": "Scenario assumption only: a three-year cumulative non-acquisition lifecycle savings pool is stress-tested at 0–15%, scaled by min(horizon years / 3, 1), and multiplied by path-specific capture rates. The central case is zero because no transferable empirical estimate is available",
           "bypassCost": "Scenario assumption only: illustrative bypass-rate range, scaled by system controls. Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991) support mechanisms, not probabilities"
         },
@@ -1560,10 +1625,17 @@
           "highPercentOfContractValue": 0.25025,
           "crossesZero": true
         },
+        "deltaDecomposition": {
+          "process": -6750.000000000007,
+          "delay": 0,
+          "lifecycle": 192.5,
+          "delayShareOfDeltaPercent": 0
+        },
         "decisionThreshold": {
           "effectiveDayDifference": 0,
           "nonDelayDelta": -6557.500000000007,
-          "breakEvenDailyCostOfInaction": null
+          "breakEvenDailyCostOfInaction": null,
+          "status": "no_day_difference"
         }
       }
     }

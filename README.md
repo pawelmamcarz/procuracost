@@ -2,7 +2,7 @@
 
 > **A tunnel has walls. A field has a horizon.**
 
-ProcuraCost is an open-source decision model comparing formal/sequential and adaptive/compliant procurement designs under the same governance boundary. Version 2.1 reports a central estimate, a broad scenario interval, and a daily-cost-of-inaction break-even threshold. It may favor either path and does not claim a universal causal advantage.
+ProcuraCost is an open-source decision model comparing formal/sequential and adaptive/compliant procurement designs under the same governance boundary. Version 2.2 reports ΔC decomposed into process, delay and lifecycle buckets, a broad scenario interval, and an unclamped break-even daily cost of inaction. The delay bucket is an accounting identity between a template day count and a user-supplied price per day, and it carried 77.7–99.5% of the 2.1 headline; excluding it, the formal path is cheaper on process cost in 6 of 9 built-in scenarios. The model may favor either path and does not claim a universal causal advantage.
 
 ## The Model
 
@@ -18,10 +18,10 @@ Procurement *policy* defines principles and boundaries. Procurement *procedure* 
 ## Features
 
 - **Cost Calculator** — 7-dimension model comparing formal/sequential and adaptive/compliant paths under the same governance boundary across 7 process types
-- **Path Optimizer** — a common-criteria, rule-based scorer with a 30-run ±25% weight-sensitivity sweep, ranking-margin ablation, and a natural-language explanation. It is illustrative, not trained ML, and not validated on real procurement data; public recommendations are hard-filtered to lawful PZP modes
-- **Maturity Assessment** — 10-question free audit placing your organization on the Tunnel→Field spectrum
+- **Path Optimizer** — a common-criteria, rule-based scorer with a 30-run ±25% weight-sensitivity sweep, ranking-margin ablation, and a natural-language explanation. It is illustrative, not trained ML, and not validated on real procurement data; public recommendations are filtered to procedures available without separate statutory grounds, within zamówienia klasyczne only; withheld procedures are named in the UI
+- **Maturity Assessment** — 10-question free self-assessment placing your organization on the Tunnel→Field spectrum
 - **Illustrative cases** — practitioner and company examples used for mechanism illustration, not causal evidence
-- **Industry Benchmark** — See where your scenario sits relative to 8 reference cases
+- **Industry Benchmark** — See where your scenario sits relative to the 9 non-custom reference scenarios (7 of which carry an illustrative case study)
 - **Bilingual** — Full Polish and English interfaces
 
 ## Team
@@ -52,8 +52,8 @@ Open [http://localhost:3000](http://localhost:3000) for the Polish interface or 
 
 The cost model draws on peer-reviewed and practitioner sources (only a subset of the model's parameters are peer-reviewed):
 
-1. **Szucs (2024)** — corrected main specification: approximately 6 percentage points higher normalized price and 28% lower measured contractor productivity under discretion; Hungarian-public transfer caveat applies.
-2. **Beuve, Moszoro & Spiller (2023)** — 2SLS/IV estimate of 0.077–0.105 additional formal amendments per contract-year for contractual rigidity in French car-park contracts; not an event probability or workflow estimate.
+1. **Szucs (2024)** — structural estimates: about 6% higher price and about 10% lower average contractor total factor productivity under discretion. Identified on Hungarian public contracts below a ~25m HUF threshold, so the transfer caveat is substantial.
+2. **Beuve, Moszoro & Spiller (2023)** — 2SLS/IV estimate of 0.077–0.105 additional formal amendments per contract-year for a simultaneous one-SD increase in *each* of seven z-scored rigidity categories, in French car-park contracts; not an event probability, not a workflow estimate, and not the effect of a one-SD move on the summed index.
 3. **TCO and bypass** — scenario assumptions with broad bounds. The unsupported 30% TCO rule and the former bypass sigmoid are excluded from the baseline.
 
 Theoretical grounding: Lipsky (1980) Street-Level Bureaucracy · Vaughan (1996) Challenger · Holmström & Milgrom (1991) Multitask Principal-Agent
@@ -78,7 +78,7 @@ components/             React components
 lib/
   calculations.ts       7-dimension cost model
   optimizer.ts          rule-based path scorer (30-run sensitivity sweep)
-  scenarios.ts          8 reference case studies
+  scenarios.ts          10 reference scenarios (9 exported; 7 with case studies)
   i18n.ts               All user-facing strings (PL + EN)
 ```
 

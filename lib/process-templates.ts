@@ -20,7 +20,12 @@ export interface ProcessStep {
   flexibleDays: number | null;
   // Legally mandated minimum waiting period — cannot be shortened
   mandatoryWait: boolean;
-  // Hours each stakeholder role spends on this step
+  // TOTAL hours the role spends on this step, for the whole role, not per person.
+  // Model 2.1 multiplied these by the role headcount, so declaring three buyers made
+  // the identical workflow cost three times as much in buyer time. A fixed workload
+  // does not grow because more people are available to share it; headcount is captured
+  // as descriptive input only. An empty object means the step consumes elapsed calendar
+  // time without consuming role effort (e.g. a statutory standstill).
   participation: Partial<Record<StakeholderRole, number>>;
   // Explanation shown to the user
   note: string;
@@ -119,13 +124,28 @@ export const PROCESS_RIGIDITY: Record<ProcessType, number> = {
 };
 
 // ─── Corruption / favoritism-risk context by process type ───────────────────────
-// A calibrated governance-risk index (Grade C) for how much favoritism, price-dispersion
-// and value loss a DISCRETIONARY award would risk in this context (0 = none, 1 = high
-// public-money scrutiny). This is what competitive (rigid) tendering averts — the basis
-// of the governance value credited to formal procedures. The pzp_eu = 1.0 anchor is tied
-// to Szucs 2024 (discretion raises prices and selects less-productive contractors); the
-// ordinal direction is taken from OECD; the intermediate gradient between anchors is a
-// modeling assumption — sensitivity-tested. Public procurement carries the highest stakes.
+// How much favoritism, price dispersion and value loss a DISCRETIONARY award would risk
+// in this context (0 = none, 1 = high public-money scrutiny). This is what competitive
+// tendering averts — the basis of the governance value credited to formal procedures,
+// and the only channel in the model that can favour the formal path.
+//
+// EVIDENTIAL STATUS (corrected in 2.2): this whole vector is a Grade-C ordinal calibration
+// assumption with NO external warrant, on the same footing as PATH_PROFILES. Two claims
+// were removed here because neither survived checking:
+//
+//   1. "the ordinal direction is taken from OECD" — no OECD publication was named anywhere
+//      in the corpus. An organisation name attached to no title, year or table cannot be
+//      checked, and this vector is live: it scales productivityCost.
+//   2. "the pzp_eu = 1.0 anchor is tied to Szucs 2024" — Szucs identifies his effect on
+//      Hungarian contracts BELOW a ~25m HUF (~90k USD) invitational threshold, i.e. the
+//      small end of the value distribution. Anchoring the maximum risk value to the
+//      largest, most heavily publicised EU-threshold procedures inverts his population.
+//      Szucs supplies a price and a productivity effect within one threshold band; he
+//      supplies no index of favoritism risk by procedure type, and no value of the form 1.0.
+//
+// Replace with observed favoritism-risk indicators (single-bid rates, price dispersion,
+// audit findings) during calibration. Until then it is an assumption, and the sensitivity
+// sweep should treat it as one.
 export const CORRUPTION_RISK_CONTEXT: Record<ProcessType, number> = {
   pzp_eu: 1.0,
   pzp_krajowy: 0.9,
@@ -164,14 +184,14 @@ const PZP_EU_STEPS: ProcessStep[] = [
   },
   {
     id: "publication",
-    name: "Publikacja BZP/TED",
-    nameEn: "Publication in BZP/TED",
+    name: "Publikacja w TED (Dz.Urz. UE)",
+    nameEn: "Publication in TED (OJ EU)",
     rigidDays: 35,
     flexibleDays: 35,
     mandatoryWait: true,
     participation: { buyer: 4 },
-    note: "Modelowany standardowy termin składania ofert: 35 dni — art. 138 ust. 1 PZP. Ustawowe skrócenia, m.in. do 30 dni przy pełnej komunikacji elektronicznej, wymagają osobnego scenariusza.",
-    noteEn: "Modeled standard bid-submission period: 35 days — Art. 138(1) PZP. Statutory reductions, including 30 days for fully electronic submission, require a separate scenario.",
+    note: "Modelowany standardowy termin składania ofert: 35 dni — art. 138 ust. 1 PZP. Powyżej progów unijnych ogłoszenie trafia do Dz.Urz. UE / TED; BZP jest kanałem dla postępowań krajowych (Dział III). Uwaga: art. 138 ust. 4 pozwala skrócić termin do 30 dni przy pełnej komunikacji elektronicznej, a art. 61 ust. 1 czyni ją ustawowym domyślnym trybem — skrócenie jest więc w praktyce dostępne w większości postępowań. Model zachowuje 35 dni jako wariant konserwatywny; 30 dni jest udokumentowanym przypadkiem wrażliwości.",
+    noteEn: "Modeled standard bid-submission period: 35 days — Art. 138(1) PZP. Above the EU thresholds the notice goes to the OJ EU / TED; BZP is the channel for national (Dział III) procedures. Note that Art. 138(4) permits a reduction to 30 days for fully electronic submission and Art. 61(1) makes electronic communication the statutory default, so the reduction is in practice available in most procedures. The model keeps 35 days as the conservative variant; 30 days is a documented sensitivity case.",
   },
   {
     id: "bid_evaluation",
@@ -694,8 +714,21 @@ export interface StepTiming {
 
 export interface ProcessTiming {
   steps: StepTiming[];
+  // Elapsed calendar days, unrounded. Model 2.1 rounded here, before the figure was
+  // multiplied by the daily cost of inaction — at 50,000 PLN/day a half-day of
+  // rounding was worth 25,000 PLN of pure discretisation artifact. Rounding is now a
+  // presentation concern only.
   rigidDays: number;
   flexibleDays: number;
+  // Days on steps that actually consume role effort. Non-labour coordination overhead
+  // accrues only over these: a statutory standstill has nobody working on the file, so
+  // it cannot generate "per-day meeting and alignment effort".
+  rigidActiveDays: number;
+  flexibleActiveDays: number;
+}
+
+function stepConsumesEffort(step: ProcessStep): boolean {
+  return Object.values(step.participation).some((hours) => nonNegativeFinite(hours) > 0);
 }
 
 function nonNegativeFinite(value: number): number {
@@ -735,13 +768,24 @@ export function deriveStepTimings(
     return { step, rigidDays, flexibleDays };
   });
 
+  const active = timingSteps.filter((item) => stepConsumesEffort(item.step));
+
   return {
     steps: timingSteps,
-    rigidDays: Math.round(timingSteps.reduce((total, item) => total + item.rigidDays, 0)),
-    flexibleDays: Math.round(
-      timingSteps.reduce((total, item) => total + (item.flexibleDays ?? 0), 0),
-    ),
+    rigidDays: timingSteps.reduce((total, item) => total + item.rigidDays, 0),
+    flexibleDays: timingSteps.reduce((total, item) => total + (item.flexibleDays ?? 0), 0),
+    rigidActiveDays: active.reduce((total, item) => total + item.rigidDays, 0),
+    flexibleActiveDays: active.reduce((total, item) => total + (item.flexibleDays ?? 0), 0),
   };
+}
+
+export function deriveActiveDays(
+  steps: ProcessStep[],
+  techMultiplier: number,
+  flexible: boolean,
+): number {
+  const timing = deriveStepTimings(steps, techMultiplier);
+  return flexible ? timing.flexibleActiveDays : timing.rigidActiveDays;
 }
 
 export function deriveRigidDays(
@@ -767,9 +811,11 @@ export function deriveStaffCost(
   flexible: boolean,
   stakeholders: Record<StakeholderRole, { count: number; dailyRate: number }>,
   processPhase?: "upstream" | "downstream",
-  spendType?: "direct" | "indirect"
+  spendType?: "direct" | "indirect",
+  techMultiplier = 1,
 ): number {
   const staffContextMultiplier = getStaffContextMultiplier(processPhase, spendType);
+  const safeTechMultiplier = nonNegativeFinite(techMultiplier);
   const activeSteps = flexible
     ? steps.filter((s) => s.mandatoryWait || s.flexibleDays !== null)
     : steps;
@@ -789,11 +835,22 @@ export function deriveStaffCost(
           effectiveHours *= Math.min(1, Math.max(0, step.flexibleDays / step.rigidDays));
         }
 
+        // Technology scales effort on non-mandatory steps the same way it scales their
+        // duration. Model 2.1 applied the multiplier to elapsed days only, so moving to
+        // an end-to-end suite cut delay and overhead but left role hours untouched —
+        // inconsistent with scaling adaptive effort by a duration ratio two lines above,
+        // and with H5 ("technology changes execution costs when it is used"). A statutory
+        // wait is exempt: no system shortens it and none removes the effort around it.
+        if (!step.mandatoryWait) {
+          effectiveHours *= safeTechMultiplier;
+        }
+
         effectiveHours *= staffContextMultiplier;
 
-        const count = nonNegativeFinite(rate.count);
+        // rate.count is descriptive. See ProcessStep.participation: the hours are a
+        // whole-role total, so spreading them over more people does not create more work.
         const dailyRate = nonNegativeFinite(rate.dailyRate);
-        return stepTotal + (effectiveHours * count * dailyRate) / WORK_HOURS_PER_DAY;
+        return stepTotal + (effectiveHours * dailyRate) / WORK_HOURS_PER_DAY;
       },
       0
     );

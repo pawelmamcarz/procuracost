@@ -7,13 +7,13 @@ import { calculateCosts } from "@/lib/calculations";
 export const metadata: Metadata = {
   title: "ProcuraCost — Procurement Cost Calculator",
   description:
-    "Neutral procurement cost model with scenario uncertainty, path optimizer, and maturity audit.",
+    "Neutral procurement cost model with scenario uncertainty, path optimizer, and maturity self-assessment.",
 };
 
 const stats = [
-  { value: "~6 pp", label: "normalized-price increase under discretion; Hungarian-market transfer", source: "Szucs, JEEA 2024" },
-  { value: "0–0.105/year", label: "contract-rigidity increase in formal-amendment frequency", source: "Beuve et al., JLEO 2023, 2SLS/IV" },
-  { value: "0–15%", label: "declared TCO stress test; central scenario is zero", source: "model 2.1 assumption" },
+  { value: "~6%", label: "price increase under discretion; structural estimate, Hungarian-market transfer", source: "Szucs, JEEA 2024" },
+  { value: "0.077–0.105/year", label: "added formal-amendment frequency for a 1 SD rise in each of 7 contract-rigidity categories", source: "Beuve et al., JLEO 2023, 2SLS/IV" },
+  { value: "0–15%", label: "declared TCO stress test; central scenario is zero", source: "model 2.2 assumption" },
 ];
 
 const howItWorks = [
@@ -65,7 +65,10 @@ const caseStudyPreviews = SCENARIOS.filter((s) => s.caseStudy)
     const insight = s.caseStudy!.insightEn;
     return {
       title: s.caseStudy!.title,
-      insight: insight.length > 120 ? insight.slice(0, 117) + "…" : insight,
+      // Full text. Truncating at 117 chars systematically severed the caveat, which is
+      // always the second sentence — "This is a c…" instead of "…a claim reported by an
+      // organisation promoting the method, not an independent study."
+      insight,
       rigidDays: result.rigidDays,
       flexibleDays: result.flexibleDays,
       source: s.caseStudy!.source,
@@ -117,7 +120,7 @@ export default function EnHomePage() {
             href="/en/assessment"
             className="rounded-xl border border-gray-200 bg-white px-8 py-3 text-sm font-semibold text-gray-600 hover:border-gray-300"
           >
-            Free audit →
+            Free self-assessment →
           </Link>
           <Link
             href="/en/optimizer"
@@ -249,7 +252,7 @@ export default function EnHomePage() {
       <div className="mt-16 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-center text-white">
         <h2 className="text-2xl font-bold">See what your organisation is losing</h2>
         <p className="mt-2 text-blue-100">
-          Cost calculator, path optimizer and a free procurement maturity audit —
+          Cost calculator, path optimizer and a free procurement maturity self-assessment —
           with empirical evidence separated from broad scenario assumptions.
         </p>
         <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
@@ -263,7 +266,7 @@ export default function EnHomePage() {
             href="/en/assessment"
             className="rounded-xl border border-white/40 bg-white/10 px-8 py-3 text-sm font-semibold text-white hover:bg-white/20"
           >
-            Free audit →
+            Free self-assessment →
           </Link>
         </div>
       </div>

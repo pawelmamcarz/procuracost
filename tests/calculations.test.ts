@@ -102,9 +102,79 @@ describe("(c) central break-even threshold", () => {
     const threshold = result.decisionThreshold;
     const reconstructed = threshold.nonDelayDelta + threshold.effectiveDayDifference * 4_321;
     expect(reconstructed).toBeCloseTo(result.delta, 8);
-    if (threshold.breakEvenDailyCostOfInaction !== null) {
-      expect(threshold.breakEvenDailyCostOfInaction).toBeGreaterThanOrEqual(0);
+  });
+
+  // Model 2.1 clamped the threshold at zero, which made "the formal path is already
+  // more expensive with the delay bucket removed" indistinguishable from "any positive
+  // delay cost tips the result". Those are different claims and the status must
+  // separate them. No 2.1 test could fail on the clamp, so it survived unnoticed.
+  it("reports a negative threshold instead of clamping it to zero", () => {
+    const result = calculateCosts(makeInputs({ dailyCostOfInaction: 4_321 }));
+    const { breakEvenDailyCostOfInaction, nonDelayDelta, status } = result.decisionThreshold;
+    expect(nonDelayDelta).toBeGreaterThan(0);
+    expect(status).toBe("formal_costlier_at_zero_delay");
+    expect(breakEvenDailyCostOfInaction).toBeLessThan(0);
+  });
+
+  it("reports a genuinely positive threshold when the non-delay delta favours formality", () => {
+    // Drive the selection channel hard enough to outweigh process and lifecycle costs:
+    // a large contract on a process type with a wide competition gap.
+    const result = calculateCosts(
+      makeInputs({
+        processType: "capex",
+        contractValue: 900_000_000,
+        renegotiationCost: 0,
+        dailyCostOfInaction: 1,
+      }),
+    );
+    const { breakEvenDailyCostOfInaction, nonDelayDelta, status } = result.decisionThreshold;
+    expect(nonDelayDelta).toBeLessThan(0);
+    expect(status).toBe("threshold_above_zero");
+    expect(breakEvenDailyCostOfInaction).toBeGreaterThan(0);
+    // Below the threshold the formal path must actually win.
+    const below = calculateCosts(
+      makeInputs({
+        processType: "capex",
+        contractValue: 900_000_000,
+        renegotiationCost: 0,
+        dailyCostOfInaction: Math.floor(breakEvenDailyCostOfInaction! / 2),
+      }),
+    );
+    expect(below.delta).toBeLessThan(0);
+  });
+
+  it("reports no threshold when both paths take the same time", () => {
+    const result = calculateCosts(makeInputs({ processType: "catalog_order" }));
+    expect(result.decisionThreshold.effectiveDayDifference).toBe(0);
+    expect(result.decisionThreshold.breakEvenDailyCostOfInaction).toBeNull();
+    expect(result.decisionThreshold.status).toBe("no_day_difference");
+  });
+});
+
+describe("(c2) ΔC decomposition separates the user-supplied delay identity", () => {
+  it("splits the delta into process, delay and lifecycle buckets that sum to it", () => {
+    for (const scenario of SCENARIOS) {
+      const r = calculateCosts(scenario.inputs);
+      const d = r.deltaDecomposition;
+      expect(d.process + d.delay + d.lifecycle).toBeCloseTo(r.delta, 6);
+      expect(r.rigid.processCost + r.rigid.delayCost + r.rigid.lifecycleCost).toBeCloseTo(
+        r.rigid.total,
+        6,
+      );
+      expect(r.flexible.processCost + r.flexible.delayCost + r.flexible.lifecycleCost).toBeCloseTo(
+        r.flexible.total,
+        6,
+      );
     }
+  });
+
+  it("computes the delay bucket as exactly the day difference times the user's daily cost", () => {
+    const dailyCost = 7_777;
+    const r = calculateCosts(makeInputs({ dailyCostOfInaction: dailyCost }));
+    expect(r.deltaDecomposition.delay).toBeCloseTo(
+      (r.rigidDays - r.flexibleDays) * dailyCost,
+      6,
+    );
   });
 });
 

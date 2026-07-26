@@ -19,6 +19,7 @@ export default function HeroSummary({ result, scenario, inputs, lang }: Props) {
     flexibleDays,
     uncertainty,
     decisionThreshold,
+    deltaDecomposition,
   } = result;
 
   const spendLabel = inputs.spendType
@@ -60,15 +61,36 @@ export default function HeroSummary({ result, scenario, inputs, lang }: Props) {
           {tx.flexibleLabel}: <strong>{flexibleDays}</strong> {lang === "en" ? "days" : "dni"}
         </span>
       </div>
-      {decisionThreshold.breakEvenDailyCostOfInaction !== null && (
-        <p className="mt-2 text-xs text-white/75">
-          {lang === "en" ? "Central break-even" : "Próg równowagi w scenariuszu centralnym"}:{" "}
-          <strong>{formatPLN(decisionThreshold.breakEvenDailyCostOfInaction)}/{lang === "en" ? "day" : "dzień"}</strong>.
-          {" "}{lang === "en"
-            ? "Above this daily inaction cost, the adaptive path has the lower modeled total."
-            : "Powyżej tego dziennego kosztu bezczynności niższy modelowany koszt ma ścieżka adaptacyjna."}
-        </p>
-      )}
+      <div className="mt-3 rounded-xl border border-white/20 bg-white/10 p-3 text-sm">
+        <p className="font-semibold">{tx.decompositionTitle}</p>
+        <div className="mt-1.5 space-y-0.5 text-xs text-white/85">
+          <div>{tx.decompositionProcess}: <strong>{formatPLN(deltaDecomposition.process)}</strong></div>
+          <div>
+            {tx.decompositionDelay}: <strong>{formatPLN(deltaDecomposition.delay)}</strong>
+            {delta !== 0 && ` (${Math.round(deltaDecomposition.delayShareOfDeltaPercent)}%)`}
+          </div>
+          <div>{tx.decompositionLifecycle}: <strong>{formatPLN(deltaDecomposition.lifecycle)}</strong></div>
+        </div>
+        <p className="mt-1.5 text-xs text-white/70">{tx.decompositionNote}</p>
+      </div>
+
+      <p className="mt-2 text-xs text-white/75">
+        {tx.breakEvenLabel}:{" "}
+        {decisionThreshold.status === "threshold_above_zero" ? (
+          <>
+            <strong>
+              {formatPLN(decisionThreshold.breakEvenDailyCostOfInaction ?? 0)}/
+              {lang === "en" ? "day" : "dzień"}
+            </strong>. {tx.breakEvenAboveZero}
+          </>
+        ) : decisionThreshold.status === "formal_costlier_at_zero_delay" ? (
+          tx.breakEvenFormalLoses
+        ) : decisionThreshold.status === "adaptive_costlier_at_zero_delay" ? (
+          tx.breakEvenAdaptiveLoses
+        ) : (
+          tx.breakEvenNoDayDifference
+        )}
+      </p>
 
       {(spendLabel || phaseLabel) && (
         <div className="mt-3 flex flex-wrap gap-2 text-xs">

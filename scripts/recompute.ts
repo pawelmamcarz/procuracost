@@ -79,6 +79,45 @@ console.log(`Scenario envelope crosses zero in ${crossing.length}/${results.leng
   (crossing.length ? ` (${crossing.map((n) => n.id).join(", ")})` : "") + ".");
 console.log(`Selection dimension favours the formal path in ${favRigid.length}/${results.length} central scenarios.`);
 
+// ── (b2) ΔC decomposition ─────────────────────────────────────────────────────
+// The single most important disclosure in the model. The delay bucket is the product
+// of a template-derived day count and a daily cost the USER supplies — an accounting
+// identity, not a modeled result. Reporting only the summed Δ let that identity carry
+// most of the headline while reading as a finding.
+console.log("\n### ΔC decomposition: how much of the headline is the user-supplied delay identity?\n");
+console.log("| scenario | Δ process | Δ delay | Δ lifecycle | **Δ total** | delay share | break-even (PLN/day) | status |");
+console.log("|--|--:|--:|--:|--:|--:|--:|--|");
+
+for (const { id, r } of results) {
+  const d = r.deltaDecomposition;
+  const t = r.decisionThreshold;
+  const breakEven = t.breakEvenDailyCostOfInaction === null
+    ? "n/a"
+    : fmt(t.breakEvenDailyCostOfInaction);
+  console.log(
+    `| ${id} | ${fmt(d.process)} | ${fmt(d.delay)} | ${fmt(d.lifecycle)} | **${r.delta >= 0 ? "+" : ""}${fmt(r.delta)}** | ` +
+    `${d.delayShareOfDeltaPercent.toFixed(1)}% | ${breakEven} | ${t.status} |`
+  );
+}
+
+const withDelay = results.filter(({ r }) => r.deltaDecomposition.delay !== 0);
+const delayShares = withDelay.map(({ r }) => r.deltaDecomposition.delayShareOfDeltaPercent);
+if (delayShares.length) {
+  console.log(
+    `\nWhere the two paths differ in duration (${delayShares.length}/${results.length} scenarios), the delay ` +
+    `bucket carries ${Math.min(...delayShares).toFixed(1)}–${Math.max(...delayShares).toFixed(1)}% of |Δ|. ` +
+    `That bucket is (template day difference) × (user-supplied daily cost): an identity, not a modeled effect.`
+  );
+}
+
+const processFavoursFormal = results.filter(({ r }) => r.deltaDecomposition.process < 0);
+console.log(
+  `Excluding the delay identity, the FORMAL path is cheaper on process cost in ` +
+  `${processFavoursFormal.length}/${results.length} scenarios` +
+  (processFavoursFormal.length ? ` (${processFavoursFormal.map((n) => n.id).join(", ")})` : "") +
+  `. The Tunnel–Field advantage in this parameterisation is a delay story, not a process-cost story.`
+);
+
 // ── (c) context-uplift audit ──────────────────────────────────────────────────
 console.log("\n### Context-uplift audit (formal path): total per-dimension factor vs unset baseline");
 console.log("Invariant: no dimension's total context uplift exceeds ~×1.5.\n");

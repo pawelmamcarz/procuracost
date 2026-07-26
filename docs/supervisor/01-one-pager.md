@@ -43,6 +43,20 @@ Model nie dowodzi, że adaptacyjne zakupy są przeciętnie tańsze w Polsce. Nie
 zastępuje analizy prawnej. Wartość naukowa zależy od poprawnego pomiaru
 mechanizmów i projektu identyfikacyjnego zaakceptowanego przed zebraniem danych.
 
-Model zachowuje obowiązkowe terminy PZP w obu ścieżkach i podaje próg kosztu
-dnia bezczynności, przy którym centralny wynik zmienia znak. TCO wynosi centralnie
-zero i jest wyłącznie stres-testowane.
+Model zachowuje obowiązkowe terminy PZP w obu ścieżkach. TCO wynosi centralnie zero
+i jest wyłącznie stres-testowane.
+
+## Co zmieniła wersja 2.2
+
+ΔC jest raportowane **rozbite na trzy kubełki** — proces, opóźnienie, cykl życia — bo
+kubełek opóźnienia jest tożsamością rachunkową między liczbą dni z szablonu a ceną dnia
+podaną przez użytkownika, i niósł 77,7–99,5% dawnej liczby nagłówkowej.
+
+**Po odjęciu tej tożsamości ścieżka formalna jest tańsza na koszcie procesu w sześciu
+z dziewięciu scenariuszy wbudowanych.**
+
+Próg kosztu dnia bezczynności nie jest już ucinany do zera. W modelu 2.1 zwracał 0 w siedmiu
+scenariuszach i wartość nieokreśloną w trzech — czyli nigdy nie działał, mimo że poprzednia
+wersja tej noty przedstawiała go jako funkcję modelu. Teraz raportuje wartość surową wraz ze
+statusem, który mówi, czy o wyniku decyduje kanał opóźnienia, czy ścieżka formalna przegrywa
+już przy zerowym koszcie zwłoki.

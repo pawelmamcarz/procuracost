@@ -1,7 +1,7 @@
 # Procedural Rigidity and Adaptive Procurement: A Transparent Decision Model
 
 **Working paper — draft for review**
-**Model:** ProcuraCost 2.1.0
+**Model:** ProcuraCost 2.2.0
 **Updated:** 14 July 2026
 
 ## Abstract
@@ -41,17 +41,21 @@ Five constructs must not be conflated:
 
 ### 3.1 Supplier selection and discretion
 
-Szucs (2024) studies a Hungarian reform that made a high-discretion procedure available below a value threshold. Because contract values were manipulated around the threshold, the raw discontinuity is not a valid causal RDD. The paper uses policy timing and a structural selection correction. Its main corrected estimates indicate that discretion increased normalized prices by about **6 percentage points** and selected contractors with about **28% lower measured productivity**. Earlier ProcuraCost text incorrectly stated approximately 10% productivity and inconsistently described the price estimate.
+Szucs (2024) studies a Hungarian reform that made a high-discretion invitational procedure available below a value threshold of 25 million HUF (about 90,000 USD). Because contract values were manipulated around the threshold, the raw discontinuity is not a valid causal RDD. The paper uses policy timing and a structural selection correction. Its structural estimates indicate that discretion increases prices by about **6%** and lowers the average total factor productivity of selected contractors by about **10%**; the invalid raw discontinuity reports roughly 32%.
 
-The revised model monetizes the price channel only. Productivity remains a separate observed outcome because converting it into contract-value loss would double count and require another unsupported mapping. Transfer from Hungarian public procurement to Polish or private procurement is represented by a 2–9% scenario range.
+> **Correction (model 2.2).** Model 2.1 reported the productivity effect as 28% and asserted that the earlier figure of approximately 10% had been an error. That was backwards. 10% is the paper's structural estimate; 28 percentage points is a different quantity in the same paper — the increase in the probability that a politically connected firm wins under a high-discretion procedure. The erroneous figure propagated to the binding foundation document, the parameter table, three public pages and the README, and is corrected in all of them. See `CHANGELOG.md`.
+
+The model monetizes the price channel only. Productivity remains a separate observed outcome because converting it into contract-value loss would double count and require another unsupported mapping. Transfer is a scenario, not a measurement, and it is a demanding one in two respects: the estimate is identified on Hungarian public contracts, and it is identified *below* a threshold that in Polish terms sits at or under the 170,000 PLN application threshold — far below every EU threshold to which the model's `pzp_eu` profile applies. The 2–9% range represents that transfer uncertainty.
 
 ### 3.2 Contractual rigidity and renegotiation
 
-Beuve, Moszoro, and Spiller (2023) examine French car-park contracts. Their 2SLS/IV result is an increase of **0.077–0.105 formal amendments per contract-year** for a one-standard-deviation increase in the reported rigidity categories, with rigidity instrumented by political contestability. It is a frequency, not a percentage-point event probability, and it does not measure procurement workflow formality. ProcuraCost therefore applies it only to a separate contract-rigidity profile, multiplies the frequency by contract duration, and excludes the sample mean as a universal cross-sector baseline.
+Beuve, Moszoro, and Spiller (2023) examine French car-park contracts. Their 2SLS/IV result is an increase of **0.077–0.105 formal amendments per contract-year** for a simultaneous one-standard-deviation increase in **each** of the seven z-scored categories that make up their rigidity index, with rigidity instrumented by political contestability. It is a frequency, not a percentage-point event probability; it is not the effect of a one-standard-deviation move on the summed index; and it does not measure procurement workflow formality.
+
+ProcuraCost applies it only to a separate contract-rigidity profile and multiplies by contract duration and a user-supplied cost per amendment. **The transfer is weaker than model 2.1 presented it**, and the weakness is a unit mismatch rather than a population one. The model multiplies the slope by a hand-authored 0–1 calibration profile that is not a z-score, so it implicitly equates "profile = 1.0" with the seven-category shift the authors estimate. No conversion between those scales exists. The slope is therefore reclassified here as a **calibration assumption with an external order-of-magnitude anchor**, not as a transferred estimate — and only the *difference* between the two paths is interpretable, because the estimate is incremental and the model supplies no baseline level.
 
 ### 3.3 Administrative cost, delay, TCO, and bypass
 
-The European Commission's 2011 study estimates the total authority-and-supplier cost of EU procedures. It is useful as an external sanity-check, not as the incremental cost of rigidity.
+The European Commission's 2011 study estimates the total authority-and-supplier cost of EU procedures. It is cited here for **context only**: no ProcuraCost parameter is derived from it, and no comparison against it has been carried out. Model 2.1 described it as an "external sanity-check", which asserted a validation that never took place — the model's non-labour overheads (500 / 200 / 100 / 20 PLN per day) remain self-declared assumptions. Performing that check is listed in the empirical agenda. The same study also reports that restrictions on the exercise of discretion are associated with higher average contract prices; that finding cuts against the discretion-premium channel this model imports from Szucs, and is recorded here rather than omitted.
 
 Coviello and Mariniello (2014) show in Italian public works that publicity increased participation and did not worsen delivery delay; this contradicts any blanket claim that competition itself causes delay. ProcuraCost attributes delay to modeled workflow duration, not to competition.
 
@@ -75,17 +79,41 @@ and
 
 A positive value favors the adaptive path; a negative value favors the formal path.
 
-- **Staff:** activity hours by role, headcount, loaded rate, and three declared broad context factors. Mandatory legal waits do not disappear and are not compressed by technology.
-- **Admin:** non-labor administrative overhead plus equal tool cost when both paths use the same technology; it excludes role hours already counted under staff.
+**ΔC is reported decomposed, not as a single number.** The seven terms have three different time bases and three very different standards of evidence, and summing them concealed which one was doing the work:
+
+\[
+\Delta C = \underbrace{\Delta C_{proces}}_{\text{staff, admin, selection, bypass}} + \underbrace{(d_F-d_A)\,c_d}_{\text{delay}} + \underbrace{\Delta C_{lifecycle}}_{\text{amendments, TCO}}
+\]
+
+The middle term is an **accounting identity** between a day count taken from the model's own step templates and a price per day supplied by the user. It is not a modeled or measured effect, and it must not be read as one. In the nine built-in scenarios it carries **77.7–99.5%** of |ΔC| wherever the two paths differ in duration. Model 2.1 reported only the sum, so headline figures such as "Δ = 73.9% of the adaptive total" described the size of a user's assumption about delay, not the cost of a procedure.
+
+Excluding that identity, the formal path is **cheaper on process cost in six of the nine** built-in scenarios. That is the more informative and more falsifiable statement, and it reverses the direction a reader would infer from the 2.1 headline.
+
+- **Staff:** activity hours by role at a loaded rate, times two declared broad context factors and the technology multiplier. Hours are a whole-role total; role headcount is descriptive and does not multiply the cost of a fixed workload. Mandatory legal waits do not disappear and are not compressed by technology.
+- **Admin:** non-labor administrative overhead over *active* days, plus equal tool cost when both paths use the same technology; it excludes role hours already counted under staff. A statutory wait consumes calendar time without consuming coordination effort.
 - **Delay:** elapsed days times a user-supplied daily cost of inaction.
 - **Selection:** contract value times the discretion price scenario and residual competition risk.
 - **Amendments:** annual formal-amendment frequency \(\lambda_j\) times contract duration \(H\) and a user-supplied cost per amendment.
 - **TCO:** a declared three-year cumulative savings-pool scenario, scaled by `min(horizon years / 3, 1)`, times the share each path fails to capture; the central scenario is zero because no transferable estimate was identified.
 - **Bypass:** user-supplied exposure times a scenario rate, scaled by system controls.
 
-The shared baseline acquisition price is not added to either side: only modeled incremental selection loss enters the comparison. The central break-even daily inaction cost is \(-\Delta C_{non-delay}/(d_F-d_A)\) when the adaptive path is faster. Above that threshold, the central modeled total favors the adaptive path.
+The shared baseline acquisition price is not added to either side: only modeled incremental selection loss enters the comparison. The central break-even daily inaction cost is \(-\Delta C_{non-delay}/(d_F-d_A)\) when the two paths differ in duration. It is reported **unclamped**, together with a status that says how to read it: a threshold above zero means the delay bucket decides, while a negative threshold means the formal path already costs more with the delay bucket removed entirely. Model 2.1 clamped the value at zero, which made those two cases indistinguishable and produced a figure that was 0 or undefined in every published scenario.
 
 The low-delta scenario strengthens the governance case for formality: high discretion premium, no imported renegotiation effect, no TCO benefit, and a higher adaptive bypass rate. The high-delta scenario strengthens the adaptability case. These bounds are stress scenarios, not statistical intervals.
+
+### 4.1 Structural asymmetry of the comparison
+
+The model is designed to permit either path to win, and the parameters have not been tuned to protect the thesis. But **the architecture is not symmetric**, and a reader is entitled to know that before interpreting a sign:
+
+- Six of the seven channels are weakly ordered toward the adaptive path by construction. The adaptive path has fewer or equal days in every step template, which mechanically reduces staff effort, coordination overhead and delay; and every entry in the path-profile table gives it lower contract rigidity and higher lifecycle capture.
+- Exactly one channel can favour formality — selection — and it is bounded by contract value × the discretion premium × the residual competition gap. For `pzp_eu` that ceiling is about **0.3% of contract value**, while the delay channel is unbounded in the daily cost the user supplies.
+- In the central case, two of the seven dimensions are identically zero: the TCO pool is zero and both bypass rates are 0.05, so the bypass difference vanishes. Five dimensions are active centrally, not seven.
+
+The consequence is that a sign reversal in this model is driven almost entirely by the delay input and by the size of the selection channel. It is reachable — the control scenario `governance_control` returns a negative ΔC, three of nine scenarios cross zero, and the process bucket alone favours formality in six of nine — but it is not reachable *symmetrically*.
+
+**The published sensitivity sweep does not test this, and that limitation was undocumented.** Across 11,340 configurations the central result favours the formal path in 1,482 of them, but *no* configuration robustly favours it. The reason is a defect in the uncertainty design rather than a result about procurement. `EVIDENCE_CASES` perturbs five scalars — the discretion premium, the rigidity slope, the TCO pool and the two bypass rates — and holds the step-day templates and the daily cost of inaction fixed. Since the day-driven channels are pro-adaptive by construction, the low case begins from a pro-adaptive baseline and merely fails to overturn it, while the high case begins from the same baseline and adds a 15% TCO pool. "Robustly favours adaptive" and "robustly favours formal" are therefore not equally hard questions, and reporting them side by side implied that they were.
+
+Two things follow for the empirical agenda. First, calibration should treat the day templates and the path profiles as the **primary objects of measurement**, because they — not the evidence anchors — carry the directional assumption. Second, an honest symmetry test requires a second sensitivity axis over the daily cost of inaction and over non-mandatory step durations, and at least one process template in which adaptive execution is *slower* (rework, re-scoping, an abandoned negotiation). None exists yet, and until one does, the model should not be described as demonstrating that either path can win — only as permitting it.
 
 ## 5. Interpretation
 

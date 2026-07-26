@@ -234,7 +234,9 @@ export default function PDFExport({ result, scenario, inputs }: Props) {
     doc.text("TOTAL", margin + 4, y + 5.5);
     doc.text(formatPLN(result.rigid.total), margin + 72, y + 5.5);
     doc.text(formatPLN(result.flexible.total), margin + 112, y + 5.5);
-    doc.text(`+${formatPLN(result.delta)}`, margin + 155, y + 5.5);
+    // Sign must follow the number. A hardcoded "+" printed "+-6 558 zł" on the one
+    // built-in scenario constructed to demonstrate that the formal path can win.
+    doc.text(`${result.delta >= 0 ? "+" : ""}${formatPLN(result.delta)}`, margin + 155, y + 5.5);
 
     y += 16;
 
