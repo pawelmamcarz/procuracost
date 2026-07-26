@@ -1,5 +1,5 @@
 {
-  "modelVersion": "2.2.0",
+  "modelVersion": "2.2.1",
   "evidenceStatus": "Deterministic model outputs under illustrative inputs; not empirical estimates of realized organizational effects.",
   "scenarios": [
     {
@@ -84,7 +84,7 @@
         "rigidDays": 44,
         "flexibleDays": 24,
         "trace": {
-          "modelVersion": "2.2.0",
+          "modelVersion": "2.2.1",
           "sanitizedInputs": {
             "contractValue": 5000000,
             "tcoHorizonYears": 2,
@@ -162,12 +162,17 @@
           "bypassCost": "Scenario assumption only: illustrative bypass-rate range, scaled by system controls. Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991) support mechanisms, not probabilities"
         },
         "uncertainty": {
-          "lowDelta": 55796.07142857142,
+          "lowDelta": -29567.75,
           "centralDelta": 104081.38947590871,
-          "highDelta": 217784.0521978023,
-          "lowPercentOfContractValue": 1.1159214285714285,
-          "highPercentOfContractValue": 4.355681043956046,
-          "crossesZero": false
+          "highDelta": 640647.8736263737,
+          "lowPercentOfContractValue": -0.591355,
+          "highPercentOfContractValue": 12.812957472527476,
+          "crossesZero": true,
+          "evidenceLowDelta": 55796.07142857142,
+          "evidenceHighDelta": 217784.0521978023,
+          "structuralLowDelta": 18717.568047337278,
+          "structuralHighDelta": 526945.2109044801,
+          "widthDrivenBy": "structural"
         },
         "deltaDecomposition": {
           "process": -2453.9285714285725,
@@ -265,7 +270,7 @@
         "rigidDays": 50.599999999999994,
         "flexibleDays": 27.599999999999994,
         "trace": {
-          "modelVersion": "2.2.0",
+          "modelVersion": "2.2.1",
           "sanitizedInputs": {
             "contractValue": 3000000,
             "tcoHorizonYears": 3,
@@ -343,12 +348,17 @@
           "bypassCost": "Scenario assumption only: illustrative bypass-rate range, scaled by system controls. Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991) support mechanisms, not probabilities"
         },
         "uncertainty": {
-          "lowDelta": 318934.8928571428,
+          "lowDelta": 29529.42499999996,
           "centralDelta": 357099.2907936909,
-          "highDelta": 453535.89097436646,
-          "lowPercentOfContractValue": 10.631163095238092,
-          "highPercentOfContractValue": 15.117863032478882,
-          "crossesZero": false
+          "highDelta": 1907316.3588315095,
+          "lowPercentOfContractValue": 0.9843141666666654,
+          "highPercentOfContractValue": 63.57721196105032,
+          "crossesZero": false,
+          "evidenceLowDelta": 318934.8928571428,
+          "evidenceHighDelta": 453535.89097436646,
+          "structuralLowDelta": 67693.82293654807,
+          "structuralHighDelta": 1810879.7586508337,
+          "widthDrivenBy": "structural"
         },
         "deltaDecomposition": {
           "process": 8734.892857142855,
@@ -446,7 +456,7 @@
         "rigidDays": 44,
         "flexibleDays": 24,
         "trace": {
-          "modelVersion": "2.2.0",
+          "modelVersion": "2.2.1",
           "sanitizedInputs": {
             "contractValue": 8000000,
             "tcoHorizonYears": 3,
@@ -524,12 +534,17 @@
           "bypassCost": "Scenario assumption only: illustrative bypass-rate range, scaled by system controls. Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991) support mechanisms, not probabilities"
         },
         "uncertainty": {
-          "lowDelta": 324286.90476190473,
+          "lowDelta": -8799.166666666686,
           "centralDelta": 416728.74590892345,
-          "highDelta": 621954.8724451091,
-          "lowPercentOfContractValue": 4.053586309523809,
-          "highPercentOfContractValue": 7.774435905563863,
-          "crossesZero": false
+          "highDelta": 2305040.943873681,
+          "lowPercentOfContractValue": -0.10998958333333357,
+          "highPercentOfContractValue": 28.813011798421012,
+          "crossesZero": true,
+          "evidenceLowDelta": 324286.90476190473,
+          "evidenceHighDelta": 621954.8724451091,
+          "structuralLowDelta": 83642.67448035203,
+          "structuralHighDelta": 2099814.817337495,
+          "widthDrivenBy": "structural"
         },
         "deltaDecomposition": {
           "process": -8913.095238095222,
@@ -627,7 +642,7 @@
         "rigidDays": 61.599999999999994,
         "flexibleDays": 33.599999999999994,
         "trace": {
-          "modelVersion": "2.2.0",
+          "modelVersion": "2.2.1",
           "sanitizedInputs": {
             "contractValue": 12000000,
             "tcoHorizonYears": 1,
@@ -705,12 +720,17 @@
           "bypassCost": "Scenario assumption only: illustrative bypass-rate range, scaled by system controls. Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991) support mechanisms, not probabilities"
         },
         "uncertainty": {
-          "lowDelta": 1146638.833333333,
+          "lowDelta": -15512.816666666768,
           "centralDelta": 1406144.6025641023,
-          "highDelta": 1980229.2179487175,
-          "lowPercentOfContractValue": 9.555323611111108,
-          "highPercentOfContractValue": 16.501910149572645,
-          "crossesZero": false
+          "highDelta": 7867380.867948713,
+          "lowPercentOfContractValue": -0.12927347222222307,
+          "highPercentOfContractValue": 65.56150723290594,
+          "crossesZero": true,
+          "evidenceLowDelta": 1146638.833333333,
+          "evidenceHighDelta": 1980229.2179487175,
+          "structuralLowDelta": 243992.95256410248,
+          "structuralHighDelta": 7293296.252564097,
+          "widthDrivenBy": "structural"
         },
         "deltaDecomposition": {
           "process": -4961.166666666686,
@@ -808,7 +828,7 @@
         "rigidDays": 87,
         "flexibleDays": 71,
         "trace": {
-          "modelVersion": "2.2.0",
+          "modelVersion": "2.2.1",
           "sanitizedInputs": {
             "contractValue": 5000000,
             "tcoHorizonYears": 3,
@@ -886,12 +906,17 @@
           "bypassCost": "Scenario assumption only: illustrative bypass-rate range, scaled by system controls. Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991) support mechanisms, not probabilities"
         },
         "uncertainty": {
-          "lowDelta": 106262.38095238095,
+          "lowDelta": -29236.333333333314,
           "centralDelta": 169483.30152589025,
-          "highDelta": 314534.0923770509,
-          "lowPercentOfContractValue": 2.125247619047619,
-          "highPercentOfContractValue": 6.290681847541017,
-          "crossesZero": false
+          "highDelta": 990032.8066627644,
+          "lowPercentOfContractValue": -0.5847266666666663,
+          "highPercentOfContractValue": 19.800656133255288,
+          "crossesZero": true,
+          "evidenceLowDelta": 106262.38095238095,
+          "evidenceHighDelta": 314534.0923770509,
+          "structuralLowDelta": 33984.58724017604,
+          "structuralHighDelta": 844982.015811604,
+          "widthDrivenBy": "structural"
         },
         "deltaDecomposition": {
           "process": -3337.619047619024,
@@ -989,7 +1014,7 @@
         "rigidDays": 2.0999999999999996,
         "flexibleDays": 2.0999999999999996,
         "trace": {
-          "modelVersion": "2.2.0",
+          "modelVersion": "2.2.1",
           "sanitizedInputs": {
             "contractValue": 50000,
             "tcoHorizonYears": 1,
@@ -1069,10 +1094,15 @@
         "uncertainty": {
           "lowDelta": -130,
           "centralDelta": 0,
-          "highDelta": 338.07692307692287,
+          "highDelta": 338.0769230769238,
           "lowPercentOfContractValue": -0.26,
-          "highPercentOfContractValue": 0.6761538461538458,
-          "crossesZero": true
+          "highPercentOfContractValue": 0.6761538461538475,
+          "crossesZero": true,
+          "evidenceLowDelta": -130,
+          "evidenceHighDelta": 338.07692307692287,
+          "structuralLowDelta": 0,
+          "structuralHighDelta": 0,
+          "widthDrivenBy": "evidence"
         },
         "deltaDecomposition": {
           "process": 0,
@@ -1170,7 +1200,7 @@
         "rigidDays": 1.4,
         "flexibleDays": 1.4,
         "trace": {
-          "modelVersion": "2.2.0",
+          "modelVersion": "2.2.1",
           "sanitizedInputs": {
             "contractValue": 500000,
             "tcoHorizonYears": 1,
@@ -1250,10 +1280,15 @@
         "uncertainty": {
           "lowDelta": -650,
           "centralDelta": 29.615384615384755,
-          "highDelta": 1730.7692307692305,
+          "highDelta": 1730.7692307692341,
           "lowPercentOfContractValue": -0.13,
-          "highPercentOfContractValue": 0.3461538461538461,
-          "crossesZero": true
+          "highPercentOfContractValue": 0.3461538461538468,
+          "crossesZero": true,
+          "evidenceLowDelta": -650,
+          "evidenceHighDelta": 1730.7692307692305,
+          "structuralLowDelta": 29.615384615382936,
+          "structuralHighDelta": 29.615384615386574,
+          "widthDrivenBy": "evidence"
         },
         "deltaDecomposition": {
           "process": 0,
@@ -1351,7 +1386,7 @@
         "rigidDays": 60,
         "flexibleDays": 42,
         "trace": {
-          "modelVersion": "2.2.0",
+          "modelVersion": "2.2.1",
           "sanitizedInputs": {
             "contractValue": 15000000,
             "tcoHorizonYears": 10,
@@ -1429,12 +1464,17 @@
           "bypassCost": "Scenario assumption only: illustrative bypass-rate range, scaled by system controls. Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991) support mechanisms, not probabilities"
         },
         "uncertainty": {
-          "lowDelta": 345175.7142857143,
+          "lowDelta": -104217.00000000006,
           "centralDelta": 659665.0682881952,
-          "highDelta": 1166036.2016714788,
-          "lowPercentOfContractValue": 2.3011714285714286,
-          "highPercentOfContractValue": 7.773574677809858,
-          "crossesZero": false
+          "highDelta": 3437928.915957192,
+          "lowPercentOfContractValue": -0.6947800000000004,
+          "highPercentOfContractValue": 22.91952610638128,
+          "crossesZero": true,
+          "evidenceLowDelta": 345175.7142857143,
+          "evidenceHighDelta": 1166036.2016714788,
+          "structuralLowDelta": 210272.35400248086,
+          "structuralHighDelta": 2931557.7825739086,
+          "widthDrivenBy": "structural"
         },
         "deltaDecomposition": {
           "process": -30224.28571428571,
@@ -1537,7 +1577,7 @@
         "rigidDays": 13.999999999999998,
         "flexibleDays": 13.999999999999998,
         "trace": {
-          "modelVersion": "2.2.0",
+          "modelVersion": "2.2.1",
           "sanitizedInputs": {
             "contractValue": 5000000,
             "tcoHorizonYears": 0,
@@ -1632,7 +1672,12 @@
           "highDelta": 12502.403846153844,
           "lowPercentOfContractValue": -0.3325000000000003,
           "highPercentOfContractValue": 0.25004807692307685,
-          "crossesZero": true
+          "crossesZero": true,
+          "evidenceLowDelta": -16625.000000000015,
+          "evidenceHighDelta": 12502.403846153844,
+          "structuralLowDelta": -6564.903846153851,
+          "structuralHighDelta": -6564.903846153844,
+          "widthDrivenBy": "evidence"
         },
         "deltaDecomposition": {
           "process": -6750.000000000007,
@@ -1730,7 +1775,7 @@
         "rigidDays": 34,
         "flexibleDays": 47,
         "trace": {
-          "modelVersion": "2.2.0",
+          "modelVersion": "2.2.1",
           "sanitizedInputs": {
             "contractValue": 3000000,
             "tcoHorizonYears": 3,
@@ -1808,12 +1853,17 @@
           "bypassCost": "Scenario assumption only: illustrative bypass-rate range, scaled by system controls. Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991) support mechanisms, not probabilities"
         },
         "uncertainty": {
-          "lowDelta": -168854.16666666663,
+          "lowDelta": -611871.4166666667,
           "centralDelta": -129160.06618874217,
-          "highDelta": 7582.519154908252,
-          "lowPercentOfContractValue": -5.6284722222222205,
-          "highPercentOfContractValue": 0.25275063849694174,
-          "crossesZero": true
+          "highDelta": 99599.76915490831,
+          "lowPercentOfContractValue": -20.395713888888892,
+          "highPercentOfContractValue": 3.3199923051636104,
+          "crossesZero": true,
+          "evidenceLowDelta": -168854.16666666663,
+          "evidenceHighDelta": 7582.519154908252,
+          "structuralLowDelta": -572177.3161887422,
+          "structuralHighDelta": -37142.81618874223,
+          "widthDrivenBy": "structural"
         },
         "deltaDecomposition": {
           "process": -35844.16666666666,

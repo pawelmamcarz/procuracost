@@ -139,10 +139,38 @@ słabszym wychwyceniem wartości cyklu życia. W 12 960 konfiguracjach przegląd
 **1 221 wyników odpornie pro-formalnych** obok 5 834 odpornie pro-adaptacyjnych. Twierdzenie,
 że wygrać może każda ze ścieżek, jest więc pokazane, a nie tylko zadeklarowane.
 
+### 3.3 Dwie osie niepewności
+
+Model 2.2.1 rozszerza raportowany przedział o drugą oś, bo pierwsza obejmowała niewłaściwe
+wielkości:
+
+- **oś dowodowa** — pięć skalarów z literatury: premia dyskrecji, współczynnik sztywności,
+  pula TCO i dwie stopy obejść;
+- **oś strukturalna** — koszt dnia bezczynności (×0,25 … ×4) oraz czasy trwania etapów
+  nieobowiązkowych (×0,7 … ×1,3). Ustawowe terminy PZP pozostają nienaruszone w obu osiach.
+
+Oś strukturalna nie jest ćwiczeniem z pesymizmu. Koszt dnia to najmniej wiarygodna liczba,
+jaką podaje użytkownik, a model nie ma jak jej sprawdzić; tabele dni to z kolei własne,
+nieprzetestowane założenia modelu. Razem niosą 80–99% ΔC. Ograniczanie przedziału do
+wielkości małych, przy zamrożeniu dużych, zaniżało niepewność dokładnie tam, gdzie model
+jest najsłabszy.
+
+Efekt jest duży i działa **przeciwko** tezie:
+
+| | tylko oś dowodowa | obie osie |
+|---|---:|---:|
+| scenariusze wbudowane przechodzące przez zero | 4 z 10 | **9 z 10** |
+| przegląd: odpornie pro-formalne | 1 221 z 12 960 | 1 045 |
+| przegląd: odpornie pro-adaptacyjne | 5 834 z 12 960 | 5 357 |
+
+W dziewięciu z dziesięciu scenariuszy wbudowanych model **nie wskazuje odpornie żadnej
+ścieżki**, gdy dwa dominujące wejścia mogą się poruszać w obronialnych granicach. To jest
+uczciwy nagłówek tego artykułu i twierdzenie słabsze niż jakiekolwiek wcześniejsze w tym
+projekcie.
+
 Dwa zastrzeżenia zostają. Zakup odkrywczy sam jest założeniem modelowym, a nie obserwacją.
-Przedział niepewności nadal obejmuje wyłącznie pięć parametrów dowodowych — pełny test
-symetrii wymaga drugiej osi wrażliwości po koszcie dnia zwłoki i po czasach trwania etapów
-nieobowiązkowych, której jeszcze nie ma.
+Mnożniki ×0,25–×4 i ×0,7–×1,3 są jawnymi sądami o tym, jak bardzo można się mylić co do
+niezmierzonego wejścia — nie przedziałami estymowanymi.
 
 W postępowaniach PZP okresy publikacji i standstill wybrane w szablonie pozostają
 takie same w obu ścieżkach i nie są kompresowane przez technologię. Szablon UE

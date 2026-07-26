@@ -167,12 +167,23 @@ export interface ComparisonResult {
   rigidDays: number;
   flexibleDays: number;
   uncertainty: {
+    // Combined envelope over BOTH axes: the five evidence scalars and the two structural
+    // inputs (daily cost of inaction, non-mandatory step durations). Through 2.2.0 this
+    // was the evidence axis alone, which bracketed the small quantities and held the two
+    // that carry the result fixed.
     lowDelta: number;
     centralDelta: number;
     highDelta: number;
     lowPercentOfContractValue: number;
     highPercentOfContractValue: number;
     crossesZero: boolean;
+    // Each axis on its own, so a reader can see which one the width comes from.
+    evidenceLowDelta: number;
+    evidenceHighDelta: number;
+    structuralLowDelta: number;
+    structuralHighDelta: number;
+    // Which axis contributes more of the combined width.
+    widthDrivenBy: "evidence" | "structural" | "balanced";
   };
   // ΔC split by time base and evidential standing. `delay` is the elapsed-day
   // difference multiplied by a daily cost the user supplies; it is an accounting
@@ -216,6 +227,7 @@ export interface MatrixCell {
 }
 
 type EvidenceCase = "low" | "central" | "high";
+const EVIDENCE_CASE_IDS: EvidenceCase[] = ["low", "central", "high"];
 
 // Scenario ranges, not confidence intervals. `low` minimizes the rigid-minus-adaptive
 // delta; `high` maximizes it. Wide bounds expose weak evidence instead of laundering it
@@ -400,12 +412,56 @@ function buildBreakdown(
 
 type PointComparisonResult = Omit<ComparisonResult, "uncertainty" | "decisionThreshold" | "deltaDecomposition">;
 
-function calculateCostsForEvidenceCase(inputs: ProcurementInputs, evidenceCase: EvidenceCase): PointComparisonResult {
+/**
+ * The second sensitivity axis, added in 2.2.1.
+ *
+ * `EVIDENCE_CASES` brackets the five literature-facing scalars. It does NOT touch the two
+ * inputs that actually carry the result: the daily cost of inaction (a user estimate that
+ * drives 80–99% of ΔC wherever the paths differ in duration) and the non-mandatory step
+ * durations (the model's own templates). Reporting an envelope that varies the small
+ * quantities and holds the large ones fixed understated uncertainty precisely where the
+ * model is least defensible.
+ *
+ * - `delayCostMultiplier` — ×0.25 to ×4. The cost of a day is the least reliable number a
+ *   user supplies; a factor of four either way is not pessimism, it is the honest spread of
+ *   an unmeasured quantity. Statutory waits are unaffected: this scales the price of a day,
+ *   not the number of days.
+ * - `durationMultiplier` — ×0.7 to ×1.3 on NON-MANDATORY steps only, applied exactly the
+ *   way the technology multiplier is. Mandatory PZP waits stay invariant, as everywhere.
+ */
+const STRUCTURAL_CASES = {
+  delayCostMultiplier: [0.25, 1, 4],
+  durationMultiplier: [0.7, 1, 1.3],
+} as const;
+
+interface StructuralCase {
+  delayCostMultiplier: number;
+  durationMultiplier: number;
+}
+
+const NEUTRAL_STRUCTURAL: StructuralCase = { delayCostMultiplier: 1, durationMultiplier: 1 };
+
+function structuralGrid(): StructuralCase[] {
+  const grid: StructuralCase[] = [];
+  for (const delayCostMultiplier of STRUCTURAL_CASES.delayCostMultiplier) {
+    for (const durationMultiplier of STRUCTURAL_CASES.durationMultiplier) {
+      grid.push({ delayCostMultiplier, durationMultiplier });
+    }
+  }
+  return grid;
+}
+
+function calculateCostsForEvidenceCase(
+  inputs: ProcurementInputs,
+  evidenceCase: EvidenceCase,
+  structural: StructuralCase = NEUTRAL_STRUCTURAL,
+): PointComparisonResult {
   // Basic sanitization of inputs (defensive programming)
   const contractValue = nonNegativeFinite(inputs.contractValue);
   const tcoHorizonYears = nonNegativeFinite(inputs.tcoHorizonYears);
   const contractDurationYears = nonNegativeFinite(inputs.contractDurationYears);
-  const dailyCostOfInaction = nonNegativeFinite(inputs.dailyCostOfInaction);
+  const dailyCostOfInaction =
+    nonNegativeFinite(inputs.dailyCostOfInaction) * structural.delayCostMultiplier;
   const renegotiationCost = nonNegativeFinite(inputs.renegotiationCost);
   const bypassAuditExposure = nonNegativeFinite(inputs.bypassAuditExposure);
   const discountRatePct = Number.isFinite(inputs.discountRatePct as number)
@@ -433,9 +489,13 @@ function calculateCostsForEvidenceCase(inputs: ProcurementInputs, evidenceCase: 
   // Dimension multipliers must be calculated early
   const dims = getDimensionMultipliers(inputs.spendType, inputs.processPhase);
 
-  // Derive days from process step templates × tech multiplier + context
-  const rigidDays = deriveRigidDays(steps, tech.timeMultiplier, inputs.processPhase, inputs.spendType);
-  const flexibleDays = deriveFlexibleDays(steps, tech.timeMultiplier, inputs.processPhase, inputs.spendType);
+  // Derive days from process step templates × tech multiplier + context. The structural
+  // duration multiplier rides on the technology multiplier, so it reaches exactly the same
+  // things: non-mandatory step durations and the effort attached to them. Mandatory PZP
+  // waits are untouched by either.
+  const durationMultiplier = tech.timeMultiplier * structural.durationMultiplier;
+  const rigidDays = deriveRigidDays(steps, durationMultiplier, inputs.processPhase, inputs.spendType);
+  const flexibleDays = deriveFlexibleDays(steps, durationMultiplier, inputs.processPhase, inputs.spendType);
 
   // Staff costs from step participation matrix and one broad context factor.
   const rigidStaffCost = deriveStaffCost(
@@ -444,7 +504,7 @@ function calculateCostsForEvidenceCase(inputs: ProcurementInputs, evidenceCase: 
     stakeholders,
     inputs.processPhase,
     inputs.spendType,
-    tech.timeMultiplier,
+    durationMultiplier,
   );
 
   const flexibleStaffCost = deriveStaffCost(
@@ -453,7 +513,7 @@ function calculateCostsForEvidenceCase(inputs: ProcurementInputs, evidenceCase: 
     stakeholders,
     inputs.processPhase,
     inputs.spendType,
-    tech.timeMultiplier,
+    durationMultiplier,
   );
 
   // Illustrative non-labor administrative overhead. Stakeholder labor is already
@@ -463,8 +523,8 @@ function calculateCostsForEvidenceCase(inputs: ProcurementInputs, evidenceCase: 
   // pzp_eu process accrued "per-day meeting & alignment effort" across all 45 days of
   // statutory publication and standstill — periods in which, by construction, no role
   // has any participation hours at all.
-  const rigidActiveDays = deriveActiveDays(steps, tech.timeMultiplier, false);
-  const flexibleActiveDays = deriveActiveDays(steps, tech.timeMultiplier, true);
+  const rigidActiveDays = deriveActiveDays(steps, durationMultiplier, false);
+  const flexibleActiveDays = deriveActiveDays(steps, durationMultiplier, true);
   const rigidCoordCost = tech.coordCostPerDay * rigidActiveDays * dims.coordinationIntensityMultiplier;
   const flexibleCoordCost = tech.coordCostPerDay * flexibleActiveDays * dims.coordinationIntensityMultiplier;
 
@@ -609,11 +669,42 @@ function calculateCostsForEvidenceCase(inputs: ProcurementInputs, evidenceCase: 
 
 export function calculateCosts(inputs: ProcurementInputs): ComparisonResult {
   const central = calculateCostsForEvidenceCase(inputs, "central");
-  const low = calculateCostsForEvidenceCase(inputs, "low");
-  const high = calculateCostsForEvidenceCase(inputs, "high");
   const contractValue = nonNegativeFinite(inputs.contractValue);
-  const lowDelta = Math.min(low.delta, central.delta, high.delta);
-  const highDelta = Math.max(low.delta, central.delta, high.delta);
+
+  // Axis 1 — evidence. The five literature-facing scalars, structural inputs neutral.
+  const evidenceDeltas = EVIDENCE_CASE_IDS.map(
+    (id) => calculateCostsForEvidenceCase(inputs, id).delta,
+  );
+  const evidenceLowDelta = Math.min(...evidenceDeltas);
+  const evidenceHighDelta = Math.max(...evidenceDeltas);
+
+  // Axis 2 — structural. The daily cost of inaction and the non-mandatory step durations,
+  // evidence held at central. These are the two inputs that carry most of ΔC, and through
+  // 2.2.0 no published sensitivity run varied either of them.
+  const structuralDeltas = structuralGrid().map(
+    (s) => calculateCostsForEvidenceCase(inputs, "central", s).delta,
+  );
+  const structuralLowDelta = Math.min(...structuralDeltas);
+  const structuralHighDelta = Math.max(...structuralDeltas);
+
+  // Combined envelope over the full cross product.
+  const combinedDeltas: number[] = [];
+  for (const id of EVIDENCE_CASE_IDS) {
+    for (const s of structuralGrid()) {
+      combinedDeltas.push(calculateCostsForEvidenceCase(inputs, id, s).delta);
+    }
+  }
+  const lowDelta = Math.min(...combinedDeltas);
+  const highDelta = Math.max(...combinedDeltas);
+
+  const evidenceWidth = evidenceHighDelta - evidenceLowDelta;
+  const structuralWidth = structuralHighDelta - structuralLowDelta;
+  const widthDrivenBy: "evidence" | "structural" | "balanced" =
+    structuralWidth > evidenceWidth * 1.25
+      ? "structural"
+      : evidenceWidth > structuralWidth * 1.25
+        ? "evidence"
+        : "balanced";
   const processDelta = central.rigid.processCost - central.flexible.processCost;
   const delayDelta = central.rigid.delayCost - central.flexible.delayCost;
   const lifecycleDelta = central.rigid.lifecycleCost - central.flexible.lifecycleCost;
@@ -651,6 +742,11 @@ export function calculateCosts(inputs: ProcurementInputs): ComparisonResult {
       lowPercentOfContractValue: contractValue > 0 ? (lowDelta / contractValue) * 100 : 0,
       highPercentOfContractValue: contractValue > 0 ? (highDelta / contractValue) * 100 : 0,
       crossesZero: lowDelta <= 0 && highDelta >= 0,
+      evidenceLowDelta,
+      evidenceHighDelta,
+      structuralLowDelta,
+      structuralHighDelta,
+      widthDrivenBy,
     },
     deltaDecomposition: {
       process: processDelta,

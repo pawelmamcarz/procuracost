@@ -49,9 +49,14 @@ const summaryRows = scenarios.map(({ scenarioId, scenarioName, context, results 
   deltaPLN: Math.round(results.delta),
   delayShareOfDeltaPercent: Number(results.deltaDecomposition.delayShareOfDeltaPercent.toFixed(1)),
   deltaPercentOfAdaptiveTotal: Number(results.deltaPercent.toFixed(1)),
+  evidenceLowDeltaPLN: Math.round(results.uncertainty.evidenceLowDelta),
+  evidenceHighDeltaPLN: Math.round(results.uncertainty.evidenceHighDelta),
+  structuralLowDeltaPLN: Math.round(results.uncertainty.structuralLowDelta),
+  structuralHighDeltaPLN: Math.round(results.uncertainty.structuralHighDelta),
   lowDeltaPLN: Math.round(results.uncertainty.lowDelta),
   highDeltaPLN: Math.round(results.uncertainty.highDelta),
   crossesZero: results.uncertainty.crossesZero,
+  widthDrivenBy: results.uncertainty.widthDrivenBy,
   breakEvenDailyInactionPLN: results.decisionThreshold.breakEvenDailyCostOfInaction === null
     ? "not-applicable"
     : Math.round(results.decisionThreshold.breakEvenDailyCostOfInaction),
@@ -67,12 +72,16 @@ writeFileSync(
 
 const markdownRows = summaryRows.map(
   (row) =>
-    `| ${row.scenarioId} | ${row.spendType} × ${row.processPhase} | ${row.rigidDays} | ${row.flexibleDays} | ${row.deltaProcessPLN} | ${row.deltaDelayPLN} | ${row.deltaLifecyclePLN} | ${row.deltaPLN} | ${row.delayShareOfDeltaPercent}% | ${row.lowDeltaPLN} – ${row.highDeltaPLN} | ${row.crossesZero} | ${row.breakEvenStatus} |`,
+    `| ${row.scenarioId} | ${row.spendType} × ${row.processPhase} | ${row.rigidDays} | ${row.flexibleDays} | ${row.deltaProcessPLN} | ${row.deltaDelayPLN} | ${row.deltaLifecyclePLN} | ${row.deltaPLN} | ${row.delayShareOfDeltaPercent}% | ${row.evidenceLowDeltaPLN} – ${row.evidenceHighDeltaPLN} | ${row.structuralLowDeltaPLN} – ${row.structuralHighDeltaPLN} | ${row.lowDeltaPLN} – ${row.highDeltaPLN} | ${row.crossesZero} | ${row.widthDrivenBy} | ${row.breakEvenStatus} |`,
 );
 
 const withDelay = summaryRows.filter((row) => row.deltaDelayPLN !== 0);
 const shares = withDelay.map((row) => row.delayShareOfDeltaPercent);
 const processFavoursFormal = summaryRows.filter((row) => row.deltaProcessPLN < 0);
+const combinedCrossing = summaryRows.filter((row) => row.crossesZero);
+const evidenceCrossing = summaryRows.filter(
+  (row) => row.evidenceLowDeltaPLN <= 0 && row.evidenceHighDeltaPLN >= 0,
+);
 
 const markdown = [
   `# Built-in Scenario Outputs (Model ${MODEL_VERSION})`,
@@ -97,8 +106,20 @@ const markdown = [
       `(${processFavoursFormal.map((r) => r.scenarioId).join(", ")}).`
     : "",
   "",
-  "| Scenario | Context | Formal days | Adaptive days | Δ process (PLN) | Δ delay (PLN) | Δ lifecycle (PLN) | Δ total (PLN) | Delay share | Scenario range (PLN) | Crosses zero | Break-even status |",
-  "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|:---:|---|",
+  "The scenario range covers **two axes**:",
+  "",
+  "- **Evidence** — the five literature-facing scalars (discretion premium, rigidity slope,",
+  "  TCO pool, two bypass rates).",
+  "- **Structural** — the daily cost of inaction (×0.25 … ×4) and non-mandatory step",
+  "  durations (×0.7 … ×1.3). Statutory PZP waits are invariant under both.",
+  "",
+  `Through model 2.2.0 only the evidence axis was published. On that axis alone, ` +
+    `${evidenceCrossing.length} of ${summaryRows.length} scenarios cross zero; with the structural axis ` +
+    `included, ${combinedCrossing.length} of ${summaryRows.length} do. The narrow envelope was an artefact of ` +
+    `bracketing the small quantities and holding fixed the two that carry the result.`,
+  "",
+  "| Scenario | Context | Formal days | Adaptive days | Δ process (PLN) | Δ delay (PLN) | Δ lifecycle (PLN) | Δ total (PLN) | Delay share | Evidence axis (PLN) | Structural axis (PLN) | Combined range (PLN) | Crosses zero | Width driven by | Break-even status |",
+  "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|:---:|---|---|",
   ...markdownRows,
   "",
 ].join("\n");

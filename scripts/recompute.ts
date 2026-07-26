@@ -110,6 +110,34 @@ if (delayShares.length) {
   );
 }
 
+// ── (b3) uncertainty by axis ──────────────────────────────────────────────────
+// Through 2.2.0 the envelope varied only the five evidence scalars. It held the daily cost
+// of inaction and the step-day templates fixed — the two inputs carrying most of ΔC — and
+// so reported its narrowest uncertainty exactly where the model is least defensible.
+console.log("\n### Uncertainty by axis: which one actually carries the width?\n");
+console.log("| scenario | central Δ | evidence axis | structural axis | combined | crosses zero | width driven by |");
+console.log("|--|--:|--:|--:|--:|:--:|--|");
+
+for (const { id, r } of results) {
+  const u = r.uncertainty;
+  console.log(
+    `| ${id} | ${fmt(u.centralDelta)} | ${fmt(u.evidenceLowDelta)}…${fmt(u.evidenceHighDelta)} | ` +
+    `${fmt(u.structuralLowDelta)}…${fmt(u.structuralHighDelta)} | ${fmt(u.lowDelta)}…${fmt(u.highDelta)} | ` +
+    `${u.crossesZero ? "yes" : "no"} | ${u.widthDrivenBy} |`
+  );
+}
+
+const crossingCombined = results.filter(({ r }) => r.uncertainty.crossesZero);
+const crossingEvidenceOnly = results.filter(
+  ({ r }) => r.uncertainty.evidenceLowDelta <= 0 && r.uncertainty.evidenceHighDelta >= 0,
+);
+console.log(
+  `\nOn the evidence axis alone ${crossingEvidenceOnly.length}/${results.length} scenarios cross zero. ` +
+  `Adding the structural axis takes that to ${crossingCombined.length}/${results.length}. ` +
+  `The model identifies a robust winner in far fewer cases than model 2.1 reported, and that is ` +
+  `the honest reading: the narrow envelope was an artefact of bracketing only the small quantities.`
+);
+
 const processFavoursFormal = results.filter(({ r }) => r.deltaDecomposition.process < 0);
 console.log(
   `Excluding the delay identity, the FORMAL path is cheaper on process cost in ` +

@@ -1,7 +1,7 @@
 # Procedural Rigidity and Adaptive Procurement: A Transparent Decision Model
 
 **Working paper — draft for review**
-**Model:** ProcuraCost 2.2.0
+**Model:** ProcuraCost 2.2.1
 **Updated:** 14 July 2026
 
 ## Abstract
@@ -113,9 +113,29 @@ The consequence is that a sign reversal in this model is driven almost entirely 
 
 **Through model 2.1 the published sensitivity sweep could not detect this, and that limitation was undocumented.** Across 11,340 configurations the central result favoured the formal path in 1,482 of them, but *no* configuration favoured it robustly — that is, the pro-adaptive extreme of the envelope never favoured formality. The cause was the templates rather than the evidence: every step of every template had `flexibleDays ≤ rigidDays`, so both the low and the high case were asked from a pro-adaptive process baseline. `EVIDENCE_CASES` perturbs five scalars — the discretion premium, the rigidity slope, the TCO pool and the two bypass rates — and leaves the step-day templates and the daily cost of inaction untouched. "Robustly favours adaptive" and "robustly favours formal" were therefore not equally hard questions, and reporting them side by side implied that they were.
 
-Model 2.2 adds the `discovery` process type, in which the requirement emerges during the procurement and adaptive execution is genuinely **slower and more effortful** — co-design with suppliers, a re-scoping round, sometimes an abandoned negotiation — while the formal path freezes the requirement early and pays with a worse specification and weaker lifecycle capture. Across 12,960 configurations the sweep now returns **1,221 robustly formal** results alongside 5,834 robustly adaptive ones. The claim that either path can win is now demonstrated rather than asserted.
+Model 2.2 adds the `discovery` process type, in which the requirement emerges during the procurement and adaptive execution is genuinely **slower and more effortful** — co-design with suppliers, a re-scoping round, sometimes an abandoned negotiation — while the formal path freezes the requirement early and pays with a worse specification and weaker lifecycle capture. The sweep can now fail in both directions, which is the minimum a symmetry claim requires.
 
-Two qualifications remain, and they belong in the empirical agenda rather than in a footnote. First, calibration should treat the day templates and the path profiles as the **primary objects of measurement**, because they — not the evidence anchors — carry the directional assumption; `discovery` is itself a modelling assumption, not an observation. Second, the envelope still brackets only the five evidence parameters. A complete symmetry test needs a second sensitivity axis over the daily cost of inaction and over non-mandatory step durations, which does not yet exist.
+### 4.2 Two axes of uncertainty
+
+Model 2.2.1 widens the reported envelope to cover a second axis, because the first one bracketed the wrong quantities:
+
+- **Evidence axis** — the five literature-facing scalars: the discretion premium, the rigidity slope, the TCO pool and the two bypass rates.
+- **Structural axis** — the daily cost of inaction (×0.25 to ×4) and non-mandatory step durations (×0.7 to ×1.3). Statutory PZP waits are invariant under both.
+
+The structural axis is not a pessimism exercise. The cost of a day is the least reliable number a user supplies and the model has no way to check it, while the step-day tables are the model's own untested assumptions — and together they carry 80–99% of ΔC. Bracketing the small quantities while freezing the large ones understated uncertainty exactly where the model is least defensible.
+
+The effect is large and it goes against the thesis:
+
+| | evidence axis only (through 2.2.0) | both axes (2.2.1) |
+|---|---:|---:|
+| built-in scenarios crossing zero | 4 of 10 | **9 of 10** |
+| sweep: robustly favours formal | 1,221 of 12,960 | 1,045 |
+| sweep: robustly favours adaptive | 5,834 of 12,960 | 5,357 |
+| sweep: crosses zero | 5,905 | **6,558** |
+
+In nine of the ten built-in scenarios the model does **not** identify a robust winner once the two dominant inputs are allowed to move within defensible bounds. That is the honest headline, and it is a weaker claim than any previous version of this project made.
+
+Two qualifications remain for the empirical agenda. Calibration should treat the day templates and the path profiles as the **primary objects of measurement**, because they — not the evidence anchors — carry the directional assumption; `discovery` is itself a modelling assumption, not an observation. And the ×0.25–×4 and ×0.7–×1.3 bounds are themselves declared judgements about how wrong an unmeasured input can be, not estimated intervals.
 
 ## 5. Interpretation
 

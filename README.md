@@ -2,7 +2,7 @@
 
 > **A tunnel has walls. A field has a horizon.**
 
-ProcuraCost is an open-source decision model comparing formal/sequential and adaptive/compliant procurement designs under the same governance boundary. Version 2.2 reports ΔC decomposed into process, delay and lifecycle buckets, a broad scenario interval, and an unclamped break-even daily cost of inaction. The delay bucket is an accounting identity between a template day count and a user-supplied price per day, and it carried 80.5–99.6% of the 2.1 headline; excluding it, the formal path is cheaper on process cost in 7 of 10 built-in scenarios. The model may favor either path and does not claim a universal causal advantage.
+ProcuraCost is an open-source decision model comparing formal/sequential and adaptive/compliant procurement designs under the same governance boundary. Version 2.2 reports ΔC decomposed into process, delay and lifecycle buckets, an unclamped break-even daily cost of inaction, and a scenario interval covering two axes — the evidence parameters and the two structural inputs that actually carry the result. Under that interval the model identifies a robust winner in only 1 of 10 built-in scenarios. The delay bucket is an accounting identity between a template day count and a user-supplied price per day, and it carried 80.5–99.6% of the 2.1 headline; excluding it, the formal path is cheaper on process cost in 7 of 10 built-in scenarios. The model may favor either path and does not claim a universal causal advantage.
 
 ## The Model
 

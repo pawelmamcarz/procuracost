@@ -43,6 +43,17 @@ export default function HeroSummary({ result, scenario, inputs, lang }: Props) {
         <p className="font-semibold">
           {lang === "en" ? "Scenario range" : "Przedział scenariuszowy"}: {formatPLN(uncertainty.lowDelta)} – {formatPLN(uncertainty.highDelta)}
         </p>
+        <div className="mt-1.5 space-y-0.5 text-xs text-white/80">
+          <div>
+            {tx.axisEvidence}: {formatPLN(uncertainty.evidenceLowDelta)} – {formatPLN(uncertainty.evidenceHighDelta)}
+          </div>
+          <div>
+            {tx.axisStructural}: {formatPLN(uncertainty.structuralLowDelta)} – {formatPLN(uncertainty.structuralHighDelta)}
+          </div>
+        </div>
+        <p className="mt-1.5 text-xs text-white/70">
+          {uncertainty.widthDrivenBy === "structural" ? tx.axisNoteStructural : tx.axisNoteEvidence}
+        </p>
         <p className="mt-1 text-xs text-white/70">
           {uncertainty.crossesZero
             ? (lang === "en"

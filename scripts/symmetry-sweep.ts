@@ -96,24 +96,25 @@ for (const mode of EXPOSURE_MODES) {
 console.log(
   "\nHOW TO READ THIS.\n" +
   "\n" +
-  "'Robustly favours adaptive' asks whether the LOW evidence case still favours adaptive.\n" +
-  "'Robustly favours formal' asks whether the HIGH case still favours formal. EVIDENCE_CASES\n" +
-  "varies five scalars — the discretion premium, the rigidity slope, the TCO pool and the two\n" +
-  "bypass rates — and does NOT perturb the step-day templates or the daily cost of inaction.\n" +
-  "So both questions are asked from whatever process baseline the template supplies.\n" +
+  "'Robustly favours X' means the whole scenario envelope stays on X's side. Since 2.2.1 that\n" +
+  "envelope covers TWO axes: the five evidence scalars, and the structural inputs — the daily\n" +
+  "cost of inaction (x0.25 to x4) and non-mandatory step durations (x0.7 to x1.3). Statutory\n" +
+  "PZP waits are invariant under both.\n" +
   "\n" +
-  "Through model 2.1 every template had flexibleDays <= rigidDays in every step, which made\n" +
-  "that baseline pro-adaptive by construction: the sweep returned 0 robustly-formal results\n" +
-  "out of 11,340 configurations, and decoupling the exposures did not change that. The zero\n" +
-  "was a property of the templates, not a finding about procurement.\n" +
+  "Two corrections are folded into these numbers, and both moved them a long way.\n" +
   "\n" +
-  "Model 2.2 adds the `discovery` process type, where the requirement emerges in flight and\n" +
-  "adaptive execution is genuinely slower and more effortful (co-design, a re-scoping round).\n" +
-  "The test can now fail in both directions, which is the minimum a symmetry claim requires.\n" +
+  "1. Through 2.1 every template had flexibleDays <= rigidDays in every step, so the process\n" +
+  "   baseline was pro-adaptive by construction and the sweep returned 0 robustly-formal\n" +
+  "   results out of 11,340. That zero described the templates, not procurement. The\n" +
+  "   `discovery` type — requirement emerging in flight, adaptive execution genuinely slower\n" +
+  "   — lets the test fail in both directions.\n" +
+  "2. Through 2.2.0 the envelope varied only the evidence axis, holding fixed the two inputs\n" +
+  "   that carry 80-99% of the result. Adding the structural axis widens it several-fold and\n" +
+  "   collapses both robustness counts, because most configurations genuinely do not identify\n" +
+  "   a winner once the dominant inputs are allowed to move.\n" +
   "\n" +
-  "Still missing, and still worth building: a second sensitivity axis over the daily cost of\n" +
-  "inaction and over non-mandatory step durations. Until it exists, the envelope brackets the\n" +
-  "evidence parameters only, not the two inputs that carry most of the result."
+  "A low robustness count is therefore the honest reading, not a defect. The earlier high\n" +
+  "counts came from an envelope that bracketed the small quantities and froze the large ones."
 );
 if (lowest) console.log(`lowest low-case delta: ${Math.round(lowest.delta)} (${lowest.pct.toFixed(2)}% CV), ${lowest.key}`);
 if (lowestCentral) console.log(`lowest central delta: ${Math.round(lowestCentral.delta)}, ${lowestCentral.key}`);

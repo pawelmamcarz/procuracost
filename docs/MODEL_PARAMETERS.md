@@ -1,6 +1,6 @@
 # ProcuraCost Model Parameters
 
-**Model version:** 2.2.0
+**Model version:** 2.2.1
 **Status:** transparent decision model; not an empirical estimator
 
 ## Comparison object
@@ -37,6 +37,36 @@ The calculator reports a central estimate and a wide scenario interval. These ar
 | Adaptive-path base bypass rate | 15% | 5% | 1% | Scenario assumption before technology-control scaling |
 
 The low-delta case deliberately maximizes the governance value of formality; the high-delta case maximizes the value of adaptability. A range crossing zero means that the preferred path depends on assumptions.
+
+### The second axis: structural uncertainty (new in 2.2.1)
+
+The table above is the **evidence axis**. On its own it brackets the five literature-facing
+scalars and holds fixed the two inputs that carry 80–99% of ΔC — so the model reported its
+narrowest uncertainty precisely where it is least defensible.
+
+The **structural axis** perturbs those two:
+
+| Input | Range | Why |
+|---|---|---|
+| Daily cost of inaction | ×0.25 … ×4 | The least reliable number a user supplies; the model cannot check it. A factor of four either way is the honest spread of an unmeasured quantity. |
+| Non-mandatory step durations | ×0.7 … ×1.3 | The model's own step templates are untested assumptions. Applied exactly like the technology multiplier. |
+
+**Statutory PZP waits are invariant under both axes**, as everywhere else in the model.
+
+The reported `lowDelta` / `highDelta` is the envelope over the full cross product, and both
+single-axis envelopes are reported alongside it so a reader can see which one the width
+comes from (`widthDrivenBy`). Widening it changes the headline conclusion:
+
+| | evidence axis only | both axes |
+|---|---:|---:|
+| built-in scenarios crossing zero | 4 of 10 | **9 of 10** |
+| sweep: robustly favours formal | 1,221 / 12,960 | 1,045 |
+| sweep: robustly favours adaptive | 5,834 / 12,960 | 5,357 |
+
+In nine of ten built-in scenarios the model no longer identifies a robust winner. That is
+the correct result, not a regression: the earlier narrow envelope was an artefact of the
+choice of what to vary. The multipliers themselves are declared judgements about how wrong
+an unmeasured input can be, not estimated intervals.
 
 ### Unit warning on the rigidity slope (corrected in 2.2)
 
@@ -96,8 +126,11 @@ the requirement early and lives with a worse specification. Its profile row is t
 where the competition gap is wide (.82 / .62): co-designing with a small supplier set
 genuinely weakens competition, and that is the trade the type exists to represent.
 
-With it in the grid the sweep returns **1,221 robustly formal** results out of 12,960,
-alongside 5,834 robustly adaptive. The two-sidedness the model claims is now demonstrated.
+With it in the grid the sweep can fail in both directions for the first time: on the
+evidence axis alone it returns 1,221 robustly formal results out of 12,960 where 2.1
+returned none, and under the two-axis envelope introduced in 2.2.1 it returns 1,045. The
+two-sidedness the model claims is demonstrated rather than asserted.
+
 `discovery` is nonetheless a modelling assumption like every other template, not an
 observation, and calibration should treat the day tables as a primary object of measurement.
 

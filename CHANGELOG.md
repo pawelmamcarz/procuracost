@@ -1,5 +1,39 @@
 # Changelog
 
+## 2026-07-26 — model 2.2.1
+
+Closes the last open item from the 2.2 audit, and it changes the headline conclusion.
+
+### The uncertainty envelope now covers both axes
+
+Through 2.2.0 the reported range varied only the five evidence scalars — the discretion
+premium, the rigidity slope, the TCO pool and the two bypass rates — and held fixed the
+**daily cost of inaction** and the **non-mandatory step durations**, which together carry
+80–99% of ΔC. The model therefore reported its narrowest uncertainty exactly where it is
+least defensible.
+
+Added a structural axis: daily cost of inaction ×0.25 … ×4, non-mandatory step durations
+×0.7 … ×1.3. Statutory PZP waits remain invariant under both axes. `lowDelta` / `highDelta`
+is now the envelope over the full cross product, with each single-axis envelope reported
+alongside it and a `widthDrivenBy` flag.
+
+The result works against the project's own thesis, which is why it belongs here:
+
+| | evidence axis only | both axes |
+|---|---:|---:|
+| built-in scenarios crossing zero | 4 of 10 | **9 of 10** |
+| sweep: robustly favours formal | 1,221 / 12,960 | 1,045 |
+| sweep: robustly favours adaptive | 5,834 / 12,960 | 5,357 |
+| sweep: crosses zero | 5,905 | **6,558** |
+
+In nine of ten built-in scenarios the model no longer identifies a robust winner. That is
+the honest reading: the earlier narrow envelope was an artefact of choosing to vary the
+small quantities and freeze the large ones. The multipliers are declared judgements about
+how wrong an unmeasured input can be, not estimated intervals.
+
+Reported in `RESEARCH.md` §4.2, `docs/MODEL_PARAMETERS.md`, article 2 §3.3, the calculator
+hero panel, `npm run recompute`, `npm run sweep` and the replication package.
+
 ## 2026-07-26 — model 2.2.0
 
 Model 2.2 is a correction release following an adversarial audit of the model

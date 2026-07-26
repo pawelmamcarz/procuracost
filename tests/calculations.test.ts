@@ -184,6 +184,54 @@ describe("(c) central break-even threshold", () => {
   });
 });
 
+describe("(c3) the uncertainty envelope covers both axes", () => {
+  // Through 2.2.0 the envelope varied only the five evidence scalars and held the daily
+  // cost of inaction and the step-day templates fixed — the two inputs carrying 80–99% of
+  // ΔC. It therefore reported its narrowest uncertainty exactly where the model is least
+  // defensible.
+  it("reports the evidence and structural axes separately and combines them", () => {
+    for (const scenario of SCENARIOS) {
+      const u = calculateCosts(scenario.inputs).uncertainty;
+      // The combined envelope must contain both single-axis envelopes.
+      expect(u.lowDelta).toBeLessThanOrEqual(u.evidenceLowDelta + 1e-6);
+      expect(u.lowDelta).toBeLessThanOrEqual(u.structuralLowDelta + 1e-6);
+      expect(u.highDelta).toBeGreaterThanOrEqual(u.evidenceHighDelta - 1e-6);
+      expect(u.highDelta).toBeGreaterThanOrEqual(u.structuralHighDelta - 1e-6);
+      // And it must contain the central point.
+      expect(u.lowDelta).toBeLessThanOrEqual(u.centralDelta + 1e-6);
+      expect(u.highDelta).toBeGreaterThanOrEqual(u.centralDelta - 1e-6);
+    }
+  });
+
+  it("finds the structural axis wider wherever the two paths differ in duration", () => {
+    const withDayGap = SCENARIOS.filter((s) => {
+      const r = calculateCosts(s.inputs);
+      return Math.abs(r.rigidDays - r.flexibleDays) > 0.5;
+    });
+    expect(withDayGap.length).toBeGreaterThan(0);
+    for (const scenario of withDayGap) {
+      const u = calculateCosts(scenario.inputs).uncertainty;
+      const evidenceWidth = u.evidenceHighDelta - u.evidenceLowDelta;
+      const structuralWidth = u.structuralHighDelta - u.structuralLowDelta;
+      expect(structuralWidth).toBeGreaterThan(evidenceWidth);
+      expect(u.widthDrivenBy).toBe("structural");
+    }
+  });
+
+  it("leaves statutory waits invariant under the structural duration perturbation", () => {
+    // The structural axis rides on the technology multiplier, which never touches a
+    // mandatory wait. A pzp_eu process must keep its 35 + 10 statutory days in every
+    // corner of the envelope, so the day gap can never exceed the non-mandatory span.
+    const r = calculateCosts(makeInputs({ processType: "pzp_eu", techLevel: "partial_erp" }));
+    const mandatory = PROCESS_TEMPLATES.pzp_eu
+      .filter((s) => s.mandatoryWait)
+      .reduce((sum, s) => sum + s.rigidDays, 0);
+    expect(mandatory).toBe(45);
+    expect(r.rigidDays).toBeGreaterThanOrEqual(mandatory);
+    expect(r.flexibleDays).toBeGreaterThanOrEqual(mandatory);
+  });
+});
+
 describe("(c2) ΔC decomposition separates the user-supplied delay identity", () => {
   it("splits the delta into process, delay and lifecycle buckets that sum to it", () => {
     for (const scenario of SCENARIOS) {

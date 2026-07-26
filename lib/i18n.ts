@@ -169,6 +169,12 @@ const comparisonPl = {
   modelAdjustUpstreamBypass: "Nakład pracy i koordynacja Upstream: ×1,15 (założenie)",
   modelAdjustDownstreamProd: "Nakład pracy ×0,90 i koordynacja Downstream ×0,85 (założenie)",
   modelAdjustStrongest: "Łączna korekta pracy Direct × Upstream: ×1,265",
+  axisEvidence: "Oś dowodowa (5 skalarów z literatury)",
+  axisStructural: "Oś strukturalna (koszt dnia ×0,25…×4, czasy etapów ×0,7…×1,3)",
+  axisNoteStructural:
+    "Szerokość przedziału niesie oś strukturalna, nie dowodowa. To znaczy, że o wyniku decydują Twoje założenia o koszcie dnia i o czasach etapów, a nie parametry z badań. Terminy ustawowe PZP pozostają nienaruszone w obu osiach.",
+  axisNoteEvidence:
+    "Szerokość przedziału niesie oś dowodowa. Terminy ustawowe PZP pozostają nienaruszone w obu osiach.",
   decompositionTitle: "Z czego składa się ta różnica",
   decompositionProcess: "Proces (praca, administracja, selekcja, obejścia)",
   decompositionDelay: "Opóźnienie (dni × Twój koszt dnia)",
@@ -265,6 +271,12 @@ const comparisonEn = {
   modelAdjustUpstreamBypass: "Upstream staff effort and coordination: ×1.15 (assumption)",
   modelAdjustDownstreamProd: "Downstream staff effort ×0.90 and coordination ×0.85 (assumption)",
   modelAdjustStrongest: "Combined Direct × Upstream staff factor: ×1.265",
+  axisEvidence: "Evidence axis (5 literature scalars)",
+  axisStructural: "Structural axis (daily cost ×0.25…×4, step durations ×0.7…×1.3)",
+  axisNoteStructural:
+    "The width comes from the structural axis, not the evidence one. Your assumptions about the cost of a day and about step durations decide this result — not the parameters taken from research. Statutory PZP waits are invariant under both axes.",
+  axisNoteEvidence:
+    "The width comes from the evidence axis. Statutory PZP waits are invariant under both axes.",
   decompositionTitle: "What this difference is made of",
   decompositionProcess: "Process (staff, admin, selection, bypass)",
   decompositionDelay: "Delay (days × your daily cost)",
