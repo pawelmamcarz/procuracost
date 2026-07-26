@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { SCENARIOS, Scenario } from "@/lib/scenarios";
-import { ProcurementInputs, ProcessType, TechLevelId, StakeholderRole } from "@/lib/calculations";
+import { ProcurementInputs, ProcessType, TechLevelId, StakeholderRole, DEFAULT_DISCOUNT_RATE_PCT } from "@/lib/calculations";
 import { TECH_LEVELS, PROCESS_TYPE_META, ProcessCategory, deriveRigidDays, deriveFlexibleDays, getSteps } from "@/lib/process-templates";
 import { calculatorT, Lang } from "@/lib/i18n";
 
@@ -17,7 +17,7 @@ interface Props {
 const PROCESS_CATEGORY_ORDER: ProcessCategory[] = ["strategic", "operational", "strategic_pzp"];
 
 const PROCESS_TYPES_BY_CATEGORY: Record<ProcessCategory, Exclude<ProcessType, "custom">[]> = {
-  strategic: ["private_formal", "policy_only", "capex"],
+  strategic: ["private_formal", "policy_only", "discovery", "capex"],
   operational: ["catalog_order", "mrp_order"],
   strategic_pzp: ["pzp_eu", "pzp_krajowy"],
 };
@@ -314,6 +314,29 @@ export default function CostCalculator({ onCalculate, lang = "pl", initialInputs
               onChange={(e) => setField("contractDurationYears", +e.target.value)}
               min={0}
               max={50}
+              step={0.5}
+            />
+          </div>
+          <div>
+            <div className="flex items-center gap-1 mb-1">
+              <label className="text-xs font-medium text-gray-600" htmlFor="cc-discount-rate">{tx.discountRate}</label>
+              <button
+                type="button"
+                className="cursor-help text-gray-400"
+                title={tx.discountRateTooltip}
+                aria-label={tx.discountRateTooltip}
+              >
+                ⓘ
+              </button>
+            </div>
+            <input
+              id="cc-discount-rate"
+              type="number"
+              className={inputClass}
+              value={inputs.discountRatePct ?? DEFAULT_DISCOUNT_RATE_PCT}
+              onChange={(e) => setField("discountRatePct", +e.target.value)}
+              min={0}
+              max={25}
               step={0.5}
             />
           </div>

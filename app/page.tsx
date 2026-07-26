@@ -7,13 +7,13 @@ import { calculateCosts } from "@/lib/calculations";
 export const metadata: Metadata = {
   title: "ProcuraCost — Kalkulator kosztów procedur zakupowych",
   description:
-    "Neutralny model kosztów z zakresem niepewności, optymalizator ścieżki i audyt dojrzałości zakupowej.",
+    "Neutralny model kosztów z zakresem niepewności, optymalizator ścieżki i samoocena dojrzałości zakupowej.",
 };
 
 const stats = [
-  { value: "~6 pp", label: "wzrost znormalizowanej ceny przy dyskrecji; transfer z rynku węgierskiego", source: "Szucs, JEEA 2024" },
-  { value: "0–0,105/rok", label: "przyrost częstości formalnych aneksów od sztywności kontraktu", source: "Beuve et al., JLEO 2023, 2SLS/IV" },
-  { value: "0–15%", label: "jawny stres-test puli TCO; scenariusz centralny wynosi zero", source: "założenie modelu 2.1" },
+  { value: "~6%", label: "wzrost ceny przy dyskrecji; estymata strukturalna, transfer z rynku węgierskiego", source: "Szucs, JEEA 2024" },
+  { value: "0,077–0,105/rok", label: "przyrost częstości formalnych aneksów przy wzroście o 1 SD w każdej z 7 kategorii sztywności kontraktu", source: "Beuve et al., JLEO 2023, 2SLS/IV" },
+  { value: "0–15%", label: "jawny stres-test puli TCO; scenariusz centralny wynosi zero", source: "założenie modelu 2.2" },
 ];
 
 const howItWorks = [
@@ -65,7 +65,10 @@ const caseStudyPreviews = SCENARIOS.filter((s) => s.caseStudy)
     const insight = s.caseStudy!.insight;
     return {
       title: s.caseStudy!.title,
-      insight: insight.length > 120 ? insight.slice(0, 117) + "…" : insight,
+      // Full text. Truncating at 117 chars systematically severed the caveat, which is
+      // always the second sentence — "This is a c…" instead of "…a claim reported by an
+      // organisation promoting the method, not an independent study."
+      insight,
       rigidDays: result.rigidDays,
       flexibleDays: result.flexibleDays,
       source: s.caseStudy!.source,
@@ -117,7 +120,7 @@ export default function HomePage() {
             href="/assessment"
             className="rounded-xl border border-gray-300 bg-white px-8 py-3.5 text-sm font-semibold text-gray-700 shadow-sm hover:border-blue-300 hover:text-blue-700"
           >
-            Bezpłatny audyt →
+            Bezpłatna samoocena →
           </Link>
           <Link
             href="/optimizer"
@@ -248,7 +251,7 @@ export default function HomePage() {
       <div className="mt-16 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-center text-white">
         <h2 className="text-2xl font-bold">Sprawdź, ile traci Twoja organizacja</h2>
         <p className="mt-2 text-blue-100">
-          Kalkulator kosztów, optymalizator ścieżki i bezpłatny audyt dojrzałości zakupowej —
+          Kalkulator kosztów, optymalizator ścieżki i bezpłatna samoocena dojrzałości zakupowej —
           z jawnym rozdzieleniem wyników badań od szerokich założeń scenariuszowych.
         </p>
         <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
@@ -262,7 +265,7 @@ export default function HomePage() {
             href="/assessment"
             className="rounded-xl border border-white/40 bg-white/10 px-8 py-3 text-sm font-semibold text-white hover:bg-white/20"
           >
-            Bezpłatny audyt →
+            Bezpłatna samoocena →
           </Link>
         </div>
       </div>

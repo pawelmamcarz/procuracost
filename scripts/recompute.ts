@@ -79,6 +79,73 @@ console.log(`Scenario envelope crosses zero in ${crossing.length}/${results.leng
   (crossing.length ? ` (${crossing.map((n) => n.id).join(", ")})` : "") + ".");
 console.log(`Selection dimension favours the formal path in ${favRigid.length}/${results.length} central scenarios.`);
 
+// ── (b2) ΔC decomposition ─────────────────────────────────────────────────────
+// The single most important disclosure in the model. The delay bucket is the product
+// of a template-derived day count and a daily cost the USER supplies — an accounting
+// identity, not a modeled result. Reporting only the summed Δ let that identity carry
+// most of the headline while reading as a finding.
+console.log("\n### ΔC decomposition: how much of the headline is the user-supplied delay identity?\n");
+console.log("| scenario | Δ process | Δ delay | Δ lifecycle | **Δ total** | delay share | break-even (PLN/day) | status |");
+console.log("|--|--:|--:|--:|--:|--:|--:|--|");
+
+for (const { id, r } of results) {
+  const d = r.deltaDecomposition;
+  const t = r.decisionThreshold;
+  const breakEven = t.breakEvenDailyCostOfInaction === null
+    ? "n/a"
+    : fmt(t.breakEvenDailyCostOfInaction);
+  console.log(
+    `| ${id} | ${fmt(d.process)} | ${fmt(d.delay)} | ${fmt(d.lifecycle)} | **${r.delta >= 0 ? "+" : ""}${fmt(r.delta)}** | ` +
+    `${d.delayShareOfDeltaPercent.toFixed(1)}% | ${breakEven} | ${t.status} |`
+  );
+}
+
+const withDelay = results.filter(({ r }) => r.deltaDecomposition.delay !== 0);
+const delayShares = withDelay.map(({ r }) => r.deltaDecomposition.delayShareOfDeltaPercent);
+if (delayShares.length) {
+  console.log(
+    `\nWhere the two paths differ in duration (${delayShares.length}/${results.length} scenarios), the delay ` +
+    `bucket carries ${Math.min(...delayShares).toFixed(1)}–${Math.max(...delayShares).toFixed(1)}% of |Δ|. ` +
+    `That bucket is (template day difference) × (user-supplied daily cost): an identity, not a modeled effect.`
+  );
+}
+
+// ── (b3) uncertainty by axis ──────────────────────────────────────────────────
+// Through 2.2.0 the envelope varied only the five evidence scalars. It held the daily cost
+// of inaction and the step-day templates fixed — the two inputs carrying most of ΔC — and
+// so reported its narrowest uncertainty exactly where the model is least defensible.
+console.log("\n### Uncertainty by axis: which one actually carries the width?\n");
+console.log("| scenario | central Δ | evidence axis | structural axis | combined | crosses zero | width driven by |");
+console.log("|--|--:|--:|--:|--:|:--:|--|");
+
+for (const { id, r } of results) {
+  const u = r.uncertainty;
+  console.log(
+    `| ${id} | ${fmt(u.centralDelta)} | ${fmt(u.evidenceLowDelta)}…${fmt(u.evidenceHighDelta)} | ` +
+    `${fmt(u.structuralLowDelta)}…${fmt(u.structuralHighDelta)} | ${fmt(u.lowDelta)}…${fmt(u.highDelta)} | ` +
+    `${u.crossesZero ? "yes" : "no"} | ${u.widthDrivenBy} |`
+  );
+}
+
+const crossingCombined = results.filter(({ r }) => r.uncertainty.crossesZero);
+const crossingEvidenceOnly = results.filter(
+  ({ r }) => r.uncertainty.evidenceLowDelta <= 0 && r.uncertainty.evidenceHighDelta >= 0,
+);
+console.log(
+  `\nOn the evidence axis alone ${crossingEvidenceOnly.length}/${results.length} scenarios cross zero. ` +
+  `Adding the structural axis takes that to ${crossingCombined.length}/${results.length}. ` +
+  `The model identifies a robust winner in far fewer cases than model 2.1 reported, and that is ` +
+  `the honest reading: the narrow envelope was an artefact of bracketing only the small quantities.`
+);
+
+const processFavoursFormal = results.filter(({ r }) => r.deltaDecomposition.process < 0);
+console.log(
+  `Excluding the delay identity, the FORMAL path is cheaper on process cost in ` +
+  `${processFavoursFormal.length}/${results.length} scenarios` +
+  (processFavoursFormal.length ? ` (${processFavoursFormal.map((n) => n.id).join(", ")})` : "") +
+  `. The Tunnel–Field advantage in this parameterisation is a delay story, not a process-cost story.`
+);
+
 // ── (c) context-uplift audit ──────────────────────────────────────────────────
 console.log("\n### Context-uplift audit (formal path): total per-dimension factor vs unset baseline");
 console.log("Invariant: no dimension's total context uplift exceeds ~×1.5.\n");

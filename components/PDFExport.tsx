@@ -18,6 +18,35 @@ interface Props {
   inputs: ProcurementInputs;
 }
 
+// jsPDF's built-in Helvetica is WinAnsi (cp1252), which has no Polish diacritics.
+// Every ą ć ę ł ń ó ś ź ż and every "zł" in the exported report rendered as mojibake —
+// "1 234 567 zB", "Zcielka formalna" — in the one artifact that leaves the site.
+// Noto Sans is embedded instead, subsetted to Latin + Latin Extended-A (~23 KB each)
+// and fetched only when an export actually runs, so it never enters the page bundle.
+const PDF_FONTS = [
+  { file: "NotoSans-Regular-subset.ttf", vfs: "NotoSans-Regular.ttf", style: "normal" },
+  { file: "NotoSans-Bold-subset.ttf", vfs: "NotoSans-Bold.ttf", style: "bold" },
+] as const;
+
+let fontCache: Array<{ vfs: string; style: string; base64: string }> | null = null;
+
+async function loadPdfFonts() {
+  if (fontCache) return fontCache;
+  fontCache = await Promise.all(
+    PDF_FONTS.map(async ({ file, vfs, style }) => {
+      const response = await fetch(`/fonts/${file}`);
+      if (!response.ok) throw new Error(`font ${file}: HTTP ${response.status}`);
+      const bytes = new Uint8Array(await response.arrayBuffer());
+      let binary = "";
+      for (let i = 0; i < bytes.length; i += 8192) {
+        binary += String.fromCharCode(...bytes.subarray(i, i + 8192));
+      }
+      return { vfs, style, base64: btoa(binary) };
+    }),
+  );
+  return fontCache;
+}
+
 export default function PDFExport({ result, scenario, inputs }: Props) {
   const [generating, setGenerating] = useState<"pl" | "en" | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -34,7 +63,13 @@ export default function PDFExport({ result, scenario, inputs }: Props) {
       // Note: spendType and processPhase are closed over from the component scope
       // (passed via props when the component renders the generate function)
 
+    const fonts = await loadPdfFonts();
     const doc = new jsPDF();
+    for (const { vfs, style, base64 } of fonts) {
+      doc.addFileToVFS(vfs, base64);
+      doc.addFont(vfs, "NotoSans", style);
+    }
+    doc.setFont("NotoSans", "normal");
     const margin = 18;
     let y = 18;
     let pageNumber = 1;
@@ -234,7 +269,9 @@ export default function PDFExport({ result, scenario, inputs }: Props) {
     doc.text("TOTAL", margin + 4, y + 5.5);
     doc.text(formatPLN(result.rigid.total), margin + 72, y + 5.5);
     doc.text(formatPLN(result.flexible.total), margin + 112, y + 5.5);
-    doc.text(`+${formatPLN(result.delta)}`, margin + 155, y + 5.5);
+    // Sign must follow the number. A hardcoded "+" printed "+-6 558 zł" on the one
+    // built-in scenario constructed to demonstrate that the formal path can win.
+    doc.text(`${result.delta >= 0 ? "+" : ""}${formatPLN(result.delta)}`, margin + 155, y + 5.5);
 
     y += 16;
 

@@ -5,7 +5,7 @@
 // - Stakeholder hours: calibrated / illustrative (role-hour magnitudes are modeling assumptions)
 // - Step effort and all technology multipliers/costs: illustrative model assumptions
 
-export type ProcessType = "pzp_eu" | "pzp_krajowy" | "private_formal" | "policy_only" | "catalog_order" | "mrp_order" | "capex" | "custom";
+export type ProcessType = "pzp_eu" | "pzp_krajowy" | "private_formal" | "policy_only" | "discovery" | "catalog_order" | "mrp_order" | "capex" | "custom";
 export type TechLevelId = "manual" | "sourcing_tool" | "partial_erp" | "end_to_end";
 export type StakeholderRole = "buyer" | "lawyer" | "finance" | "manager" | "executive" | "requestor";
 
@@ -20,7 +20,12 @@ export interface ProcessStep {
   flexibleDays: number | null;
   // Legally mandated minimum waiting period — cannot be shortened
   mandatoryWait: boolean;
-  // Hours each stakeholder role spends on this step
+  // TOTAL hours the role spends on this step, for the whole role, not per person.
+  // Model 2.1 multiplied these by the role headcount, so declaring three buyers made
+  // the identical workflow cost three times as much in buyer time. A fixed workload
+  // does not grow because more people are available to share it; headcount is captured
+  // as descriptive input only. An empty object means the step consumes elapsed calendar
+  // time without consuming role effort (e.g. a statutory standstill).
   participation: Partial<Record<StakeholderRole, number>>;
   // Explanation shown to the user
   note: string;
@@ -112,6 +117,7 @@ export const PROCESS_RIGIDITY: Record<ProcessType, number> = {
   pzp_krajowy: 0.80,
   private_formal: 0.60,
   policy_only: 0.15,
+  discovery: 0.30,
   catalog_order: 0.20,
   mrp_order: 0.12,
   capex: 0.72,
@@ -119,18 +125,34 @@ export const PROCESS_RIGIDITY: Record<ProcessType, number> = {
 };
 
 // ─── Corruption / favoritism-risk context by process type ───────────────────────
-// A calibrated governance-risk index (Grade C) for how much favoritism, price-dispersion
-// and value loss a DISCRETIONARY award would risk in this context (0 = none, 1 = high
-// public-money scrutiny). This is what competitive (rigid) tendering averts — the basis
-// of the governance value credited to formal procedures. The pzp_eu = 1.0 anchor is tied
-// to Szucs 2024 (discretion raises prices and selects less-productive contractors); the
-// ordinal direction is taken from OECD; the intermediate gradient between anchors is a
-// modeling assumption — sensitivity-tested. Public procurement carries the highest stakes.
+// How much favoritism, price dispersion and value loss a DISCRETIONARY award would risk
+// in this context (0 = none, 1 = high public-money scrutiny). This is what competitive
+// tendering averts — the basis of the governance value credited to formal procedures,
+// and the only channel in the model that can favour the formal path.
+//
+// EVIDENTIAL STATUS (corrected in 2.2): this whole vector is a Grade-C ordinal calibration
+// assumption with NO external warrant, on the same footing as PATH_PROFILES. Two claims
+// were removed here because neither survived checking:
+//
+//   1. "the ordinal direction is taken from OECD" — no OECD publication was named anywhere
+//      in the corpus. An organisation name attached to no title, year or table cannot be
+//      checked, and this vector is live: it scales productivityCost.
+//   2. "the pzp_eu = 1.0 anchor is tied to Szucs 2024" — Szucs identifies his effect on
+//      Hungarian contracts BELOW a ~25m HUF (~90k USD) invitational threshold, i.e. the
+//      small end of the value distribution. Anchoring the maximum risk value to the
+//      largest, most heavily publicised EU-threshold procedures inverts his population.
+//      Szucs supplies a price and a productivity effect within one threshold band; he
+//      supplies no index of favoritism risk by procedure type, and no value of the form 1.0.
+//
+// Replace with observed favoritism-risk indicators (single-bid rates, price dispersion,
+// audit findings) during calibration. Until then it is an assumption, and the sensitivity
+// sweep should treat it as one.
 export const CORRUPTION_RISK_CONTEXT: Record<ProcessType, number> = {
   pzp_eu: 1.0,
   pzp_krajowy: 0.9,
   capex: 0.6,
   policy_only: 0.45,
+  discovery: 0.42,
   private_formal: 0.4,
   custom: 0.4,
   catalog_order: 0.2,
@@ -164,14 +186,14 @@ const PZP_EU_STEPS: ProcessStep[] = [
   },
   {
     id: "publication",
-    name: "Publikacja BZP/TED",
-    nameEn: "Publication in BZP/TED",
+    name: "Publikacja w TED (Dz.Urz. UE)",
+    nameEn: "Publication in TED (OJ EU)",
     rigidDays: 35,
     flexibleDays: 35,
     mandatoryWait: true,
     participation: { buyer: 4 },
-    note: "Modelowany standardowy termin składania ofert: 35 dni — art. 138 ust. 1 PZP. Ustawowe skrócenia, m.in. do 30 dni przy pełnej komunikacji elektronicznej, wymagają osobnego scenariusza.",
-    noteEn: "Modeled standard bid-submission period: 35 days — Art. 138(1) PZP. Statutory reductions, including 30 days for fully electronic submission, require a separate scenario.",
+    note: "Modelowany standardowy termin składania ofert: 35 dni — art. 138 ust. 1 PZP. Powyżej progów unijnych ogłoszenie trafia do Dz.Urz. UE / TED; BZP jest kanałem dla postępowań krajowych (Dział III). Uwaga: art. 138 ust. 4 pozwala skrócić termin do 30 dni przy pełnej komunikacji elektronicznej, a art. 61 ust. 1 czyni ją ustawowym domyślnym trybem — skrócenie jest więc w praktyce dostępne w większości postępowań. Model zachowuje 35 dni jako wariant konserwatywny; 30 dni jest udokumentowanym przypadkiem wrażliwości.",
+    noteEn: "Modeled standard bid-submission period: 35 days — Art. 138(1) PZP. Above the EU thresholds the notice goes to the OJ EU / TED; BZP is the channel for national (Dział III) procedures. Note that Art. 138(4) permits a reduction to 30 days for fully electronic submission and Art. 61(1) makes electronic communication the statutory default, so the reduction is in practice available in most procedures. The model keeps 35 days as the conservative variant; 30 days is a documented sensitivity case.",
   },
   {
     id: "bid_evaluation",
@@ -374,6 +396,86 @@ const PRIVATE_FORMAL_STEPS: ProcessStep[] = [
     flexibleDays: 2,
     mandatoryWait: false,
     participation: { buyer: 2, executive: 2 },
+    note: "Finalne podpisanie i archiwizacja",
+    noteEn: "Final signing and archiving",
+  },
+];
+
+// Discovery purchase: the requirement is genuinely unknown at the outset, so the
+// adaptive path buys learning with time. Iterative scoping, supplier co-design and the
+// real possibility of an abandoned round make adaptive execution SLOWER and more
+// effortful here, while a formal path forces the requirement to be frozen early and
+// simply lives with a worse specification.
+//
+// This template exists because every other one had flexibleDays <= rigidDays in every
+// step, which made "the adaptive path is faster" an identity rather than a finding and
+// left the sensitivity sweep unable to fail in the pro-formal direction. It is a
+// modelling assumption like any other template, not an empirical claim — but it makes
+// the comparison two-sided, which the model claims to be.
+const DISCOVERY_STEPS: ProcessStep[] = [
+  {
+    id: "problem_framing",
+    name: "Ramowanie problemu",
+    nameEn: "Problem framing",
+    rigidDays: 6,
+    flexibleDays: 8,
+    mandatoryWait: false,
+    participation: { requestor: 12, buyer: 10, manager: 4 },
+    note: "Ścieżka formalna zamraża wymaganie wcześnie, żeby dało się je opisać w SIWZ. Ścieżka adaptacyjna świadomie zostawia je otwarte dłużej — to kosztuje czas, a zwraca lepsze dopasowanie.",
+    noteEn: "The formal path freezes the requirement early so it can be specified. The adaptive path deliberately leaves it open for longer — that costs time and buys fit.",
+  },
+  {
+    id: "market_codesign",
+    name: "Współprojektowanie z rynkiem",
+    nameEn: "Co-design with the market",
+    rigidDays: 5,
+    flexibleDays: 14,
+    mandatoryWait: false,
+    participation: { requestor: 16, buyer: 24, manager: 6 },
+    note: "Iteracyjne rozmowy z dostawcami, prototypy i korekty zakresu. Ścieżka formalna ogranicza się do jednorazowego rozeznania rynku.",
+    noteEn: "Iterative supplier conversations, prototypes and scope revisions. The formal path limits itself to a single market survey.",
+  },
+  {
+    id: "rework_round",
+    name: "Runda przeprojektowania",
+    nameEn: "Re-scoping round",
+    rigidDays: 2,
+    flexibleDays: 9,
+    mandatoryWait: false,
+    participation: { requestor: 8, buyer: 12, lawyer: 4 },
+    note: "Adaptacja odkrywa informacje, które unieważniają część wcześniejszych ustaleń. Czasem oznacza to porzucenie rundy negocjacyjnej. Ścieżka formalna tego nie robi — i dlatego nie uczy się w trakcie.",
+    noteEn: "Adaptive work surfaces information that invalidates earlier decisions, sometimes abandoning a negotiation round entirely. The formal path does not do this — which is also why it does not learn in flight.",
+  },
+  {
+    id: "evaluation",
+    name: "Ocena i wybór",
+    nameEn: "Evaluation and selection",
+    rigidDays: 10,
+    flexibleDays: 7,
+    mandatoryWait: false,
+    participation: { buyer: 20, finance: 6, manager: 4 },
+    note: "Tu adaptacja odzyskuje czas: kryteria i dostawcy są już przedyskutowani.",
+    noteEn: "Here the adaptive path recovers time: criteria and suppliers are already understood.",
+  },
+  {
+    id: "legal_review",
+    name: "Przegląd prawny",
+    nameEn: "Legal review",
+    rigidDays: 8,
+    flexibleDays: 6,
+    mandatoryWait: false,
+    participation: { lawyer: 20, finance: 4 },
+    note: "Umowa z mechanizmem zmiany zakresu wymaga więcej pracy prawnej niż umowa sztywna, ale mniej niż aneksowanie po fakcie.",
+    noteEn: "A contract with a scope-change mechanism takes more legal work than a rigid one, and less than amending after the fact.",
+  },
+  {
+    id: "signing",
+    name: "Podpisanie",
+    nameEn: "Signing",
+    rigidDays: 3,
+    flexibleDays: 3,
+    mandatoryWait: false,
+    participation: { buyer: 2, executive: 3 },
     note: "Finalne podpisanie i archiwizacja",
     noteEn: "Final signing and archiving",
   },
@@ -583,6 +685,7 @@ export const PROCESS_TEMPLATES: Record<Exclude<ProcessType, "custom">, ProcessSt
   pzp_krajowy: PZP_KRAJOWY_STEPS,
   private_formal: PRIVATE_FORMAL_STEPS,
   policy_only: POLICY_ONLY_STEPS,
+  discovery: DISCOVERY_STEPS,
   catalog_order: CATALOG_ORDER_STEPS,
   mrp_order: MRP_ORDER_STEPS,
   capex: CAPEX_STEPS,
@@ -632,6 +735,13 @@ export const PROCESS_TYPE_META: Record<Exclude<ProcessType, "custom">, { categor
     nameEn: "Strategic purchase — adaptive and compliant path",
     description: "Adaptacyjna sekwencja działań w tej samej granicy uprawnień, konkurencji, etyki i dokumentacji. Nie oznacza zwolnienia z PZP ani kontroli.",
     descriptionEn: "Adaptive sequencing within the same authorization, competition, ethics and documentation boundary. It is not an exemption from law or control.",
+  },
+  discovery: {
+    category: "strategic",
+    name: "Strategiczny zakup odkrywczy — wymaganie nieznane na starcie",
+    nameEn: "Strategic discovery purchase — requirement unknown at the outset",
+    description: "Zakup, w którym wymaganie powstaje w trakcie: współprojektowanie z dostawcami, prototypy, możliwa runda przeprojektowania. Tutaj ścieżka adaptacyjna jest WOLNIEJSZA i pracochłonniejsza niż formalna, bo kupuje uczenie się. Ścieżka formalna zamraża wymaganie wcześnie i żyje z gorszą specyfikacją.",
+    descriptionEn: "A purchase whose requirement emerges in flight: supplier co-design, prototypes, a possible re-scoping round. Here the adaptive path is SLOWER and more effortful than the formal one, because it buys learning. The formal path freezes the requirement early and lives with a worse specification.",
   },
   capex: {
     category: "strategic",
@@ -694,8 +804,21 @@ export interface StepTiming {
 
 export interface ProcessTiming {
   steps: StepTiming[];
+  // Elapsed calendar days, unrounded. Model 2.1 rounded here, before the figure was
+  // multiplied by the daily cost of inaction — at 50,000 PLN/day a half-day of
+  // rounding was worth 25,000 PLN of pure discretisation artifact. Rounding is now a
+  // presentation concern only.
   rigidDays: number;
   flexibleDays: number;
+  // Days on steps that actually consume role effort. Non-labour coordination overhead
+  // accrues only over these: a statutory standstill has nobody working on the file, so
+  // it cannot generate "per-day meeting and alignment effort".
+  rigidActiveDays: number;
+  flexibleActiveDays: number;
+}
+
+function stepConsumesEffort(step: ProcessStep): boolean {
+  return Object.values(step.participation).some((hours) => nonNegativeFinite(hours) > 0);
 }
 
 function nonNegativeFinite(value: number): number {
@@ -735,13 +858,24 @@ export function deriveStepTimings(
     return { step, rigidDays, flexibleDays };
   });
 
+  const active = timingSteps.filter((item) => stepConsumesEffort(item.step));
+
   return {
     steps: timingSteps,
-    rigidDays: Math.round(timingSteps.reduce((total, item) => total + item.rigidDays, 0)),
-    flexibleDays: Math.round(
-      timingSteps.reduce((total, item) => total + (item.flexibleDays ?? 0), 0),
-    ),
+    rigidDays: timingSteps.reduce((total, item) => total + item.rigidDays, 0),
+    flexibleDays: timingSteps.reduce((total, item) => total + (item.flexibleDays ?? 0), 0),
+    rigidActiveDays: active.reduce((total, item) => total + item.rigidDays, 0),
+    flexibleActiveDays: active.reduce((total, item) => total + (item.flexibleDays ?? 0), 0),
   };
+}
+
+export function deriveActiveDays(
+  steps: ProcessStep[],
+  techMultiplier: number,
+  flexible: boolean,
+): number {
+  const timing = deriveStepTimings(steps, techMultiplier);
+  return flexible ? timing.flexibleActiveDays : timing.rigidActiveDays;
 }
 
 export function deriveRigidDays(
@@ -767,9 +901,11 @@ export function deriveStaffCost(
   flexible: boolean,
   stakeholders: Record<StakeholderRole, { count: number; dailyRate: number }>,
   processPhase?: "upstream" | "downstream",
-  spendType?: "direct" | "indirect"
+  spendType?: "direct" | "indirect",
+  techMultiplier = 1,
 ): number {
   const staffContextMultiplier = getStaffContextMultiplier(processPhase, spendType);
+  const safeTechMultiplier = nonNegativeFinite(techMultiplier);
   const activeSteps = flexible
     ? steps.filter((s) => s.mandatoryWait || s.flexibleDays !== null)
     : steps;
@@ -785,15 +921,31 @@ export function deriveStaffCost(
         // Participation hours describe the rigid version of a step. Scale the
         // adaptive path's retained-step effort by its own duration ratio. Without
         // this, elapsed time fell while labour stayed identical in most scenarios.
+        //
+        // The ratio is NOT capped at 1. Model 2.1 capped it, which meant a step where
+        // adaptive execution takes longer — iterative scoping, rework, an abandoned
+        // negotiation round — could cost more calendar days but never more effort.
+        // That cap was one of the reasons no configuration could favour the formal path.
         if (flexible && !step.mandatoryWait && step.flexibleDays !== null && step.rigidDays > 0) {
-          effectiveHours *= Math.min(1, Math.max(0, step.flexibleDays / step.rigidDays));
+          effectiveHours *= Math.max(0, step.flexibleDays / step.rigidDays);
+        }
+
+        // Technology scales effort on non-mandatory steps the same way it scales their
+        // duration. Model 2.1 applied the multiplier to elapsed days only, so moving to
+        // an end-to-end suite cut delay and overhead but left role hours untouched —
+        // inconsistent with scaling adaptive effort by a duration ratio two lines above,
+        // and with H5 ("technology changes execution costs when it is used"). A statutory
+        // wait is exempt: no system shortens it and none removes the effort around it.
+        if (!step.mandatoryWait) {
+          effectiveHours *= safeTechMultiplier;
         }
 
         effectiveHours *= staffContextMultiplier;
 
-        const count = nonNegativeFinite(rate.count);
+        // rate.count is descriptive. See ProcessStep.participation: the hours are a
+        // whole-role total, so spreading them over more people does not create more work.
         const dailyRate = nonNegativeFinite(rate.dailyRate);
-        return stepTotal + (effectiveHours * count * dailyRate) / WORK_HOURS_PER_DAY;
+        return stepTotal + (effectiveHours * dailyRate) / WORK_HOURS_PER_DAY;
       },
       0
     );

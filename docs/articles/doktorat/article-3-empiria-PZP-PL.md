@@ -82,17 +82,74 @@ ocen do tezy.
 
 ## 5. Strategia analityczna
 
-Podstawowa analiza porównuje podobne zakupy wewnątrz organizacji i kategorii.
-Model czasu powinien uwzględniać wartość, CPV, złożoność, pilność, liczbę ofert,
-rok oraz efekty stałe zamawiającego. Osobne modele dotyczą konkurencji, zmian
-umowy, wyników dostawy i ustaleń audytu. Dopiero po ich prezentacji można
-zbudować rachunek pieniężny ProcuraCost.
+Pełny plan analizy, wraz z rachunkiem mocy i harmonogramem, znajduje się w
+`docs/research/EMPIRICAL_VALIDATION_PLAN.md`. Poniżej jego rdzeń.
+
+**Zmienna objaśniająca.** `prescriptiveness` mierzona *ex ante* — z macierzy akceptacji
+i wersji polityki obowiązującej w dniu autoryzacji potrzeby, a nie z faktycznego przebiegu
+postępowania. Przebieg faktyczny jest współokreślony przez wynik, więc kodowanie go jako
+ekspozycji tworzy odwrotną przyczynowość. Indeks jest sumą pięciu z-standaryzowanych
+składowych: liczby bram decyzyjnych, wymuszonych par sekwencyjnych, głębokości eskalacji,
+sztywności dokumentacji i odwróconej autonomii zespołu.
+
+Z ekspozycji **wykluczam udział czasu oczekiwania i długość ścieżki krytycznej**, mimo że
+wcześniejszy szkic je zawierał: obie dzielą jednostki z wynikiem głównym i mechanicznie go
+ograniczają.
+
+**Wynik główny:** `log(dni cyklu)` od autoryzacji potrzeby do podpisania umowy.
+
+**Specyfikacja bazowa:**
+
+`log(dni) = β · z(prescriptiveness) + γ′X + α_zamawiający + δ_CPV + θ_rok + ε`
+
+z błędami klastrowanymi na poziomie zamawiającego (przy < 30 klastrach —
+*wild cluster bootstrap*).
+
+**Kontrole dozwolone (przed-ekspozycyjne):** wartość szacunkowa, CPV, złożoność, pilność
+deklarowana przed wszczęciem, rok, efekty stałe zamawiającego.
+
+**Kontrole zakazane (po-ekspozycyjne):** liczba ofert, cena względem benchmarku, liczba
+aneksów, wynik dostawy. Wcześniejsza wersja tego protokołu umieszczała **liczbę ofert
+w modelu czasu cyklu**. To był błąd specyfikacji: liczba ofert powstaje po publikacji,
+zależy od projektu procesu i mechanicznie wpływa na czas oceny, więc jest zmienną
+pośredniczącą, a jej kontrolowanie obciąża współczynnik główny. Liczba ofert jest zmienną
+zależną w modelu konkurencji (H2), nie kontrolą w modelu czasu (H1).
+
+Osobne modele dotyczą konkurencji, zmian umowy, wyników dostawy i ustaleń audytu. Dopiero
+po ich prezentacji można zbudować rachunek pieniężny ProcuraCost.
+
+### 5.0 Identyfikacja i moc
+
+**Wariant bazowy** (dopasowane zdarzenia wewnątrz organizacji) identyfikuje asocjację
+warunkową, nie efekt przyczynowy — wybór ścieżki jest endogeniczny, co artykuł 2 przyznaje
+wprost.
+
+**Wariant rekomendowany dla warstwy przyczynowej:** zmiana wersji polityki wewnętrznej
+(macierzy akceptacji, uruchomienie modułu workflow) przy niezmienionych progach ustawowych,
+estymowana jako *staggered DiD* estymatorem odpornym na heterogeniczne efekty
+(Callaway–Sant’Anna albo Sun–Abraham; nie dwukierunkowe efekty stałe). Wymaga testu trendów
+równoległych i wykluczenia antycypacji.
+
+**Minimalny istotny efekt** deklaruję przed zebraniem danych: `|β| = 0,10`, czyli 10%
+skrócenia czasu cyklu na jedno odchylenie standardowe indeksu. Przy medianie ok. 60 dni to
+6 dni — poniżej tego progu efekt jest nieodróżnialny od szumu kalendarzowego.
+
+**Moc.** Przy α = 0,05, mocy 0,80, `sd(log dni) ≈ 0,55` i `R²` kontroli ≈ 0,30 rachunek
+zamknięty daje ok. 166 zdarzeń, ale korekta na klastrowanie (ICC ≈ 0,15, ok. 60 zdarzeń na
+organizację) podnosi to do rzędu 1 600 zdarzeń. Wniosek jest niewygodny i trzeba go postawić:
+**przy tej strukturze danych moc wiąże liczba organizacji, nie liczba zdarzeń.** Wariant
+przekrojowy wymagałby 25–30 organizacji, co jest nierealne; wariant wewnątrzorganizacyjny
+przy 6 organizacjach i 2 zmianach polityki daje wykrywalny efekt rzędu 12–15%. To jest
+argument za wariantem B jako osią artykułu. Ostateczne `n` wyznaczy symulacja na strukturze
+pilotażu.
 
 Progi kwotowe mogą wspierać projekt quasi-eksperymentalny tylko po sprawdzeniu,
 czy wartość nie jest manipulowana oraz czy po obu stronach progu zmienia się
 konkretny mechanizm. Szucs (2024) pokazuje, dlaczego sortowanie przy progu może
-unieważnić prosty RDD. Test gęstości jest diagnostyką, a nie naprawą wszystkich
-naruszeń. „Donut” wokół progu nie przywraca identyfikacji automatycznie.
+unieważnić prosty RDD. Test gęstości — w wersji Cattaneo, Jansson i Ma (2020) —
+jest diagnostyką, a nie naprawą wszystkich naruszeń. „Donut” wokół progu nie
+przywraca identyfikacji automatycznie. Zakładam, że wariant progowy tych testów
+nie przejdzie, i nie buduję na nim rozprawy.
 
 Plan analizy, wyniki główne, wyłączenia, okna i transformacje należy
 prerejestrować przed oszacowaniem efektów. Analizy eksploracyjne muszą być tak

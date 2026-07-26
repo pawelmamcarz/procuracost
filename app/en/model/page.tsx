@@ -18,11 +18,13 @@ export default function ModelPageEn() {
       <section className="mt-10 space-y-4 text-gray-700">
         <h2 className="text-xl font-semibold text-gray-900">What the studies estimate</h2>
         <p>
-          Szucs (2024) estimates about a 6 pp increase in normalized price and 28%
-          lower measured productivity of selected contractors under discretion.
-          Beuve, Moszoro and Spiller (2023) estimate 0.077–0.105 additional formal
-          amendments per contract-year for a one-standard-deviation increase in
-          rigidity in French car-park contracts. This is not an event probability.
+          Szucs (2024) estimates, in the structural specification, about a 6% price
+          increase and about 10% lower average productivity of selected contractors
+          under discretion; the effect is identified on contracts below a threshold of
+          roughly 25 million HUF. Beuve, Moszoro and Spiller (2023) estimate 0.077–0.105
+          additional formal amendments per contract-year for a simultaneous
+          one-standard-deviation increase in each of the seven rigidity categories, in
+          French car-park contracts. This is not an event probability.
         </p>
         <h2 className="text-xl font-semibold text-gray-900">What the model assumes</h2>
         <p>

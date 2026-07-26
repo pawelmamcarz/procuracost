@@ -1,14 +1,24 @@
-// ProcuraCost 2.1. Outputs are scenario estimates under assumptions documented in
+// ProcuraCost 2.2. Outputs are scenario estimates under assumptions documented in
 // docs/MODEL_PARAMETERS.md, not measured facts. Formal/sequential and
 // adaptive/compliant paths share the same legal boundary; no winner is imposed.
+//
+// 2.2 reports ΔC decomposed into three buckets with different time bases and
+// different evidential standing, because summing them into one headline number
+// hid the fact that the delay bucket dominated it:
+//   - process   (per procurement event): staff, admin, selection, bypass
+//   - delay     (per procurement event): elapsed-day difference × a daily cost the
+//                USER supplies. This bucket is an accounting identity, not a finding.
+//   - lifecycle (over the contract life): formal amendments, foregone lifecycle value
 //
 // - Szucs (JEEA 2024, DOI 10.1093/jeea/jvad017): discretion RAISES prices and selects
 //   less-productive contractors. Competitive (rigid) tendering averts this favoritism
 //   premium — the governance value credited to formal procedures here.
-// - Beuve, Moszoro & Spiller (NBER wp28491; JLEO 2023): 2SLS/IV estimate (rigidity
-//   instrumented by political contestability; exclusion restriction load-bearing); French
-//   car-park sector; +0.077–0.105 formal amendments per contract-year for a one-SD
-//   increase in each rigidity category. This is a frequency, not an event probability.
+// - Beuve, Moszoro & Spiller (JLEO 2023): 2SLS/IV estimate (rigidity instrumented by
+//   political contestability); French car-park sector; +0.077–0.105 formal amendments
+//   per contract-year for a ONE-STANDARD-DEVIATION increase in each rigidity category.
+//   ProcuraCost multiplies it by a 0–1 calibration profile that is NOT a z-score, so
+//   the slope is a scenario assumption anchored to an external order of magnitude —
+//   not a transferred estimate. Only the between-path difference is interpretable.
 // - TCO and bypass magnitudes are broad scenarios, not literature estimates.
 // - Lipsky (1980) + Vaughan (1996): informal bypass as a behavioural hazard.
 // - Holmström & Milgrom (1991): enforcement can crowd out value creation.
@@ -23,6 +33,7 @@ import {
   getSteps,
   deriveRigidDays,
   deriveFlexibleDays,
+  deriveActiveDays,
   deriveStaffCost,
   getStaffContextMultiplier,
   ProcessStep,
@@ -41,6 +52,11 @@ export interface ProcurementInputs {
   dailyCostOfInaction: number; // PLN/day — value lost per day without the contract
   renegotiationCost: number;   // PLN — cost if contract requires renegotiation
   bypassAuditExposure: number; // PLN — audit/penalty cost if informal bypass discovered
+  // Annual real discount rate, in percent. Optional; DEFAULT_DISCOUNT_RATE_PCT applies.
+  // Model 2.1 had no discount rate at all and summed a per-event cost with an
+  // undiscounted whole-of-contract-life amendment stream — for a ten-year CAPEX that
+  // overstated the lifecycle side by roughly a quarter and left `total` with no time base.
+  discountRatePct?: number;
   customSteps?: ProcessStep[];
 
   // Context dimensions. Their numeric multipliers are transparent assumptions.
@@ -61,6 +77,11 @@ export interface CostBreakdown {
   tcoCost: number;
   bypassCost: number;
   total: number;
+  // Bucket subtotals. `total` remains their sum for backward compatibility, but the
+  // three buckets have different time bases and must be read separately.
+  processCost: number;   // per procurement event: time + admin + selection + bypass
+  delayCost: number;     // per procurement event: days × user-supplied daily cost
+  lifecycleCost: number; // over the contract life: amendments + foregone lifecycle value
   // Sub-breakdown for transparency
   days: number;
   staffCost: number;
@@ -92,6 +113,7 @@ export interface CalculationTrace {
     dailyCostOfInaction: number;
     renegotiationCost: number;
     bypassAuditExposure: number;
+    discountRatePct: number;
   };
   context: {
     spendType?: "direct" | "indirect";
@@ -121,6 +143,19 @@ export interface CalculationTrace {
   dimensions: Record<CostDimensionKey, { rigid: number; flexible: number }>;
 }
 
+// How to read `breakEvenDailyCostOfInaction`.
+// - threshold_above_zero: the delay bucket decides. Adaptive wins only once the daily
+//   cost of inaction exceeds the reported threshold.
+// - formal_costlier_at_zero_delay: the formal path is already more expensive with the
+//   delay bucket removed entirely. The threshold is negative and not actionable.
+// - adaptive_costlier_at_zero_delay: mirror case.
+// - no_day_difference: both paths take the same time, so no threshold exists.
+export type BreakEvenStatus =
+  | "threshold_above_zero"
+  | "formal_costlier_at_zero_delay"
+  | "adaptive_costlier_at_zero_delay"
+  | "no_day_difference";
+
 export interface ComparisonResult {
   rigid: CostBreakdown;
   flexible: CostBreakdown;
@@ -132,21 +167,45 @@ export interface ComparisonResult {
   rigidDays: number;
   flexibleDays: number;
   uncertainty: {
+    // Combined envelope over BOTH axes: the five evidence scalars and the two structural
+    // inputs (daily cost of inaction, non-mandatory step durations). Through 2.2.0 this
+    // was the evidence axis alone, which bracketed the small quantities and held the two
+    // that carry the result fixed.
     lowDelta: number;
     centralDelta: number;
     highDelta: number;
     lowPercentOfContractValue: number;
     highPercentOfContractValue: number;
     crossesZero: boolean;
+    // Each axis on its own, so a reader can see which one the width comes from.
+    evidenceLowDelta: number;
+    evidenceHighDelta: number;
+    structuralLowDelta: number;
+    structuralHighDelta: number;
+    // Which axis contributes more of the combined width.
+    widthDrivenBy: "evidence" | "structural" | "balanced";
+  };
+  // ΔC split by time base and evidential standing. `delay` is the elapsed-day
+  // difference multiplied by a daily cost the user supplies; it is an accounting
+  // identity and is reported separately so it cannot be read as a modeled finding.
+  deltaDecomposition: {
+    process: number;
+    delay: number;
+    lifecycle: number;
+    // |delay| as a share of |delta|, in percent. Disclosed because in the built-in
+    // scenarios this bucket carries 77–99% of the headline number.
+    delayShareOfDeltaPercent: number;
   };
   decisionThreshold: {
-    // Effective calendar-day advantage; the user-supplied daily cost is not
-    // altered by a hidden context coefficient.
+    // Signed calendar-day advantage of the adaptive path (positive = adaptive faster).
     effectiveDayDifference: number;
-    // Formal-minus-adaptive delta after removing opportunity cost.
+    // Formal-minus-adaptive delta after removing the delay bucket.
     nonDelayDelta: number;
-    // Daily inaction cost above which the central result favours adaptive.
+    // Raw solution of ΔC(c_d) = 0. May be negative or null — see `status`, which
+    // must be used to interpret it. Never clamped: a clamped zero is indistinguishable
+    // from "formal already loses with free delay", which is a different claim.
     breakEvenDailyCostOfInaction: number | null;
+    status: BreakEvenStatus;
   };
   trace: CalculationTrace;
   sources: {
@@ -168,6 +227,7 @@ export interface MatrixCell {
 }
 
 type EvidenceCase = "low" | "central" | "high";
+const EVIDENCE_CASE_IDS: EvidenceCase[] = ["low", "central", "high"];
 
 // Scenario ranges, not confidence intervals. `low` minimizes the rigid-minus-adaptive
 // delta; `high` maximizes it. Wide bounds expose weak evidence instead of laundering it
@@ -192,6 +252,11 @@ const PATH_PROFILES: Record<ProcessType, {
   pzp_krajowy: { formalCompetition: 0.90, adaptiveCompetition: 0.85, formalContractRigidity: 0.65, adaptiveContractRigidity: 0.40, formalTcoCapture: 0.67, adaptiveTcoCapture: 0.72 },
   private_formal: { formalCompetition: 0.85, adaptiveCompetition: 0.75, formalContractRigidity: 0.60, adaptiveContractRigidity: 0.30, formalTcoCapture: 0.70, adaptiveTcoCapture: 0.75 },
   policy_only: { formalCompetition: 0.75, adaptiveCompetition: 0.70, formalContractRigidity: 0.35, adaptiveContractRigidity: 0.25, formalTcoCapture: 0.73, adaptiveTcoCapture: 0.78 },
+  // Discovery: the formal path forces an early requirement freeze, so it captures LESS
+  // lifecycle value than the adaptive one by a wide margin — but co-design with a small
+  // set of suppliers genuinely weakens competition, which is the trade the type exists to
+  // represent. This is the one profile row where the competition gap is large.
+  discovery: { formalCompetition: 0.82, adaptiveCompetition: 0.62, formalContractRigidity: 0.55, adaptiveContractRigidity: 0.30, formalTcoCapture: 0.60, adaptiveTcoCapture: 0.78 },
   catalog_order: { formalCompetition: 0.90, adaptiveCompetition: 0.90, formalContractRigidity: 0.25, adaptiveContractRigidity: 0.20, formalTcoCapture: 0.80, adaptiveTcoCapture: 0.82 },
   mrp_order: { formalCompetition: 0.90, adaptiveCompetition: 0.90, formalContractRigidity: 0.20, adaptiveContractRigidity: 0.18, formalTcoCapture: 0.85, adaptiveTcoCapture: 0.86 },
   capex: { formalCompetition: 0.88, adaptiveCompetition: 0.80, formalContractRigidity: 0.70, adaptiveContractRigidity: 0.40, formalTcoCapture: 0.70, adaptiveTcoCapture: 0.75 },
@@ -199,47 +264,39 @@ const PATH_PROFILES: Record<ProcessType, {
 };
 
 // Direct/Indirect × Upstream/Downstream context multipliers (getDimensionMultipliers).
-// Grade-C modeling assumptions; each scales ONE cost channel through the shared
-// per-path formulas. Audited invariant: no dimension's total context uplift exceeds
-// ~×1.5 (scripts/recompute.ts / MODEL_PARAMETERS.md §4).
+//
+// SCOPE, stated explicitly because the earlier shape overpromised: context reaches
+// exactly TWO channels — role hours and non-labor coordination. Model 2.1 also
+// declared tco/delay/productivity/bypass/renegotiation multipliers, but all five were
+// hardcoded to 1, so four of the seven dimensions had no context sensitivity at all
+// while the API implied otherwise. They are removed in 2.2 rather than left inert.
+// Reviving any of them requires an argument for the specific mechanism, not a constant.
+//
+// Grade-C modeling assumptions. Audited invariant: no dimension's total context uplift
+// exceeds ~×1.5 (scripts/recompute.ts / docs/MODEL_PARAMETERS.md).
 const UPSTREAM_COORDINATION_MULTIPLIER = 1.15;
 const DOWNSTREAM_COORDINATION_MULTIPLIER = 0.85;
 
 /**
- * Returns a set of multipliers based on Spend Type (Direct/Indirect) and Process Phase (Upstream/Downstream).
- * This is the central place for dimension-based model behavior.
+ * Context multipliers from Spend Type (Direct/Indirect) and Process Phase
+ * (Upstream/Downstream). Calendar time comes only from the process template and
+ * technology; context never alters a statutory wait or the user-supplied daily
+ * inaction cost.
  */
 export function getDimensionMultipliers(
   spendType?: "direct" | "indirect",
   processPhase?: "upstream" | "downstream"
 ) {
-  // Calendar time comes only from the process template and technology. Context
-  // changes broad staff effort and non-labor coordination; it does not alter the
-  // user-supplied daily inaction cost or reuse one mechanism for another.
   const staffMultiplier = getStaffContextMultiplier(processPhase, spendType);
-  const tcoMultiplier = 1;
-  const delayMultiplier = 1;
-  const productivityMultiplier = 1;
-  const bypassMultiplier = 1;
-  const renegotiationMultiplier = 1;
   let coordinationIntensityMultiplier = 1; // per-day meeting & alignment effort
 
-  // Upstream vs Downstream effects
   if (processPhase === "upstream") {
-    coordinationIntensityMultiplier = UPSTREAM_COORDINATION_MULTIPLIER; // higher meeting & alignment effort per day
+    coordinationIntensityMultiplier = UPSTREAM_COORDINATION_MULTIPLIER;
   } else if (processPhase === "downstream") {
-    coordinationIntensityMultiplier = DOWNSTREAM_COORDINATION_MULTIPLIER; // more standardized, less coordination
+    coordinationIntensityMultiplier = DOWNSTREAM_COORDINATION_MULTIPLIER;
   }
 
-  return {
-    staffMultiplier,
-    tcoMultiplier,
-    delayMultiplier,
-    productivityMultiplier,
-    bypassMultiplier,
-    renegotiationMultiplier,
-    coordinationIntensityMultiplier,
-  };
+  return { staffMultiplier, coordinationIntensityMultiplier };
 }
 
 /**
@@ -248,14 +305,7 @@ export function getDimensionMultipliers(
  * live in lib/i18n.ts (dimensionMultiplierLabelsT) — the model layer stays
  * language-free.
  */
-export type DimensionMultiplierKey =
-  | "staff"
-  | "tco"
-  | "delay"
-  | "productivity"
-  | "bypass"
-  | "renegotiation"
-  | "coordination";
+export type DimensionMultiplierKey = "staff" | "coordination";
 
 export function getDimensionMultiplierDetails(
   spendType?: "direct" | "indirect",
@@ -265,11 +315,6 @@ export function getDimensionMultiplierDetails(
   const details: Array<{ key: DimensionMultiplierKey; value: number }> = [];
 
   if (m.staffMultiplier !== 1) details.push({ key: "staff", value: m.staffMultiplier });
-  if (m.tcoMultiplier !== 1) details.push({ key: "tco", value: m.tcoMultiplier });
-  if (m.delayMultiplier !== 1) details.push({ key: "delay", value: m.delayMultiplier });
-  if (m.productivityMultiplier !== 1) details.push({ key: "productivity", value: m.productivityMultiplier });
-  if (m.bypassMultiplier !== 1) details.push({ key: "bypass", value: m.bypassMultiplier });
-  if (m.renegotiationMultiplier !== 1) details.push({ key: "renegotiation", value: m.renegotiationMultiplier });
   if (m.coordinationIntensityMultiplier !== 1) details.push({ key: "coordination", value: m.coordinationIntensityMultiplier });
 
   return details;
@@ -286,12 +331,47 @@ function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
 }
 
-function renegotiationAnnualFrequency(contractRigidity: number, slope: number, contextMultiplier: number): number {
-  return clamp(slope * contractRigidity * contextMultiplier, 0, 0.105);
+// Expected annual formal-amendment frequency for a path.
+//
+// UNIT WARNING (load-bearing, see docs/MODEL_PARAMETERS.md): `slope` is anchored to an
+// external 2SLS/IV estimate expressed per ONE STANDARD DEVIATION of a survey rigidity
+// index, while `contractRigidity` is a hand-authored 0–1 calibration score that is not
+// a z-score. The product is therefore a scenario assumption with an external order-of-
+// magnitude anchor, not a transferred effect size. Only the difference between the two
+// paths is interpretable; neither level is.
+//
+// The bound is structural rather than a magic constant: the profile is 0–1, so the
+// frequency can never exceed the slope. (Model 2.1 clamped at 0.105, which was
+// unreachable — the maximum attainable product was 0.105 × 0.75 = 0.079.)
+function renegotiationAnnualFrequency(contractRigidity: number, slope: number): number {
+  return clamp(slope, 0, 1) * clamp(contractRigidity, 0, 1);
 }
 
 function nonNegativeFinite(value: number): number {
   return Number.isFinite(value) ? Math.max(0, value) : 0;
+}
+
+/**
+ * Annual real discount rate applied to lifecycle flows. 4% is the conventional real
+ * social discount rate used in Polish and EU public-investment appraisal; it is a
+ * declared assumption, not an estimate, and the user can override it.
+ */
+export const DEFAULT_DISCOUNT_RATE_PCT = 4;
+
+/** Years over which the TCO savings pool is defined. The pool is a cumulative figure. */
+const TCO_POOL_YEARS = 3;
+
+/**
+ * Present value of one unit received annually for `years`, at annual rate `rate`.
+ * Reduces to `years` when the rate is zero, so a zero-rate run reproduces the
+ * undiscounted model exactly.
+ */
+function annuityFactor(years: number, rate: number): number {
+  const n = nonNegativeFinite(years);
+  const r = Number.isFinite(rate) ? Math.max(0, rate) : 0;
+  if (n === 0) return 0;
+  if (r === 0) return n;
+  return (1 - Math.pow(1 + r, -n)) / r;
 }
 
 function buildBreakdown(
@@ -307,9 +387,10 @@ function buildBreakdown(
 ): CostBreakdown {
   const timeCost = staffCost;
   const adminCost = coordCost + toolCost;
-  const total =
-    timeCost + adminCost + opportunityCost + productivityCost +
-    renegotiationExpected + tcoCost + bypassCost;
+  const processCost = timeCost + adminCost + productivityCost + bypassCost;
+  const delayCost = opportunityCost;
+  const lifecycleCost = renegotiationExpected + tcoCost;
+  const total = processCost + delayCost + lifecycleCost;
   return {
     timeCost,
     adminCost,
@@ -319,6 +400,9 @@ function buildBreakdown(
     tcoCost,
     bypassCost,
     total,
+    processCost,
+    delayCost,
+    lifecycleCost,
     days,
     staffCost,
     coordCost,
@@ -326,16 +410,64 @@ function buildBreakdown(
   };
 }
 
-type PointComparisonResult = Omit<ComparisonResult, "uncertainty" | "decisionThreshold">;
+type PointComparisonResult = Omit<ComparisonResult, "uncertainty" | "decisionThreshold" | "deltaDecomposition">;
 
-function calculateCostsForEvidenceCase(inputs: ProcurementInputs, evidenceCase: EvidenceCase): PointComparisonResult {
+/**
+ * The second sensitivity axis, added in 2.2.1.
+ *
+ * `EVIDENCE_CASES` brackets the five literature-facing scalars. It does NOT touch the two
+ * inputs that actually carry the result: the daily cost of inaction (a user estimate that
+ * drives 80–99% of ΔC wherever the paths differ in duration) and the non-mandatory step
+ * durations (the model's own templates). Reporting an envelope that varies the small
+ * quantities and holds the large ones fixed understated uncertainty precisely where the
+ * model is least defensible.
+ *
+ * - `delayCostMultiplier` — ×0.25 to ×4. The cost of a day is the least reliable number a
+ *   user supplies; a factor of four either way is not pessimism, it is the honest spread of
+ *   an unmeasured quantity. Statutory waits are unaffected: this scales the price of a day,
+ *   not the number of days.
+ * - `durationMultiplier` — ×0.7 to ×1.3 on NON-MANDATORY steps only, applied exactly the
+ *   way the technology multiplier is. Mandatory PZP waits stay invariant, as everywhere.
+ */
+const STRUCTURAL_CASES = {
+  delayCostMultiplier: [0.25, 1, 4],
+  durationMultiplier: [0.7, 1, 1.3],
+} as const;
+
+interface StructuralCase {
+  delayCostMultiplier: number;
+  durationMultiplier: number;
+}
+
+const NEUTRAL_STRUCTURAL: StructuralCase = { delayCostMultiplier: 1, durationMultiplier: 1 };
+
+function structuralGrid(): StructuralCase[] {
+  const grid: StructuralCase[] = [];
+  for (const delayCostMultiplier of STRUCTURAL_CASES.delayCostMultiplier) {
+    for (const durationMultiplier of STRUCTURAL_CASES.durationMultiplier) {
+      grid.push({ delayCostMultiplier, durationMultiplier });
+    }
+  }
+  return grid;
+}
+
+function calculateCostsForEvidenceCase(
+  inputs: ProcurementInputs,
+  evidenceCase: EvidenceCase,
+  structural: StructuralCase = NEUTRAL_STRUCTURAL,
+): PointComparisonResult {
   // Basic sanitization of inputs (defensive programming)
   const contractValue = nonNegativeFinite(inputs.contractValue);
   const tcoHorizonYears = nonNegativeFinite(inputs.tcoHorizonYears);
   const contractDurationYears = nonNegativeFinite(inputs.contractDurationYears);
-  const dailyCostOfInaction = nonNegativeFinite(inputs.dailyCostOfInaction);
+  const dailyCostOfInaction =
+    nonNegativeFinite(inputs.dailyCostOfInaction) * structural.delayCostMultiplier;
   const renegotiationCost = nonNegativeFinite(inputs.renegotiationCost);
   const bypassAuditExposure = nonNegativeFinite(inputs.bypassAuditExposure);
+  const discountRatePct = Number.isFinite(inputs.discountRatePct as number)
+    ? Math.max(0, inputs.discountRatePct as number)
+    : DEFAULT_DISCOUNT_RATE_PCT;
+  const discountRate = discountRatePct / 100;
 
   const {
     processType,
@@ -357,9 +489,13 @@ function calculateCostsForEvidenceCase(inputs: ProcurementInputs, evidenceCase: 
   // Dimension multipliers must be calculated early
   const dims = getDimensionMultipliers(inputs.spendType, inputs.processPhase);
 
-  // Derive days from process step templates × tech multiplier + context
-  const rigidDays = deriveRigidDays(steps, tech.timeMultiplier, inputs.processPhase, inputs.spendType);
-  const flexibleDays = deriveFlexibleDays(steps, tech.timeMultiplier, inputs.processPhase, inputs.spendType);
+  // Derive days from process step templates × tech multiplier + context. The structural
+  // duration multiplier rides on the technology multiplier, so it reaches exactly the same
+  // things: non-mandatory step durations and the effort attached to them. Mandatory PZP
+  // waits are untouched by either.
+  const durationMultiplier = tech.timeMultiplier * structural.durationMultiplier;
+  const rigidDays = deriveRigidDays(steps, durationMultiplier, inputs.processPhase, inputs.spendType);
+  const flexibleDays = deriveFlexibleDays(steps, durationMultiplier, inputs.processPhase, inputs.spendType);
 
   // Staff costs from step participation matrix and one broad context factor.
   const rigidStaffCost = deriveStaffCost(
@@ -367,7 +503,8 @@ function calculateCostsForEvidenceCase(inputs: ProcurementInputs, evidenceCase: 
     false,
     stakeholders,
     inputs.processPhase,
-    inputs.spendType
+    inputs.spendType,
+    durationMultiplier,
   );
 
   const flexibleStaffCost = deriveStaffCost(
@@ -375,13 +512,21 @@ function calculateCostsForEvidenceCase(inputs: ProcurementInputs, evidenceCase: 
     true,
     stakeholders,
     inputs.processPhase,
-    inputs.spendType
+    inputs.spendType,
+    durationMultiplier,
   );
 
   // Illustrative non-labor administrative overhead. Stakeholder labor is already
   // captured by the step participation matrix and is not repeated here.
-  const rigidCoordCost = tech.coordCostPerDay * rigidDays * dims.coordinationIntensityMultiplier;
-  const flexibleCoordCost = tech.coordCostPerDay * flexibleDays * dims.coordinationIntensityMultiplier;
+  //
+  // Charged over ACTIVE days only. Model 2.1 charged it over every elapsed day, so a
+  // pzp_eu process accrued "per-day meeting & alignment effort" across all 45 days of
+  // statutory publication and standstill — periods in which, by construction, no role
+  // has any participation hours at all.
+  const rigidActiveDays = deriveActiveDays(steps, durationMultiplier, false);
+  const flexibleActiveDays = deriveActiveDays(steps, durationMultiplier, true);
+  const rigidCoordCost = tech.coordCostPerDay * rigidActiveDays * dims.coordinationIntensityMultiplier;
+  const flexibleCoordCost = tech.coordCostPerDay * flexibleActiveDays * dims.coordinationIntensityMultiplier;
 
   // Tool license (amortized per process)
   const rigidToolCost = tech.toolCostPerProcess;
@@ -390,46 +535,55 @@ function calculateCostsForEvidenceCase(inputs: ProcurementInputs, evidenceCase: 
   // Opportunity cost: deployment-delay cost over EACH path's own duration. Both paths
   // tie up value while procuring; the saving is the difference, reported honestly as a
   // delta of two non-zero quantities (no zero-friction baseline).
-  const rigidOpportunityCost = rigidDays * dailyCostOfInaction * dims.delayMultiplier;
-  const flexibleOpportunityCost = flexibleDays * dailyCostOfInaction * dims.delayMultiplier;
+  const rigidOpportunityCost = rigidDays * dailyCostOfInaction;
+  const flexibleOpportunityCost = flexibleDays * dailyCostOfInaction;
 
   // Favoritism / selection-quality cost (Szucs 2024). Competition effectiveness is
   // distinct from workflow or contract rigidity; an adaptive route may still compete.
   const rigidProductivityCost =
-    contractValue * evidence.favoritismPremium * (1 - profile.formalCompetition) * corruptionContext * dims.productivityMultiplier;
+    contractValue * evidence.favoritismPremium * (1 - profile.formalCompetition) * corruptionContext;
   const flexibleProductivityCost =
-    contractValue * evidence.favoritismPremium * (1 - profile.adaptiveCompetition) * corruptionContext * dims.productivityMultiplier;
+    contractValue * evidence.favoritismPremium * (1 - profile.adaptiveCompetition) * corruptionContext;
 
   // Beuve et al. measure CONTRACTUAL rigidity in French car-park contracts. We model
   // only the incremental premium; their 22% sample mean is not exported as a universal
   // baseline for unrelated sectors.
   const rigidRenegotiationFrequency = renegotiationAnnualFrequency(
-    profile.formalContractRigidity, evidence.renegotiationSlope, dims.renegotiationMultiplier,
+    profile.formalContractRigidity, evidence.renegotiationSlope,
   );
   const flexibleRenegotiationFrequency = renegotiationAnnualFrequency(
-    profile.adaptiveContractRigidity, evidence.renegotiationSlope, dims.renegotiationMultiplier,
+    profile.adaptiveContractRigidity, evidence.renegotiationSlope,
   );
+  // Lifecycle flows are discounted to present value at award — the single time base for
+  // the whole model. Model 2.1 multiplied the annual frequency by contract duration with
+  // no discounting, so a ten-year contract contributed ten full-value amendment years.
+  const contractAnnuity = annuityFactor(contractDurationYears, discountRate);
   const rigidExpectedAmendments = rigidRenegotiationFrequency * contractDurationYears;
   const flexibleExpectedAmendments = flexibleRenegotiationFrequency * contractDurationYears;
-  const rigidRenegotiationExpected = rigidExpectedAmendments * renegotiationCost;
-  const flexibleRenegotiationExpected = flexibleExpectedAmendments * renegotiationCost;
+  const rigidRenegotiationExpected = rigidRenegotiationFrequency * renegotiationCost * contractAnnuity;
+  const flexibleRenegotiationExpected = flexibleRenegotiationFrequency * renegotiationCost * contractAnnuity;
 
   // TCO is a cumulative scenario potential over the user-selected horizon, not an
   // invented annual law. The evidence range is 0–15%; the old unsupported 30% headline
   // no longer drives the default result.
-  const horizonScale = clamp(tcoHorizonYears / 3, 0, 1);
-  const tcoPool = contractValue * evidence.tcoSavingsPotential * horizonScale * dims.tcoMultiplier;
+  // The pool is a cumulative figure defined over TCO_POOL_YEARS, so it enters as an
+  // annual flow discounted over whichever is shorter — the pool window or the user's
+  // horizon. This gives both lifecycle channels the same treatment: model 2.1 scaled
+  // amendments linearly and without bound in contract duration while capping TCO at
+  // three years, so the same purchase was driven in two directions by two horizons.
+  // At a zero discount rate this reproduces the 2.1 value exactly.
+  const tcoYears = Math.min(nonNegativeFinite(tcoHorizonYears), TCO_POOL_YEARS);
+  const tcoAnnualPool = (contractValue * evidence.tcoSavingsPotential) / TCO_POOL_YEARS;
+  const tcoPool = tcoAnnualPool * annuityFactor(tcoYears, discountRate);
   const rigidTCOForgone = tcoPool * (1 - profile.formalTcoCapture);
   const flexibleTCOForgone = tcoPool * (1 - profile.adaptiveTcoCapture);
 
   // Bypass has no defensible structural probability function in the cited theory.
   // Use broad observable-rate scenarios and let system controls scale both paths.
-  const pBypassRigid = clamp(
-    evidence.formalBypassProbability * tech.bypassProbMultiplier * dims.bypassMultiplier, 0, 0.50,
-  );
-  const pBypassFlexible = clamp(
-    evidence.adaptiveBypassProbability * tech.bypassProbMultiplier * dims.bypassMultiplier, 0, 0.50,
-  );
+  // Bounded as a probability. The old 0.50 cap was unreachable (max attainable
+  // 0.30 × 1.50 = 0.45) and read as a substantive limit it never imposed.
+  const pBypassRigid = clamp(evidence.formalBypassProbability * tech.bypassProbMultiplier, 0, 1);
+  const pBypassFlexible = clamp(evidence.adaptiveBypassProbability * tech.bypassProbMultiplier, 0, 1);
   const rigidBypassCost = pBypassRigid * bypassAuditExposure;
   const flexibleBypassCost = pBypassFlexible * bypassAuditExposure;
 
@@ -465,6 +619,7 @@ function calculateCostsForEvidenceCase(inputs: ProcurementInputs, evidenceCase: 
         dailyCostOfInaction,
         renegotiationCost,
         bypassAuditExposure,
+        discountRatePct,
       },
       context: {
         spendType: inputs.spendType,
@@ -503,9 +658,9 @@ function calculateCostsForEvidenceCase(inputs: ProcurementInputs, evidenceCase: 
     },
     sources: {
       timeCost: "Step durations: legal minima (PZP 2019 + Dyrektywa 2014/24/UE) and practitioner benchmarks — not a single empirical source",
-      opportunityCost: "Deployment-delay cost = procurement duration × daily cost of inaction (model construction)",
-      productivityCost: "Szucs (2024), JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017: discretion increased normalized prices by about 6 percentage points and selected firms with about 28% lower measured productivity in the corrected main specification. The model monetizes price only and stress-tests 2–9%; Hungarian public-procurement transfer caveat applies",
-      renegotiationCost: "Beuve, Moszoro & Spiller (2023), JLEO 39(1):281–308, DOI 10.1093/jleo/ewab039: 2SLS/IV estimate for annual formal-amendment frequency, not event probability, in French car-park contracts. The model maps 0–0.105 additional amendments per contract-year to a separate contract-rigidity profile and multiplies by contract duration and user-supplied per-amendment cost",
+      opportunityCost: "Deployment-delay cost = procurement duration × daily cost of inaction. This is an accounting identity between a template-derived day count and a user-supplied price per day; it is not a modeled or measured effect, and it is reported as its own bucket for that reason",
+      productivityCost: "Szucs (2024), JEEA 22(1):117–160, DOI 10.1093/jeea/jvad017, structural estimates: discretion increases prices by about 6% and lowers average contractor total factor productivity by about 10%. (The invalid raw discontinuity reports roughly 32%.) The model monetizes price only and stress-tests 2–9%. Identified on Hungarian contracts below the ~25m HUF / ~90k USD invitational threshold, so transfer to Polish EU-threshold or private procurement is a scenario, not a measurement",
+      renegotiationCost: "Scenario assumption with an external order-of-magnitude anchor. Beuve, Moszoro & Spiller (2023), JLEO 39(1):281–308, DOI 10.1093/jleo/ewab039 report +0.077–0.105 formal amendments per contract-year per ONE STANDARD DEVIATION of a rigidity index, by 2SLS/IV, in French car-park contracts. ProcuraCost multiplies that slope by a 0–1 calibration profile that is not a z-score, so the product is not a transferred estimate. Only the difference between the two paths is interpretable; neither reported level is",
       tcoCost: "Scenario assumption only: a three-year cumulative non-acquisition lifecycle savings pool is stress-tested at 0–15%, scaled by min(horizon years / 3, 1), and multiplied by path-specific capture rates. The central case is zero because no transferable empirical estimate is available",
       bypassCost: "Scenario assumption only: illustrative bypass-rate range, scaled by system controls. Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991) support mechanisms, not probabilities",
     },
@@ -514,20 +669,69 @@ function calculateCostsForEvidenceCase(inputs: ProcurementInputs, evidenceCase: 
 
 export function calculateCosts(inputs: ProcurementInputs): ComparisonResult {
   const central = calculateCostsForEvidenceCase(inputs, "central");
-  const low = calculateCostsForEvidenceCase(inputs, "low");
-  const high = calculateCostsForEvidenceCase(inputs, "high");
   const contractValue = nonNegativeFinite(inputs.contractValue);
-  const lowDelta = Math.min(low.delta, central.delta, high.delta);
-  const highDelta = Math.max(low.delta, central.delta, high.delta);
-  const centralOpportunityDelta = central.rigid.opportunityCost - central.flexible.opportunityCost;
-  const nonDelayDelta = central.delta - centralOpportunityDelta;
-  const effectiveDayDifference = Math.max(
-    0,
-    (central.rigidDays - central.flexibleDays) * central.trace.multipliers.delayMultiplier,
+
+  // Axis 1 — evidence. The five literature-facing scalars, structural inputs neutral.
+  const evidenceDeltas = EVIDENCE_CASE_IDS.map(
+    (id) => calculateCostsForEvidenceCase(inputs, id).delta,
   );
-  const breakEvenDailyCostOfInaction = effectiveDayDifference > 0
-    ? Math.max(0, -nonDelayDelta / effectiveDayDifference)
+  const evidenceLowDelta = Math.min(...evidenceDeltas);
+  const evidenceHighDelta = Math.max(...evidenceDeltas);
+
+  // Axis 2 — structural. The daily cost of inaction and the non-mandatory step durations,
+  // evidence held at central. These are the two inputs that carry most of ΔC, and through
+  // 2.2.0 no published sensitivity run varied either of them.
+  const structuralDeltas = structuralGrid().map(
+    (s) => calculateCostsForEvidenceCase(inputs, "central", s).delta,
+  );
+  const structuralLowDelta = Math.min(...structuralDeltas);
+  const structuralHighDelta = Math.max(...structuralDeltas);
+
+  // Combined envelope over the full cross product.
+  const combinedDeltas: number[] = [];
+  for (const id of EVIDENCE_CASE_IDS) {
+    for (const s of structuralGrid()) {
+      combinedDeltas.push(calculateCostsForEvidenceCase(inputs, id, s).delta);
+    }
+  }
+  const lowDelta = Math.min(...combinedDeltas);
+  const highDelta = Math.max(...combinedDeltas);
+
+  const evidenceWidth = evidenceHighDelta - evidenceLowDelta;
+  const structuralWidth = structuralHighDelta - structuralLowDelta;
+  const widthDrivenBy: "evidence" | "structural" | "balanced" =
+    structuralWidth > evidenceWidth * 1.25
+      ? "structural"
+      : evidenceWidth > structuralWidth * 1.25
+        ? "evidence"
+        : "balanced";
+  const processDelta = central.rigid.processCost - central.flexible.processCost;
+  const delayDelta = central.rigid.delayCost - central.flexible.delayCost;
+  const lifecycleDelta = central.rigid.lifecycleCost - central.flexible.lifecycleCost;
+  const nonDelayDelta = processDelta + lifecycleDelta;
+
+  // Signed: positive means the adaptive path is faster. Model 2.1 clamped this at 0,
+  // which silently hid any template where the formal path is the faster one.
+  const effectiveDayDifference = central.rigidDays - central.flexibleDays;
+
+  // ΔC(c_d) = nonDelayDelta + effectiveDayDifference × c_d. Solve for zero. The raw
+  // solution is reported unclamped and paired with a status, because a clamped 0 and a
+  // genuine 0 mean different things: the first says "formal already loses with free
+  // delay", the second says "any positive delay cost tips it".
+  const breakEvenDailyCostOfInaction = effectiveDayDifference !== 0
+    ? -nonDelayDelta / effectiveDayDifference
     : null;
+
+  let status: BreakEvenStatus;
+  if (breakEvenDailyCostOfInaction === null) {
+    status = "no_day_difference";
+  } else if (breakEvenDailyCostOfInaction >= 0) {
+    status = "threshold_above_zero";
+  } else if (nonDelayDelta > 0) {
+    status = "formal_costlier_at_zero_delay";
+  } else {
+    status = "adaptive_costlier_at_zero_delay";
+  }
 
   return {
     ...central,
@@ -538,11 +742,25 @@ export function calculateCosts(inputs: ProcurementInputs): ComparisonResult {
       lowPercentOfContractValue: contractValue > 0 ? (lowDelta / contractValue) * 100 : 0,
       highPercentOfContractValue: contractValue > 0 ? (highDelta / contractValue) * 100 : 0,
       crossesZero: lowDelta <= 0 && highDelta >= 0,
+      evidenceLowDelta,
+      evidenceHighDelta,
+      structuralLowDelta,
+      structuralHighDelta,
+      widthDrivenBy,
+    },
+    deltaDecomposition: {
+      process: processDelta,
+      delay: delayDelta,
+      lifecycle: lifecycleDelta,
+      delayShareOfDeltaPercent: central.delta !== 0
+        ? (Math.abs(delayDelta) / Math.abs(central.delta)) * 100
+        : 0,
     },
     decisionThreshold: {
       effectiveDayDifference,
       nonDelayDelta,
       breakEvenDailyCostOfInaction,
+      status,
     },
   };
 }

@@ -1,4 +1,4 @@
-# Ile kosztuje projekt procesu? Siedmiowymiarowy model decyzyjny ProcuraCost 2.1
+# Ile kosztuje projekt procesu? Siedmiowymiarowy model decyzyjny ProcuraCost 2.2
 
 **Artykuł 2 cyklu doktorskiego · ekonomia i finanse · szkic metodologiczny**
 
@@ -25,11 +25,14 @@ warunkowy: mówi, co wynika z danych i założeń, a nie co spowodowałaby refor
 
 ## 2. Wymiary
 
-**Praca ludzi.** Koszt jest sumą godzin uczestnictwa według roli, liczby osób i
-stawki obciążonej. Czas kalendarzowy i roboczogodziny pozostają różnymi
-wielkościami. Kontekst ma wyłącznie trzy szerokie mnożniki pracy: Upstream ×1,15,
-Downstream ×0,90 i Direct ×1,10. Model nie przypisuje pozornie precyzyjnych
-mnożników poszczególnym stanowiskom.
+**Praca ludzi.** Koszt jest sumą godzin uczestnictwa według roli i stawki obciążonej.
+Godziny są sumą dla całej roli, nie na osobę: liczba osób w roli jest danymi opisowymi
+i nie zwielokrotnia kosztu ustalonego zakresu pracy. Czas kalendarzowy i roboczogodziny
+pozostają różnymi wielkościami — dni pochodzą z szablonu procesu, godziny z macierzy
+uczestnictwa. Kontekst działa przez pięć mnożników: trzy na pracę (Upstream ×1,15,
+Downstream ×0,90, Direct ×1,10) i dwa na koordynację w kanale administracyjnym
+(Upstream ×1,15, Downstream ×0,85). Nie sięga do pozostałych wymiarów. Model nie
+przypisuje pozornie precyzyjnych mnożników poszczególnym stanowiskom.
 
 **Administracja.** Obejmuje niepracowniczy narzut administracyjny na dzień oraz koszt narzędzia.
 Jeżeli obie ścieżki korzystają z tej samej technologii, koszt narzędzia jest
@@ -40,6 +43,13 @@ użytkownik. Powinien wynikać z utraconej marży, przestoju albo innego możliw
 do obrony rachunku, a nie z wartości kontraktu pomnożonej przez arbitralny
 procent.
 
+Ten wymiar wymaga osobnego ostrzeżenia, bo jest największy. Jego różnica między ścieżkami
+to iloczyn liczby dni z własnego szablonu modelu i ceny dnia podanej z zewnątrz — czyli
+**tożsamość rachunkowa, a nie wynik modelowania**. W scenariuszach wbudowanych niesie
+80,5–99,6% całej ΔC wszędzie tam, gdzie ścieżki różnią się czasem trwania. Dlatego model 2.2
+raportuje ΔC rozbite na trzy kubełki (proces, opóźnienie, cykl życia) zamiast jednej sumy:
+jedna liczba pozwalała czytać założenie użytkownika jako ustalenie badawcze.
+
 **Selekcja.** Empiryczną kotwicą jest Szucs (2024), lecz model używa jej tylko
 dla ryzyka dyskrecji i osłabionej konkurencji. Centralny scenariusz ceny wynosi
 6%, a zakres 2–9% reprezentuje niepewność transferu. Efekt produktywności
@@ -47,15 +57,31 @@ wykonawcy nie jest monetyzowany drugi raz.
 
 **Formalne aneksy.** Koszt jednego aneksu oraz czas trwania umowy podaje użytkownik.
 Roczna częstość jest funkcją sztywności kontraktu, nie sztywności obiegu. Zakres
-0–0,105 dodatkowego aneksu na rok wykorzystuje badanie Beuve’a, Moszoro i Spillera
-(2023) jako zewnętrzną kotwicę scenariusza. To nie jest prawdopodobieństwo pojedynczego
+0,077–0,105 dodatkowego aneksu na rok wykorzystuje badanie Beuve’a, Moszoro i Spillera
+(2023) jako zewnętrzną kotwicę rzędu wielkości. To nie jest prawdopodobieństwo pojedynczego
 zdarzenia, a średnia z ich próby nie staje się bazą dla każdej branży.
+
+Kotwica jest słabsza, niż sugerowały wcześniejsze wersje, i słabość dotyczy jednostki.
+Autorzy szacują efekt jednoczesnego wzrostu o jedno odchylenie standardowe **w każdej**
+z siedmiu z-standaryzowanych kategorii sztywności. Model mnoży ten współczynnik przez profil
+0–1, który nie jest z-score, więc milcząco utożsamia „profil = 1,0" z tym siedmiokategoryjnym
+przesunięciem. Konwersja między tymi skalami nie istnieje. Dlatego współczynnik jest
+w modelu 2.2 **parametrem klasy trzeciej** (założenie kalibracyjne z zewnętrzną kotwicą),
+a nie klasy drugiej, i interpretowalna jest wyłącznie **różnica** między ścieżkami — nie
+poziom żadnej z nich, bo estymata jest przyrostowa, a model nie podaje bazy.
 
 **TCO.** Model tworzy pulę możliwej wartości cyklu życia i mnoży ją przez część
 niewychwyconą przez daną ścieżkę. Scenariusz centralny wynosi 0%, a stres-test
-sięga 15% jako trzyletnia pula skumulowana; krótszy horyzont skaluje ją przez
-`min(horyzont/3, 1)`. Nie istnieje tu
-reguła „10% rocznie” ani automatyczny limit 30%.
+sięga 15% jako trzyletnia pula skumulowana. Nie istnieje tu reguła „10% rocznie”
+ani automatyczny limit 30%.
+
+**Baza czasowa.** Model 2.2 sprowadza oba przepływy cyklu życia — aneksy i TCO — do
+wartości bieżącej na moment udzielenia zamówienia, przy jawnej stopie dyskontowej
+(domyślnie 4% realnie). To jedyna baza czasowa całego rachunku. Model 2.1 mnożył roczną
+częstość aneksów przez czas trwania umowy bez dyskontowania, jednocześnie ograniczając TCO
+do trzech lat — ten sam zakup był więc ciągnięty w dwie strony przez dwa różne horyzonty,
+a `total` sumował koszt zdarzenia z niedyskontowanym strumieniem wieloletnim. Wpisanie
+stopy 0 odtwarza dokładnie arytmetykę 2.1.
 
 **Obejście.** Koszt to ekspozycja audytowa użytkownika razy scenariusz częstości
 i działanie kontroli systemowych. Zakresy 1–30% nie pochodzą z literatury; służą
@@ -82,10 +108,69 @@ Dawny `PROCESS_RIGIDITY` nie uczestniczy w formułach ekonomicznych. Gdy dostęp
 są dane o ofertach, klauzulach i wynikach cyklu życia, powinny zastąpić wartości
 domyślne bez automatycznej zmiany pozostałych konstruktów.
 
-Implementacja waliduje wejścia, traktuje koszt technologii symetrycznie,
-ogranicza przyrost rocznej częstości formalnych aneksów do 0,105 i zapisuje ślad wszystkich
-składników. Nie gwarantuje to trafności, ale ogranicza arbitralność oraz ułatwia
-wykrycie podwójnego liczenia.
+Implementacja waliduje wejścia, traktuje koszt technologii symetrycznie i zapisuje ślad
+wszystkich składników. Ograniczenie częstości aneksów wynika teraz ze struktury — profil
+jest z przedziału 0–1, więc iloczyn nie może przekroczyć samego współczynnika — a nie
+z osobnej stałej. Poprzednia wersja deklarowała limit 0,105 jako regułę ochronną, choć
+maksymalna osiągalna wartość wynosiła 0,079 i limit nigdy nie działał. Nie gwarantuje to
+trafności, ale ogranicza arbitralność oraz ułatwia wykrycie podwójnego liczenia.
+
+### 3.2 Asymetria konstrukcyjna
+
+Model dopuszcza obie ścieżki, ale nie jest wobec nich symetryczny i artykuł musi to
+powiedzieć przed recenzentem. W większości typów procesu kanały są z konstrukcji
+uporządkowane na korzyść ścieżki adaptacyjnej: ma ona nie więcej dni, a w tabeli profili
+niższą sztywność kontraktu i wyższe wychwycenie TCO. Jedyny kanał mogący sprzyjać
+formalności — selekcja — jest ograniczony iloczynem premii dyskrecji i różnicy skuteczności
+konkurencji, co dla `pzp_eu` daje pułap rzędu 0,3% wartości kontraktu, podczas gdy kanał
+opóźnienia jest nieograniczony.
+
+Do modelu 2.1 miało to konsekwencję, której nie ujawniano: w 11 340 konfiguracjach wynik
+centralny sprzyjał formalności w 1 482, ale **żadna nie sprzyjała jej odpornie**. Przyczyną
+były szablony, nie dowody — w każdym kroku każdego szablonu zachodziło
+`flexibleDays ≤ rigidDays`, więc oba warianty przedziału pytano z tej samej,
+proadaptacyjnej bazy.
+
+Model 2.2 dodaje typ **zakupu odkrywczego**, w którym wymaganie powstaje w trakcie,
+a wykonanie adaptacyjne jest realnie **wolniejsze i bardziej pracochłonne**:
+współprojektowanie z dostawcami, runda przeprojektowania, czasem porzucona runda
+negocjacyjna. Ścieżka formalna zamraża wymaganie wcześnie i płaci gorszą specyfikacją oraz
+słabszym wychwyceniem wartości cyklu życia. W 12 960 konfiguracjach przegląd zwraca teraz
+**1 221 wyników odpornie pro-formalnych** obok 5 834 odpornie pro-adaptacyjnych. Twierdzenie,
+że wygrać może każda ze ścieżek, jest więc pokazane, a nie tylko zadeklarowane.
+
+### 3.3 Dwie osie niepewności
+
+Model 2.2.1 rozszerza raportowany przedział o drugą oś, bo pierwsza obejmowała niewłaściwe
+wielkości:
+
+- **oś dowodowa** — pięć skalarów z literatury: premia dyskrecji, współczynnik sztywności,
+  pula TCO i dwie stopy obejść;
+- **oś strukturalna** — koszt dnia bezczynności (×0,25 … ×4) oraz czasy trwania etapów
+  nieobowiązkowych (×0,7 … ×1,3). Ustawowe terminy PZP pozostają nienaruszone w obu osiach.
+
+Oś strukturalna nie jest ćwiczeniem z pesymizmu. Koszt dnia to najmniej wiarygodna liczba,
+jaką podaje użytkownik, a model nie ma jak jej sprawdzić; tabele dni to z kolei własne,
+nieprzetestowane założenia modelu. Razem niosą 80–99% ΔC. Ograniczanie przedziału do
+wielkości małych, przy zamrożeniu dużych, zaniżało niepewność dokładnie tam, gdzie model
+jest najsłabszy.
+
+Efekt jest duży i działa **przeciwko** tezie:
+
+| | tylko oś dowodowa | obie osie |
+|---|---:|---:|
+| scenariusze wbudowane przechodzące przez zero | 4 z 10 | **9 z 10** |
+| przegląd: odpornie pro-formalne | 1 221 z 12 960 | 1 045 |
+| przegląd: odpornie pro-adaptacyjne | 5 834 z 12 960 | 5 357 |
+
+W dziewięciu z dziesięciu scenariuszy wbudowanych model **nie wskazuje odpornie żadnej
+ścieżki**, gdy dwa dominujące wejścia mogą się poruszać w obronialnych granicach. To jest
+uczciwy nagłówek tego artykułu i twierdzenie słabsze niż jakiekolwiek wcześniejsze w tym
+projekcie.
+
+Dwa zastrzeżenia zostają. Zakup odkrywczy sam jest założeniem modelowym, a nie obserwacją.
+Mnożniki ×0,25–×4 i ×0,7–×1,3 są jawnymi sądami o tym, jak bardzo można się mylić co do
+niezmierzonego wejścia — nie przedziałami estymowanymi.
 
 W postępowaniach PZP okresy publikacji i standstill wybrane w szablonie pozostają
 takie same w obu ścieżkach i nie są kompresowane przez technologię. Szablon UE
@@ -151,9 +236,16 @@ monetyzacji ani wszystkich sankcji prawnych. Profile startowe nie są pomiarami
 organizacji. Zewnętrzne efekty pochodzą z innych państw i sektorów. Wynik nie jest
 poradą prawną.
 
-Wkładem nie jest jedna liczba „kosztu sztywności”, lecz audytowalna dekompozycja,
-która uniemożliwia podwójne liczenie i ujawnia, gdzie kończy się pomiar, a zaczyna
-założenie. Model zachowuje warunkową tezę Tunnel–Field bez wymuszania jej wyniku.
+**Wkład tego artykułu.** Nie jest nim liczba „kosztu sztywności” ani teza Tunnel–Field.
+Jest nim **audytowalna dekompozycja, która rozdziela to, co model wie, od tego, co zakłada,
+i pokazuje, że dominujący składnik popularnego argumentu o kosztach procedury jest
+tożsamością rachunkową, a nie ustaleniem.** Po odjęciu tej tożsamości ścieżka formalna jest
+tańsza na koszcie procesu w siedmiu z dziesięciu scenariuszy wbudowanych — wynik węższy niż
+teza wyjściowa, ale sprawdzalny i przeciwny do intuicji, którą sam projekt wcześniej
+komunikował.
+
+Artykuł nie dowodzi żadnego efektu przyczynowego i nie jest estymacją. Jego rolą w cyklu jest
+dostarczenie konstrukcji pomiarowej, którą artykuł 3 poddaje testowi na danych.
 
 ## Bibliografia
 

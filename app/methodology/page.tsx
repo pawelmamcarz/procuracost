@@ -59,7 +59,7 @@ export default function MethodologyPage() {
         </p>
       </section>
 
-      <p className="text-sm"><Link href="/research" className="font-medium text-blue-600 hover:underline">Pełny working paper i zweryfikowana bibliografia →</Link></p>
+      <p className="text-sm"><Link href="/research" className="font-medium text-blue-600 hover:underline">Pełny working paper i bibliografia →</Link></p>
     </div>
   );
 }

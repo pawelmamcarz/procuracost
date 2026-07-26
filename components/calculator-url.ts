@@ -14,6 +14,7 @@ const VALID_PROCESS_TYPES: ProcessType[] = [
   "pzp_krajowy",
   "private_formal",
   "policy_only",
+  "discovery",
   "catalog_order",
   "mrp_order",
   "capex",
@@ -40,6 +41,7 @@ export function encodeInputsToParams(inputs: ProcurementInputs, scenarioId: stri
   params.set("dci", String(inputs.dailyCostOfInaction));
   params.set("rc", String(inputs.renegotiationCost));
   params.set("bae", String(inputs.bypassAuditExposure));
+  if (inputs.discountRatePct !== undefined) params.set("dr", String(inputs.discountRatePct));
   if (inputs.spendType) params.set("st", inputs.spendType);
   if (inputs.processPhase) params.set("pp", inputs.processPhase);
   params.set(
@@ -84,6 +86,9 @@ export function inputsFromSearchParams(
 
   const bae = parseNumber(params.get("bae"));
   if (bae !== null) next.bypassAuditExposure = bae;
+
+  const dr = parseNumber(params.get("dr"));
+  if (dr !== null) next.discountRatePct = dr;
 
   const st = params.get("st");
   if (st === "direct" || st === "indirect") next.spendType = st;

@@ -95,8 +95,8 @@ export default function SiteFooter({ lang }: { lang: Lang }) {
         <span className="font-mono text-gray-300">{VERSION}</span>
         {" · "}
         {isEnglish
-          ? "Model based on peer-reviewed academic research"
-          : "Model oparty na badaniach akademickich"}{" "}
+          ? "Model informed by academic research; most parameters are declared assumptions"
+          : "Model oparty na badaniach akademickich; większość parametrów to jawne założenia"}{" "}
         ·{" "}
         <Link href={isEnglish ? "/en/methodology" : "/methodology"} className="underline hover:text-blue-500">
           {isEnglish ? "Sources & methodology" : "Źródła i metodologia"}

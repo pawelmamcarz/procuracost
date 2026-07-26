@@ -1,6 +1,6 @@
 # ProcuraCost Model Parameters
 
-**Model version:** 2.1.0
+**Model version:** 2.2.1
 **Status:** transparent decision model; not an empirical estimator
 
 ## Comparison object
@@ -14,7 +14,7 @@ For public procurement, the adaptive path is never an exemption from PZP. It mea
 
 ## Constructs kept separate
 
-Version 2.1 keeps the single latent rigidity index out of economic formulas. `PROCESS_RIGIDITY` remains only as legacy descriptive metadata. The calculation distinguishes:
+Version 2.1 removed the single latent rigidity index out of economic formulas. `PROCESS_RIGIDITY` remains only as legacy descriptive metadata. The calculation distinguishes:
 
 1. workflow duration and labor effort;
 2. competition effectiveness;
@@ -30,13 +30,67 @@ The calculator reports a central estimate and a wide scenario interval. These ar
 
 | Parameter | Low-delta case | Central | High-delta case | Status |
 |---|---:|---:|---:|---|
-| Discretion price premium | 9% | 6% | 2% | Empirical anchor with transfer uncertainty |
-| Rigidity-slope anchor | 0 | 0.077 | 0.105 | Amendments per contract-year per full normalized profile unit; transferred from the external 2SLS/IV estimate and then multiplied by the declared contract-rigidity profile |
+| Discretion price premium | 9% | 6% | 2% | Empirical anchor with substantial transfer uncertainty (Hungarian, sub-25m HUF band) |
+| Rigidity-slope anchor | 0 | 0.077 | 0.105 | **Calibration assumption with an external order-of-magnitude anchor** — see the unit warning below. Not a transferred estimate |
 | Cumulative TCO savings pool | 0% | 0% | 15% | Scenario assumption; no transferable central estimate |
 | Formal-path base bypass rate | 2% | 5% | 30% | Scenario assumption before technology-control scaling |
 | Adaptive-path base bypass rate | 15% | 5% | 1% | Scenario assumption before technology-control scaling |
 
 The low-delta case deliberately maximizes the governance value of formality; the high-delta case maximizes the value of adaptability. A range crossing zero means that the preferred path depends on assumptions.
+
+### The second axis: structural uncertainty (new in 2.2.1)
+
+The table above is the **evidence axis**. On its own it brackets the five literature-facing
+scalars and holds fixed the two inputs that carry 80–99% of ΔC — so the model reported its
+narrowest uncertainty precisely where it is least defensible.
+
+The **structural axis** perturbs those two:
+
+| Input | Range | Why |
+|---|---|---|
+| Daily cost of inaction | ×0.25 … ×4 | The least reliable number a user supplies; the model cannot check it. A factor of four either way is the honest spread of an unmeasured quantity. |
+| Non-mandatory step durations | ×0.7 … ×1.3 | The model's own step templates are untested assumptions. Applied exactly like the technology multiplier. |
+
+**Statutory PZP waits are invariant under both axes**, as everywhere else in the model.
+
+The reported `lowDelta` / `highDelta` is the envelope over the full cross product, and both
+single-axis envelopes are reported alongside it so a reader can see which one the width
+comes from (`widthDrivenBy`). Widening it changes the headline conclusion:
+
+| | evidence axis only | both axes |
+|---|---:|---:|
+| built-in scenarios crossing zero | 4 of 10 | **9 of 10** |
+| sweep: robustly favours formal | 1,221 / 12,960 | 1,045 |
+| sweep: robustly favours adaptive | 5,834 / 12,960 | 5,357 |
+
+In nine of ten built-in scenarios the model no longer identifies a robust winner. That is
+the correct result, not a regression: the earlier narrow envelope was an artefact of the
+choice of what to vary. The multipliers themselves are declared judgements about how wrong
+an unmeasured input can be, not estimated intervals.
+
+### Unit warning on the rigidity slope (corrected in 2.2)
+
+Beuve, Moszoro and Spiller report 0.077–0.105 additional formal amendments per contract-year
+for a simultaneous one-standard-deviation increase in **each** of seven z-scored rigidity
+categories — a move of about +7 units on a summed index that itself ranges well beyond that.
+It is not the effect of a one-SD move on the index, and several 2.1 documents dropped the word
+"each".
+
+ProcuraCost multiplies that slope by `contractRigidity`, a hand-authored **0–1 calibration
+score** from the path profiles below. That score is not a z-score, and no conversion between
+the two scales is available. The product therefore implicitly declares "profile = 1.0" to mean
+"+1 SD in each of seven clause categories", which the source does not support.
+
+Consequences, stated rather than buried:
+
+- The slope is reclassified from **class 2 (external anchor)** to **class 3 (calibration
+  assumption with an external order-of-magnitude anchor)** in the taxonomy of article 2.
+- Only the **difference** between the two paths' renegotiation cost is interpretable. The
+  reported level for either path is not, because the estimate is incremental and the model
+  supplies no baseline.
+- Model 2.1 also displayed the range as "0–0.105/year" sourced to Beuve. The 0 is the model's
+  own low-delta floor, not part of the published estimate; the homepage tiles now say
+  0.077–0.105 and attribute the floor to the model.
 
 ## Path-profile defaults
 
@@ -50,12 +104,39 @@ capture respectively.
 | PZP national | .90 / .85 | .65 / .40 | .67 / .72 |
 | Private formal | .85 / .75 | .60 / .30 | .70 / .75 |
 | Policy-compatible private | .75 / .70 | .35 / .25 | .73 / .78 |
+| **Discovery (new in 2.2)** | **.82 / .62** | .55 / .30 | **.60 / .78** |
 | Catalog | .90 / .90 | .25 / .20 | .80 / .82 |
 | MRP | .90 / .90 | .20 / .18 | .85 / .86 |
 | CAPEX | .88 / .80 | .70 / .40 | .70 / .75 |
 
 They should be replaced by observed bidder, clause and lifecycle data during
 calibration. They must not be interpreted as scores measured for an organization.
+
+### The `discovery` process type (new in 2.2)
+
+Through model 2.1, **every step of every template had `flexibleDays ≤ rigidDays`**. That
+made "the adaptive path is faster" an identity rather than a finding, and it meant the
+sensitivity sweep could not fail in the pro-formal direction: 0 robustly-formal results out
+of 11,340 configurations, a number that reflected the templates and not procurement.
+
+`discovery` models a purchase whose requirement emerges in flight. The adaptive path buys
+learning with time — co-design with suppliers, a re-scoping round, sometimes an abandoned
+negotiation — so it is **slower and more effortful** than the formal path, which freezes
+the requirement early and lives with a worse specification. Its profile row is the one place
+where the competition gap is wide (.82 / .62): co-designing with a small supplier set
+genuinely weakens competition, and that is the trade the type exists to represent.
+
+With it in the grid the sweep can fail in both directions for the first time: on the
+evidence axis alone it returns 1,221 robustly formal results out of 12,960 where 2.1
+returned none, and under the two-axis envelope introduced in 2.2.1 it returns 1,045. The
+two-sidedness the model claims is demonstrated rather than asserted.
+
+`discovery` is nonetheless a modelling assumption like every other template, not an
+observation, and calibration should treat the day tables as a primary object of measurement.
+
+Related fix: the adaptive effort ratio is no longer capped at 1. Model 2.1 capped it, so a
+step where adaptive execution takes longer could cost more calendar days but never more
+staff hours.
 
 ## Workflow, technology, and context assumptions
 
@@ -80,10 +161,74 @@ and 0.85 respectively; direct spend multiplies role hours by 1.10. Indirect
 spend adds no further factor. At most two factors combine, and none changes a
 statutory wait or the user-supplied daily inaction cost.
 
+**Context reaches exactly two channels: role hours and non-labour coordination.** It does
+*not* touch delay, selection, amendments, TCO or bypass. Model 2.1 declared multipliers for
+those five as well, but every one of them was hardcoded to 1, so four of the seven dimensions
+had no context sensitivity while the API and this table implied otherwise. They are removed in
+2.2 rather than left inert. Reviving any of them requires an argument for the specific
+mechanism, not a constant. The maximum combined uplift is ×1.265 (direct × upstream) against an
+audited invariant of ×1.5; `direct + downstream` nets to ×0.99, i.e. no effect.
+
+## Time base and discounting (new in 2.2)
+
+**Every figure the model reports is a present value at award.** That is the single time
+base, and model 2.1 did not have one: it multiplied the annual amendment frequency by
+contract duration with no discounting, while capping the TCO pool at three years. A ten-year
+CAPEX therefore contributed ten full-value amendment years against a three-year lifecycle
+pool — two horizons pulling the same purchase in opposite directions — and `total` summed a
+per-event cost with an undiscounted multi-year stream.
+
+Both lifecycle channels now use the same annuity machinery:
+
+- amendments: `λ_j × cost_per_amendment × af(r, contract duration)`
+- TCO: `(pool / 3) × af(r, min(horizon, 3)) × (1 − capture_j)`
+
+where `af(n, r) = n` at `r = 0` and `(1 − (1+r)^−n) / r` otherwise. **A zero rate reproduces
+the 2.1 arithmetic exactly**, which is how the change is verified in `tests/`.
+
+The default rate is **4% real**, the conventional social discount rate in Polish and EU
+public-investment appraisal. It is a declared assumption, exposed as a calculator input and
+carried in shared links and the replication trace. At 4% over ten years the CAPEX amendment
+stream falls by about 19%.
+
+## ΔC decomposition (new in 2.2)
+
+ΔC is reported in three buckets rather than one number, because they have different time bases
+and very different evidential standing:
+
+| Bucket | Contents | Time base | Standing |
+|---|---|---|---|
+| **Process** | staff, administration, selection, bypass | per procurement event | modeled |
+| **Delay** | (formal days − adaptive days) × daily cost of inaction | per procurement event | **accounting identity** between a template and a user input |
+| **Lifecycle** | expected formal amendments, foregone lifecycle value | over the contract life | modeled, weakly anchored |
+
+This matters because in the built-in scenarios the delay bucket carries **80.5–99.6%** of |ΔC|
+wherever the two paths differ in duration. Reporting only the sum let an identity between the
+model's own step templates and a number the user supplies read as a modeled finding.
+
+Excluding that identity, the formal path is **cheaper on process cost in 7 of 10** built-in
+scenarios. The Tunnel–Field advantage in this parameterisation is a delay story, not a
+process-cost story — and saying so is a stronger and more checkable claim than the headline
+percentages model 2.1 reported.
+
+## Break-even daily cost of inaction (corrected in 2.2)
+
+Solves ΔC(c_d) = 0 for the daily cost of inaction. Model 2.1 clamped the result at zero, so it
+returned 0 in seven built-in scenarios and `null` in three and never once produced an
+informative positive number — while the supervisor pack and article 2 described it as a live
+feature. The clamp is removed; the raw solution is reported with a status that says how to read
+it:
+
+- `threshold_above_zero` — the delay bucket decides; adaptive wins above the reported threshold.
+- `formal_costlier_at_zero_delay` — the formal path already costs more with the delay bucket
+  removed entirely. The threshold is negative and not actionable.
+- `adaptive_costlier_at_zero_delay` — mirror case.
+- `no_day_difference` — both paths take the same time, so no threshold exists.
+
 ## Dimension formulas
 
-- **Staff time:** step participation hours × broad context factors × headcount × daily rate / 8. Adaptive effort for a retained non-mandatory step is scaled by its adaptive/formal template-duration ratio. Mandatory legal waits and their role effort remain unchanged.
-- **Administrative overhead:** illustrative non-labor overhead per elapsed day plus the same selected tool cost for both paths. It excludes stakeholder hours already counted above.
+- **Staff time:** step participation hours × broad context factors × technology multiplier × daily rate / 8. Participation hours are a **whole-role total, not per person**: model 2.1 multiplied them by role headcount, so declaring three buyers made the identical workflow cost three times as much in buyer time. Headcount is now descriptive input only. Adaptive effort for a retained non-mandatory step is scaled by its adaptive/formal template-duration ratio, and the technology multiplier scales non-mandatory effort the same way it scales non-mandatory duration — 2.1 applied it to elapsed days only, which was inconsistent with both the adaptive-duration scaling and H5. Statutory waits are exempt from both.
+- **Administrative overhead:** illustrative non-labor overhead per **active** day plus the same selected tool cost for both paths. It excludes stakeholder hours already counted above. Model 2.1 charged it over every elapsed day, so a `pzp_eu` process accrued per-day "meeting and alignment effort" across all 45 days of statutory publication and standstill — periods in which no role has any participation hours by construction.
 - **Delay:** path days × user-supplied daily cost of inaction.
 - **Selection/favoritism:** contract value × price-premium scenario × (1 − competition effectiveness) × context weight. Contractor productivity is not separately monetized.
 - **Formal amendments:** user-supplied cost per amendment × contract duration × incremental annual frequency from the path's **contract-rigidity** profile. The French sample mean is not treated as a universal baseline.
@@ -94,21 +239,57 @@ The shared baseline purchase price is excluded from both totals. The reported br
 
 ## Empirical anchors and limits
 
-- **Szucs (2024):** Hungarian public procurement; discretion increased normalized prices by about 6 percentage points and selected contractors with about 28% lower measured productivity in the corrected main specification. The price effect is monetized; productivity is disclosed, not added again.
+- **Szucs (2024):** Hungarian public procurement, structural estimates: discretion increases prices by about 6% and lowers average contractor total factor productivity by about 10%. (The invalid raw discontinuity reports roughly 32%. Model 2.1 stated 28% — that is a different quantity in the same paper, the increase in a politically connected firm's win probability — and it was corrected in 2.2.) The price effect is monetized; productivity is disclosed, not added again. Identified on contracts below the ~25m HUF invitational threshold, i.e. at the small end of the value distribution.
 - **Beuve, Moszoro, and Spiller (2023):** French car-park contracts; contractual rigidity is instrumented with political contestability in a 2SLS design. The 0.077–0.105 result is an annual formal-amendment frequency, not an event probability. Transfer to general procurement is a scenario, not a measurement.
-- **European Commission (2011):** total authority-and-supplier procedure cost is a sanity-check, not an estimate of the incremental cost of formality.
+- **European Commission (2011):** context only. No parameter is derived from or validated against it, and the comparison model 2.1 called a "sanity-check" was never performed. The per-day administrative overheads are calibration assumptions.
 - **Lipsky, Vaughan, and Holmström–Milgrom:** mechanism-level theory only. None supplies a bypass probability.
 
 ## Legal thresholds used by the optimizer
 
-Effective from 1 January 2026:
+**Scope: zamówienia klasyczne only.** Sectoral (art. 2 ust. 1 pkt 2) and defence/security
+(pkt 3) procurement applies from far higher thresholds and draws on a different procedure
+catalogue (art. 376). Model 2.1 ran those buyers through the classic ladder and returned a
+confidently wrong band — a sectoral utility buying supplies for 500,000 PLN was told art. 275
+applied when PZP did not apply at all. Model 2.2 declines to advise them instead.
+
+For proceedings **initiated on or after 1 January 2026** (Dz.U. 2025 poz. 1173; a proceeding
+opened earlier stays under the previous 130,000 PLN threshold). EU thresholds per Obwieszczenie
+Prezesa UZP z 8.12.2025, M.P. 2025 poz. 1247, at 1 EUR = 4.31 PLN:
 
 - PZP application threshold: **170,000 PLN net**;
-- central supplies/services EU threshold: **603,400 PLN**;
-- sub-central supplies/services EU threshold: **930,960 PLN**;
-- works EU threshold: **23,291,240 PLN**.
+- central supplies/services EU threshold: **603,400 PLN** (140,000 EUR);
+- sub-central supplies/services EU threshold: **930,960 PLN** (216,000 EUR);
+- works EU threshold: **23,291,240 PLN** (5,404,000 EUR), independent of authority level;
+- social and other special services EU threshold (art. 359 / Annex XIV): **3,232,500 PLN**
+  (750,000 EUR), independent of authority level.
 
-The optimizer asks for procurement object and authority level before selecting the applicable threshold. Under Arts. 266 and 275, the 170,000 PLN–EU-threshold band is restricted to the national basic mode; EU-threshold procedures are not offered there. At or above the EU threshold, the default filter offers only open and restricted tender, which Art. 129(2) permits without additional grounds. Competitive dialogue and negotiated or single-source procedures require a separate legal-grounds assessment and are not recommended by this input form. The scorer evaluates every feasible path on the same criteria and denominator. Its 30 runs vary all criterion weights by ±25%; agreement is sensitivity stability, not statistical confidence.
+The social-services threshold was **missing in model 2.1**, so a 1.5M PLN social-services
+contract was classified above the EU threshold and `tryb podstawowy` — the correct, cheaper
+and faster national procedure — was foreclosed. That affects a large share of local-government
+spend and was over-restrictive advice stated with legal authority.
+
+The optimizer asks for procurement object and authority level before selecting the applicable
+threshold. Under Arts. 266 and 275, the 170,000 PLN–EU-threshold band is restricted to the
+national basic mode. At or above the EU threshold, the default filter offers only open and
+restricted tender, which Art. 129(2) permits without additional grounds.
+
+**The filter is sound within its scope but deliberately incomplete.** Partnerstwo innowacyjne
+(art. 297), negocjacje bez ogłoszenia (art. 300) and zamówienie z wolnej ręki (art. 304–306,
+art. 214 ust. 1) are lawful on their own statutory grounds and are withheld because the input
+form does not collect or verify those grounds. Model 2.2 names the withheld procedures in the
+UI rather than dropping them silently: a user who accepts a truncated option set without being
+told it was truncated can forgo a procedure the law allows.
+
+Statutory duration floors, under one consistent assumption set (standard periods, electronic
+communication, no urgency derogation): open tender 45 days (35 + 10 standstill), restricted
+tender 70 days (30 + 30 + 10). The restricted procedure is therefore structurally **slower**;
+model 2.1 displayed it as faster, inverting the ordering on the only genuine choice the tool
+makes above the EU threshold.
+
+The scorer evaluates every feasible path on the same criteria and denominator. Its 30 runs vary
+all criterion weights by ±25%; agreement is **weight stability, not statistical confidence** —
+renamed in 2.2 for that reason. Where the legal filter leaves one candidate, the stability
+figure is 1.0 by construction and the UI suppresses it rather than displaying 100%.
 
 ## Validation requirements
 

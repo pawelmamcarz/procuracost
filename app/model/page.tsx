@@ -18,11 +18,13 @@ export default function ModelPage() {
       <section className="mt-10 space-y-4 text-gray-700">
         <h2 className="text-xl font-semibold text-gray-900">Co jest wynikiem badań</h2>
         <p>
-          Szucs (2024) szacuje około 6 pp wzrostu znormalizowanej ceny i 28% niższą
-          produktywność wybranych wykonawców przy dyskrecji. Beuve, Moszoro i Spiller
-          (2023) szacują wzrost częstości formalnych aneksów o 0,077–0,105 na rok
-          kontraktu przy wzroście sztywności o jedno odchylenie standardowe w badanych
-          francuskich kontraktach parkingowych. To nie jest prawdopodobieństwo zdarzenia.
+          Szucs (2024) w estymatach strukturalnych szacuje około 6% wzrostu ceny i około
+          10% niższą produktywność wybranych wykonawców przy dyskrecji; efekt
+          zidentyfikowano na zamówieniach poniżej progu ok. 25 mln HUF. Beuve, Moszoro
+          i Spiller (2023) szacują wzrost częstości formalnych aneksów o 0,077–0,105 na
+          rok kontraktu przy jednoczesnym wzroście o jedno odchylenie standardowe
+          w każdej z siedmiu kategorii sztywności, w badanych francuskich kontraktach
+          parkingowych. To nie jest prawdopodobieństwo zdarzenia.
         </p>
         <h2 className="text-xl font-semibold text-gray-900">Co jest założeniem</h2>
         <p>

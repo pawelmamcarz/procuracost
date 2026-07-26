@@ -30,8 +30,11 @@ Political Contestability and Public Contract Renegotiations. *Journal of Law,
 Economics, and Organization, 39*(1), 281–308.
 https://doi.org/10.1093/jleo/ewab039
 
-Wcześniejszy tytuł „Contractual Rigidity and Political Contestability” oraz DOI
-`ewab022` były błędne i nie występują w aktywnych materiałach.
+Wcześniejszy rekord łączył tytuł wersji roboczej (NBER Working Paper 28491,
+„Contractual Rigidity and Political Contestability: Revisiting Public Contract
+Renegotiations”) z błędnym DOI `ewab022`. Błędem był DOI i niezgodność tytułu
+z rekordem czasopisma, a nie sam tytuł — jest on poprawnym tytułem wersji
+roboczej. Rekordem właściwym dla publikacji jest wersja z JLEO podana wyżej.
 
 ## Claims / non-claims
 
