@@ -352,9 +352,13 @@ function nonNegativeFinite(value: number): number {
 }
 
 /**
- * Annual real discount rate applied to lifecycle flows. 4% is the conventional real
- * social discount rate used in Polish and EU public-investment appraisal; it is a
- * declared assumption, not an estimate, and the user can override it.
+ * Annual real discount rate applied to lifecycle flows. 4% is the real FINANCIAL
+ * discount rate prescribed by the Polish MFiPR appraisal guidelines for 2021-2027
+ * (Wytyczne MFiPR/2021-2027/15(1), 2023); the SOCIAL discount rate in the same
+ * guidelines and in the EC Economic Appraisal Vademecum 2021-2027 is 3%. Model 2.2.1
+ * mislabelled 4% as the social rate; the financial rate is the appropriate default for
+ * a buyer-side cost model, and a public appraisal can override to 3. A declared
+ * assumption either way, not an estimate.
  */
 export const DEFAULT_DISCOUNT_RATE_PCT = 4;
 
@@ -529,8 +533,17 @@ function calculateCostsForEvidenceCase(
   const flexibleCoordCost = tech.coordCostPerDay * flexibleActiveDays * dims.coordinationIntensityMultiplier;
 
   // Tool license (amortized per process)
-  const rigidToolCost = tech.toolCostPerProcess;
-  const flexibleToolCost = tech.toolCostPerProcess * FLEXIBLE_TOOL_UTILIZATION_RATE;
+  // Operational orders (catalog/MRP) carry the per-PO amortisation, not the
+  // strategic-event amortisation. Model 2.1/2.2.0 charged the flat 2,000 PLN
+  // strategic figure per individual purchase order — 30–100× the citable per-PO
+  // tool cost (see TechLevel.toolCostPerOperationalOrder). Cancels in ΔC either
+  // way (identical on both paths); the distortion was confined to absolute totals.
+  const isOperationalOrder = processType === "catalog_order" || processType === "mrp_order";
+  const toolCostForProcess = isOperationalOrder
+    ? tech.toolCostPerOperationalOrder
+    : tech.toolCostPerProcess;
+  const rigidToolCost = toolCostForProcess;
+  const flexibleToolCost = toolCostForProcess * FLEXIBLE_TOOL_UTILIZATION_RATE;
 
   // Opportunity cost: deployment-delay cost over EACH path's own duration. Both paths
   // tie up value while procuring; the saving is the difference, reported honestly as a

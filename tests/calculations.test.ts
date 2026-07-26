@@ -203,18 +203,29 @@ describe("(c3) the uncertainty envelope covers both axes", () => {
     }
   });
 
-  it("finds the structural axis wider wherever the two paths differ in duration", () => {
-    const withDayGap = SCENARIOS.filter((s) => {
-      const r = calculateCosts(s.inputs);
-      return Math.abs(r.rigidDays - r.flexibleDays) > 0.5;
-    });
-    expect(withDayGap.length).toBeGreaterThan(0);
-    for (const scenario of withDayGap) {
+  // Before the 2.2.2 recalibration this asserted that the structural axis dominates in
+  // EVERY scenario with a day gap — true only because several dailyCostOfInaction values
+  // were inflated 3–10× beyond any citable benchmark. After recalibration the property
+  // that actually holds is mechanistic, not universal: the structural axis dominates
+  // where the delay bucket is large, and the flag must agree with the computed widths.
+  it("makes the structural axis dominate when the delay bucket is large", () => {
+    const u = calculateCosts(makeInputs({ dailyCostOfInaction: 10_000 })).uncertainty;
+    const evidenceWidth = u.evidenceHighDelta - u.evidenceLowDelta;
+    const structuralWidth = u.structuralHighDelta - u.structuralLowDelta;
+    expect(structuralWidth).toBeGreaterThan(evidenceWidth);
+    expect(u.widthDrivenBy).toBe("structural");
+  });
+
+  it("keeps widthDrivenBy consistent with the computed axis widths", () => {
+    for (const scenario of SCENARIOS) {
       const u = calculateCosts(scenario.inputs).uncertainty;
       const evidenceWidth = u.evidenceHighDelta - u.evidenceLowDelta;
       const structuralWidth = u.structuralHighDelta - u.structuralLowDelta;
-      expect(structuralWidth).toBeGreaterThan(evidenceWidth);
-      expect(u.widthDrivenBy).toBe("structural");
+      if (u.widthDrivenBy === "structural") {
+        expect(structuralWidth).toBeGreaterThan(evidenceWidth * 1.25 - 1);
+      } else if (u.widthDrivenBy === "evidence") {
+        expect(evidenceWidth).toBeGreaterThan(structuralWidth * 1.25 - 1);
+      }
     }
   });
 

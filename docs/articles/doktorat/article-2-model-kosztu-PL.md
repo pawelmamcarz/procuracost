@@ -46,7 +46,7 @@ procent.
 Ten wymiar wymaga osobnego ostrzeżenia, bo jest największy. Jego różnica między ścieżkami
 to iloczyn liczby dni z własnego szablonu modelu i ceny dnia podanej z zewnątrz — czyli
 **tożsamość rachunkowa, a nie wynik modelowania**. W scenariuszach wbudowanych niesie
-80,5–99,6% całej ΔC wszędzie tam, gdzie ścieżki różnią się czasem trwania. Dlatego model 2.2
+68,3–99,6% całej ΔC wszędzie tam, gdzie ścieżki różnią się czasem trwania (po audycie kalibracji 2.2.2; przed audytem 80,5–99,6%). Dlatego model 2.2
 raportuje ΔC rozbite na trzy kubełki (proces, opóźnienie, cykl życia) zamiast jednej sumy:
 jedna liczba pozwalała czytać założenie użytkownika jako ustalenie badawcze.
 
@@ -157,13 +157,13 @@ jest najsłabszy.
 
 Efekt jest duży i działa **przeciwko** tezie:
 
-| | tylko oś dowodowa | obie osie |
+| | tylko oś dowodowa | obie osie (kalibracja 2.2.2) |
 |---|---:|---:|
-| scenariusze wbudowane przechodzące przez zero | 4 z 10 | **9 z 10** |
-| przegląd: odpornie pro-formalne | 1 221 z 12 960 | 1 045 |
-| przegląd: odpornie pro-adaptacyjne | 5 834 z 12 960 | 5 357 |
+| scenariusze wbudowane przechodzące przez zero | 5 z 10 | **10 z 10** |
+| przegląd: odpornie pro-formalne | — | 1 042 z 12 960 |
+| przegląd: odpornie pro-adaptacyjne | — | 5 374 z 12 960 |
 
-W dziewięciu z dziesięciu scenariuszy wbudowanych model **nie wskazuje odpornie żadnej
+Po audycie kalibracji **żaden scenariusz wbudowany nie wskazuje odpornie żadnej
 ścieżki**, gdy dwa dominujące wejścia mogą się poruszać w obronialnych granicach. To jest
 uczciwy nagłówek tego artykułu i twierdzenie słabsze niż jakiekolwiek wcześniejsze w tym
 projekcie.

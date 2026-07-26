@@ -2,7 +2,7 @@
 
 **Stan na:** 26 lipca 2026
 
-**Wersja modelu:** 2.2.1
+**Wersja modelu:** 2.2.2
 
 **Adresat:** prof. Krzysztof Piech (powtórna recenzja po modelu 1.x)
 
@@ -31,12 +31,15 @@ zostały zebrane.
    oczekiwane od promotora.
 5. [`../research/EMPIRICAL_VALIDATION_PLAN.md`](../research/EMPIRICAL_VALIDATION_PLAN.md)
    — plan walidacji: ekspozycja, identyfikacja, moc testu, harmonogram.
-6. [`02-meeting-agenda.md`](02-meeting-agenda.md) — agenda rozmowy na 45–60 minut.
-7. [`04-evidence-and-integrity-note.md`](04-evidence-and-integrity-note.md) — co
+6. [`../research/CALIBRATION_BENCHMARKS.md`](../research/CALIBRATION_BENCHMARKS.md)
+   — **audyt kalibracji**: każde założenie modelu wobec zewnętrznego benchmarku,
+   w tym wykonany i zdany check EC 2011.
+7. [`02-meeting-agenda.md`](02-meeting-agenda.md) — agenda rozmowy na 45–60 minut.
+8. [`04-evidence-and-integrity-note.md`](04-evidence-and-integrity-note.md) — co
    zostało skorygowane i czego model nie twierdzi.
-8. [`../articles/doktorat/00-shared-foundation.md`](../articles/doktorat/00-shared-foundation.md)
+9. [`../articles/doktorat/00-shared-foundation.md`](../articles/doktorat/00-shared-foundation.md)
    — wiążący kontrakt modelu i **kanoniczny zestaw hipotez**.
-9. Trzy szkice cyklu:
+10. Trzy szkice cyklu:
    [artykuł 1](../articles/doktorat/article-1-tunnel-or-field-EN.md),
    [artykuł 2](../articles/doktorat/article-2-model-kosztu-PL.md) i
    [artykuł 3](../articles/doktorat/article-3-empiria-PZP-PL.md).

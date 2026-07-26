@@ -1,7 +1,7 @@
 # Co zmieniło się od poprzedniej recenzji
 
 **Adresat:** prof. Krzysztof Piech
-**Stan na:** 26 lipca 2026 · model 2.2.1
+**Stan na:** 26 lipca 2026 · model 2.2.2
 **Poprzednia recenzja dotyczyła:** modelu 1.x (czerwiec 2026)
 
 Ta nota istnieje po to, żeby nie musiał Pan rekonstruować historii zmian z repozytorium.
@@ -105,7 +105,7 @@ który model importuje od Szucsa.
 
 To nie jest błąd cytowania, tylko konstrukcji, i uważam go za najważniejszą rzecz w tej nocie.
 
-Model 2.1 raportował jedną liczbę ΔC. Rozłożenie jej pokazuje, że **od 80,5% do 99,6%**
+Model 2.1 raportował jedną liczbę ΔC. Rozłożenie jej pokazało, że **od 80,5% do 99,6%**
 każdej opublikowanej delty to iloczyn dwóch wielkości, których model nie mierzy:
 
 > (różnica dni z własnego szablonu) × (koszt dnia bezczynności podany przez użytkownika)
@@ -168,13 +168,13 @@ z różnicą dni niesie ją strukturalna.
 
 **Wynik działa przeciwko tezie i to jest najważniejsza liczba w tej nocie:**
 
-| | tylko oś dowodowa | obie osie |
+| | tylko oś dowodowa | obie osie (kalibracja 2.2.2) |
 |---|---:|---:|
-| scenariusze przechodzące przez zero | 4 z 10 | **9 z 10** |
-| przegląd: odpornie pro-formalne | 1 221 z 12 960 | 1 045 |
-| przegląd: odpornie pro-adaptacyjne | 5 834 z 12 960 | 5 357 |
+| scenariusze przechodzące przez zero | 5 z 10 | **10 z 10** |
+| przegląd: odpornie pro-formalne | — | 1 042 z 12 960 |
+| przegląd: odpornie pro-adaptacyjne | — | 5 374 z 12 960 |
 
-**W dziewięciu z dziesięciu scenariuszy wbudowanych model nie wskazuje odpornie żadnej
+**Po audycie kalibracji żaden scenariusz wbudowany nie wskazuje odpornie żadnej
 ścieżki.** Obie liczby odporności spadły, nie tylko jedna — przedział jest szerszy uczciwie,
 a nie przechylony.
 
@@ -222,6 +222,27 @@ pomija i dlaczego — bo użytkownik, który dostaje obcięty zbiór wyboru bez 
 może zrezygnować z trybu dopuszczalnego przez prawo.
 
 ---
+
+## 5a. Audyt kalibracji (2.2.2)
+
+Po rozstrzygnięciu kwestii konstrukcyjnych każde założenie liczbowe modelu zostało
+sprawdzone wobec zewnętrznego benchmarku, z przeciwstawną weryfikacją każdego zarzutu
+(`docs/research/CALIBRATION_BENCHMARKS.md`). Najważniejsze:
+
+- **Check EC 2011, którego poprzednie wersje tylko obiecywały, został wykonany — i model
+  go przechodzi** (23,8 osobodnia na postępowanie UE vs mediana 22 / średnia 36).
+- Szablony dni są o 25–50% SZYBSZE niż średnie UZP — konserwatywne odchylenie przeciwko
+  własnej tezie modelu, teraz jawnie opisane.
+- **Pięć wartości kosztu dnia bezczynności nie miało obronialnego wyprowadzenia**
+  i zostało przeliczonych z jawnych formuł (m.in. logistics 20 000 → 1 800; domyślny
+  seed kalkulatora 10 000 → 500). Po rekalibracji delta logistics spadła z 417k do 53k.
+- Drabina kontroli obejść zawężona z 15× do 3× (kotwica Hackett), koszt narzędzia
+  rozdzielony na strategiczny i operacyjny (2 000 zł za pojedyncze PO było 30–100×
+  ponad benchmark APQC), etykieta stopy dyskontowej poprawiona (4% = stopa finansowa
+  MFiPR, nie społeczna).
+
+Skutek zbiorczy: przy uczciwych wejściach **wszystkie 10 scenariuszy wbudowanych
+przechodzi przez zero**. Model nie wskazuje odpornego zwycięzcy w żadnym z nich.
 
 ## 6. O co proszę na tym spotkaniu
 

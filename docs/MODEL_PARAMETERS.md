@@ -1,6 +1,6 @@
 # ProcuraCost Model Parameters
 
-**Model version:** 2.2.1
+**Model version:** 2.2.2
 **Status:** transparent decision model; not an empirical estimator
 
 ## Comparison object
@@ -57,13 +57,13 @@ The reported `lowDelta` / `highDelta` is the envelope over the full cross produc
 single-axis envelopes are reported alongside it so a reader can see which one the width
 comes from (`widthDrivenBy`). Widening it changes the headline conclusion:
 
-| | evidence axis only | both axes |
+| | evidence axis only | both axes (2.2.2 calibration) |
 |---|---:|---:|
-| built-in scenarios crossing zero | 4 of 10 | **9 of 10** |
-| sweep: robustly favours formal | 1,221 / 12,960 | 1,045 |
-| sweep: robustly favours adaptive | 5,834 / 12,960 | 5,357 |
+| built-in scenarios crossing zero | 5 of 10 | **10 of 10** |
+| sweep: robustly favours formal | — | 1,042 / 12,960 |
+| sweep: robustly favours adaptive | — | 5,374 / 12,960 |
 
-In nine of ten built-in scenarios the model no longer identifies a robust winner. That is
+Under the audited calibration no built-in scenario identifies a robust winner. That is
 the correct result, not a regression: the earlier narrow envelope was an artefact of the
 choice of what to vary. The multipliers themselves are declared judgements about how wrong
 an unmeasured input can be, not estimated intervals.
@@ -186,8 +186,10 @@ Both lifecycle channels now use the same annuity machinery:
 where `af(n, r) = n` at `r = 0` and `(1 − (1+r)^−n) / r` otherwise. **A zero rate reproduces
 the 2.1 arithmetic exactly**, which is how the change is verified in `tests/`.
 
-The default rate is **4% real**, the conventional social discount rate in Polish and EU
-public-investment appraisal. It is a declared assumption, exposed as a calculator input and
+The default rate is **4% real** — the real *financial* discount rate prescribed by the
+Polish MFiPR appraisal guidelines for 2021–2027 (MFiPR/2021-2027/15(1), 2023); the *social*
+rate in the same guidelines and the EC Vademecum is 3%, appropriate when appraising a
+public project. Model 2.2.1 mislabelled 4% as the social rate. It is a declared assumption, exposed as a calculator input and
 carried in shared links and the replication trace. At 4% over ten years the CAPEX amendment
 stream falls by about 19%.
 
@@ -202,8 +204,9 @@ and very different evidential standing:
 | **Delay** | (formal days − adaptive days) × daily cost of inaction | per procurement event | **accounting identity** between a template and a user input |
 | **Lifecycle** | expected formal amendments, foregone lifecycle value | over the contract life | modeled, weakly anchored |
 
-This matters because in the built-in scenarios the delay bucket carries **80.5–99.6%** of |ΔC|
-wherever the two paths differ in duration. Reporting only the sum let an identity between the
+This matters because in the built-in scenarios the delay bucket carries **68.3–99.6%** of |ΔC|
+wherever the two paths differ in duration (2.2.2 audited calibration; under the pre-audit
+inputs it was 80.5–99.6%). Reporting only the sum let an identity between the
 model's own step templates and a number the user supplies read as a modeled finding.
 
 Excluding that identity, the formal path is **cheaper on process cost in 7 of 10** built-in
@@ -241,7 +244,7 @@ The shared baseline purchase price is excluded from both totals. The reported br
 
 - **Szucs (2024):** Hungarian public procurement, structural estimates: discretion increases prices by about 6% and lowers average contractor total factor productivity by about 10%. (The invalid raw discontinuity reports roughly 32%. Model 2.1 stated 28% — that is a different quantity in the same paper, the increase in a politically connected firm's win probability — and it was corrected in 2.2.) The price effect is monetized; productivity is disclosed, not added again. Identified on contracts below the ~25m HUF invitational threshold, i.e. at the small end of the value distribution.
 - **Beuve, Moszoro, and Spiller (2023):** French car-park contracts; contractual rigidity is instrumented with political contestability in a 2SLS design. The 0.077–0.105 result is an annual formal-amendment frequency, not an event probability. Transfer to general procurement is a scenario, not a measurement.
-- **European Commission (2011):** context only. No parameter is derived from or validated against it, and the comparison model 2.1 called a "sanity-check" was never performed. The per-day administrative overheads are calibration assumptions.
+- **European Commission (2011):** the sanity-check model 2.1 claimed was performed in the 2.2.2 audit and the model passes it (23.8 person-days per EU procedure vs the study's median 22 / mean 36; process cost 0.3–2.2% of CV vs ~0.3% authority-side). See `docs/research/CALIBRATION_BENCHMARKS.md`. The per-day administrative overheads remain calibration assumptions with no direct benchmark.
 - **Lipsky, Vaughan, and Holmström–Milgrom:** mechanism-level theory only. None supplies a bypass probability.
 
 ## Legal thresholds used by the optimizer

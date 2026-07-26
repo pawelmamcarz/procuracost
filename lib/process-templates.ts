@@ -45,8 +45,20 @@ export interface TechLevel {
   coordCostPerDay: number;
   // PLN/process: amortised license/subscription cost of the tool
   toolCostPerProcess: number;
-  // Multiplier on the assumed bypass rate.
+  // Multiplier on the assumed bypass rate. Span recalibrated in 2.2.2: the 2.1 ladder
+  // (1.50 → 0.10) attributed a 15× control effect to technology alone, which no citable
+  // evidence supports. The Hackett Group maverick-spend study puts top performers at 91%
+  // on-contract compliance vs 74% typical — maverick shares 9% vs 26%, a ~2.9× spread —
+  // and best-in-class e-procurement reaches only ~69% compliance in Bartolini (2012).
+  // The ladder is now anchored to that ~3× span. Envelope-only materiality: the central
+  // bypass delta is zero because both paths share the same central rate.
   bypassProbMultiplier: number;
+  // Amortised tool cost for a single OPERATIONAL order (catalog/MRP). Split from
+  // toolCostPerProcess in 2.2.2: charging the strategic-event amortisation (2,000 PLN)
+  // per individual purchase order was ~30–100× too high — APQC puts the TOTAL procurement
+  // process cost per PO at ~$14–54 (~55–215 PLN), and a ~600k PLN/yr mid-market suite
+  // license spread over 10,000–30,000 POs/yr gives 20–60 PLN of tool cost per order.
+  toolCostPerOperationalOrder: number;
   // Legacy compatibility index; not used as a causal coefficient in model 2.1.
   policyRigidityIndex: number;
 }
@@ -65,6 +77,7 @@ export const TECH_LEVELS: Record<TechLevelId, TechLevel> = {
     coordCostPerDay: 500,
     toolCostPerProcess: 0,
     bypassProbMultiplier: 1.50,
+    toolCostPerOperationalOrder: 0,
     policyRigidityIndex: 0.35,
   },
   sourcing_tool: {
@@ -77,7 +90,8 @@ export const TECH_LEVELS: Record<TechLevelId, TechLevel> = {
     timeMultiplier: 1.15,
     coordCostPerDay: 200,
     toolCostPerProcess: 800,
-    bypassProbMultiplier: 0.80,
+    bypassProbMultiplier: 0.90,
+    toolCostPerOperationalOrder: 30,
     policyRigidityIndex: 0.22,
   },
   partial_erp: {
@@ -90,7 +104,8 @@ export const TECH_LEVELS: Record<TechLevelId, TechLevel> = {
     timeMultiplier: 1.00,
     coordCostPerDay: 100,
     toolCostPerProcess: 1200,
-    bypassProbMultiplier: 0.55,
+    bypassProbMultiplier: 0.70,
+    toolCostPerOperationalOrder: 50,
     policyRigidityIndex: 0.15,
   },
   end_to_end: {
@@ -103,7 +118,8 @@ export const TECH_LEVELS: Record<TechLevelId, TechLevel> = {
     timeMultiplier: 0.70,
     coordCostPerDay: 20,
     toolCostPerProcess: 2000,
-    bypassProbMultiplier: 0.10,
+    bypassProbMultiplier: 0.50,
+    toolCostPerOperationalOrder: 60,
     policyRigidityIndex: 0.05,
   },
 };
@@ -130,9 +146,17 @@ export const PROCESS_RIGIDITY: Record<ProcessType, number> = {
 // tendering averts — the basis of the governance value credited to formal procedures,
 // and the only channel in the model that can favour the formal path.
 //
-// EVIDENTIAL STATUS (corrected in 2.2): this whole vector is a Grade-C ordinal calibration
-// assumption with NO external warrant, on the same footing as PATH_PROFILES. Two claims
-// were removed here because neither survived checking:
+// EVIDENTIAL STATUS (updated in 2.2.2 after the calibration audit): the VALUES remain
+// Grade-C ordinal calibration assumptions, but the ORDERING (public > private >
+// transactional) now has citable directional support: OECD (2016), "Preventing Corruption
+// in Public Procurement" — procurement is the government activity most vulnerable to
+// waste and corruption; Bandiera, Prat & Valletti (2009), QJE 124(3) — Italian public
+// bodies pay >=22% more than a benchmark agency for equivalent goods; Poland's single-bid
+// rate 56% in 2024 vs the EU average 28% (EC Single Market Scoreboard). For
+// pzp_eu >= pzp_krajowy the nearest analogue is Fazekas et al.: EU-funded contracts carry
+// higher corruption risk than nationally funded ones (funding source, not threshold —
+// an imperfect proxy, stated as such). Two claims were removed in 2.2 because neither
+// survived checking:
 //
 //   1. "the ordinal direction is taken from OECD" — no OECD publication was named anywhere
 //      in the corpus. An organisation name attached to no title, year or table cannot be
@@ -600,13 +624,21 @@ const MRP_ORDER_STEPS: ProcessStep[] = [
   },
 ];
 
+// CAPEX cycle recalibrated in 2.2.2 (60/42 → 120/84 days). Practitioner benchmarks for
+// capital-equipment sourcing disperse from ~3–4 months (letsworkwise.com procurement
+// lead-time guide) to 6–18 months (procurekey.com capex-sourcing-guide, needs assessment
+// to signature); 60 days sat below even the softest floor while the scenario pairs this
+// template with a 15M PLN production line. 120 formal days matches the 3–4-month floor;
+// the 0.70 adaptive ratio is preserved (84 days). Doubling also fixed an internal
+// inconsistency: vendor_selection (14d) was shorter than private_formal's rfq+negotiation
+// block (20d) for a purchase three times the value — it is now 28d.
 const CAPEX_STEPS: ProcessStep[] = [
   {
     id: "business_case",
     name: "Business case i budżet CAPEX",
     nameEn: "Business case and CAPEX budget",
-    rigidDays: 14,
-    flexibleDays: 10,
+    rigidDays: 28,
+    flexibleDays: 20,
     mandatoryWait: false,
     participation: { requestor: 24, finance: 16, manager: 8, executive: 4 },
     note: "Uzasadnienie inwestycji, analiza NPV/IRR, zatwierdzenie budżetu kapitałowego — governance ma tu wartość",
@@ -616,8 +648,8 @@ const CAPEX_STEPS: ProcessStep[] = [
     id: "technical_spec",
     name: "Specyfikacja techniczna",
     nameEn: "Technical specification",
-    rigidDays: 10,
-    flexibleDays: 7,
+    rigidDays: 20,
+    flexibleDays: 14,
     mandatoryWait: false,
     participation: { requestor: 32, buyer: 16, lawyer: 8 },
     note: "Pełna specyfikacja techniczna i wymagania eksploatacyjne środka trwałego",
@@ -627,8 +659,8 @@ const CAPEX_STEPS: ProcessStep[] = [
     id: "capex_committee",
     name: "Komitet CAPEX",
     nameEn: "CAPEX committee",
-    rigidDays: 7,
-    flexibleDays: 5,
+    rigidDays: 14,
+    flexibleDays: 10,
     mandatoryWait: false,
     participation: { finance: 8, manager: 6, executive: 4 },
     note: "Zatwierdzenie przez komitet CAPEX — formalne ale uzasadnione przy dużych inwestycjach",
@@ -638,8 +670,8 @@ const CAPEX_STEPS: ProcessStep[] = [
     id: "vendor_selection",
     name: "Selekcja i ocena dostawcy",
     nameEn: "Vendor selection and evaluation",
-    rigidDays: 14,
-    flexibleDays: 10,
+    rigidDays: 28,
+    flexibleDays: 20,
     mandatoryWait: false,
     participation: { requestor: 16, buyer: 32, finance: 8, manager: 8 },
     note: "RFP/RFQ lub negocjacje bezpośrednie z kwalifikowanymi dostawcami",
@@ -649,8 +681,8 @@ const CAPEX_STEPS: ProcessStep[] = [
     id: "legal_review",
     name: "Przegląd prawny kontraktu",
     nameEn: "Contract legal review",
-    rigidDays: 7,
-    flexibleDays: 5,
+    rigidDays: 14,
+    flexibleDays: 10,
     mandatoryWait: false,
     participation: { lawyer: 24, finance: 8 },
     note: "Przegląd umowy inwestycyjnej, gwarancji, SLA, warunków serwisowych",
@@ -660,8 +692,8 @@ const CAPEX_STEPS: ProcessStep[] = [
     id: "final_approval",
     name: "Finalna akceptacja zarządu",
     nameEn: "Final board approval",
-    rigidDays: 5,
-    flexibleDays: 3,
+    rigidDays: 10,
+    flexibleDays: 6,
     mandatoryWait: false,
     participation: { executive: 4, finance: 4 },
     note: "Finalne zatwierdzenie inwestycji przed podpisaniem — konieczne przy dużej wartości",
@@ -671,8 +703,8 @@ const CAPEX_STEPS: ProcessStep[] = [
     id: "contract_signing",
     name: "Podpisanie i rejestracja",
     nameEn: "Signing and asset registration",
-    rigidDays: 3,
-    flexibleDays: 2,
+    rigidDays: 6,
+    flexibleDays: 4,
     mandatoryWait: false,
     participation: { buyer: 4, lawyer: 8, executive: 2 },
     note: "Podpisanie umowy inwestycyjnej i rejestracja środka trwałego w systemie",

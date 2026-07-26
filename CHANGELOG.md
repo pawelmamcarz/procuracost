@@ -1,5 +1,63 @@
 # Changelog
 
+## 2026-07-26 — model 2.2.2
+
+Calibration audit: every assumption in the model checked against an external benchmark,
+with adversarial verification of every challenge (a "nonsensical" verdict required the
+benchmark confirmed at source and a ≥3× contradiction). Full reconciliation with sources:
+`docs/research/CALIBRATION_BENCHMARKS.md`. Headline numbers change again — against the
+thesis, again.
+
+### What the audit confirmed (no change needed)
+
+- **The EC 2011 sanity check the corpus promised was performed — and the model passes.**
+  pzp_eu implies 23.8 authority-side person-days per EU procedure vs the study's median
+  22 / mean 36; process cost 0.3–2.2% of contract value vs ~0.3% authority-side + APQC's
+  0.5–1.96%-of-spend band. The effort layer is the best-calibrated part of the model.
+- Step-day templates vs UZP 2023: pzp_eu 70 post-publication days vs 90 observed,
+  pzp_krajowy 27 vs 40 — the formal path is UNDERSTATED, a conservative bias against
+  the model's own adaptive-friendly tendency, now documented rather than implicit.
+- All six daily rates sit inside the Hays Poland 2026 salary bands.
+- Technology time multipliers (2× span) sit inside the 30–50% cycle-reduction literature.
+- Competition-direction profiles supported by Coviello–Guglielmo–Spagnolo (2018) and
+  EU single-bid statistics; corruption-context ORDERING now carries citable directional
+  support (OECD 2016; Bandiera–Prat–Valletti 2009) while its values stay Grade C.
+
+### What was nonsensical and changed
+
+- **Five dailyCostOfInaction values had no defensible derivation** — the input carrying
+  most of ΔC. Recalibrated with explicit formulas in lib/scenarios.ts:
+  erp 15,000 → 8,200 (12-month ex-ante payback; realized benchmark 18–36 months),
+  logistics 20,000 → 1,800 (25% spot premium × daily spend; was an uncitable ~270%),
+  capex 30,000 → 13,700 (3-year payback cash flow; annuity at 15–25% IRR),
+  discovery 8,000 → 5,500 (18-month payback), custom default 10,000 → 500 (placeholder,
+  0.05% CV/day — the old seed put a 200k delay bucket, 95% of the delta, in front of
+  every user by default). fleet, production, pipe_vs_field, mrp, catalog kept with the
+  economic framing now written down (production's 50k/day is a single-source stoppage
+  mechanism, stated as plant economics, not a spot premium).
+- **capex template 60/42 → 120/84 days.** 60 days for sourcing a 15M PLN production
+  line sat below the softest citable floor (3–4 months; practitioner range to 18
+  months). Also fixed vendor_selection (14d) being shorter than private_formal's
+  sourcing block for a purchase 3× the value.
+- **Tool cost split by process category.** Charging the strategic-event amortisation
+  (2,000 PLN) per individual catalog/MRP purchase order was 30–100× the citable per-PO
+  cost (APQC $14–54 total). New toolCostPerOperationalOrder: 0/30/50/60 PLN. ΔC-neutral.
+- **Bypass-control ladder narrowed from 15× to 3×** (1.50→0.50 instead of 1.50→0.10).
+  Citable maverick-spend evidence supports ~1.6–2.9× (Hackett; Bartolini 2012); a 15×
+  effect attributed to technology alone had none. Envelope-only materiality.
+- **Discount-rate label corrected**: 4% is the MFiPR real FINANCIAL rate; the social
+  rate is 3%. Model 2.2.1 called 4% "the social discount rate" — value kept, label fixed
+  in code, tooltips and docs.
+
+### Effect on results
+
+Delay share of |ΔC| drops from 80.5–99.6% to **68.3–99.6%**; logistics Δ falls 417k →
+53k, custom default Δ 212k → 22k. Under the audited calibration **all 10 built-in
+scenarios cross zero** (evidence axis alone: 5) and the sweep reads 1,042 robustly
+formal / 5,374 robustly adaptive / 6,544 crossing of 12,960. The model now identifies
+a robust winner in no built-in scenario — the honest consequence of feeding it honest
+inputs.
+
 ## 2026-07-26 — model 2.2.1
 
 Closes the last open item from the 2.2 audit, and it changes the headline conclusion.

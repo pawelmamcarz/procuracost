@@ -55,7 +55,7 @@ ProcuraCost applies it only to a separate contract-rigidity profile and multipli
 
 ### 3.3 Administrative cost, delay, TCO, and bypass
 
-The European Commission's 2011 study estimates the total authority-and-supplier cost of EU procedures. It is cited here for **context only**: no ProcuraCost parameter is derived from it, and no comparison against it has been carried out. Model 2.1 described it as an "external sanity-check", which asserted a validation that never took place — the model's non-labour overheads (500 / 200 / 100 / 20 PLN per day) remain self-declared assumptions. Performing that check is listed in the empirical agenda. The same study also reports that restrictions on the exercise of discretion are associated with higher average contract prices; that finding cuts against the discretion-premium channel this model imports from Szucs, and is recorded here rather than omitted.
+The European Commission's 2011 study estimates the total authority-and-supplier cost of EU procedures. Model 2.1 described it as an "external sanity-check" although no comparison had been carried out; **the check was performed in the 2.2.2 calibration audit, against the full report, and the model passes it**: the pzp_eu template implies 23.8 authority-side person-days per EU-threshold procedure (16.8–33.0 across technology levels) against the study's median 22 / mean 36 person-days (pp. 84–85), and per-procedure process cost of 0.3–2.2% of contract value against the study's ~0.3% authority-side aggregate and APQC's 0.5–1.96%-of-spend band. The non-labour overheads (500 / 200 / 100 / 20 PLN per day) remain declared assumptions with no direct benchmark; the nearest anchor is the 25–30% Standard-Cost-Model uplift the study itself applies (fn. 40). Full reconciliation: `docs/research/CALIBRATION_BENCHMARKS.md`. The same study also reports that restrictions on the exercise of discretion are associated with higher average contract prices; that finding cuts against the discretion-premium channel this model imports from Szucs, and is recorded here rather than omitted.
 
 Coviello and Mariniello (2014) show in Italian public works that publicity increased participation and did not worsen delivery delay; this contradicts any blanket claim that competition itself causes delay. ProcuraCost attributes delay to modeled workflow duration, not to competition.
 
@@ -85,7 +85,7 @@ A positive value favors the adaptive path; a negative value favors the formal pa
 \Delta C = \underbrace{\Delta C_{proces}}_{\text{staff, admin, selection, bypass}} + \underbrace{(d_F-d_A)\,c_d}_{\text{delay}} + \underbrace{\Delta C_{lifecycle}}_{\text{amendments, TCO}}
 \]
 
-The middle term is an **accounting identity** between a day count taken from the model's own step templates and a price per day supplied by the user. It is not a modeled or measured effect, and it must not be read as one. In the seven built-in scenarios where the two paths differ in duration it carries **80.5–99.6%** of |ΔC|. Model 2.1 reported only the sum, so headline figures such as "Δ = 73.9% of the adaptive total" described the size of a user's assumption about delay, not the cost of a procedure.
+The middle term is an **accounting identity** between a day count taken from the model's own step templates and a price per day supplied by the user. It is not a modeled or measured effect, and it must not be read as one. In the seven built-in scenarios where the two paths differ in duration it carries **68.3–99.6%** of |ΔC| after the 2.2.2 calibration audit (up to 96–99.6% in the stoppage-framed scenarios). Model 2.1 reported only the sum, so headline figures such as "Δ = 73.9% of the adaptive total" described the size of a user's assumption about delay, not the cost of a procedure.
 
 Excluding that identity, the formal path is **cheaper on process cost in seven of the ten** built-in scenarios. That is the more informative and more falsifiable statement, and it reverses the direction a reader would infer from the 2.1 headline.
 
@@ -126,14 +126,14 @@ The structural axis is not a pessimism exercise. The cost of a day is the least 
 
 The effect is large and it goes against the thesis:
 
-| | evidence axis only (through 2.2.0) | both axes (2.2.1) |
+| | evidence axis only | both axes (2.2.2 calibration) |
 |---|---:|---:|
-| built-in scenarios crossing zero | 4 of 10 | **9 of 10** |
-| sweep: robustly favours formal | 1,221 of 12,960 | 1,045 |
-| sweep: robustly favours adaptive | 5,834 of 12,960 | 5,357 |
-| sweep: crosses zero | 5,905 | **6,558** |
+| built-in scenarios crossing zero | 5 of 10 | **10 of 10** |
+| sweep: robustly favours formal | — | 1,042 of 12,960 |
+| sweep: robustly favours adaptive | — | 5,374 of 12,960 |
+| sweep: crosses zero | — | 6,544 of 12,960 |
 
-In nine of the ten built-in scenarios the model does **not** identify a robust winner once the two dominant inputs are allowed to move within defensible bounds. That is the honest headline, and it is a weaker claim than any previous version of this project made.
+Under the audited calibration, **no built-in scenario identifies a robust winner** once the two dominant inputs are allowed to move within defensible bounds. That is the honest headline, and it is a weaker claim than any previous version of this project made.
 
 Two qualifications remain for the empirical agenda. Calibration should treat the day templates and the path profiles as the **primary objects of measurement**, because they — not the evidence anchors — carry the directional assumption; `discovery` is itself a modelling assumption, not an observation. And the ×0.25–×4 and ×0.7–×1.3 bounds are themselves declared judgements about how wrong an unmeasured input can be, not estimated intervals.
 

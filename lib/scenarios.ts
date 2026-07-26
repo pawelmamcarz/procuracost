@@ -45,8 +45,15 @@ export const SCENARIOS: Scenario[] = [
         manager:   { count: 1, dailyRate: 1500 },
         executive: { count: 1, dailyRate: 2500 },
       },
+      // 50 aut x ~100 PLN/auto/dzien premii wynajmu krotkoterminowego wobec stawki
+      // kontraktowej FSL (kontrakt = 5M/730 = 6 849 PLN/dzien; spot rental biega
+      // ~1.5-2x stawki dlugoterminowej). Zalozenie scenariuszowe z jawnym rachunkiem.
       dailyCostOfInaction: 5_000,
+      // 3.0% CV za aneks; kotwica rzedu wielkosci: Bajari, Houghton & Tadelis (2014),
+      // AER 104(4) - koszty adaptacji 7.5-14% wartosci kontraktu w calym cyklu zycia.
       renegotiationCost: 150_000,
+      // ~10% CV; kotwica: decyzja KE C(2019) 3452 - korekty finansowe 5/10/25/100%
+      // wartosci kontraktu za naruszenia zamowien.
       bypassAuditExposure: 500_000,
     },
     caseStudy: {
@@ -79,7 +86,11 @@ export const SCENARIOS: Scenario[] = [
         manager:   { count: 2, dailyRate: 1800 },
         executive: { count: 1, dailyRate: 3000 },
       },
-      dailyCostOfInaction: 15_000,
+      // Odroczona korzysc wdrozenia przy ambitnym 12-mies. paybacku ex ante:
+      // 3M / 365 = 8 219 PLN/dzien. Realized payback wg Panorama Consulting to
+      // 18-36 mies. (4 100-5 500/dzien); 2.1 uzywal 15 000 = payback 6.6 mies.,
+      // ktorego zaden benchmark nie wspiera.
+      dailyCostOfInaction: 8_200,
       renegotiationCost: 300_000,
       bypassAuditExposure: 300_000,
     },
@@ -112,7 +123,10 @@ export const SCENARIOS: Scenario[] = [
         manager:   { count: 1, dailyRate: 1600 },
         executive: { count: 1, dailyRate: 2800 },
       },
-      dailyCostOfInaction: 20_000,
+      // Bez umowy ramowej fracht jedzie po stawkach spot: premia spot vs kontrakt
+      // 25-35% (DAT Freight & Analytics). 25% x (8M / 1095 dni) = ~1 825 PLN/dzien.
+      // 2.1 uzywal 20 000 = premia ~270%, niespotykana w zadnym cytowalnym zrodle.
+      dailyCostOfInaction: 1_800,
       renegotiationCost: 400_000,
       bypassAuditExposure: 800_000,
     },
@@ -146,6 +160,11 @@ export const SCENARIOS: Scenario[] = [
         manager:   { count: 1, dailyRate: 1400 },
         executive: { count: 1, dailyRate: 2500 },
       },
+      // Mechanizm: JEDYNY kwalifikowany dostawca surowcow klasy A - brak kontraktu
+      // grozi zatrzymaniem produkcji, nie zakupem spot. Utracona marza brutto
+      // ~50k/dzien odpowiada zakladowi o przychodzie ~40M PLN/rok i marzy ~45%.
+      // To zalozenie o ekonomice zakladu, nie premia cenowa; przy dostepnym rynku
+      // spot wlasciwa rama to 10-20% premii x 48k/dzien = 5-10k/dzien.
       dailyCostOfInaction: 50_000,
       renegotiationCost: 500_000,
       bypassAuditExposure: 1_200_000,
@@ -180,6 +199,9 @@ export const SCENARIOS: Scenario[] = [
         manager:   { count: 1, dailyRate: 1500 },
         executive: { count: 1, dailyRate: 2500 },
       },
+      // Projekt publiczny: odroczona korzysc spoleczna przy BCR ~2.2 (10k x 365 /
+      // zannualizowany koszt 1.67M/rok), wewnatrz typowego pasma BCR 1-4 z ocen
+      // projektow inwestycyjnych (EC Guide to CBA 2014).
       dailyCostOfInaction: 10_000,
       renegotiationCost: 200_000,
       bypassAuditExposure: 600_000,
@@ -214,6 +236,10 @@ export const SCENARIOS: Scenario[] = [
         manager:   { count: 1, dailyRate: 1500 },
         executive: { count: 0, dailyRate: 2500 },
       },
+      // Tarcie transakcyjne, nie premia cenowa: koszt recznej obslugi zamowien
+      // poza katalogiem (Levvel/PayStream: reczna faktura $10-15 vs $2-3
+      // automatyczna) plus drobna premia detaliczna. Delta dni = 0, wiec wartosc
+      // nie wplywa na roznice miedzy sciezkami.
       dailyCostOfInaction: 500,
       renegotiationCost: 0,
       bypassAuditExposure: 10_000,
@@ -239,6 +265,11 @@ export const SCENARIOS: Scenario[] = [
         manager:   { count: 0, dailyRate: 1500 },
         executive: { count: 0, dailyRate: 2500 },
       },
+      // Mechanizm stockoutu: brak POJEDYNCZEGO zlecenia na surowiec moze zatrzymac
+      // linie w ciagu dni - rama zatrzymania (utracona marza), nie premii spot.
+      // Jako premia spot byloby to 5.8x rocznego wydatku, czyli nonsens; jako
+      // koszt postoju liniowego jest w zakresie ekonomiki malego zakladu.
+      // Delta dni = 0, wiec wartosc nie wplywa na roznice miedzy sciezkami.
       dailyCostOfInaction: 8_000,
       renegotiationCost: 20_000,
       bypassAuditExposure: 50_000,
@@ -264,7 +295,11 @@ export const SCENARIOS: Scenario[] = [
         manager:   { count: 2, dailyRate: 1600 },
         executive: { count: 1, dailyRate: 3000 },
       },
-      dailyCostOfInaction: 30_000,
+      // Odroczony cash flow linii przy kryterium 3-letniego paybacku (typowe dla
+      // urzadzen produkcyjnych): 15M / 3 / 365 = 13 699 PLN/dzien. Annuitet przy
+      // hurdle rate 15-25% (Jagannathan i in., JFE 2016) daje 8.2-11.5k/dzien.
+      // 2.1 uzywal 30 000 = payback 1.4 roku, 2.2-3.7x ponad pasmo obronialne.
+      dailyCostOfInaction: 13_700,
       renegotiationCost: 800_000,
       bypassAuditExposure: 2_000_000,
     },
@@ -326,7 +361,10 @@ export const SCENARIOS: Scenario[] = [
         manager:   { count: 1, dailyRate: 1600 },
         executive: { count: 1, dailyRate: 2800 },
       },
-      dailyCostOfInaction: 8_000,
+      // Odroczona korzysc rozwiazania przy 18-mies. paybacku - konserwatywniejszym
+      // niz ERP, bo korzysci zakupu odkrywczego sa z natury mniej pewne:
+      // 3M / (1.5 x 365) = 5 479 PLN/dzien (pasmo Panorama 18-36 mies.).
+      dailyCostOfInaction: 5_500,
       renegotiationCost: 200_000,
       bypassAuditExposure: 300_000,
     },
@@ -353,7 +391,11 @@ export const SCENARIOS: Scenario[] = [
       processType: "private_formal",
       techLevel: "partial_erp",
       stakeholders: { ...DEFAULT_STAKEHOLDERS },
-      dailyCostOfInaction: 10_000,
+      // PLACEHOLDER bez uzasadnienia ekonomicznego - uzytkownik MUSI podac wlasna
+      // wartosc. Seed = 0.05% CV/dzien (500 dla 1M), spojne z premia spot/odroczonymi
+      // oszczednosciami 10-35% na zannualizowanym wydatku. Domyslne 10 000 z modelu
+      // 2.1 zasiewalo delte 200k PLN (95% wyniku) implikujac BCR 7.3 na kontrakcie 1M.
+      dailyCostOfInaction: 500,
       renegotiationCost: 100_000,
       bypassAuditExposure: 100_000,
     },

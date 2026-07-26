@@ -20,7 +20,7 @@ const calculatorPl = {
   contractDuration: "Czas trwania kontraktu (lata)",
   discountRate: "Stopa dyskontowa (% rocznie)",
   discountRateTooltip:
-    "Realna roczna stopa dyskontowa dla przepływów cyklu życia (aneksy, TCO). Model sprowadza je do wartości bieżącej na moment udzielenia zamówienia — to jedyna baza czasowa całego rachunku. Domyślne 4% to konwencjonalna społeczna stopa dyskontowa, czyli jawne założenie, a nie oszacowanie. Wpisanie 0 odtwarza niedyskontowany model 2.1.",
+    "Realna roczna stopa dyskontowa dla przepływów cyklu życia (aneksy, TCO). Model sprowadza je do wartości bieżącej na moment udzielenia zamówienia — to jedyna baza czasowa całego rachunku. Domyślne 4% to realna finansowa stopa dyskontowa z wytycznych MFiPR 2021–2027 (stopa społeczna w tych samych wytycznych to 3% — właściwa dla oceny projektów publicznych). Jawne założenie, nie oszacowanie. Wpisanie 0 odtwarza niedyskontowany model 2.1.",
   bypassExposure: "Ryzyko audytowe przy obejściu (PLN)",
   bypassTooltip:
     "Szacowany koszt audytu, kary regulacyjne lub reputacyjne jeśli nieformalne obejście procedury zostanie odkryte. Wartość podaje użytkownik. Lipsky (1980) i Vaughan (1996) uzasadniają sam mechanizm obejścia, ale nie dostarczają ani jego kosztu, ani częstości.",
@@ -89,7 +89,7 @@ const calculatorEn = {
   contractDuration: "Contract duration (years)",
   discountRate: "Discount rate (% per year)",
   discountRateTooltip:
-    "Real annual discount rate for lifecycle flows (amendments, TCO). The model brings them to present value at award — the single time base for the whole calculation. The 4% default is the conventional social discount rate: a declared assumption, not an estimate. Entering 0 reproduces the undiscounted 2.1 model.",
+    "Real annual discount rate for lifecycle flows (amendments, TCO). The model brings them to present value at award — the single time base for the whole calculation. The 4% default is the real financial discount rate from the Polish MFiPR 2021–2027 appraisal guidelines (the social rate in the same guidelines is 3% — appropriate for public-appraisal use). A declared assumption, not an estimate. Entering 0 reproduces the undiscounted 2.1 model.",
   bypassExposure: "Audit exposure on bypass (PLN)",
   bypassTooltip:
     "Estimated audit cost, regulatory or reputational penalties if an informal procedure bypass is discovered. User-supplied. Lipsky (1980) and Vaughan (1996) motivate the bypass mechanism; neither supplies its cost or its rate.",

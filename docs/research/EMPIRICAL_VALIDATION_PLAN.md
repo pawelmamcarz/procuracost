@@ -260,7 +260,7 @@ albo późniejszego okresu.
 
 ### 8.1 Czego ten test nie rozstrzygnie
 
-`dailyCostOfInaction` — parametr niosący 80,5–99,6% wyniku modelu — **nie jest odzyskiwalny
+`dailyCostOfInaction` — parametr niosący 68,3–99,6% wyniku modelu (po audycie kalibracji 2.2.2) — **nie jest odzyskiwalny
 z żadnej z dwóch warstw danych.** Żadna z siedmiu kategorii kodowania go nie mierzy.
 
 To jest najpoważniejsze ograniczenie całego projektu i wymaga osobnego rozwiązania:

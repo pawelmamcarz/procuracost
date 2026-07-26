@@ -1,5 +1,5 @@
 {
-  "modelVersion": "2.2.1",
+  "modelVersion": "2.2.2",
   "evidenceStatus": "Deterministic model outputs under illustrative inputs; not empirical estimates of realized organizational effects.",
   "scenarios": [
     {
@@ -50,9 +50,9 @@
           "productivityCost": 18000.000000000004,
           "renegotiationCost": 13070.636094674575,
           "tcoCost": 0,
-          "bypassCost": 13750.000000000002,
-          "total": 287283.1360946746,
-          "processCost": 54212.5,
+          "bypassCost": 17500,
+          "total": 291033.1360946746,
+          "processCost": 57962.5,
           "delayCost": 220000,
           "lifecycleCost": 13070.636094674575,
           "days": 44,
@@ -67,9 +67,9 @@
           "productivityCost": 30000,
           "renegotiationCost": 6535.318047337288,
           "tcoCost": 0,
-          "bypassCost": 13750.000000000002,
-          "total": 183201.74661876587,
-          "processCost": 56666.42857142857,
+          "bypassCost": 17500,
+          "total": 186951.74661876587,
+          "processCost": 60416.42857142857,
           "delayCost": 120000,
           "lifecycleCost": 6535.318047337288,
           "days": 24,
@@ -78,13 +78,13 @@
           "toolCost": 1200
         },
         "delta": 104081.38947590871,
-        "deltaPercent": 56.812443875056026,
-        "bypassProbability": 0.027500000000000004,
-        "flexibleBypassProbability": 0.027500000000000004,
+        "deltaPercent": 55.672862842064085,
+        "bypassProbability": 0.034999999999999996,
+        "flexibleBypassProbability": 0.034999999999999996,
         "rigidDays": 44,
         "flexibleDays": 24,
         "trace": {
-          "modelVersion": "2.2.1",
+          "modelVersion": "2.2.2",
           "sanitizedInputs": {
             "contractValue": 5000000,
             "tcoHorizonYears": 2,
@@ -113,8 +113,8 @@
             "flexible": 24
           },
           "probabilities": {
-            "bypassRigid": 0.027500000000000004,
-            "bypassFlexible": 0.027500000000000004
+            "bypassRigid": 0.034999999999999996,
+            "bypassFlexible": 0.034999999999999996
           },
           "renegotiation": {
             "annualFrequencyRigid": 0.0462,
@@ -148,8 +148,8 @@
               "flexible": 0
             },
             "bypassCost": {
-              "rigid": 13750.000000000002,
-              "flexible": 13750.000000000002
+              "rigid": 17500,
+              "flexible": 17500
             }
           }
         },
@@ -162,14 +162,14 @@
           "bypassCost": "Scenario assumption only: illustrative bypass-rate range, scaled by system controls. Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991) support mechanisms, not probabilities"
         },
         "uncertainty": {
-          "lowDelta": -29567.75,
+          "lowDelta": -39317.75,
           "centralDelta": 104081.38947590871,
-          "highDelta": 640647.8736263737,
-          "lowPercentOfContractValue": -0.591355,
-          "highPercentOfContractValue": 12.812957472527476,
+          "highDelta": 662397.8736263737,
+          "lowPercentOfContractValue": -0.786355,
+          "highPercentOfContractValue": 13.247957472527474,
           "crossesZero": true,
-          "evidenceLowDelta": 55796.07142857142,
-          "evidenceHighDelta": 217784.0521978023,
+          "evidenceLowDelta": 46046.07142857142,
+          "evidenceHighDelta": 239534.0521978023,
           "structuralLowDelta": 18717.568047337278,
           "structuralHighDelta": 526945.2109044801,
           "widthDrivenBy": "structural"
@@ -224,7 +224,7 @@
             "dailyRate": 3000
           }
         },
-        "dailyCostOfInaction": 15000,
+        "dailyCostOfInaction": 8200,
         "renegotiationCost": 300000,
         "bypassAuditExposure": 300000
       },
@@ -232,14 +232,14 @@
         "rigid": {
           "timeCost": 25731.25,
           "adminCost": 10919.999999999998,
-          "opportunityCost": 758999.9999999999,
+          "opportunityCost": 414919.99999999994,
           "productivityCost": 10800.000000000002,
           "renegotiationCost": 6728.795873096181,
           "tcoCost": 0,
-          "bypassCost": 12000.000000000002,
-          "total": 825180.0458730961,
-          "processCost": 59451.25,
-          "delayCost": 758999.9999999999,
+          "bypassCost": 13500.000000000002,
+          "total": 482600.0458730961,
+          "processCost": 60951.25,
+          "delayCost": 414919.99999999994,
           "lifecycleCost": 6728.795873096181,
           "days": 50.599999999999994,
           "staffCost": 25731.25,
@@ -249,33 +249,33 @@
         "flexible": {
           "timeCost": 14396.357142857141,
           "adminCost": 6319.999999999999,
-          "opportunityCost": 413999.99999999994,
+          "opportunityCost": 226319.99999999994,
           "productivityCost": 18000,
           "renegotiationCost": 3364.3979365480905,
           "tcoCost": 0,
-          "bypassCost": 12000.000000000002,
-          "total": 468080.7550794052,
-          "processCost": 50716.357142857145,
-          "delayCost": 413999.99999999994,
+          "bypassCost": 13500.000000000002,
+          "total": 281900.7550794052,
+          "processCost": 52216.357142857145,
+          "delayCost": 226319.99999999994,
           "lifecycleCost": 3364.3979365480905,
           "days": 27.599999999999994,
           "staffCost": 14396.357142857141,
           "coordCost": 5519.999999999999,
           "toolCost": 800
         },
-        "delta": 357099.2907936909,
-        "deltaPercent": 76.2901031325487,
-        "bypassProbability": 0.04000000000000001,
-        "flexibleBypassProbability": 0.04000000000000001,
+        "delta": 200699.2907936909,
+        "deltaPercent": 71.19501710350451,
+        "bypassProbability": 0.045000000000000005,
+        "flexibleBypassProbability": 0.045000000000000005,
         "rigidDays": 50.599999999999994,
         "flexibleDays": 27.599999999999994,
         "trace": {
-          "modelVersion": "2.2.1",
+          "modelVersion": "2.2.2",
           "sanitizedInputs": {
             "contractValue": 3000000,
             "tcoHorizonYears": 3,
             "contractDurationYears": 0.5,
-            "dailyCostOfInaction": 15000,
+            "dailyCostOfInaction": 8200,
             "renegotiationCost": 300000,
             "bypassAuditExposure": 300000,
             "discountRatePct": 4
@@ -299,8 +299,8 @@
             "flexible": 27.599999999999994
           },
           "probabilities": {
-            "bypassRigid": 0.04000000000000001,
-            "bypassFlexible": 0.04000000000000001
+            "bypassRigid": 0.045000000000000005,
+            "bypassFlexible": 0.045000000000000005
           },
           "renegotiation": {
             "annualFrequencyRigid": 0.0462,
@@ -318,8 +318,8 @@
               "flexible": 6319.999999999999
             },
             "opportunityCost": {
-              "rigid": 758999.9999999999,
-              "flexible": 413999.99999999994
+              "rigid": 414919.99999999994,
+              "flexible": 226319.99999999994
             },
             "productivityCost": {
               "rigid": 10800.000000000002,
@@ -334,8 +334,8 @@
               "flexible": 0
             },
             "bypassCost": {
-              "rigid": 12000.000000000002,
-              "flexible": 12000.000000000002
+              "rigid": 13500.000000000002,
+              "flexible": 13500.000000000002
             }
           }
         },
@@ -348,23 +348,23 @@
           "bypassCost": "Scenario assumption only: illustrative bypass-rate range, scaled by system controls. Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991) support mechanisms, not probabilities"
         },
         "uncertainty": {
-          "lowDelta": 29529.42499999996,
-          "centralDelta": 357099.2907936909,
-          "highDelta": 1907316.3588315095,
-          "lowPercentOfContractValue": 0.9843141666666654,
-          "highPercentOfContractValue": 63.57721196105032,
-          "crossesZero": false,
-          "evidenceLowDelta": 318934.8928571428,
-          "evidenceHighDelta": 453535.89097436646,
-          "structuralLowDelta": 67693.82293654807,
-          "structuralHighDelta": 1810879.7586508337,
+          "lowDelta": -1740.5750000000116,
+          "centralDelta": 200699.2907936909,
+          "highDelta": 1102736.3588315095,
+          "lowPercentOfContractValue": -0.05801916666666705,
+          "highPercentOfContractValue": 36.757878627716984,
+          "crossesZero": true,
+          "evidenceLowDelta": 158634.89285714284,
+          "evidenceHighDelta": 305835.89097436646,
+          "structuralLowDelta": 40323.82293654808,
+          "structuralHighDelta": 997599.7586508337,
           "widthDrivenBy": "structural"
         },
         "deltaDecomposition": {
           "process": 8734.892857142855,
-          "delay": 344999.99999999994,
+          "delay": 188600,
           "lifecycle": 3364.3979365480905,
-          "delayShareOfDeltaPercent": 96.61178526375703
+          "delayShareOfDeltaPercent": 93.97143320943351
         },
         "decisionThreshold": {
           "effectiveDayDifference": 23,
@@ -410,7 +410,7 @@
             "dailyRate": 2800
           }
         },
-        "dailyCostOfInaction": 20000,
+        "dailyCostOfInaction": 1800,
         "renegotiationCost": 400000,
         "bypassAuditExposure": 800000
       },
@@ -418,14 +418,14 @@
         "rigid": {
           "timeCost": 18575,
           "adminCost": 5600,
-          "opportunityCost": 880000,
+          "opportunityCost": 79200,
           "productivityCost": 28800.000000000007,
           "renegotiationCost": 51283.68229403738,
           "tcoCost": 0,
-          "bypassCost": 22000.000000000004,
-          "total": 1006258.6822940374,
-          "processCost": 74975.00000000001,
-          "delayCost": 880000,
+          "bypassCost": 27999.999999999996,
+          "total": 211458.68229403737,
+          "processCost": 80975,
+          "delayCost": 79200,
           "lifecycleCost": 51283.68229403738,
           "days": 44,
           "staffCost": 18575,
@@ -435,33 +435,33 @@
         "flexible": {
           "timeCost": 10288.095238095235,
           "adminCost": 3600,
-          "opportunityCost": 480000,
+          "opportunityCost": 43200,
           "productivityCost": 48000,
           "renegotiationCost": 25641.84114701869,
           "tcoCost": 0,
-          "bypassCost": 22000.000000000004,
-          "total": 589529.936385114,
-          "processCost": 83888.09523809524,
-          "delayCost": 480000,
+          "bypassCost": 27999.999999999996,
+          "total": 158729.93638511392,
+          "processCost": 89888.09523809524,
+          "delayCost": 43200,
           "lifecycleCost": 25641.84114701869,
           "days": 24,
           "staffCost": 10288.095238095235,
           "coordCost": 2400,
           "toolCost": 1200
         },
-        "delta": 416728.74590892345,
-        "deltaPercent": 70.68830947996047,
-        "bypassProbability": 0.027500000000000004,
-        "flexibleBypassProbability": 0.027500000000000004,
+        "delta": 52728.74590892345,
+        "deltaPercent": 33.2191564551452,
+        "bypassProbability": 0.034999999999999996,
+        "flexibleBypassProbability": 0.034999999999999996,
         "rigidDays": 44,
         "flexibleDays": 24,
         "trace": {
-          "modelVersion": "2.2.1",
+          "modelVersion": "2.2.2",
           "sanitizedInputs": {
             "contractValue": 8000000,
             "tcoHorizonYears": 3,
             "contractDurationYears": 3,
-            "dailyCostOfInaction": 20000,
+            "dailyCostOfInaction": 1800,
             "renegotiationCost": 400000,
             "bypassAuditExposure": 800000,
             "discountRatePct": 4
@@ -485,8 +485,8 @@
             "flexible": 24
           },
           "probabilities": {
-            "bypassRigid": 0.027500000000000004,
-            "bypassFlexible": 0.027500000000000004
+            "bypassRigid": 0.034999999999999996,
+            "bypassFlexible": 0.034999999999999996
           },
           "renegotiation": {
             "annualFrequencyRigid": 0.0462,
@@ -504,8 +504,8 @@
               "flexible": 3600
             },
             "opportunityCost": {
-              "rigid": 880000,
-              "flexible": 480000
+              "rigid": 79200,
+              "flexible": 43200
             },
             "productivityCost": {
               "rigid": 28800.000000000007,
@@ -520,8 +520,8 @@
               "flexible": 0
             },
             "bypassCost": {
-              "rigid": 22000.000000000004,
-              "flexible": 22000.000000000004
+              "rigid": 27999.999999999996,
+              "flexible": 27999.999999999996
             }
           }
         },
@@ -534,28 +534,28 @@
           "bypassCost": "Scenario assumption only: illustrative bypass-rate range, scaled by system controls. Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991) support mechanisms, not probabilities"
         },
         "uncertainty": {
-          "lowDelta": -8799.166666666686,
-          "centralDelta": 416728.74590892345,
-          "highDelta": 2305040.943873681,
-          "lowPercentOfContractValue": -0.10998958333333357,
-          "highPercentOfContractValue": 28.813011798421012,
+          "lowDelta": -88099.16666666669,
+          "centralDelta": 52728.74590892345,
+          "highDelta": 447040.94387368066,
+          "lowPercentOfContractValue": -1.1012395833333335,
+          "highPercentOfContractValue": 5.588011798421008,
           "crossesZero": true,
-          "evidenceLowDelta": 324286.90476190473,
-          "evidenceHighDelta": 621954.8724451091,
-          "structuralLowDelta": 83642.67448035203,
-          "structuralHighDelta": 2099814.817337495,
-          "widthDrivenBy": "structural"
+          "evidenceLowDelta": -55313.09523809524,
+          "evidenceHighDelta": 292754.8724451093,
+          "structuralLowDelta": 19942.674480351998,
+          "structuralHighDelta": 207014.81733749487,
+          "widthDrivenBy": "evidence"
         },
         "deltaDecomposition": {
-          "process": -8913.095238095222,
-          "delay": 400000,
+          "process": -8913.095238095237,
+          "delay": 36000,
           "lifecycle": 25641.84114701869,
-          "delayShareOfDeltaPercent": 95.98569907328171
+          "delayShareOfDeltaPercent": 68.27395451843586
         },
         "decisionThreshold": {
           "effectiveDayDifference": 20,
-          "nonDelayDelta": 16728.74590892347,
-          "breakEvenDailyCostOfInaction": -836.4372954461735,
+          "nonDelayDelta": 16728.745908923454,
+          "breakEvenDailyCostOfInaction": -836.4372954461727,
           "status": "formal_costlier_at_zero_delay"
         }
       }
@@ -642,7 +642,7 @@
         "rigidDays": 61.599999999999994,
         "flexibleDays": 33.599999999999994,
         "trace": {
-          "modelVersion": "2.2.1",
+          "modelVersion": "2.2.2",
           "sanitizedInputs": {
             "contractValue": 12000000,
             "tcoHorizonYears": 1,
@@ -794,9 +794,9 @@
           "productivityCost": 15000.000000000013,
           "renegotiationCost": 32052.301433773362,
           "tcoCost": 0,
-          "bypassCost": 16500.000000000004,
-          "total": 967527.3014337734,
-          "processCost": 65475.000000000015,
+          "bypassCost": 20999.999999999996,
+          "total": 972027.3014337734,
+          "processCost": 69975.00000000001,
           "delayCost": 870000,
           "lifecycleCost": 32052.301433773362,
           "days": 87,
@@ -811,9 +811,9 @@
           "productivityCost": 29999.999999999993,
           "renegotiationCost": 19231.380860264017,
           "tcoCost": 0,
-          "bypassCost": 16500.000000000004,
-          "total": 798043.9999078831,
-          "processCost": 68812.61904761904,
+          "bypassCost": 20999.999999999996,
+          "total": 802543.9999078831,
+          "processCost": 73312.61904761904,
           "delayCost": 710000,
           "lifecycleCost": 19231.380860264017,
           "days": 71,
@@ -822,13 +822,13 @@
           "toolCost": 1200
         },
         "delta": 169483.30152589025,
-        "deltaPercent": 21.23733798455391,
-        "bypassProbability": 0.027500000000000004,
-        "flexibleBypassProbability": 0.027500000000000004,
+        "deltaPercent": 21.118256637062107,
+        "bypassProbability": 0.034999999999999996,
+        "flexibleBypassProbability": 0.034999999999999996,
         "rigidDays": 87,
         "flexibleDays": 71,
         "trace": {
-          "modelVersion": "2.2.1",
+          "modelVersion": "2.2.2",
           "sanitizedInputs": {
             "contractValue": 5000000,
             "tcoHorizonYears": 3,
@@ -857,8 +857,8 @@
             "flexible": 71
           },
           "probabilities": {
-            "bypassRigid": 0.027500000000000004,
-            "bypassFlexible": 0.027500000000000004
+            "bypassRigid": 0.034999999999999996,
+            "bypassFlexible": 0.034999999999999996
           },
           "renegotiation": {
             "annualFrequencyRigid": 0.057749999999999996,
@@ -892,8 +892,8 @@
               "flexible": 0
             },
             "bypassCost": {
-              "rigid": 16500.000000000004,
-              "flexible": 16500.000000000004
+              "rigid": 20999.999999999996,
+              "flexible": 20999.999999999996
             }
           }
         },
@@ -906,14 +906,14 @@
           "bypassCost": "Scenario assumption only: illustrative bypass-rate range, scaled by system controls. Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991) support mechanisms, not probabilities"
         },
         "uncertainty": {
-          "lowDelta": -29236.333333333314,
+          "lowDelta": -40936.333333333314,
           "centralDelta": 169483.30152589025,
-          "highDelta": 990032.8066627644,
-          "lowPercentOfContractValue": -0.5847266666666663,
-          "highPercentOfContractValue": 19.800656133255288,
+          "highDelta": 1016132.8066627644,
+          "lowPercentOfContractValue": -0.8187266666666663,
+          "highPercentOfContractValue": 20.322656133255286,
           "crossesZero": true,
-          "evidenceLowDelta": 106262.38095238095,
-          "evidenceHighDelta": 314534.0923770509,
+          "evidenceLowDelta": 94562.38095238095,
+          "evidenceHighDelta": 340634.0923770509,
           "structuralLowDelta": 33984.58724017604,
           "structuralHighDelta": 844982.015811604,
           "widthDrivenBy": "structural"
@@ -975,46 +975,46 @@
       "results": {
         "rigid": {
           "timeCost": 240.625,
-          "adminCost": 2042,
+          "adminCost": 102,
           "opportunityCost": 1049.9999999999998,
           "productivityCost": 59.99999999999999,
           "renegotiationCost": 0,
           "tcoCost": 0,
-          "bypassCost": 50.00000000000001,
-          "total": 3442.625,
-          "processCost": 2392.625,
+          "bypassCost": 250,
+          "total": 1702.6249999999998,
+          "processCost": 652.625,
           "delayCost": 1049.9999999999998,
           "lifecycleCost": 0,
           "days": 2.0999999999999996,
           "staffCost": 240.625,
           "coordCost": 41.99999999999999,
-          "toolCost": 2000
+          "toolCost": 60
         },
         "flexible": {
           "timeCost": 240.625,
-          "adminCost": 2042,
+          "adminCost": 102,
           "opportunityCost": 1049.9999999999998,
           "productivityCost": 59.99999999999999,
           "renegotiationCost": 0,
           "tcoCost": 0,
-          "bypassCost": 50.00000000000001,
-          "total": 3442.625,
-          "processCost": 2392.625,
+          "bypassCost": 250,
+          "total": 1702.6249999999998,
+          "processCost": 652.625,
           "delayCost": 1049.9999999999998,
           "lifecycleCost": 0,
           "days": 2.0999999999999996,
           "staffCost": 240.625,
           "coordCost": 41.99999999999999,
-          "toolCost": 2000
+          "toolCost": 60
         },
         "delta": 0,
         "deltaPercent": 0,
-        "bypassProbability": 0.005000000000000001,
-        "flexibleBypassProbability": 0.005000000000000001,
+        "bypassProbability": 0.025,
+        "flexibleBypassProbability": 0.025,
         "rigidDays": 2.0999999999999996,
         "flexibleDays": 2.0999999999999996,
         "trace": {
-          "modelVersion": "2.2.1",
+          "modelVersion": "2.2.2",
           "sanitizedInputs": {
             "contractValue": 50000,
             "tcoHorizonYears": 1,
@@ -1043,8 +1043,8 @@
             "flexible": 2.0999999999999996
           },
           "probabilities": {
-            "bypassRigid": 0.005000000000000001,
-            "bypassFlexible": 0.005000000000000001
+            "bypassRigid": 0.025,
+            "bypassFlexible": 0.025
           },
           "renegotiation": {
             "annualFrequencyRigid": 0.01925,
@@ -1058,8 +1058,8 @@
               "flexible": 240.625
             },
             "adminCost": {
-              "rigid": 2042,
-              "flexible": 2042
+              "rigid": 102,
+              "flexible": 102
             },
             "opportunityCost": {
               "rigid": 1049.9999999999998,
@@ -1078,8 +1078,8 @@
               "flexible": 0
             },
             "bypassCost": {
-              "rigid": 50.00000000000001,
-              "flexible": 50.00000000000001
+              "rigid": 250,
+              "flexible": 250
             }
           }
         },
@@ -1092,14 +1092,14 @@
           "bypassCost": "Scenario assumption only: illustrative bypass-rate range, scaled by system controls. Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991) support mechanisms, not probabilities"
         },
         "uncertainty": {
-          "lowDelta": -130,
+          "lowDelta": -650.0000000000002,
           "centralDelta": 0,
-          "highDelta": 338.0769230769238,
-          "lowPercentOfContractValue": -0.26,
-          "highPercentOfContractValue": 0.6761538461538475,
+          "highDelta": 1498.0769230769233,
+          "lowPercentOfContractValue": -1.3000000000000005,
+          "highPercentOfContractValue": 2.9961538461538466,
           "crossesZero": true,
-          "evidenceLowDelta": -130,
-          "evidenceHighDelta": 338.07692307692287,
+          "evidenceLowDelta": -650.0000000000002,
+          "evidenceHighDelta": 1498.0769230769233,
           "structuralLowDelta": 0,
           "structuralHighDelta": 0,
           "widthDrivenBy": "evidence"
@@ -1161,46 +1161,46 @@
       "results": {
         "rigid": {
           "timeCost": 140,
-          "adminCost": 2028,
+          "adminCost": 88,
           "opportunityCost": 11200,
           "productivityCost": 449.99999999999994,
           "renegotiationCost": 296.1538461538468,
           "tcoCost": 0,
-          "bypassCost": 250.00000000000006,
-          "total": 14364.153846153848,
-          "processCost": 2868,
+          "bypassCost": 1250,
+          "total": 13424.153846153848,
+          "processCost": 1928,
           "delayCost": 11200,
           "lifecycleCost": 296.1538461538468,
           "days": 1.4,
           "staffCost": 140,
           "coordCost": 28,
-          "toolCost": 2000
+          "toolCost": 60
         },
         "flexible": {
           "timeCost": 140,
-          "adminCost": 2028,
+          "adminCost": 88,
           "opportunityCost": 11200,
           "productivityCost": 449.99999999999994,
           "renegotiationCost": 266.5384615384621,
           "tcoCost": 0,
-          "bypassCost": 250.00000000000006,
-          "total": 14334.538461538463,
-          "processCost": 2868,
+          "bypassCost": 1250,
+          "total": 13394.538461538463,
+          "processCost": 1928,
           "delayCost": 11200,
           "lifecycleCost": 266.5384615384621,
           "days": 1.4,
           "staffCost": 140,
           "coordCost": 28,
-          "toolCost": 2000
+          "toolCost": 60
         },
         "delta": 29.615384615384755,
-        "deltaPercent": 0.20660159163719782,
-        "bypassProbability": 0.005000000000000001,
-        "flexibleBypassProbability": 0.005000000000000001,
+        "deltaPercent": 0.22110044851805372,
+        "bypassProbability": 0.025,
+        "flexibleBypassProbability": 0.025,
         "rigidDays": 1.4,
         "flexibleDays": 1.4,
         "trace": {
-          "modelVersion": "2.2.1",
+          "modelVersion": "2.2.2",
           "sanitizedInputs": {
             "contractValue": 500000,
             "tcoHorizonYears": 1,
@@ -1229,8 +1229,8 @@
             "flexible": 1.4
           },
           "probabilities": {
-            "bypassRigid": 0.005000000000000001,
-            "bypassFlexible": 0.005000000000000001
+            "bypassRigid": 0.025,
+            "bypassFlexible": 0.025
           },
           "renegotiation": {
             "annualFrequencyRigid": 0.0154,
@@ -1244,8 +1244,8 @@
               "flexible": 140
             },
             "adminCost": {
-              "rigid": 2028,
-              "flexible": 2028
+              "rigid": 88,
+              "flexible": 88
             },
             "opportunityCost": {
               "rigid": 11200,
@@ -1264,8 +1264,8 @@
               "flexible": 0
             },
             "bypassCost": {
-              "rigid": 250.00000000000006,
-              "flexible": 250.00000000000006
+              "rigid": 1250,
+              "flexible": 1250
             }
           }
         },
@@ -1278,14 +1278,14 @@
           "bypassCost": "Scenario assumption only: illustrative bypass-rate range, scaled by system controls. Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991) support mechanisms, not probabilities"
         },
         "uncertainty": {
-          "lowDelta": -650,
+          "lowDelta": -3250.0000000000036,
           "centralDelta": 29.615384615384755,
-          "highDelta": 1730.7692307692341,
-          "lowPercentOfContractValue": -0.13,
-          "highPercentOfContractValue": 0.3461538461538468,
+          "highDelta": 7530.769230769241,
+          "lowPercentOfContractValue": -0.6500000000000008,
+          "highPercentOfContractValue": 1.5061538461538482,
           "crossesZero": true,
-          "evidenceLowDelta": -650,
-          "evidenceHighDelta": 1730.7692307692305,
+          "evidenceLowDelta": -3250,
+          "evidenceHighDelta": 7530.7692307692305,
           "structuralLowDelta": 29.615384615382936,
           "structuralHighDelta": 29.615384615386574,
           "widthDrivenBy": "evidence"
@@ -1340,58 +1340,58 @@
             "dailyRate": 3000
           }
         },
-        "dailyCostOfInaction": 30000,
+        "dailyCostOfInaction": 13700,
         "renegotiationCost": 800000,
         "bypassAuditExposure": 2000000
       },
       "results": {
         "rigid": {
           "timeCost": 37500,
-          "adminCost": 7200,
-          "opportunityCost": 1800000,
+          "adminCost": 13200,
+          "opportunityCost": 1644000,
           "productivityCost": 64800,
           "renegotiationCost": 349741.8260057891,
           "tcoCost": 0,
-          "bypassCost": 55000.00000000001,
-          "total": 2314241.826005789,
-          "processCost": 164500,
-          "delayCost": 1800000,
+          "bypassCost": 70000,
+          "total": 2179241.826005789,
+          "processCost": 185500,
+          "delayCost": 1644000,
           "lifecycleCost": 349741.8260057891,
-          "days": 60,
+          "days": 120,
           "staffCost": 37500,
-          "coordCost": 6000,
+          "coordCost": 12000,
           "toolCost": 1200
         },
         "flexible": {
           "timeCost": 26324.285714285714,
-          "adminCost": 5400,
-          "opportunityCost": 1260000,
+          "adminCost": 9600,
+          "opportunityCost": 1150800,
           "productivityCost": 107999.99999999999,
           "renegotiationCost": 199852.47200330807,
           "tcoCost": 0,
-          "bypassCost": 55000.00000000001,
-          "total": 1654576.7577175938,
-          "processCost": 194724.2857142857,
-          "delayCost": 1260000,
+          "bypassCost": 70000,
+          "total": 1564576.7577175938,
+          "processCost": 213924.28571428568,
+          "delayCost": 1150800,
           "lifecycleCost": 199852.47200330807,
-          "days": 42,
+          "days": 84,
           "staffCost": 26324.285714285714,
-          "coordCost": 4200,
+          "coordCost": 8400,
           "toolCost": 1200
         },
-        "delta": 659665.0682881952,
-        "deltaPercent": 39.8691124610121,
-        "bypassProbability": 0.027500000000000004,
-        "flexibleBypassProbability": 0.027500000000000004,
-        "rigidDays": 60,
-        "flexibleDays": 42,
+        "delta": 614665.0682881952,
+        "deltaPercent": 39.286347905670624,
+        "bypassProbability": 0.034999999999999996,
+        "flexibleBypassProbability": 0.034999999999999996,
+        "rigidDays": 120,
+        "flexibleDays": 84,
         "trace": {
-          "modelVersion": "2.2.1",
+          "modelVersion": "2.2.2",
           "sanitizedInputs": {
             "contractValue": 15000000,
             "tcoHorizonYears": 10,
             "contractDurationYears": 10,
-            "dailyCostOfInaction": 30000,
+            "dailyCostOfInaction": 13700,
             "renegotiationCost": 800000,
             "bypassAuditExposure": 2000000,
             "discountRatePct": 4
@@ -1411,12 +1411,12 @@
           },
           "multiplierDetails": [],
           "days": {
-            "rigid": 60,
-            "flexible": 42
+            "rigid": 120,
+            "flexible": 84
           },
           "probabilities": {
-            "bypassRigid": 0.027500000000000004,
-            "bypassFlexible": 0.027500000000000004
+            "bypassRigid": 0.034999999999999996,
+            "bypassFlexible": 0.034999999999999996
           },
           "renegotiation": {
             "annualFrequencyRigid": 0.053899999999999997,
@@ -1430,12 +1430,12 @@
               "flexible": 26324.285714285714
             },
             "adminCost": {
-              "rigid": 7200,
-              "flexible": 5400
+              "rigid": 13200,
+              "flexible": 9600
             },
             "opportunityCost": {
-              "rigid": 1800000,
-              "flexible": 1260000
+              "rigid": 1644000,
+              "flexible": 1150800
             },
             "productivityCost": {
               "rigid": 64800,
@@ -1450,8 +1450,8 @@
               "flexible": 0
             },
             "bypassCost": {
-              "rigid": 55000.00000000001,
-              "flexible": 55000.00000000001
+              "rigid": 70000,
+              "flexible": 70000
             }
           }
         },
@@ -1464,28 +1464,28 @@
           "bypassCost": "Scenario assumption only: illustrative bypass-rate range, scaled by system controls. Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991) support mechanisms, not probabilities"
         },
         "uncertainty": {
-          "lowDelta": -104217.00000000006,
-          "centralDelta": 659665.0682881952,
-          "highDelta": 3437928.915957192,
-          "lowPercentOfContractValue": -0.6947800000000004,
-          "highPercentOfContractValue": 22.91952610638128,
+          "lowDelta": -150147.00000000006,
+          "centralDelta": 614665.0682881952,
+          "highDelta": 3283908.915957192,
+          "lowPercentOfContractValue": -1.0009800000000004,
+          "highPercentOfContractValue": 21.89272610638128,
           "crossesZero": true,
-          "evidenceLowDelta": 345175.7142857143,
-          "evidenceHighDelta": 1166036.2016714788,
-          "structuralLowDelta": 210272.35400248086,
-          "structuralHighDelta": 2931557.7825739086,
+          "evidenceLowDelta": 261175.71428571432,
+          "evidenceHighDelta": 1208036.2016714788,
+          "structuralLowDelta": 203342.35400248086,
+          "structuralHighDelta": 2690537.7825739086,
           "widthDrivenBy": "structural"
         },
         "deltaDecomposition": {
-          "process": -30224.28571428571,
-          "delay": 540000,
+          "process": -28424.28571428568,
+          "delay": 493200,
           "lifecycle": 149889.35400248104,
-          "delayShareOfDeltaPercent": 81.85972335950404
+          "delayShareOfDeltaPercent": 80.23882036659933
         },
         "decisionThreshold": {
-          "effectiveDayDifference": 18,
-          "nonDelayDelta": 119665.06828819533,
-          "breakEvenDailyCostOfInaction": -6648.059349344185,
+          "effectiveDayDifference": 36,
+          "nonDelayDelta": 121465.06828819535,
+          "breakEvenDailyCostOfInaction": -3374.0296746720933,
           "status": "formal_costlier_at_zero_delay"
         }
       }
@@ -1543,9 +1543,9 @@
           "productivityCost": 33750,
           "renegotiationCost": 647.8365384615399,
           "tcoCost": 0,
-          "bypassCost": 2500.0000000000005,
-          "total": 43278.08653846154,
-          "processCost": 42630.25,
+          "bypassCost": 12500,
+          "total": 53278.08653846154,
+          "processCost": 52630.25,
           "delayCost": 0,
           "lifecycleCost": 647.8365384615399,
           "days": 13.999999999999998,
@@ -1560,9 +1560,9 @@
           "productivityCost": 40500.00000000001,
           "renegotiationCost": 462.74038461538566,
           "tcoCost": 0,
-          "bypassCost": 2500.0000000000005,
-          "total": 49842.99038461539,
-          "processCost": 49380.25000000001,
+          "bypassCost": 12500,
+          "total": 59842.99038461539,
+          "processCost": 59380.25000000001,
           "delayCost": 0,
           "lifecycleCost": 462.74038461538566,
           "days": 13.999999999999998,
@@ -1571,13 +1571,13 @@
           "toolCost": 2000
         },
         "delta": -6564.903846153851,
-        "deltaPercent": -13.171167691776745,
-        "bypassProbability": 0.005000000000000001,
-        "flexibleBypassProbability": 0.005000000000000001,
+        "deltaPercent": -10.970213560453315,
+        "bypassProbability": 0.025,
+        "flexibleBypassProbability": 0.025,
         "rigidDays": 13.999999999999998,
         "flexibleDays": 13.999999999999998,
         "trace": {
-          "modelVersion": "2.2.1",
+          "modelVersion": "2.2.2",
           "sanitizedInputs": {
             "contractValue": 5000000,
             "tcoHorizonYears": 0,
@@ -1618,8 +1618,8 @@
             "flexible": 13.999999999999998
           },
           "probabilities": {
-            "bypassRigid": 0.005000000000000001,
-            "bypassFlexible": 0.005000000000000001
+            "bypassRigid": 0.025,
+            "bypassFlexible": 0.025
           },
           "renegotiation": {
             "annualFrequencyRigid": 0.026949999999999998,
@@ -1653,8 +1653,8 @@
               "flexible": 0
             },
             "bypassCost": {
-              "rigid": 2500.0000000000005,
-              "flexible": 2500.0000000000005
+              "rigid": 12500,
+              "flexible": 12500
             }
           }
         },
@@ -1667,14 +1667,14 @@
           "bypassCost": "Scenario assumption only: illustrative bypass-rate range, scaled by system controls. Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991) support mechanisms, not probabilities"
         },
         "uncertainty": {
-          "lowDelta": -16625.000000000015,
+          "lowDelta": -42625.000000000015,
           "centralDelta": -6564.903846153851,
-          "highDelta": 12502.403846153844,
-          "lowPercentOfContractValue": -0.3325000000000003,
-          "highPercentOfContractValue": 0.25004807692307685,
+          "highDelta": 70502.40384615384,
+          "lowPercentOfContractValue": -0.8525000000000003,
+          "highPercentOfContractValue": 1.4100480769230768,
           "crossesZero": true,
-          "evidenceLowDelta": -16625.000000000015,
-          "evidenceHighDelta": 12502.403846153844,
+          "evidenceLowDelta": -42625.000000000015,
+          "evidenceHighDelta": 70502.40384615384,
           "structuralLowDelta": -6564.903846153851,
           "structuralHighDelta": -6564.903846153844,
           "widthDrivenBy": "evidence"
@@ -1729,7 +1729,7 @@
             "dailyRate": 2800
           }
         },
-        "dailyCostOfInaction": 8000,
+        "dailyCostOfInaction": 5500,
         "renegotiationCost": 200000,
         "bypassAuditExposure": 300000
       },
@@ -1737,14 +1737,14 @@
         "rigid": {
           "timeCost": 20700,
           "adminCost": 4600,
-          "opportunityCost": 272000,
+          "opportunityCost": 187000,
           "productivityCost": 13608.000000000002,
           "renegotiationCost": 23505.021051433803,
           "tcoCost": 0,
-          "bypassCost": 8250.000000000002,
-          "total": 342663.0210514338,
-          "processCost": 47158,
-          "delayCost": 272000,
+          "bypassCost": 10499.999999999998,
+          "total": 259913.0210514338,
+          "processCost": 49408,
+          "delayCost": 187000,
           "lifecycleCost": 23505.021051433803,
           "days": 34,
           "staffCost": 20700,
@@ -1754,33 +1754,33 @@
         "flexible": {
           "timeCost": 40124.166666666664,
           "adminCost": 5900,
-          "opportunityCost": 376000,
+          "opportunityCost": 258500,
           "productivityCost": 28728,
           "renegotiationCost": 12820.920573509346,
           "tcoCost": 0,
-          "bypassCost": 8250.000000000002,
-          "total": 471823.087240176,
-          "processCost": 83002.16666666666,
-          "delayCost": 376000,
+          "bypassCost": 10499.999999999998,
+          "total": 356573.087240176,
+          "processCost": 85252.16666666666,
+          "delayCost": 258500,
           "lifecycleCost": 12820.920573509346,
           "days": 47,
           "staffCost": 40124.166666666664,
           "coordCost": 4700,
           "toolCost": 1200
         },
-        "delta": -129160.06618874217,
-        "deltaPercent": -27.37468124848133,
-        "bypassProbability": 0.027500000000000004,
-        "flexibleBypassProbability": 0.027500000000000004,
+        "delta": -96660.06618874217,
+        "deltaPercent": -27.10806554046944,
+        "bypassProbability": 0.034999999999999996,
+        "flexibleBypassProbability": 0.034999999999999996,
         "rigidDays": 34,
         "flexibleDays": 47,
         "trace": {
-          "modelVersion": "2.2.1",
+          "modelVersion": "2.2.2",
           "sanitizedInputs": {
             "contractValue": 3000000,
             "tcoHorizonYears": 3,
             "contractDurationYears": 3,
-            "dailyCostOfInaction": 8000,
+            "dailyCostOfInaction": 5500,
             "renegotiationCost": 200000,
             "bypassAuditExposure": 300000,
             "discountRatePct": 4
@@ -1804,8 +1804,8 @@
             "flexible": 47
           },
           "probabilities": {
-            "bypassRigid": 0.027500000000000004,
-            "bypassFlexible": 0.027500000000000004
+            "bypassRigid": 0.034999999999999996,
+            "bypassFlexible": 0.034999999999999996
           },
           "renegotiation": {
             "annualFrequencyRigid": 0.042350000000000006,
@@ -1823,8 +1823,8 @@
               "flexible": 5900
             },
             "opportunityCost": {
-              "rigid": 272000,
-              "flexible": 376000
+              "rigid": 187000,
+              "flexible": 258500
             },
             "productivityCost": {
               "rigid": 13608.000000000002,
@@ -1839,8 +1839,8 @@
               "flexible": 0
             },
             "bypassCost": {
-              "rigid": 8250.000000000002,
-              "flexible": 8250.000000000002
+              "rigid": 10499.999999999998,
+              "flexible": 10499.999999999998
             }
           }
         },
@@ -1853,23 +1853,23 @@
           "bypassCost": "Scenario assumption only: illustrative bypass-rate range, scaled by system controls. Lipsky (1980), Vaughan (1996), and Holmström & Milgrom (1991) support mechanisms, not probabilities"
         },
         "uncertainty": {
-          "lowDelta": -611871.4166666667,
-          "centralDelta": -129160.06618874217,
-          "highDelta": 99599.76915490831,
-          "lowPercentOfContractValue": -20.395713888888892,
-          "highPercentOfContractValue": 3.3199923051636104,
+          "lowDelta": -448721.4166666666,
+          "centralDelta": -96660.06618874217,
+          "highDelta": 118337.26915490831,
+          "lowPercentOfContractValue": -14.957380555555556,
+          "highPercentOfContractValue": 3.9445756384969437,
           "crossesZero": true,
-          "evidenceLowDelta": -168854.16666666663,
-          "evidenceHighDelta": 7582.519154908252,
-          "structuralLowDelta": -572177.3161887422,
-          "structuralHighDelta": -37142.81618874223,
+          "evidenceLowDelta": -142204.16666666663,
+          "evidenceHighDelta": 53132.51915490825,
+          "structuralLowDelta": -403177.3161887422,
+          "structuralHighDelta": -31455.31618874219,
           "widthDrivenBy": "structural"
         },
         "deltaDecomposition": {
           "process": -35844.16666666666,
-          "delay": -104000,
+          "delay": -71500,
           "lifecycle": 10684.100477924458,
-          "delayShareOfDeltaPercent": 80.52024365489588
+          "delayShareOfDeltaPercent": 73.97056801139195
         },
         "decisionThreshold": {
           "effectiveDayDifference": -13,
