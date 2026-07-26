@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PipeFieldDiagram from "@/components/PipeFieldDiagram";
+import DecisionMap from "@/components/DecisionMap";
 import { SCENARIOS } from "@/lib/scenarios";
 import { calculateCosts } from "@/lib/calculations";
 
@@ -214,6 +215,10 @@ export default function EnHomePage() {
           Theoretical basis: Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) Challenger;
           Holmström &amp; Milgrom (1991) Multitask Principal-Agent
         </p>
+      </div>
+
+      <div className="mt-12">
+        <DecisionMap lang="en" />
       </div>
 
       <div className="mt-16">

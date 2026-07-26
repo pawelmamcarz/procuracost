@@ -35,6 +35,8 @@ npm run recompute  # per-dimension Δ table for every reference scenario + conte
                    # invariant audit (no dimension's total uplift may exceed ~×1.5)
 npm run sweep      # sign-robustness sweep over every process × tech × spend × phase combo
 npm run replicate  # regenerate replication/outputs/ from SCENARIOS
+npm run map        # decision-threshold map per category × tech × CV → replication/outputs/decision-thresholds.md
+                   # (also rendered visually on the homepage by components/DecisionMap.tsx)
 ```
 
 After any change under `lib/`, run `npm test && npm run recompute && npm run sweep && npm run build`. CI (`.github/workflows/ci.yml`, Node 22) runs lint → test → build → recompute on every PR and push to `main`; `sweep` and `replicate` are manual. Path alias `@/*` maps to the repo root.
