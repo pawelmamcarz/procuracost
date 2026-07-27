@@ -4,7 +4,7 @@
 
 ## Streszczenie
 
-Artykuł przekłada model ProcuraCost 2.1 na falsyfikowalny projekt badania
+Artykuł przekłada model ProcuraCost 2.2.2 na falsyfikowalny projekt badania
 polskich zamówień publicznych. Nie przedstawia nieistniejących wyników. Dane BZP,
 TED i e-Zamówień mogą opisać konkurencję, czas oraz zmiany umów, lecz nie mierzą
 wiarygodnie pracy wewnętrznej, kosztu zwłoki, TCO ani nieformalnych obejść. Dlatego
@@ -14,9 +14,9 @@ tworzenia jednego obserwowanego indeksu „sztywności”.
 
 ## 1. Pytanie i granica wnioskowania
 
-Pytanie brzmi: czy przy porównywalnym przedmiocie, wartości i warunkach rynku
-bardziej sekwencyjny przebieg postępowania wiąże się z większym czasem i kosztem,
-bez pogorszenia konkurencji, zgodności i wyniku kontraktu?
+Pytanie brzmi: jak, przy porównywalnym przedmiocie, wartości i warunkach rynku,
+projekt procesu obowiązujący przed rozpoczęciem zakupu wiąże się osobno z czasem,
+nakładem pracy, konkurencją i wynikiem kontraktu?
 
 Nie wolno utożsamiać trybu PZP z topologią pracy. Ten sam tryb może być
 przygotowany sekwencyjnie lub równolegle. Nie wolno też porównywać postępowania
@@ -30,18 +30,26 @@ ponadprogowymi.
 
 ## 2. Hipotezy
 
-- **H1:** większa liczba rzeczywistych zależności i oczekiwań między etapami
-  zwiększa czas cyklu, po uwzględnieniu złożoności zakupu.
-- **H2:** skuteczna konkurencja obniża ryzyko straty selekcyjnej niezależnie od
-  organizacji pracy.
+- **H1:** większa preskryptywność projektu procesu mierzona *ex ante* zwiększa
+  czas cyklu i nakład koordynacyjny, po uwzględnieniu złożoności zakupu.
+- **H2:** bardziej otwarty projekt dostępu do rynku mierzony *ex ante* wiąże się
+  z większą liczbą ważnych ofert i mniejszą różnicą ceny względem porównywalnego
+  benchmarku, niezależnie od preskryptywności workflow.
 - **H3:** sztywność klauzul zmiany zwiększa ekspozycję na formalne aneksy lub
   renegocjację; sama liczba akceptacji przed wszczęciem nie musi tego robić.
-- **H4:** adaptacyjny przebieg skraca czas tylko wtedy, gdy zespół rzeczywiście
-  równolegli pracę i ma zdolność decyzyjną.
+- **H4:** jeżeli ścieżka adaptacyjna jest rzeczywiście szybsza, jej przewaga
+  netto rośnie wraz z możliwym do obrony, ustalonym przed wynikiem kosztem
+  zwłoki. Jeżeli uczenie się wydłuża ścieżkę adaptacyjną, zależność od kosztu
+  dnia odwraca znak. W obu przypadkach słaba konkurencja lub kontrola może
+  odwrócić wynik całkowity.
 - **H5:** kontrola technologiczna moderuje obejścia tylko wtedy, gdy jej użycie
-  jest widoczne w logach lub śladzie audytowym.
+  i konfiguracja są widoczne w logach lub śladzie audytowym; samo posiadanie
+  systemu nie jest ekspozycją operacyjną.
 
 Każda hipoteza dopuszcza wynik zerowy lub przeciwny.
+H3 i H5 nie są testowalne w obecnym kalkulatorze: nie ma on wejścia pozwalającego
+niezależnie zmienić sztywność klauzul ani pomiaru wykorzystania kontroli. Wymagają
+danych organizacyjnych z punktów 4–5, a nie kolejnego przebiegu kalkulatora.
 
 ## 3. Warstwa danych wtórnych
 
@@ -91,6 +99,9 @@ postępowania. Przebieg faktyczny jest współokreślony przez wynik, więc kodo
 ekspozycji tworzy odwrotną przyczynowość. Indeks jest sumą pięciu z-standaryzowanych
 składowych: liczby bram decyzyjnych, wymuszonych par sekwencyjnych, głębokości eskalacji,
 sztywności dokumentacji i odwróconej autonomii zespołu.
+Indeks dotyczy wyłącznie projektu workflow, nie konkurencji ani sztywności umowy.
+Wyniki pięciu składowych są raportowane także osobno; ich równe wagi zostają
+zamrożone przed analizą, a inne ważenie ma status eksploracyjny.
 
 Z ekspozycji **wykluczam udział czasu oczekiwania i długość ścieżki krytycznej**, mimo że
 wcześniejszy szkic je zawierał: obie dzielą jednostki z wynikiem głównym i mechanicznie go
@@ -103,7 +114,9 @@ ograniczają.
 `log(dni) = β · z(prescriptiveness) + γ′X + α_zamawiający + δ_CPV + θ_rok + ε`
 
 z błędami klastrowanymi na poziomie zamawiającego (przy < 30 klastrach —
-*wild cluster bootstrap*).
+*wild cluster bootstrap*). Przy 4–6 organizacjach także ta korekta nie daje
+pewnej inferencji; wyniki pozostają eksploracyjne i wymagają analizy
+*leave-one-organization-out*.
 
 **Kontrole dozwolone (przed-ekspozycyjne):** wartość szacunkowa, CPV, złożoność, pilność
 deklarowana przed wszczęciem, rok, efekty stałe zamawiającego.
@@ -117,6 +130,16 @@ zależną w modelu konkurencji (H2), nie kontrolą w modelu czasu (H1).
 
 Osobne modele dotyczą konkurencji, zmian umowy, wyników dostawy i ustaleń audytu. Dopiero
 po ich prezentacji można zbudować rachunek pieniężny ProcuraCost.
+W modelu H2 ekspozycją są cechy dostępu do rynku ustalone przed ofertami, np. zakres
+publikacji, planowana liczba zaproszeń i restrykcyjność warunków udziału. Liczba
+ważnych ofert pozostaje wynikiem; użycie jej po obu stronach równania byłoby tautologią.
+
+H3 i H5 nie mogą opierać wniosku o „braku efektu" na samym `p > 0,05`.
+Praktyczne granice równoważności dla liczby bram i samego posiadania systemu
+zostaną ustalone po pilotażu, lecz przed estymacją zależności w badaniu
+właściwym, na podstawie znaczenia merytorycznego, a nie zaobserwowanego efektu.
+Dla H5 osobno raportowana będzie interakcja z faktycznie zalogowanym użyciem
+kontroli.
 
 ### 5.0 Identyfikacja i moc
 
@@ -124,24 +147,33 @@ po ich prezentacji można zbudować rachunek pieniężny ProcuraCost.
 warunkową, nie efekt przyczynowy — wybór ścieżki jest endogeniczny, co artykuł 2 przyznaje
 wprost.
 
-**Wariant rekomendowany dla warstwy przyczynowej:** zmiana wersji polityki wewnętrznej
-(macierzy akceptacji, uruchomienie modułu workflow) przy niezmienionych progach ustawowych,
-estymowana jako *staggered DiD* estymatorem odpornym na heterogeniczne efekty
-(Callaway–Sant’Anna albo Sun–Abraham; nie dwukierunkowe efekty stałe). Wymaga testu trendów
-równoległych i wykluczenia antycypacji.
+**Warunkowe rozszerzenie przyczynowe:** jednorazowe, jasno datowane wdrożenie tej samej
+zmiany procesu w organizacjach o różnym terminie wejścia, przy grupach jeszcze
+nieobjętych zmianą. Tylko taki pochłaniający stan interwencji uzasadnia *staggered DiD*
+estymatorem Callawaya–Sant’Anny albo Suna–Abraham. Zwykłe wersje polityki, które mogą
+zwiększać i zmniejszać preskryptywność, nie spełniają tego warunku i pozostają analizą
+asocjacyjną. Estymandem DiD jest grupowo-czasowy ATT interwencji dla `log(dni)`,
+a nie automatycznie efekt jednego odchylenia indeksu. Trendy przed zmianą mogą
+osłabić wiarygodność założenia trendów równoległych,
+ale nie mogą go dowieść; równoległe transformacje organizacyjne wykluczają interpretację
+przyczynową.
 
-**Minimalny istotny efekt** deklaruję przed zebraniem danych: `|β| = 0,10`, czyli 10%
-skrócenia czasu cyklu na jedno odchylenie standardowe indeksu. Przy medianie ok. 60 dni to
-6 dni — poniżej tego progu efekt jest nieodróżnialny od szumu kalendarzowego.
+**Minimalny istotny efekt** deklaruję przed zebraniem danych: `β_MSI = ln(1,10) ≈ 0,095`,
+czyli 10% wydłużenia czasu cyklu na jedno odchylenie standardowe indeksu. Przy medianie
+ok. 60 dni to 6 dni. Próg jest kryterium istotności praktycznej, a nie granicą, poniżej
+której efekt staje się statystycznym „szumem”.
+Nakład pracy ma inne jednostki i wymaga osobnego MSI, ustalonego po pilotażu, ale
+przed estymacją zależności w badaniu właściwym i na podstawie znaczenia
+merytorycznego. Progu dla czasu nie wolno użyć ponownie dla godzin pracy.
 
-**Moc.** Przy α = 0,05, mocy 0,80, `sd(log dni) ≈ 0,55` i `R²` kontroli ≈ 0,30 rachunek
-zamknięty daje ok. 166 zdarzeń, ale korekta na klastrowanie (ICC ≈ 0,15, ok. 60 zdarzeń na
-organizację) podnosi to do rzędu 1 600 zdarzeń. Wniosek jest niewygodny i trzeba go postawić:
-**przy tej strukturze danych moc wiąże liczba organizacji, nie liczba zdarzeń.** Wariant
-przekrojowy wymagałby 25–30 organizacji, co jest nierealne; wariant wewnątrzorganizacyjny
-przy 6 organizacjach i 2 zmianach polityki daje wykrywalny efekt rzędu 12–15%. To jest
-argument za wariantem B jako osią artykułu. Ostateczne `n` wyznaczy symulacja na strukturze
-pilotażu.
+**Moc.** Prosty rachunek dla niezależnych obserwacji nie jest wystarczający dla tego
+projektu: nie uwzględnia korelacji ekspozycji z kontrolami, efektów stałych, nierównych
+klastrów, autokorelacji ani harmonogramu wdrożeń. Nie ma więc podstaw do deklarowania
+166, 1 600 ani „12–15%” jako wykrywalnego efektu. Moc wiąże przede wszystkim liczba
+organizacji i niezależnych terminów zmiany, nie sama liczba zdarzeń. Pilotaż służy do
+oszacowania wariancji i ICC, a ostateczne `n` oraz MDE wyznaczy prerejestrowana symulacja
+Monte Carlo na rzeczywistej strukturze panelu. Przy zaledwie 4–6 organizacjach warstwa
+przyczynowa pozostaje eksploracyjna.
 
 Progi kwotowe mogą wspierać projekt quasi-eksperymentalny tylko po sprawdzeniu,
 czy wartość nie jest manipulowana oraz czy po obu stronach progu zmienia się
@@ -162,9 +194,10 @@ i koniec oraz rozdzielając przygotowanie, postępowanie i wykonanie. Liczba ofe
 powinna odróżniać oferty złożone, ważne i ocenione. Zmiana umowy wymaga
 zakodowania podstawy, zakresu, ceny i terminu; sama flaga aneksu jest zbyt uboga.
 
-Sekwencyjność powinna wynikać z grafu zdarzeń: udziału oczekiwania, długości
-ścieżki krytycznej, liczby przekazań i możliwej równoległości. Nie może być
-etykietą nadaną po poznaniu wyniku. Raport pokazuje kompletność danych według
+Faktyczny przebieg powinien wynikać z grafu zdarzeń: udziału oczekiwania, długości
+ścieżki krytycznej, liczby przekazań i możliwej równoległości. Jest miarą mechanizmu
+lub wynikiem wtórnym, a nie ekspozycją w modelu głównym; nie może być etykietą nadaną
+po poznaniu wyniku. Raport pokazuje kompletność danych według
 roku, zamawiającego i typu zakupu, ponieważ braki mogą korelować z jakością
 procesu.
 
@@ -172,7 +205,7 @@ Testy odporności zmieniają definicje czasu, wyłączają tryby wyjątkowe, sto
 alternatywne miary konkurencji i pokazują wyniki bez monetyzacji. Test placebo na
 progu, który nie zmienia obowiązków, może ujawnić trend mylony z efektem prawa.
 
-## 6. Test modelu 2.1
+## 6. Test modelu 2.2.2
 
 Walidacja nie polega na sprawdzeniu, czy kalkulator przewidział własne założenia.
 Dla każdego zdarzenia najpierw oblicza się niezależnie obserwowane składniki.
@@ -180,9 +213,11 @@ Następnie porównuje się znak, kalibrację i błąd wyniku scenariuszowego z w
 rzeczywistym. Parametry można aktualizować na zbiorze treningowym, ale końcowa
 ocena wymaga odłożonej próby lub późniejszego okresu.
 
-Teza słabnie, jeżeli po uwzględnieniu złożoności sekwencyjność nie zwiększa czasu
-ani pracy, adaptacyjność regularnie osłabia konkurencję lub mechanizmy zmian nie
-poprawiają wykonania. Teza pozostaje sensowna, jeśli efekty są heterogeniczne:
+Teza słabnie, jeżeli po uwzględnieniu złożoności preskryptywność nie ma
+materialnego dodatniego związku z czasem ani pracą, adaptacyjność regularnie
+osłabia konkurencję lub mechanizmy zmian nie poprawiają wykonania. Czas i nakład
+pracy są oceniane osobno, każdy względem własnego prerejestrowanego MSI. Teza
+pozostaje sensowna, jeśli efekty są heterogeniczne:
 adaptacja pomaga w zakupach niepewnych i kosztownych czasowo, a formalność w
 stabilnych sytuacjach o wysokim ryzyku dyskrecji.
 
@@ -216,6 +251,10 @@ Political Contestability and Public Contract Renegotiations. *Journal of Law,
 Economics, and Organization, 39*(1), 281–308.
 https://doi.org/10.1093/jleo/ewab039
 
+Callaway, B., i Sant’Anna, P. H. C. (2021). Difference-in-Differences with
+Multiple Time Periods. *Journal of Econometrics, 225*(2), 200–230.
+https://doi.org/10.1016/j.jeconom.2020.12.001
+
 Cattaneo, M. D., Jansson, M., i Ma, X. (2020). Simple Local Polynomial Density
 Estimators. *Journal of the American Statistical Association, 115*(531),
 1449–1455. https://doi.org/10.1080/01621459.2019.1635480
@@ -227,6 +266,10 @@ https://doi.org/10.1016/j.jpubeco.2013.10.008
 Szucs, F. (2024). Discretion and Favoritism in Public Procurement. *Journal of
 the European Economic Association, 22*(1), 117–160.
 https://doi.org/10.1093/jeea/jvad017
+
+Sun, L., i Abraham, S. (2021). Estimating Dynamic Treatment Effects in Event
+Studies with Heterogeneous Treatment Effects. *Journal of Econometrics, 225*(2),
+175–199. https://doi.org/10.1016/j.jeconom.2020.09.006
 
 Ustawa z dnia 11 września 2019 r. – Prawo zamówień publicznych, z późn. zm.
 

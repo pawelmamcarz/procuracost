@@ -41,7 +41,8 @@ The low-delta case deliberately maximizes the governance value of formality; the
 ### The second axis: structural uncertainty (new in 2.2.1)
 
 The table above is the **evidence axis**. On its own it brackets the five literature-facing
-scalars and holds fixed the two inputs that carry 80–99% of ΔC — so the model reported its
+scalars and holds fixed the two inputs behind a delay bucket that carries 68.3–99.6% of
+|ΔC| in the fixed reference scenarios where path durations differ — so the model reported its
 narrowest uncertainty precisely where it is least defensible.
 
 The **structural axis** perturbs those two:
@@ -59,11 +60,11 @@ comes from (`widthDrivenBy`). Widening it changes the headline conclusion:
 
 | | evidence axis only | both axes (2.2.2 calibration) |
 |---|---:|---:|
-| built-in scenarios crossing zero | 5 of 10 | **10 of 10** |
+| fixed reference scenarios crossing zero | 5 of 10 | **10 of 10** |
 | sweep: robustly favours formal | — | 1,042 / 12,960 |
 | sweep: robustly favours adaptive | — | 5,374 / 12,960 |
 
-Under the audited calibration no built-in scenario identifies a robust winner. That is
+Under the audited calibration no fixed reference scenario identifies a robust winner. That is
 the correct result, not a regression: the earlier narrow envelope was an artefact of the
 choice of what to vary. The multipliers themselves are declared judgements about how wrong
 an unmeasured input can be, not estimated intervals.
@@ -128,8 +129,9 @@ genuinely weakens competition, and that is the trade the type exists to represen
 
 With it in the grid the sweep can fail in both directions for the first time: on the
 evidence axis alone it returns 1,221 robustly formal results out of 12,960 where 2.1
-returned none, and under the two-axis envelope introduced in 2.2.1 it returns 1,045. The
-two-sidedness the model claims is demonstrated rather than asserted.
+returned none. The first 2.2.1 two-axis calibration returned 1,045; the audited 2.2.2
+calibration returns 1,042. The two-sidedness the model claims is demonstrated rather
+than asserted.
 
 `discovery` is nonetheless a modelling assumption like every other template, not an
 observation, and calibration should treat the day tables as a primary object of measurement.
@@ -145,15 +147,18 @@ selected technology multiplier applies to non-mandatory steps in both paths;
 mandatory PZP waits are unchanged. No additional hidden context compression is
 applied.
 
-| Technology | Time multiplier | Non-labor overhead/day | Tool cost/process | Bypass-rate multiplier |
-|---|---:|---:|---:|---:|
-| Manual | 1.40 | 500 PLN | 0 PLN | 1.50 |
-| Sourcing tool | 1.15 | 200 PLN | 800 PLN | 0.80 |
-| Partial ERP | 1.00 | 100 PLN | 1,200 PLN | 0.55 |
-| End-to-end | 0.70 | 20 PLN | 2,000 PLN | 0.10 |
+| Technology | Time multiplier | Non-labor overhead/day | Tool cost/strategic process | Tool cost/operational order | Bypass-rate multiplier |
+|---|---:|---:|---:|---:|---:|
+| Manual | 1.40 | 500 PLN | 0 PLN | 0 PLN | 1.50 |
+| Sourcing tool | 1.15 | 200 PLN | 800 PLN | 30 PLN | 0.90 |
+| Partial ERP | 1.00 | 100 PLN | 1,200 PLN | 50 PLN | 0.70 |
+| End-to-end | 0.70 | 20 PLN | 2,000 PLN | 60 PLN | 0.50 |
 
 These are calibration assumptions. Both compared paths use the same selected
-technology and therefore the same per-process tool cost.
+technology and therefore the same applicable tool cost. Model 2.2.2 separates
+strategic processes from catalog/MRP orders; charging a strategic-event license
+allocation to every operational order overstated the absolute cost by roughly
+30–100×. The bypass ladder was narrowed from an unsupported 15× spread to 3×.
 
 The broad context factors are deliberately simple: upstream multiplies role
 hours and non-labor coordination by 1.15; downstream multiplies them by 0.90
@@ -183,7 +188,7 @@ Both lifecycle channels now use the same annuity machinery:
 - amendments: `λ_j × cost_per_amendment × af(r, contract duration)`
 - TCO: `(pool / 3) × af(r, min(horizon, 3)) × (1 − capture_j)`
 
-where `af(n, r) = n` at `r = 0` and `(1 − (1+r)^−n) / r` otherwise. **A zero rate reproduces
+where `af(r, n) = n` at `r = 0` and `(1 − (1+r)^−n) / r` otherwise. **A zero rate reproduces
 the 2.1 arithmetic exactly**, which is how the change is verified in `tests/`.
 
 The default rate is **4% real** — the real *financial* discount rate prescribed by the
@@ -204,12 +209,13 @@ and very different evidential standing:
 | **Delay** | (formal days − adaptive days) × daily cost of inaction | per procurement event | **accounting identity** between a template and a user input |
 | **Lifecycle** | expected formal amendments, foregone lifecycle value | over the contract life | modeled, weakly anchored |
 
-This matters because in the built-in scenarios the delay bucket carries **68.3–99.6%** of |ΔC|
-wherever the two paths differ in duration (2.2.2 audited calibration; under the pre-audit
+This matters because in the ten fixed reference scenarios (excluding the editable `custom`
+seed) the delay bucket carries **68.3–99.6%** of |ΔC| wherever the two paths differ in
+duration (2.2.2 audited calibration; under the pre-audit
 inputs it was 80.5–99.6%). Reporting only the sum let an identity between the
 model's own step templates and a number the user supplies read as a modeled finding.
 
-Excluding that identity, the formal path is **cheaper on process cost in 7 of 10** built-in
+Excluding that identity, the formal path is **cheaper on process cost in 7 of 10** fixed reference
 scenarios. The Tunnel–Field advantage in this parameterisation is a delay story, not a
 process-cost story — and saying so is a stronger and more checkable claim than the headline
 percentages model 2.1 reported.
@@ -222,7 +228,9 @@ informative positive number — while the supervisor pack and article 2 describe
 feature. The clamp is removed; the raw solution is reported with a status that says how to read
 it:
 
-- `threshold_above_zero` — the delay bucket decides; adaptive wins above the reported threshold.
+- `threshold_above_zero` — the delay bucket decides. If the adaptive path is
+  faster, it wins above the threshold; if the formal path is faster, the
+  direction is reversed.
 - `formal_costlier_at_zero_delay` — the formal path already costs more with the delay bucket
   removed entirely. The threshold is negative and not actionable.
 - `adaptive_costlier_at_zero_delay` — mirror case.
@@ -231,11 +239,11 @@ it:
 ## Dimension formulas
 
 - **Staff time:** step participation hours × broad context factors × technology multiplier × daily rate / 8. Participation hours are a **whole-role total, not per person**: model 2.1 multiplied them by role headcount, so declaring three buyers made the identical workflow cost three times as much in buyer time. Headcount is now descriptive input only. Adaptive effort for a retained non-mandatory step is scaled by its adaptive/formal template-duration ratio, and the technology multiplier scales non-mandatory effort the same way it scales non-mandatory duration — 2.1 applied it to elapsed days only, which was inconsistent with both the adaptive-duration scaling and H5. Statutory waits are exempt from both.
-- **Administrative overhead:** illustrative non-labor overhead per **active** day plus the same selected tool cost for both paths. It excludes stakeholder hours already counted above. Model 2.1 charged it over every elapsed day, so a `pzp_eu` process accrued per-day "meeting and alignment effort" across all 45 days of statutory publication and standstill — periods in which no role has any participation hours by construction.
+- **Administrative overhead:** illustrative non-labor overhead per **active** day plus the same applicable tool cost for both paths (strategic process or operational order). It excludes stakeholder hours already counted above. Model 2.1 charged it over every elapsed day, so a `pzp_eu` process accrued per-day "meeting and alignment effort" across all 45 days of statutory publication and standstill — periods in which no role has any participation hours by construction.
 - **Delay:** path days × user-supplied daily cost of inaction.
-- **Selection/favoritism:** contract value × price-premium scenario × (1 − competition effectiveness) × context weight. Contractor productivity is not separately monetized.
-- **Formal amendments:** user-supplied cost per amendment × contract duration × incremental annual frequency from the path's **contract-rigidity** profile. The French sample mean is not treated as a universal baseline.
-- **TCO:** contract value × cumulative savings-pool scenario × `min(horizon years / 3, 1)` × (1 − capture rate). The pool is a declared three-year cumulative stress test, not an annual law; it is zero centrally and capped at 15% in the high scenario.
+- **Selection/favoritism:** contract value × price-premium scenario × (1 − competition effectiveness) × process-type corruption-risk assumption. This is distinct from the spend/phase context factors, which reach only staff and coordination. Contractor productivity is not separately monetized.
+- **Formal amendments:** user-supplied cost per amendment × incremental annual frequency from the path's **contract-rigidity** profile × `AF(discount rate, contract duration)`. The French sample mean is not treated as a universal baseline.
+- **TCO:** `(contract value × cumulative savings-pool scenario / 3)` × `AF(discount rate, min(horizon years, 3))` × `(1 − capture rate)`. The pool is a declared three-year cumulative stress test, not an annual law; it is zero centrally and capped at 15% in the high scenario.
 - **Bypass:** user-supplied audit exposure × bypass-rate scenario × technology-control multiplier. The former invented sigmoid and 86% prediction are removed.
 
 The shared baseline purchase price is excluded from both totals. The reported break-even daily inaction cost solves the central equation after separating the delay and non-delay deltas.

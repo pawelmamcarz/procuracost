@@ -1,6 +1,6 @@
 # Tunnel or Field: Separating Governance Boundaries from Procurement Workflow
 
-**Doctoral-cycle article 1 · conceptual paper · ProcuraCost 2.1 · draft**
+**Doctoral-cycle article 1 · conceptual paper · ProcuraCost 2.2.2 · draft**
 
 ## Abstract
 
@@ -29,8 +29,10 @@ Earlier versions of the Tunnel–Field thesis treated these properties as one
 latent continuum. That move made the story simple and the inference invalid.
 Evidence about discretion was presented as evidence about workflow; evidence
 about contractual clauses was mapped onto process gates; theory about informal
-workarounds was converted into a numerical bypass probability. Version 2.1
-removes those mappings.
+workarounds was converted into a numerical bypass probability. ProcuraCost has
+kept these constructs separate since version 2.1; version 2.2.2 additionally
+widens uncertainty around the user-supplied cost of delay and the model's own
+step-duration assumptions.
 
 The relevant question is narrower:
 
@@ -86,10 +88,14 @@ of competition.
 Incomplete contracts create adaptation costs when relevant contingencies cannot
 be specified ex ante (Bajari, Houghton, and Tadelis 2014). Beuve, Moszoro, and
 Spiller (2023) distinguish contractual flexibility from tolerance for deviation.
-Their 2SLS/IV estimates associate a one-standard-deviation increase in rigidity
-categories with 0.077–0.105 additional formal amendments per contract-year in
-French car-park contracts. Their empirical object is contractual rigidity and an
-annual amendment frequency—not an event probability or the number of sourcing approvals.
+Their 2SLS/IV estimates associate a simultaneous one-standard-deviation increase
+in **each of seven z-scored rigidity categories** with 0.077–0.105 additional
+formal amendments per contract-year in French car-park contracts. Their
+empirical object is contractual rigidity and an annual amendment frequency—not
+an event probability or the number of sourcing approvals. ProcuraCost's 0–1
+contract-rigidity profile has no empirical conversion to that seven-category
+z-score shift, so the coefficient is only an order-of-magnitude anchor for a
+calibration assumption, not a transferred estimate.
 
 This distinction matters. Workflow can be redesigned without changing the
 contract, and contractual adaptation can be improved without eliminating formal
@@ -107,20 +113,24 @@ data or be labelled as a scenario assumption.
 The same caution applies to technology. A system can enforce approval limits,
 retain evidence, and prevent unauthorized commitments, but ownership of a tool
 does not prove that controls are configured or used. Technology is a moderator
-to be observed, not an automatic benefit assigned to the field.
+to be observed, not an automatic benefit assigned to the field. The shipped
+calculator has no utilization or control-enforcement input, so it cannot test
+this proposition; organizational logs are required.
 
 ## 6. Propositions
 
-- **P1:** More sequential workflows increase elapsed time and coordination cost
-  when dependencies and waiting are real, conditional on purchase complexity.
+- **P1:** Greater *ex ante* workflow prescriptiveness increases elapsed time and
+  coordination effort, conditional on purchase complexity.
 - **P2:** Effective competition reduces discretion-related selection loss,
   independently of workflow topology.
 - **P3:** Contractual rigidity raises formal adaptation and renegotiation
   exposure; workflow formality alone need not do so.
-- **P4:** Adaptive execution can reduce delay and lifecycle loss, but weak
-  competition or control can reverse the net result.
-- **P5:** Technical controls affect outcomes only through observed use and
-  enforcement.
+- **P4:** Adaptive execution can shorten or lengthen the calendar; it creates net
+  value only when its time and lifecycle effects outweigh selection and control
+  losses.
+- **P5:** Technology-enabled controls reduce execution error or bypass only
+  through observed configuration, use, and enforcement; ownership alone is not
+  operational exposure.
 
 These propositions permit either path to dominate. They also permit a null
 result: many routine purchases may show no material workflow difference.
@@ -133,18 +143,21 @@ P1–P5 are operationalisations of the canonical H1–H5 in
 The cycle combines a governance argument, a cost model and an empirical design, and each
 article must carry its own contribution rather than borrowing the cycle's. This one
 contributes **a decomposition of "procedural rigidity" into five separately measurable
-constructs, and a demonstration that the procurement literature's principal empirical
-anchors do not license claims about the construct they are routinely used to support.**
+constructs, and a demonstration that the two empirical anchors used by earlier versions
+of this project do not license claims about workflow formality.**
 
-Evidence about *bidder-selection discretion* (Szucs) and about *contractual clause rigidity*
-(Beuve et al.) has been read as evidence about *workflow formality*. It is not. Neither study
-observes workflow topology; neither varies it; neither reports it. This article states the
+Earlier ProcuraCost versions read evidence about *bidder-selection discretion* (Szucs) and
+about *contractual clause rigidity* (Beuve et al.) as evidence about *workflow formality*.
+It is not. Neither study observes workflow topology; neither varies it; neither reports it.
+This article states the
 non-equivalence, shows what each construct would require to be measured, and derives
 propositions that are falsifiable separately — which is the precondition for the cost model
 of article 2 and the protocol of article 3 to mean anything.
 
-The contribution is therefore conceptual and negative-clearing: it removes a class of
-inference the field makes casually. It does not claim an effect, and it is not validated.
+The contribution is therefore conceptual and negative-clearing: it removes an invalid
+inference from this project. The present draft does not establish that the wider procurement
+literature routinely makes the same error; that broader novelty claim would require a
+systematic review. It does not claim an effect, and it is not validated.
 
 For managers, the framework recommends component diagnosis rather than wholesale
 process ideology. Remove a gate only after identifying the risk it controls.
@@ -153,12 +166,15 @@ change mechanisms where uncertainty is genuine. Measure timestamps, effort,
 bids, amendments, and audit outcomes before monetizing them.
 
 The framework has not been causally validated as an integrated model. Its TCO
-stress test (zero centrally) and bypass ranges are scenarios. Mandatory PZP
-publication and standstill periods cannot be compressed by an adaptive workflow.
-Estimates from Hungary, France, and
-Italy do not automatically transport to Poland or to private procurement. The
-Tunnel–Field thesis therefore survives only in conditional form: prescribed
-sequence can destroy value, but formality can also protect value.
+stress test (zero centrally), bypass ranges, path profiles, step durations and
+structural uncertainty multipliers are assumptions. Mandatory PZP publication
+and standstill periods cannot be compressed by an adaptive workflow. Estimates
+from Hungary, France, and Italy do not automatically transport to Poland or to
+private procurement. Under the audited 2.2.2 calibration, every fixed reference
+scenario crosses zero once both evidence and structural uncertainty are varied;
+the model therefore identifies no robust winner in those scenarios. The
+Tunnel–Field thesis survives only in conditional form: prescribed sequence can
+destroy value, but formality can also protect value.
 
 ## References
 

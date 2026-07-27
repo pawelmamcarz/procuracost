@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { comparisonT } from "@/lib/i18n";
+import { MODEL_VERSION } from "@/lib/version";
 
 export const metadata = {
-  title: "Metodologia modelu 2.1 | ProcuraCost",
+  title: `Metodologia modelu ${MODEL_VERSION} | ProcuraCost`,
   description: "Neutralny model porównawczy z jawnym zakresem niepewności.",
 };
 
@@ -9,7 +11,9 @@ export default function MethodologyPage() {
   return (
     <div className="mx-auto max-w-3xl space-y-8 px-6 py-10">
       <header>
-        <p className="text-xs font-semibold uppercase tracking-wide text-blue-600">Model 2.1</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-blue-600">
+          Model {MODEL_VERSION}
+        </p>
         <h1 className="mt-1 text-2xl font-bold text-gray-900">Metodologia bez zaszytego zwycięzcy</h1>
         <p className="mt-2 text-sm text-gray-600">
           Porównujemy ścieżkę formalną/sekwencyjną z adaptacyjną/zgodną. Obie zachowują te same
@@ -43,8 +47,7 @@ export default function MethodologyPage() {
         <p className="mt-2 text-sm text-amber-800">
           Wynik centralny ma przedział niskiego i wysokiego ΔC. To stres-test założeń, nie przedział
           ufności. Przecięcie zera oznacza, że model nie wskazuje odpornego zwycięzcy.
-          Próg równowagi pokazuje dzienny koszt bezczynności, od którego centralny wynik
-          zaczyna sprzyjać szybszej ścieżce adaptacyjnej.
+          {" "}{comparisonT.pl.breakEvenGeneral}
         </p>
       </section>
 

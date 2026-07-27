@@ -109,7 +109,8 @@ console.log(
   "   `discovery` type — requirement emerging in flight, adaptive execution genuinely slower\n" +
   "   — lets the test fail in both directions.\n" +
   "2. Through 2.2.0 the envelope varied only the evidence axis, holding fixed the two inputs\n" +
-  "   that carry 80-99% of the result. Adding the structural axis widens it several-fold and\n" +
+  "   behind a delay bucket carrying 68.3-99.6% of |delta| in the fixed reference cases. Adding the\n" +
+  "   structural axis widens it several-fold and\n" +
   "   collapses both robustness counts, because most configurations genuinely do not identify\n" +
   "   a winner once the dominant inputs are allowed to move.\n" +
   "\n" +

@@ -92,7 +92,9 @@ export default function HeroSummary({ result, scenario, inputs, lang }: Props) {
             <strong>
               {formatPLN(decisionThreshold.breakEvenDailyCostOfInaction ?? 0)}/
               {lang === "en" ? "day" : "dzień"}
-            </strong>. {tx.breakEvenAboveZero}
+            </strong>. {decisionThreshold.effectiveDayDifference > 0
+              ? tx.breakEvenAboveZero
+              : tx.breakEvenAboveZeroFormalFaster}
           </>
         ) : decisionThreshold.status === "formal_costlier_at_zero_delay" ? (
           tx.breakEvenFormalLoses

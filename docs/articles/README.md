@@ -1,6 +1,6 @@
 # Article Status
 
-## Current model 2.1 material
+## Current model 2.2.2 material
 
 The binding foundation is
 [`doktorat/00-shared-foundation.md`](doktorat/00-shared-foundation.md). The current
@@ -22,5 +22,9 @@ Any new article draft must:
 2. keep workflow, competition and contract rigidity separate;
 3. report low/central/high scenario results and allow sign reversal;
 4. cite Szucs and Beuve only for their matching constructs and populations;
-5. label TCO and bypass magnitudes as assumptions.
-6. treat Beuve's result as an annual formal-amendment frequency and preserve mandatory PZP waits.
+5. label TCO, bypass and path-profile magnitudes as assumptions;
+6. treat Beuve's result as an annual formal-amendment-frequency anchor with an
+   unresolved unit conversion, not as an event probability or a transferred estimate;
+7. preserve mandatory PZP waits; and
+8. separate the evidence and structural uncertainty axes, including the user's
+   cost of inaction and the model's unvalidated step-duration templates.

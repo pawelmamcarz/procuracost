@@ -1,14 +1,14 @@
 # Procedural Rigidity and Adaptive Procurement: A Transparent Decision Model
 
 **Working paper — draft for review**
-**Model:** ProcuraCost 2.2.1
-**Updated:** 14 July 2026
+**Model:** ProcuraCost 2.2.2
+**Updated:** 27 July 2026
 
 ## Abstract
 
 Procurement policy, procurement procedure, competition, and contract design are related but distinct. Earlier versions of ProcuraCost collapsed them into one rigidity index and therefore overstated what the cited literature could support. This paper presents a corrected seven-dimension decision model comparing a formal/sequential path with an adaptive/compliant path for the same purchase. Both paths must satisfy the same legal and governance boundary; in public procurement, flexibility means lawful design within PZP rather than a `policy-only` exemption.
 
-The model monetizes staff effort, administrative overhead, delay, supplier-selection risk, incremental formal-amendment cost, foregone lifecycle value, and bypass exposure. Empirical estimates are used only for the construct and population they actually measure. Weakly identified quantities—especially TCO capture and bypass rates—enter as broad scenarios rather than precise predictions. Results are reported as a central estimate plus a scenario interval that may cross zero. The Tunnel–Field proposition therefore survives as a conditional hypothesis: adaptive procurement is advantageous when avoidable workflow delay and adaptation costs exceed the governance value of formal competition and control. It is not a universal result.
+The model monetizes staff effort, administrative overhead, delay, supplier-selection risk, incremental formal-amendment cost, foregone lifecycle value, and bypass exposure. Empirical estimates are used only for the construct and population they actually measure. Weakly identified quantities—especially TCO capture and bypass rates—enter as broad scenarios rather than precise predictions. Results are reported as a central estimate plus a stress envelope over both evidence-facing parameters and the structural inputs that carry most of the result. The Tunnel–Field proposition therefore survives as a conditional hypothesis: adaptive procurement is advantageous when avoidable workflow delay and adaptation costs exceed the governance value of formal competition and control. It is not a universal result.
 
 ## 1. Research question and claim boundary
 
@@ -68,7 +68,8 @@ Lipsky (1980), Vaughan (1996), and Holmström and Milgrom (1991) motivate possib
 For path \(j \in \{F,A\}\), where F is formal/sequential and A is adaptive/compliant:
 
 \[
-C_j = C_{staff,j}+C_{admin,j}+d_jc_d+B\pi_j+H\lambda_jc_{amend}+B\tau_j+p_jE_j
+C_j = C_{staff,j}+C_{admin,j}+d_jc_d+B\pi_j
++\lambda_jc_{amend}AF(r,H)+\frac{Bs_{TCO}}{3}AF(r,\min(H_{TCO},3))(1-q_j)+p_jE_j
 \]
 
 and
@@ -78,14 +79,18 @@ and
 \]
 
 A positive value favors the adaptive path; a negative value favors the formal path.
+Here \(AF(r,n)\) is the annuity factor, \(\lambda_j\) is the incremental annual
+formal-amendment frequency, \(s_{TCO}\) is the declared three-year lifecycle
+pool, and \(q_j\) is the share captured by path \(j\). Both lifecycle channels
+are discounted to present value at award.
 
 **ΔC is reported decomposed, not as a single number.** The seven terms have three different time bases and three very different standards of evidence, and summing them concealed which one was doing the work:
 
 \[
-\Delta C = \underbrace{\Delta C_{proces}}_{\text{staff, admin, selection, bypass}} + \underbrace{(d_F-d_A)\,c_d}_{\text{delay}} + \underbrace{\Delta C_{lifecycle}}_{\text{amendments, TCO}}
+\Delta C = \underbrace{\Delta C_{process}}_{\text{staff, admin, selection, bypass}} + \underbrace{(d_F-d_A)\,c_d}_{\text{delay}} + \underbrace{\Delta C_{lifecycle}}_{\text{amendments, TCO}}
 \]
 
-The middle term is an **accounting identity** between a day count taken from the model's own step templates and a price per day supplied by the user. It is not a modeled or measured effect, and it must not be read as one. In the seven built-in scenarios where the two paths differ in duration it carries **68.3–99.6%** of |ΔC| after the 2.2.2 calibration audit (up to 96–99.6% in the stoppage-framed scenarios). Model 2.1 reported only the sum, so headline figures such as "Δ = 73.9% of the adaptive total" described the size of a user's assumption about delay, not the cost of a procedure.
+The middle term is an **accounting identity** between a day count taken from the model's own step templates and a price per day supplied by the user. It is not a modeled or measured effect, and it must not be read as one. In the seven fixed reference scenarios where the two paths differ in duration (excluding the editable `custom` seed) it carries **68.3–99.6%** of |ΔC| after the 2.2.2 calibration audit (up to 96–99.6% in the stoppage-framed scenarios). Model 2.1 reported only the sum, so headline figures such as "Δ = 73.9% of the adaptive total" described the size of a user's assumption about delay, not the cost of a procedure.
 
 Excluding that identity, the formal path is **cheaper on process cost in seven of the ten** built-in scenarios. That is the more informative and more falsifiable statement, and it reverses the direction a reader would infer from the 2.1 headline.
 
@@ -93,8 +98,8 @@ Excluding that identity, the formal path is **cheaper on process cost in seven o
 - **Admin:** non-labor administrative overhead over *active* days, plus equal tool cost when both paths use the same technology; it excludes role hours already counted under staff. A statutory wait consumes calendar time without consuming coordination effort.
 - **Delay:** elapsed days times a user-supplied daily cost of inaction.
 - **Selection:** contract value times the discretion price scenario and residual competition risk.
-- **Amendments:** annual formal-amendment frequency \(\lambda_j\) times contract duration \(H\) and a user-supplied cost per amendment.
-- **TCO:** a declared three-year cumulative savings-pool scenario, scaled by `min(horizon years / 3, 1)`, times the share each path fails to capture; the central scenario is zero because no transferable estimate was identified.
+- **Amendments:** annual formal-amendment frequency \(\lambda_j\) times a user-supplied cost per amendment and the annuity factor over contract duration.
+- **TCO:** a declared three-year cumulative savings-pool scenario, converted to an annual flow and discounted over the shorter of the user horizon and three years, times the share each path fails to capture; the central scenario is zero because no transferable estimate was identified.
 - **Bypass:** user-supplied exposure times a scenario rate, scaled by system controls.
 
 The shared baseline acquisition price is not added to either side: only modeled incremental selection loss enters the comparison. The central break-even daily inaction cost is \(-\Delta C_{non-delay}/(d_F-d_A)\) when the two paths differ in duration. It is reported **unclamped**, together with a status that says how to read it: a threshold above zero means the delay bucket decides, while a negative threshold means the formal path already costs more with the delay bucket removed entirely. Model 2.1 clamped the value at zero, which made those two cases indistinguishable and produced a figure that was 0 or undefined in every published scenario.
@@ -105,11 +110,11 @@ The low-delta scenario strengthens the governance case for formality: high discr
 
 The model is designed to permit either path to win, and the parameters have not been tuned to protect the thesis. But **the architecture is not symmetric**, and a reader is entitled to know that before interpreting a sign:
 
-- Six of the seven channels are weakly ordered toward the adaptive path by construction. The adaptive path has fewer or equal days in every step template, which mechanically reduces staff effort, coordination overhead and delay; and every entry in the path-profile table gives it lower contract rigidity and higher lifecycle capture.
-- Exactly one channel can favour formality — selection — and it is bounded by contract value × the discretion premium × the residual competition gap. For `pzp_eu` that ceiling is about **0.3% of contract value**, while the delay channel is unbounded in the daily cost the user supplies.
+- In seven standard process profiles, the adaptive path has no more modeled days and the profile table assigns it lower contract rigidity and higher lifecycle capture. These are calibration choices, not findings. The `discovery` profile is the explicit counterexample: adaptive learning is slower and more effortful while the formal path freezes the requirement early.
+- Selection can favour formality and is bounded by contract value × the discretion premium × the residual competition gap. For `pzp_eu` that ceiling is about **0.3% of contract value**; the delay channel, by contrast, scales without a model-imposed ceiling in the daily cost supplied by the user.
 - In the central case, two of the seven dimensions are identically zero: the TCO pool is zero and both bypass rates are 0.05, so the bypass difference vanishes. Five dimensions are active centrally, not seven.
 
-The consequence is that a sign reversal in this model is driven almost entirely by the delay input and by the size of the selection channel. It is reachable — the control scenario `governance_control` returns a negative ΔC, four of ten scenarios cross zero, and the process bucket alone favours formality in seven of ten — but it is not reachable *symmetrically*.
+The sign is therefore driven mainly by the modeled day difference, the user-supplied cost of a day, and the selection channel. Under the 2.2.2 combined envelope all ten fixed reference scenarios cross zero, while the process bucket alone favours formality in seven of ten. The model does not identify a robust winner in its reference scenarios.
 
 **Through model 2.1 the published sensitivity sweep could not detect this, and that limitation was undocumented.** Across 11,340 configurations the central result favoured the formal path in 1,482 of them, but *no* configuration favoured it robustly — that is, the pro-adaptive extreme of the envelope never favoured formality. The cause was the templates rather than the evidence: every step of every template had `flexibleDays ≤ rigidDays`, so both the low and the high case were asked from a pro-adaptive process baseline. `EVIDENCE_CASES` perturbs five scalars — the discretion premium, the rigidity slope, the TCO pool and the two bypass rates — and leaves the step-day templates and the daily cost of inaction untouched. "Robustly favours adaptive" and "robustly favours formal" were therefore not equally hard questions, and reporting them side by side implied that they were.
 
@@ -122,7 +127,7 @@ Model 2.2.1 widens the reported envelope to cover a second axis, because the fir
 - **Evidence axis** — the five literature-facing scalars: the discretion premium, the rigidity slope, the TCO pool and the two bypass rates.
 - **Structural axis** — the daily cost of inaction (×0.25 to ×4) and non-mandatory step durations (×0.7 to ×1.3). Statutory PZP waits are invariant under both.
 
-The structural axis is not a pessimism exercise. The cost of a day is the least reliable number a user supplies and the model has no way to check it, while the step-day tables are the model's own untested assumptions — and together they carry 80–99% of ΔC. Bracketing the small quantities while freezing the large ones understated uncertainty exactly where the model is least defensible.
+The structural axis is not a pessimism exercise. The cost of a day is the least reliable number a user supplies and the model has no way to check it, while the step-day tables are the model's own untested assumptions. In the fixed reference scenarios where path durations differ, the delay bucket carries 68.3–99.6% of |ΔC| after the 2.2.2 audit. Bracketing the small quantities while freezing the large ones understated uncertainty exactly where the model is least defensible.
 
 The effect is large and it goes against the thesis:
 

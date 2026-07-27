@@ -144,8 +144,8 @@ export interface CalculationTrace {
 }
 
 // How to read `breakEvenDailyCostOfInaction`.
-// - threshold_above_zero: the delay bucket decides. Adaptive wins only once the daily
-//   cost of inaction exceeds the reported threshold.
+// - threshold_above_zero: the delay bucket decides. Above the threshold, the faster
+//   path wins; that is adaptive for the standard templates and formal for `discovery`.
 // - formal_costlier_at_zero_delay: the formal path is already more expensive with the
 //   delay bucket removed entirely. The threshold is negative and not actionable.
 // - adaptive_costlier_at_zero_delay: mirror case.
@@ -420,8 +420,9 @@ type PointComparisonResult = Omit<ComparisonResult, "uncertainty" | "decisionThr
  * The second sensitivity axis, added in 2.2.1.
  *
  * `EVIDENCE_CASES` brackets the five literature-facing scalars. It does NOT touch the two
- * inputs that actually carry the result: the daily cost of inaction (a user estimate that
- * drives 80–99% of ΔC wherever the paths differ in duration) and the non-mandatory step
+ * inputs that actually carry the result: the daily cost of inaction (a user estimate behind
+ * 68.3–99.6% of |ΔC| in the fixed reference cases where paths differ in duration after the 2.2.2 audit)
+ * and the non-mandatory step
  * durations (the model's own templates). Reporting an envelope that varies the small
  * quantities and holds the large ones fixed understated uncertainty precisely where the
  * model is least defensible.

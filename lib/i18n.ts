@@ -184,6 +184,10 @@ const comparisonPl = {
   breakEvenLabel: "Próg kosztu dnia bezczynności",
   breakEvenAboveZero:
     "Powyżej tego dziennego kosztu bezczynności niższy modelowany koszt ma ścieżka adaptacyjna.",
+  breakEvenAboveZeroFormalFaster:
+    "Powyżej tego dziennego kosztu bezczynności niższy modelowany koszt ma ścieżka formalna, ponieważ w tym profilu jest szybsza.",
+  breakEvenGeneral:
+    "Próg równowagi pokazuje dzienny koszt bezczynności, przy którym zmienia się wynik centralny. Powyżej progu niższy modelowany koszt ma ścieżka szybsza w wybranym profilu — nie zawsze adaptacyjna.",
   breakEvenFormalLoses:
     "ścieżka formalna kosztuje więcej już przy zerowym koszcie zwłoki — kanał opóźnienia nie jest potrzebny do tego wyniku.",
   breakEvenAdaptiveLoses:
@@ -286,6 +290,10 @@ const comparisonEn = {
   breakEvenLabel: "Break-even daily cost of inaction",
   breakEvenAboveZero:
     "Above this daily inaction cost, the adaptive path has the lower modeled total.",
+  breakEvenAboveZeroFormalFaster:
+    "Above this daily inaction cost, the formal path has the lower modeled total because it is faster in this profile.",
+  breakEvenGeneral:
+    "The break-even threshold is the daily inaction cost at which the central result changes sign. Above it, the faster path in the selected profile has the lower modeled total — and that path is not always adaptive.",
   breakEvenFormalLoses:
     "the formal path already costs more at zero delay cost — the delay channel is not needed for this result.",
   breakEvenAdaptiveLoses:

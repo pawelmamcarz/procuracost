@@ -1,4 +1,4 @@
-# Ile kosztuje projekt procesu? Siedmiowymiarowy model decyzyjny ProcuraCost 2.2
+# Ile kosztuje projekt procesu? Siedmiowymiarowy model decyzyjny ProcuraCost 2.2.2
 
 **Artykuł 2 cyklu doktorskiego · ekonomia i finanse · szkic metodologiczny**
 
@@ -18,10 +18,18 @@ Niech `F` oznacza ścieżkę formalną/sekwencyjną, a `A` ścieżkę
 adaptacyjną/zgodną. Obie dotyczą tego samego zakupu, rynku, progu prawnego i
 obowiązków konkurencyjnych. Dla ścieżki `j`:
 
-`C_j = C_staff,j + C_admin,j + d_j × c_d + B × π_j + H × λ_j × c_aneks + B × τ_j + p_j × E_j`
+\[
+C_j = C_{staff,j}+C_{admin,j}+d_jc_d+B\pi_j
++\lambda_jc_{aneks}AF(r,H)+\frac{Bs_{TCO}}{3}AF(r,\min(H_{TCO},3))(1-q_j)+p_jE_j
+\]
 
 oraz `ΔC = C_F − C_A`. Dodatnie `ΔC` sprzyja `A`, ujemne `F`. Jest to rachunek
 warunkowy: mówi, co wynika z danych i założeń, a nie co spowodowałaby reforma.
+`AF(r,n)` jest czynnikiem annuitetowym, `λ_j` przyrostową roczną częstością
+formalnych aneksów, `s_TCO` trzyletnią pulą scenariuszową, `H_TCO` horyzontem
+podanym przez użytkownika, a `q_j` udziałem puli wychwyconym przez ścieżkę. Zapis
+pokazuje dyskontowanie obu strumieni cyklu życia; wcześniejszy skrót `H × λ_j`
+był niespójny z implementacją 2.2.
 
 ## 2. Wymiary
 
@@ -45,8 +53,10 @@ procent.
 
 Ten wymiar wymaga osobnego ostrzeżenia, bo jest największy. Jego różnica między ścieżkami
 to iloczyn liczby dni z własnego szablonu modelu i ceny dnia podanej z zewnątrz — czyli
-**tożsamość rachunkowa, a nie wynik modelowania**. W scenariuszach wbudowanych niesie
-68,3–99,6% całej ΔC wszędzie tam, gdzie ścieżki różnią się czasem trwania (po audycie kalibracji 2.2.2; przed audytem 80,5–99,6%). Dlatego model 2.2
+**tożsamość rachunkowa, a nie wynik modelowania**. W dziesięciu stałych scenariuszach
+referencyjnych (bez edytowalnego ziarna `custom`) niesie 68,3–99,6% całej `|ΔC|` wszędzie
+tam, gdzie ścieżki różnią się czasem trwania (po audycie kalibracji 2.2.2; przed audytem
+80,5–99,6%). Dlatego model 2.2
 raportuje ΔC rozbite na trzy kubełki (proces, opóźnienie, cykl życia) zamiast jednej sumy:
 jedna liczba pozwalała czytać założenie użytkownika jako ustalenie badawcze.
 
@@ -120,10 +130,12 @@ trafności, ale ogranicza arbitralność oraz ułatwia wykrycie podwójnego licz
 Model dopuszcza obie ścieżki, ale nie jest wobec nich symetryczny i artykuł musi to
 powiedzieć przed recenzentem. W większości typów procesu kanały są z konstrukcji
 uporządkowane na korzyść ścieżki adaptacyjnej: ma ona nie więcej dni, a w tabeli profili
-niższą sztywność kontraktu i wyższe wychwycenie TCO. Jedyny kanał mogący sprzyjać
-formalności — selekcja — jest ograniczony iloczynem premii dyskrecji i różnicy skuteczności
-konkurencji, co dla `pzp_eu` daje pułap rzędu 0,3% wartości kontraktu, podczas gdy kanał
-opóźnienia jest nieograniczony.
+niższą sztywność kontraktu i wyższe wychwycenie TCO. W tych profilach jedynym kanałem
+mogącym centralnie sprzyjać formalności jest selekcja; w niskim wariancie
+scenariuszowym dołącza do niej także niższa stopa obejść. Kanał selekcji ogranicza
+iloczyn premii dyskrecji i różnicy skuteczności konkurencji, co dla `pzp_eu` daje
+pułap rzędu 0,3% wartości kontraktu, podczas gdy kanał opóźnienia jest
+nieograniczony.
 
 Do modelu 2.1 miało to konsekwencję, której nie ujawniano: w 11 340 konfiguracjach wynik
 centralny sprzyjał formalności w 1 482, ale **żadna nie sprzyjała jej odpornie**. Przyczyną
@@ -135,7 +147,8 @@ Model 2.2 dodaje typ **zakupu odkrywczego**, w którym wymaganie powstaje w trak
 a wykonanie adaptacyjne jest realnie **wolniejsze i bardziej pracochłonne**:
 współprojektowanie z dostawcami, runda przeprojektowania, czasem porzucona runda
 negocjacyjna. Ścieżka formalna zamraża wymaganie wcześnie i płaci gorszą specyfikacją oraz
-słabszym wychwyceniem wartości cyklu życia. W 12 960 konfiguracjach przegląd zwraca teraz
+słabszym wychwyceniem wartości cyklu życia. Na samej osi dowodowej przegląd 12 960
+konfiguracji zwraca
 **1 221 wyników odpornie pro-formalnych** obok 5 834 odpornie pro-adaptacyjnych. Twierdzenie,
 że wygrać może każda ze ścieżek, jest więc pokazane, a nie tylko zadeklarowane.
 
@@ -151,7 +164,8 @@ wielkości:
 
 Oś strukturalna nie jest ćwiczeniem z pesymizmu. Koszt dnia to najmniej wiarygodna liczba,
 jaką podaje użytkownik, a model nie ma jak jej sprawdzić; tabele dni to z kolei własne,
-nieprzetestowane założenia modelu. Razem niosą 80–99% ΔC. Ograniczanie przedziału do
+nieprzetestowane założenia modelu. W scenariuszach, w których ścieżki różnią się czasem,
+kanał zwłoki niesie po audycie 68,3–99,6% `|ΔC|`. Ograniczanie przedziału do
 wielkości małych, przy zamrożeniu dużych, zaniżało niepewność dokładnie tam, gdzie model
 jest najsłabszy.
 
@@ -177,8 +191,9 @@ takie same w obu ścieżkach i nie są kompresowane przez technologię. Szablon 
 używa standardowych 35 dni i 10 dni; ustawowe skrócenia oraz wyjątki wymagają
 osobnego scenariusza. Wspólna bazowa cena
 zakupu nie jest dodawana do żadnej strony; porównanie obejmuje jedynie przyrostową
-stratę selekcyjną. Model raportuje także próg kosztu dnia bezczynności, powyżej
-którego centralna przewaga czasowa zmienia znak wyniku.
+stratę selekcyjną. Model raportuje także próg kosztu dnia bezczynności, przy którym
+wkład opóźnienia zmienia znak wyniku. Kierunek zależy od tego, która ścieżka jest
+szybsza; w zakupie odkrywczym wyższy koszt dnia może wzmacniać ścieżkę formalną.
 
 ## 4. Pochodzenie parametrów
 
@@ -240,7 +255,7 @@ poradą prawną.
 Jest nim **audytowalna dekompozycja, która rozdziela to, co model wie, od tego, co zakłada,
 i pokazuje, że dominujący składnik popularnego argumentu o kosztach procedury jest
 tożsamością rachunkową, a nie ustaleniem.** Po odjęciu tej tożsamości ścieżka formalna jest
-tańsza na koszcie procesu w siedmiu z dziesięciu scenariuszy wbudowanych — wynik węższy niż
+tańsza na koszcie procesu w siedmiu z dziesięciu stałych scenariuszy referencyjnych — wynik węższy niż
 teza wyjściowa, ale sprawdzalny i przeciwny do intuicji, którą sam projekt wcześniej
 komunikował.
 

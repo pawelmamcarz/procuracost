@@ -1,8 +1,10 @@
 import PrintButton from "./PrintButton";
+import { comparisonT } from "@/lib/i18n";
+import { MODEL_VERSION } from "@/lib/version";
 
 export const metadata = {
   title: "Procedural Rigidity and Adaptive Procurement | ProcuraCost",
-  description: "Corrected working paper for the neutral ProcuraCost 2.1 decision model.",
+  description: `Corrected working paper for the neutral ProcuraCost ${MODEL_VERSION} decision model.`,
 };
 
 const references = [
@@ -22,9 +24,9 @@ export default function ResearchPage() {
       <div className="mb-8 flex items-center justify-between print:hidden">
         <div>
           <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
-            Working paper · ProcuraCost 2.1
+            Working paper · ProcuraCost {MODEL_VERSION}
           </span>
-          <p className="mt-2 text-xs text-gray-500">Corrected evidence and model specification · 14 July 2026</p>
+          <p className="mt-2 text-xs text-gray-500">Corrected evidence and model specification · 27 July 2026</p>
         </div>
         <PrintButton />
       </div>
@@ -35,7 +37,7 @@ export default function ResearchPage() {
         <h2>Abstract</h2>
         <p>
           Procurement policy, workflow, competition, and contract design are related but distinct.
-          ProcuraCost 2.1 corrects an earlier model that collapsed them into one rigidity index and
+          ProcuraCost {MODEL_VERSION} corrects an earlier model that collapsed them into one rigidity index and
           therefore overstated what the cited literature supported. The revised model compares a
           formal/sequential path with an adaptive/compliant path under the same legal and governance
           boundary. It reports a central estimate and a wide scenario interval that may favor either path.
@@ -54,6 +56,7 @@ export default function ResearchPage() {
           <li>Tool cost is equal when both paths use the same technology.</li>
           <li>Mandatory PZP publication and standstill periods remain identical in both paths.</li>
           <li>Weak quantities appear as broad scenarios, not precise predictions or confidence intervals.</li>
+          <li>The combined uncertainty envelope crosses zero in all ten fixed reference scenarios.</li>
         </ul>
 
         <h2>Evidence corrections</h2>
@@ -69,8 +72,10 @@ export default function ResearchPage() {
         <p>
           <strong>Beuve, Moszoro, and Spiller (2023)</strong> estimate contractual—not procedural—rigidity
           using 2SLS/IV in French car-park contracts. Their 0.077–0.105 result is an increase in formal
-          amendments per contract-year, not an event probability. The model multiplies that frequency by
-          contract duration; the sample mean is not treated as a universal baseline.
+          amendments per contract-year for a simultaneous one-standard-deviation increase in each of seven
+          rigidity categories, not an event probability. ProcuraCost&apos;s 0–1 profile has no empirical
+          conversion to that shift, so the coefficient is a calibration assumption with an external
+          order-of-magnitude anchor, not a transferred estimate.
         </p>
         <p>
           Theory from Lipsky, Vaughan, and Holmström–Milgrom supports possible workaround mechanisms but
@@ -81,13 +86,13 @@ export default function ResearchPage() {
         <h2>Seven-dimension model</h2>
         <p><code>ΔC = C_formal − C_adaptive = Σ ΔC_i</code></p>
         <ol>
-          <li><strong>Staff effort:</strong> activity hours by role, headcount, and loaded rate.</li>
-          <li><strong>Administration:</strong> non-labor overhead plus equal technology cost.</li>
+          <li><strong>Staff effort:</strong> total activity hours by role and loaded rate; headcount is descriptive.</li>
+          <li><strong>Administration:</strong> non-labor overhead on active days plus equal technology cost.</li>
           <li><strong>Delay:</strong> elapsed days times user-supplied cost of inaction.</li>
           <li><strong>Selection risk:</strong> price-premium scenario times residual competition risk.</li>
-          <li><strong>Formal amendments:</strong> annual contract-rigidity frequency times contract duration and event cost.</li>
-          <li><strong>TCO:</strong> cumulative savings pool times the share not captured; central pool is zero.</li>
-          <li><strong>Bypass:</strong> observed-rate scenario times user-supplied exposure and system controls.</li>
+          <li><strong>Formal amendments:</strong> annual contract-rigidity frequency times event cost and a discounted annuity factor.</li>
+          <li><strong>TCO:</strong> a three-year cumulative pool converted to a discounted annual flow; central pool is zero.</li>
+          <li><strong>Bypass:</strong> scenario rate times user-supplied exposure and system controls.</li>
         </ol>
 
         <h2>Interpretation</h2>
@@ -97,8 +102,7 @@ export default function ResearchPage() {
           only within the declared bounds—not statistically proven.
         </p>
         <p>
-          The calculator also reports the central break-even daily cost of inaction. This is the threshold
-          above which the adaptive path&apos;s time advantage outweighs its non-delay cost difference.
+          {comparisonT.en.breakEvenGeneral}
         </p>
         <p>
           Formality can dominate when delay is cheap, competition materially constrains favoritism, requirements

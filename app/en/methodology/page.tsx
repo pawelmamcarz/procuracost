@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { comparisonT } from "@/lib/i18n";
+import { MODEL_VERSION } from "@/lib/version";
 
 export const metadata = {
-  title: "Model 2.1 Methodology | ProcuraCost",
+  title: `Model ${MODEL_VERSION} Methodology | ProcuraCost`,
   description: "Neutral comparative model with explicit scenario uncertainty.",
 };
 
@@ -9,7 +11,9 @@ export default function EnMethodologyPage() {
   return (
     <div className="mx-auto max-w-3xl space-y-8 px-6 py-10">
       <header>
-        <p className="text-xs font-semibold uppercase tracking-wide text-blue-600">Model 2.1</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-blue-600">
+          Model {MODEL_VERSION}
+        </p>
         <h1 className="mt-1 text-2xl font-bold text-gray-900">A methodology without a built-in winner</h1>
         <p className="mt-2 text-sm text-gray-600">
           The formal/sequential and adaptive/compliant paths share the same legal, competition,
@@ -43,8 +47,7 @@ export default function EnMethodologyPage() {
         <p className="mt-2 text-sm text-amber-800">
           The low and high ΔC values are assumption stress tests, not confidence intervals. A range
           crossing zero means the model does not identify a robust winner.
-          The break-even threshold states the daily inaction cost at which the central result
-          starts to favor the faster adaptive path.
+          {" "}{comparisonT.en.breakEvenGeneral}
         </p>
       </section>
 

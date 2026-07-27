@@ -1,6 +1,6 @@
 # Plan walidacji empirycznej ProcuraCost
 
-**Wersja:** 1.0 dla modelu 2.2.1 · 26 lipca 2026
+**Wersja:** 1.1 dla modelu 2.2.2 · 27 lipca 2026
 **Status:** projekt do oceny promotora. **Nie zawiera wyników — żadne dane nie zostały zebrane.**
 **Zastępuje:** materiały z `docs/archive/model-1.x/planning/`, napisane pod model 1.x i nieprzenośne.
 
@@ -8,7 +8,7 @@
 
 ## 0. Po co ten dokument
 
-Model 2.2 jest rachunkiem warunkowym. Mówi, co wynika z założeń, a nie co dzieje się
+Model 2.2.2 jest rachunkiem warunkowym. Mówi, co wynika z założeń, a nie co dzieje się
 w polskich zamówieniach. Bez planu, który da się skrytykować przed zebraniem danych, cykl
 doktorski nie ma warstwy empirycznej — a `PHD_ROADMAP.md` sam nazywa tę fazę „the part the
 professor cares about most".
@@ -26,8 +26,8 @@ bo mają różną trudność i różny status:
 
 | Poziom | Pytanie | Wykonalne |
 |---|---|---|
-| **A. Pomiar** | Czy sekwencyjność przebiegu da się w ogóle zmierzyć rzetelnie z danych organizacyjnych? | tak, i to jest warunek wstępny reszty |
-| **B. Asocjacja** | Czy bardziej sekwencyjny przebieg wiąże się z dłuższym cyklem i większym nakładem pracy, przy kontroli złożoności? | tak |
+| **A. Pomiar** | Czy preskryptywność projektu procesu da się rzetelnie zmierzyć *ex ante* z dokumentów organizacyjnych? | tak, i to jest warunek wstępny reszty |
+| **B. Asocjacja** | Czy bardziej preskryptywny projekt procesu wiąże się z dłuższym cyklem i większym nakładem pracy, przy kontroli złożoności? | tak |
 | **C. Przyczynowość** | Czy zmiana projektu procesu **powoduje** zmianę kosztu? | tylko warunkowo — patrz §5 |
 
 **Deklaruję wprost: rozprawa celuje w A i B, a C traktuje jako warunkowe.** Poprzednie wersje
@@ -63,6 +63,11 @@ jakiegokolwiek wyniku.
 | 4 | Sztywność dokumentacji | liczba obowiązkowych artefaktów bez wariantu uproszczonego | tekst polityki |
 | 5 | Autonomia zespołu | odwrócona: czy zespół może zmienić zakres bez ponownej akceptacji | tekst polityki |
 
+Indeks opisuje wyłącznie projekt workflow. Nie zawiera konkurencji, sztywności
+klauzul ani wykorzystania technologii. Pięć składowych jest raportowanych także
+osobno; równe wagi zostają zamrożone przed analizą, a alternatywne ważenie ma
+status eksploracyjny.
+
 **Świadomie wykluczam z ekspozycji:** udział czasu oczekiwania i długość ścieżki krytycznej.
 Obie dzielą jednostki z wynikiem głównym i mechanicznie go ograniczają — wejście ich do
 ekspozycji byłoby regresją czasu na czas. Poprzedni szkic protokołu je zawierał.
@@ -73,8 +78,9 @@ ekspozycji byłoby regresją czasu na czas. Poprzedni szkic protokołu je zawier
 2. Kodowanie ekspozycji odbywa się z dokumentów datowanych **przed** `exposure_reference_at`.
 3. Podręcznik kodowania jest zamrożony i wersjonowany przed pierwszym kodowaniem.
 4. Co najmniej dwóch koderów, niezależnie; zgodność raportowana jako **Krippendorff α**,
-   próg akceptacji **α ≥ 0,75** dla pozycji uznaniowych. Poniżej progu pozycja jest
-   przeprojektowana albo usunięta, nie uśredniona.
+   prerejestrowany próg akceptacji **α ≥ 0,80** dla pozycji uznaniowych. Poniżej progu pozycja jest
+   przeprojektowana albo usunięta, nie uśredniona. Próg 0,80 jest konserwatywną
+   decyzją projektową, a nie uniwersalnym prawem dla każdego rodzaju kodowania.
 
 ---
 
@@ -102,6 +108,19 @@ na czas oceny — jest zmienną pośredniczącą, a kontrolowanie jej obciąża 
 (*post-treatment bias*). Liczba ofert jest zmienną zależną w modelu konkurencji (H2),
 nie kontrolą w modelu czasu (H1).
 
+W H2 ekspozycją są cechy dostępu do rynku ustalone przed złożeniem ofert, np.
+zakres publikacji, planowana liczba zaproszeń i restrykcyjność warunków udziału.
+Wynikami są liczba ważnych ofert i cena względem wcześniej ustalonego benchmarku.
+Liczba ofert nie może wystąpić jednocześnie jako miara „skutecznej konkurencji"
+i wynik tego samego modelu.
+
+H3 i H5 zawierają twierdzenia o braku samodzielnego efektu liczby bram oraz
+samego posiadania systemu. `p > 0,05` nie potwierdza takiego braku. Po pilotażu,
+ale przed estymacją zależności w badaniu właściwym, trzeba zamrozić praktyczne
+granice równoważności na podstawie znaczenia merytorycznego, nie zaobserwowanego
+efektu, i sprawdzić, czy cały przedział ufności mieści się w tych granicach. Dla
+H5 osobno raportowana jest interakcja z faktycznie zalogowanym użyciem kontroli.
+
 ---
 
 ## 4. Warstwy danych
@@ -124,12 +143,15 @@ Jednostka analizy: **zdarzenie zakupowe**. Wymagane: logi workflow lub ERP ze zn
 czasu, macierz akceptacji z datą wersji, polityka zakupowa z historią wersji, ewidencja czasu
 pracy (jeśli istnieje), rejestr aneksów, rejestr odstępstw.
 
-**Realistyczne minimum:** 4–6 organizacji, po ≥ 60 zdarzeń każda, z co najmniej dwiema
-zmianami wersji polityki w oknie obserwacji.
+**Cel rekrutacyjny dla pomiaru i asocjacji:** 4–6 organizacji, po ≥ 60 zdarzeń każda,
+z historią wersji polityki. To nie jest wystarczająca z góry liczba klastrów do analizy
+przyczynowej. Rozszerzenie DiD wymaga dodatkowo jednorazowej, porównywalnej interwencji,
+zróżnicowanych terminów wdrożenia oraz grup jeszcze nieobjętych zmianą; wymaganą liczbę
+organizacji wyznaczy symulacja po pilotażu.
 
 ---
 
-## 5. Identyfikacja — trzy warianty, z rekomendacją
+## 5. Identyfikacja — trzy warianty o różnym statusie
 
 ### Wariant A — dopasowane zdarzenia wewnątrz organizacji *(bazowy)*
 
@@ -139,26 +161,38 @@ zamawiającego i kategorii CPV.
 `log(dni) = β·prescriptiveness + γ'X + α_zamawiający + δ_CPV + θ_rok + ε`
 
 Błędy standardowe klastrowane na poziomie zamawiającego. Przy < 30 klastrach —
-*wild cluster bootstrap*.
+*wild cluster bootstrap*. Przy zaledwie 4–6 klastrach także ta korekta nie daje
+pewnej inferencji: wyniki pozostają eksploracyjne i wymagają analizy
+*leave-one-organization-out*.
 
 **Co identyfikuje:** asocjację warunkową. **Czego nie:** przyczynowości — wybór ścieżki jest
 endogeniczny, trudniejsze zakupy mogą trafiać na ścieżkę bardziej formalną.
 To jest poziom B, nie C.
 
-### Wariant B — zmiana wersji polityki wewnętrznej *(rekomendowany dla warstwy przyczynowej)*
+### Wariant B — jednorazowa zmiana procesu *(warunkowe rozszerzenie przyczynowe)*
 
-Wykorzystuje moment, w którym organizacja zmienia macierz akceptacji lub uruchamia moduł
-workflow. Zdarzenia przed i po, przy niezmienionych progach ustawowych.
+Wykorzystuje moment, w którym organizacje wdrażają tę samą, jasno zdefiniowaną zmianę,
+np. uruchomienie modułu workflow z ustalonym zakresem albo jednokierunkowe uproszczenie
+macierzy akceptacji. Interwencja musi być stanem pochłaniającym: po wdrożeniu organizacja
+nie wraca w oknie badania do wcześniejszego projektu procesu.
 
-Staggered DiD z estymatorem odpornym na heterogeniczne efekty w czasie
-(Callaway–Sant'Anna albo Sun–Abraham; **nie** dwukierunkowe efekty stałe, które przy
-niejednoczesnym wejściu dają obciążenie „złych porównań").
+Przy zróżnicowanych terminach i grupach jeszcze nieobjętych zmianą można zastosować
+*staggered DiD* z estymatorem odpornym na heterogeniczne efekty w czasie
+(Callaway–Sant'Anna albo Sun–Abraham; **nie** naiwną regresję z dwukierunkowymi efektami
+stałymi, która przy niejednoczesnym wejściu może tworzyć obciążone porównania).
+Estymandem jest wtedy grupowo-czasowy ATT interwencji dla `log(dni)`, a nie
+automatycznie współczynnik na jedno odchylenie indeksu prescriptiveness.
 
-Wymagania: test trendów równoległych na oknie przed-zmianą; brak antycypacji
-(zdarzenia z okna −1 miesiąc wyłączone); zmiana polityki nie może być reakcją na wynik
-(sprawdzenie w wywiadzie z właścicielem procesu i w uzasadnieniu zmiany).
+Wymagania: ocena trendów przed zmianą, brak antycypacji (okno wyłączenia ustalone przed
+analizą), brak równoległej transformacji wpływającej na wynik i wiarygodne grupy
+porównawcze. Brak różnic w trendach przed zmianą nie dowodzi założenia trendów
+równoległych. Wywiad z właścicielem procesu może ujawnić endogeniczną reakcję na wyniki,
+ale nie może sam potwierdzić egzogeniczności.
 
-**To jest najmocniejszy realistycznie dostępny wariant** i rekomenduję go jako oś artykułu 3.
+Zwykłe aktualizacje polityki, które mogą zwiększać i zmniejszać preskryptywność, nie
+spełniają założenia stanu pochłaniającego. Są analizowane w wariancie A. Artykuł 3 opiera
+się na pomiarze i asocjacji; wariant B staje się osią przyczynową tylko wtedy, gdy dane
+spełnią powyższe warunki i symulacja wykaże wystarczającą moc.
 
 ### Wariant C — próg ustawowy *(warunkowy, prawdopodobnie odrzucony)*
 
@@ -177,53 +211,43 @@ automatycznie. **Zakładam, że ten wariant nie przejdzie testów, i nie buduję
 
 ## 6. Wielkość próby i moc testu
 
-Poprzednie wersje pytały o to promotora. Poniżej rachunek, który on ma ocenić.
+Poprzednie wersje deklarowały liczebność z uproszczonego wzoru. Poniżej reguła
+projektowa do oceny przed pilotażem.
 
 ### 6.1 Minimalny istotny efekt (MSI)
 
-Ustalam **MSI = 10% skrócenia czasu cyklu** na jedną jednostkę odchylenia standardowego
-indeksu prescriptiveness, czyli `|β| = 0,10` w modelu logarytmicznym.
+Ustalam **MSI = 10% wydłużenia czasu cyklu** na jedno odchylenie standardowe
+indeksu prescriptiveness, czyli `β_MSI = ln(1,10) ≈ 0,095` w modelu logarytmicznym.
 
-Uzasadnienie: przy medianie cyklu ok. 60 dni to 6 dni. Poniżej tego progu efekt jest
-nieodróżnialny od szumu kalendarzowego (święta, urlopy, terminy sesji komisji) i nie
-uzasadnia przeprojektowania procesu. Próg jest deklarowany **przed** zebraniem danych.
+Uzasadnienie: przy medianie cyklu ok. 60 dni to 6 dni. To próg istotności praktycznej,
+nie granica odróżniająca efekt od szumu statystycznego. Próg jest deklarowany **przed**
+zebraniem danych i wymaga akceptacji jako decyzja zarządczo-badawcza; nie pochodzi
+z zewnętrznego benchmarku.
 
-### 6.2 Rachunek mocy
+Nakład pracy jest odrębnym wynikiem i wymaga własnego MSI, w jego własnej skali.
+Próg dla godzin zostanie ustalony po pilotażu, lecz przed estymacją zależności w
+badaniu właściwym i na podstawie znaczenia merytorycznego; `β_MSI` dla czasu nie
+może być mechanicznie użyty dla wysiłku.
 
-Założenia: α = 0,05 dwustronnie, moc 0,80, `sd(log dni) ≈ 0,55` (typowe dla prawoskośnych
-czasów cyklu), ekspozycja z-standaryzowana (`sd = 1`), `R²` kontroli ≈ 0,30, korelacja
-wewnątrzklastrowa ICC ≈ 0,15.
+Dla warunkowego wariantu B należy osobno prerejestrować minimalny istotny ATT
+interwencji. Nie wolno przeliczać go na `β_MSI` bez udokumentowania, o ile
+interwencja rzeczywiście zmieniła indeks prescriptiveness.
 
-Dla regresji z jednym predyktorem ciągłym:
+### 6.2 Moc: najpierw pilotaż, potem symulacja
 
-```
-n ≈ (z_{1-α/2} + z_{1-β})² · sd²(y)·(1−R²) / β²
-  = (1,96 + 0,84)² · 0,55²·0,70 / 0,10²
-  ≈ 7,84 · 0,2118 / 0,01
-  ≈ 166 zdarzeń
-```
+Nie deklaruję zamkniętego `n` ani MDE przed pilotażem. Prosty wzór dla niezależnych
+obserwacji byłby tu fałszywie precyzyjny: nie uwzględnia korelacji ekspozycji z kontrolami,
+efektów stałych, nierównych klastrów, autokorelacji ani harmonogramu wdrożeń. Mnożenie go
+przez klasyczny *design effect* także nie odwzorowuje estymatora panelowego lub DiD.
 
-Korekta na klastrowanie (design effect przy średnio 60 zdarzeniach na organizację):
+Pilotaż oszacuje `sd(log dni)`, ICC, rozkład ekspozycji, liczbę zdarzeń w okresach oraz
+korelację szeregową. Następnie prerejestrowana symulacja Monte Carlo odtworzy planowany
+estymator, układ klastrów, terminy interwencji, braki danych i efekt `β_MSI`. Raport poda
+moc dla kilku liczb organizacji i minimalny wykrywalny efekt przy α = 0,05.
 
-```
-DE = 1 + (m−1)·ICC = 1 + 59·0,15 ≈ 9,85
-n_efektywne ≈ 166 · 9,85 ≈ 1 635 zdarzeń
-```
-
-To jest nierealne przy 4–6 organizacjach. **Wniosek, który trzeba postawić uczciwie:**
-przy tej strukturze danych moc wiąże **liczba organizacji, nie liczba zdarzeń**.
-
-Dlatego:
-
-- **Wariant A** (przekrojowy między organizacjami) wymagałby ~25–30 organizacji.
-  Nierealne bez wsparcia instytucjonalnego.
-- **Wariant B** (zmiana wewnątrz organizacji) opiera identyfikację na porównaniu
-  wewnątrzklastrowym, gdzie ICC nie karze w ten sam sposób. Przy 6 organizacjach ×
-  2 zmiany polityki × ≥ 60 zdarzeń, z efektami stałymi zamawiającego,
-  wykrywalny efekt to ok. **12–15%** — nieco powyżej MSI, ale w zasięgu.
-
-**To jest argument za wariantem B i przeciw wariantowi A jako osi rozprawy.** Ostateczne
-`n` wyznaczy symulacja Monte Carlo na strukturze pilotażu, nie wzór zamknięty.
+**Wniosek znany już teraz:** moc wiąże przede wszystkim liczba organizacji i niezależnych
+terminów zmiany, nie liczba zdarzeń. Przy 4–6 organizacjach analiza przyczynowa jest
+eksploracyjna; nie ma podstaw do obiecywania wykrywalnego efektu 12–15% przed symulacją.
 
 ### 6.3 Pilotaż przed badaniem właściwym
 
@@ -243,7 +267,7 @@ nie było.
 
 ---
 
-## 8. Test modelu 2.2 na danych
+## 8. Test modelu 2.2.2 na danych
 
 Dopiero po estymacji składowych:
 
@@ -260,14 +284,16 @@ albo późniejszego okresu.
 
 ### 8.1 Czego ten test nie rozstrzygnie
 
-`dailyCostOfInaction` — parametr niosący 68,3–99,6% wyniku modelu (po audycie kalibracji 2.2.2) — **nie jest odzyskiwalny
+`dailyCostOfInaction` — parametr stojący za kubełkiem zwłoki, który w stałych
+scenariuszach referencyjnych o różnych czasach ścieżek niesie 68,3–99,6% `|ΔC|`
+(po audycie kalibracji 2.2.2) — **nie jest odzyskiwalny
 z żadnej z dwóch warstw danych.** Żadna z siedmiu kategorii kodowania go nie mierzy.
 
 To jest najpoważniejsze ograniczenie całego projektu i wymaga osobnego rozwiązania:
 ustrukturyzowanego wywiadu z właścicielem biznesowym, prowadzonego **przed** poznaniem czasu
 cyklu, z jawnym rozliczeniem (utracona marża, przestój, koszt rozwiązania zastępczego).
 Do czasu jego opracowania kanał opóźnienia pozostaje parametryzowany przez użytkownika i musi
-być raportowany osobno — tak jak robi to model 2.2.
+być raportowany osobno — tak jak robi to model 2.2.2.
 
 ---
 
@@ -275,8 +301,9 @@ być raportowany osobno — tak jak robi to model 2.2.
 
 Teza słabnie, jeżeli — przy kontroli złożoności:
 
-- prescriptiveness nie zwiększa czasu cyklu ani nakładu pracy (`|β| < MSI`, przedział
-  ufności wykluczający MSI);
+- prescriptiveness nie ma materialnego dodatniego związku z czasem cyklu ani
+  nakładem pracy (dla każdego wyniku górna granica przedziału ufności jest
+  poniżej jego własnego prerejestrowanego MSI);
 - adaptacyjny przebieg systematycznie obniża liczbę ważnych ofert;
 - mechanizmy zmiany umowy nie poprawiają wykonania;
 - model nie bije mediany kategorii.
@@ -299,7 +326,7 @@ a wymagania stabilne.
 | 3 | Symulacja mocy na strukturze pilotażu; prerejestracja |
 | 3–5 | Kodowanie warstwy 2; równolegle pobranie i czyszczenie warstwy 1 |
 | 6 | Estymacja składowych; testy odporności |
-| 7 | Test modelu 2.2; artykuł 3 |
+| 7 | Test modelu 2.2.2; artykuł 3 |
 
 **Ryzyko krytyczne:** rekrutacja organizacji. Bez 4–6 partnerów plan nie jest wykonalny
 w żadnym wariancie i trzeba zawęzić rozprawę do warstwy A (pomiar) plus studium wykonalności.

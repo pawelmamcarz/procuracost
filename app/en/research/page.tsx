@@ -1,7 +1,8 @@
 import { redirect } from "next/navigation";
+import { MODEL_VERSION } from "@/lib/version";
 
 export const metadata = {
-  title: "Research Paper — ProcuraCost 2.1",
+  title: `Research Paper — ProcuraCost ${MODEL_VERSION}`,
   description:
     "Neutral decision model comparing formal/sequential and adaptive/compliant procurement paths with scenario uncertainty.",
 };

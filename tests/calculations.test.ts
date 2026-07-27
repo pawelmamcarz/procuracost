@@ -176,6 +176,25 @@ describe("(c) central break-even threshold", () => {
     expect(below.delta).toBeLessThan(0);
   });
 
+  it("reverses the above-threshold winner when the formal path is faster", () => {
+    const base = makeInputs({
+      processType: "discovery",
+      renegotiationCost: 1_000_000,
+      dailyCostOfInaction: 1,
+    });
+    const thresholdResult = calculateCosts(base);
+    const threshold = thresholdResult.decisionThreshold.breakEvenDailyCostOfInaction;
+
+    expect(thresholdResult.decisionThreshold.status).toBe("threshold_above_zero");
+    expect(thresholdResult.decisionThreshold.effectiveDayDifference).toBeLessThan(0);
+    expect(threshold).toBeGreaterThan(0);
+
+    const below = calculateCosts({ ...base, dailyCostOfInaction: threshold! / 2 });
+    const above = calculateCosts({ ...base, dailyCostOfInaction: threshold! * 2 });
+    expect(below.delta).toBeGreaterThan(0);
+    expect(above.delta).toBeLessThan(0);
+  });
+
   it("reports no threshold when both paths take the same time", () => {
     const result = calculateCosts(makeInputs({ processType: "catalog_order" }));
     expect(result.decisionThreshold.effectiveDayDifference).toBe(0);
@@ -186,8 +205,9 @@ describe("(c) central break-even threshold", () => {
 
 describe("(c3) the uncertainty envelope covers both axes", () => {
   // Through 2.2.0 the envelope varied only the five evidence scalars and held the daily
-  // cost of inaction and the step-day templates fixed — the two inputs carrying 80–99% of
-  // ΔC. It therefore reported its narrowest uncertainty exactly where the model is least
+  // cost of inaction and the step-day templates fixed — the two inputs behind a delay
+  // bucket carrying 68.3–99.6% of |ΔC| in the fixed reference cases after the audit. It therefore reported its
+  // narrowest uncertainty exactly where the model is least
   // defensible.
   it("reports the evidence and structural axes separately and combines them", () => {
     for (const scenario of SCENARIOS) {

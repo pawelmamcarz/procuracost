@@ -70,14 +70,18 @@ for (const s of SCENARIOS) {
 }
 
 // ── (b) sign robustness ───────────────────────────────────────────────────────
-const negatives = results.filter(({ r }) => r.delta < 0);
-const favRigid = results.filter(({ r }) => r.rigid.productivityCost - r.flexible.productivityCost < 0);
-const crossing = results.filter(({ r }) => r.uncertainty.crossesZero);
-console.log(`\n### Sign test: central Δ < 0 in ${negatives.length} of ${results.length} scenarios` +
+// `custom` is an editable form seed, not a fixed reference case. Keep it in the
+// table, but exclude it from aggregate diagnostics cited in the articles.
+const referenceResults = results.filter(({ id }) => id !== "custom");
+const negatives = referenceResults.filter(({ r }) => r.delta < 0);
+const favRigid = referenceResults.filter(({ r }) => r.rigid.productivityCost - r.flexible.productivityCost < 0);
+const crossing = referenceResults.filter(({ r }) => r.uncertainty.crossesZero);
+console.log("\nAggregate diagnostics exclude `custom`, the editable form seed.");
+console.log(`\n### Sign test: central Δ < 0 in ${negatives.length} of ${referenceResults.length} fixed reference scenarios` +
   (negatives.length ? ` (${negatives.map((n) => n.id).join(", ")})` : "") + ".");
-console.log(`Scenario envelope crosses zero in ${crossing.length}/${results.length} scenarios` +
+console.log(`Scenario envelope crosses zero in ${crossing.length}/${referenceResults.length} fixed reference scenarios` +
   (crossing.length ? ` (${crossing.map((n) => n.id).join(", ")})` : "") + ".");
-console.log(`Selection dimension favours the formal path in ${favRigid.length}/${results.length} central scenarios.`);
+console.log(`Selection dimension favours the formal path in ${favRigid.length}/${referenceResults.length} fixed reference scenarios.`);
 
 // ── (b2) ΔC decomposition ─────────────────────────────────────────────────────
 // The single most important disclosure in the model. The delay bucket is the product
@@ -100,11 +104,11 @@ for (const { id, r } of results) {
   );
 }
 
-const withDelay = results.filter(({ r }) => r.deltaDecomposition.delay !== 0);
+const withDelay = referenceResults.filter(({ r }) => r.deltaDecomposition.delay !== 0);
 const delayShares = withDelay.map(({ r }) => r.deltaDecomposition.delayShareOfDeltaPercent);
 if (delayShares.length) {
   console.log(
-    `\nWhere the two paths differ in duration (${delayShares.length}/${results.length} scenarios), the delay ` +
+    `\nWhere the two paths differ in duration (${delayShares.length}/${referenceResults.length} fixed reference scenarios), the delay ` +
     `bucket carries ${Math.min(...delayShares).toFixed(1)}–${Math.max(...delayShares).toFixed(1)}% of |Δ|. ` +
     `That bucket is (template day difference) × (user-supplied daily cost): an identity, not a modeled effect.`
   );
@@ -127,21 +131,21 @@ for (const { id, r } of results) {
   );
 }
 
-const crossingCombined = results.filter(({ r }) => r.uncertainty.crossesZero);
-const crossingEvidenceOnly = results.filter(
+const crossingCombined = referenceResults.filter(({ r }) => r.uncertainty.crossesZero);
+const crossingEvidenceOnly = referenceResults.filter(
   ({ r }) => r.uncertainty.evidenceLowDelta <= 0 && r.uncertainty.evidenceHighDelta >= 0,
 );
 console.log(
-  `\nOn the evidence axis alone ${crossingEvidenceOnly.length}/${results.length} scenarios cross zero. ` +
-  `Adding the structural axis takes that to ${crossingCombined.length}/${results.length}. ` +
+  `\nOn the evidence axis alone ${crossingEvidenceOnly.length}/${referenceResults.length} fixed reference scenarios cross zero. ` +
+  `Adding the structural axis takes that to ${crossingCombined.length}/${referenceResults.length}. ` +
   `The model identifies a robust winner in far fewer cases than model 2.1 reported, and that is ` +
   `the honest reading: the narrow envelope was an artefact of bracketing only the small quantities.`
 );
 
-const processFavoursFormal = results.filter(({ r }) => r.deltaDecomposition.process < 0);
+const processFavoursFormal = referenceResults.filter(({ r }) => r.deltaDecomposition.process < 0);
 console.log(
   `Excluding the delay identity, the FORMAL path is cheaper on process cost in ` +
-  `${processFavoursFormal.length}/${results.length} scenarios` +
+  `${processFavoursFormal.length}/${referenceResults.length} fixed reference scenarios` +
   (processFavoursFormal.length ? ` (${processFavoursFormal.map((n) => n.id).join(", ")})` : "") +
   `. The Tunnel–Field advantage in this parameterisation is a delay story, not a process-cost story.`
 );
