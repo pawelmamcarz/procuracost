@@ -375,6 +375,55 @@ const homeEn = {
 
 export const homeT = { pl: homePl, en: homeEn } as const;
 
+type ResearchAgendaCopy = {
+  metadataTitle: (version: string) => string;
+  metadataDescription: (version: string) => string;
+  eyebrow: (version: string) => string;
+  title: string;
+  intro: string;
+  prioritiesTitle: string;
+  priorities: readonly [string, string, string, string];
+  identificationTitle: string;
+  identificationRule: string;
+  statusTitle: string;
+  status: (version: string) => string;
+  actions: {
+    paper: string;
+    methodology: string;
+    scenarios: string;
+  };
+};
+
+const researchAgendaPl = {
+  metadataTitle: (version: string) => `Agenda badawcza ${version}: ProcuraCost`,
+  metadataDescription: (version: string) =>
+    `Agenda empirycznej walidacji neutralnego modelu ProcuraCost ${version}.`,
+  eyebrow: (version: string) => `Agenda badawcza · Model ${version}`,
+  title: "Waliduj mechanizmy przed ich wyceną",
+  intro:
+    "ProcuraCost jest przejrzystym modelem decyzyjnym, a nie zmierzonym efektem. Program empiryczny zaczyna się od oddzielnego pomiaru przebiegu pracy, konkurencji i konstrukcji kontraktu. Narzędzia badawcze wymagają przeglądu przed zbieraniem danych.",
+  prioritiesTitle: "Priorytety pomiaru",
+  priorities: [
+    "Przebieg pracy: znaczniki czasu, praca równoległa i godziny pracy według ról.",
+    "Konkurencja: udział oferentów, kwalifikacja i benchmarki cenowe.",
+    "Konstrukcja kontraktu: adaptowalność na poziomie klauzul i aneksy.",
+    "Wyniki: opóźnienie, efekty w cyklu życia, obejścia i ustalenia audytowe.",
+  ],
+  identificationTitle: "Reguła identyfikacji",
+  identificationRule:
+    "Oszacuj wyniki składowe oddzielnie przed przeliczeniem ich na pieniądze. Porównuj zgodne z prawem ścieżki w tych samych granicach ładu i kontroli, kontroluj wyniki ze względu na złożoność zakupu i zachowuj możliwość odwrócenia znaku. Nie kalibruj danych tak, aby odtwarzały tezę Tunel–Pole.",
+  statusTitle: "Aktualny status",
+  status: (version: string) =>
+    `Nie zatwierdzono jeszcze ankiety dla modelu ${version}, prerejestracji ani protokołu konfirmacyjnego. Nowe narzędzia muszą wynikać z rozdzielonych konstruktów i przejść przegląd przed rekrutacją lub pozyskaniem danych.`,
+  actions: {
+    paper: "Artykuł naukowy",
+    methodology: "Metodologia",
+    scenarios: "Zakresy scenariuszy",
+  },
+} satisfies ResearchAgendaCopy;
+
+export const researchAgendaT = { pl: researchAgendaPl } as const;
+
 const comparisonPl = {
   costLabels: {
     timeCost: "Koszt czasu (kadra)",
