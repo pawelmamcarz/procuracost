@@ -35,20 +35,30 @@ export default function HeroSummary({ result, scenario, inputs, lang }: Props) {
       <p className="text-sm font-medium uppercase tracking-wide opacity-80">
         {tx.deltaHeadline}
       </p>
-      <p className="mt-1 text-4xl font-bold">{formatPLN(delta)}</p>
+      <p className="mt-1 font-mono text-4xl font-bold">{formatPLN(delta)}</p>
       <p className="mt-1 text-lg opacity-90">
-        {formatPercent(Math.abs(deltaPercent))} {deltaPercent >= 0 ? tx.higherThan : tx.lowerThan}
+        <span className="font-mono">{formatPercent(Math.abs(deltaPercent))}</span>{" "}
+        {deltaPercent >= 0 ? tx.higherThan : tx.lowerThan}
       </p>
       <div className="mt-3 rounded-xl border border-white/20 bg-white/10 p-3 text-sm">
         <p className="font-semibold">
-          {lang === "en" ? "Scenario range" : "Przedział scenariuszowy"}: {formatPLN(uncertainty.lowDelta)} – {formatPLN(uncertainty.highDelta)}
+          {lang === "en" ? "Scenario range" : "Przedział scenariuszowy"}:{" "}
+          <span className="font-mono">
+            {formatPLN(uncertainty.lowDelta)} – {formatPLN(uncertainty.highDelta)}
+          </span>
         </p>
         <div className="mt-1.5 space-y-0.5 text-xs text-white/80">
           <div>
-            {tx.axisEvidence}: {formatPLN(uncertainty.evidenceLowDelta)} – {formatPLN(uncertainty.evidenceHighDelta)}
+            {tx.axisEvidence}:{" "}
+            <span className="font-mono">
+              {formatPLN(uncertainty.evidenceLowDelta)} – {formatPLN(uncertainty.evidenceHighDelta)}
+            </span>
           </div>
           <div>
-            {tx.axisStructural}: {formatPLN(uncertainty.structuralLowDelta)} – {formatPLN(uncertainty.structuralHighDelta)}
+            {tx.axisStructural}:{" "}
+            <span className="font-mono">
+              {formatPLN(uncertainty.structuralLowDelta)} – {formatPLN(uncertainty.structuralHighDelta)}
+            </span>
           </div>
         </div>
         <p className="mt-1.5 text-xs text-white/70">
@@ -66,21 +76,23 @@ export default function HeroSummary({ result, scenario, inputs, lang }: Props) {
       </div>
       <div className="mt-3 flex gap-4 text-sm">
         <span className="rounded-lg bg-white/10 px-3 py-1">
-          {tx.rigidLabel}: <strong>{rigidDays}</strong> {lang === "en" ? "days" : "dni"}
+          {tx.rigidLabel}: <strong className="font-mono">{rigidDays}</strong> {lang === "en" ? "days" : "dni"}
         </span>
         <span className="rounded-lg bg-white/10 px-3 py-1">
-          {tx.flexibleLabel}: <strong>{flexibleDays}</strong> {lang === "en" ? "days" : "dni"}
+          {tx.flexibleLabel}: <strong className="font-mono">{flexibleDays}</strong> {lang === "en" ? "days" : "dni"}
         </span>
       </div>
       <div className="mt-3 rounded-xl border border-white/20 bg-white/10 p-3 text-sm">
         <p className="font-semibold">{tx.decompositionTitle}</p>
         <div className="mt-1.5 space-y-0.5 text-xs text-white/85">
-          <div>{tx.decompositionProcess}: <strong>{formatPLN(deltaDecomposition.process)}</strong></div>
+          <div>{tx.decompositionProcess}: <strong className="font-mono">{formatPLN(deltaDecomposition.process)}</strong></div>
           <div>
-            {tx.decompositionDelay}: <strong>{formatPLN(deltaDecomposition.delay)}</strong>
-            {delta !== 0 && ` (${Math.round(deltaDecomposition.delayShareOfDeltaPercent)}%)`}
+            {tx.decompositionDelay}: <strong className="font-mono">{formatPLN(deltaDecomposition.delay)}</strong>
+            {delta !== 0 && (
+              <span className="font-mono"> ({Math.round(deltaDecomposition.delayShareOfDeltaPercent)}%)</span>
+            )}
           </div>
-          <div>{tx.decompositionLifecycle}: <strong>{formatPLN(deltaDecomposition.lifecycle)}</strong></div>
+          <div>{tx.decompositionLifecycle}: <strong className="font-mono">{formatPLN(deltaDecomposition.lifecycle)}</strong></div>
         </div>
         <p className="mt-1.5 text-xs text-white/70">{tx.decompositionNote}</p>
       </div>
@@ -89,7 +101,7 @@ export default function HeroSummary({ result, scenario, inputs, lang }: Props) {
         {tx.breakEvenLabel}:{" "}
         {decisionThreshold.status === "threshold_above_zero" ? (
           <>
-            <strong>
+            <strong className="font-mono">
               {formatPLN(decisionThreshold.breakEvenDailyCostOfInaction ?? 0)}/
               {lang === "en" ? "day" : "dzień"}
             </strong>. {decisionThreshold.effectiveDayDifference > 0
@@ -153,7 +165,7 @@ export default function HeroSummary({ result, scenario, inputs, lang }: Props) {
                 style={{ width: `${Math.round(bypassProbability * 100)}%` }}
               />
             </div>
-            <span className="text-sm font-bold">{Math.round(bypassProbability * 100)}%</span>
+            <span className="font-mono text-sm font-bold">{Math.round(bypassProbability * 100)}%</span>
           </div>
           <p className="mt-1 text-xs opacity-60">
             {tx.bypassNote} {lang === "en" ? "Scenario assumption, not a predicted probability." : "Założenie scenariuszowe, nie prognoza prawdopodobieństwa."}
@@ -162,12 +174,14 @@ export default function HeroSummary({ result, scenario, inputs, lang }: Props) {
       </div>
       {scenario.caseStudy && (
         <div className="mt-3 rounded-xl bg-white/10 p-3 text-sm">
-          <p className="font-semibold">{scenario.caseStudy.title}</p>
+          <p className="font-semibold">
+            {lang === "en" ? scenario.caseStudy.titleEn : scenario.caseStudy.title}
+          </p>
           <p className="mt-1 opacity-90">
             {lang === "en" ? scenario.caseStudy.insightEn : scenario.caseStudy.insight}
           </p>
           <p className="mt-1 text-xs opacity-60">
-            {lang === "en" ? "Source" : "Źródło"}: {scenario.caseStudy.source}
+            {lang === "en" ? "Source" : "Źródło"}: {lang === "en" ? scenario.caseStudy.sourceEn : scenario.caseStudy.source}
           </p>
         </div>
       )}

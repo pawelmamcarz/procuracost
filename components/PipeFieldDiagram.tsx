@@ -103,7 +103,6 @@ export default function PipeFieldDiagram({ lang = "pl" }: Props) {
           ))}
 
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
-            <p className="text-3xl font-bold text-green-200">∞</p>
             <p className="text-xs font-medium text-green-600">
               {isPl ? "zgodnych ścieżek" : "compliant paths"}
             </p>

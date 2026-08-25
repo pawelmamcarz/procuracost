@@ -14,6 +14,7 @@ import {
 import { ProcurementFeatures, optimize, OptimizationResult } from "@/lib/optimizer";
 import { optimizerT, Lang } from "@/lib/i18n";
 import { formatCompact } from "@/lib/calculations";
+import { revealResult } from "@/components/result-reveal";
 
 const defaultFeatures: ProcurementFeatures = {
   contractValue: 2_000_000,
@@ -51,7 +52,7 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
   function handleOptimize() {
     setResult(optimize(features, lang));
     requestAnimationFrame(() => {
-      resultsRef.current?.scrollIntoView({ behavior: "smooth" });
+      revealResult(resultsRef.current);
     });
   }
 
@@ -70,7 +71,7 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
           <div>
             <label className={labelClass} htmlFor="pf-contract-value">
               {tx.contractValue}{" "}
-              <span className="font-semibold text-gray-800">
+              <span className="font-mono font-semibold text-gray-800">
                 {formatPLNShort(features.contractValue)}
               </span>
             </label>
@@ -84,7 +85,7 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
               onChange={(e) => handleChange("contractValue", +e.target.value)}
               className="w-full accent-blue-500"
             />
-            <div className="flex justify-between text-xs text-gray-400">
+            <div className="flex justify-between font-mono text-xs text-gray-400">
               <span>50k</span>
               <span>50M PLN</span>
             </div>
@@ -93,7 +94,7 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
           <div>
             <label className={labelClass} htmlFor="pf-supplier-count">
               {tx.supplierCount}{" "}
-              <span className="font-semibold text-gray-800">{features.supplierCount}</span>
+              <span className="font-mono font-semibold text-gray-800">{features.supplierCount}</span>
             </label>
             <input
               id="pf-supplier-count"
@@ -105,7 +106,7 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
               onChange={(e) => handleChange("supplierCount", +e.target.value)}
               className="w-full accent-blue-500"
             />
-            <div className="flex justify-between text-xs text-gray-400">
+            <div className="flex justify-between font-mono text-xs text-gray-400">
               <span>{tx.monopoly}</span>
               <span>{tx.supplierMax}</span>
             </div>
@@ -114,7 +115,7 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
           <div>
             <label className={labelClass} htmlFor="pf-urgency-days">
               {tx.timeAvailable}{" "}
-              <span className="font-semibold text-gray-800">{features.urgencyDays} {tx.days}</span>
+              <span className="font-mono font-semibold text-gray-800">{features.urgencyDays} {tx.days}</span>
             </label>
             <input
               id="pf-urgency-days"
@@ -126,7 +127,7 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
               onChange={(e) => handleChange("urgencyDays", +e.target.value)}
               className="w-full accent-blue-500"
             />
-            <div className="flex justify-between text-xs text-gray-400">
+            <div className="flex justify-between font-mono text-xs text-gray-400">
               <span>{tx.urgent}</span>
               <span>{tx.daysMax}</span>
             </div>
@@ -159,7 +160,7 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
                 onChange={(e) => handleChange(key, +e.target.value as ProcurementFeatures[typeof key])}
                 className="w-full accent-blue-500"
               />
-              <div className="flex justify-between text-xs text-gray-400">
+              <div className="flex justify-between font-mono text-xs text-gray-400">
                 <span>1</span>
                 <span>5</span>
               </div>
@@ -262,14 +263,30 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
       </div>
 
       {result?.outOfScope && (
-        <div id="optimizer-results" ref={resultsRef} className="rounded-2xl border border-amber-400 bg-amber-50 p-6">
+        <div
+          id="optimizer-results"
+          ref={resultsRef}
+          role="region"
+          tabIndex={-1}
+          aria-live="polite"
+          aria-label={tx.outOfScopeTitle}
+          className="scroll-mt-6 rounded-2xl border border-amber-400 bg-amber-50 p-6 outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+        >
           <p className="text-xs font-bold uppercase tracking-wide text-amber-700">{tx.outOfScopeTitle}</p>
           <p className="mt-2 text-sm leading-relaxed text-gray-700">{result.policyNote}</p>
         </div>
       )}
 
       {result && result.topPath && !result.outOfScope && (
-        <div id="optimizer-results" ref={resultsRef} className="space-y-6">
+        <div
+          id="optimizer-results"
+          ref={resultsRef}
+          role="region"
+          tabIndex={-1}
+          aria-live="polite"
+          aria-label={tx.recommended}
+          className="scroll-mt-6 space-y-6 outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+        >
           <div
             className="rounded-2xl p-6 text-white"
             style={{ background: `linear-gradient(135deg, ${result.topPath.path.color}, ${result.topPath.path.color}cc)` }}
@@ -296,13 +313,13 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
                 <>
                   <div className="rounded-xl bg-white/15 px-4 py-2 text-center">
                     <p className="text-xs opacity-70">{tx.modelConfidence}</p>
-                    <p className="text-xl font-bold">
+                    <p className="font-mono text-xl font-bold">
                       {Math.round(result.topPath.weightStability * 100)}%
                     </p>
                   </div>
                   <div className="rounded-xl bg-white/15 px-4 py-2 text-center">
                     <p className="text-xs opacity-70">{tx.treeVotes}</p>
-                    <p className="text-xl font-bold">{result.topPath.votes}/30</p>
+                    <p className="font-mono text-xl font-bold">{result.topPath.votes}/30</p>
                   </div>
                 </>
               ) : (
@@ -313,7 +330,7 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
               )}
               <div className="rounded-xl bg-white/15 px-4 py-2 text-center">
                 <p className="text-xs opacity-70">{tx.typicalTime}</p>
-                <p className="text-xl font-bold">
+                <p className="font-mono text-xl font-bold">
                   {result.topPath.path.typicalDays[0]}–{result.topPath.path.typicalDays[1]} {tx.days}
                 </p>
               </div>
@@ -375,7 +392,7 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
             <div className="space-y-3">
               {result.ranked.map((r, i) => (
                 <div key={r.path.id} className="flex items-center gap-3">
-                  <span className="w-4 text-xs font-bold text-gray-400">{i + 1}</span>
+                  <span className="w-4 font-mono text-xs font-bold text-gray-400">{i + 1}</span>
                   <div className="w-36 shrink-0">
                     <p className="text-xs font-medium text-gray-700">
                       {lang === "en" ? r.path.nameEn : r.path.name}
@@ -395,11 +412,11 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
                       />
                     </div>
                   </div>
-                  <span className="w-10 text-right text-xs font-semibold text-gray-600">
+                  <span className="w-10 text-right font-mono text-xs font-semibold text-gray-600">
                     {r.votes}/30
                   </span>
                   <span
-                    className="w-14 rounded-full px-2 py-0.5 text-center text-xs font-bold text-white"
+                    className="w-14 rounded-full px-2 py-0.5 text-center font-mono text-xs font-bold text-white"
                     style={{ background: r.path.color }}
                   >
                     {Math.round(r.weightStability * 100)}%

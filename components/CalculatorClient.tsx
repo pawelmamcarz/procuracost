@@ -7,6 +7,7 @@ import CostCalculator from "@/components/CostCalculator";
 import { calculateCosts, ComparisonResult, ProcurementInputs } from "@/lib/calculations";
 import { Scenario, SCENARIOS } from "@/lib/scenarios";
 import { encodeInputsToParams, inputsFromSearchParams } from "@/components/calculator-url";
+import { revealResult } from "@/components/result-reveal";
 
 const CostComparison = dynamic(() => import("@/components/CostComparison"), { ssr: false });
 const PDFExport = dynamic(() => import("@/components/PDFExport"), { ssr: false });
@@ -29,7 +30,7 @@ export default function CalculatorClient() {
     setActiveScenario(scenario);
     setActiveInputs(inputs);
     requestAnimationFrame(() => {
-      resultsRef.current?.scrollIntoView({ behavior: "smooth" });
+      revealResult(resultsRef.current);
     });
   }
 
@@ -45,7 +46,7 @@ export default function CalculatorClient() {
         <p className="mt-1 text-sm text-gray-500">
           Porównaj całkowite koszty dla trzech klas procesów: zakupów strategicznych, zakupów
           operacyjnych oraz strategicznych zakupów PZP. Czas i koszty wynikają z szablonu procesu
-          i stawek uczestników — nie są wpisywane ręcznie.
+          i stawek uczestników. Nie są wpisywane ręcznie.
         </p>
       </div>
 
@@ -59,9 +60,16 @@ export default function CalculatorClient() {
       </div>
 
       {result && activeScenario && activeInputs && (
-        <div ref={resultsRef} className="mt-10 rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+        <div
+          ref={resultsRef}
+          role="region"
+          tabIndex={-1}
+          aria-live="polite"
+          aria-labelledby="calculator-results-title"
+          className="mt-10 scroll-mt-6 rounded-2xl border border-gray-100 bg-white p-6 shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+        >
           <div className="mb-6 flex items-center justify-between">
-            <h2 className="text-lg font-bold text-gray-900">
+            <h2 id="calculator-results-title" className="text-lg font-bold text-gray-900">
               Wyniki: {activeScenario.name}
             </h2>
             <PDFExport result={result} scenario={activeScenario} inputs={activeInputs} />

@@ -1,57 +1,65 @@
 "use client";
 
-import { useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { Suspense, useSyncExternalStore } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 import NavBar from "@/components/NavBar";
 import SiteFooter from "@/components/SiteFooter";
+import { navigationT, type Lang } from "@/lib/i18n";
+import { localizedCounterpart, navigationFor } from "@/lib/site-routes";
 
-interface NavItem {
-  href: string;
-  label: string;
-  highlight?: boolean;
+function isActiveRoute(pathname: string, href: string) {
+  return pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
 }
 
-const navItemsPl: NavItem[] = [
-  { href: "/calculator", label: "Kalkulator" },
-  { href: "/optimizer", label: "Optymalizator", highlight: true },
-  { href: "/case-studies", label: "Scenariusze" },
-  { href: "/assessment", label: "Ocena dojrzałości" },
-  { href: "/shortcasty", label: "Shortcasty" },
-  { href: "/team", label: "Zespół" },
-  { href: "/research", label: "Research paper" },
-  { href: "/research-agenda", label: "Agenda" },
-  { href: "/methodology", label: "Methodology" },
-];
+export function languageSwitchHref(pathname: string, search: string, hash: string, targetLang: Lang) {
+  return localizedCounterpart(`${pathname}${search ? `?${search}` : ""}${hash}`, targetLang);
+}
 
-const navItemsEn: NavItem[] = [
-  { href: "/en/calculator", label: "Calculator" },
-  { href: "/en/optimizer", label: "Optimizer", highlight: true },
-  { href: "/en/case-studies", label: "Scenarios" },
-  { href: "/en/assessment", label: "Maturity Assessment" },
-  { href: "/en/team", label: "Team" },
-  { href: "/en/model", label: "Model" },
-  { href: "/en/methodology", label: "Methodology" },
-];
+function subscribeToHashChange(onStoreChange: () => void) {
+  window.addEventListener("hashchange", onStoreChange);
+  return () => window.removeEventListener("hashchange", onStoreChange);
+}
 
-export default function AppShell({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-  const isEnglish = pathname?.startsWith("/en") ?? false;
+function useHash() {
+  return useSyncExternalStore(
+    subscribeToHashChange,
+    () => window.location.hash,
+    () => "",
+  );
+}
 
-  useEffect(() => {
-    document.documentElement.lang = isEnglish ? "en" : "pl";
-  }, [isEnglish]);
+type NavChromeProps = {
+  brand: { href: string; label: string };
+  items: { href: string; label: string; highlight?: boolean; active: boolean }[];
+  lang: Lang;
+  targetLang: Lang;
+  labels: { languageSwitch: string; primaryNavigation: string; openMenu: string; closeMenu: string };
+  pathname: string;
+};
 
-  const brand = { href: isEnglish ? "/en" : "/", label: "ProcuraCost" };
-  const items = isEnglish ? navItemsEn : navItemsPl;
-  const langSwitch = isEnglish
-    ? { href: "/", label: "PL" }
-    : { href: "/en", label: "EN" };
+function ContextualNavBar({ brand, items, lang, targetLang, labels, pathname }: NavChromeProps) {
+  const search = useSearchParams().toString();
+  const hash = useHash();
+  const langSwitch = { href: languageSwitchHref(pathname, search, hash, targetLang), label: labels.languageSwitch };
+
+  return <NavBar key={`${pathname}?${search}${hash}`} brand={brand} items={items} lang={lang} langSwitch={langSwitch} labels={labels} pathname={pathname} />;
+}
+
+export default function AppShell({ children, lang }: { children: React.ReactNode; lang: Lang }) {
+  const pathname = usePathname() ?? "/";
+  const targetLang: Lang = lang === "en" ? "pl" : "en";
+  const labels = navigationT[lang];
+  const brand = { href: lang === "en" ? "/en" : "/", label: "ProcuraCost" };
+  const items = navigationFor(lang).map((item) => ({ ...item, active: isActiveRoute(pathname, item.href) }));
+  const fallbackLangSwitch = { href: localizedCounterpart(pathname, targetLang), label: labels.languageSwitch };
 
   return (
     <>
-      <NavBar brand={brand} items={items} langSwitch={langSwitch} />
+      <Suspense fallback={<NavBar key={pathname} brand={brand} items={items} lang={lang} langSwitch={fallbackLangSwitch} labels={labels} pathname={pathname} />}>
+        <ContextualNavBar brand={brand} items={items} lang={lang} targetLang={targetLang} labels={labels} pathname={pathname} />
+      </Suspense>
       <main className="flex-1">{children}</main>
-      <SiteFooter lang={isEnglish ? "en" : "pl"} />
+      <SiteFooter lang={lang} />
     </>
   );
 }

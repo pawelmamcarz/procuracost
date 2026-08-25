@@ -60,17 +60,17 @@ The cost model is a layered pipeline of pure functions and constants. Changes to
 
 ### Routing: duplicated PL/EN route trees
 
-Polish is the default at the root (`app/calculator`, `app/optimizer`, …). English lives under `app/en/` as a **parallel, manually-duplicated subtree** (`app/en/calculator`, …). There is no locale middleware or dynamic `[lang]` segment — changing a page that exists in both trees means editing both. The trees are **not** at full parity, and the exceptions each have a reason:
+Polish is the default at the root (`app/(pl)/calculator`, `app/(pl)/optimizer`, …). English lives under `app/(en)/en/` as a **parallel, manually-duplicated subtree** (`app/(en)/en/calculator`, …). The `(pl)` and `(en)` route groups do not appear in public URLs. They provide separate static root layouts with genuine server-rendered `lang="pl"` and `lang="en"`. There is no locale middleware or dynamic `[lang]` segment — changing a page that exists in both trees means editing both. The trees are **not** at full parity, and the exceptions each have a reason:
 
 - Mirrored normally: `assessment`, `calculator`, `case-studies`, `methodology`, `model`, `optimizer`, `team`, `shortcasty`.
-- `app/en/research/page.tsx` is a **redirect to `/research`**, not a translation — the working paper is written in English, so the PL route already serves the English text. Don't "fix" it by duplicating the paper.
-- `app/research-agenda` is PL-only and has no EN counterpart.
+- `app/(en)/en/research/page.tsx` is a **redirect to `/research`**, not a translation. The working paper is written in English and `app/(en)/research/page.tsx` places its canonical URL under the English root. Don't "fix" it by duplicating the paper.
+- `app/(pl)/research-agenda` is PL-only and has no EN counterpart.
 
-Confirm a route exists under `app/en/` before assuming you must edit it. Language is selected via the NavBar lang switch and the `lang`/`Lang` param threaded into components and i18n lookups.
+Confirm a route exists under `app/(en)/en/` before assuming you must edit it. Language is selected via the NavBar lang switch and the `lang`/`Lang` param threaded into components and i18n lookups.
 
 The interactive pages follow one pattern: the route file is a thin **async server component** that `await connection()` (from `next/server`, opting out of prerender because the tool reads `useSearchParams`) and renders a client wrapper — `CalculatorClient` (PL) / `EnCalculatorClient` (EN). The wrapper owns result state, `dynamic(..., { ssr: false })` imports of `CostComparison` and `PDFExport`, and URL round-tripping of calculator inputs via `encodeInputsToParams` / `inputsFromSearchParams` in `components/calculator-url.ts`. Adding an input to `ProcurementInputs` means updating that codec too, or shared links silently drop the field.
 
-Chrome (NavBar + footer + projects bar) is rendered **once** by `components/AppShell.tsx`, a `"use client"` shell that the root `app/layout.tsx` wraps around all children. AppShell reads `usePathname()` and switches to English chrome for any path under `/en`. Because the root layout wraps every route, `app/en/layout.tsx` must **not** render its own NavBar/footer (doing so produced a duplicate navbar + mismatched-language footer) — it only sets EN `metadata` and returns `{children}`. The footer/projects bar markup lives in `components/SiteFooter.tsx` (language-aware via a `lang` prop). To change nav items, edit the `navItemsPl` / `navItemsEn` arrays in `AppShell`; to change the footer, edit `SiteFooter`.
+Chrome (NavBar + footer + projects bar) is rendered **once** by `components/AppShell.tsx`, a `"use client"` shell mounted by each static route-group root layout. `app/(pl)/layout.tsx` passes `lang="pl"`; `app/(en)/layout.tsx` passes `lang="en"`. AppShell uses the pathname only for active-route state and context-preserving links; it never patches the document language after hydration. The footer/projects bar markup lives in `components/SiteFooter.tsx` (language-aware via a `lang` prop). To change primary navigation, edit the typed manifest in `lib/site-routes.ts`; to change the footer, edit `SiteFooter` and its typed copy in `lib/i18n.ts`.
 
 ### Components
 

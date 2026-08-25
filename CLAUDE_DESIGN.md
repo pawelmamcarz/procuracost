@@ -1,4 +1,4 @@
-# Design System — ProcuraCost
+# Design System: ProcuraCost
 
 ## Color semantics
 
@@ -8,7 +8,7 @@ Every new UI element maps to one of these roles. Never introduce new palette ent
 |---|---|---|
 | Primary action | `blue-500/600`, `blue-50`, `blue-700` | Buttons, links, scenario pills, chart bars |
 | Rigid / tunnel | `red-200/300`, `red-50`, `red-600/700/900` | PZP-EU steps, mandatory waits, tunnel metaphor |
-| Flexible / field | `green-200/400`, `green-50`, `green-600/700` | policy_only, field metaphor, savings deltas |
+| Flexible / field | `green-200/400`, `green-50`, `green-600/700` | policy_only, field metaphor |
 | Process type selector | `indigo-400`, `indigo-50`, `indigo-700` | Process type toggle buttons |
 | Tech level selector | `teal-400`, `teal-50`, `teal-700` | Technology level toggle buttons |
 | Section surface | `gray-50`, `gray-100`, `border-gray-100` | Section card backgrounds |
@@ -17,7 +17,11 @@ Every new UI element maps to one of these roles. Never introduce new palette ent
 
 Chart color constants (Recharts): rigid = `#ef4444`, flexible = `#22c55e`, delta = `#3b82f6`.
 
+Red and green identify rigid and flexible paths only. Never use red or green to encode generic cost magnitude; use the neutral gray scale and action blue for magnitude instead.
+
 ## Typography
+
+Use Public Sans for interface and body text. Use IBM Plex Mono for numeric values, assumptions, version strings, and notation. Do not use prose em dashes; use a full stop, colon, or parentheses when the sentence needs a pause.
 
 ```
 Labels above inputs:   text-xs font-medium text-gray-600 mb-1
@@ -53,10 +57,12 @@ Semantic field card (green):
 </div>
 ```
 
-Hero/CTA gradient:
+Page hero and CTA:
 ```tsx
-<div className="rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-center text-white">
+<div className="rounded-2xl bg-blue-600 p-8 text-center text-white">
 ```
+
+Page heroes must not use gradients.
 
 ## Button patterns
 
@@ -65,22 +71,22 @@ Primary CTA:
 className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white hover:bg-blue-700 active:bg-blue-800"
 ```
 
-Toggle pill — selected (scenario):
+Toggle pill: selected scenario:
 ```tsx
 className="rounded-lg border border-blue-500 bg-blue-50 text-blue-700"
 ```
 
-Toggle pill — selected (process type):
+Toggle pill: selected process type:
 ```tsx
 className="rounded-lg border border-indigo-400 bg-indigo-50 text-indigo-700"
 ```
 
-Toggle pill — selected (tech level):
+Toggle pill: selected tech level:
 ```tsx
 className="rounded-lg border border-teal-400 bg-teal-50 text-teal-700"
 ```
 
-Toggle pill — idle (all):
+Toggle pill: idle:
 ```tsx
 className="rounded-lg border border-gray-200 bg-white text-gray-600 hover:border-gray-300"
 ```
@@ -115,11 +121,11 @@ Radar / multi-axis charts: normalize values to 0–100 before passing to RadarCh
 
 ## i18n pattern
 
-All user-facing strings go through `lib/i18n.ts`. Never hardcode Polish or English text in components directly — use `tx = calculatorT[lang]` or `comparisonT[lang]`.
+All user-facing strings go through `lib/i18n.ts`. Never hardcode Polish or English text in components directly. Use `tx = calculatorT[lang]` or `comparisonT[lang]`.
 
 Exception: the `lang === "en" ? "…" : "…"` ternary is acceptable only for very short labels (e.g., "days" / "dni") where adding an i18n key would be disproportionate.
 
-## Tunnel vs Field metaphor — usage rules
+## Tunnel vs Field metaphor: usage rules
 
 Use these terms consistently across all UI surfaces:
 
@@ -134,7 +140,9 @@ Use these terms consistently across all UI surfaces:
 
 Tagline (canonical): **"Tunel ma ściany. Pole ma horyzont."** / **"A tunnel has walls. A field has a horizon."**
 
-The mathematical notation `∂Φ = {uprawnienia, konkurencja, etyka, dokumentacja}` (PL) / `∂Φ = {auth, competition, ethics, docs}` (EN) is canonical — use it wherever the formal model is referenced.
+The mathematical notation `∂Φ = {uprawnienia, konkurencja, etyka, dokumentacja}` (PL) / `∂Φ = {auth, competition, ethics, docs}` (EN) is canonical. Use it wherever the formal model is referenced.
+
+The field is bounded by the same admissibility constraints as the tunnel. Any field visual must show that boundary and must not imply an unbounded or infinite option space.
 
 ## Process type visual grouping
 
@@ -150,10 +158,10 @@ Consider adding a visual separator or group label between layers if the selector
 
 ## Anti-patterns
 
-- No inline hex color values in `className` — use semantic Tailwind classes only
-- No `useEffect` for values derivable from props/state — compute inline or with `useMemo`
-- No new chart libraries — only Recharts (already a dependency)
-- No magic numbers in business logic — use named constants from `process-templates.ts`
-- No JSX comments (`{/* comment */}`) in returned markup — they add noise, remove them
+- No inline hex color values in `className`. Use semantic Tailwind classes only.
+- No `useEffect` for values derivable from props/state. Compute inline or with `useMemo`.
+- No new chart libraries. Use only Recharts, which is already a dependency.
+- No magic numbers in business logic. Use named constants from `process-templates.ts`.
+- No JSX comments (`{/* comment */}`) in returned markup. They add noise, remove them.
 - No multi-paragraph docstrings or comment blocks on functions
-- No `grid-cols-5` on mobile (breaks at narrow widths) — always start with `grid-cols-2` minimum
+- No `grid-cols-5` on mobile. Always start with `grid-cols-2` minimum.

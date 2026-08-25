@@ -20,4 +20,5 @@ Non-negotiables, in short:
 - Never tune parameters to preserve the Tunnel–Field result. `docs/MODEL_PARAMETERS.md`
   is the model-2.1 source of truth; `docs/archive/model-1.x/` is history, never a source.
 - All user-facing strings go through `lib/i18n.ts`. PL and EN are separate route
-  trees under `app/` and `app/en/` — check whether both need the edit.
+  trees under `app/(pl)/` and `app/(en)/en/`; route groups do not change their
+  public URLs. Check whether both need the edit.

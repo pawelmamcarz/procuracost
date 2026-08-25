@@ -48,6 +48,7 @@ next-env.d.ts
 **/.DS_Store
 # Large or frequently changing folders that shouldn't travel through iCloud
 .turbo/
+.worktrees/
 *.log
 playwright-report/
 test-results/

@@ -4,6 +4,9 @@ import { resolveSiteVersion } from "./lib/version-core";
 const buildVersion = resolveSiteVersion(process.env.NEXT_PUBLIC_VERSION);
 
 const nextConfig: NextConfig = {
+  turbopack: {
+    root: process.cwd(),
+  },
   experimental: {
     // `next dev` bez limitu sterty w NODE_OPTIONS ustawia dziecku
     // --max-old-space-size na 50% RAM (na 64 GB maszynie to 32 GB), a restartuje
