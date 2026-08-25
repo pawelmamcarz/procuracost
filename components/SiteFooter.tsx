@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+
 import Link from "next/link";
 import { VERSION } from "@/lib/version";
 import { teamT, type Lang } from "@/lib/i18n";
@@ -45,7 +47,6 @@ export default function SiteFooter({ lang }: { lang: Lang }) {
             className="flex items-center gap-3 opacity-80 hover:opacity-100"
           >
             <div className="flex -space-x-2">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/logo.png" alt="Paweł Mamcarz" className="h-7 w-7 rounded-full object-cover ring-2 ring-white" />
               {teamAvatars.map((initials) => (
                 <div

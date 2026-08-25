@@ -76,7 +76,7 @@ const calculatorPl = {
   flexiblePolicy: "Polityka zakupowa (elastyczna)",
   durationDays: "Czas trwania (dni)",
   adminCosts: "Koszty administracyjne (PLN)",
-  calculate: "Oblicz koszty utracone",
+  calculate: "Porównaj koszty",
   derivedNote: "Czas i koszty administracyjne wynikają z szablonu procesu i poziomu narzędzia.",
 } as const;
 
@@ -141,7 +141,7 @@ const calculatorEn = {
   flexiblePolicy: "Procurement policy (flexible)",
   durationDays: "Duration (days)",
   adminCosts: "Administrative costs (PLN)",
-  calculate: "Calculate opportunity costs",
+  calculate: "Compare costs",
   derivedNote: "Duration and administrative costs are derived from the process template and technology level.",
 } satisfies CalculatorShape;
 
@@ -1151,9 +1151,9 @@ const navigationPl = {
   caseStudies: "Scenariusze",
   assessment: "Ocena dojrzałości",
   team: "Zespół",
-  research: "Research paper",
-  researchAgenda: "Agenda",
-  methodology: "Methodology",
+  research: "Artykuł naukowy",
+  researchAgenda: "Agenda badawcza",
+  methodology: "Metodologia",
   model: "Model",
   languageSwitch: "EN",
   primaryNavigation: "Nawigacja główna",

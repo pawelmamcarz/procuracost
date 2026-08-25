@@ -4,7 +4,7 @@ import { calculateCosts } from "@/lib/calculations";
 import { PROCESS_TYPE_META, TECH_LEVELS } from "@/lib/process-templates";
 
 export const metadata: Metadata = {
-  title: "Case Studies — ProcuraCost",
+  title: "Case Studies | ProcuraCost",
   description:
     "Procurement-mechanism illustrations with sources kept separate from model outputs.",
 };
@@ -68,7 +68,6 @@ export default function EnCaseStudiesPage() {
         })}
       </div>
 
-      {/* Enforcement Fallacy box */}
       <div className="mt-6 rounded-2xl border border-amber-100 bg-amber-50 p-6">
         <h2 className="font-bold text-amber-900">The Enforcement Fallacy</h2>
         <p className="mt-2 text-sm text-amber-800">

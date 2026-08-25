@@ -7,6 +7,7 @@ import * as i18n from "@/lib/i18n";
 import ShortcastyEnPage from "@/app/en/shortcasty/page";
 import TeamPage from "@/components/TeamPage";
 import { EPISODES } from "@/lib/shortcasty";
+import { navigationFor } from "@/lib/site-routes";
 import { MODEL_VERSION } from "@/lib/version";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
@@ -26,6 +27,9 @@ const currentPublicFiles = [
   "app/shortcasty/page.tsx",
   "app/en/shortcasty/page.tsx",
   "app/shortcasty/[slug]/page.tsx",
+  "app/en/case-studies/page.tsx",
+  "app/icon.svg",
+  "components/SiteFooter.tsx",
   "lib/i18n.ts",
   "lib/shortcasty.ts",
   "lib/scenarios.ts",
@@ -68,6 +72,30 @@ describe("public editorial integrity", () => {
       const content = await readPublicFile(path);
       expect(content, path).not.toContain("formspree.io/f/placeholder");
       expect(content, path).not.toMatch(/href:\s*["']#["']/);
+    }
+  });
+
+  it("keeps the calculator action neutral in both languages", () => {
+    expect(i18n.calculatorT.pl.calculate).toBe("Porównaj koszty");
+    expect(i18n.calculatorT.en.calculate).toBe("Compare costs");
+  });
+
+  it("keeps Polish navigation labels in Polish", () => {
+    const labels = navigationFor("pl").map((item) => item.label);
+
+    expect(labels).toEqual(expect.arrayContaining([
+      "Artykuł naukowy",
+      "Agenda badawcza",
+      "Metodologia",
+    ]));
+    expect(labels).not.toEqual(expect.arrayContaining(["Research paper", "Methodology"]));
+  });
+
+  it("keeps public markup free of JSX comments and unbounded-field claims", async () => {
+    for (const path of currentPublicFiles) {
+      const content = await readPublicFile(path);
+      expect(content, path).not.toContain("{/*");
+      expect(content, path).not.toMatch(/infinite compliant paths/i);
     }
   });
 
