@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { Suspense, useEffect, useSyncExternalStore } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 import NavBar from "@/components/NavBar";
 import SiteFooter from "@/components/SiteFooter";
 import { navigationT, type Lang } from "@/lib/i18n";
@@ -11,6 +11,40 @@ function isActiveRoute(pathname: string, href: string) {
   return pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
 }
 
+export function languageSwitchHref(pathname: string, search: string, hash: string, targetLang: Lang) {
+  return localizedCounterpart(`${pathname}${search ? `?${search}` : ""}${hash}`, targetLang);
+}
+
+function subscribeToHashChange(onStoreChange: () => void) {
+  window.addEventListener("hashchange", onStoreChange);
+  return () => window.removeEventListener("hashchange", onStoreChange);
+}
+
+function useHash() {
+  return useSyncExternalStore(
+    subscribeToHashChange,
+    () => window.location.hash,
+    () => "",
+  );
+}
+
+type NavChromeProps = {
+  brand: { href: string; label: string };
+  items: { href: string; label: string; highlight?: boolean; active: boolean }[];
+  lang: Lang;
+  targetLang: Lang;
+  labels: { languageSwitch: string; primaryNavigation: string; openMenu: string; closeMenu: string };
+  pathname: string;
+};
+
+function ContextualNavBar({ brand, items, lang, targetLang, labels, pathname }: NavChromeProps) {
+  const search = useSearchParams().toString();
+  const hash = useHash();
+  const langSwitch = { href: languageSwitchHref(pathname, search, hash, targetLang), label: labels.languageSwitch };
+
+  return <NavBar key={`${pathname}?${search}${hash}`} brand={brand} items={items} lang={lang} langSwitch={langSwitch} labels={labels} pathname={pathname} />;
+}
+
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname() ?? "/";
   const lang: Lang = pathname.startsWith("/en") ? "en" : "pl";
@@ -18,7 +52,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const labels = navigationT[lang];
   const brand = { href: lang === "en" ? "/en" : "/", label: "ProcuraCost" };
   const items = navigationFor(lang).map((item) => ({ ...item, active: isActiveRoute(pathname, item.href) }));
-  const langSwitch = { href: localizedCounterpart(pathname, targetLang), label: labels.languageSwitch };
+  const fallbackLangSwitch = { href: localizedCounterpart(pathname, targetLang), label: labels.languageSwitch };
 
   useEffect(() => {
     document.documentElement.lang = lang;
@@ -26,7 +60,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <NavBar key={pathname} brand={brand} items={items} lang={lang} langSwitch={langSwitch} labels={labels} pathname={pathname} />
+      <Suspense fallback={<NavBar key={pathname} brand={brand} items={items} lang={lang} langSwitch={fallbackLangSwitch} labels={labels} pathname={pathname} />}>
+        <ContextualNavBar brand={brand} items={items} lang={lang} targetLang={targetLang} labels={labels} pathname={pathname} />
+      </Suspense>
       <main className="flex-1">{children}</main>
       <SiteFooter lang={lang} />
     </>

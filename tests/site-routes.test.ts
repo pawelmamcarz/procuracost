@@ -1,10 +1,15 @@
 import { describe, expect, it } from "vitest";
+import { languageSwitchHref } from "@/components/AppShell";
 import { localizedCounterpart, navigationFor, sitemapPaths } from "@/lib/site-routes";
 
 describe("public route contract", () => {
   it("keeps language switches on the equivalent route", () => {
     expect(localizedCounterpart("/calculator", "en")).toBe("/en/calculator");
     expect(localizedCounterpart("/en/model/assumptions", "pl")).toBe("/model/assumptions");
+  });
+
+  it("passes query strings and fragments through the chrome language switch", () => {
+    expect(languageSwitchHref("/calculator", "x=1", "#result", "en")).toBe("/en/calculator?x=1#result");
   });
 
   it("keeps the working paper canonical at /research", () => {
