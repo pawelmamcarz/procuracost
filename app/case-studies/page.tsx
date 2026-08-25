@@ -4,7 +4,7 @@ import { calculateCosts } from "@/lib/calculations";
 import { PROCESS_TYPE_META, TECH_LEVELS } from "@/lib/process-templates";
 
 export const metadata: Metadata = {
-  title: "Case studies — ProcuraCost",
+  title: "Case studies: ProcuraCost",
   description:
     "Ilustracje mechanizmów zakupowych z jawnym oddzieleniem źródeł od wyników modelu.",
 };

@@ -46,7 +46,7 @@ export default function CalculatorClient() {
         <p className="mt-1 text-sm text-gray-500">
           Porównaj całkowite koszty dla trzech klas procesów: zakupów strategicznych, zakupów
           operacyjnych oraz strategicznych zakupów PZP. Czas i koszty wynikają z szablonu procesu
-          i stawek uczestników — nie są wpisywane ręcznie.
+          i stawek uczestników. Nie są wpisywane ręcznie.
         </p>
       </div>
 

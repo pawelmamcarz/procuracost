@@ -70,9 +70,9 @@ export const PATHS: Record<PathId, ProcurementPath> = {
     nameEn: "Open Tender",
     pzpArticle: "PZP Art. 132",
     description:
-      "Klasyczny przetarg otwarty — oferty składa nieograniczona liczba podmiotów. Maksymalna konkurencja, pełna przejrzystość, najdłuższy czas.",
+      "Klasyczny przetarg otwarty. Oferty składa nieograniczona liczba podmiotów. Maksymalna konkurencja, pełna przejrzystość, najdłuższy czas.",
     descriptionEn:
-      "Classic open tender — offers submitted by an unlimited number of entities. Maximum competition, full transparency, longest timeline.",
+      "Classic open tender. Offers are submitted by an unlimited number of entities. Maximum competition, full transparency, longest timeline.",
     // Statutory floor, standard periods, electronic communication, no urgency derogation:
     // 35 d offers (art. 138 ust. 1) + 10 d standstill (art. 264 ust. 1) = 45 d.
     typicalDays: [45, 180],
@@ -141,9 +141,9 @@ export const PATHS: Record<PathId, ProcurementPath> = {
     nameEn: "Competitive Dialogue",
     pzpArticle: "PZP Art. 169",
     description:
-      "Wieloetapowe negocjacje z wybranymi dostawcami — zamawiający nie zna optymalnego rozwiązania i iteracyjnie go odkrywa. Idealny dla innowacji i złożonych projektów.",
+      "Wieloetapowe negocjacje z wybranymi dostawcami. Zamawiający nie zna optymalnego rozwiązania i iteracyjnie je doprecyzowuje. Tryb przewidziany dla zamówień innowacyjnych i złożonych.",
     descriptionEn:
-      "Multi-stage negotiations with selected suppliers — the contracting authority does not know the optimal solution and iteratively discovers it. Ideal for innovation and complex projects.",
+      "Multi-stage negotiations with selected suppliers. The contracting authority does not know the optimal solution and refines it iteratively. A procedure intended for innovative and complex procurements.",
     typicalDays: [90, 270],
     conditions: [
       "Wysoka złożoność lub innowacyjność",

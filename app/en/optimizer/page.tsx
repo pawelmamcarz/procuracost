@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import PathOptimizer from "@/components/PathOptimizer";
 
 export const metadata: Metadata = {
-  title: "Procurement Path Optimizer — ProcuraCost",
+  title: "Procurement Path Optimizer: ProcuraCost",
   description:
     "A rule-based model with a 30-run sensitivity sweep recommending a lawful procurement path based on your purchase parameters.",
 };
@@ -12,7 +12,7 @@ export default function EnOptimizerPage() {
     <div className="mx-auto max-w-5xl px-6 py-10">
       <div className="mb-8">
         <span className="inline-block rounded-full bg-blue-50 px-3 py-0.5 text-xs font-semibold uppercase tracking-wide text-blue-600">
-          Rule-based model — sensitivity analysis (30 runs)
+          Rule-based model · sensitivity analysis (30 runs)
         </span>
         <h1 className="mt-3 text-2xl font-bold text-gray-900">
           Procurement Path Optimizer

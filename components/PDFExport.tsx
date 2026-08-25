@@ -286,7 +286,7 @@ export default function PDFExport({ result, scenario, inputs }: Props) {
 
       doc.setTextColor(75, 85, 99);
       doc.setFontSize(7);
-      doc.text(exportLang === "pl" ? "KONTEKST MODELU — ZASTOSOWANE MNOŻNIKI" : "MODEL CONTEXT — APPLIED MULTIPLIERS", margin + 4, y + 5);
+      doc.text(exportLang === "pl" ? "KONTEKST MODELU: ZASTOSOWANE MNOŻNIKI" : "MODEL CONTEXT: APPLIED MULTIPLIERS", margin + 4, y + 5);
 
       doc.setFontSize(6.5);
       doc.setTextColor(55, 65, 81);

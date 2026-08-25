@@ -48,7 +48,7 @@ export default function CostMatrix({ inputs, lang }: Props) {
               {inputs.spendType && inputs.processPhase ? " × " : ""}
               {inputs.processPhase === "upstream" ? tx.matrixContextUpstream : inputs.processPhase === "downstream" ? tx.matrixContextDownstream : ""}
             </span>
-            <span className="ml-1 text-blue-600/70">— {tx.matrixContextDetail}</span>
+            <span className="ml-1 text-blue-600/70">· {tx.matrixContextDetail}</span>
           </div>
         ) : (
           <p className="mb-2 text-[10px] text-gray-500">{tx.matrixNoContextNote}</p>

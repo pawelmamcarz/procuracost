@@ -70,7 +70,7 @@ export default function ResearchPage() {
           scenario rather than a measurement.
         </p>
         <p>
-          <strong>Beuve, Moszoro, and Spiller (2023)</strong> estimate contractual—not procedural—rigidity
+          <strong>Beuve, Moszoro, and Spiller (2023)</strong> estimate contractual rather than procedural rigidity
           using 2SLS/IV in French car-park contracts. Their 0.077–0.105 result is an increase in formal
           amendments per contract-year for a simultaneous one-standard-deviation increase in each of seven
           rigidity categories, not an event probability. ProcuraCost&apos;s 0–1 profile has no empirical
@@ -99,7 +99,7 @@ export default function ResearchPage() {
         <p>
           A positive ΔC favors the adaptive path; a negative value favors the formal path. If the displayed
           scenario interval crosses zero, assumptions determine the winner. If it does not, the sign is stable
-          only within the declared bounds—not statistically proven.
+          only within the declared bounds; it is not statistically proven.
         </p>
         <p>
           {comparisonT.en.breakEvenGeneral}

@@ -28,7 +28,7 @@ export default function StepsTable({ inputs, rigidDays, flexibleDays, lang }: Pr
   return (
     <div>
       <h3 className="mb-3 text-sm font-semibold text-gray-700">{tx.stepsTitle}</h3>
-      <p className="mb-3 text-xs text-gray-400">{processLabel} — {TECH_LEVELS[inputs.techLevel][lang === "en" ? "nameEn" : "name"]}</p>
+      <p className="mb-3 text-xs text-gray-400">{processLabel}: {TECH_LEVELS[inputs.techLevel][lang === "en" ? "nameEn" : "name"]}</p>
       <div className="overflow-x-auto rounded-xl border border-gray-100">
         <table className="w-full text-xs">
           <thead>

@@ -46,7 +46,7 @@ export default function EnCalculatorClient() {
         <p className="mt-1 text-sm text-gray-500">
           Compare total costs across three process classes: strategic procurement, operational
           procurement and strategic PZP procurement. Duration and admin costs are derived from the
-          process template and stakeholder rates — not entered manually.
+          process template and stakeholder rates. They are not entered manually.
         </p>
       </div>
 

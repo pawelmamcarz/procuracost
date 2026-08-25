@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { TAGLINE_PL } from "./seo-config";
 
-export const alt = "ProcuraCost — Tunel ma ściany. Pole ma horyzont.";
+export const alt = "ProcuraCost: Tunel ma ściany. Pole ma horyzont.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

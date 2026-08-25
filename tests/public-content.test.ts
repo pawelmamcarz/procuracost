@@ -5,7 +5,11 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import * as i18n from "@/lib/i18n";
 import ShortcastyEnPage from "@/app/en/shortcasty/page";
+import ResearchAgendaPage from "@/app/research-agenda/page";
 import TeamPage from "@/components/TeamPage";
+import { calculateCosts } from "@/lib/calculations";
+import { PATHS } from "@/lib/optimizer";
+import { SCENARIOS } from "@/lib/scenarios";
 import { EPISODES } from "@/lib/shortcasty";
 import { navigationFor } from "@/lib/site-routes";
 import { MODEL_VERSION } from "@/lib/version";
@@ -35,6 +39,27 @@ const currentPublicFiles = [
   "lib/scenarios.ts",
 ] as const;
 
+// These files contain mutable, current-facing prose. Process-template display data,
+// historical comparison prose, canonical notation and missing-value placeholders are
+// intentionally outside this guard because their em dashes carry protected meaning.
+const currentProseFiles = [
+  "app/calculator/layout.tsx",
+  "app/case-studies/page.tsx",
+  "app/en/calculator/layout.tsx",
+  "app/en/opengraph-image.tsx",
+  "app/en/optimizer/page.tsx",
+  "app/en/research/page.tsx",
+  "app/opengraph-image.tsx",
+  "app/optimizer/page.tsx",
+  "app/research/page.tsx",
+  "app/research-agenda/page.tsx",
+  "components/CalculatorClient.tsx",
+  "components/cost-comparison/CostMatrix.tsx",
+  "components/cost-comparison/StepsTable.tsx",
+  "components/EnCalculatorClient.tsx",
+  "components/PDFExport.tsx",
+] as const;
+
 const historicalI18nAllowList = [
   "Wpisanie 0 odtwarza niedyskontowany model 2.1.",
   "Model 2.1 stosuje szerokie mnożniki kontekstu wyłącznie do nakładu pracy i niepracowniczego narzutu koordynacyjnego. Pozostałe mechanizmy mają odrębne profile; 1,00 oznacza brak korekty.",
@@ -51,6 +76,12 @@ const forbiddenTeamPhrases = [
 
 async function readPublicFile(path: string) {
   return readFile(new URL(path, `file://${root}/`), "utf8");
+}
+
+function withoutCodeComments(content: string) {
+  return content
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .replace(/^\s*\/\/.*$/gm, "");
 }
 
 describe("public editorial integrity", () => {
@@ -100,9 +131,40 @@ describe("public editorial integrity", () => {
   });
 
   it("keeps current public prose free of em dashes", async () => {
-    for (const path of currentPublicFiles) {
-      expect(await readPublicFile(path), path).not.toContain("—");
+    for (const path of currentProseFiles) {
+      const prose = withoutCodeComments(await readPublicFile(path));
+      expect(prose, path).not.toContain("—");
     }
+
+    const sources = Object.values(calculateCosts(SCENARIOS[0].inputs).sources);
+    const optimizerDescriptions = Object.values(PATHS).flatMap((path) => [
+      path.description,
+      path.descriptionEn,
+    ]);
+
+    expect(sources.join("\n"), "calculation sources").not.toContain("—");
+    expect(optimizerDescriptions.join("\n"), "optimizer descriptions").not.toContain("—");
+  });
+
+  it("describes optimizer paths factually in both languages", () => {
+    const dialogue = PATHS.dialog_konkurencyjny;
+
+    expect(dialogue.description).not.toMatch(/Idealny dla/i);
+    expect(dialogue.descriptionEn).not.toMatch(/Ideal for/i);
+    expect(dialogue.description).toContain("Tryb przewidziany dla");
+    expect(dialogue.descriptionEn).toContain("A procedure intended for");
+  });
+
+  it("renders the Polish-only research agenda in Polish", () => {
+    const markup = renderToStaticMarkup(createElement(ResearchAgendaPage));
+
+    expect(markup).toContain("Agenda badawcza");
+    expect(markup).toContain("Priorytety pomiaru");
+    expect(markup).toContain("Reguła identyfikacji");
+    expect(markup).toContain("Aktualny status");
+    expect(markup).not.toContain("Validate mechanisms before monetizing them");
+    expect(markup).not.toContain("Measurement priorities");
+    expect(markup).not.toContain("Current status");
   });
 
   it("keeps rendered Polish and English team content free of inflated role claims", () => {
