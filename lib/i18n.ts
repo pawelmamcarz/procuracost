@@ -1,4 +1,5 @@
 import { MODEL_VERSION } from "./version";
+import type { DecisionMapRowId } from "./decision-map";
 
 export type Lang = "pl" | "en";
 
@@ -726,6 +727,70 @@ const shortcastsEn = {
 } satisfies ShortcastsShape;
 
 export const shortcastsT = { pl: shortcastsPl, en: shortcastsEn } as const;
+
+const decisionMapPl = {
+  eyebrow: "Kiedy tunel, kiedy pole: mapa progów",
+  description:
+    "Oś pozioma pokazuje podany koszt dnia bezczynności. Każdy pas wskazuje, czy pełny zakres niepewności daje odporny wynik, czy o wyborze ścieżki decydują założenia.",
+  legend: {
+    formal: "formalna wygrywa odpornie",
+    undecided: "decydują założenia",
+    adaptive: "adaptacyjna wygrywa odpornie",
+    central: "próg centralny",
+  },
+  ariaLabel: "Mapa progów decyzyjnych według kategorii zakupu",
+  axisLabel: "PLN / dzień bezczynności →",
+  contractValue: (value: string) => `CV ${value}`,
+  dayDifference: (value: number) =>
+    `Δ ${value > 0 ? "+" : ""}${value.toFixed(0)} ${Math.abs(value) === 1 ? "dzień" : "dni"}`,
+  rows: {
+    pzpEu: "PZP: przetarg UE",
+    pzpEuLarge: "PZP: przetarg UE (duży)",
+    pzpNational: "PZP: tryb podstawowy",
+    privateFormal: "Przetarg prywatny (RFP)",
+    capex: "Inwestycja CAPEX",
+    discovery: "Zakup odkrywczy",
+    policyOnly: "Ścieżka adaptacyjna",
+    catalog: "Zamówienie z katalogu",
+    mrp: "Zlecenie MRP",
+  } satisfies Record<DecisionMapRowId, string>,
+  note:
+    "Wejścia porównawcze: technologia partial ERP, kontrakt dwuletni, koszt aneksu 4% CV i ekspozycja 10% CV. Pas „decydują założenia” łączy niepewność dowodową i założenia strukturalne, w tym koszt dnia bezczynności oraz czasy etapów. Nie jest przedziałem ufności.",
+} as const;
+
+type DecisionMapShape = LangShape<typeof decisionMapPl>;
+
+const decisionMapEn = {
+  eyebrow: "When tunnel, when field: threshold map",
+  description:
+    "The horizontal axis shows the supplied daily cost of inaction. Each band indicates whether the full uncertainty range gives a robust result or assumptions determine the path choice.",
+  legend: {
+    formal: "formal wins robustly",
+    undecided: "assumptions decide",
+    adaptive: "adaptive wins robustly",
+    central: "central threshold",
+  },
+  ariaLabel: "Decision-threshold map by purchase category",
+  axisLabel: "PLN / day of inaction →",
+  contractValue: (value: string) => `CV ${value}`,
+  dayDifference: (value: number) =>
+    `Δ ${value > 0 ? "+" : ""}${value.toFixed(0)} ${Math.abs(value) === 1 ? "day" : "days"}`,
+  rows: {
+    pzpEu: "PZP: EU tender",
+    pzpEuLarge: "PZP: EU tender (large)",
+    pzpNational: "PZP: national basic mode",
+    privateFormal: "Private tender (RFP)",
+    capex: "CAPEX investment",
+    discovery: "Discovery purchase",
+    policyOnly: "Adaptive path",
+    catalog: "Catalog order",
+    mrp: "MRP order",
+  } satisfies Record<DecisionMapRowId, string>,
+  note:
+    "Comparator inputs: partial-ERP technology, a two-year contract, amendment cost at 4% of CV, and exposure at 10% of CV. The “assumptions decide” band combines evidence uncertainty with structural assumptions, including the daily cost of inaction and step durations. It is not a confidence interval.",
+} satisfies DecisionMapShape;
+
+export const decisionMapT = { pl: decisionMapPl, en: decisionMapEn } as const;
 
 const dimensionMultiplierLabelsPl = {
   staff: "Nakład pracy ról",
