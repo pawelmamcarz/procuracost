@@ -721,3 +721,40 @@ export const dimensionMultiplierLabelsT = {
   pl: dimensionMultiplierLabelsPl,
   en: dimensionMultiplierLabelsEn,
 } as const;
+
+const navigationPl = {
+  calculator: "Kalkulator",
+  optimizer: "Optymalizator",
+  caseStudies: "Scenariusze",
+  assessment: "Ocena dojrzałości",
+  team: "Zespół",
+  research: "Research paper",
+  researchAgenda: "Agenda",
+  methodology: "Methodology",
+  model: "Model",
+  languageSwitch: "EN",
+  primaryNavigation: "Nawigacja główna",
+  openMenu: "Otwórz menu",
+  closeMenu: "Zamknij menu",
+} as const;
+
+type NavigationShape = LangShape<typeof navigationPl>;
+
+const navigationEn = {
+  calculator: "Calculator",
+  optimizer: "Optimizer",
+  caseStudies: "Scenarios",
+  assessment: "Maturity Assessment",
+  team: "Team",
+  research: "Research paper",
+  researchAgenda: "Agenda",
+  methodology: "Methodology",
+  model: "Model",
+  languageSwitch: "PL",
+  primaryNavigation: "Primary navigation",
+  openMenu: "Open menu",
+  closeMenu: "Close menu",
+} satisfies NavigationShape;
+
+export const navigationT = { pl: navigationPl, en: navigationEn } as const;
+export type NavigationLabelKey = keyof typeof navigationPl;
