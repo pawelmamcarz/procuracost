@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useSyncExternalStore } from "react";
+import { Suspense, useSyncExternalStore } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import NavBar from "@/components/NavBar";
 import SiteFooter from "@/components/SiteFooter";
@@ -45,18 +45,13 @@ function ContextualNavBar({ brand, items, lang, targetLang, labels, pathname }: 
   return <NavBar key={`${pathname}?${search}${hash}`} brand={brand} items={items} lang={lang} langSwitch={langSwitch} labels={labels} pathname={pathname} />;
 }
 
-export default function AppShell({ children }: { children: React.ReactNode }) {
+export default function AppShell({ children, lang }: { children: React.ReactNode; lang: Lang }) {
   const pathname = usePathname() ?? "/";
-  const lang: Lang = pathname.startsWith("/en") ? "en" : "pl";
   const targetLang: Lang = lang === "en" ? "pl" : "en";
   const labels = navigationT[lang];
   const brand = { href: lang === "en" ? "/en" : "/", label: "ProcuraCost" };
   const items = navigationFor(lang).map((item) => ({ ...item, active: isActiveRoute(pathname, item.href) }));
   const fallbackLangSwitch = { href: localizedCounterpart(pathname, targetLang), label: labels.languageSwitch };
-
-  useEffect(() => {
-    document.documentElement.lang = lang;
-  }, [lang]);
 
   return (
     <>

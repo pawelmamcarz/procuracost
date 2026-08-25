@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
-import { TAGLINE_EN } from "../seo-config";
+import { TAGLINE_PL } from "../seo-config";
 
-export const alt = "ProcuraCost: A tunnel has walls. A field has a horizon.";
+export const alt = "ProcuraCost: Tunel ma ściany. Pole ma horyzont.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -33,7 +33,7 @@ export default function Image() {
             maxWidth: 900,
           }}
         >
-          {TAGLINE_EN}
+          {TAGLINE_PL}
         </div>
         <div style={{ display: "flex", marginTop: 36, width: 120, height: 6, backgroundColor: "#2563eb", borderRadius: 3 }} />
       </div>

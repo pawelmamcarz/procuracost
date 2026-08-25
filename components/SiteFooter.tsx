@@ -1,33 +1,33 @@
 import Image from "next/image";
 import Link from "next/link";
 import { VERSION } from "@/lib/version";
-import { teamT, type Lang } from "@/lib/i18n";
+import { footerT, teamT, type FooterProjectKey, type Lang } from "@/lib/i18n";
 
-const projects = [
+const projects: readonly { href: string; label: string; descriptionKey: FooterProjectKey }[] = [
   {
     href: "https://silence-tax.com",
     label: "Silence Tax",
-    desc: "Kalkulator podatku od milczenia",
+    descriptionKey: "silenceTax",
   },
   {
     href: "https://czympojade.pl",
     label: "CzymPojade.pl",
-    desc: "Kalkulator TCO samochodu",
+    descriptionKey: "carTco",
   },
   {
     href: "https://przypominamy.com",
     label: "Przypominamy.com",
-    desc: "Platforma przypomnień",
+    descriptionKey: "reminders",
   },
   {
     href: "https://akrobacja.com",
     label: "Akrobacja.com",
-    desc: "akrobacja.com",
+    descriptionKey: "aerobatics",
   },
   {
     href: "https://www.linkedin.com/in/pawelmamcarz/",
     label: "LinkedIn",
-    desc: "Profil zawodowy",
+    descriptionKey: "linkedin",
   },
 ];
 
@@ -36,6 +36,7 @@ const teamAvatars = ["MK", "MB", "TS", "RM"];
 export default function SiteFooter({ lang }: { lang: Lang }) {
   const isEnglish = lang === "en";
   const teamCopy = teamT[lang];
+  const footerCopy = footerT[lang];
 
   return (
     <>
@@ -77,7 +78,7 @@ export default function SiteFooter({ lang }: { lang: Lang }) {
                 href={p.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                title={p.desc}
+                title={footerCopy.projectTitles[p.descriptionKey]}
                 className="rounded-full border border-gray-200 bg-white px-3 py-1 text-xs font-medium text-gray-600 transition-colors hover:border-blue-500 hover:text-blue-700"
               >
                 {p.label} ↗

@@ -189,7 +189,8 @@ describe("homepage content contract", () => {
     for (const key of routeKeys) {
       const route = SITE_ROUTES.find((candidate) => candidate.key === key)!;
       const href = route.en ?? route.pl;
-      expect(markup).toContain(`href="${href}"`);
+      expect(href).toBeDefined();
+      expect(markup).toContain(`href="${href!}"`);
     }
   });
 

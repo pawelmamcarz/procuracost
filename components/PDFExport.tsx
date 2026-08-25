@@ -30,6 +30,38 @@ const PDF_FONTS = [
 
 let fontCache: Array<{ vfs: string; style: string; base64: string }> | null = null;
 
+type PdfCaseStudy = NonNullable<Scenario["caseStudy"]>;
+type PdfCaseStudyDocument = Pick<
+  jsPDF,
+  "setFillColor" | "setDrawColor" | "roundedRect" | "setTextColor" | "setFontSize" | "text"
+>;
+
+export function renderCaseStudyPdf(
+  doc: PdfCaseStudyDocument,
+  caseStudy: PdfCaseStudy,
+  exportLang: "pl" | "en",
+  box: { x: number; y: number; width: number },
+) {
+  const title = exportLang === "en" ? caseStudy.titleEn : caseStudy.title;
+  const caseInsight = exportLang === "en" ? caseStudy.insightEn : caseStudy.insight;
+  const source = exportLang === "en" ? caseStudy.sourceEn : caseStudy.source;
+  const insight = caseInsight.length > 140
+    ? `${caseInsight.slice(0, 137)}…`
+    : caseInsight;
+
+  doc.setFillColor(239, 246, 255);
+  doc.setDrawColor(191, 219, 254);
+  doc.roundedRect(box.x, box.y, box.width, 22, 2, 2, "FD");
+  doc.setTextColor(30, 64, 175);
+  doc.setFontSize(9);
+  doc.text(title, box.x + 6, box.y + 7);
+  doc.setTextColor(55, 65, 81);
+  doc.setFontSize(8);
+  doc.text(insight, box.x + 6, box.y + 13);
+  doc.setTextColor(107, 114, 128);
+  doc.text(`${exportLang === "pl" ? "Źródło" : "Source"}: ${source}`, box.x + 6, box.y + 19);
+}
+
 async function loadPdfFonts() {
   if (fontCache) return fontCache;
   fontCache = await Promise.all(
@@ -198,21 +230,11 @@ export default function PDFExport({ result, scenario, inputs }: Props) {
 
     // Case study (if present)
     if (scenario.caseStudy) {
-      doc.setFillColor(239, 246, 255);
-      doc.setDrawColor(191, 219, 254);
-      doc.roundedRect(margin, y, pageWidth - margin * 2, 22, 2, 2, "FD");
-      doc.setTextColor(30, 64, 175);
-      doc.setFontSize(9);
-      doc.text(scenario.caseStudy.title, margin + 6, y + 7);
-      doc.setTextColor(55, 65, 81);
-      doc.setFontSize(8);
-      const caseInsight = exportLang === "en" ? scenario.caseStudy.insightEn : scenario.caseStudy.insight;
-      const insight = caseInsight.length > 140
-        ? caseInsight.slice(0, 137) + "…"
-        : caseInsight;
-      doc.text(insight, margin + 6, y + 13);
-      doc.setTextColor(107, 114, 128);
-      doc.text(`${exportLang === "pl" ? "Źródło" : "Source"}: ${scenario.caseStudy.source}`, margin + 6, y + 19);
+      renderCaseStudyPdf(doc, scenario.caseStudy, exportLang, {
+        x: margin,
+        y,
+        width: pageWidth - margin * 2,
+      });
       y += 26;
     }
 

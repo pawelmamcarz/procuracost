@@ -53,7 +53,7 @@ export default function TeamPage({ lang }: { lang: Lang }) {
   const t = teamT[lang];
 
   return (
-    <main className="mx-auto max-w-5xl px-6 py-12">
+    <div className="mx-auto max-w-5xl px-6 py-12">
       <header className="mb-10 rounded-xl border border-gray-100 bg-gray-50 p-6">
         <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">
           {t.eyebrow}
@@ -112,6 +112,6 @@ export default function TeamPage({ lang }: { lang: Lang }) {
           ))}
         </ul>
       </section>
-    </main>
+    </div>
   );
 }

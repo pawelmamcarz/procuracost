@@ -36,7 +36,7 @@ export default async function EpisodePage({ params }: { params: Promise<{ slug: 
         ← Materiały ProcuraCost {MODEL_VERSION}
       </Link>
 
-      <div className="mb-8 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-white">
+      <div className="mb-8 rounded-2xl bg-blue-600 p-8 text-white">
         <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-blue-200">
           Odcinek {ep.number} · {ep.dimension}
         </p>

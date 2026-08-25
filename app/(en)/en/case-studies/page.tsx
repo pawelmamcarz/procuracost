@@ -37,7 +37,7 @@ export default function EnCaseStudiesPage() {
               <span className="inline-block rounded-full bg-blue-50 px-3 py-0.5 text-xs font-medium text-blue-600">
                 {s.nameEn}
               </span>
-              <h2 className="mt-3 text-lg font-bold text-gray-900">{s.caseStudy!.title}</h2>
+              <h2 className="mt-3 text-lg font-bold text-gray-900">{s.caseStudy!.titleEn}</h2>
               <p className="mt-2 text-sm text-gray-600">{s.caseStudy!.insightEn}</p>
 
               <div className="mt-4 grid grid-cols-2 gap-3 text-xs">
@@ -61,7 +61,7 @@ export default function EnCaseStudiesPage() {
               </p>
 
               <p className="mt-2 text-xs text-gray-400">
-                Source: {s.caseStudy!.source}
+                Source: {s.caseStudy!.sourceEn}
               </p>
             </div>
           );

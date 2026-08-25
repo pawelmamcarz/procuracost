@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { languageSwitchHref } from "@/components/AppShell";
-import { localizedCounterpart, navigationFor, sitemapPaths } from "@/lib/site-routes";
+import { SITE_ROUTES, localizedCounterpart, navigationFor, sitemapPaths } from "@/lib/site-routes";
 
 describe("public route contract", () => {
   it("keeps language switches on the equivalent route", () => {
@@ -12,19 +12,52 @@ describe("public route contract", () => {
     expect(languageSwitchHref("/calculator", "x=1", "#result", "en")).toBe("/en/calculator?x=1#result");
   });
 
-  it("keeps the working paper canonical at /research", () => {
+  it("models the canonical working paper as an English-only route", () => {
+    const research = SITE_ROUTES.find((route) => route.key === "research");
+
+    expect(research).toMatchObject({
+      en: "/research",
+      aliases: ["/en/research"],
+      canonical: true,
+      sitemap: true,
+    });
+    expect(research).not.toHaveProperty("pl");
     expect(localizedCounterpart("/research", "en")).toBe("/research");
-    expect(localizedCounterpart("/en/research", "pl")).toBe("/research");
+    expect(localizedCounterpart("/research", "pl")).toBe("/");
+    expect(localizedCounterpart("/en/research", "pl")).toBe("/");
   });
 
-  it("exposes no placeholder shortcast navigation", () => {
-    expect(navigationFor("pl").some((item) => item.href.includes("shortcasty"))).toBe(false);
-    expect(navigationFor("en").some((item) => item.href.includes("shortcasty"))).toBe(false);
+  it("exposes the exact manager-first primary navigation", () => {
+    expect(navigationFor("pl")).toEqual([
+      { href: "/calculator", label: "Kalkulator", highlight: true },
+      { href: "/optimizer", label: "Optymalizator", highlight: undefined },
+      { href: "/assessment", label: "Ocena dojrzałości", highlight: undefined },
+      { href: "/model", label: "Model", highlight: undefined },
+    ]);
+    expect(navigationFor("en")).toEqual([
+      { href: "/en/calculator", label: "Calculator", highlight: true },
+      { href: "/en/optimizer", label: "Optimizer", highlight: undefined },
+      { href: "/en/assessment", label: "Maturity Assessment", highlight: undefined },
+      { href: "/en/model", label: "Model", highlight: undefined },
+    ]);
   });
 
-  it("includes every indexable bilingual route in the sitemap", () => {
-    expect(sitemapPaths()).toEqual(expect.arrayContaining([
-      "/methodology", "/en/methodology", "/team", "/en/team",
-    ]));
+  it("owns the exact indexable route set and excludes aliases and Shortcasts", () => {
+    expect(sitemapPaths()).toEqual([
+      "/", "/en",
+      "/calculator", "/en/calculator",
+      "/optimizer", "/en/optimizer",
+      "/case-studies", "/en/case-studies",
+      "/assessment", "/en/assessment",
+      "/team", "/en/team",
+      "/methodology", "/en/methodology",
+      "/model", "/en/model",
+      "/model/assumptions", "/en/model/assumptions",
+      "/research",
+      "/research-agenda",
+    ]);
+    expect(sitemapPaths()).not.toContain("/en/research");
+    expect(sitemapPaths()).not.toContain("/shortcasty");
+    expect(sitemapPaths()).not.toContain("/en/shortcasty");
   });
 });

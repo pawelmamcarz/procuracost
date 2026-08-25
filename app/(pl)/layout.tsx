@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Public_Sans } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 import AppShell from "@/components/AppShell";
-import { SITE_URL } from "./seo-config";
+import { SITE_URL } from "../seo-config";
 import { MODEL_VERSION } from "@/lib/version";
 
 const publicSans = Public_Sans({
@@ -48,7 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${publicSans.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col font-sans">
-        <AppShell>{children}</AppShell>
+        <AppShell lang="pl">{children}</AppShell>
       </body>
     </html>
   );

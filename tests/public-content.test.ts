@@ -6,8 +6,11 @@ import { renderToStaticMarkup } from "react-dom/server";
 import ts from "typescript";
 import { describe, expect, it } from "vitest";
 import * as i18n from "@/lib/i18n";
-import ShortcastyEnPage from "@/app/en/shortcasty/page";
-import ResearchAgendaPage from "@/app/research-agenda/page";
+import ShortcastyEnPage from "@/app/(en)/en/shortcasty/page";
+import ShortcastyPage from "@/app/(pl)/shortcasty/page";
+import ShortcastEpisodePage from "@/app/(pl)/shortcasty/[slug]/page";
+import ResearchAgendaPage from "@/app/(pl)/research-agenda/page";
+import SiteFooter from "@/components/SiteFooter";
 import TeamPage from "@/components/TeamPage";
 import { PATHS } from "@/lib/optimizer";
 import { EPISODES } from "@/lib/shortcasty";
@@ -18,21 +21,21 @@ import { APPROVED_PUBLIC_EM_DASH_LINES } from "./fixtures/approved-public-em-das
 const root = fileURLToPath(new URL("..", import.meta.url));
 
 const currentPublicFiles = [
-  "app/layout.tsx",
-  "app/en/layout.tsx",
-  "app/model/page.tsx",
-  "app/en/model/page.tsx",
-  "app/model/assumptions/layout.tsx",
-  "app/en/model/assumptions/layout.tsx",
-  "app/model/assumptions/page.tsx",
-  "app/en/model/assumptions/page.tsx",
-  "app/assessment/page.tsx",
-  "app/en/assessment/page.tsx",
-  "app/research-agenda/page.tsx",
-  "app/shortcasty/page.tsx",
-  "app/en/shortcasty/page.tsx",
-  "app/shortcasty/[slug]/page.tsx",
-  "app/en/case-studies/page.tsx",
+  "app/(pl)/layout.tsx",
+  "app/(en)/layout.tsx",
+  "app/(pl)/model/page.tsx",
+  "app/(en)/en/model/page.tsx",
+  "app/(pl)/model/assumptions/layout.tsx",
+  "app/(en)/en/model/assumptions/layout.tsx",
+  "app/(pl)/model/assumptions/page.tsx",
+  "app/(en)/en/model/assumptions/page.tsx",
+  "app/(pl)/assessment/page.tsx",
+  "app/(en)/en/assessment/page.tsx",
+  "app/(pl)/research-agenda/page.tsx",
+  "app/(pl)/shortcasty/page.tsx",
+  "app/(en)/en/shortcasty/page.tsx",
+  "app/(pl)/shortcasty/[slug]/page.tsx",
+  "app/(en)/en/case-studies/page.tsx",
   "app/icon.svg",
   "components/SiteFooter.tsx",
   "lib/i18n.ts",
@@ -42,9 +45,7 @@ const currentPublicFiles = [
 
 const historicalI18nAllowList = [
   "Wpisanie 0 odtwarza niedyskontowany model 2.1.",
-  "Model 2.1 stosuje szerokie mnożniki kontekstu wyłącznie do nakładu pracy i niepracowniczego narzutu koordynacyjnego. Pozostałe mechanizmy mają odrębne profile; 1,00 oznacza brak korekty.",
   "Entering 0 reproduces the undiscounted 2.1 model.",
-  "Model 2.1 applies broad context multipliers only to staff effort and non-labor coordination overhead. Other mechanisms use separate profiles; 1.00 means no adjustment.",
 ] as const;
 
 const staleCurrentVersion = /\b(?:model 2\.1|modelu 2\.1|ProcuraCost 2\.1)\b/i;
@@ -182,15 +183,19 @@ function assertNoUnapprovedEmDashes(sources: PublicSource[]) {
 
 describe("public editorial integrity", () => {
   it("keeps current public surfaces on the active model version", async () => {
-    for (const path of currentPublicFiles) {
-      let content = await readPublicFile(path);
-      if (path === "lib/i18n.ts") {
-        for (const historicalSentence of historicalI18nAllowList) {
-          content = content.replace(historicalSentence, "");
-        }
+    const currentFacingSources = (await readCurrentPublicSources()).filter((source) =>
+      source.path.startsWith("app/")
+      || source.path.startsWith("components/")
+      || ["lib/i18n.ts", "lib/scenarios.ts", "lib/shortcasty.ts"].includes(source.path),
+    );
+
+    for (const source of currentFacingSources) {
+      let content = source.content;
+      for (const historicalSentence of historicalI18nAllowList) {
+        content = content.replaceAll(historicalSentence, "");
       }
 
-      expect(content, path).not.toMatch(staleCurrentVersion);
+      expect(content, source.path).not.toMatch(staleCurrentVersion);
     }
   });
 
@@ -210,11 +215,7 @@ describe("public editorial integrity", () => {
   it("keeps Polish navigation labels in Polish", () => {
     const labels = navigationFor("pl").map((item) => item.label);
 
-    expect(labels).toEqual(expect.arrayContaining([
-      "Artykuł naukowy",
-      "Agenda badawcza",
-      "Metodologia",
-    ]));
+    expect(labels).toEqual(["Kalkulator", "Optymalizator", "Ocena dojrzałości", "Model"]);
     expect(labels).not.toEqual(expect.arrayContaining(["Research paper", "Methodology"]));
   });
 
@@ -359,5 +360,66 @@ describe("public editorial integrity", () => {
     expect(markup).toContain(firstEpisode.thesisEn);
     expect(markup).not.toContain(firstEpisode.title);
     expect(markup).not.toContain(firstEpisode.thesis);
+  });
+
+  it("uses solid analytical Shortcast heroes", () => {
+    const polishMarkup = renderToStaticMarkup(createElement(ShortcastyPage));
+    const englishMarkup = renderToStaticMarkup(createElement(ShortcastyEnPage));
+
+    for (const markup of [polishMarkup, englishMarkup]) {
+      expect(markup).toContain("bg-blue-600");
+      expect(markup).not.toContain("bg-gradient");
+    }
+  });
+
+  it("keeps future English episodes non-linking while Polish owns its detail route", () => {
+    const episode = EPISODES[0];
+    const previousPublishedAt = episode.publishedAt;
+    episode.publishedAt = "2026-08-25";
+
+    try {
+      const polishMarkup = renderToStaticMarkup(createElement(ShortcastyPage));
+      const englishMarkup = renderToStaticMarkup(createElement(ShortcastyEnPage));
+
+      expect(polishMarkup).toContain(`href="/shortcasty/${episode.slug}"`);
+      expect(englishMarkup).toContain(episode.titleEn);
+      expect(englishMarkup).not.toContain(`href="/shortcasty/${episode.slug}"`);
+    } finally {
+      if (previousPublishedAt) episode.publishedAt = previousPublishedAt;
+      else delete episode.publishedAt;
+    }
+  });
+
+  it("uses a solid analytical hero on a published Polish Shortcast detail", async () => {
+    const episode = EPISODES[0];
+    const previousPublishedAt = episode.publishedAt;
+    episode.publishedAt = "2026-08-25";
+
+    try {
+      const page = await ShortcastEpisodePage({
+        params: Promise.resolve({ slug: episode.slug }),
+      });
+      const markup = renderToStaticMarkup(page);
+
+      expect(markup).toContain("bg-blue-600");
+      expect(markup).not.toContain("bg-gradient");
+      expect(markup).toContain(episode.title);
+    } finally {
+      if (previousPublishedAt) episode.publishedAt = previousPublishedAt;
+      else delete episode.publishedAt;
+    }
+  });
+
+  it("localizes project title attributes in the English footer", () => {
+    const polishMarkup = renderToStaticMarkup(createElement(SiteFooter, { lang: "pl" }));
+    const englishMarkup = renderToStaticMarkup(createElement(SiteFooter, { lang: "en" }));
+
+    expect(polishMarkup).toContain('title="Kalkulator podatku od milczenia"');
+    expect(englishMarkup).toContain('title="Silence tax calculator"');
+    expect(englishMarkup).toContain('title="Car TCO calculator"');
+    expect(englishMarkup).toContain('title="Reminder platform"');
+    expect(englishMarkup).toContain('title="Professional profile"');
+    expect(englishMarkup).not.toContain('title="Kalkulator podatku od milczenia"');
+    expect(englishMarkup).not.toContain('title="Profil zawodowy"');
   });
 });

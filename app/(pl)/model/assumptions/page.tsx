@@ -8,7 +8,7 @@ export default function AssumptionsPage() {
   const result = calculateCosts(example.inputs);
 
   return (
-    <main className="mx-auto max-w-4xl px-6 py-12">
+    <div className="mx-auto max-w-4xl px-6 py-12">
       <p className="text-sm font-semibold text-blue-700">ProcuraCost {MODEL_VERSION}</p>
       <h1 className="mt-2 text-3xl font-bold">Założenia i niepewność modelu</h1>
       <p className="mt-4 text-gray-600">
@@ -45,6 +45,6 @@ export default function AssumptionsPage() {
         <Link href="/methodology" className="text-blue-700 underline">metodologia</Link>.
         Dane wejściowe i wynik można wyeksportować z kalkulatora.
       </p>
-    </main>
+    </div>
   );
 }

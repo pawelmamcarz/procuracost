@@ -174,12 +174,14 @@ export default function HeroSummary({ result, scenario, inputs, lang }: Props) {
       </div>
       {scenario.caseStudy && (
         <div className="mt-3 rounded-xl bg-white/10 p-3 text-sm">
-          <p className="font-semibold">{scenario.caseStudy.title}</p>
+          <p className="font-semibold">
+            {lang === "en" ? scenario.caseStudy.titleEn : scenario.caseStudy.title}
+          </p>
           <p className="mt-1 opacity-90">
             {lang === "en" ? scenario.caseStudy.insightEn : scenario.caseStudy.insight}
           </p>
           <p className="mt-1 text-xs opacity-60">
-            {lang === "en" ? "Source" : "Źródło"}: {scenario.caseStudy.source}
+            {lang === "en" ? "Source" : "Źródło"}: {lang === "en" ? scenario.caseStudy.sourceEn : scenario.caseStudy.source}
           </p>
         </div>
       )}

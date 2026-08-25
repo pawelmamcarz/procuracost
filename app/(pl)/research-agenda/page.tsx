@@ -11,7 +11,7 @@ export const metadata = {
 
 export default function ResearchAgendaPage() {
   return (
-    <main className="mx-auto max-w-3xl px-6 py-12">
+    <div className="mx-auto max-w-3xl px-6 py-12">
       <p className="text-sm font-semibold text-blue-700">{tx.eyebrow(MODEL_VERSION)}</p>
       <h1 className="mt-2 text-3xl font-bold">{tx.title}</h1>
       <p className="mt-4 text-gray-700">{tx.intro}</p>
@@ -40,6 +40,6 @@ export default function ResearchAgendaPage() {
         <Link href="/methodology" className="rounded-lg border px-5 py-3 text-sm font-semibold">{tx.actions.methodology}</Link>
         <Link href="/model/assumptions" className="rounded-lg border px-5 py-3 text-sm font-semibold">{tx.actions.scenarios}</Link>
       </div>
-    </main>
+    </div>
   );
 }

@@ -502,7 +502,7 @@ const comparisonPl = {
   matrixNoContextNote: "Macierz pokazuje wszystkie kombinacje technologii × trybu procesu dla wybranego typu zakupu.",
   matrixColorLegend: "Neutralna skala wielkości: szary oznacza niższą wartość liczbową, a niebieski wyższą. Wiersz podświetlony wskazuje aktualne ustawienie. Wartości uwzględniają efekty Spend Type × Process Phase.",
   appliedMultipliersTitle: "Zastosowane mnożniki kontekstu",
-  appliedMultipliersNote: "Model 2.1 stosuje szerokie mnożniki kontekstu wyłącznie do nakładu pracy i niepracowniczego narzutu koordynacyjnego. Pozostałe mechanizmy mają odrębne profile; 1,00 oznacza brak korekty.",
+  appliedMultipliersNote: `Model ${MODEL_VERSION} stosuje szerokie mnożniki kontekstu wyłącznie do nakładu pracy i niepracowniczego narzutu koordynacyjnego. Pozostałe mechanizmy mają odrębne profile; 1,00 oznacza brak korekty.`,
   // Sub-breakdown
   staffCost: "Kadra (godziny × stawki)",
   coordCost: "Narzut administracyjny (bez pracy ról)",
@@ -606,7 +606,7 @@ const comparisonEn = {
   matrixNoContextNote: "Matrix shows all technology × process mode combinations for the selected procurement type.",
   matrixColorLegend: "Neutral magnitude scale: gray indicates a lower numeric value and blue a higher one. The highlighted row marks the current selection. Values include Spend Type × Process Phase effects.",
   appliedMultipliersTitle: "Applied context multipliers",
-  appliedMultipliersNote: "Model 2.1 applies broad context multipliers only to staff effort and non-labor coordination overhead. Other mechanisms use separate profiles; 1.00 means no adjustment.",
+  appliedMultipliersNote: `Model ${MODEL_VERSION} applies broad context multipliers only to staff effort and non-labor coordination overhead. Other mechanisms use separate profiles; 1.00 means no adjustment.`,
   staffCost: "Staff (hours × rates)",
   coordCost: "Administrative overhead (excluding role labor)",
   toolCost: "Tool license",
@@ -1193,6 +1193,31 @@ const teamEn = {
 export const teamT = { pl: teamPl, en: teamEn } as const;
 export type TeamRole = keyof typeof teamPl.roles;
 export type TeamCompetency = keyof typeof teamPl.competencies;
+
+const footerPl = {
+  projectTitles: {
+    silenceTax: "Kalkulator podatku od milczenia",
+    carTco: "Kalkulator TCO samochodu",
+    reminders: "Platforma przypomnień",
+    aerobatics: "akrobacja.com",
+    linkedin: "Profil zawodowy",
+  },
+} as const;
+
+type FooterShape = LangShape<typeof footerPl>;
+
+const footerEn = {
+  projectTitles: {
+    silenceTax: "Silence tax calculator",
+    carTco: "Car TCO calculator",
+    reminders: "Reminder platform",
+    aerobatics: "akrobacja.com",
+    linkedin: "Professional profile",
+  },
+} satisfies FooterShape;
+
+export const footerT = { pl: footerPl, en: footerEn } as const;
+export type FooterProjectKey = keyof typeof footerPl.projectTitles;
 
 const navigationPl = {
   calculator: "Kalkulator",

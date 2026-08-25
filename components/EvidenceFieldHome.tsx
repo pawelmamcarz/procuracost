@@ -28,7 +28,9 @@ const scenarioRecords = SCENARIOS.flatMap((scenario) => {
 function siteHref(key: string, lang: Lang) {
   const route = SITE_ROUTES.find((candidate) => candidate.key === key);
   if (!route) throw new Error(`Missing route-manifest entry: ${key}`);
-  return lang === "en" ? route.en ?? route.pl : route.pl;
+  const href = lang === "en" ? route.en ?? route.pl : route.pl ?? route.en;
+  if (!href) throw new Error(`Route-manifest entry ${key} has no public path.`);
+  return href;
 }
 
 function formatDays(value: number, lang: Lang) {
@@ -75,7 +77,7 @@ export default function EvidenceFieldHome({ lang }: EvidenceFieldHomeProps) {
   ];
 
   return (
-    <main className="mx-auto max-w-5xl px-5 py-10 sm:px-6 sm:py-14">
+    <div className="mx-auto max-w-5xl px-5 py-10 sm:px-6 sm:py-14">
       <section aria-labelledby="evidence-field-hero" className="border-b border-gray-200 pb-12 sm:pb-16">
         <p className="text-xs font-semibold uppercase tracking-wide text-blue-700">
           {tx.hero.eyebrow}
@@ -290,6 +292,6 @@ export default function EvidenceFieldHome({ lang }: EvidenceFieldHomeProps) {
           </Link>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

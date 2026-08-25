@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function ModelPage() {
   return (
-    <main className="mx-auto max-w-4xl px-6 py-12">
+    <div className="mx-auto max-w-4xl px-6 py-12">
       <p className="text-sm font-semibold text-blue-700">ProcuraCost {MODEL_VERSION}</p>
       <h1 className="mt-2 text-3xl font-bold">Model i założenia</h1>
       <p className="mt-4 text-lg text-gray-600">
@@ -42,6 +42,6 @@ export default function ModelPage() {
         <Link href="/methodology" className="rounded-lg border px-5 py-3 text-sm font-semibold">Metodologia</Link>
         <Link href="/research" className="rounded-lg border px-5 py-3 text-sm font-semibold">Audyt źródeł</Link>
       </div>
-    </main>
+    </div>
   );
 }

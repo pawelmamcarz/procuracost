@@ -8,7 +8,7 @@ export default function AssumptionsPageEn() {
   const result = calculateCosts(example.inputs);
 
   return (
-    <main className="mx-auto max-w-4xl px-6 py-12">
+    <div className="mx-auto max-w-4xl px-6 py-12">
       <p className="text-sm font-semibold text-blue-700">ProcuraCost {MODEL_VERSION}</p>
       <h1 className="mt-2 text-3xl font-bold">Model assumptions and uncertainty</h1>
       <p className="mt-4 text-gray-600">
@@ -45,6 +45,6 @@ export default function AssumptionsPageEn() {
         for equations, parameter provenance, and transfer limits. Inputs and results
         can be exported from the calculator.
       </p>
-    </main>
+    </div>
   );
 }

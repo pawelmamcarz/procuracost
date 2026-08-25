@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { shortcastsT } from "@/lib/i18n";
 import { EPISODES } from "@/lib/shortcasty";
 import { MODEL_VERSION } from "@/lib/version";
@@ -14,8 +13,8 @@ export default function ShortcastyEnPage() {
   const planned = EPISODES.filter((episode) => !episode.publishedAt);
 
   return (
-    <main className="mx-auto max-w-5xl px-6 py-12">
-      <div className="rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-white">
+    <div className="mx-auto max-w-5xl px-6 py-12">
+      <div className="rounded-2xl bg-blue-600 p-8 text-white">
         <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-blue-200">
           {tx.badge(MODEL_VERSION)}
         </p>
@@ -32,10 +31,9 @@ export default function ShortcastyEnPage() {
           </p>
           <div className="space-y-3">
             {published.map((episode) => (
-              <Link
+              <article
                 key={episode.slug}
-                href={`/shortcasty/${episode.slug}`}
-                className="block rounded-xl border border-gray-100 bg-white p-5 transition-colors hover:border-blue-200"
+                className="rounded-xl border border-gray-100 bg-white p-5"
               >
                 <div className="text-xs font-medium text-blue-600">
                   #{episode.number} · {episode.dimensionEn}
@@ -43,7 +41,7 @@ export default function ShortcastyEnPage() {
                 <h2 className="mt-1 font-semibold text-gray-900">{episode.titleEn}</h2>
                 <p className="mt-1 text-sm text-gray-600">{episode.thesisEn}</p>
                 <p className="mt-2 text-xs text-gray-500">{tx.focusLabel}: {episode.focusEn}</p>
-              </Link>
+              </article>
             ))}
           </div>
         </section>
@@ -66,6 +64,6 @@ export default function ShortcastyEnPage() {
           ))}
         </div>
       </section>
-    </main>
+    </div>
   );
 }

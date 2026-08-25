@@ -14,8 +14,8 @@ export default function ShortcastyPage() {
   const planned = EPISODES.filter((episode) => !episode.publishedAt);
 
   return (
-    <main className="mx-auto max-w-5xl px-6 py-12">
-      <div className="rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-white">
+    <div className="mx-auto max-w-5xl px-6 py-12">
+      <div className="rounded-2xl bg-blue-600 p-8 text-white">
         <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-blue-200">
           {tx.badge(MODEL_VERSION)}
         </p>
@@ -78,6 +78,6 @@ export default function ShortcastyPage() {
           ))}
         </div>
       </section>
-    </main>
+    </div>
   );
 }

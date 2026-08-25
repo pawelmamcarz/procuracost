@@ -7,7 +7,7 @@ function localizedAlternates(path: string) {
     (candidate) => candidate.sitemap && !candidate.canonical && (candidate.pl === path || candidate.en === path),
   );
 
-  if (!route?.en) return undefined;
+  if (!route?.pl || !route.en) return undefined;
 
   return {
     languages: {
