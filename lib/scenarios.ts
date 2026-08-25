@@ -10,7 +10,9 @@ export interface Scenario {
   inputs: ProcurementInputs;
   caseStudy?: {
     title: string;
+    titleEn: string;
     source: string;
+    sourceEn: string;
     insight: string;
     insightEn: string;
   };
@@ -59,7 +61,10 @@ export const SCENARIOS: Scenario[] = [
     },
     caseStudy: {
       title: "Ryanair Fleet Procurement (private-sector example)",
+      titleEn: "Ryanair Fleet Procurement (private-sector example)",
       source:
+        "Ryanair 2002/2003 Annual Report / SEC Form 20-F (Boeing price concessions)",
+      sourceEn:
         "Ryanair 2002/2003 Annual Report / SEC Form 20-F (Boeing price concessions)",
       insight:
         "Raport roczny dokumentuje duże zamówienie Boeingów 737 i ustępstwa cenowe producenta. Nie opisuje jednak porównywalnego procesu zakupowego ani nie identyfikuje skutku elastyczności; liczby scenariusza są niezależnymi założeniami modelu.",
@@ -97,7 +102,9 @@ export const SCENARIOS: Scenario[] = [
     },
     caseStudy: {
       title: "Swiss Casinos ERP: Agile Sourcing (private-sector example)",
+      titleEn: "Swiss Casinos ERP: Agile Sourcing (private-sector example)",
       source: "Agile Business Consortium: Case Study: Swiss Casinos (practitioner report)",
+      sourceEn: "Agile Business Consortium: Case Study: Swiss Casinos (practitioner report)",
       insight:
         "Raport praktyczny Agile Business Consortium podaje, że Swiss Casinos przeprowadziło sourcing ERP w cztery tygodnie. To deklaracja opisana przez organizację promującą metodę, nie niezależne badanie ani czas pełnego wdrożenia.",
       insightEn:
@@ -133,7 +140,10 @@ export const SCENARIOS: Scenario[] = [
     },
     caseStudy: {
       title: "Air France KLM Martinair Cargo: Lean Agile Procurement (private-sector example)",
+      titleEn: "Air France KLM Martinair Cargo: Lean Agile Procurement (private-sector example)",
       source:
+        "LAP Alliance / Agile Business Consortium (2021): Air France KLM Martinair Cargo case study (practitioner example, illustrative)",
+      sourceEn:
         "LAP Alliance / Agile Business Consortium (2021): Air France KLM Martinair Cargo case study (practitioner example, illustrative)",
       insight:
         "Prywatny przewoźnik: Air France KLM zastosował Lean Agile Procurement dla modernizacji cargo door-to-door w ścisłym oknie czasowym. Przykład praktyczny ilustrujący efektywność sektora prywatnego, nie dowód empiryczny dotyczący prawa zamówień publicznych.",
@@ -172,7 +182,10 @@ export const SCENARIOS: Scenario[] = [
     },
     caseStudy: {
       title: "Zara: Responsive Fast-Fashion Supply Chain (illustrative)",
+      titleEn: "Zara: Responsive Fast-Fashion Supply Chain (illustrative)",
       source:
+        "Ferdows, Lewis & Machuca, HBR (2004): Rapid-Fire Fulfillment (illustrative example)",
+      sourceEn:
         "Ferdows, Lewis & Machuca, HBR (2004): Rapid-Fire Fulfillment (illustrative example)",
       insight:
         "Ferdows, Lewis i Machuca opisują responsywną sieć dostaw Zary. To materiał o operacjach i łańcuchu dostaw, nie dowód na konkretną metodę zakupową ani zastąpienie przetargów przez AI.",
@@ -209,8 +222,11 @@ export const SCENARIOS: Scenario[] = [
     },
     caseStudy: {
       title: "Tunel vs Pole: ten sam zakup, dwa światy",
+      titleEn: "Tunnel vs Field: the same purchase, two designs",
       source:
         `Konstrukcja modelu ${MODEL_VERSION}: scenariusz ilustracyjny bez źródła zewnętrznego. Wartości wejściowe są założeniami, a nie danymi z żadnego badania.`,
+      sourceEn:
+        `ProcuraCost ${MODEL_VERSION} model construction: an illustrative scenario without an external source. Input values are assumptions, not observations from a study.`,
       insight:
         "Porównanie dwóch legalnych projektów tego samego postępowania: bardziej sekwencyjnego i bardziej adaptacyjnego. Wynik zależy od kosztu zwłoki, konkurencji i konstrukcji kontraktu; nie zakłada obejścia PZP.",
       insightEn:
@@ -306,7 +322,10 @@ export const SCENARIOS: Scenario[] = [
     },
     caseStudy: {
       title: "Ryanair CAPEX: Boeing bulk order at crisis prices (private-sector example)",
+      titleEn: "Ryanair CAPEX: Boeing bulk order at crisis prices (private-sector example)",
       source:
+        "Ryanair 2002/2003 Annual Report / SEC Form 20-F (Boeing price concessions)",
+      sourceEn:
         "Ryanair 2002/2003 Annual Report / SEC Form 20-F (Boeing price concessions)",
       insight:
         "Raport dokumentuje duże zamówienie Boeingów i ustępstwa cenowe, ale nie opisuje wewnętrznych bramek CAPEX, prekwalifikacji ani czasu procesu. Scenariusz ilustruje rachunek kosztów i nie jest rekonstrukcją postępowania Ryanaira.",
@@ -335,7 +354,9 @@ export const SCENARIOS: Scenario[] = [
     },
     caseStudy: {
       title: "Scenariusz kontrolny: formalność może wygrać",
+      titleEn: "Control scenario: formality can win",
       source: `Założenia scenariuszowe ProcuraCost ${MODEL_VERSION}: nie obserwacja empiryczna`,
+      sourceEn: `ProcuraCost ${MODEL_VERSION} scenario assumptions: not an empirical observation`,
       insight:
         "Gdy koszt zwłoki jest pomijalny, rynek stabilny, a bardziej formalna ścieżka zachowuje przewagę konkurencyjną, centralny wynik może sprzyjać formalności. Szeroki stres-test nadal może zmienić znak.",
       insightEn:
@@ -371,8 +392,11 @@ export const SCENARIOS: Scenario[] = [
     },
     caseStudy: {
       title: "Scenariusz kontrolny II: adaptacja bywa droższa",
+      titleEn: "Control scenario II: adaptation can cost more",
       source:
         `Konstrukcja modelu ${MODEL_VERSION}: scenariusz ilustracyjny bez źródła zewnętrznego. Wartości wejściowe są założeniami, a nie danymi z badania.`,
+      sourceEn:
+        `ProcuraCost ${MODEL_VERSION} model construction: an illustrative scenario without an external source. Input values are assumptions, not observations from a study.`,
       insight:
         "Kiedy wymaganie powstaje w trakcie, ścieżka adaptacyjna kupuje uczenie się czasem: współprojektowanie i runda przeprojektowania wydłużają kalendarz i zwiększają pracę. Formalna zamraża wymaganie wcześnie i wychodzi szybciej, płacąc gorszym dopasowaniem i słabszym wychwyceniem wartości cyklu życia. Ten scenariusz istnieje po to, żeby teza modelu dała się obalić, a nie tylko potwierdzić.",
       insightEn:

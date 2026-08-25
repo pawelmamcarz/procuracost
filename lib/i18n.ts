@@ -153,6 +153,216 @@ export const PHI_SET = {
   en: "∂Φ = {auth, competition, ethics, docs}",
 } as const;
 
+const homePl = {
+  hero: {
+    eyebrow: "Model decyzji zakupowych",
+    title: "Porównaj koszt dwóch dopuszczalnych ścieżek zakupu.",
+    tagline: "Tunel ma ściany. Pole ma horyzont.",
+    description:
+      "Wprowadź parametry realnego zakupu. Model zestawi ścieżkę formalną i adaptacyjną, pokaże składniki kosztu oraz pełny zakres niepewności.",
+    primaryAction: "Policz własny scenariusz",
+    secondaryAction: "Jak czytać wynik",
+  },
+  boundary: {
+    eyebrow: "Granica decyzji",
+    title: "Dwie ścieżki. Ta sama granica zgodności.",
+    tunnelLabel: "Tunel",
+    tunnelDescription: "Sekwencyjna procedura",
+    boundaryLabel: "Granica dopuszczalności",
+    notation: PHI_SET.pl,
+    fieldLabel: "Pole dopuszczalne",
+    fieldDescription: "Adaptacja w jawnych granicach",
+    caption:
+      "Pole nie oznacza dowolności. Obie ścieżki pozostają we wspólnej granicy uprawnień, konkurencji, etyki i dokumentacji.",
+  },
+  modelContract: {
+    eyebrow: "Kontrakt modelu",
+    title: "Co wynik mówi, a czego nie rozstrzyga",
+    modelVersionLabel: "Wersja modelu",
+    modelVersion: MODEL_VERSION,
+    modelVersionDisplay: `Model ${MODEL_VERSION}`,
+    uncertaintyLabel: "Zakres niepewności",
+    uncertaintyValue: "Dowody × założenia strukturalne",
+    winnerLabel: "Założony zwycięzca",
+    winnerValue: "Brak",
+    note:
+      "Wynik centralny jest jednym punktem. Zakres łączy niepewność dowodową z kosztem dnia i czasami etapów. Może objąć oba znaki. Różnica dni pomnożona przez koszt dnia podany przez użytkownika jest tożsamością rachunkową, nie efektem empirycznym.",
+  },
+  jobs: {
+    eyebrow: "Trzy zadania",
+    title: "Zacznij od decyzji, którą masz podjąć",
+    compare: {
+      label: "Porównaj koszty",
+      body: "Policz ten sam zakup dla ścieżki formalnej i adaptacyjnej. Zobacz składniki, zakres oraz próg zmiany wyniku.",
+      action: "Otwórz kalkulator",
+    },
+    choose: {
+      label: "Wybierz ścieżkę",
+      body: "Sprawdź ilustracyjny, regułowy ranking legalnie dostępnych ścieżek i jego wrażliwość na wagi. Optymalizator nie był walidowany na danych wynikowych.",
+      action: "Otwórz optymalizator",
+    },
+    assess: {
+      label: "Oceń proces",
+      body: "Opisz sposób pracy organizacji. Samoocena jest opisowa i nie stanowi audytu ani walidacji.",
+      action: "Przejdź do samooceny",
+    },
+  },
+  scenarios: {
+    eyebrow: "Porównywalne rekordy",
+    title: "Scenariusze referencyjne",
+    description:
+      "Każdy wiersz korzysta z jawnych danych wejściowych i tego samego modelu. Czasy oraz zakres są wynikami ilustracyjnymi, nie danymi z cytowanego źródła.",
+    columns: {
+      scenario: "Scenariusz",
+      contractValue: "Wartość zakupu",
+      formalDays: "Formalna, dni",
+      adaptiveDays: "Adaptacyjna, dni",
+      uncertainty: "Zakres ΔC",
+      source: "Źródło i status",
+    },
+    allAction: "Zobacz wszystkie scenariusze",
+  },
+  evidence: {
+    eyebrow: "Łańcuch dowodowy",
+    title: "Od założenia do odtworzenia wyniku",
+    description:
+      "Każdy poziom odsłania kolejną warstwę: parametry, metodę, argument naukowy i materiały do reprodukcji.",
+    assumptions: {
+      title: "Założenia",
+      body: "Parametry, profile i status każdej wartości użytej w rachunku.",
+      action: "Sprawdź założenia",
+    },
+    methodology: {
+      title: "Metodologia",
+      body: "Mechanizmy siedmiu wymiarów kosztu oraz granice interpretacji.",
+      action: "Przeczytaj metodologię",
+    },
+    paper: {
+      title: "Artykuł naukowy",
+      body: "Formalny model, hipotezy i projekt empirycznej walidacji.",
+      action: "Otwórz artykuł",
+    },
+    replication: {
+      title: "Replikacja",
+      body: "Kod, testy i generowane wyniki używane do audytu obliczeń.",
+      action: "Otwórz pakiet replikacyjny",
+    },
+  },
+  finalAction: {
+    eyebrow: "Twój przypadek",
+    title: "Porównaj zakup na własnych założeniach.",
+    body: "Podaj wartość, typ procesu, koszt dnia, zespół i horyzont. Wynik pokaże punkt centralny oraz warunki, które mogą zmienić jego znak.",
+    action: "Policz własny scenariusz",
+  },
+} as const;
+
+type HomeShape = LangShape<typeof homePl>;
+
+const homeEn = {
+  hero: {
+    eyebrow: "Procurement decision model",
+    title: "Compare the cost of two admissible procurement paths.",
+    tagline: "A tunnel has walls. A field has a horizon.",
+    description:
+      "Enter the parameters of a real purchase. The model compares formal and adaptive paths, shows each cost component, and reports the full uncertainty range.",
+    primaryAction: "Calculate your scenario",
+    secondaryAction: "How to read the result",
+  },
+  boundary: {
+    eyebrow: "Decision boundary",
+    title: "Two paths. The same compliance boundary.",
+    tunnelLabel: "Tunnel",
+    tunnelDescription: "Sequential procedure",
+    boundaryLabel: "Admissibility boundary",
+    notation: PHI_SET.en,
+    fieldLabel: "Admissible field",
+    fieldDescription: "Adaptation within explicit bounds",
+    caption:
+      "A field does not mean unrestricted choice. Both paths remain inside the same boundary of authority, competition, ethics, and documentation.",
+  },
+  modelContract: {
+    eyebrow: "Model contract",
+    title: "What the result says and what it does not settle",
+    modelVersionLabel: "Model version",
+    modelVersion: MODEL_VERSION,
+    modelVersionDisplay: `Model ${MODEL_VERSION}`,
+    uncertaintyLabel: "Uncertainty range",
+    uncertaintyValue: "Evidence × structural assumptions",
+    winnerLabel: "Assumed winner",
+    winnerValue: "None",
+    note:
+      "The central result is one point. The range combines evidence uncertainty with the daily cost and step durations. It may span both signs. The day difference multiplied by the user-supplied daily cost is an accounting identity, not an empirical effect.",
+  },
+  jobs: {
+    eyebrow: "Three jobs",
+    title: "Start with the decision you need to make",
+    compare: {
+      label: "Compare costs",
+      body: "Calculate the same purchase for formal and adaptive paths. Inspect the components, range, and result-switching threshold.",
+      action: "Open calculator",
+    },
+    choose: {
+      label: "Choose a path",
+      body: "Review an illustrative, rule-based ranking of legally available paths and its sensitivity to weights. The optimizer has not been validated on outcome data.",
+      action: "Open optimizer",
+    },
+    assess: {
+      label: "Assess a process",
+      body: "Describe how the organisation works. The self-assessment is descriptive, not an audit or validation.",
+      action: "Open self-assessment",
+    },
+  },
+  scenarios: {
+    eyebrow: "Comparable records",
+    title: "Reference scenarios",
+    description:
+      "Each row uses declared inputs and the same model. Durations and ranges are illustrative outputs, not observations from the cited source.",
+    columns: {
+      scenario: "Scenario",
+      contractValue: "Purchase value",
+      formalDays: "Formal, days",
+      adaptiveDays: "Adaptive, days",
+      uncertainty: "ΔC range",
+      source: "Source and status",
+    },
+    allAction: "View all scenarios",
+  },
+  evidence: {
+    eyebrow: "Evidence chain",
+    title: "From assumption to reproducible result",
+    description:
+      "Each level opens another layer: parameters, method, research argument, and reproduction materials.",
+    assumptions: {
+      title: "Assumptions",
+      body: "Parameters, profiles, and the status of every value used in the calculation.",
+      action: "Review assumptions",
+    },
+    methodology: {
+      title: "Methodology",
+      body: "Mechanisms behind the seven cost dimensions and limits on interpretation.",
+      action: "Read the methodology",
+    },
+    paper: {
+      title: "Research paper",
+      body: "The formal model, hypotheses, and empirical validation design.",
+      action: "Open the paper",
+    },
+    replication: {
+      title: "Replication",
+      body: "Code, tests, and generated outputs used to audit the calculations.",
+      action: "Open replication package",
+    },
+  },
+  finalAction: {
+    eyebrow: "Your case",
+    title: "Compare a purchase using your own assumptions.",
+    body: "Enter value, process type, daily cost, team, and horizon. The result reports a central point and the conditions that can change its sign.",
+    action: "Calculate your scenario",
+  },
+} satisfies HomeShape;
+
+export const homeT = { pl: homePl, en: homeEn } as const;
+
 const comparisonPl = {
   costLabels: {
     timeCost: "Koszt czasu (kadra)",
