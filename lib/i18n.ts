@@ -451,7 +451,7 @@ const comparisonPl = {
   matrixContextDownstream: "Downstream (operacyjny)",
   matrixContextDetail: "jawne, szerokie korekty nakładu pracy i koordynacji; czas kroków i dzienny koszt bezczynności nie mają ukrytej korekty kontekstowej.",
   matrixNoContextNote: "Macierz pokazuje wszystkie kombinacje technologii × trybu procesu dla wybranego typu zakupu.",
-  matrixColorLegend: "Gradient kolorów: zielony = najniższy koszt, czerwony = najwyższy. Wiersz podświetlony = aktualne ustawienie. Wartości uwzględniają efekty Spend Type × Process Phase.",
+  matrixColorLegend: "Neutralna skala wielkości: szary oznacza niższą wartość liczbową, a niebieski wyższą. Wiersz podświetlony wskazuje aktualne ustawienie. Wartości uwzględniają efekty Spend Type × Process Phase.",
   appliedMultipliersTitle: "Zastosowane mnożniki kontekstu",
   appliedMultipliersNote: "Model 2.1 stosuje szerokie mnożniki kontekstu wyłącznie do nakładu pracy i niepracowniczego narzutu koordynacyjnego. Pozostałe mechanizmy mają odrębne profile; 1,00 oznacza brak korekty.",
   // Sub-breakdown
@@ -555,7 +555,7 @@ const comparisonEn = {
   matrixContextDownstream: "Downstream (operational)",
   matrixContextDetail: "explicit broad staff-effort and coordination factors; step timing and daily inaction cost have no hidden context adjustment.",
   matrixNoContextNote: "Matrix shows all technology × process mode combinations for the selected procurement type.",
-  matrixColorLegend: "Color gradient: green = lowest cost, red = highest. Row highlighted = current selection. Numbers already incorporate Spend Type × Process Phase effects.",
+  matrixColorLegend: "Neutral magnitude scale: gray indicates a lower numeric value and blue a higher one. The highlighted row marks the current selection. Values include Spend Type × Process Phase effects.",
   appliedMultipliersTitle: "Applied context multipliers",
   appliedMultipliersNote: "Model 2.1 applies broad context multipliers only to staff effort and non-labor coordination overhead. Other mechanisms use separate profiles; 1.00 means no adjustment.",
   staffCost: "Staff (hours × rates)",

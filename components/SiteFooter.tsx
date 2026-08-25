@@ -7,40 +7,30 @@ const projects = [
     href: "https://silence-tax.com",
     label: "Silence Tax",
     desc: "Kalkulator podatku od milczenia",
-    color: "bg-orange-50 text-orange-700 border-orange-200",
   },
   {
     href: "https://czympojade.pl",
     label: "CzymPojade.pl",
     desc: "Kalkulator TCO samochodu",
-    color: "bg-blue-50 text-blue-700 border-blue-200",
   },
   {
     href: "https://przypominamy.com",
     label: "Przypominamy.com",
     desc: "Platforma przypomnień",
-    color: "bg-purple-50 text-purple-700 border-purple-200",
   },
   {
     href: "https://akrobacja.com",
     label: "Akrobacja.com",
     desc: "akrobacja.com",
-    color: "bg-teal-50 text-teal-700 border-teal-200",
   },
   {
     href: "https://www.linkedin.com/in/pawelmamcarz/",
     label: "LinkedIn",
     desc: "Profil zawodowy",
-    color: "bg-gray-50 text-gray-600 border-gray-200",
   },
 ];
 
-const teamAvatars = [
-  { initials: "MK", color: "bg-indigo-100 text-indigo-700" },
-  { initials: "MB", color: "bg-teal-100 text-teal-700" },
-  { initials: "TS", color: "bg-amber-100 text-amber-700" },
-  { initials: "RM", color: "bg-red-100 text-red-700" },
-];
+const teamAvatars = ["MK", "MB", "TS", "RM"];
 
 export default function SiteFooter({ lang }: { lang: Lang }) {
   const isEnglish = lang === "en";
@@ -56,10 +46,10 @@ export default function SiteFooter({ lang }: { lang: Lang }) {
             <div className="flex -space-x-2">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/logo.png" alt="Paweł Mamcarz" className="h-7 w-7 rounded-full object-cover ring-2 ring-white" />
-              {teamAvatars.map(({ initials, color }) => (
+              {teamAvatars.map((initials) => (
                 <div
                   key={initials}
-                  className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold ring-2 ring-white ${color}`}
+                  className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-100 text-xs font-bold text-gray-700 ring-2 ring-white"
                 >
                   {initials}
                 </div>
@@ -81,7 +71,7 @@ export default function SiteFooter({ lang }: { lang: Lang }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 title={p.desc}
-                className={`rounded-full border px-3 py-1 text-xs font-medium transition-opacity hover:opacity-80 ${p.color}`}
+                className="rounded-full border border-gray-200 bg-white px-3 py-1 text-xs font-medium text-gray-600 transition-colors hover:border-blue-500 hover:text-blue-700"
               >
                 {p.label} ↗
               </a>
