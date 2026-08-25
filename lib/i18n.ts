@@ -1,7 +1,9 @@
+import { MODEL_VERSION } from "./version";
+
 export type Lang = "pl" | "en";
 
 // Enforces that a translation object for one language has exactly the same
-// key structure (and function signatures) as the other — a key added to
+// key structure (and function signatures) as the other, a key added to
 // only one language surfaces as a compile error instead of a silent
 // `undefined` at runtime.
 type LangShape<T> = T extends (...args: infer A) => infer R
@@ -15,12 +17,12 @@ const calculatorPl = {
   contractValue: "Bazowa wartość zakupu (PLN)",
   dailyCostOfInaction: "Dzienny koszt zaniechania (PLN/dzień)",
   dailyCostOfInactionTooltip:
-    "Wartość tracona każdego dnia bez podpisanego kontraktu — zatrzymana produkcja, nieosiągalny przychód, koszt alternatywny.",
+    "Wartość tracona każdego dnia bez podpisanego kontraktu: zatrzymana produkcja, nieosiągalny przychód, koszt alternatywny.",
   renegotiationCost: "Koszt jednego formalnego aneksu (PLN)",
   contractDuration: "Czas trwania kontraktu (lata)",
   discountRate: "Stopa dyskontowa (% rocznie)",
   discountRateTooltip:
-    "Realna roczna stopa dyskontowa dla przepływów cyklu życia (aneksy, TCO). Model sprowadza je do wartości bieżącej na moment udzielenia zamówienia — to jedyna baza czasowa całego rachunku. Domyślne 4% to realna finansowa stopa dyskontowa z wytycznych MFiPR 2021–2027 (stopa społeczna w tych samych wytycznych to 3% — właściwa dla oceny projektów publicznych). Jawne założenie, nie oszacowanie. Wpisanie 0 odtwarza niedyskontowany model 2.1.",
+    "Realna roczna stopa dyskontowa dla przepływów cyklu życia (aneksy, TCO). Model sprowadza je do wartości bieżącej na moment udzielenia zamówienia. To jedyna baza czasowa całego rachunku. Domyślne 4% to realna finansowa stopa dyskontowa z wytycznych MFiPR 2021–2027 (stopa społeczna w tych samych wytycznych to 3%, właściwa dla oceny projektów publicznych). Jawne założenie, nie oszacowanie. Wpisanie 0 odtwarza niedyskontowany model 2.1.",
   bypassExposure: "Ryzyko audytowe przy obejściu (PLN)",
   bypassTooltip:
     "Szacowany koszt audytu, kary regulacyjne lub reputacyjne jeśli nieformalne obejście procedury zostanie odkryte. Wartość podaje użytkownik. Lipsky (1980) i Vaughan (1996) uzasadniają sam mechanizm obejścia, ale nie dostarczają ani jego kosztu, ani częstości.",
@@ -30,15 +32,15 @@ const calculatorPl = {
   // Process type section
   processTypeLabel: "Typ procesu zakupowego",
   processCategoryLabels: {
-    strategic: "Zakupy strategiczne — dobór dostawcy, negocjacje, CAPEX",
-    operational: "Zakupy operacyjne — realizacja na bazie kontraktu",
-    strategic_pzp: "Zakupy strategiczne PZP — tryby ustawowe",
+    strategic: "Zakupy strategiczne: dobór dostawcy, negocjacje, CAPEX",
+    operational: "Zakupy operacyjne: realizacja na bazie kontraktu",
+    strategic_pzp: "Zakupy strategiczne PZP: tryby ustawowe",
   },
   operationalCategoryNote: "Zakupy operacyjne działają na pre-negocjowanych kontraktach (dostawca i cena są już ustalone). Model kosztów porównuje tu ręczną realizację z automatyzacją ERP/Ariba Guided Buying, nie wybór procedury przetargowej.",
   strategicPzpCategoryNote: "Strategiczne PZP pokazujemy osobno, bo wybór ścieżki ograniczają progi, terminy i przesłanki ustawowe. Porównanie obejmuje wyłącznie dopuszczalne warianty w tej samej granicy prawa.",
   processTypes: {
-    pzp_eu: "Strategiczne PZP — przetarg UE",
-    pzp_krajowy: "Strategiczne PZP — postępowanie krajowe",
+    pzp_eu: "Strategiczne PZP: przetarg UE",
+    pzp_krajowy: "Strategiczne PZP: postępowanie krajowe",
     private_formal: "Strategiczny przetarg prywatny (RFQ/RFP)",
     policy_only: "Strategiczna ścieżka adaptacyjna i zgodna",
     discovery: "Strategiczny zakup odkrywczy (wymaganie nieznane)",
@@ -84,12 +86,12 @@ const calculatorEn = {
   contractValue: "Baseline purchase value (PLN)",
   dailyCostOfInaction: "Daily cost of inaction (PLN/day)",
   dailyCostOfInactionTooltip:
-    "Value lost every day without a signed contract — halted production, unrealised revenue, opportunity cost.",
+    "Value lost every day without a signed contract: halted production, unrealised revenue, opportunity cost.",
   renegotiationCost: "Cost per formal amendment (PLN)",
   contractDuration: "Contract duration (years)",
   discountRate: "Discount rate (% per year)",
   discountRateTooltip:
-    "Real annual discount rate for lifecycle flows (amendments, TCO). The model brings them to present value at award — the single time base for the whole calculation. The 4% default is the real financial discount rate from the Polish MFiPR 2021–2027 appraisal guidelines (the social rate in the same guidelines is 3% — appropriate for public-appraisal use). A declared assumption, not an estimate. Entering 0 reproduces the undiscounted 2.1 model.",
+    "Real annual discount rate for lifecycle flows (amendments, TCO). The model brings them to present value at award. This is the single time base for the whole calculation. The 4% default is the real financial discount rate from the Polish MFiPR 2021–2027 appraisal guidelines (the social rate in the same guidelines is 3%, appropriate for public-appraisal use). A declared assumption, not an estimate. Entering 0 reproduces the undiscounted 2.1 model.",
   bypassExposure: "Audit exposure on bypass (PLN)",
   bypassTooltip:
     "Estimated audit cost, regulatory or reputational penalties if an informal procedure bypass is discovered. User-supplied. Lipsky (1980) and Vaughan (1996) motivate the bypass mechanism; neither supplies its cost or its rate.",
@@ -98,15 +100,15 @@ const calculatorEn = {
     "The declared stress test scales the TCO pool linearly up to 3 years and does not increase it beyond that horizon. The central TCO pool is 0%.",
   processTypeLabel: "Procurement process type",
   processCategoryLabels: {
-    strategic: "Strategic procurement — supplier selection, negotiation, CAPEX",
-    operational: "Operational procurement — execution against contract",
-    strategic_pzp: "Strategic PZP procurement — statutory procedures",
+    strategic: "Strategic procurement: supplier selection, negotiation, CAPEX",
+    operational: "Operational procurement: execution against contract",
+    strategic_pzp: "Strategic PZP procurement: statutory procedures",
   },
   operationalCategoryNote: "Operational procurement runs against pre-negotiated contracts (supplier and price are already set). The cost model compares manual execution against ERP/Ariba Guided Buying automation, not competing tender approaches.",
   strategicPzpCategoryNote: "Strategic PZP is shown separately because path choice is constrained by statutory thresholds, timelines and grounds. Comparisons include only variants inside the same legal boundary.",
   processTypes: {
-    pzp_eu: "Strategic PZP — EU open tender",
-    pzp_krajowy: "Strategic PZP — national procedure",
+    pzp_eu: "Strategic PZP: EU open tender",
+    pzp_krajowy: "Strategic PZP: national procedure",
     private_formal: "Strategic private tender (RFQ/RFP)",
     policy_only: "Strategic adaptive and compliant path",
     discovery: "Strategic discovery purchase (requirement unknown)",
@@ -144,7 +146,7 @@ const calculatorEn = {
 
 export const calculatorT = { pl: calculatorPl, en: calculatorEn } as const;
 
-// Canonical ∂Φ boundary set (CLAUDE_DESIGN.md) — single source of truth; use verbatim everywhere.
+// Canonical ∂Φ boundary set (CLAUDE_DESIGN.md), single source of truth; use verbatim everywhere.
 export const PHI_SET = {
   pl: "∂Φ = {uprawnienia, konkurencja, etyka, dokumentacja}",
   en: "∂Φ = {auth, competition, ethics, docs}",
@@ -180,20 +182,20 @@ const comparisonPl = {
   decompositionDelay: "Opóźnienie (dni × Twój koszt dnia)",
   decompositionLifecycle: "Cykl życia (aneksy, TCO)",
   decompositionNote:
-    "Kubełek opóźnienia to iloczyn różnicy dni z szablonu i ceny dnia, którą podałeś — tożsamość rachunkowa, nie wynik modelowania. Czytaj go osobno od pozostałych dwóch.",
+    "Kubełek opóźnienia to iloczyn różnicy dni z szablonu i ceny dnia, którą podałeś. To tożsamość rachunkowa, nie wynik modelowania. Czytaj go osobno od pozostałych dwóch.",
   breakEvenLabel: "Próg kosztu dnia bezczynności",
   breakEvenAboveZero:
     "Powyżej tego dziennego kosztu bezczynności niższy modelowany koszt ma ścieżka adaptacyjna.",
   breakEvenAboveZeroFormalFaster:
     "Powyżej tego dziennego kosztu bezczynności niższy modelowany koszt ma ścieżka formalna, ponieważ w tym profilu jest szybsza.",
   breakEvenGeneral:
-    "Próg równowagi pokazuje dzienny koszt bezczynności, przy którym zmienia się wynik centralny. Powyżej progu niższy modelowany koszt ma ścieżka szybsza w wybranym profilu — nie zawsze adaptacyjna.",
+    "Próg równowagi pokazuje dzienny koszt bezczynności, przy którym zmienia się wynik centralny. Powyżej progu niższy modelowany koszt ma ścieżka szybsza w wybranym profilu, nie zawsze adaptacyjna.",
   breakEvenFormalLoses:
-    "ścieżka formalna kosztuje więcej już przy zerowym koszcie zwłoki — kanał opóźnienia nie jest potrzebny do tego wyniku.",
+    "ścieżka formalna kosztuje więcej już przy zerowym koszcie zwłoki. Kanał opóźnienia nie jest potrzebny do tego wyniku.",
   breakEvenAdaptiveLoses:
     "ścieżka adaptacyjna kosztuje więcej już przy zerowym koszcie zwłoki.",
   breakEvenNoDayDifference:
-    "obie ścieżki trwają tyle samo, więc próg nie istnieje — o wyniku decydują wyłącznie koszty procesu i cyklu życia.",
+    "obie ścieżki trwają tyle samo, więc próg nie istnieje. O wyniku decydują wyłącznie koszty procesu i cyklu życia.",
   bypassLabel: "Centralna scenariuszowa stopa obejść",
   bypassNote:
     "Założenie modelowe skalowane przez kontrolę systemową; teoria nie dostarcza prawdopodobieństwa",
@@ -206,7 +208,7 @@ const comparisonPl = {
   sourcesTitle: "Źródła naukowe modelu",
   importance: "Ważność",
   // Step breakdown section
-  stepsTitle: "Kroki procesu — skąd wynika czas?",
+  stepsTitle: "Kroki procesu: skąd wynika czas?",
   stepsRigidDays: "Dni (formalny)",
   stepsFlexDays: "Dni (adaptacyjny)",
   stepsMandatory: "Wymagany prawnie",
@@ -241,7 +243,7 @@ const comparisonPl = {
   fieldDesc:
     "Ścieżka adaptacyjna działa w tej samej granicy uprawnień, konkurencji, etyki i dokumentacji. Może przyspieszać iteracje, lecz słaba konkurencja lub kontrola może odwrócić jej przewagę.",
   pipeFieldSource: "Źródło modelu: Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) Challenger; Holmström & Milgrom (1991) Multitask Principal-Agent",
-  radarTitle: "Profil kosztów — 6 wymiarów (znormalizowane)",
+  radarTitle: "Profil kosztów: 6 wymiarów (znormalizowane)",
   radarSubtitle: "Każda oś pokazuje koszt w danym wymiarze jako % wartości wyższej (100 = max). Mniejsza powierzchnia = niższy koszt.",
   sensitivityTitle: "Wrażliwość: koszty vs. wartość kontraktu",
   sensitivitySubtitle: "Jak zmieniają się koszty całkowite przy zmianie wartości kontraktu. Pozostałe parametry stałe.",
@@ -251,7 +253,7 @@ const comparisonPl = {
   benchmarkSubtitle: "Różnica formalny − adaptacyjny (% kosztu ścieżki adaptacyjnej)",
   benchmarkYours: "Twój scenariusz",
   benchmarkSummary: (pct: number, rank: number, total: number) =>
-    `Różnica w Twoim scenariuszu wynosi ${pct}% — jest wyższa niż w ${rank} z ${total} przypadków referencyjnych.`,
+    `Różnica w Twoim scenariuszu wynosi ${pct}%. Jest wyższa niż w ${rank} z ${total} przypadków referencyjnych.`,
 } as const;
 
 type ComparisonShape = LangShape<typeof comparisonPl>;
@@ -278,7 +280,7 @@ const comparisonEn = {
   axisEvidence: "Evidence axis (5 literature scalars)",
   axisStructural: "Structural axis (daily cost ×0.25…×4, step durations ×0.7…×1.3)",
   axisNoteStructural:
-    "The width comes from the structural axis, not the evidence one. Your assumptions about the cost of a day and about step durations decide this result — not the parameters taken from research. Statutory PZP waits are invariant under both axes.",
+    "The width comes from the structural axis, not the evidence one. Your assumptions about the cost of a day and about step durations decide this result, not the parameters taken from research. Statutory PZP waits are invariant under both axes.",
   axisNoteEvidence:
     "The width comes from the evidence axis. Statutory PZP waits are invariant under both axes.",
   decompositionTitle: "What this difference is made of",
@@ -286,20 +288,20 @@ const comparisonEn = {
   decompositionDelay: "Delay (days × your daily cost)",
   decompositionLifecycle: "Lifecycle (amendments, TCO)",
   decompositionNote:
-    "The delay bucket is the template day difference multiplied by the daily cost you supplied — an accounting identity, not a modeled result. Read it separately from the other two.",
+    "The delay bucket is the template day difference multiplied by the daily cost you supplied. It is an accounting identity, not a modeled result. Read it separately from the other two.",
   breakEvenLabel: "Break-even daily cost of inaction",
   breakEvenAboveZero:
     "Above this daily inaction cost, the adaptive path has the lower modeled total.",
   breakEvenAboveZeroFormalFaster:
     "Above this daily inaction cost, the formal path has the lower modeled total because it is faster in this profile.",
   breakEvenGeneral:
-    "The break-even threshold is the daily inaction cost at which the central result changes sign. Above it, the faster path in the selected profile has the lower modeled total — and that path is not always adaptive.",
+    "The break-even threshold is the daily inaction cost at which the central result changes sign. Above it, the faster path in the selected profile has the lower modeled total, and that path is not always adaptive.",
   breakEvenFormalLoses:
-    "the formal path already costs more at zero delay cost — the delay channel is not needed for this result.",
+    "the formal path already costs more at zero delay cost. The delay channel is not needed for this result.",
   breakEvenAdaptiveLoses:
     "the adaptive path already costs more at zero delay cost.",
   breakEvenNoDayDifference:
-    "both paths take the same time, so no threshold exists — process and lifecycle costs decide the result on their own.",
+    "both paths take the same time, so no threshold exists. Process and lifecycle costs decide the result on their own.",
   bypassLabel: "Central scenario bypass rate",
   bypassNote:
     "Model assumption scaled by system controls; the cited theory does not provide a probability",
@@ -311,7 +313,7 @@ const comparisonEn = {
   colDiff: "Difference",
   sourcesTitle: "Academic sources",
   importance: "Importance",
-  stepsTitle: "Process steps — why does it take this long?",
+  stepsTitle: "Process steps: why does it take this long?",
   stepsRigidDays: "Days (formal)",
   stepsFlexDays: "Days (adaptive)",
   stepsMandatory: "Legally required",
@@ -344,7 +346,7 @@ const comparisonEn = {
   fieldDesc:
     "The adaptive path operates within the same authorisation, competition, ethics and documentation boundary. It can speed iteration, but weak competition or control can reverse its advantage.",
   pipeFieldSource: "Model sources: Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) Challenger; Holmström & Milgrom (1991) Multitask Principal-Agent",
-  radarTitle: "Cost profile — 6 dimensions (normalized)",
+  radarTitle: "Cost profile: 6 dimensions (normalized)",
   radarSubtitle: "Each axis shows the cost in that dimension as a % of the higher value (100 = maximum). Smaller area = lower cost.",
   sensitivityTitle: "Sensitivity: cost vs. contract value",
   sensitivitySubtitle: "How total costs change as contract value varies. All other parameters fixed.",
@@ -354,7 +356,7 @@ const comparisonEn = {
   benchmarkSubtitle: "Formal − adaptive cost difference (% of adaptive-path cost)",
   benchmarkYours: "Your scenario",
   benchmarkSummary: (pct: number, rank: number, total: number) =>
-    `Your scenario difference is ${pct}% — higher than ${rank} of ${total} reference cases.`,
+    `Your scenario difference is ${pct}%, higher than ${rank} of ${total} reference cases.`,
 } satisfies ComparisonShape;
 
 export const comparisonT = { pl: comparisonPl, en: comparisonEn } as const;
@@ -419,7 +421,7 @@ const optimizerPl = {
   treeVotes: "Zgodne przebiegi (z 30)",
   singleCandidateLabel: "Zbiór wyboru",
   singleCandidateValue: "Jedyny tryb bez dodatkowych przesłanek",
-  outsidePzpLabel: "Ścieżka organizacyjna — poza reżimem PZP",
+  outsidePzpLabel: "Ścieżka organizacyjna: poza reżimem PZP",
   outOfScopeTitle: "Poza zakresem narzędzia",
   withheldTitle: "Tryby pominięte przez filtr",
   withheldBody:
@@ -427,7 +429,7 @@ const optimizerPl = {
   typicalTime: "Typowy czas",
   pzpNote: "Nota PZP",
   rankingTitle: "Ranking ścieżek (wspólne kryteria, 30 przebiegów wrażliwości wag)",
-  importanceTitle: "Ważność kryteriów — co zmienia ranking",
+  importanceTitle: "Ważność kryteriów: co zmienia ranking",
   importanceNote:
     "Zmiana marginesu lidera nad najlepszą alternatywą po ustawieniu kryterium na wartość neutralną (ablacja deterministyczna).",
   whenToUse: "Kiedy stosować",
@@ -440,7 +442,7 @@ const optimizerPl = {
     5: "Bardzo wysoki",
   } as Record<number, string>,
   modelNote:
-    "Model: każda ścieżka jest oceniana na tych samych kryteriach i wspólnym mianowniku — NIE jest to ML ani prognoza wyniku zamówienia. 30 przebiegów zmienia wszystkie wagi o ±25% i pokazuje lokalną stabilność rankingu. Wagi i profile dopasowania są jawnymi założeniami, nie parametrami uczonymi. Narzędzie ilustracyjne, niewalidowane na realnych danych; rekomendacje publiczne są twardo filtrowane do dopuszczalnych trybów PZP.",
+    "Model: każda ścieżka jest oceniana na tych samych kryteriach i wspólnym mianowniku. NIE jest to ML ani prognoza wyniku zamówienia. 30 przebiegów zmienia wszystkie wagi o ±25% i pokazuje lokalną stabilność rankingu. Wagi i profile dopasowania są jawnymi założeniami, nie parametrami uczonymi. Narzędzie ilustracyjne, niewalidowane na realnych danych; rekomendacje publiczne są twardo filtrowane do dopuszczalnych trybów PZP.",
   importanceUnit: "%",
   importance: "Ważność",
   explanationTitle: "Dlaczego ta rekomendacja?",
@@ -478,7 +480,7 @@ const optimizerEn = {
   treeVotes: "Agreeing runs (of 30)",
   singleCandidateLabel: "Choice set",
   singleCandidateValue: "Only procedure available without additional grounds",
-  outsidePzpLabel: "Organisational path — outside the PZP regime",
+  outsidePzpLabel: "Organisational path: outside the PZP regime",
   outOfScopeTitle: "Outside this tool's scope",
   withheldTitle: "Procedures withheld by the filter",
   withheldBody:
@@ -486,7 +488,7 @@ const optimizerEn = {
   typicalTime: "Typical time",
   pzpNote: "PZP note",
   rankingTitle: "All paths ranked (common criteria, 30 weight-sensitivity runs)",
-  importanceTitle: "Criterion importance — what changes the ranking",
+  importanceTitle: "Criterion importance: what changes the ranking",
   importanceNote:
     "Change in the leader's margin over the best alternative when a criterion is set to its neutral value (deterministic ablation).",
   whenToUse: "When to use",
@@ -499,7 +501,7 @@ const optimizerEn = {
     5: "Very high",
   } as Record<number, string>,
   modelNote:
-    "Model: every path is evaluated on the same criteria and denominator — this is NOT ML or an outcome prediction. The 30 runs vary all weights by ±25% and show local ranking stability. Weights and suitability profiles are explicit assumptions, not learned parameters. The tool is illustrative and unvalidated on real procurement data; public recommendations are hard-filtered to lawful PZP procedures.",
+    "Model: every path is evaluated on the same criteria and denominator. This is NOT ML or an outcome prediction. The 30 runs vary all weights by ±25% and show local ranking stability. Weights and suitability profiles are explicit assumptions, not learned parameters. The tool is illustrative and unvalidated on real procurement data; public recommendations are hard-filtered to lawful PZP procedures.",
   importanceUnit: "%",
   importance: "Importance",
   explanationTitle: "Why this recommendation?",
@@ -518,7 +520,7 @@ export const optimizerT = { pl: optimizerPl, en: optimizerEn } as const;
 const assessmentPl = {
   title: "Profil projektowania zakupów",
   subtitle: "10 pytań o sekwencyjność, kontrolę i adaptację. To samoocena, nie walidowany audyt.",
-  badge: "Samoocena 2.1",
+  badge: `Samoocena ${MODEL_VERSION}`,
   questionOf: (n: number, total: number) => `Pytanie ${n} z ${total}`,
   never: "Nigdy",
   sometimes: "Zależy / czasem",
@@ -553,12 +555,12 @@ const assessmentPl = {
     {
       q: "Gdy dostawca proponuje szybszą metodę zakupu, kupiec może ją zaakceptować?",
       dim: "Elastyczność procesu",
-      answers: ["Nigdy — tylko zatwierdzona procedura", "Tak, z dodatkowym approvalem", "Tak, jeśli spełnia kryteria polityki"],
+      answers: ["Nigdy: tylko zatwierdzona procedura", "Tak, z dodatkowym approvalem", "Tak, jeśli spełnia kryteria polityki"],
     },
     {
       q: "Czy organizacja rozróżnia ustawowe okresy oczekiwania od własnych terminów i kolejek akceptacyjnych?",
       dim: "Źródło ograniczeń czasu",
-      answers: ["Nie — wszystkie traktujemy jako obowiązkowe", "Częściowo", "Tak — każde ograniczenie ma wskazane źródło"],
+      answers: ["Nie: wszystkie traktujemy jako obowiązkowe", "Częściowo", "Tak: każde ograniczenie ma wskazane źródło"],
     },
     {
       q: "Pod presją czasu kupcy najczęściej:",
@@ -578,27 +580,27 @@ const assessmentPl = {
     {
       q: "Czy kontrakty mają proporcjonalne do ryzyka mechanizmy przeglądu i kontrolowanej zmiany?",
       dim: "Adaptacyjność kontraktu",
-      answers: ["Nie — używamy jednego sztywnego wzorca", "Tylko w wybranych kategoriach", "Tak — mechanizmy wynikają z ryzyka i przedmiotu"],
+      answers: ["Nie: używamy jednego sztywnego wzorca", "Tylko w wybranych kategoriach", "Tak: mechanizmy wynikają z ryzyka i przedmiotu"],
     },
     {
       q: "Dostawcy skarżą się na złożoność procesu zakupowego?",
       dim: "Doświadczenie dostawcy",
-      answers: ["Tak, regularnie", "Sporadycznie", "Rzadko — uważają nasz proces za sprawny"],
+      answers: ["Tak, regularnie", "Sporadycznie", "Rzadko: uważają nasz proces za sprawny"],
     },
     {
       q: "Kupiec może zamawiać standardowe pozycje z katalogu lub przez e-auction bez pełnej procedury?",
       dim: "Ścieżki operacyjne (downstream)",
-      answers: ["Nie — każdy zakup przez tę samą procedurę", "Tylko poniżej określonego progu wartości", "Tak — mamy dedykowane ścieżki dla katalogów i MRP"],
+      answers: ["Nie: każdy zakup przez tę samą procedurę", "Tylko poniżej określonego progu wartości", "Tak: mamy dedykowane ścieżki dla katalogów i MRP"],
     },
     {
       q: "System IT pokrywa cały cykl zakupowy (P2P)?",
       dim: "Poziom technologiczny",
-      answers: ["Głównie Excel i email", "Częściowy ERP — sourcing lub PO, nie całość", "End-to-end: od zapotrzebowania do faktury w jednym systemie"],
+      answers: ["Głównie Excel i email", "Częściowy ERP: sourcing lub PO, nie całość", "End-to-end: od zapotrzebowania do faktury w jednym systemie"],
     },
     {
       q: "Polityka zakupowa określa granice (co i dlaczego), nie kroki (jak i w jakiej kolejności)?",
       dim: "Model polityki vs procedury",
-      answers: ["Nie — mamy procedurę krok po kroku", "Częściowo — polityka istnieje, ale procedury dominują", "Tak — polityka wyznacza granice, kupiec decyduje o ścieżce"],
+      answers: ["Nie: mamy procedurę krok po kroku", "Częściowo: polityka istnieje, ale procedury dominują", "Tak: polityka wyznacza granice, kupiec decyduje o ścieżce"],
     },
   ],
 } as const;
@@ -608,7 +610,7 @@ type AssessmentShape = LangShape<typeof assessmentPl>;
 const assessmentEn = {
   title: "Procurement Design Profile",
   subtitle: "10 questions about sequencing, control and adaptability. This is a self-assessment, not a validated audit.",
-  badge: "Model 2.1 self-assessment",
+  badge: `Model ${MODEL_VERSION} self-assessment`,
   questionOf: (n: number, total: number) => `Question ${n} of ${total}`,
   never: "Never",
   sometimes: "Sometimes / depends",
@@ -643,12 +645,12 @@ const assessmentEn = {
     {
       q: "When a supplier proposes a faster procurement method, can the buyer accept it?",
       dim: "Process flexibility",
-      answers: ["Never — only the approved procedure", "Yes, with additional approval", "Yes, if it meets policy criteria"],
+      answers: ["Never: only the approved procedure", "Yes, with additional approval", "Yes, if it meets policy criteria"],
     },
     {
       q: "Does the organization distinguish statutory waiting periods from internal timelines and approval queues?",
       dim: "Source of timing constraints",
-      answers: ["No — all are treated as mandatory", "Partly", "Yes — every constraint has a documented source"],
+      answers: ["No: all are treated as mandatory", "Partly", "Yes: every constraint has a documented source"],
     },
     {
       q: "Under time pressure, buyers typically:",
@@ -668,27 +670,27 @@ const assessmentEn = {
     {
       q: "Do contracts include risk-proportionate review and controlled-change mechanisms?",
       dim: "Contract adaptability",
-      answers: ["No — one rigid template is used", "Only in selected categories", "Yes — mechanisms follow risk and subject matter"],
+      answers: ["No: one rigid template is used", "Only in selected categories", "Yes: mechanisms follow risk and subject matter"],
     },
     {
       q: "Do suppliers complain about the complexity of your procurement process?",
       dim: "Supplier experience",
-      answers: ["Yes, regularly", "Occasionally", "Rarely — they find our process efficient"],
+      answers: ["Yes, regularly", "Occasionally", "Rarely: they find our process efficient"],
     },
     {
       q: "Can the buyer order standard items from a catalog or via e-auction without a full procedure?",
       dim: "Operational paths (downstream)",
-      answers: ["No — every purchase goes through the same procedure", "Only below a certain value threshold", "Yes — we have dedicated paths for catalogs and MRP"],
+      answers: ["No: every purchase goes through the same procedure", "Only below a certain value threshold", "Yes: we have dedicated paths for catalogs and MRP"],
     },
     {
       q: "Does the IT system cover the full procurement cycle (P2P)?",
       dim: "Technology level",
-      answers: ["Mainly Excel and email", "Partial ERP — sourcing or PO, not both", "End-to-end: from requisition to invoice in one system"],
+      answers: ["Mainly Excel and email", "Partial ERP: sourcing or PO, not both", "End-to-end: from requisition to invoice in one system"],
     },
     {
       q: "Does the procurement policy define boundaries (what & why), not steps (how & in what order)?",
       dim: "Policy vs procedure model",
-      answers: ["No — we have a step-by-step procedure", "Partially — policy exists but procedures dominate", "Yes — policy sets boundaries, buyer decides the path"],
+      answers: ["No: we have a step-by-step procedure", "Partially: policy exists but procedures dominate", "Yes: policy sets boundaries, buyer decides the path"],
     },
   ],
 } satisfies AssessmentShape;

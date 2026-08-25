@@ -1,6 +1,8 @@
-const title = "ProcuraCost — Procurement Cost Calculator";
+import { MODEL_VERSION } from "@/lib/version";
+
+const title = "ProcuraCost: Procurement Cost Calculator";
 const description =
-  "Compare formal and adaptive procurement paths with the explicit uncertainty range of model 2.1.";
+  `Compare formal and adaptive procurement paths with the explicit uncertainty range of model ${MODEL_VERSION}.`;
 
 export const metadata = {
   title,

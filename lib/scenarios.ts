@@ -1,4 +1,5 @@
 import { ProcurementInputs } from "./calculations";
+import { MODEL_VERSION } from "./version";
 
 export interface Scenario {
   id: string;
@@ -95,8 +96,8 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 300_000,
     },
     caseStudy: {
-      title: "Swiss Casinos ERP — Agile Sourcing (private-sector example)",
-      source: "Agile Business Consortium — Case Study: Swiss Casinos (practitioner report)",
+      title: "Swiss Casinos ERP: Agile Sourcing (private-sector example)",
+      source: "Agile Business Consortium: Case Study: Swiss Casinos (practitioner report)",
       insight:
         "Raport praktyczny Agile Business Consortium podaje, że Swiss Casinos przeprowadziło sourcing ERP w cztery tygodnie. To deklaracja opisana przez organizację promującą metodę, nie niezależne badanie ani czas pełnego wdrożenia.",
       insightEn:
@@ -131,21 +132,21 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 800_000,
     },
     caseStudy: {
-      title: "Air France KLM Martinair Cargo — Lean Agile Procurement (private-sector example)",
+      title: "Air France KLM Martinair Cargo: Lean Agile Procurement (private-sector example)",
       source:
-        "LAP Alliance / Agile Business Consortium (2021) — Air France KLM Martinair Cargo case study (practitioner example, illustrative)",
+        "LAP Alliance / Agile Business Consortium (2021): Air France KLM Martinair Cargo case study (practitioner example, illustrative)",
       insight:
-        "Prywatny przewoźnik: Air France KLM zastosował Lean Agile Procurement dla modernizacji cargo door-to-door w ścisłym oknie czasowym. Przykład praktyczny ilustrujący efektywność sektora prywatnego — nie dowód empiryczny dotyczący prawa zamówień publicznych.",
+        "Prywatny przewoźnik: Air France KLM zastosował Lean Agile Procurement dla modernizacji cargo door-to-door w ścisłym oknie czasowym. Przykład praktyczny ilustrujący efektywność sektora prywatnego, nie dowód empiryczny dotyczący prawa zamówień publicznych.",
       insightEn:
-        "Private-sector case: Air France KLM applied Lean Agile Procurement for cargo door-to-door modernisation within a tight time window. A practitioner example illustrating private-sector efficiency — not empirical evidence about public-procurement law.",
+        "Private-sector case: Air France KLM applied Lean Agile Procurement for cargo door-to-door modernisation within a tight time window. A practitioner example illustrating private-sector efficiency, not empirical evidence about public-procurement law.",
     },
   },
   {
     id: "production",
     name: "Materiały produkcyjne",
     nameEn: "Production Materials",
-    description: "Kategoria A — kluczowe surowce, kontrakt 12 miesięcy",
-    descriptionEn: "Category A — critical raw materials, 12-month contract",
+    description: "Kategoria A: kluczowe surowce, kontrakt 12 miesięcy",
+    descriptionEn: "Category A: critical raw materials, 12-month contract",
     inputs: {
       contractValue: 12_000_000,
       tcoHorizonYears: 1,
@@ -170,9 +171,9 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 1_200_000,
     },
     caseStudy: {
-      title: "Zara — Responsive Fast-Fashion Supply Chain (illustrative)",
+      title: "Zara: Responsive Fast-Fashion Supply Chain (illustrative)",
       source:
-        "Ferdows, Lewis & Machuca, HBR (2004) — Rapid-Fire Fulfillment (illustrative example)",
+        "Ferdows, Lewis & Machuca, HBR (2004): Rapid-Fire Fulfillment (illustrative example)",
       insight:
         "Ferdows, Lewis i Machuca opisują responsywną sieć dostaw Zary. To materiał o operacjach i łańcuchu dostaw, nie dowód na konkretną metodę zakupową ani zastąpienie przetargów przez AI.",
       insightEn:
@@ -207,9 +208,9 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 600_000,
     },
     caseStudy: {
-      title: "Tunel vs Pole — ten sam zakup, dwa światy",
+      title: "Tunel vs Pole: ten sam zakup, dwa światy",
       source:
-        "Konstrukcja modelu 2.2 — scenariusz ilustracyjny bez źródła zewnętrznego. Wartości wejściowe są założeniami, a nie danymi z żadnego badania.",
+        `Konstrukcja modelu ${MODEL_VERSION}: scenariusz ilustracyjny bez źródła zewnętrznego. Wartości wejściowe są założeniami, a nie danymi z żadnego badania.`,
       insight:
         "Porównanie dwóch legalnych projektów tego samego postępowania: bardziej sekwencyjnego i bardziej adaptacyjnego. Wynik zależy od kosztu zwłoki, konkurencji i konstrukcji kontraktu; nie zakłada obejścia PZP.",
       insightEn:
@@ -220,8 +221,8 @@ export const SCENARIOS: Scenario[] = [
     id: "catalog",
     name: "Zamówienie z katalogu",
     nameEn: "Catalog Order",
-    description: "Materiały biurowe / MRO z katalogu dostawcy — system egzekwuje cenę",
-    descriptionEn: "Office supplies / MRO from supplier catalog — system enforces price",
+    description: "Materiały biurowe / MRO z katalogu dostawcy: system egzekwuje cenę",
+    descriptionEn: "Office supplies / MRO from supplier catalog: system enforces price",
     inputs: {
       contractValue: 50_000,
       tcoHorizonYears: 1,
@@ -249,8 +250,8 @@ export const SCENARIOS: Scenario[] = [
     id: "mrp",
     name: "Zlecenie MRP",
     nameEn: "MRP Order",
-    description: "Surowce produkcyjne — zlecenia generowane automatycznie przez ERP",
-    descriptionEn: "Production raw materials — orders auto-generated by ERP",
+    description: "Surowce produkcyjne: zlecenia generowane automatycznie przez ERP",
+    descriptionEn: "Production raw materials: orders auto-generated by ERP",
     inputs: {
       contractValue: 500_000,
       tcoHorizonYears: 1,
@@ -279,8 +280,8 @@ export const SCENARIOS: Scenario[] = [
     id: "capex_investment",
     name: "Inwestycja CAPEX",
     nameEn: "CAPEX Investment",
-    description: "Linia produkcyjna — procedura CAPEX jest tu uzasadniona",
-    descriptionEn: "Production line — CAPEX governance is justified here",
+    description: "Linia produkcyjna: procedura CAPEX jest tu uzasadniona",
+    descriptionEn: "Production line: CAPEX governance is justified here",
     inputs: {
       contractValue: 15_000_000,
       tcoHorizonYears: 10,
@@ -304,7 +305,7 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 2_000_000,
     },
     caseStudy: {
-      title: "Ryanair CAPEX — Boeing bulk order at crisis prices (private-sector example)",
+      title: "Ryanair CAPEX: Boeing bulk order at crisis prices (private-sector example)",
       source:
         "Ryanair 2002/2003 Annual Report / SEC Form 20-F (Boeing price concessions)",
       insight:
@@ -315,8 +316,8 @@ export const SCENARIOS: Scenario[] = [
   },
   {
     id: "governance_control",
-    name: "Stabilny zakup — scenariusz kontrolny",
-    nameEn: "Stable purchase — control scenario",
+    name: "Stabilny zakup: scenariusz kontrolny",
+    nameEn: "Stable purchase: control scenario",
     description: "Dojrzały rynek, niski koszt zwłoki i zachowana przewaga konkurencji formalnej",
     descriptionEn: "Mature market, negligible delay cost, and a retained formal-competition advantage",
     inputs: {
@@ -334,7 +335,7 @@ export const SCENARIOS: Scenario[] = [
     },
     caseStudy: {
       title: "Scenariusz kontrolny: formalność może wygrać",
-      source: "Założenia scenariuszowe ProcuraCost 2.1 — nie obserwacja empiryczna",
+      source: `Założenia scenariuszowe ProcuraCost ${MODEL_VERSION}: nie obserwacja empiryczna`,
       insight:
         "Gdy koszt zwłoki jest pomijalny, rynek stabilny, a bardziej formalna ścieżka zachowuje przewagę konkurencyjną, centralny wynik może sprzyjać formalności. Szeroki stres-test nadal może zmienić znak.",
       insightEn:
@@ -343,8 +344,8 @@ export const SCENARIOS: Scenario[] = [
   },
   {
     id: "discovery_rd",
-    name: "Zakup odkrywczy — wymaganie nieznane",
-    nameEn: "Discovery purchase — requirement unknown",
+    name: "Zakup odkrywczy: wymaganie nieznane",
+    nameEn: "Discovery purchase: requirement unknown",
     description: "Rozwiązanie projektowane wspólnie z dostawcami; adaptacja kupuje uczenie się kosztem czasu",
     descriptionEn: "Solution co-designed with suppliers; adaptation buys learning at the cost of time",
     inputs: {
@@ -371,7 +372,7 @@ export const SCENARIOS: Scenario[] = [
     caseStudy: {
       title: "Scenariusz kontrolny II: adaptacja bywa droższa",
       source:
-        "Konstrukcja modelu 2.2 — scenariusz ilustracyjny bez źródła zewnętrznego. Wartości wejściowe są założeniami, a nie danymi z badania.",
+        `Konstrukcja modelu ${MODEL_VERSION}: scenariusz ilustracyjny bez źródła zewnętrznego. Wartości wejściowe są założeniami, a nie danymi z badania.`,
       insight:
         "Kiedy wymaganie powstaje w trakcie, ścieżka adaptacyjna kupuje uczenie się czasem: współprojektowanie i runda przeprojektowania wydłużają kalendarz i zwiększają pracę. Formalna zamraża wymaganie wcześnie i wychodzi szybciej, płacąc gorszym dopasowaniem i słabszym wychwyceniem wartości cyklu życia. Ten scenariusz istnieje po to, żeby teza modelu dała się obalić, a nie tylko potwierdzić.",
       insightEn:

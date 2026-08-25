@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { calculateCosts } from "@/lib/calculations";
 import { SCENARIOS } from "@/lib/scenarios";
+import { MODEL_VERSION } from "@/lib/version";
 
 export default function AssumptionsPage() {
   const example = SCENARIOS[0];
@@ -8,7 +9,7 @@ export default function AssumptionsPage() {
 
   return (
     <main className="mx-auto max-w-4xl px-6 py-12">
-      <p className="text-sm font-semibold text-blue-700">ProcuraCost 2.1</p>
+      <p className="text-sm font-semibold text-blue-700">ProcuraCost {MODEL_VERSION}</p>
       <h1 className="mt-2 text-3xl font-bold">Założenia i niepewność modelu</h1>
       <p className="mt-4 text-gray-600">
         Model porównuje formalną/sekwencyjną i adaptacyjną/zgodną ścieżkę tego

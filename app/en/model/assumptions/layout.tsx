@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import { MODEL_VERSION } from "@/lib/version";
 
 export const metadata: Metadata = {
-  title: "Model 2.1 assumptions — ProcuraCost",
+  title: `Model ${MODEL_VERSION} assumptions: ProcuraCost`,
   description:
-    "Evidence ranges, calibration assumptions and uncertainty in ProcuraCost 2.1.",
+    `Evidence ranges, calibration assumptions and uncertainty in ProcuraCost ${MODEL_VERSION}.`,
 };
 
 export default function EnModelAssumptionsLayout({ children }: { children: React.ReactNode }) {

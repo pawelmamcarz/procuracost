@@ -1,14 +1,15 @@
 import Link from "next/link";
+import { MODEL_VERSION } from "@/lib/version";
 
 export const metadata = {
-  title: "Model & assumptions — ProcuraCost",
-  description: "Parameters, sources and limits of the neutral ProcuraCost 2.1 model.",
+  title: "Model & assumptions: ProcuraCost",
+  description: `Parameters, sources and limits of the neutral ProcuraCost ${MODEL_VERSION} model.`,
 };
 
 export default function ModelPageEn() {
   return (
     <main className="mx-auto max-w-4xl px-6 py-12">
-      <p className="text-sm font-semibold text-blue-700">ProcuraCost 2.1</p>
+      <p className="text-sm font-semibold text-blue-700">ProcuraCost {MODEL_VERSION}</p>
       <h1 className="mt-2 text-3xl font-bold">Model and assumptions</h1>
       <p className="mt-4 text-lg text-gray-600">
         The model compares a formal/sequential path with an adaptive/compliant

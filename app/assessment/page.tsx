@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { assessmentT } from "@/lib/i18n";
 import AssessmentQuiz from "@/components/AssessmentQuiz";
+import { MODEL_VERSION } from "@/lib/version";
 
 export const metadata: Metadata = {
-  title: "Profil projektowania zakupów — ProcuraCost 2.1",
+  title: `Profil projektowania zakupów: ProcuraCost ${MODEL_VERSION}`,
   description:
     "Opisowy profil sekwencyjności i adaptacyjności procesu; nie jest walidowanym testem dojrzałości.",
 };

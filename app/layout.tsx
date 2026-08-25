@@ -3,12 +3,13 @@ import { Geist } from "next/font/google";
 import "./globals.css";
 import AppShell from "@/components/AppShell";
 import { SITE_URL } from "./seo-config";
+import { MODEL_VERSION } from "@/lib/version";
 
 const geist = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 
-const title = "ProcuraCost — Kalkulator kosztów procedur zakupowych";
+const title = "ProcuraCost: Kalkulator kosztów procedur zakupowych";
 const description =
-  "Porównaj formalną i adaptacyjną ścieżkę zakupu z jawnym zakresem niepewności modelu 2.1.";
+  `Porównaj formalną i adaptacyjną ścieżkę zakupu z jawnym zakresem niepewności modelu ${MODEL_VERSION}.`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

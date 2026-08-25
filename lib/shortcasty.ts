@@ -1,9 +1,11 @@
+import { MODEL_VERSION } from "./version";
+
 export type Episode = {
   number: number;
   slug: string;
   title: string;
   dimension: string;
-  guest: string;
+  focus: string;
   thesis: string;
   recommendation: string;
   youtubeId?: string;
@@ -12,14 +14,14 @@ export type Episode = {
   publishedAt?: string;
 };
 
-// Model-2.1 editorial set. Only current, source-bounded claims belong here.
+// Planned source-bounded editorial set.
 export const EPISODES: Episode[] = [
   {
     number: 1,
-    slug: "model-2-1-co-sie-zmienilo",
-    title: "ProcuraCost 2.1: co naprawdę porównujemy?",
+    slug: "model-2-2-2-co-porownujemy",
+    title: `ProcuraCost ${MODEL_VERSION}: co naprawdę porównujemy?`,
     dimension: "Metodologia",
-    guest: "Odcinek metodologiczny",
+    focus: "Ustalenia metodologiczne",
     thesis:
       "Formalny workflow, konkurencja i sztywność kontraktu są odrębnymi mechanizmami. Nie wolno zastępować ich jednym indeksem sztywności.",
     recommendation:
@@ -30,7 +32,7 @@ export const EPISODES: Episode[] = [
     slug: "szucs-konkurencja-i-dyskrecja",
     title: "Szucs: ile kosztuje dyskrecja w wyborze wykonawcy?",
     dimension: "Konkurencja · Selekcja",
-    guest: "Przegląd źródła",
+    focus: "Przegląd źródła",
     thesis:
       "W badanym rynku węgierskim dyskrecja zwiększała cenę o około 6% i prowadziła do wyboru wykonawców o około 10% niższej mierzonej produktywności (estymaty strukturalne). Efekt zidentyfikowano na zamówieniach poniżej progu ok. 25 mln HUF, więc transfer poza ten rynek wymaga ostrożności.",
     recommendation:
@@ -41,7 +43,7 @@ export const EPISODES: Episode[] = [
     slug: "beuve-sztywnosc-kontraktu",
     title: "Beuve: kontrakt to nie workflow",
     dimension: "Kontrakt · Formalne aneksy",
-    guest: "Przegląd źródła",
+    focus: "Przegląd źródła",
     thesis:
       "Estymacja 0,077–0,105 dotyczy dodatkowych formalnych aneksów na rok kontraktu przy wzroście sztywności o jedno odchylenie standardowe w sektorze francuskich parkingów. To częstość, nie prawdopodobieństwo zdarzenia ani efekt formalności workflow.",
     recommendation:
@@ -52,7 +54,7 @@ export const EPISODES: Episode[] = [
     slug: "jak-czytac-przedzial-scenariuszowy",
     title: "Kiedy model nie wskazuje zwycięzcy?",
     dimension: "Niepewność",
-    guest: "Odcinek metodologiczny",
+    focus: "Ustalenia metodologiczne",
     thesis:
       "Zakres low/central/high jest testem założeń, nie przedziałem ufności. Gdy przecina zero, model nie daje odpornej rekomendacji kosztowej.",
     recommendation:

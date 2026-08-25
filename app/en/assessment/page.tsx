@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { assessmentT } from "@/lib/i18n";
 import AssessmentQuiz from "@/components/AssessmentQuiz";
+import { MODEL_VERSION } from "@/lib/version";
 
 export const metadata: Metadata = {
-  title: "Procurement Design Profile — ProcuraCost 2.1",
+  title: `Procurement Design Profile: ProcuraCost ${MODEL_VERSION}`,
   description:
     "A descriptive profile of process sequencing and adaptability; not a validated maturity test.",
 };

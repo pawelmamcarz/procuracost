@@ -1,17 +1,18 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { EPISODES, getEpisode } from "@/lib/shortcasty";
+import { MODEL_VERSION } from "@/lib/version";
 
 export function generateStaticParams() {
-  return EPISODES.map((e) => ({ slug: e.slug }));
+  return EPISODES.filter((episode) => episode.publishedAt).map((episode) => ({ slug: episode.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const ep = getEpisode(slug);
-  if (!ep) return {};
+  if (!ep?.publishedAt) return {};
   return {
-    title: `Odc. ${ep.number}: ${ep.title} — ProcuraCost 2.1`,
+    title: `Odc. ${ep.number}: ${ep.title}: ProcuraCost ${MODEL_VERSION}`,
     description: ep.thesis,
   };
 }
@@ -19,10 +20,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function EpisodePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const ep = getEpisode(slug);
-  if (!ep) notFound();
+  if (!ep?.publishedAt) notFound();
 
-  const prev = EPISODES.find((e) => e.number === ep.number - 1);
-  const next = EPISODES.find((e) => e.number === ep.number + 1);
+  const published = EPISODES.filter((episode) => episode.publishedAt);
+  const currentIndex = published.findIndex((episode) => episode.slug === ep.slug);
+  const prev = published[currentIndex - 1];
+  const next = published[currentIndex + 1];
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-12">
@@ -30,7 +33,7 @@ export default async function EpisodePage({ params }: { params: Promise<{ slug: 
         href="/shortcasty"
         className="mb-6 inline-flex items-center gap-1.5 text-xs text-gray-400 hover:text-blue-600"
       >
-        ← Materiały ProcuraCost 2.1
+        ← Materiały ProcuraCost {MODEL_VERSION}
       </Link>
 
       <div className="mb-8 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-white">
@@ -38,11 +41,10 @@ export default async function EpisodePage({ params }: { params: Promise<{ slug: 
           Odcinek {ep.number} · {ep.dimension}
         </p>
         <h1 className="text-2xl font-bold leading-tight">{ep.title}</h1>
-        <p className="mt-3 text-sm text-blue-100">Gość: {ep.guest}</p>
+        <p className="mt-3 text-sm text-blue-100">Temat: {ep.focus}</p>
       </div>
 
       {ep.youtubeId ? (
-        /* Published — player */
         <div className="mb-8 space-y-6">
           <div className="aspect-video overflow-hidden rounded-xl bg-black">
             <iframe
@@ -79,21 +81,7 @@ export default async function EpisodePage({ params }: { params: Promise<{ slug: 
             </div>
           )}
         </div>
-      ) : (
-        /* Upcoming */
-        <div className="mb-8 rounded-xl border border-amber-100 bg-amber-50 p-6 text-center">
-          <p className="text-sm font-semibold text-amber-800">Ten odcinek jeszcze nie jest dostępny</p>
-          <p className="mt-1 text-xs text-amber-600">
-            Zapisz się na powiadomienia, żeby nie przegapić premiery.
-          </p>
-          <Link
-            href="/shortcasty"
-            className="mt-4 inline-block rounded-lg bg-blue-600 px-5 py-2 text-sm font-semibold text-white hover:bg-blue-700"
-          >
-            Zapisz się
-          </Link>
-        </div>
-      )}
+      ) : null}
 
       <div className="space-y-4">
         <div className="rounded-xl border border-gray-100 bg-gray-50 p-5">

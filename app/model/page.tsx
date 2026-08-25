@@ -1,14 +1,15 @@
 import Link from "next/link";
+import { MODEL_VERSION } from "@/lib/version";
 
 export const metadata = {
-  title: "Model i założenia — ProcuraCost",
-  description: "Parametry, źródła i ograniczenia neutralnego modelu ProcuraCost 2.1.",
+  title: "Model i założenia: ProcuraCost",
+  description: `Parametry, źródła i ograniczenia neutralnego modelu ProcuraCost ${MODEL_VERSION}.`,
 };
 
 export default function ModelPage() {
   return (
     <main className="mx-auto max-w-4xl px-6 py-12">
-      <p className="text-sm font-semibold text-blue-700">ProcuraCost 2.1</p>
+      <p className="text-sm font-semibold text-blue-700">ProcuraCost {MODEL_VERSION}</p>
       <h1 className="mt-2 text-3xl font-bold">Model i założenia</h1>
       <p className="mt-4 text-lg text-gray-600">
         Model porównuje formalną/sekwencyjną i adaptacyjną/zgodną ścieżkę tego
@@ -31,7 +32,7 @@ export default function ModelPage() {
           Profile konkurencji i kontraktu, nakład pracy,
           technologia oraz stopy obejścia są kalibracjami scenariuszowymi. Nie są
           pomiarami polskich organizacji. TCO ma zerowy scenariusz centralny i zakres
-          stresowy 0–15%. Wynik zawsze należy czytać z zakresem
+          stresowy 0–15%. Wynik należy czytać z zakresem
           low/central/high, który nie jest przedziałem ufności.
         </p>
       </section>

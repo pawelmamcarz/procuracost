@@ -1,116 +1,72 @@
 import Link from "next/link";
 import { EPISODES } from "@/lib/shortcasty";
+import { MODEL_VERSION } from "@/lib/version";
 
 export const metadata = {
-  title: "ProcuraCost 2.1 — methodology shorts",
+  title: `ProcuraCost ${MODEL_VERSION}: methodology shorts`,
   description:
-    "A short series about evidence, assumptions and uncertainty in the neutral ProcuraCost 2.1 model.",
+    `A planned, source-bounded editorial series about assumptions and uncertainty in the ProcuraCost ${MODEL_VERSION} model.`,
 };
 
-const PLATFORMS = [
-  { label: "YouTube", href: "#", color: "bg-red-50 text-red-700 border-red-200" },
-  { label: "Spotify", href: "#", color: "bg-green-50 text-green-700 border-green-200" },
-  { label: "Apple Podcasts", href: "#", color: "bg-indigo-50 text-indigo-700 border-indigo-200" },
-];
-
 export default function ShortcastyEnPage() {
-  const published = EPISODES.filter((e) => e.publishedAt);
-  const upcoming = EPISODES.filter((e) => !e.publishedAt);
+  const published = EPISODES.filter((episode) => episode.publishedAt);
+  const planned = EPISODES.filter((episode) => !episode.publishedAt);
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-12">
-      {/* Hero */}
-      <div className="mb-10 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-white">
+    <main className="mx-auto max-w-5xl px-6 py-12">
+      <div className="rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-white">
         <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-blue-200">
-          Model 2.1 · {EPISODES.length} episodes
+          Model {MODEL_VERSION} · editorial plan
         </p>
         <h1 className="text-3xl font-bold leading-tight">ProcuraCost: evidence and assumptions</h1>
-        <p className="mt-1 text-base text-blue-100 font-medium">
-          Short explanations of what the model knows, does not know and when its sign changes.
+        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-blue-100">
+          This planned editorial series separates source evidence from model
+          calibration. It does not present ProcuraCost outputs as measured
+          organizational effects.
         </p>
-        <p className="mt-4 text-sm text-blue-100 max-w-2xl leading-relaxed">
-          Each episode separates source evidence from model calibration. ProcuraCost
-          outputs are not presented as measured organizational effects.
-        </p>
-
-        {/* Platform links */}
-        <div className="mt-6 flex flex-wrap items-center gap-3">
-          <span className="text-xs text-blue-200">Listen on:</span>
-          {PLATFORMS.map((p) => (
-            <a
-              key={p.label}
-              href={p.href}
-              className="rounded-full border border-white/30 bg-white/10 px-4 py-1.5 text-xs font-semibold text-white hover:bg-white/20 transition-colors"
-            >
-              {p.label} ↗
-            </a>
-          ))}
-        </div>
       </div>
 
-      {/* Subscribe */}
-      <div className="mb-10 rounded-xl border border-blue-100 bg-blue-50 p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <p className="text-sm font-semibold text-blue-900 mb-0.5">
-            Get notified
-          </p>
-          <p className="text-xs text-blue-700">
-            New episode every two weeks, Tuesday at 7:00.
-          </p>
-        </div>
-        <a
-          href="mailto:pawel@mamcarz.com?subject=Field%20Conversations%20%E2%80%94%20subscribe%20to%20notifications&body=Hi%2C%20please%20add%20me%20to%20notifications%20for%20new%20Field%20Conversations%20episodes."
-          className="shrink-0 rounded-lg bg-blue-600 px-5 py-2 text-sm font-semibold text-white hover:bg-blue-700 active:bg-blue-800 text-center"
-        >
-          Subscribe →
-        </a>
-      </div>
-
-      {/* Published episodes */}
       {published.length > 0 && (
-        <div className="mb-10">
+        <section className="mt-10">
           <p className="mb-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-            Published episodes
+            Published materials
           </p>
           <div className="space-y-3">
-            {published.map((ep) => (
+            {published.map((episode) => (
               <Link
-                key={ep.slug}
-                href={`/shortcasty/${ep.slug}`}
-                className="block rounded-xl border border-gray-100 bg-white p-5 hover:border-blue-200 transition-colors"
+                key={episode.slug}
+                href={`/shortcasty/${episode.slug}`}
+                className="block rounded-xl border border-gray-100 bg-white p-5 transition-colors hover:border-blue-200"
               >
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <div className="text-xs font-medium text-blue-600">#{ep.number} · {ep.dimension}</div>
-                    <h3 className="mt-1 font-semibold text-gray-900">{ep.title}</h3>
-                    <p className="mt-1 text-sm text-gray-600 line-clamp-2">{ep.thesis}</p>
-                    <p className="mt-2 text-xs text-gray-500">Guest: {ep.guest}</p>
-                  </div>
+                <div className="text-xs font-medium text-blue-600">
+                  #{episode.number} · {episode.dimension}
                 </div>
+                <h2 className="mt-1 font-semibold text-gray-900">{episode.title}</h2>
+                <p className="mt-1 text-sm text-gray-600">{episode.thesis}</p>
+                <p className="mt-2 text-xs text-gray-500">Focus: {episode.focus}</p>
               </Link>
             ))}
           </div>
-        </div>
+        </section>
       )}
 
-      {/* Upcoming */}
-      {upcoming.length > 0 && (
-        <div>
-          <p className="mb-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-            Upcoming episodes
-          </p>
-          <div className="space-y-3">
-            {upcoming.map((ep) => (
-              <div key={ep.slug} className="rounded-xl border border-gray-100 bg-gray-50 p-5 opacity-75">
-                <div className="text-xs font-medium text-gray-500">#{ep.number} · {ep.dimension}</div>
-                <h3 className="mt-1 font-semibold text-gray-700">{ep.title}</h3>
-                <p className="mt-1 text-sm text-gray-600">{ep.thesis}</p>
-                <p className="mt-2 text-xs text-gray-500">Guest: {ep.guest} (coming soon)</p>
+      <section className="mt-10">
+        <p className="mb-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
+          Planned topics
+        </p>
+        <div className="space-y-3">
+          {planned.map((episode) => (
+            <div key={episode.slug} className="rounded-xl border border-gray-100 bg-gray-50 p-5">
+              <div className="text-xs font-medium text-gray-500">
+                #{episode.number} · {episode.dimension}
               </div>
-            ))}
-          </div>
+              <h2 className="mt-1 font-semibold text-gray-700">{episode.title}</h2>
+              <p className="mt-1 text-sm text-gray-600">{episode.thesis}</p>
+              <p className="mt-2 text-xs text-gray-500">Focus: {episode.focus}</p>
+            </div>
+          ))}
         </div>
-      )}
-    </div>
+      </section>
+    </main>
   );
 }
