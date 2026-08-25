@@ -212,6 +212,12 @@ const homePl = {
     title: "Scenariusze referencyjne",
     description:
       "Każdy wiersz korzysta z jawnych danych wejściowych i tego samego modelu. Czasy oraz zakres są wynikami ilustracyjnymi, nie danymi z cytowanego źródła.",
+    money: {
+      locale: "pl-PL",
+      currencyCode: "PLN",
+      thousandSuffix: " tys.",
+      millionSuffix: " mln",
+    },
     columns: {
       scenario: "Scenariusz",
       contractValue: "Wartość zakupu",
@@ -317,6 +323,12 @@ const homeEn = {
     title: "Reference scenarios",
     description:
       "Each row uses declared inputs and the same model. Durations and ranges are illustrative outputs, not observations from the cited source.",
+    money: {
+      locale: "en-GB",
+      currencyCode: "PLN",
+      thousandSuffix: "k",
+      millionSuffix: "M",
+    },
     columns: {
       scenario: "Scenario",
       contractValue: "Purchase value",

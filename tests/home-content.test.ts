@@ -2,7 +2,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import EvidenceFieldHome from "@/components/EvidenceFieldHome";
-import { homeT, PHI_SET } from "@/lib/i18n";
+import { decisionMapT, homeT, PHI_SET } from "@/lib/i18n";
 import { SCENARIOS } from "@/lib/scenarios";
 import { SITE_ROUTES } from "@/lib/site-routes";
 import { MODEL_VERSION } from "@/lib/version";
@@ -20,6 +20,16 @@ function visibleStrings(value: unknown): string[] {
   if (typeof value !== "object" || value === null) return [];
 
   return Object.values(value).flatMap(visibleStrings);
+}
+
+function renderedText(markup: string): string {
+  return markup
+    .replace(/<[^>]+>/g, " ")
+    .replaceAll("&amp;", "&")
+    .replaceAll("&#x27;", "'")
+    .replaceAll("&quot;", '"')
+    .replaceAll("&lt;", "<")
+    .replaceAll("&gt;", ">");
 }
 
 describe("homepage content contract", () => {
@@ -84,6 +94,52 @@ describe("homepage content contract", () => {
     }
   });
 
+  it("renders Polish scenario titles and English scenario titles and sources", () => {
+    const polishMarkup = renderToStaticMarkup(createElement(EvidenceFieldHome, { lang: "pl" }));
+    const englishMarkup = renderToStaticMarkup(createElement(EvidenceFieldHome, { lang: "en" }));
+    const polishText = renderedText(polishMarkup);
+    const englishText = renderedText(englishMarkup);
+    const caseStudies = SCENARIOS.flatMap((scenario) =>
+      scenario.caseStudy ? [scenario.caseStudy] : [],
+    );
+
+    for (const caseStudy of caseStudies) {
+      expect(caseStudy.title).not.toBe(caseStudy.titleEn);
+      expect(polishText).toContain(caseStudy.title);
+      expect(polishText).toContain(caseStudy.source);
+      expect(polishText).not.toContain(caseStudy.titleEn);
+      expect(englishText).toContain(caseStudy.titleEn);
+      expect(englishText).toContain(caseStudy.sourceEn);
+      expect(englishText).not.toContain(caseStudy.title);
+      if (caseStudy.source !== caseStudy.sourceEn) {
+        expect(englishText).not.toContain(caseStudy.source);
+      }
+    }
+  });
+
+  it("owns and localizes the compact PLN presentation through homeT", () => {
+    const polishMarkup = renderToStaticMarkup(createElement(EvidenceFieldHome, { lang: "pl" }));
+    const englishMarkup = renderToStaticMarkup(createElement(EvidenceFieldHome, { lang: "en" }));
+
+    expect(homeT.pl.scenarios.money).toEqual({
+      locale: "pl-PL",
+      currencyCode: "PLN",
+      thousandSuffix: " tys.",
+      millionSuffix: " mln",
+    });
+    expect(homeT.en.scenarios.money).toEqual({
+      locale: "en-GB",
+      currencyCode: "PLN",
+      thousandSuffix: "k",
+      millionSuffix: "M",
+    });
+    expect(polishMarkup).toContain("5,0 mln PLN");
+    expect(polishMarkup).toContain("-39 tys.–662 tys. PLN");
+    expect(polishMarkup).not.toContain("5.0M PLN");
+    expect(englishMarkup).toContain("5.0M PLN");
+    expect(englishMarkup).toContain("-39k–662k PLN");
+  });
+
   it("renders the approved manager-first section order in both languages", () => {
     for (const lang of ["pl", "en"] as const) {
       const markup = renderToStaticMarkup(createElement(EvidenceFieldHome, { lang }));
@@ -93,6 +149,7 @@ describe("homepage content contract", () => {
         tx.boundary.title,
         tx.modelContract.title,
         tx.jobs.title,
+        decisionMapT[lang].eyebrow,
         tx.scenarios.title,
         tx.evidence.title,
         tx.finalAction.title,

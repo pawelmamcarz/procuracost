@@ -60,7 +60,7 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 500_000,
     },
     caseStudy: {
-      title: "Ryanair Fleet Procurement (private-sector example)",
+      title: "Zakup floty Ryanair (przykład z sektora prywatnego)",
       titleEn: "Ryanair Fleet Procurement (private-sector example)",
       source:
         "Ryanair 2002/2003 Annual Report / SEC Form 20-F (Boeing price concessions)",
@@ -101,7 +101,7 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 300_000,
     },
     caseStudy: {
-      title: "Swiss Casinos ERP: Agile Sourcing (private-sector example)",
+      title: "Swiss Casinos ERP: zwinny wybór dostawcy (przykład z sektora prywatnego)",
       titleEn: "Swiss Casinos ERP: Agile Sourcing (private-sector example)",
       source: "Agile Business Consortium: Case Study: Swiss Casinos (practitioner report)",
       sourceEn: "Agile Business Consortium: Case Study: Swiss Casinos (practitioner report)",
@@ -139,7 +139,7 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 800_000,
     },
     caseStudy: {
-      title: "Air France KLM Martinair Cargo: Lean Agile Procurement (private-sector example)",
+      title: "Air France KLM Martinair Cargo: zakupy Lean Agile (przykład z sektora prywatnego)",
       titleEn: "Air France KLM Martinair Cargo: Lean Agile Procurement (private-sector example)",
       source:
         "LAP Alliance / Agile Business Consortium (2021): Air France KLM Martinair Cargo case study (practitioner example, illustrative)",
@@ -181,7 +181,7 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 1_200_000,
     },
     caseStudy: {
-      title: "Zara: Responsive Fast-Fashion Supply Chain (illustrative)",
+      title: "Zara: responsywny łańcuch dostaw szybkiej mody (przykład ilustracyjny)",
       titleEn: "Zara: Responsive Fast-Fashion Supply Chain (illustrative)",
       source:
         "Ferdows, Lewis & Machuca, HBR (2004): Rapid-Fire Fulfillment (illustrative example)",
@@ -321,7 +321,7 @@ export const SCENARIOS: Scenario[] = [
       bypassAuditExposure: 2_000_000,
     },
     caseStudy: {
-      title: "Ryanair CAPEX: Boeing bulk order at crisis prices (private-sector example)",
+      title: "Ryanair CAPEX: duże zamówienie Boeingów po cenach kryzysowych (przykład z sektora prywatnego)",
       titleEn: "Ryanair CAPEX: Boeing bulk order at crisis prices (private-sector example)",
       source:
         "Ryanair 2002/2003 Annual Report / SEC Form 20-F (Boeing price concessions)",

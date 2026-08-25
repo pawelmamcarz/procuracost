@@ -1,7 +1,7 @@
 import Link from "next/link";
 import BoundaryField from "@/components/BoundaryField";
 import DecisionMap from "@/components/DecisionMap";
-import { calculateCosts, formatCompact } from "@/lib/calculations";
+import { calculateCosts } from "@/lib/calculations";
 import { homeT, type Lang } from "@/lib/i18n";
 import { SCENARIOS } from "@/lib/scenarios";
 import { SITE_ROUTES } from "@/lib/site-routes";
@@ -35,6 +35,29 @@ function formatDays(value: number, lang: Lang) {
   return new Intl.NumberFormat(lang === "pl" ? "pl-PL" : "en-GB", {
     maximumFractionDigits: 1,
   }).format(value);
+}
+
+function formatCompactMoney(
+  value: number,
+  presentation: (typeof homeT)[Lang]["scenarios"]["money"],
+) {
+  const sign = value < 0 ? "-" : "";
+  const absoluteValue = Math.abs(value);
+  const isMillions = absoluteValue >= 1_000_000;
+  const isThousands = !isMillions && absoluteValue >= 1_000;
+  const divisor = isMillions ? 1_000_000 : isThousands ? 1_000 : 1;
+  const suffix = isMillions
+    ? presentation.millionSuffix
+    : isThousands
+      ? presentation.thousandSuffix
+      : "";
+  const fractionDigits = isMillions ? 1 : 0;
+  const formattedValue = new Intl.NumberFormat(presentation.locale, {
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits,
+  }).format(absoluteValue / divisor);
+
+  return `${sign}${formattedValue}${suffix}`;
 }
 
 export default function EvidenceFieldHome({ lang }: EvidenceFieldHomeProps) {
@@ -188,7 +211,7 @@ export default function EvidenceFieldHome({ lang }: EvidenceFieldHomeProps) {
                       {title}
                     </th>
                     <td className="whitespace-nowrap px-3 py-4 text-right font-mono text-xs text-gray-700">
-                      {formatCompact(scenario.inputs.contractValue)} PLN
+                      {formatCompactMoney(scenario.inputs.contractValue, tx.scenarios.money)} {tx.scenarios.money.currencyCode}
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-right font-mono text-xs font-semibold text-red-700">
                       {formatDays(result.rigidDays, lang)}
@@ -197,7 +220,7 @@ export default function EvidenceFieldHome({ lang }: EvidenceFieldHomeProps) {
                       {formatDays(result.flexibleDays, lang)}
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-right font-mono text-xs text-gray-900">
-                      {formatCompact(result.uncertainty.lowDelta)}–{formatCompact(result.uncertainty.highDelta)} PLN
+                      {formatCompactMoney(result.uncertainty.lowDelta, tx.scenarios.money)}–{formatCompactMoney(result.uncertainty.highDelta, tx.scenarios.money)} {tx.scenarios.money.currencyCode}
                     </td>
                     <td className="px-3 py-4">
                       <p className="text-xs leading-relaxed text-gray-600">{insight}</p>
