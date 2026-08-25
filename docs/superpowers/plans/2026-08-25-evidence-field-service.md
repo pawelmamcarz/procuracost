@@ -28,6 +28,7 @@
 **Files:**
 - Create: `lib/site-routes.ts`
 - Create: `tests/site-routes.test.ts`
+- Modify: `lib/i18n.ts`
 - Modify: `components/AppShell.tsx`
 - Modify: `components/NavBar.tsx`
 - Modify: `app/sitemap.ts`
@@ -74,11 +75,11 @@ Expected: FAIL because `@/lib/site-routes` does not exist.
 
 - [ ] **Step 3: Implement the typed manifest**
 
-Use a literal route array with `pl`, optional `en`, `nav`, `sitemap`, and localized labels. `localizedCounterpart` must preserve query/hash suffixes and fall back to the target-language homepage only when no counterpart exists. Mark research as a canonical exception and shortcasts as non-navigation surfaces.
+Use a literal route array with `pl`, optional `en`, `nav`, `sitemap`, and typed label keys. Resolve every visible localized label through `lib/i18n.ts`. `localizedCounterpart` must preserve query/hash suffixes and fall back to the target-language homepage only when no counterpart exists. Mark research as a canonical exception and shortcasts as non-navigation surfaces.
 
 - [ ] **Step 4: Wire the manifest into chrome and sitemap**
 
-AppShell derives items and the contextual language target from the manifest. NavBar receives `lang`, `pathname`, localized menu labels, and active state. Sitemap uses `sitemapPaths()` and adds localized alternates only for genuine route pairs.
+AppShell derives items and the contextual language target from the manifest. NavBar receives `lang`, `pathname`, localized menu labels, and active state. Its mobile menu uses localized accessible labels, `aria-controls`, Escape handling, visible keyboard focus, and closes after navigation. Sitemap uses `sitemapPaths()` and adds localized alternates only for genuine route pairs.
 
 - [ ] **Step 5: Run focused and full tests**
 
@@ -89,7 +90,7 @@ Expected: route tests and all existing tests PASS.
 - [ ] **Step 6: Commit**
 
 ```bash
-git add lib/site-routes.ts tests/site-routes.test.ts components/AppShell.tsx components/NavBar.tsx app/sitemap.ts
+git add lib/site-routes.ts tests/site-routes.test.ts lib/i18n.ts components/AppShell.tsx components/NavBar.tsx app/sitemap.ts
 git commit -m "fix: make bilingual routing contextual"
 ```
 
