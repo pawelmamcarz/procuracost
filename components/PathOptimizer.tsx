@@ -85,7 +85,7 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
               onChange={(e) => handleChange("contractValue", +e.target.value)}
               className="w-full accent-blue-500"
             />
-            <div className="flex justify-between text-xs text-gray-400">
+            <div className="flex justify-between font-mono text-xs text-gray-400">
               <span>50k</span>
               <span>50M PLN</span>
             </div>
@@ -106,7 +106,7 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
               onChange={(e) => handleChange("supplierCount", +e.target.value)}
               className="w-full accent-blue-500"
             />
-            <div className="flex justify-between text-xs text-gray-400">
+            <div className="flex justify-between font-mono text-xs text-gray-400">
               <span>{tx.monopoly}</span>
               <span>{tx.supplierMax}</span>
             </div>
@@ -127,7 +127,7 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
               onChange={(e) => handleChange("urgencyDays", +e.target.value)}
               className="w-full accent-blue-500"
             />
-            <div className="flex justify-between text-xs text-gray-400">
+            <div className="flex justify-between font-mono text-xs text-gray-400">
               <span>{tx.urgent}</span>
               <span>{tx.daysMax}</span>
             </div>
@@ -160,7 +160,7 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
                 onChange={(e) => handleChange(key, +e.target.value as ProcurementFeatures[typeof key])}
                 className="w-full accent-blue-500"
               />
-              <div className="flex justify-between text-xs text-gray-400">
+              <div className="flex justify-between font-mono text-xs text-gray-400">
                 <span>1</span>
                 <span>5</span>
               </div>

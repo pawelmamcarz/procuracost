@@ -58,8 +58,8 @@ export default function CostMatrix({ inputs, lang }: Props) {
             <thead>
               <tr className="bg-gray-50">
                 <th className="px-3 py-2 text-left font-medium text-gray-500">{tx.matrixTechLabel}</th>
-                <th className="px-3 py-2 text-center font-medium text-red-400" colSpan={2}>{tx.matrixRigid}</th>
-                <th className="px-3 py-2 text-center font-medium text-green-500" colSpan={2}>{tx.matrixFlexible}</th>
+                <th className="px-3 py-2 text-center font-medium text-red-700" colSpan={2}>{tx.matrixRigid}</th>
+                <th className="px-3 py-2 text-center font-medium text-green-700" colSpan={2}>{tx.matrixFlexible}</th>
               </tr>
               <tr className="bg-gray-50 text-gray-400">
                 <th />
