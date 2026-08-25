@@ -697,6 +697,36 @@ const assessmentEn = {
 
 export const assessmentT = { pl: assessmentPl, en: assessmentEn } as const;
 
+const shortcastsPl = {
+  metadataTitle: (version: string) => `ProcuraCost ${version}: krótkie materiały metodologiczne`,
+  metadataDescription: (version: string) =>
+    `Planowana, ograniczona źródłowo seria o założeniach i niepewności modelu ProcuraCost ${version}.`,
+  badge: (version: string) => `Model ${version} · plan redakcyjny`,
+  title: "ProcuraCost: źródła i założenia",
+  intro:
+    "Planowana seria redakcyjna oddziela ustalenia źródłowe od kalibracji modelowej. Nie przedstawia wyników ProcuraCost jako zmierzonych efektów organizacyjnych.",
+  publishedMaterials: "Opublikowane materiały",
+  plannedTopics: "Planowane tematy",
+  focusLabel: "Temat",
+} as const;
+
+type ShortcastsShape = LangShape<typeof shortcastsPl>;
+
+const shortcastsEn = {
+  metadataTitle: (version: string) => `ProcuraCost ${version}: methodology shorts`,
+  metadataDescription: (version: string) =>
+    `A planned, source-bounded editorial series about assumptions and uncertainty in the ProcuraCost ${version} model.`,
+  badge: (version: string) => `Model ${version} · editorial plan`,
+  title: "ProcuraCost: evidence and assumptions",
+  intro:
+    "This planned editorial series separates source evidence from model calibration. It does not present ProcuraCost outputs as measured organizational effects.",
+  publishedMaterials: "Published materials",
+  plannedTopics: "Planned topics",
+  focusLabel: "Focus",
+} satisfies ShortcastsShape;
+
+export const shortcastsT = { pl: shortcastsPl, en: shortcastsEn } as const;
+
 const dimensionMultiplierLabelsPl = {
   staff: "Nakład pracy ról",
   tco: "Dźwignia TCO",

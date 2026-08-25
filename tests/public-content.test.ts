@@ -1,6 +1,11 @@
 import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
+import * as i18n from "@/lib/i18n";
+import ShortcastyEnPage from "@/app/en/shortcasty/page";
+import { EPISODES } from "@/lib/shortcasty";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 
@@ -31,7 +36,7 @@ const historicalI18nAllowList = [
   "Model 2.1 applies broad context multipliers only to staff effort and non-labor coordination overhead. Other mechanisms use separate profiles; 1.00 means no adjustment.",
 ] as const;
 
-const staleCurrentVersion = /\b(?:Model 2\.1|modelu 2\.1|ProcuraCost 2\.1)\b/;
+const staleCurrentVersion = /\b(?:model 2\.1|modelu 2\.1|ProcuraCost 2\.1)\b/i;
 
 async function readPublicFile(path: string) {
   return readFile(new URL(path, `file://${root}/`), "utf8");
@@ -63,5 +68,45 @@ describe("public editorial integrity", () => {
     for (const path of currentPublicFiles) {
       expect(await readPublicFile(path), path).not.toContain("—");
     }
+  });
+
+  it("provides English content for every planned Shortcast", () => {
+    expect(EPISODES).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        titleEn: "ProcuraCost 2.2.2: what do we actually compare?",
+        dimensionEn: "Methodology",
+        focusEn: "Methodological clarification",
+      }),
+      expect.objectContaining({
+        titleEn: "Szucs: what does discretion cost in contractor selection?",
+        dimensionEn: "Competition · Selection",
+        focusEn: "Source review",
+      }),
+    ]));
+
+    for (const episode of EPISODES) {
+      expect(episode.titleEn).toEqual(expect.any(String));
+      expect(episode.thesisEn).toEqual(expect.any(String));
+      expect(episode.focusEn).toEqual(expect.any(String));
+      expect(episode.titleEn).not.toBe(episode.title);
+      expect(episode.thesisEn).not.toBe(episode.thesis);
+    }
+  });
+
+  it("keeps Shortcast framing in the shared English dictionary", () => {
+    expect(i18n).toHaveProperty("shortcastsT.en.plannedTopics", "Planned topics");
+    expect(i18n).toHaveProperty("shortcastsT.en.focusLabel", "Focus");
+  });
+
+  it("renders planned Shortcasts in English", () => {
+    const markup = renderToStaticMarkup(createElement(ShortcastyEnPage));
+    const firstEpisode = EPISODES[0];
+
+    expect(markup).toContain(firstEpisode.titleEn);
+    expect(markup).toContain(firstEpisode.dimensionEn);
+    expect(markup).toContain(firstEpisode.focusEn);
+    expect(markup).toContain(firstEpisode.thesisEn);
+    expect(markup).not.toContain(firstEpisode.title);
+    expect(markup).not.toContain(firstEpisode.thesis);
   });
 });

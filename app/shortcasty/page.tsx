@@ -1,14 +1,15 @@
 import Link from "next/link";
+import { shortcastsT } from "@/lib/i18n";
 import { EPISODES } from "@/lib/shortcasty";
 import { MODEL_VERSION } from "@/lib/version";
 
 export const metadata = {
-  title: `ProcuraCost ${MODEL_VERSION}: krótkie materiały metodologiczne`,
-  description:
-    `Planowana, ograniczona źródłowo seria o założeniach i niepewności modelu ProcuraCost ${MODEL_VERSION}.`,
+  title: shortcastsT.pl.metadataTitle(MODEL_VERSION),
+  description: shortcastsT.pl.metadataDescription(MODEL_VERSION),
 };
 
 export default function ShortcastyPage() {
+  const tx = shortcastsT.pl;
   const published = EPISODES.filter((episode) => episode.publishedAt);
   const planned = EPISODES.filter((episode) => !episode.publishedAt);
 
@@ -16,20 +17,18 @@ export default function ShortcastyPage() {
     <main className="mx-auto max-w-5xl px-6 py-12">
       <div className="rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-white">
         <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-blue-200">
-          Model {MODEL_VERSION} · plan redakcyjny
+          {tx.badge(MODEL_VERSION)}
         </p>
-        <h1 className="text-3xl font-bold leading-tight">ProcuraCost: źródła i założenia</h1>
+        <h1 className="text-3xl font-bold leading-tight">{tx.title}</h1>
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-blue-100">
-          Planowana seria redakcyjna oddziela ustalenia źródłowe od kalibracji
-          modelowej. Nie przedstawia wyników ProcuraCost jako zmierzonych efektów
-          organizacyjnych.
+          {tx.intro}
         </p>
       </div>
 
       {published.length > 0 && (
         <section className="mt-10">
           <p className="mb-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-            Opublikowane materiały
+            {tx.publishedMaterials}
           </p>
           <div className="space-y-3">
             {published.map((episode) => (
@@ -57,7 +56,7 @@ export default function ShortcastyPage() {
 
       <section className="mt-10">
         <p className="mb-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-          Planowane tematy
+          {tx.plannedTopics}
         </p>
         <div className="space-y-2">
           {planned.map((episode) => (
