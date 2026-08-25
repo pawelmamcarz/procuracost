@@ -5,6 +5,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import * as i18n from "@/lib/i18n";
 import ShortcastyEnPage from "@/app/en/shortcasty/page";
+import TeamPage from "@/components/TeamPage";
 import { EPISODES } from "@/lib/shortcasty";
 import { MODEL_VERSION } from "@/lib/version";
 
@@ -38,7 +39,6 @@ const historicalI18nAllowList = [
 ] as const;
 
 const staleCurrentVersion = /\b(?:model 2\.1|modelu 2\.1|ProcuraCost 2\.1)\b/i;
-const activeTeamPageFiles = ["app/team/page.tsx", "app/en/team/page.tsx"] as const;
 const forbiddenTeamPhrases = [
   "pełne e2e kompletnego",
   "procurement ecosystem",
@@ -77,11 +77,11 @@ describe("public editorial integrity", () => {
     }
   });
 
-  it("keeps active team pages free of inflated role claims", async () => {
-    for (const path of activeTeamPageFiles) {
-      const content = await readPublicFile(path);
+  it("keeps rendered Polish and English team content free of inflated role claims", () => {
+    for (const lang of ["pl", "en"] as const) {
+      const content = renderToStaticMarkup(createElement(TeamPage, { lang }));
       for (const phrase of forbiddenTeamPhrases) {
-        expect(content, path).not.toContain(phrase);
+        expect(content, lang).not.toContain(phrase);
       }
     }
   });
