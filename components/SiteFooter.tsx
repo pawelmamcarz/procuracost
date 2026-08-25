@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { VERSION } from "@/lib/version";
-import type { Lang } from "@/lib/i18n";
+import { teamT, type Lang } from "@/lib/i18n";
 
 const projects = [
   {
@@ -34,6 +34,7 @@ const teamAvatars = ["MK", "MB", "TS", "RM"];
 
 export default function SiteFooter({ lang }: { lang: Lang }) {
   const isEnglish = lang === "en";
+  const teamCopy = teamT[lang];
 
   return (
     <>
@@ -56,7 +57,7 @@ export default function SiteFooter({ lang }: { lang: Lang }) {
               ))}
             </div>
             <span className="text-sm font-medium text-gray-700">
-              {isEnglish ? "Procurement Collective" : "Zakupowy kolektyw"}
+              {teamCopy.collectiveLabel}
             </span>
           </Link>
 

@@ -1041,6 +1041,110 @@ export const dimensionMultiplierLabelsT = {
   en: dimensionMultiplierLabelsEn,
 } as const;
 
+const teamPl = {
+  metadataTitle: "Zespół | ProcuraCost",
+  metadataDescription:
+    "Zespół pracujący na styku zakupów, analityki, systemów, wdrożeń, negocjacji i badań.",
+  eyebrow: "Zespół",
+  title: "Kompetencje wokół zakupów i wdrożeń",
+  description:
+    "Łączymy perspektywy zakupów, analityki, systemów, wdrożeń, negocjacji i badań.",
+  peopleTitle: "Osoby",
+  competenciesTitle: "Obszary pracy",
+  linkedinLabel: "Profil LinkedIn",
+  collectiveLabel: "Zespół ProcuraCost",
+  roles: {
+    procurement: "zakupy",
+    analytics: "analityka",
+    systems: "systemy",
+    implementation: "wdrożenia",
+    negotiation: "negocjacje",
+    research: "badania",
+    sales: "sprzedaż",
+  },
+  competencies: {
+    procurement: {
+      label: "Zakupy",
+      description: "Sourcing, kategorie zakupowe i negocjacje.",
+    },
+    analytics: {
+      label: "Analityka",
+      description: "Dane, modele i analiza decyzji.",
+    },
+    systems: {
+      label: "Systemy",
+      description: "Architektura procesów, integracje i automatyzacja.",
+    },
+    implementation: {
+      label: "Wdrożenia",
+      description: "Uruchamianie systemów i procesów.",
+    },
+    negotiation: {
+      label: "Negocjacje",
+      description: "Rozmowy handlowe i warunki współpracy.",
+    },
+    research: {
+      label: "Badania",
+      description: "Pytania badawcze i interpretacja źródeł.",
+    },
+  },
+} as const;
+
+type TeamShape = LangShape<typeof teamPl>;
+
+const teamEn = {
+  metadataTitle: "Team | ProcuraCost",
+  metadataDescription:
+    "A team working across procurement, analytics, systems, implementation, negotiation, and research.",
+  eyebrow: "Team",
+  title: "Capabilities across procurement and implementation",
+  description:
+    "We bring together perspectives from procurement, analytics, systems, implementation, negotiation, and research.",
+  peopleTitle: "People",
+  competenciesTitle: "Areas of work",
+  linkedinLabel: "LinkedIn profile",
+  collectiveLabel: "ProcuraCost team",
+  roles: {
+    procurement: "procurement",
+    analytics: "analytics",
+    systems: "systems",
+    implementation: "implementation",
+    negotiation: "negotiation",
+    research: "research",
+    sales: "sales",
+  },
+  competencies: {
+    procurement: {
+      label: "Procurement",
+      description: "Sourcing, procurement categories, and negotiation.",
+    },
+    analytics: {
+      label: "Analytics",
+      description: "Data, models, and decision analysis.",
+    },
+    systems: {
+      label: "Systems",
+      description: "Process architecture, integrations, and automation.",
+    },
+    implementation: {
+      label: "Implementation",
+      description: "Bringing systems and processes into operation.",
+    },
+    negotiation: {
+      label: "Negotiation",
+      description: "Commercial discussions and terms of cooperation.",
+    },
+    research: {
+      label: "Research",
+      description: "Research questions and source interpretation.",
+    },
+  },
+} satisfies TeamShape;
+
+export const teamT = { pl: teamPl, en: teamEn } as const;
+export type TeamRole = keyof typeof teamPl.roles;
+export type TeamCompetency = keyof typeof teamPl.competencies;
+
 const navigationPl = {
   calculator: "Kalkulator",
   optimizer: "Optymalizator",

@@ -6,6 +6,7 @@ import { describe, expect, it } from "vitest";
 import * as i18n from "@/lib/i18n";
 import ShortcastyEnPage from "@/app/en/shortcasty/page";
 import { EPISODES } from "@/lib/shortcasty";
+import { MODEL_VERSION } from "@/lib/version";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 
@@ -37,6 +38,12 @@ const historicalI18nAllowList = [
 ] as const;
 
 const staleCurrentVersion = /\b(?:model 2\.1|modelu 2\.1|ProcuraCost 2\.1)\b/i;
+const activeTeamPageFiles = ["app/team/page.tsx", "app/en/team/page.tsx"] as const;
+const forbiddenTeamPhrases = [
+  "pełne e2e kompletnego",
+  "procurement ecosystem",
+  "deep tech wizard",
+] as const;
 
 async function readPublicFile(path: string) {
   return readFile(new URL(path, `file://${root}/`), "utf8");
@@ -70,10 +77,28 @@ describe("public editorial integrity", () => {
     }
   });
 
+  it("keeps active team pages free of inflated role claims", async () => {
+    for (const path of activeTeamPageFiles) {
+      const content = await readPublicFile(path);
+      for (const phrase of forbiddenTeamPhrases) {
+        expect(content, path).not.toContain(phrase);
+      }
+    }
+  });
+
+  it("keeps shared team copy structurally aligned in Polish and English", () => {
+    expect(i18n).toHaveProperty("teamT");
+
+    const teamT = i18n.teamT;
+    expect(Object.keys(teamT.pl)).toEqual(Object.keys(teamT.en));
+    expect(Object.keys(teamT.pl.roles)).toEqual(Object.keys(teamT.en.roles));
+    expect(Object.keys(teamT.pl.competencies)).toEqual(Object.keys(teamT.en.competencies));
+  });
+
   it("provides English content for every planned Shortcast", () => {
     expect(EPISODES).toEqual(expect.arrayContaining([
       expect.objectContaining({
-        titleEn: "ProcuraCost 2.2.2: what do we actually compare?",
+        titleEn: `ProcuraCost ${MODEL_VERSION}: what do we actually compare?`,
         dimensionEn: "Methodology",
         focusEn: "Methodological clarification",
       }),
