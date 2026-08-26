@@ -1,6 +1,7 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
+import BoundaryField from "@/components/BoundaryField";
 import EvidenceFieldHome from "@/components/EvidenceFieldHome";
 import { decisionMapT, homeT, PHI_SET } from "@/lib/i18n";
 import { SCENARIOS } from "@/lib/scenarios";
@@ -49,6 +50,51 @@ describe("homepage content contract", () => {
       "∂Φ = {auth, competition, ethics, docs}",
     );
     expect(visibleStrings(homeT).join(" ")).not.toContain("∞");
+  });
+
+  it("renders both decision paths inside one accessible shared boundary", () => {
+    for (const lang of ["pl", "en"] as const) {
+      const markup = renderToStaticMarkup(createElement(BoundaryField, { lang }));
+      const text = renderedText(markup);
+      const tx = homeT[lang].boundary;
+
+      expect(markup).toContain("<svg");
+      expect(markup).toContain('role="img"');
+      expect(markup).toContain(
+        `aria-labelledby="boundary-visual-title-${lang} boundary-visual-desc-${lang}"`,
+      );
+      expect(markup).toContain(`id="boundary-visual-title-${lang}"`);
+      expect(markup).toContain(`id="boundary-visual-desc-${lang}"`);
+      expect(markup.match(/data-boundary="shared"/g)).toHaveLength(1);
+      expect(markup.match(/data-scope="shared"/g)).toHaveLength(1);
+      expect(markup).toMatch(/<path[^>]*data-boundary="shared"/);
+      expect(markup).toContain('data-path="formal"');
+      expect(markup).toContain('data-path="adaptive"');
+      expect(markup).toContain('data-geometry="sequential"');
+      expect(markup).toContain('data-geometry="branching"');
+      expect(markup.match(/data-converges-at="navigator"/g)).toHaveLength(2);
+      expect(markup.match(/data-endpoint="navigator"/g)).toHaveLength(1);
+      expect(markup).toContain('viewBox="0 0 760 360"');
+      const svgTag = markup.match(/<svg\b[^>]*>/)?.[0];
+      expect(svgTag).toContain("h-auto");
+      expect(svgTag).toContain("w-full");
+      expect(svgTag).toContain("max-w-full");
+      expect(svgTag).not.toContain("min-w-");
+      for (const semanticElement of ["section", "h2", "figure", "figcaption"]) {
+        expect(markup).toContain(`<${semanticElement}`);
+      }
+      expect(text).toContain(tx.tunnelLabel);
+      expect(text).toContain(tx.fieldLabel);
+      expect(text).toContain(tx.boundaryLabel);
+      expect(text).toContain(tx.notation);
+      expect(text).toContain(tx.caption);
+      expect(markup).not.toContain("<animate");
+      expect(markup).not.toMatch(/<(?:linear|radial)Gradient\b/);
+      expect(markup).not.toContain("<filter");
+      expect(markup).not.toMatch(/(?:drop-)?shadow-/);
+      expect(markup).not.toContain("→");
+      expect(text).not.toContain("∞");
+    }
   });
 
   it("keeps the primary action neutral and the model version current", () => {
