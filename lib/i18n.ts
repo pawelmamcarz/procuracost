@@ -147,7 +147,296 @@ const calculatorEn = {
 
 export const calculatorT = { pl: calculatorPl, en: calculatorEn } as const;
 
+const migrationRolesPl: Record<string, string> = {
+  requestor: "Wnioskodawca biznesowy",
+  buyer: "Kupiec",
+  lawyer: "Prawnik",
+  finance: "Finanse",
+  manager: "Kierownik",
+  executive: "Zarząd",
+};
+
+const migrationRolesEn: Record<string, string> = {
+  requestor: "Business requestor",
+  buyer: "Buyer",
+  lawyer: "Lawyer",
+  finance: "Finance",
+  manager: "Manager",
+  executive: "Executive",
+};
+
+function migrationFieldLabel(
+  field: string,
+  lang: Lang
+): string {
+  const labels =
+    lang === "pl"
+      ? {
+          scenarioId: "Scenariusz bazowy",
+          governanceBoundaryId: "Ramy prawne i ład zakupowy",
+          procedureFamilyId: "Rodzina procedury",
+          purchaseArchetypeId: "Archetyp zakupu",
+          executionChannelId: "Kanał realizacji zakupu",
+          systemSupportId: "Wsparcie systemowe",
+          workflowDesignFormalId: "Bazowy przebieg ścieżki formalnej",
+          workflowDesignAdaptiveId: "Bazowy przebieg ścieżki adaptacyjnej",
+          contractDesignFormalId: "Konstrukcja umowy ścieżki formalnej",
+          contractDesignAdaptiveId: "Konstrukcja umowy ścieżki adaptacyjnej",
+          "retainedProcessMap.formalSequential":
+            "Mapa procesu ścieżki formalnej",
+          "retainedProcessMap.adaptiveCompliant":
+            "Mapa procesu ścieżki adaptacyjnej",
+          "retainedRoleEffort.formalSequential":
+            "Nakład pracy ról w ścieżce formalnej",
+          "retainedRoleEffort.adaptiveCompliant":
+            "Nakład pracy ról w ścieżce adaptacyjnej",
+          "retainedNonLabourCost.formalSequential":
+            "Koszt pozapracowniczy ścieżki formalnej",
+          "retainedNonLabourCost.adaptiveCompliant":
+            "Koszt pozapracowniczy ścieżki adaptacyjnej",
+          "retainedLegacyInputs.contractValue": "Wartość kontraktu",
+          "retainedLegacyInputs.tcoHorizonYears": "Horyzont TCO",
+          "retainedLegacyInputs.contractDurationYears": "Czas trwania kontraktu",
+          "retainedLegacyInputs.dailyCostOfInaction":
+            "Dzienny koszt zwłoki",
+          "retainedLegacyInputs.renegotiationCost": "Koszt renegocjacji",
+          "retainedLegacyInputs.bypassAuditExposure":
+            "Ekspozycja audytowa zakupu poza procesem",
+          "retainedLegacyInputs.discountRatePct": "Stopa dyskontowa",
+          "retainedLegacyInputs.spendType": "Typ wydatku",
+          "retainedLegacyInputs.processPhase": "Faza procesu",
+          workflowDesign: "Projekt przebiegu procesu",
+          contractDesign: "Konstrukcja umowy",
+          economicAssumptions: "Założenia ekonomiczne",
+        }
+      : {
+          scenarioId: "Base scenario",
+          governanceBoundaryId: "Legal and governance boundary",
+          procedureFamilyId: "Procedure family",
+          purchaseArchetypeId: "Purchase archetype",
+          executionChannelId: "Purchase execution channel",
+          systemSupportId: "System support",
+          workflowDesignFormalId: "Formal alternative base workflow",
+          workflowDesignAdaptiveId: "Adaptive alternative base workflow",
+          contractDesignFormalId: "Formal alternative contract design",
+          contractDesignAdaptiveId: "Adaptive alternative contract design",
+          "retainedProcessMap.formalSequential":
+            "Formal alternative process map",
+          "retainedProcessMap.adaptiveCompliant":
+            "Adaptive alternative process map",
+          "retainedRoleEffort.formalSequential":
+            "Formal alternative role effort",
+          "retainedRoleEffort.adaptiveCompliant":
+            "Adaptive alternative role effort",
+          "retainedNonLabourCost.formalSequential":
+            "Formal alternative non-labour cost",
+          "retainedNonLabourCost.adaptiveCompliant":
+            "Adaptive alternative non-labour cost",
+          "retainedLegacyInputs.contractValue": "Contract value",
+          "retainedLegacyInputs.tcoHorizonYears": "TCO horizon",
+          "retainedLegacyInputs.contractDurationYears": "Contract duration",
+          "retainedLegacyInputs.dailyCostOfInaction": "Daily cost of delay",
+          "retainedLegacyInputs.renegotiationCost": "Renegotiation cost",
+          "retainedLegacyInputs.bypassAuditExposure":
+            "Off-process audit exposure",
+          "retainedLegacyInputs.discountRatePct": "Discount rate",
+          "retainedLegacyInputs.spendType": "Spend type",
+          "retainedLegacyInputs.processPhase": "Process phase",
+          workflowDesign: "Procurement workflow design",
+          contractDesign: "Contract design",
+          economicAssumptions: "Economic assumptions",
+        };
+  if (field in labels) return labels[field as keyof typeof labels];
+
+  const stakeholder = /^retainedLegacyInputs\.stakeholders\.([^.]+)\.(count|dailyRate)$/.exec(
+    field
+  );
+  if (stakeholder) {
+    const roles = lang === "pl" ? migrationRolesPl : migrationRolesEn;
+    const role = roles[stakeholder[1]] ??
+      (lang === "pl" ? "Inna rola" : "Other role");
+    const measure =
+      stakeholder[2] === "count"
+        ? lang === "pl"
+          ? "liczba osób"
+          : "participant count"
+        : lang === "pl"
+          ? "stawka dzienna"
+          : "daily rate";
+    return `${role}: ${measure}`;
+  }
+  return lang === "pl" ? "Inne przeniesione pole" : "Other migrated field";
+}
+
 const calculatorV2Pl = {
+  alternatives: {
+    formalSequential: "Formalna ścieżka sekwencyjna",
+    adaptiveCompliant: "Adaptacyjna ścieżka zgodna z ramami",
+  },
+  rail: {
+    boundary: "Wspólna granica prawna i ładu",
+    addStep: "Dodaj krok",
+    start: "Początek",
+    outcome: "Rezultat",
+    criticalPath: "Ścieżka krytyczna",
+    parallelBranch: "Gałąź równoległa",
+    lockedLegalWait: "Zablokowany termin prawny",
+    needsCorrection: "Wymaga korekty",
+    selected: "Wybrano",
+    split: "Rozdzielenie",
+    merge: "Scalenie",
+    predecessors: "Poprzednicy",
+    noPredecessor: "brak",
+    unknownPredecessor: "nieznany krok",
+    unnamedStep: "Krok bez nazwy",
+    graphRegion: (alternative: string) =>
+      `Schemat zależności: ${alternative}`,
+    timingSummary: (active: string, queue: string, elapsed: string) =>
+      `${active} pracy + ${queue} oczekiwania = ${elapsed} dni`,
+    accessibleNode: (
+      alternative: string,
+      position: number,
+      label: string,
+      status: string,
+      active: string,
+      queue: string,
+      predecessors: string
+    ) =>
+      `${alternative}, krok ${position}, ${label}${status ? `, ${status}` : ""}, ${active} dni pracy aktywnej, ${queue} dni oczekiwania, poprzednicy: ${predecessors}.`,
+  },
+  inspector: {
+    title: "Edytuj krok",
+    selectStep: "Wybierz krok na mapie, aby zobaczyć jego szczegóły.",
+    identity: "Tożsamość",
+    stepLabel: "Nazwa kroku",
+    stepLabelHint:
+      "Własna nazwa zastępuje nazwę projektu bazowego tylko w tym porównaniu.",
+    kind: "Rodzaj kroku",
+    kinds: {
+      activity: "Czynność",
+      approval: "Zatwierdzenie",
+      milestone: "Kamień milowy",
+    },
+    activeWork: "Praca aktywna",
+    queue: "Oczekiwanie i kolejka",
+    predecessors: "Poprzednicy",
+    roleHours: "Godziny pracy ról",
+    nonLabourCost: "Koszt pozapracowniczy",
+    rangeEvidence: "Zakres i nota dowodowa",
+    low: "Niska",
+    central: "Centralna",
+    high: "Wysoka",
+    daysUnit: "dni",
+    hoursUnit: "h",
+    currencyUnit: "PLN",
+    evidenceClass: "Klasa dowodowa",
+    evidenceIds: "Identyfikatory źródeł",
+    noEvidenceIds: "brak",
+    evidenceClasses: {
+      empirical_anchor: "Kotwica empiryczna",
+      official_case: "Przypadek urzędowy",
+      practitioner_observation: "Obserwacja praktyka",
+      illustrative_scenario: "Scenariusz ilustracyjny",
+      research_hypothesis: "Hipoteza badawcza",
+      retained_legacy_assumption: "Przeniesione założenie",
+      user_input: "Dane użytkownika",
+      legal_rule: "Reguła prawna",
+    },
+    roles: {
+      requestor: "Wnioskodawca biznesowy",
+      buyer: "Kupiec",
+      lawyer: "Prawnik",
+      finance: "Finanse",
+      manager: "Kierownik",
+      executive: "Zarząd",
+      unknown: "Inna rola",
+    },
+    appliesImmediately:
+      "Zmiany są od razu uwzględniane w tym porównaniu.",
+    removeStep: "Usuń krok",
+    lockedHeading: "Zablokowany termin prawny",
+    lockedDescription:
+      "Ten krok wynika z wybranego zbioru reguł prawnych i nie można go edytować ani usunąć.",
+    legalRuleset: "Zbiór reguł prawnych",
+    ruleId: "Identyfikator reguły",
+    provision: "Podstawa prawna",
+    initiatedOn: "Data wszczęcia",
+    lockedActive: "Zablokowana praca aktywna",
+    lockedQueue: "Zablokowany termin oczekiwania",
+  },
+  workspace: {
+    title: "Porównanie kosztów procesu zakupowego",
+    introduction:
+      "Model porównuje dwie dopuszczalne alternatywy w tych samych ramach prawnych i ładu. Nie zakłada preferowanego wyniku.",
+    modelLabel: "Model",
+    calibrationLabel: "Kalibracja",
+    rulesetLabel: "Zbiór reguł prawnych",
+    stageContext: "1. Zdefiniuj kontekst zakupu",
+    stageWorkflows: "2. Porównaj przebieg alternatyw",
+    stageEconomics: "3. Uzupełnij założenia ekonomiczne",
+    scenario: "Scenariusz bazowy",
+    scenarioDescription: "Opis scenariusza",
+    scenarioEvidence: "Klasa źródła scenariusza",
+    retainedAssumption: "Przeniesione założenie modelu 2.2.2",
+    legalConstraints: "Rozstrzygnięte obowiązkowe ograniczenia prawne",
+    noLegalWaits: "W tym kontekście model nie wyznacza obowiązkowych terminów prawnych.",
+    waitDuration: (days: string) => `${days} dni oczekiwania`,
+    baseDesignProvenance: "Pochodzenie projektów bazowych",
+    designNarrowing:
+      "Identyfikatory wskazują zgodne projekty bazowe. Mapy obu alternatyw można edytować niezależnie.",
+    workflowDesign: "Projekt przebiegu procesu zakupowego",
+    contractDesign: "Konstrukcja umowy",
+    locallyEdited: "Lokalnie zmieniono względem projektu bazowego",
+    unchangedFromBase: "Niezmieniony projekt bazowy",
+    mapsValid: "2 mapy poprawne. Obowiązkowe oczekiwania są zablokowane.",
+    mapNeedsCorrection: "Mapa wymaga korekty",
+    focusIssue: "Przejdź do kroku",
+    undo: "Cofnij",
+    undoAvailable: "Możesz cofnąć ostatnią zmianę mapy.",
+    calculate: "Oblicz i utwórz zapis porównania",
+    calculationBlocked:
+      "Obliczenie jest zablokowane do czasu usunięcia wymienionych problemów.",
+    preCalculation:
+      "Zapis porównania pojawi się tutaj po sprawdzeniu obu map i wykonaniu obliczenia.",
+    recordBoundaryTitle: "Utworzono zapis porównania",
+    shareCopied: "Skopiowano link do scenariusza bazowego.",
+    shareFailed: "Nie udało się skopiować linku. Skopiuj adres z paska przeglądarki.",
+    stepAdded: "Dodano krok. Uzupełnij wymagane pola.",
+    discardUrlState:
+      "Odrzuć stan wczytany z linku i użyj tego scenariusza bazowego",
+  },
+  economics: {
+    introduction:
+      "Wartości niska, centralna i wysoka opisują jawny zakres założeń. Koszt i stawki są wyrażone w PLN.",
+    contractValue: "Wartość kontraktu",
+    dailyCostOfDelay: "Dzienny koszt zwłoki",
+    competitionTransfer: "Zakres transferu konkurencji cenowej",
+    roleRates: "Stawki godzinowe ról",
+    fixedDimensions: "Stała granica neutralności modelu",
+    fixedNeutral: "Utrzymane centralnie na poziomie zero do czasu wskazania danych lub reguły alokacji.",
+    amendmentDifferential: "Różnica kosztu aneksów",
+    tcoDifferential: "Różnica alokacji TCO",
+    bypass: "Zakup poza zatwierdzonym procesem",
+    notMonetized: "Raportowany, ale niemonetyzowany",
+    low: "Niska",
+    central: "Centralna",
+    high: "Wysoka",
+    hourlyUnit: "PLN/h",
+    currencyUnit: "PLN",
+    rateUnit: "udział 0–1",
+  },
+  migration: {
+    title: "Potwierdź przeniesione dane wejściowe",
+    description:
+      "Stary odnośnik zawiera wartości wymagające jawnego potwierdzenia przed przeliczeniem.",
+    fields: "Pola wymagające potwierdzenia",
+    retainedValues: "przeniesione wartości starego modelu",
+    confirmation:
+      "Potwierdzam użycie przeniesionych danych wejściowych w modelu 2.3.0.",
+    recalculation:
+      "Poprzedni wynik nie jest odtwarzany. Dane zostaną ponownie obliczone w modelu 2.3.0.",
+    fieldLabel: (field: string): string => migrationFieldLabel(field, "pl"),
+  },
   share: {
     action: "Kopiuj link do scenariusza bazowego",
     disclosure:
@@ -199,6 +488,172 @@ const calculatorV2Pl = {
 type CalculatorV2Shape = LangShape<typeof calculatorV2Pl>;
 
 const calculatorV2En = {
+  alternatives: {
+    formalSequential: "Formal sequential alternative",
+    adaptiveCompliant: "Adaptive compliant alternative",
+  },
+  rail: {
+    boundary: "Shared legal and governance boundary",
+    addStep: "Add step",
+    start: "Start",
+    outcome: "Outcome",
+    criticalPath: "Critical path",
+    parallelBranch: "Parallel branch",
+    lockedLegalWait: "Locked legal wait",
+    needsCorrection: "Needs correction",
+    selected: "Selected",
+    split: "Split",
+    merge: "Merge",
+    predecessors: "Predecessors",
+    noPredecessor: "none",
+    unknownPredecessor: "unknown step",
+    unnamedStep: "Unnamed step",
+    graphRegion: (alternative: string) =>
+      `Dependency diagram: ${alternative}`,
+    timingSummary: (active: string, queue: string, elapsed: string) =>
+      `${active} active + ${queue} queue = ${elapsed} days`,
+    accessibleNode: (
+      alternative: string,
+      position: number,
+      label: string,
+      status: string,
+      active: string,
+      queue: string,
+      predecessors: string
+    ) =>
+      `${alternative}, step ${position}, ${label}${status ? `, ${status}` : ""}, ${active} active days, ${queue} queue days, predecessors: ${predecessors}.`,
+  },
+  inspector: {
+    title: "Edit step",
+    selectStep: "Select a step on the map to inspect its details.",
+    identity: "Identity",
+    stepLabel: "Step name",
+    stepLabelHint:
+      "A custom name replaces the base-design name only in this comparison.",
+    kind: "Step kind",
+    kinds: {
+      activity: "Activity",
+      approval: "Approval",
+      milestone: "Milestone",
+    },
+    activeWork: "Active work",
+    queue: "Waiting and queue",
+    predecessors: "Predecessors",
+    roleHours: "Role hours",
+    nonLabourCost: "Non-labour cost",
+    rangeEvidence: "Range and evidence note",
+    low: "Low",
+    central: "Central",
+    high: "High",
+    daysUnit: "days",
+    hoursUnit: "h",
+    currencyUnit: "PLN",
+    evidenceClass: "Evidence class",
+    evidenceIds: "Evidence identifiers",
+    noEvidenceIds: "none",
+    evidenceClasses: {
+      empirical_anchor: "Empirical anchor",
+      official_case: "Official case",
+      practitioner_observation: "Practitioner observation",
+      illustrative_scenario: "Illustrative scenario",
+      research_hypothesis: "Research hypothesis",
+      retained_legacy_assumption: "Retained legacy assumption",
+      user_input: "User input",
+      legal_rule: "Legal rule",
+    },
+    roles: {
+      requestor: "Business requestor",
+      buyer: "Buyer",
+      lawyer: "Lawyer",
+      finance: "Finance",
+      manager: "Manager",
+      executive: "Executive",
+      unknown: "Other role",
+    },
+    appliesImmediately: "Changes apply to this comparison immediately.",
+    removeStep: "Remove step",
+    lockedHeading: "Locked legal wait",
+    lockedDescription:
+      "This step is fixed by the selected legal ruleset and cannot be edited or removed.",
+    legalRuleset: "Legal ruleset",
+    ruleId: "Rule identifier",
+    provision: "Legal provision",
+    initiatedOn: "Initiated on",
+    lockedActive: "Locked active work",
+    lockedQueue: "Locked waiting period",
+  },
+  workspace: {
+    title: "Procurement process cost comparison",
+    introduction:
+      "The model compares two lawful alternatives within the same legal and governance boundary. It does not prefer either outcome.",
+    modelLabel: "Model",
+    calibrationLabel: "Calibration",
+    rulesetLabel: "Legal ruleset",
+    stageContext: "1. Define the purchasing context",
+    stageWorkflows: "2. Compare the alternative workflows",
+    stageEconomics: "3. Set the economic assumptions",
+    scenario: "Base scenario",
+    scenarioDescription: "Scenario description",
+    scenarioEvidence: "Scenario source class",
+    retainedAssumption: "Retained model 2.2.2 assumption",
+    legalConstraints: "Resolved mandatory legal constraints",
+    noLegalWaits: "The model resolves no mandatory legal waits for this context.",
+    waitDuration: (days: string) => `${days} days waiting`,
+    baseDesignProvenance: "Base-design provenance",
+    designNarrowing:
+      "The identifiers name compatible base designs. Each alternative's workflow map remains independently editable.",
+    workflowDesign: "Procurement workflow design",
+    contractDesign: "Contract design",
+    locallyEdited: "Locally edited from base design",
+    unchangedFromBase: "Unchanged base design",
+    mapsValid: "2 valid maps. Mandatory waits are locked.",
+    mapNeedsCorrection: "The map needs correction",
+    focusIssue: "Go to step",
+    undo: "Undo",
+    undoAvailable: "You can undo the latest map change.",
+    calculate: "Calculate and create decision record",
+    calculationBlocked:
+      "Calculation is blocked until the listed issues are corrected.",
+    preCalculation:
+      "A decision record will appear here after both maps are valid and the comparison is calculated.",
+    recordBoundaryTitle: "Decision record created",
+    shareCopied: "Base-scenario link copied.",
+    shareFailed: "The link could not be copied. Copy the address from the browser bar.",
+    stepAdded: "Step added. Complete the required fields.",
+    discardUrlState: "Discard imported link state and use this base scenario",
+  },
+  economics: {
+    introduction:
+      "Low, central and high values declare an explicit assumption range. Costs and rates are expressed in PLN.",
+    contractValue: "Contract value",
+    dailyCostOfDelay: "Daily cost of delay",
+    competitionTransfer: "Price-competition transfer range",
+    roleRates: "Role hourly rates",
+    fixedDimensions: "Fixed model-neutrality boundary",
+    fixedNeutral: "Held centrally at zero until data or an allocation rule is supplied.",
+    amendmentDifferential: "Contract-amendment differential",
+    tcoDifferential: "TCO allocation differential",
+    bypass: "Off-process purchasing",
+    notMonetized: "Reported but not monetised",
+    low: "Low",
+    central: "Central",
+    high: "High",
+    hourlyUnit: "PLN/h",
+    currencyUnit: "PLN",
+    rateUnit: "ratio 0–1",
+  },
+  migration: {
+    title: "Confirm migrated inputs",
+    description:
+      "The legacy link contains values that require explicit confirmation before recalculation.",
+    fields: "Fields requiring confirmation",
+    retainedValues: "retained legacy values",
+    confirmation:
+      "I confirm the use of the retained inputs under model 2.3.0.",
+    recalculation:
+      "The former result is not being reproduced. The inputs will be recalculated under model 2.3.0.",
+    fieldLabel: (field: string) => migrationFieldLabel(field, "en"),
+  },
   share: {
     action: "Copy base-scenario link",
     disclosure:
@@ -1982,7 +2437,16 @@ const modelV2Pl = {
       userDefined: "Krok użytkownika",
     },
     legal: {
+      pzpBasic: {
+        bidSubmission: "Obowiązkowy termin składania ofert",
+        standstill: "Obowiązkowy termin przed zawarciem umowy",
+      },
       pzpOpen: {
+        bidSubmission: "Obowiązkowy termin składania ofert",
+        standstill: "Obowiązkowy termin przed zawarciem umowy",
+      },
+      pzpRestricted: {
+        requestToParticipate: "Obowiązkowy termin składania wniosków",
         bidSubmission: "Obowiązkowy termin składania ofert",
         standstill: "Obowiązkowy termin przed zawarciem umowy",
       },
@@ -2219,7 +2683,16 @@ const modelV2En: WidenModelV2Copy<typeof modelV2Pl> = {
       userDefined: "User-defined step",
     },
     legal: {
+      pzpBasic: {
+        bidSubmission: "Mandatory tender-submission period",
+        standstill: "Mandatory standstill before contract conclusion",
+      },
       pzpOpen: {
+        bidSubmission: "Mandatory tender-submission period",
+        standstill: "Mandatory standstill before contract conclusion",
+      },
+      pzpRestricted: {
+        requestToParticipate: "Mandatory request-to-participate period",
         bidSubmission: "Mandatory tender-submission period",
         standstill: "Mandatory standstill before contract conclusion",
       },

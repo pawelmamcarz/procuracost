@@ -41,7 +41,7 @@ export interface ContextUiIssue extends IssueLocation {
     | "calculatorV2.validation.contextReconciliationFailed";
 }
 
-export interface UrlUiIssue {
+export interface UrlUiIssue extends IssueLocation {
   source: "url";
   code: V2UrlValidationCode;
   field: V2UrlField;
@@ -49,7 +49,7 @@ export interface UrlUiIssue {
   messageKey: string;
 }
 
-export interface MigrationUiIssue {
+export interface MigrationUiIssue extends IssueLocation {
   source: "migration";
   code: LegacyMigrationDraftIssueCode;
   field: string;
