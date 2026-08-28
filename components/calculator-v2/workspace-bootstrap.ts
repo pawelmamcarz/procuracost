@@ -2,6 +2,7 @@ import {
   createScenarioDraft,
   createScenarioDraftFromLegacyMigration,
   type LegacyMigrationResult,
+  type PartialLegacyMigration,
 } from "@/lib/model-v2";
 
 import {
@@ -64,5 +65,27 @@ export function applyLegacyMigrationConfirmation(
     focusTarget: confirmed ? { kind: "migration-confirmation" } : null,
     issues: [],
     record: null,
+  };
+}
+
+export interface LegacyMigrationControlTransition {
+  state: CalculatorWorkspaceState;
+  migrationResult: PartialLegacyMigration | null;
+}
+
+export function applyLegacyMigrationControlTransition(
+  state: CalculatorWorkspaceState,
+  result: PartialLegacyMigration,
+  confirmed: boolean
+): LegacyMigrationControlTransition {
+  const nextState = applyLegacyMigrationConfirmation(
+    state,
+    result,
+    confirmed
+  );
+  return {
+    state: nextState,
+    migrationResult:
+      nextState.migration?.status === "ready" ? null : result,
   };
 }

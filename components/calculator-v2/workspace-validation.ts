@@ -134,6 +134,16 @@ function rangeIssue(
   };
 }
 
+function competitionTransferRangeIssue(): RangeUiIssue {
+  return {
+    source: "range",
+    code: "competition_transfer_out_of_bounds",
+    messageKey:
+      "calculatorV2.validation.competitionTransferOutOfBounds",
+    field: "economicAssumptions.competitionTransferRate",
+  };
+}
+
 function isValidNonNegativeRange(value: CalibratedValue): boolean {
   try {
     assertValidCalibratedValue(value);
@@ -171,10 +181,19 @@ function collectRangeIssues(state: CalculatorWorkspaceState): RangeUiIssue[] {
   );
   check(assumptions.tcoDifferential, "economicAssumptions.tcoDifferential");
   if (assumptions.competitionTransferRate) {
-    check(
-      assumptions.competitionTransferRate,
-      "economicAssumptions.competitionTransferRate"
-    );
+    try {
+      assertValidCalibratedValue(assumptions.competitionTransferRate);
+      if (
+        assumptions.competitionTransferRate.low < 0 ||
+        assumptions.competitionTransferRate.high > 1
+      ) {
+        issues.push(competitionTransferRangeIssue());
+      }
+    } catch {
+      issues.push(
+        rangeIssue("economicAssumptions.competitionTransferRate")
+      );
+    }
   }
 
   for (const alternativeId of ALTERNATIVE_IDS) {
@@ -592,6 +611,8 @@ export function calculatorIssueCopy(
       return validation.unknownRole;
     case "invalid_calibrated_range":
       return validation.invalidCalibratedRange;
+    case "competition_transfer_out_of_bounds":
+      return validation.competitionTransferOutOfBounds;
     case "invalid_step_kind":
       return validation.invalidStepKind;
     case "illegal_context":

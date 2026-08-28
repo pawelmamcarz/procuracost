@@ -388,8 +388,9 @@ const calculatorV2Pl = {
     contractDesign: "Konstrukcja umowy",
     locallyEdited: "Lokalnie zmieniono względem projektu bazowego",
     unchangedFromBase: "Niezmieniony projekt bazowy",
-    mapsValid: "2 mapy poprawne. Obowiązkowe oczekiwania są zablokowane.",
+    mapsValid: "2 mapy poprawne · obowiązkowe oczekiwania zablokowane",
     mapNeedsCorrection: "Mapa wymaga korekty",
+    calculationNeedsCorrection: "Dane do obliczenia wymagają korekty",
     focusIssue: "Przejdź do kroku",
     undo: "Cofnij",
     undoAvailable: "Możesz cofnąć ostatnią zmianę mapy.",
@@ -449,6 +450,8 @@ const calculatorV2Pl = {
     unknownRole: "Wybrana rola nie istnieje w zestawie stawek tego scenariusza.",
     invalidCalibratedRange:
       "Zakres musi zawierać nieujemne wartości w kolejności niska, centralna, wysoka.",
+    competitionTransferOutOfBounds:
+      "Zakres transferu konkurencji cenowej musi mieścić się od 0 do 1.",
     invalidStepKind:
       "Krok użytkownika może być czynnością, zatwierdzeniem albo kamieniem milowym.",
     illegalContext:
@@ -606,8 +609,9 @@ const calculatorV2En = {
     contractDesign: "Contract design",
     locallyEdited: "Locally edited from base design",
     unchangedFromBase: "Unchanged base design",
-    mapsValid: "2 valid maps. Mandatory waits are locked.",
+    mapsValid: "2 valid maps · mandatory waits locked",
     mapNeedsCorrection: "The map needs correction",
+    calculationNeedsCorrection: "Calculation inputs need correction",
     focusIssue: "Go to step",
     undo: "Undo",
     undoAvailable: "You can undo the latest map change.",
@@ -666,6 +670,8 @@ const calculatorV2En = {
     unknownRole: "The selected role is not present in this scenario's rate set.",
     invalidCalibratedRange:
       "The range must contain non-negative values ordered low, central and high.",
+    competitionTransferOutOfBounds:
+      "The price-competition transfer range must stay between 0 and 1.",
     invalidStepKind:
       "A user step may be an activity, approval or milestone.",
     illegalContext:

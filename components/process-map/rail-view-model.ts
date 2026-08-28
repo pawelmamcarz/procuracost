@@ -215,9 +215,28 @@ function buildLane(
         workflow.steps.find(({ id }) => id === node.stepId)!.queueDays.central,
       lang
     );
+    const statuses = [
+      node.criticalText,
+      node.parallel ? tx.rail.parallelBranch : null,
+      node.lockText,
+      node.invalidText,
+      node.selectedText,
+    ].filter((value): value is string => value !== null);
+    const predecessors = node.predecessorNames.length
+      ? node.predecessorNames.join(", ")
+      : tx.rail.noPredecessor;
     return {
       ...node,
       position: index + 1,
+      accessibleName: tx.rail.accessibleNode(
+        tx.alternatives[alternativeId],
+        index + 1,
+        node.label,
+        statuses.join(", "),
+        activeCentral,
+        queueCentral,
+        predecessors
+      ),
       activeCentral,
       queueCentral,
       elapsedCentral,
@@ -228,9 +247,7 @@ function buildLane(
       ),
       parallelText: node.parallel ? tx.rail.parallelBranch : null,
       predecessorSummary: `${tx.rail.predecessors}: ${
-        node.predecessorNames.length
-          ? node.predecessorNames.join(", ")
-          : tx.rail.noPredecessor
+        predecessors
       }`,
       x:
         PROCESS_RAIL_GEOMETRY.startOffset +

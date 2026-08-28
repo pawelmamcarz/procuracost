@@ -64,8 +64,12 @@ export interface ProcessMapUiIssue extends IssueLocation {
 
 export interface RangeUiIssue extends IssueLocation {
   source: "range";
-  code: "invalid_calibrated_range";
-  messageKey: "calculatorV2.validation.invalidCalibratedRange";
+  code:
+    | "invalid_calibrated_range"
+    | "competition_transfer_out_of_bounds";
+  messageKey:
+    | "calculatorV2.validation.invalidCalibratedRange"
+    | "calculatorV2.validation.competitionTransferOutOfBounds";
 }
 
 export interface CustomLabelUiIssue extends IssueLocation {

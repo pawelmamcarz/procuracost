@@ -94,9 +94,14 @@ export function ProcessStepNode({
 
   if (mode === "read-only") {
     return (
-      <div aria-label={node.accessibleName} className={className}>
+      <article
+        aria-label={node.accessibleName}
+        className={className}
+        id={`process-step-${alternativeId}-${node.stepId}${focusIdSuffix}`}
+        tabIndex={0}
+      >
         {content}
-      </div>
+      </article>
     );
   }
   return (

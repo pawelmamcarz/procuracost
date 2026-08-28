@@ -179,6 +179,40 @@ describe("process rail UI", () => {
     );
   });
 
+  it("uses the visible topological position in every node's accessible name", () => {
+    const workflow = branchedWorkflow(false);
+    workflow.steps = [
+      workflow.steps[3],
+      workflow.steps[0],
+      workflow.steps[2],
+      workflow.steps[1],
+    ];
+    const model = buildProcessRailViewModel({
+      lang: "en",
+      workflows: {
+        formalSequential: workflow,
+        adaptiveCompliant: structuredClone(workflow),
+      },
+      selectedAlternative: "formalSequential",
+      selectedStepId: null,
+      criticalPathStepIds: {
+        formalSequential: [],
+        adaptiveCompliant: [],
+      },
+      invalidStepIds: {
+        formalSequential: [],
+        adaptiveCompliant: [],
+      },
+    });
+
+    expect(
+      model.lanes.formalSequential.nodes.map(({ stepId }) => stepId)
+    ).toEqual(["brief", "market", "legal", "award"]);
+    for (const node of model.lanes.formalSequential.nodes) {
+      expect(node.accessibleName).toContain(`step ${node.position},`);
+    }
+  });
+
   it("contains a focusable desktop graph viewport and a separate vertical mobile sequence", () => {
     const html = renderRail();
 
@@ -219,5 +253,25 @@ describe("process rail UI", () => {
     expect(html).not.toContain("Predecessors:");
     expect(html).not.toContain("Dodaj krok");
     expect(html).not.toContain("aria-pressed");
+    expect(html).toContain(
+      'id="process-step-formalSequential-brief" tabindex="0"'
+    );
+    expect(html).toContain(
+      'id="process-step-formalSequential-brief-mobile" tabindex="0"'
+    );
+    expect(
+      html.match(/id="process-step-formalSequential-brief"/g)
+    ).toHaveLength(1);
+    expect(
+      html.match(/id="process-step-formalSequential-brief-mobile"/g)
+    ).toHaveLength(1);
+    const topologicalIds = ["brief", "legal", "market", "award"];
+    topologicalIds.reduce((previousIndex, stepId) => {
+      const index = html.indexOf(
+        `id="process-step-formalSequential-${stepId}"`
+      );
+      expect(index).toBeGreaterThan(previousIndex);
+      return index;
+    }, -1);
   });
 });

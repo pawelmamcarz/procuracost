@@ -2,10 +2,7 @@ import { useState } from "react";
 import { RotateCcw } from "lucide-react";
 
 import { calculatorV2T, type Lang } from "@/lib/i18n";
-import {
-  calculateComparison,
-  type AlternativeId,
-} from "@/lib/model-v2";
+import type { AlternativeId } from "@/lib/model-v2";
 
 import {
   calculatorWorkspaceReducer,
@@ -13,7 +10,9 @@ import {
   type CalculatorWorkspaceState,
 } from "./editor-state";
 import { ProcessMapValidationSummary } from "./ProcessMapValidationSummary";
+import { deriveProcessMapCriticalPathPreview } from "./process-map-preview";
 import { ProcessStepInspector } from "./ProcessStepInspector";
+import { partitionCalculatorIssues } from "./validation-presentation";
 import { deriveCalculatorWorkspaceValidation } from "./workspace-validation";
 import { ProcessRail } from "../process-map/ProcessRail";
 import { buildProcessRailViewModel } from "../process-map/rail-view-model";
@@ -29,25 +28,6 @@ const ALTERNATIVE_IDS: AlternativeId[] = [
   "adaptiveCompliant",
 ];
 
-function criticalPaths(state: CalculatorWorkspaceState) {
-  try {
-    const result = calculateComparison({
-      context: state.draft.context,
-      alternatives: state.draft.alternatives,
-      roleHourlyRates: state.draft.roleHourlyRates,
-      dailyCostOfInaction: state.draft.dailyCostOfInaction,
-    });
-    return {
-      formalSequential:
-        result.formalSequential.criticalPathStepIds.central,
-      adaptiveCompliant:
-        result.adaptiveCompliant.criticalPathStepIds.central,
-    };
-  } catch {
-    return { formalSequential: [], adaptiveCompliant: [] };
-  }
-}
-
 export function ProcessMapEditor({
   lang,
   state,
@@ -56,10 +36,11 @@ export function ProcessMapEditor({
   const tx = calculatorV2T[lang];
   const [announcement, setAnnouncement] = useState("");
   const validation = deriveCalculatorWorkspaceValidation(state);
+  const { processMapIssues } = partitionCalculatorIssues(validation.issues);
   const invalidStepIds = Object.fromEntries(
     ALTERNATIVE_IDS.map((alternativeId) => [
       alternativeId,
-      validation.issues.flatMap((issue) =>
+      processMapIssues.flatMap((issue) =>
         issue.alternativeId === alternativeId && issue.stepId
           ? [issue.stepId]
           : []
@@ -76,7 +57,7 @@ export function ProcessMapEditor({
     },
     selectedAlternative: state.selectedAlternative,
     selectedStepId: state.selectedStepId,
-    criticalPathStepIds: criticalPaths(state),
+    criticalPathStepIds: deriveProcessMapCriticalPathPreview(state),
     invalidStepIds,
   });
 
@@ -87,7 +68,7 @@ export function ProcessMapEditor({
   return (
     <div className="space-y-5">
       <ProcessMapValidationSummary
-        issues={validation.issues}
+        issues={processMapIssues}
         lang={lang}
         onFocusIssue={(alternativeId, stepId) => {
           const selected = calculatorWorkspaceReducer(state, {
@@ -137,7 +118,7 @@ export function ProcessMapEditor({
           viewModel={viewModel}
         />
         <ProcessStepInspector
-          issues={validation.issues}
+          issues={processMapIssues}
           lang={lang}
           onAction={dispatch}
           state={state}

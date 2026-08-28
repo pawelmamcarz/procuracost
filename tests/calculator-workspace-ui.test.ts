@@ -17,6 +17,7 @@ import { LegacyMigrationConfirmation } from "@/components/calculator-v2/LegacyMi
 import { bootstrapCalculatorUrl } from "@/components/calculator-v2/url-bootstrap";
 import {
   applyLegacyMigrationConfirmation,
+  applyLegacyMigrationControlTransition,
   createRenderableCalculatorWorkspaceState,
 } from "@/components/calculator-v2/workspace-bootstrap";
 import {
@@ -96,6 +97,10 @@ describe("calculator workspace UI", () => {
     expect(html).toContain("Resolved mandatory legal constraints");
     expect(html).toContain("Base-design provenance");
     expect(html).toContain("Role hourly rates");
+    expect(html).toContain("2 valid maps · mandatory waits locked");
+    expect(html).not.toContain(
+      "2 valid maps. Mandatory waits are locked."
+    );
   });
 
   it("shows compatible workflow and contract IDs as read-only provenance without design selectors", () => {
@@ -137,6 +142,7 @@ describe("calculator workspace UI", () => {
     expect(html).toContain('aria-describedby="process-map-status"');
     expect(html).toContain("disabled");
     expect(html).toContain("Calculation is blocked until the listed issues are corrected.");
+    expect(html).not.toContain('id="calculator-submit-status"');
     expect(html).not.toContain("RAW ENGINE MESSAGE");
   });
 
@@ -165,14 +171,17 @@ describe("calculator workspace UI", () => {
       null,
       createElement(
         "h2",
-        { id: CALCULATOR_RESULT_HEADING_ID },
+        { id: CALCULATOR_RESULT_HEADING_ID, tabIndex: -1 },
         "Decision record fixture"
       )
     );
     const html = renderWorkspace(submitted.state, "en", slot);
 
     expect(html).toContain('id="decision-record"');
-    expect(html).toContain('tabindex="-1"');
+    expect(html).toContain('role="region"');
+    expect(html).toMatch(
+      /id="decision-record-heading" tabindex="-1"/
+    );
     expect(html).toContain(
       `aria-labelledby="${CALCULATOR_RESULT_HEADING_ID}"`
     );
@@ -202,10 +211,35 @@ describe("calculator workspace UI", () => {
     expect(deriveCalculatorWorkspaceValidation(blockedLegacy).canSubmit).toBe(
       false
     );
-    expect(renderWorkspace(invalidV2)).toContain("The map needs correction");
-    expect(renderWorkspace(blockedLegacy)).toContain("The map needs correction");
-    expect(renderWorkspace(blockedLegacy)).toContain(
+    const invalidV2Html = renderWorkspace(invalidV2);
+    const blockedLegacyHtml = renderWorkspace(blockedLegacy);
+    expect(invalidV2Html).toContain("2 valid maps · mandatory waits locked");
+    expect(blockedLegacyHtml).toContain("2 valid maps · mandatory waits locked");
+    expect(invalidV2Html).not.toContain("The map needs correction");
+    expect(blockedLegacyHtml).not.toContain("The map needs correction");
+    expect(blockedLegacyHtml).toContain('id="calculator-submit-status"');
+    expect(blockedLegacyHtml).toContain("Calculation inputs need correction");
+    expect(blockedLegacyHtml).toContain(
+      'aria-describedby="calculator-submit-status"'
+    );
+    expect(blockedLegacyHtml).toContain(
       "Discard imported link state and use this base scenario"
+    );
+  });
+
+  it("uses the exact Polish valid-map status from the approved specification", () => {
+    const html = renderWorkspace(
+      createCalculatorWorkspaceState(
+        createScenarioDraft("fleet_tco_reframing")
+      ),
+      "pl"
+    );
+
+    expect(html).toContain(
+      "2 mapy poprawne · obowiązkowe oczekiwania zablokowane"
+    );
+    expect(html).not.toContain(
+      "2 mapy poprawne. Obowiązkowe oczekiwania są zablokowane."
     );
   });
 
@@ -289,6 +323,94 @@ describe("calculator workspace UI", () => {
     );
     expect(blocked.migration?.status).toBe("blocked");
     expect(deriveCalculatorWorkspaceValidation(blocked).canSubmit).toBe(false);
+  });
+
+  it("keeps a blocked partial-migration control mounted and focused until adaptation is ready", () => {
+    const blockedParams = exactFleetLegacyParams();
+    blockedParams.set("tco", "4");
+    const blockedBootstrap = bootstrapCalculatorUrl(blockedParams);
+    if (
+      blockedBootstrap.origin !== "legacy" ||
+      blockedBootstrap.result.status !== "partial"
+    ) {
+      throw new Error("Expected partial legacy fixture");
+    }
+    const transition = applyLegacyMigrationControlTransition(
+      createRenderableCalculatorWorkspaceState(blockedBootstrap),
+      blockedBootstrap.result,
+      true
+    );
+
+    expect(transition.state.migration?.status).toBe("blocked");
+    expect(transition.state.focusTarget).toEqual({
+      kind: "migration-confirmation",
+    });
+    expect(transition.migrationResult).toBe(blockedBootstrap.result);
+
+    const html = renderToStaticMarkup(
+      createElement(CalculatorWorkspaceView, {
+        lang: "en",
+        state: transition.state,
+        onStateChange: () => {},
+        onCopyBaseScenario: () => {},
+        migrationControl: {
+          result: transition.migrationResult!,
+          confirmed: true,
+          onConfirm: () => {},
+        },
+      })
+    );
+    expect(html).toContain("Confirm migrated inputs");
+    expect(html).toContain("Fields requiring confirmation");
+    expect(html).toContain('id="migration-confirmation"');
+    expect(html).toContain('checked=""');
+
+    const readyParams = exactFleetLegacyParams();
+    readyParams.set("cv", "5100000");
+    const readyBootstrap = bootstrapCalculatorUrl(readyParams);
+    if (
+      readyBootstrap.origin !== "legacy" ||
+      readyBootstrap.result.status !== "partial"
+    ) {
+      throw new Error("Expected representable partial fixture");
+    }
+    const readyTransition = applyLegacyMigrationControlTransition(
+      createRenderableCalculatorWorkspaceState(readyBootstrap),
+      readyBootstrap.result,
+      true
+    );
+    expect(readyTransition.state.migration?.status).toBe("ready");
+    expect(readyTransition.migrationResult).toBeNull();
+  });
+
+  it("enforces the typed 0 to 1 competition-transfer range and links every field member to its error", () => {
+    const draft = createScenarioDraft("fleet_tco_reframing");
+    if (!draft.economicAssumptions.competitionTransferRate) {
+      throw new Error("Expected competition-transfer fixture");
+    }
+    draft.economicAssumptions.competitionTransferRate.high = 1.1;
+    const state = createCalculatorWorkspaceState(draft);
+    const validation = deriveCalculatorWorkspaceValidation(state);
+
+    expect(validation.issues).toContainEqual(
+      expect.objectContaining({
+        source: "range",
+        code: "competition_transfer_out_of_bounds",
+        field: "economicAssumptions.competitionTransferRate",
+      })
+    );
+    const html = renderWorkspace(state);
+    expect(html).toContain(
+      "The price-competition transfer range must stay between 0 and 1."
+    );
+    expect(html.match(/aria-invalid="true"/g)).toHaveLength(3);
+    expect(
+      html.match(
+        /aria-describedby="economic-competition-transfer-error"/g
+      )
+    ).toHaveLength(3);
+    expect(html).toContain('id="calculator-submit-status"');
+    expect(html).toContain('aria-describedby="calculator-submit-status"');
   });
 
   it("keeps the complete calculator-v2 dictionary in exact PL/EN leaf parity", () => {

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  CALCULATOR_RESULT_HEADING_ID,
   CALCULATOR_RESULT_REGION_ID,
   calculatorFocusTargetElementId,
 } from "@/components/calculator-v2/CalculatorWorkspace";
@@ -45,6 +46,7 @@ describe("calculator declarative focus contract", () => {
     ).toBe("migration-confirmation");
     expect(
       calculatorFocusTargetElementId({ kind: "decision-record" })
-    ).toBe(CALCULATOR_RESULT_REGION_ID);
+    ).toBe(CALCULATOR_RESULT_HEADING_ID);
+    expect(CALCULATOR_RESULT_REGION_ID).toBe("decision-record");
   });
 });
