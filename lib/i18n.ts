@@ -147,6 +147,107 @@ const calculatorEn = {
 
 export const calculatorT = { pl: calculatorPl, en: calculatorEn } as const;
 
+const calculatorV2Pl = {
+  share: {
+    action: "Kopiuj link do scenariusza bazowego",
+    disclosure:
+      "Link odtwarza wyłącznie wybrany scenariusz bazowy. Zmiany map procesu, własne nazwy kroków, data wszczęcia i założenia ekonomiczne pozostają tylko w tej karcie przeglądarki.",
+  },
+  validation: {
+    lockedStep:
+      "Ten krok wynika z wybranego zbioru reguł prawnych i nie można go edytować ani usunąć.",
+    unknownStep: "Wybrany krok nie istnieje już w tej mapie procesu.",
+    unknownRole: "Wybrana rola nie istnieje w zestawie stawek tego scenariusza.",
+    invalidCalibratedRange:
+      "Zakres musi zawierać nieujemne wartości w kolejności niska, centralna, wysoka.",
+    invalidStepKind:
+      "Krok użytkownika może być czynnością, zatwierdzeniem albo kamieniem milowym.",
+    illegalContext:
+      "Wybrany kontekst jest niedopuszczalny albo wykracza poza zakres zbioru reguł prawnych.",
+    incompatibleLockedWaitShape:
+      "Ta zmiana wymaga innego układu obowiązkowych terminów. Wybierz zgodny scenariusz bazowy.",
+    contextReconciliationFailed:
+      "Nie można uzgodnić obu map z tym samym zestawem obowiązkowych terminów.",
+    blankCustomLabel: "Uzupełnij nazwę dodanego kroku przed obliczeniem.",
+    incompatibleWorkflowDesign:
+      "Projekt przebiegu procesu nie należy do tej ścieżki i scenariusza bazowego.",
+    incompatibleContractDesign:
+      "Konstrukcja umowy nie należy do tej ścieżki i scenariusza bazowego.",
+    calculationRejected:
+      "Stan porównania nie spełnia kontraktu obliczeniowego modelu 2.3.",
+    processMap: {
+      duplicate_step:
+        "Dwa kroki mają ten sam identyfikator. Nadaj każdemu krokowi odrębną tożsamość.",
+      unknown_predecessor:
+        "Krok wskazuje poprzednika, którego nie ma na tej mapie. Usuń albo popraw to powiązanie.",
+      cycle:
+        "Zależności tworzą cykl. Usuń poprzednika, który prowadzi z powrotem do tego kroku.",
+      invalid_value:
+        "Krok zawiera nieprawidłowy zakres. Popraw wartości niską, centralną i wysoką.",
+      invalid_locked_legal_wait:
+        "Obowiązkowy termin został zmieniony. Przywróć wartości i pochodzenie ze zbioru reguł prawnych.",
+      missing_locked_legal_wait:
+        "Na mapie brakuje obowiązkowego terminu. Wybierz zgodny scenariusz bazowy.",
+      unexpected_locked_legal_wait:
+        "Mapa zawiera termin prawny spoza bieżącego kontekstu. Wybierz zgodny scenariusz bazowy.",
+    },
+  },
+} as const;
+
+type CalculatorV2Shape = LangShape<typeof calculatorV2Pl>;
+
+const calculatorV2En = {
+  share: {
+    action: "Copy base-scenario link",
+    disclosure:
+      "The link restores only the selected base scenario. Process-map edits, custom step labels, the initiated-on date and economic assumptions remain only in this browser tab.",
+  },
+  validation: {
+    lockedStep:
+      "This step is fixed by the selected legal ruleset and cannot be edited or removed.",
+    unknownStep: "The selected step is no longer present in this process map.",
+    unknownRole: "The selected role is not present in this scenario's rate set.",
+    invalidCalibratedRange:
+      "The range must contain non-negative values ordered low, central and high.",
+    invalidStepKind:
+      "A user step may be an activity, approval or milestone.",
+    illegalContext:
+      "The selected context is unlawful or outside the coverage of the legal ruleset.",
+    incompatibleLockedWaitShape:
+      "This change requires a different mandatory-wait structure. Select a compatible base scenario.",
+    contextReconciliationFailed:
+      "Both maps could not be reconciled against the same mandatory-wait set.",
+    blankCustomLabel: "Enter a name for the added step before calculation.",
+    incompatibleWorkflowDesign:
+      "The procurement workflow design does not belong to this alternative and base scenario.",
+    incompatibleContractDesign:
+      "The contract design does not belong to this alternative and base scenario.",
+    calculationRejected:
+      "The comparison state does not satisfy the model 2.3 calculation contract.",
+    processMap: {
+      duplicate_step:
+        "Two steps use the same identifier. Give each step a distinct identity.",
+      unknown_predecessor:
+        "The step names a predecessor that is not in this map. Remove or correct that relationship.",
+      cycle:
+        "The dependencies form a cycle. Remove the predecessor that leads back to this step.",
+      invalid_value:
+        "The step contains an invalid range. Correct its low, central and high values.",
+      invalid_locked_legal_wait:
+        "A mandatory wait has been changed. Restore the values and provenance from the legal ruleset.",
+      missing_locked_legal_wait:
+        "The map is missing a mandatory wait. Select a compatible base scenario.",
+      unexpected_locked_legal_wait:
+        "The map contains a legal wait outside the current context. Select a compatible base scenario.",
+    },
+  },
+} satisfies CalculatorV2Shape;
+
+export const calculatorV2T = {
+  pl: calculatorV2Pl,
+  en: calculatorV2En,
+} as const;
+
 // Canonical ∂Φ boundary set (CLAUDE_DESIGN.md), single source of truth; use verbatim everywhere.
 export const PHI_SET = {
   pl: "∂Φ = {uprawnienia, konkurencja, etyka, dokumentacja}",
@@ -1874,6 +1975,7 @@ const modelV2Pl = {
       mrp_trigger: "Sygnał MRP",
       po_generation: "Generowanie i weryfikacja zamówienia",
       goods_receipt: "Potwierdzenie odbioru",
+      userDefined: "Krok użytkownika",
     },
     legal: {
       pzpOpen: {
@@ -2110,6 +2212,7 @@ const modelV2En: WidenModelV2Copy<typeof modelV2Pl> = {
       mrp_trigger: "MRP trigger",
       po_generation: "Purchase-order generation and verification",
       goods_receipt: "Goods receipt confirmation",
+      userDefined: "User-defined step",
     },
     legal: {
       pzpOpen: {
