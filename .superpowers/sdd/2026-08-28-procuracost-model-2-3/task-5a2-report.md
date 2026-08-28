@@ -7,6 +7,8 @@ Task 5A2 is implemented and verified on `codex/model-2-3`.
 - Reviewed start commit: `d427513cd17acd0649184b230bf6b531f2ecee29`
 - Implementation commit: `c1caf7cb1160c8d3125d6b3d7fed1215a166281d`
 - Commit message: `feat: add model 2.3 process-map workspace`
+- Reviewer-fix commit: `a8974328ed3762eb342128f3591c03876668cd1b`
+- Reviewer-fix message: `fix: harden calculator workspace contracts`
 - Worktree: `/private/tmp/procuracost-model-2-3`
 
 No public calculator client or route was cut over. No final decision-record
@@ -27,9 +29,13 @@ The result slot is rendered only when `state.record` exists and is contained by
 one `CalculatorResultBoundary` with:
 
 - `id="decision-record"`;
-- `tabIndex={-1}`;
+- `role="region"`;
 - `aria-labelledby="decision-record-heading"`;
 - one `data-result-reveal="true"` boundary.
+
+The declarative decision-record focus target resolves to the labelled
+`decision-record-heading`, which is programmatically focusable with
+`tabIndex={-1}`. The surrounding article remains the labelled region.
 
 The public owner bootstraps the current query after hydration through the
 reviewed URL decoder and `createRenderableCalculatorWorkspaceState()`. Invalid
@@ -54,7 +60,15 @@ through the reviewed reducer.
 Partial legacy confirmation lists every field with a professional localised
 name, materialises representable retained inputs only through the reviewed
 adapter and keeps unrepresentable changes fail-closed. The previous result is
-explicitly not reproduced.
+explicitly not reproduced. A blocked confirmation retains the migration
+panel, field list and checked control so the existing control can receive the
+declared focus target; the control is removed only after adaptation reaches
+`ready`.
+
+The price-competition transfer range now has a dedicated typed `0..1`
+validation issue. Its PL/EN message is rendered both in the general submit
+summary and through `aria-invalid` / `aria-describedby` on all three members
+of the affected range.
 
 ### Reusable process rail
 
@@ -73,8 +87,10 @@ horizontal overflow is the desktop graph viewport.
 
 Lock, critical-path, parallel, selected and error meaning is carried by text
 and accessible names as well as colour/icon cues. Desktop and mobile copies of
-editable nodes use unique predictable IDs. The focus resolver chooses the
-visible viewport variant before focus transfer.
+editable and read-only nodes use unique predictable IDs. Read-only nodes are
+semantic keyboard focus stops without fake click behaviour. Visible and
+accessible step numbering comes from the same topological position. The focus
+resolver chooses the visible viewport variant before focus transfer.
 
 ### Inspector, validation and focus
 
@@ -83,10 +99,18 @@ ranges, predecessors, role-hour ranges, non-labour cost, add, remove and one
 level of undo. Locked legal steps remain selectable but show full read-only
 provenance and no edit or remove control.
 
-The validation summary renders only localised copy derived from typed issue
-codes. It never prints the engine's `.message`. Invalid context, URL,
-migration, design, calibrated range, custom-label or graph state disables the
-submit button and associates it with `process-map-status`.
+Validation renders only localised copy derived from typed issue codes and never
+prints the engine's `.message`. `process-map-status` receives only graph,
+step, custom-label and step-editor issues. URL, migration, context, design,
+economic, source and submit issues render in the separate
+`calculator-submit-status` summary next to the submit action. The disabled
+submit button references the applicable summary or both summaries.
+
+Critical-path preview is owned by the pure
+`deriveProcessMapCriticalPathPreview()` controller. It builds the reviewed
+calculation input from `state.draft` and `state.urlGate`, then calls the engine.
+Any blocked or rejected state fails closed to two empty paths; React no longer
+assembles a partial input or calls `calculateComparison()` directly.
 
 Declarative focus targets cover node, new-step label, lane add, migration
 confirmation and decision record. Only successful record creation invokes the
@@ -142,14 +166,40 @@ exit 0
 The wider A1/A2 focused gate passed 12 files and 133 tests before the final URL
 and migration refinements.
 
+### Reviewer fix round
+
+Cycle 1 RED exposed that URL and migration failures were rendered under the
+process-map heading and that the approved PL/EN valid-map literals were not
+exact. GREEN separated map/general summaries and restored the exact copy;
+`calculator-workspace-ui` passed 13/13.
+
+Cycle 2 RED exposed premature migration-panel removal, the absent typed
+competition-transfer upper bound and decision-record focus on the article.
+GREEN retained the control until `ready`, linked the dedicated range issue to
+all three inputs and moved focus to the heading; the focused pair passed
+16/16.
+
+Cycle 3 RED exposed array-position text in topologically ordered nodes,
+non-focusable read-only nodes and React-local preview calculation. GREEN made
+node position consistent, added semantic read-only focus stops and introduced
+the fail-closed preview controller; the focused pair passed 10/10.
+
+Final reviewer-fix focused gate:
+
+```text
+Test Files 8 passed (8)
+Tests 114 passed (114)
+exit 0
+```
+
 ## Final verification
 
 ### Full tests
 
 ```text
 npm test
-Test Files 35 passed (35)
-Tests 406 passed (406)
+Test Files 36 passed (36)
+Tests 413 passed (413)
 exit 0
 ```
 
@@ -205,8 +255,8 @@ components/process-map/ProcessRail.tsx: one match
 ```
 
 `lib/model-v2`, public route trees, `CalculatorClient`, `EnCalculatorClient`,
-scripts, version and replication files have no Task 5A2 diff. Therefore model
-recompute/sweep gates were not required by this UI-only slice.
+scripts, version and replication files have no Task 5A2 or reviewer-fix diff.
+Therefore model recompute/sweep gates were not required by this UI-only slice.
 
 ## Verification boundary retained for Task 7
 
