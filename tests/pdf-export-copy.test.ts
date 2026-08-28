@@ -4,6 +4,8 @@ import { encodeInputsToParams } from "@/components/calculator-url";
 import {
   buildPdfCopy,
   pdfExportFilename,
+  type PdfLabelValue,
+  type PdfRendererLabels,
 } from "@/lib/model-v2/pdf-copy";
 import { buildDecisionRecordV2 } from "@/lib/model-v2/decision-record";
 import {
@@ -33,6 +35,78 @@ function migratedRecord() {
     throw new Error("Expected representable partial migration fixture");
   }
   return buildDecisionRecordV2(adaptation.draft, adaptation.gate);
+}
+
+function userFixed(value: number, evidenceId = "") {
+  return {
+    low: value,
+    central: value,
+    high: value,
+    rangeKind: "fixed" as const,
+    evidenceClass: "user_input" as const,
+    evidenceIds: evidenceId ? [evidenceId] : [],
+  };
+}
+
+function editedPartialFixture() {
+  const adaptation = createScenarioDraftFromLegacyMigration(
+    migrateLegacyCalculatorParams(new URLSearchParams({ sid: "erp" })),
+    true
+  );
+  if (adaptation.status !== "ready") {
+    throw new Error("Expected confirmed partial migration fixture");
+  }
+  const draft = structuredClone(adaptation.draft);
+  draft.economicAssumptions.contractValue = userFixed(
+    4_200_000,
+    "user.contract-value"
+  );
+  const dailyCost = userFixed(12_345, "user.daily-cost");
+  draft.economicAssumptions.dailyCostOfInaction = structuredClone(dailyCost);
+  draft.dailyCostOfInaction = structuredClone(dailyCost);
+  ["requestor", "buyer", "lawyer", "finance", "manager", "executive"].forEach(
+    (roleId, index) => {
+      draft.roleHourlyRates[roleId] = userFixed(
+        201 + index,
+        `user.hourly-rate.${roleId}`
+      );
+    }
+  );
+  return {
+    adaptation,
+    draft,
+    record: buildDecisionRecordV2(draft, adaptation.gate),
+  };
+}
+
+function exactEditedRecord() {
+  const scenario = SCENARIOS.find(({ id }) => id === "fleet")!;
+  const adaptation = createScenarioDraftFromLegacyMigration(
+    migrateLegacyCalculatorParams(
+      encodeInputsToParams(scenario.inputs, scenario.id)
+    )
+  );
+  if (adaptation.status !== "ready") {
+    throw new Error("Expected exact migration fixture");
+  }
+  const draft = structuredClone(adaptation.draft);
+  draft.economicAssumptions.contractValue = userFixed(5_500_000);
+  draft.roleHourlyRates.buyer = userFixed(321, "user.hourly-rate.buyer");
+  return buildDecisionRecordV2(draft, adaptation.gate);
+}
+
+function leafPaths(value: unknown, path = ""): string[] {
+  if (typeof value === "string") return [path];
+  if (!value || typeof value !== "object") return [];
+  return Object.entries(value).flatMap(([key, child]) =>
+    leafPaths(child, path ? `${path}.${key}` : key)
+  );
+}
+
+function stringLeaves(value: unknown): string[] {
+  if (typeof value === "string") return [value];
+  if (!value || typeof value !== "object") return [];
+  return Object.values(value).flatMap(stringLeaves);
 }
 
 function recordWithComparison(
@@ -109,6 +183,174 @@ describe("model 2.3 pure PDF copy", () => {
     expect(copy.nonMonetizedDimensions[0].status).toBe("niemonetyzowany");
   });
 
+  it("exposes a complete paired renderer vocabulary", () => {
+    const polish = buildPdfCopy(fleetRecord(), "pl", EXPORTED_AT).rendererLabels;
+    const english = buildPdfCopy(fleetRecord(), "en", EXPORTED_AT).rendererLabels;
+    const requiredFields = [
+      "id",
+      "labelKey",
+      "userLabel",
+      "value",
+      "workflowDesign",
+      "contractDesign",
+      "activeDays",
+      "queueDays",
+      "elapsedDays",
+      "totalCost",
+      "roleHours",
+      "roleHourlyRates",
+      "hourlyRate",
+      "postMigrationEdits",
+      "beforeEdit",
+      "afterEdit",
+      "originalDisposition",
+      "nonLabourCost",
+      "predecessorIds",
+      "stepKind",
+      "criticalPathCases",
+      "lockedLegalWait",
+      "contribution",
+      "status",
+      "reasons",
+      "evidenceStatus",
+      "evidenceClass",
+      "evidenceIds",
+      "supportedClaim",
+      "unsupportedClaim",
+      "population",
+      "constructs",
+      "assumptionKeys",
+      "source",
+      "path",
+      "detail",
+      "legalRulesetId",
+      "ruleId",
+      "provision",
+      "initiatedOn",
+      "lockedActiveDays",
+      "lockedQueueDays",
+      "occurrences",
+      "sourceSchemaVersion",
+      "legacyScenarioId",
+      "field",
+      "sourceField",
+      "disposition",
+      "retainedValue",
+      "changedFromLegacyScenario",
+      "materializedPaths",
+      "sourceClass",
+      "rangeKind",
+    ] as const satisfies readonly (keyof PdfRendererLabels["fields"])[];
+
+    expect(leafPaths(polish).sort()).toEqual(leafPaths(english).sort());
+    expect(Object.keys(english.fields).sort()).toEqual(
+      [...requiredFields].sort()
+    );
+    expect(Object.keys(english.stepKinds)).toEqual([
+      "activity",
+      "approval",
+      "legal_wait",
+      "milestone",
+    ]);
+    expect(Object.keys(english.roles)).toEqual([
+      "requestor",
+      "buyer",
+      "lawyer",
+      "finance",
+      "manager",
+      "executive",
+      "unknown",
+    ]);
+    expect(Object.keys(english.migrationDispositions)).toEqual([
+      "materialised",
+      "retained_only",
+      "blocked",
+    ]);
+    expect(english.alternatives).toEqual({
+      formalSequential: "Formal sequential alternative",
+      adaptiveCompliant: "Adaptive compliant alternative",
+    });
+    expect(english.fields.contribution).toBe(
+      "Contribution to cost difference"
+    );
+    const englishCopy = stringLeaves(english).join(" ");
+    expect(englishCopy).toMatch(/labour/i);
+    expect(englishCopy).toMatch(/monetised/i);
+    expect(englishCopy).toMatch(/materialised/i);
+    expect(englishCopy).not.toMatch(/\blabor\b/i);
+    expect(englishCopy).not.toMatch(/\bmonetized\b/i);
+    expect(englishCopy).not.toMatch(/\bmaterialized\b/i);
+  });
+
+  it("preserves role rates and coverage provenance in isolated PDF copy", () => {
+    const record = fleetRecord();
+    const english = buildPdfCopy(record, "en", EXPORTED_AT);
+    const polish = buildPdfCopy(record, "pl", EXPORTED_AT);
+    const oldConsumer: PdfLabelValue[] = english.coverage;
+
+    expect(oldConsumer).toHaveLength(6);
+    expect(english.roleHourlyRates.map(({ roleId }) => roleId)).toEqual([
+      "requestor",
+      "buyer",
+      "lawyer",
+      "finance",
+      "manager",
+      "executive",
+    ]);
+    expect(english.roleHourlyRates.find(({ roleId }) => roleId === "buyer")).toMatchObject({
+      roleId: "buyer",
+      roleLabel: "Buyer",
+      rate: {
+        low: "100.00 PLN",
+        central: "100.00 PLN",
+        high: "100.00 PLN",
+      },
+    });
+    expect(polish.roleHourlyRates.find(({ roleId }) => roleId === "buyer")?.roleLabel).toBe(
+      "Kupiec"
+    );
+    expect(english.coverage.every(({ label, value, status, anchors }) =>
+      Boolean(label && value && status === "included" && anchors.length > 0)
+    )).toBe(true);
+    const sourceAnchor = record.coverage[0].anchors[0];
+    const copiedAnchor = english.coverage[0].anchors[0];
+    expect(copiedAnchor).toMatchObject({
+      path: sourceAnchor.path,
+      evidenceClass: sourceAnchor.evidenceClass,
+      evidenceStatus: "Retained model 2.2.2 assumption",
+      evidenceIds: sourceAnchor.evidenceIds,
+    });
+    expect(copiedAnchor).not.toBe(sourceAnchor);
+    expect(copiedAnchor.evidenceIds).not.toBe(sourceAnchor.evidenceIds);
+    copiedAnchor.evidenceIds.push("copy-mutated");
+    expect(sourceAnchor.evidenceIds).not.toContain("copy-mutated");
+    sourceAnchor.evidenceIds.push("record-mutated");
+    expect(copiedAnchor.evidenceIds).not.toContain("record-mutated");
+  });
+
+  it("keeps the PDF copy builder clock-free", () => {
+    const record = fleetRecord();
+    const OriginalDate = globalThis.Date;
+    class ThrowingDate extends OriginalDate {
+      constructor(..._args: ConstructorParameters<typeof Date>) {
+        super(..._args);
+        throw new Error("PDF copy must not construct Date");
+      }
+
+      static now(): number {
+        throw new Error("PDF copy must not read Date.now");
+      }
+    }
+    globalThis.Date = ThrowingDate as DateConstructor;
+    try {
+      expect(
+        buildPdfCopy(record, "en", EXPORTED_AT).exportedAt
+      ).toBe("28 August 2026");
+    } finally {
+      globalThis.Date = OriginalDate;
+    }
+  });
+
   it("preserves retained and materialised legacy values in isolated PDF copy data", () => {
     const record = migratedRecord();
     const copy = buildPdfCopy(record, "en", EXPORTED_AT);
@@ -149,6 +391,86 @@ describe("model 2.3 pure PDF copy", () => {
     expect(
       record.metadata.migration.audit.fieldDispositions[0].materializedPaths
     ).not.toContain("mutated");
+  });
+
+  it("preserves edited partial values and provenance without aliasing record, audit or draft", () => {
+    const { adaptation, draft, record } = editedPartialFixture();
+    const copy = buildPdfCopy(record, "en", EXPORTED_AT);
+    const contractEdit = copy.postMigrationEdits[0];
+    const dailyEdit = copy.postMigrationEdits[1];
+
+    expect(copy.postMigrationEdits).toHaveLength(8);
+    expect(contractEdit).toEqual({
+      field: "contractValue",
+      materializedPaths: ["economicAssumptions.contractValue"],
+      before: {
+        range: {
+          low: "3,000,000.00 PLN",
+          central: "3,000,000.00 PLN",
+          high: "3,000,000.00 PLN",
+        },
+        rangeKind: "fixed",
+        evidenceClass: "user_input",
+        evidenceStatus: "User-supplied input",
+        evidenceIds: [
+          "legacy-v1.erp.retainedLegacyInputs.contractValue",
+        ],
+      },
+      after: {
+        range: {
+          low: "4,200,000.00 PLN",
+          central: "4,200,000.00 PLN",
+          high: "4,200,000.00 PLN",
+        },
+        rangeKind: "fixed",
+        evidenceClass: "user_input",
+        evidenceStatus: "User-supplied input",
+        evidenceIds: ["user.contract-value"],
+      },
+      provenance: {
+        sourceClass: "post_migration_user_edit",
+        sourceClassLabel: "User edit after migration",
+        sourceSchemaVersion: "legacy-v1",
+        legacyScenarioId: "erp",
+        sourceField: "retainedLegacyInputs.contractValue",
+        originalDisposition: "materialised",
+        originalDispositionLabel: "Materialised",
+      },
+    });
+    expect(dailyEdit.materializedPaths).toEqual([
+      "economicAssumptions.dailyCostOfInaction",
+      "dailyCostOfInaction",
+    ]);
+
+    contractEdit.before.evidenceIds.push("copy-mutated");
+    contractEdit.after.evidenceIds.push("copy-mutated");
+    contractEdit.materializedPaths.push("roleHourlyRates.buyer");
+    expect(
+      record.metadata.migration.postMigrationEdits[0].before.evidenceIds
+    ).not.toContain("copy-mutated");
+    expect(
+      record.metadata.migration.postMigrationEdits[0].after.evidenceIds
+    ).not.toContain("copy-mutated");
+    expect(
+      adaptation.audit.fieldDispositions.find(
+        ({ field }) => field === "contractValue"
+      )?.materializedPaths
+    ).toEqual(["economicAssumptions.contractValue"]);
+    expect(draft.economicAssumptions.contractValue.evidenceIds).toEqual([
+      "user.contract-value",
+    ]);
+  });
+
+  it("keeps exact legacy edits explicit with an empty post-migration copy", () => {
+    const copy = buildPdfCopy(exactEditedRecord(), "en", EXPORTED_AT);
+
+    expect(copy.postMigrationEdits).toEqual([]);
+    expect(copy.rendererLabels.values.noPostMigrationEdits).toBe(
+      "No post-migration edits"
+    );
+    expect(copy.roleHourlyRates.find(({ roleId }) => roleId === "buyer")?.rate.central).toBe(
+      "321.00 PLN"
+    );
   });
 
   it("preserves complete locked legal provenance without mixing it into evidence", () => {

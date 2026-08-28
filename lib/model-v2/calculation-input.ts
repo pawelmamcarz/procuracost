@@ -19,8 +19,8 @@ import {
 import type { ComparisonCalculationInput } from "./engine";
 import type { LegacyMigrationResult } from "./legacy-migration";
 import {
-  createScenarioDraftFromLegacyMigration,
   type LegacyMigrationAudit,
+  validateLegacyMigrationDraftForCalculation,
 } from "./legacy-migration-draft";
 import { resolveLegalWaits } from "./legal";
 import { assertValidProcessMap } from "./process-map";
@@ -226,60 +226,11 @@ function assertGateAllowsCalculation(
   if (!gate.audit) {
     throw new Error("Legacy migration requires adapter-provided audit data");
   }
+  validateLegacyMigrationDraftForCalculation(draft, gate);
   assertGateScenario(
     migration.status === "exact" ? migration.state : migration.draftState,
     draft.derivedFromScenarioId
   );
-  const adapted = createScenarioDraftFromLegacyMigration(
-    migration,
-    migration.status === "partial"
-  );
-  if (adapted.status !== "ready") {
-    const fields = adapted.issues.map(({ field }) => field).join(", ");
-    throw new Error(
-      `Confirmed legacy migration remains blocked by: ${fields}`
-    );
-  }
-  if (JSON.stringify(gate.audit) !== JSON.stringify(adapted.audit)) {
-    throw new Error(
-      "Legacy migration adapter audit does not match retained inputs"
-    );
-  }
-  if (migration.status === "partial") {
-    const mappedValues: Array<[
-      string,
-      CalibratedValue,
-      CalibratedValue,
-    ]> = [
-      [
-        "contractValue",
-        draft.economicAssumptions.contractValue,
-        adapted.draft.economicAssumptions.contractValue,
-      ],
-      [
-        "dailyCostOfInaction",
-        draft.economicAssumptions.dailyCostOfInaction,
-        adapted.draft.economicAssumptions.dailyCostOfInaction,
-      ],
-      [
-        "dailyCostOfInaction",
-        draft.dailyCostOfInaction,
-        adapted.draft.dailyCostOfInaction,
-      ],
-      ...Object.keys(adapted.draft.roleHourlyRates).map((role) => [
-        `stakeholders.${role}.dailyRate`,
-        draft.roleHourlyRates[role],
-        adapted.draft.roleHourlyRates[role],
-      ] as [string, CalibratedValue, CalibratedValue]),
-    ];
-    for (const [field, actual, expected] of mappedValues) {
-      if (JSON.stringify(actual) !== JSON.stringify(expected)) {
-        throw new Error(
-          `Draft does not match retained legacy input ${field}`
-        );
-      }
-    }
-  }
 }
 
 export function buildCalculationInputFromDraft(

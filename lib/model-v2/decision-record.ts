@@ -27,6 +27,8 @@ import {
 import {
   createScenarioDraftFromLegacyMigration,
   type LegacyMigrationAudit,
+  type PostMigrationEditRecord,
+  validateLegacyMigrationDraftForCalculation,
 } from "./legacy-migration-draft";
 import type {
   ContractDesignIdV2,
@@ -66,6 +68,7 @@ export interface DecisionRecordMigrationMetadata {
   legacyScenarioId: string | null;
   fieldsRequiringConfirmation: string[];
   audit: LegacyMigrationAudit | null;
+  postMigrationEdits: PostMigrationEditRecord[];
 }
 
 export type MonetaryDriverId =
@@ -83,6 +86,7 @@ export interface MonetaryDriverRecord {
 
 export interface MonetaryCoverageRecord extends MonetaryDriverRecord {
   status: "included";
+  anchors: CalculationAnchorRecord[];
 }
 
 export interface DecisionProcessStep {
@@ -153,6 +157,7 @@ export interface DecisionRecordV2 {
   coverage: MonetaryCoverageRecord[];
   nonMonetizedDimensions: DecisionNonMonetizedDimension[];
   assumptions: ScenarioEconomicAssumptions;
+  roleHourlyRates: Record<string, CalibratedValue>;
   calculationAnchors: CalculationAnchorRecord[];
   externalEvidence: EvidenceRecord[];
   retainedAssumptions: ScenarioAssumptionRecord[];
@@ -167,11 +172,13 @@ export function nativeV2MigrationMetadata(): DecisionRecordMigrationMetadata {
     legacyScenarioId: null,
     fieldsRequiringConfirmation: [],
     audit: null,
+    postMigrationEdits: [],
   };
 }
 
 export function migrationMetadataFromCalculationGate(
-  gate: CalculationInputGateV2
+  gate: CalculationInputGateV2,
+  draft?: ScenarioDraft
 ): DecisionRecordMigrationMetadata {
   if (gate.kind === "v2_url") {
     if (gate.result.status !== "valid" || !gate.result.canCalculate) {
@@ -190,25 +197,32 @@ export function migrationMetadataFromCalculationGate(
   if (!gate.audit) {
     throw new Error("Legacy migration requires adapter-provided audit data");
   }
-  const adapted = createScenarioDraftFromLegacyMigration(
-    migration,
-    migration.status === "partial"
+  const baseline = draft
+    ? null
+    : migration.status === "partial"
+      ? createScenarioDraftFromLegacyMigration(migration, true)
+      : createScenarioDraftFromLegacyMigration(migration);
+  if (baseline && baseline.status !== "ready") {
+    throw new Error("Legacy migration cannot produce record metadata");
+  }
+  const validated = validateLegacyMigrationDraftForCalculation(
+    draft ?? baseline!.draft,
+    gate
   );
-  if (
-    adapted.status !== "ready" ||
-    JSON.stringify(gate.audit) !== JSON.stringify(adapted.audit)
-  ) {
-    throw new Error(
-      "Legacy migration adapter audit does not match retained inputs"
-    );
+  const validatedMigration = validated.adapted.gate.result;
+  if (validatedMigration.status === "ambiguous") {
+    throw new Error("Ambiguous legacy migration cannot produce record metadata");
   }
   return {
-    sourceSchemaVersion: migration.sourceSchemaVersion,
-    status: migration.status,
+    sourceSchemaVersion: validated.adapted.audit.sourceSchemaVersion,
+    status: validatedMigration.status,
     confirmed: true,
-    legacyScenarioId: migration.legacyScenarioId,
-    fieldsRequiringConfirmation: [...migration.fieldsRequiringConfirmation],
-    audit: structuredClone(gate.audit),
+    legacyScenarioId: validated.adapted.audit.legacyScenarioId,
+    fieldsRequiringConfirmation: [
+      ...validatedMigration.fieldsRequiringConfirmation,
+    ],
+    audit: structuredClone(validated.adapted.audit),
+    postMigrationEdits: structuredClone(validated.postMigrationEdits),
   };
 }
 
@@ -292,9 +306,103 @@ function buildDrivers(
   });
 }
 
+type CoverageAnchorPaths = Record<MonetaryDriverId, string[]>;
+
+function monetizedDimensionAnchorPath(
+  input: ComparisonCalculationInput,
+  alternative: AlternativeId,
+  dimensionId: Exclude<ContractCostDimensionId, "informal_bypass">
+): string {
+  const matches = input.alternatives[
+    alternative
+  ].contractDesign.dimensions.flatMap((dimension, index) =>
+    dimension.id === dimensionId && dimension.status === "monetized"
+      ? [index]
+      : []
+  );
+  if (matches.length !== 1) {
+    throw new Error(
+      `Decision record coverage requires one monetized ${dimensionId}`
+    );
+  }
+  return `alternatives.${alternative}.contractDesign.dimensions[${matches[0]}].cost`;
+}
+
+function buildCoverageAnchorPaths(
+  input: ComparisonCalculationInput
+): CoverageAnchorPaths {
+  const roleCost: string[] = [];
+  const nonLabourCost: string[] = [];
+  const delayCost: string[] = [];
+  for (const alternative of ALTERNATIVE_IDS) {
+    input.alternatives[alternative].workflowDesign.steps.forEach(
+      (step, stepIndex) => {
+        for (const roleId of Object.keys(step.roleHours)) {
+          roleCost.push(
+            `alternatives.${alternative}.workflowDesign.steps[${stepIndex}].roleHours.${roleId}`
+          );
+        }
+        nonLabourCost.push(
+          `alternatives.${alternative}.workflowDesign.steps[${stepIndex}].nonLabourCost`
+        );
+        delayCost.push(
+          `alternatives.${alternative}.workflowDesign.steps[${stepIndex}].activeDays`,
+          `alternatives.${alternative}.workflowDesign.steps[${stepIndex}].queueDays`
+        );
+      }
+    );
+  }
+  for (const roleId of Object.keys(input.roleHourlyRates)) {
+    roleCost.push(`roleHourlyRates.${roleId}`);
+  }
+  delayCost.push("dailyCostOfInaction");
+
+  const contractPaths = (
+    id: Exclude<ContractCostDimensionId, "informal_bypass">
+  ): string[] =>
+    ALTERNATIVE_IDS.map((alternative) =>
+      monetizedDimensionAnchorPath(input, alternative, id)
+    );
+
+  return {
+    role_cost: roleCost,
+    non_labour_cost: nonLabourCost,
+    delay_cost: delayCost,
+    competition_transfer: contractPaths("competition_transfer"),
+    contract_amendment: contractPaths("contract_amendment"),
+    tco: contractPaths("tco"),
+  };
+}
+
+function exactAnchorsForCoverage(
+  id: MonetaryDriverId,
+  paths: readonly string[],
+  allAnchors: readonly CalculationAnchorRecord[]
+): CalculationAnchorRecord[] {
+  const byPath = new Map<string, CalculationAnchorRecord>();
+  for (const anchor of allAnchors) {
+    if (byPath.has(anchor.path)) {
+      throw new Error(`Duplicate calculation anchor path ${anchor.path}`);
+    }
+    byPath.set(anchor.path, anchor);
+  }
+  return paths.map((path) => {
+    const anchor = byPath.get(path);
+    if (!anchor) {
+      throw new Error(`Missing calculation anchor ${path} for coverage ${id}`);
+    }
+    return {
+      path: anchor.path,
+      evidenceClass: anchor.evidenceClass,
+      evidenceIds: [...anchor.evidenceIds],
+    };
+  });
+}
+
 function buildCoverage(
   input: ComparisonCalculationInput,
-  result: ComparisonCalculationResult
+  result: ComparisonCalculationResult,
+  allAnchors: readonly CalculationAnchorRecord[]
 ): MonetaryCoverageRecord[] {
   const ordered = [
     driver(
@@ -321,7 +429,12 @@ function buildCoverage(
         )
     ),
   ];
-  return ordered.map((entry) => ({ ...entry, status: "included" }));
+  const paths = buildCoverageAnchorPaths(input);
+  return ordered.map((entry) => ({
+    ...entry,
+    status: "included",
+    anchors: exactAnchorsForCoverage(entry.id, paths[entry.id], allAnchors),
+  }));
 }
 
 function buildNonMonetizedDimensions(
@@ -518,9 +631,10 @@ function assembleDecisionRecordV2(
       },
     },
     drivers,
-    coverage: buildCoverage(calculationInput, calculationResult),
+    coverage: buildCoverage(calculationInput, calculationResult, anchors),
     nonMonetizedDimensions: buildNonMonetizedDimensions(calculationResult),
     assumptions: structuredClone(source.economicAssumptions),
+    roleHourlyRates: structuredClone(calculationInput.roleHourlyRates),
     calculationAnchors: anchors,
     externalEvidence: buildExternalEvidence(scenario, anchors),
     retainedAssumptions: structuredClone(scenario.assumptions),
@@ -544,7 +658,7 @@ export function buildDecisionRecordV2(
   const calculationInput = buildCalculationInputFromDraft(draft, gate);
   const calculationResult = calculateComparison(calculationInput);
   const migration = gate
-    ? migrationMetadataFromCalculationGate(gate)
+    ? migrationMetadataFromCalculationGate(gate, draft)
     : nativeV2MigrationMetadata();
   return assembleDecisionRecordV2(
     scenario,

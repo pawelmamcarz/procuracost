@@ -7,6 +7,8 @@ import {
   createScenarioDraft,
   createScenarioDraftFromLegacyMigration,
   migrateLegacyCalculatorParams,
+  type CalibratedValue,
+  validateLegacyMigrationDraftForCalculation,
   type LegacyMigrationDraftBlocked,
   type LegacyMigrationDraftReady,
   type LegacyMigrationDraftResult,
@@ -87,6 +89,17 @@ function stakeholderParam(
   return STAKEHOLDER_ROLES.map(
     (role) => `${stakeholders[role].count}:${stakeholders[role].dailyRate}`
   ).join(",");
+}
+
+function editedFixed(value: number, evidenceId = ""): CalibratedValue {
+  return {
+    low: value,
+    central: value,
+    high: value,
+    rangeKind: "fixed",
+    evidenceClass: "user_input",
+    evidenceIds: evidenceId ? [evidenceId] : [],
+  };
 }
 
 describe("model 2.3 lossless legacy migration draft adapter", () => {
@@ -300,6 +313,98 @@ describe("model 2.3 lossless legacy migration draft adapter", () => {
     );
   });
 
+  it("derives eight ordered, isolated post-migration edits from the submitted partial draft", () => {
+    const migration = migrateLegacyCalculatorParams(
+      new URLSearchParams({ sid: "erp" })
+    );
+    const adapted = ready(
+      createScenarioDraftFromLegacyMigration(migration, true)
+    );
+    const submitted = structuredClone(adapted.draft);
+    const baseline = structuredClone(adapted.draft);
+
+    submitted.economicAssumptions.contractValue = editedFixed(
+      4_100_000,
+      "user.contract-value"
+    );
+    const dailyCost = editedFixed(12_345, "user.daily-cost");
+    submitted.economicAssumptions.dailyCostOfInaction = structuredClone(
+      dailyCost
+    );
+    submitted.dailyCostOfInaction = structuredClone(dailyCost);
+    STAKEHOLDER_ROLES.forEach((role, index) => {
+      submitted.roleHourlyRates[role] = editedFixed(
+        201 + index,
+        `user.hourly-rate.${role}`
+      );
+    });
+
+    const validated = validateLegacyMigrationDraftForCalculation(
+      submitted,
+      adapted.gate
+    );
+
+    expect(validated.postMigrationEdits.map(({ field }) => field)).toEqual([
+      "contractValue",
+      "dailyCostOfInaction",
+      ...STAKEHOLDER_ROLES.map((role) =>
+        `stakeholders.${role}.dailyRate` as const
+      ),
+    ]);
+    expect(validated.postMigrationEdits).toHaveLength(8);
+    expect(validated.postMigrationEdits[0].materializedPaths).toEqual([
+      "economicAssumptions.contractValue",
+    ]);
+    expect(validated.postMigrationEdits[1].materializedPaths).toEqual([
+      "economicAssumptions.dailyCostOfInaction",
+      "dailyCostOfInaction",
+    ]);
+
+    validated.postMigrationEdits.forEach((edit, index) => {
+      const role = STAKEHOLDER_ROLES[index - 2];
+      if (role) {
+        expect(edit.materializedPaths).toEqual([
+          `roleHourlyRates.${role}`,
+        ]);
+      }
+      const before = index === 0
+        ? baseline.economicAssumptions.contractValue
+        : index === 1
+          ? baseline.economicAssumptions.dailyCostOfInaction
+          : baseline.roleHourlyRates[STAKEHOLDER_ROLES[index - 2]];
+      const after = index === 0
+        ? submitted.economicAssumptions.contractValue
+        : index === 1
+          ? submitted.economicAssumptions.dailyCostOfInaction
+          : submitted.roleHourlyRates[STAKEHOLDER_ROLES[index - 2]];
+      expect(edit.before).toEqual(before);
+      expect(edit.before.evidenceIds[0]).toMatch(/^legacy-v1\.erp\./);
+      expect(edit.after).toEqual(after);
+      expect(edit.provenance).toEqual({
+        sourceClass: "post_migration_user_edit",
+        sourceSchemaVersion: "legacy-v1",
+        legacyScenarioId: "erp",
+        sourceField: `retainedLegacyInputs.${edit.field}`,
+        originalDisposition: "materialised",
+      });
+    });
+
+    validated.postMigrationEdits[0].before.evidenceIds.push("mutated");
+    validated.postMigrationEdits[0].after.evidenceIds.push("mutated");
+    validated.postMigrationEdits[0].materializedPaths.push(
+      "roleHourlyRates.buyer"
+    );
+    expect(baseline.economicAssumptions.contractValue.evidenceIds).not.toContain(
+      "mutated"
+    );
+    expect(submitted.economicAssumptions.contractValue.evidenceIds).not.toContain(
+      "mutated"
+    );
+    expect(adapted.audit.fieldDispositions[2].materializedPaths).not.toContain(
+      "roleHourlyRates.buyer"
+    );
+  });
+
   it.each([
     ["processType", "pt", "pzp_krajowy"],
     ["techLevel", "tl", "manual"],
@@ -464,7 +569,7 @@ describe("model 2.3 lossless legacy migration draft adapter", () => {
     result.draft.economicAssumptions.contractValue.central = 3_000_000;
     expect(() =>
       buildCalculationInputFromDraft(result.draft, result.gate)
-    ).toThrow(/retained legacy input.*contractValue/i);
+    ).toThrow(/contractValue.*(?:low <= central|range)/i);
   });
 
   it("builds one atomic record whose assumptions, calculation and migration audit agree", () => {

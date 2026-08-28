@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
+import { encodeInputsToParams } from "@/components/calculator-url";
+import { SCENARIOS } from "@/lib/scenarios";
 import { buildCalculationInputFromDraft } from "@/lib/model-v2/calculation-input";
+import { stateForScenarioV2 } from "@/lib/model-v2/calculator-url";
 import {
   buildDecisionRecordV2,
   migrationMetadataFromCalculationGate,
@@ -34,6 +37,17 @@ function allKeys(value: unknown): string[] {
   return Object.entries(value).flatMap(([key, child]) => [key, ...allKeys(child)]);
 }
 
+function userFixed(value: number, evidenceId: string) {
+  return {
+    low: value,
+    central: value,
+    high: value,
+    rangeKind: "fixed" as const,
+    evidenceClass: "user_input" as const,
+    evidenceIds: [evidenceId],
+  };
+}
+
 describe("model 2.3 neutral decision record", () => {
   it("serialises exact metadata, ordered axes, independent designs and engine-owned results", () => {
     const {
@@ -56,6 +70,7 @@ describe("model 2.3 neutral decision record", () => {
         legacyScenarioId: null,
         fieldsRequiringConfirmation: [],
         audit: null,
+        postMigrationEdits: [],
       },
     });
     expect(record.axes).toEqual([
@@ -130,6 +145,145 @@ describe("model 2.3 neutral decision record", () => {
     const coverageIds: string[] = record.coverage.map(({ id }) => id);
     expect(driverIds).not.toContain("informal_bypass");
     expect(coverageIds).not.toContain("informal_bypass");
+    expect(
+      record.coverage.flatMap(({ anchors }) =>
+        anchors.map(({ path }) => path)
+      )
+    ).not.toContainEqual(expect.stringContaining("informal_bypass"));
+  });
+
+  it("preserves all role hourly rates from the atomic calculation input", () => {
+    const { draft, calculationInput, record } = recordFor(
+      "fleet_tco_reframing"
+    );
+
+    expect(Object.keys(record.roleHourlyRates)).toEqual([
+      "requestor",
+      "buyer",
+      "lawyer",
+      "finance",
+      "manager",
+      "executive",
+    ]);
+    expect(record.roleHourlyRates).toEqual(calculationInput.roleHourlyRates);
+    expect(record.roleHourlyRates).not.toBe(calculationInput.roleHourlyRates);
+    for (const roleId of Object.keys(record.roleHourlyRates)) {
+      expect(record.roleHourlyRates[roleId]).not.toBe(
+        calculationInput.roleHourlyRates[roleId]
+      );
+      expect(record.roleHourlyRates[roleId].evidenceIds).not.toBe(
+        calculationInput.roleHourlyRates[roleId].evidenceIds
+      );
+    }
+
+    const recordedBuyer = structuredClone(record.roleHourlyRates.buyer);
+    draft.roleHourlyRates.buyer.central = 999;
+    draft.roleHourlyRates.buyer.evidenceIds.push("draft-mutated");
+    expect(record.roleHourlyRates.buyer).toEqual(recordedBuyer);
+    record.roleHourlyRates.buyer.evidenceIds.push("record-mutated");
+    expect(draft.roleHourlyRates.buyer.evidenceIds).not.toContain(
+      "record-mutated"
+    );
+  });
+
+  it("attaches exact ordered anchors to every coverage row", () => {
+    const { record } = recordFor("fleet_tco_reframing");
+    const anchors = Object.fromEntries(
+      record.coverage.map((entry) => [
+        entry.id,
+        entry.anchors.map(({ path }) => path),
+      ])
+    );
+
+    expect(record.coverage.every(({ anchors: entries }) => entries.length > 0)).toBe(
+      true
+    );
+    expect(anchors.role_cost).toContain(
+      "alternatives.formalSequential.workflowDesign.steps[0].roleHours.buyer"
+    );
+    expect(anchors.role_cost).toContain("roleHourlyRates.buyer");
+    expect(anchors.non_labour_cost).toContain(
+      "alternatives.formalSequential.workflowDesign.steps[0].nonLabourCost"
+    );
+    expect(anchors.delay_cost).toContain(
+      "alternatives.formalSequential.workflowDesign.steps[0].activeDays"
+    );
+    expect(anchors.delay_cost).toContain(
+      "alternatives.formalSequential.workflowDesign.steps[0].queueDays"
+    );
+    expect(anchors.delay_cost.at(-1)).toBe("dailyCostOfInaction");
+    expect(anchors.competition_transfer).toEqual([
+      "alternatives.formalSequential.contractDesign.dimensions[0].cost",
+      "alternatives.adaptiveCompliant.contractDesign.dimensions[0].cost",
+    ]);
+    expect(anchors.contract_amendment).toEqual([
+      "alternatives.formalSequential.contractDesign.dimensions[1].cost",
+      "alternatives.adaptiveCompliant.contractDesign.dimensions[1].cost",
+    ]);
+    expect(anchors.tco).toEqual([
+      "alternatives.formalSequential.contractDesign.dimensions[2].cost",
+      "alternatives.adaptiveCompliant.contractDesign.dimensions[2].cost",
+    ]);
+    expect(Object.values(anchors).flat()).not.toContainEqual(
+      expect.stringContaining("economicAssumptions")
+    );
+    expect(Object.values(anchors).flat()).not.toContainEqual(
+      expect.stringContaining("informal_bypass")
+    );
+
+    const evidenceClasses = (id: keyof typeof anchors) => [
+      ...new Set(
+        record.coverage
+          .find((entry) => entry.id === id)!
+          .anchors.map(({ evidenceClass }) => evidenceClass)
+      ),
+    ];
+    for (const id of [
+      "role_cost",
+      "non_labour_cost",
+      "delay_cost",
+      "contract_amendment",
+      "tco",
+    ] as const) {
+      expect(evidenceClasses(id)).toEqual(["retained_legacy_assumption"]);
+    }
+    expect(evidenceClasses("competition_transfer")).toEqual([
+      "empirical_anchor",
+    ]);
+
+    const publicRecord = recordFor(
+      "public_it_open_with_market_consultation"
+    ).record;
+    expect(
+      new Set(
+        publicRecord.coverage
+          .find(({ id }) => id === "delay_cost")!
+          .anchors.map(({ evidenceClass }) => evidenceClass)
+      )
+    ).toEqual(new Set(["retained_legacy_assumption", "legal_rule"]));
+  });
+
+  it("keeps coverage anchors isolated from global anchors and sibling rows", () => {
+    const { record } = recordFor("fleet_tco_reframing");
+    const coverage = record.coverage.find(({ id }) => id === "role_cost")!;
+    const copied = coverage.anchors.find(
+      ({ path }) => path === "roleHourlyRates.buyer"
+    )!;
+    const global = record.calculationAnchors.find(
+      ({ path }) => path === "roleHourlyRates.buyer"
+    )!;
+    const siblingAnchor = record.coverage.find(
+      ({ id }) => id === "delay_cost"
+    )!.anchors[0];
+
+    expect(copied).toEqual(global);
+    expect(copied).not.toBe(global);
+    expect(copied.evidenceIds).not.toBe(global.evidenceIds);
+    copied.evidenceIds.push("coverage-mutated");
+    expect(global.evidenceIds).not.toContain("coverage-mutated");
+    expect(siblingAnchor.evidenceIds).not.toContain("coverage-mutated");
+    global.evidenceIds.push("global-mutated");
+    expect(copied.evidenceIds).not.toContain("global-mutated");
   });
 
   it("recursively separates numeric anchors, qualitative evidence, retained assumptions and legal provenance", () => {
@@ -264,24 +418,28 @@ describe("model 2.3 neutral decision record", () => {
     }
     expect(
       migrationMetadataFromCalculationGate(adapted.gate)
-    ).toMatchObject({
+    ).toEqual({
       sourceSchemaVersion: "legacy-v1",
       status: "partial",
       confirmed: true,
       legacyScenarioId: "erp",
+      fieldsRequiringConfirmation: adapted.gate.result.fieldsRequiringConfirmation,
       audit: adapted.audit,
+      postMigrationEdits: [],
     });
     expect(
       buildDecisionRecordV2(
         adapted.draft,
         adapted.gate
       ).metadata.migration
-    ).toMatchObject({
+    ).toEqual({
       sourceSchemaVersion: "legacy-v1",
       status: "partial",
       confirmed: true,
       legacyScenarioId: "erp",
+      fieldsRequiringConfirmation: adapted.gate.result.fieldsRequiringConfirmation,
       audit: adapted.audit,
+      postMigrationEdits: [],
     });
     expect(() =>
       migrationMetadataFromCalculationGate({
@@ -290,6 +448,201 @@ describe("model 2.3 neutral decision record", () => {
         confirmed: true,
       })
     ).toThrow(/ambiguous/i);
+  });
+
+  it.each([
+    ["source schema", (result: Record<string, unknown>) => {
+      result.sourceSchemaVersion = "runtime-forged";
+    }],
+    ["readiness", (result: Record<string, unknown>) => {
+      result.readinessInferred = true;
+    }],
+    ["calculation status", (result: Record<string, unknown>) => {
+      result.canCalculate = true;
+    }],
+  ] as const)(
+    "rejects forged partial-migration %s before decision-record metadata assembly",
+    (_label, mutate) => {
+      const migration = migrateLegacyCalculatorParams(
+        new URLSearchParams({ sid: "erp" })
+      );
+      const adapted = createScenarioDraftFromLegacyMigration(migration, true);
+      if (adapted.status !== "ready") {
+        throw new Error("Expected confirmed partial migration fixture");
+      }
+      mutate(adapted.gate.result as unknown as Record<string, unknown>);
+
+      expect(() =>
+        buildDecisionRecordV2(adapted.draft, adapted.gate)
+      ).toThrow(/legacy migration|canonical|invariant/i);
+    }
+  );
+
+  it("rejects allowed but non-authentic partial confirmation ordering", () => {
+    const migration = migrateLegacyCalculatorParams(
+      new URLSearchParams({ sid: "erp" })
+    );
+    const adapted = createScenarioDraftFromLegacyMigration(migration, true);
+    if (adapted.status !== "ready" || adapted.gate.result.status !== "partial") {
+      throw new Error("Expected confirmed partial migration fixture");
+    }
+    adapted.gate.result.fieldsRequiringConfirmation.reverse();
+    adapted.gate.result.validationErrors.reverse();
+
+    expect(() => migrationMetadataFromCalculationGate(adapted.gate)).toThrow(
+      /authentic|canonical|migration result/i
+    );
+  });
+
+  it("rejects a partial alias bound to another canonical scenario state", () => {
+    const migration = migrateLegacyCalculatorParams(
+      new URLSearchParams({ sid: "erp" })
+    );
+    const adapted = createScenarioDraftFromLegacyMigration(migration, true);
+    if (adapted.status !== "ready" || adapted.gate.result.status !== "partial") {
+      throw new Error("Expected confirmed partial migration fixture");
+    }
+    adapted.gate.result.draftState = {
+      ...stateForScenarioV2("fleet_tco_reframing"),
+      retainedLegacyInputs:
+        adapted.gate.result.draftState.retainedLegacyInputs,
+    };
+
+    expect(() => migrationMetadataFromCalculationGate(adapted.gate)).toThrow(
+      /authentic|canonical|migration result/i
+    );
+  });
+
+  it("rejects an exact legacy alias bound to another canonical scenario state", () => {
+    const legacyFleet = SCENARIOS.find(({ id }) => id === "fleet")!;
+    const migration = migrateLegacyCalculatorParams(
+      encodeInputsToParams(legacyFleet.inputs, legacyFleet.id)
+    );
+    const adapted = createScenarioDraftFromLegacyMigration(migration);
+    if (adapted.status !== "ready" || adapted.gate.result.status !== "exact") {
+      throw new Error("Expected exact legacy migration fixture");
+    }
+    adapted.gate.result.state = stateForScenarioV2(
+      "erp_transformation_discovery"
+    );
+
+    expect(() => migrationMetadataFromCalculationGate(adapted.gate)).toThrow(
+      /authentic|canonical|migration result/i
+    );
+  });
+
+  it("rejects additional runtime calibrated fields before they can enter an edit overlay", () => {
+    const migration = migrateLegacyCalculatorParams(
+      new URLSearchParams({ sid: "erp" })
+    );
+    const adapted = createScenarioDraftFromLegacyMigration(migration, true);
+    if (adapted.status !== "ready") {
+      throw new Error("Expected confirmed partial migration fixture");
+    }
+    const draft = structuredClone(adapted.draft);
+    draft.economicAssumptions.contractValue = userFixed(
+      4_200_000,
+      "user.contract-value"
+    );
+    (
+      draft.economicAssumptions.contractValue as unknown as Record<
+        string,
+        unknown
+      >
+    ).postMigrationEdits = [{ caller: "forged" }];
+
+    expect(() => buildDecisionRecordV2(draft, adapted.gate)).toThrow(
+      /canonical|calibrated|postMigrationEdits/i
+    );
+  });
+
+  it("fails closed when a requested coverage path has no calculation anchor", () => {
+    const draft = createScenarioDraft("fleet_tco_reframing");
+    delete (
+      draft.roleHourlyRates.buyer as unknown as Record<string, unknown>
+    ).evidenceIds;
+
+    expect(() => buildDecisionRecordV2(draft)).toThrow(
+      /missing calculation anchor roleHourlyRates\.buyer/i
+    );
+  });
+
+  it("keeps the partial migration audit and derived edit overlay isolated in every direction", () => {
+    const migration = migrateLegacyCalculatorParams(
+      new URLSearchParams({ sid: "erp" })
+    );
+    const adapted = createScenarioDraftFromLegacyMigration(migration, true);
+    if (adapted.status !== "ready") {
+      throw new Error("Expected confirmed partial migration fixture");
+    }
+    const draft = structuredClone(adapted.draft);
+    const pristineGate = structuredClone(adapted.gate);
+    draft.economicAssumptions.contractValue = userFixed(
+      4_200_000,
+      "user.contract-value"
+    );
+    const pristineDraft = structuredClone(draft);
+    const record = buildDecisionRecordV2(draft, adapted.gate);
+    const originalAudit = structuredClone(adapted.audit);
+    const originalBefore = structuredClone(
+      adapted.draft.economicAssumptions.contractValue
+    );
+    const originalAfter = structuredClone(
+      draft.economicAssumptions.contractValue
+    );
+    const edit = record.metadata.migration.postMigrationEdits[0];
+
+    expect(edit).toMatchObject({
+      field: "contractValue",
+      materializedPaths: ["economicAssumptions.contractValue"],
+      before: originalBefore,
+      after: originalAfter,
+    });
+    expect(record.metadata.migration.audit).toEqual(originalAudit);
+
+    draft.economicAssumptions.contractValue.evidenceIds.push("draft-mutated");
+    adapted.gate.audit.retainedLegacyInputs.contractValue = 1;
+    expect(edit.after.evidenceIds).not.toContain("draft-mutated");
+    expect(record.metadata.migration.audit).toEqual(originalAudit);
+
+    if (!record.metadata.migration.audit) {
+      throw new Error("Expected an isolated migration audit");
+    }
+    record.metadata.migration.audit.retainedLegacyInputs.contractValue = 2;
+    expect(adapted.audit.retainedLegacyInputs.contractValue).toBe(
+      originalAudit.retainedLegacyInputs.contractValue
+    );
+
+    edit.before.central = 3;
+    edit.after.central = 4;
+    edit.before.evidenceIds.push("before-mutated");
+    edit.after.evidenceIds.push("after-mutated");
+    edit.materializedPaths.push("roleHourlyRates.buyer");
+    expect(adapted.draft.economicAssumptions.contractValue).toEqual(
+      originalBefore
+    );
+    expect(draft.economicAssumptions.contractValue.central).toBe(4_200_000);
+    expect(
+      adapted.audit.fieldDispositions.find(
+        ({ field }) => field === "contractValue"
+      )?.materializedPaths
+    ).toEqual(["economicAssumptions.contractValue"]);
+
+    const injected = {
+      field: "contractValue",
+      materializedPaths: [],
+    };
+    const rebuilt = (
+      buildDecisionRecordV2 as unknown as (
+        source: typeof draft,
+        gate: typeof adapted.gate,
+        postMigrationEdits: unknown[]
+      ) => typeof record
+    )(pristineDraft, pristineGate, [injected]);
+    expect(rebuilt.metadata.migration.postMigrationEdits).toHaveLength(1);
+    expect(rebuilt.metadata.migration.postMigrationEdits[0]).not.toBe(
+      injected
+    );
   });
 
   it("stays swap-neutral and exposes no prescriptive result field", () => {

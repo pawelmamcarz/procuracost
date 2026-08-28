@@ -4,15 +4,29 @@ import {
   researchExportV2T,
   type Lang,
 } from "../i18n";
-import type { CalibratedValue, RangeValues } from "./calibrated-value";
+import type {
+  CalibratedValue,
+  EvidenceClass,
+  RangeValues,
+} from "./calibrated-value";
 import type {
   DecisionAxisRecord,
   DecisionProcessStep,
   DecisionRecordMigrationMetadata,
   DecisionRecordV2,
+  MonetaryDriverId,
 } from "./decision-record";
-import type { LegacyMigrationAudit } from "./legacy-migration-draft";
-import { MODEL_V2_METADATA, type AlternativeId } from "./domain";
+import type {
+  LegacyMaterializedInputField,
+  LegacyMaterializedPath,
+  LegacyMigrationAudit,
+  LegacyMigrationFieldDispositionKind,
+} from "./legacy-migration-draft";
+import {
+  MODEL_V2_METADATA,
+  type AlternativeId,
+  type ProcessMapStepKind,
+} from "./domain";
 
 const ALTERNATIVE_IDS: AlternativeId[] = [
   "formalSequential",
@@ -107,8 +121,123 @@ export interface PdfEvidenceCopy {
 
 export interface PdfCalculationAnchorCopy {
   path: string;
+  evidenceClass: EvidenceClass;
   evidenceStatus: string;
   evidenceIds: string[];
+}
+
+export interface PdfCoverageCopy extends PdfLabelValue {
+  id: MonetaryDriverId;
+  status: "included";
+  anchors: PdfCalculationAnchorCopy[];
+}
+
+export interface PdfRoleHourlyRateCopy {
+  roleId: string;
+  roleLabel: string;
+  rate: PdfRangeCopy;
+  rangeKind: CalibratedValue["rangeKind"];
+  evidenceClass: EvidenceClass;
+  evidenceStatus: string;
+  evidenceIds: string[];
+}
+
+export interface PdfPostMigrationValueCopy {
+  range: PdfRangeCopy;
+  rangeKind: CalibratedValue["rangeKind"];
+  evidenceClass: EvidenceClass;
+  evidenceStatus: string;
+  evidenceIds: string[];
+}
+
+export interface PdfPostMigrationEditCopy {
+  field: LegacyMaterializedInputField;
+  materializedPaths: LegacyMaterializedPath[];
+  before: PdfPostMigrationValueCopy;
+  after: PdfPostMigrationValueCopy;
+  provenance: {
+    sourceClass: "post_migration_user_edit";
+    sourceClassLabel: string;
+    sourceSchemaVersion: "legacy-v1";
+    legacyScenarioId: string;
+    sourceField: `retainedLegacyInputs.${LegacyMaterializedInputField}`;
+    originalDisposition: "materialised";
+    originalDispositionLabel: string;
+  };
+}
+
+export interface PdfRendererLabels {
+  range: { low: string; central: string; high: string };
+  alternatives: Record<AlternativeId, string>;
+  fields: {
+    id: string;
+    labelKey: string;
+    userLabel: string;
+    value: string;
+    workflowDesign: string;
+    contractDesign: string;
+    activeDays: string;
+    queueDays: string;
+    elapsedDays: string;
+    totalCost: string;
+    roleHours: string;
+    roleHourlyRates: string;
+    hourlyRate: string;
+    postMigrationEdits: string;
+    beforeEdit: string;
+    afterEdit: string;
+    originalDisposition: string;
+    nonLabourCost: string;
+    predecessorIds: string;
+    stepKind: string;
+    criticalPathCases: string;
+    lockedLegalWait: string;
+    contribution: string;
+    status: string;
+    reasons: string;
+    evidenceStatus: string;
+    evidenceClass: string;
+    evidenceIds: string;
+    supportedClaim: string;
+    unsupportedClaim: string;
+    population: string;
+    constructs: string;
+    assumptionKeys: string;
+    source: string;
+    path: string;
+    detail: string;
+    legalRulesetId: string;
+    ruleId: string;
+    provision: string;
+    initiatedOn: string;
+    lockedActiveDays: string;
+    lockedQueueDays: string;
+    occurrences: string;
+    sourceSchemaVersion: string;
+    legacyScenarioId: string;
+    field: string;
+    sourceField: string;
+    disposition: string;
+    retainedValue: string;
+    changedFromLegacyScenario: string;
+    materializedPaths: string;
+    sourceClass: string;
+    rangeKind: string;
+  };
+  values: {
+    yes: string;
+    no: string;
+    notApplicable: string;
+    none: string;
+    included: string;
+    notMonetized: string;
+    locked: string;
+    noPostMigrationEdits: string;
+  };
+  stepKinds: Record<ProcessMapStepKind, string>;
+  roles: Record<string, string>;
+  migrationDispositions: Record<LegacyMigrationFieldDispositionKind, string>;
+  migrationSourceClasses: Record<"post_migration_user_edit", string>;
 }
 
 export interface PdfRetainedAssumptionCopy {
@@ -138,6 +267,7 @@ export interface PdfCopyV2 {
   exportedAt: string;
   pageLabel: (page: number, total: number) => string;
   sectionLabels: typeof pdfExportV2T.pl.sections | typeof pdfExportV2T.en.sections;
+  rendererLabels: PdfRendererLabels;
   metadata: PdfLabelValue[];
   context: PdfContextCopy[];
   alternatives: PdfAlternativeCopy[];
@@ -145,15 +275,17 @@ export interface PdfCopyV2 {
   comparisonSummary: string;
   comparisonRange: PdfRangeCopy;
   drivers: PdfDriverCopy[];
-  coverage: PdfLabelValue[];
+  coverage: PdfCoverageCopy[];
   nonMonetizedDimensions: PdfNonMonetizedCopy[];
   assumptions: PdfAssumptionCopy[];
+  roleHourlyRates: PdfRoleHourlyRateCopy[];
   calculationAnchors: PdfCalculationAnchorCopy[];
   externalEvidence: PdfEvidenceCopy[];
   retainedAssumptions: PdfRetainedAssumptionCopy[];
   legalProvenance: PdfLegalProvenanceCopy[];
   migration: PdfLabelValue[];
   migrationAudit: LegacyMigrationAudit | null;
+  postMigrationEdits: PdfPostMigrationEditCopy[];
 }
 
 function assertPdfRecord(record: DecisionRecordV2): void {
@@ -413,6 +545,7 @@ export function buildPdfCopy(
     exportedAt: formatIsoDate(exportedAt, locale),
     pageLabel: pdfTx.pageLabel,
     sectionLabels: pdfTx.sections,
+    rendererLabels: structuredClone(pdfTx.renderer),
     metadata: [
       { label: tx.fields.schemaVersion, value: String(record.metadata.schemaVersion) },
       { label: tx.fields.modelVersion, value: record.metadata.modelVersion },
@@ -456,8 +589,18 @@ export function buildPdfCopy(
       contribution: formatRange(driver.contribution, locale, true),
     })),
     coverage: record.coverage.map((entry) => ({
+      id: entry.id,
       label: (tx.drivers as Record<string, string>)[entry.id],
       value: tx.words.included,
+      status: entry.status,
+      anchors: entry.anchors.map((anchor) => ({
+        path: anchor.path,
+        evidenceClass: anchor.evidenceClass,
+        evidenceStatus: (
+          tx.evidenceClasses as Record<string, string>
+        )[anchor.evidenceClass],
+        evidenceIds: [...anchor.evidenceIds],
+      })),
     })),
     nonMonetizedDimensions: record.nonMonetizedDimensions.map((dimension) => {
       const entries = ALTERNATIVE_IDS.flatMap((alternativeId) => {
@@ -473,8 +616,24 @@ export function buildPdfCopy(
       };
     }),
     assumptions: assumptionCopies,
+    roleHourlyRates: Object.entries(record.roleHourlyRates).map(
+      ([roleId, rate]) => ({
+        roleId,
+        roleLabel:
+          (pdfTx.renderer.roles as Record<string, string>)[roleId] ??
+          pdfTx.renderer.roles.unknown,
+        rate: formatRange(rate, locale, true),
+        rangeKind: rate.rangeKind,
+        evidenceClass: rate.evidenceClass,
+        evidenceStatus: (
+          tx.evidenceClasses as Record<string, string>
+        )[rate.evidenceClass],
+        evidenceIds: [...rate.evidenceIds],
+      })
+    ),
     calculationAnchors: record.calculationAnchors.map((anchor) => ({
       path: anchor.path,
+      evidenceClass: anchor.evidenceClass,
       evidenceStatus: (
         tx.evidenceClasses as Record<string, string>
       )[anchor.evidenceClass],
@@ -534,5 +693,40 @@ export function buildPdfCopy(
     migrationAudit: migration.audit
       ? structuredClone(migration.audit)
       : null,
+    postMigrationEdits: migration.postMigrationEdits.map((edit) => ({
+      field: edit.field,
+      materializedPaths: [...edit.materializedPaths],
+      before: {
+        range: formatRange(edit.before, locale, true),
+        rangeKind: edit.before.rangeKind,
+        evidenceClass: edit.before.evidenceClass,
+        evidenceStatus: (
+          tx.evidenceClasses as Record<string, string>
+        )[edit.before.evidenceClass],
+        evidenceIds: [...edit.before.evidenceIds],
+      },
+      after: {
+        range: formatRange(edit.after, locale, true),
+        rangeKind: edit.after.rangeKind,
+        evidenceClass: edit.after.evidenceClass,
+        evidenceStatus: (
+          tx.evidenceClasses as Record<string, string>
+        )[edit.after.evidenceClass],
+        evidenceIds: [...edit.after.evidenceIds],
+      },
+      provenance: {
+        sourceClass: edit.provenance.sourceClass,
+        sourceClassLabel:
+          pdfTx.renderer.migrationSourceClasses[edit.provenance.sourceClass],
+        sourceSchemaVersion: edit.provenance.sourceSchemaVersion,
+        legacyScenarioId: edit.provenance.legacyScenarioId,
+        sourceField: edit.provenance.sourceField,
+        originalDisposition: edit.provenance.originalDisposition,
+        originalDispositionLabel:
+          pdfTx.renderer.migrationDispositions[
+            edit.provenance.originalDisposition
+          ],
+      },
+    })),
   };
 }

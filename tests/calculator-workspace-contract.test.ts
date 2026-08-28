@@ -13,6 +13,10 @@ import {
   submitCalculatorWorkspace,
 } from "@/components/calculator-v2/workspace-validation";
 import {
+  applyLegacyMigrationConfirmation,
+  createRenderableCalculatorWorkspaceState,
+} from "@/components/calculator-v2/workspace-bootstrap";
+import {
   adaptLegacyCalculatorBootstrap,
   bootstrapCalculatorUrl,
 } from "@/components/calculator-v2/url-bootstrap";
@@ -597,6 +601,110 @@ describe("calculator workspace validation and submit contract", () => {
       expect(submitCalculatorWorkspace(state).status).toBe("blocked");
     }
   );
+
+  it("confirms, edits and submits a partial legacy workspace with eight model-derived edits", () => {
+    const bootstrap = bootstrapCalculatorUrl(
+      new URLSearchParams({ sid: "erp" })
+    );
+    if (bootstrap.origin !== "legacy" || bootstrap.result.status !== "partial") {
+      throw new Error("Expected a blocked partial legacy bootstrap");
+    }
+    let state = createRenderableCalculatorWorkspaceState(bootstrap);
+    state = applyLegacyMigrationConfirmation(state, bootstrap.result, true);
+    if (state.migration?.status !== "ready") {
+      throw new Error("Expected the reviewed adapter to confirm the migration");
+    }
+    const originalAudit = structuredClone(state.migration.audit);
+    const assumptions = structuredClone(state.draft.economicAssumptions);
+    assumptions.contractValue = fixed(4_200_000);
+    assumptions.dailyCostOfInaction = fixed(12_345);
+    state = calculatorWorkspaceReducer(state, {
+      type: "replace-economic-assumptions",
+      economicAssumptions: assumptions,
+    });
+    for (const [index, roleId] of [
+      "requestor",
+      "buyer",
+      "lawyer",
+      "finance",
+      "manager",
+      "executive",
+    ].entries()) {
+      state = calculatorWorkspaceReducer(state, {
+        type: "edit-role-hourly-rate",
+        roleId,
+        value: fixed(201 + index),
+      });
+    }
+
+    const submitted = submitCalculatorWorkspace(state);
+
+    expect(submitted.status).toBe("submitted");
+    expect(submitted.issues).not.toContainEqual(
+      expect.objectContaining({ code: "calculation_rejected" })
+    );
+    if (submitted.status !== "submitted" || !submitted.state.record) {
+      throw new Error("Expected a submitted partial migration record");
+    }
+    expect(submitted.state.record.assumptions.contractValue.central).toBe(
+      4_200_000
+    );
+    expect(submitted.state.record.assumptions.dailyCostOfInaction.central).toBe(
+      12_345
+    );
+    expect(submitted.state.record.roleHourlyRates.executive.central).toBe(206);
+    expect(
+      submitted.state.record.metadata.migration.postMigrationEdits.map(
+        ({ field }) => field
+      )
+    ).toEqual([
+      "contractValue",
+      "dailyCostOfInaction",
+      "stakeholders.requestor.dailyRate",
+      "stakeholders.buyer.dailyRate",
+      "stakeholders.lawyer.dailyRate",
+      "stakeholders.finance.dailyRate",
+      "stakeholders.manager.dailyRate",
+      "stakeholders.executive.dailyRate",
+    ]);
+    expect(submitted.state.record.metadata.migration.audit).toEqual(
+      originalAudit
+    );
+  });
+
+  it("edits and submits an exact legacy workspace without fabricating a migration overlay", () => {
+    const bootstrap = bootstrapCalculatorUrl(exactFleetLegacyParams());
+    if (bootstrap.origin !== "legacy") {
+      throw new Error("Expected an exact legacy bootstrap");
+    }
+    let state = createRenderableCalculatorWorkspaceState(bootstrap);
+    const assumptions = structuredClone(state.draft.economicAssumptions);
+    assumptions.contractValue = fixed(5_500_000);
+    state = calculatorWorkspaceReducer(state, {
+      type: "replace-economic-assumptions",
+      economicAssumptions: assumptions,
+    });
+    state = calculatorWorkspaceReducer(state, {
+      type: "edit-role-hourly-rate",
+      roleId: "buyer",
+      value: fixed(321),
+    });
+
+    const submitted = submitCalculatorWorkspace(state);
+
+    expect(submitted.status).toBe("submitted");
+    if (submitted.status !== "submitted" || !submitted.state.record) {
+      throw new Error("Expected a submitted exact migration record");
+    }
+    expect(submitted.state.record.metadata.migration).toMatchObject({
+      status: "exact",
+      postMigrationEdits: [],
+    });
+    expect(submitted.state.record.assumptions.contractValue.central).toBe(
+      5_500_000
+    );
+    expect(submitted.state.record.roleHourlyRates.buyer.central).toBe(321);
+  });
 
   it("permits a valid native state and atomically creates one decision record with reveal focus", () => {
     const state = createCalculatorWorkspaceState(

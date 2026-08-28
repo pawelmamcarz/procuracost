@@ -33,6 +33,7 @@ export interface ResearchJsonV2 {
     nonMonetizedDimensions: DecisionRecordV2["nonMonetizedDimensions"];
   };
   assumptions: DecisionRecordV2["assumptions"];
+  roleHourlyRates: DecisionRecordV2["roleHourlyRates"];
   evidence: {
     calculationAnchors: DecisionRecordV2["calculationAnchors"];
     externalEvidence: DecisionRecordV2["externalEvidence"];
@@ -187,6 +188,16 @@ function migrationAuditValue(value: unknown): string {
   return JSON.stringify(value);
 }
 
+function roleLabel(lang: Lang, roleId: string): string {
+  const roles = researchExportV2T[lang].roles as Record<string, string>;
+  return roles[roleId] ?? `${roles.unknown} (${roleId})`;
+}
+
+function markdownRoleLabel(lang: Lang, roleId: string): string {
+  const roles = researchExportV2T[lang].roles as Record<string, string>;
+  return `${roles[roleId] ?? roles.unknown} (\`${markdownCell(roleId)}\`)`;
+}
+
 function csvEscape(value: CsvRow[CsvHeader]): string {
   if (value === null || value === undefined) return "";
   const text = String(value);
@@ -294,6 +305,7 @@ export function buildResearchJson(
       nonMonetizedDimensions: record.nonMonetizedDimensions,
     },
     assumptions: record.assumptions,
+    roleHourlyRates: record.roleHourlyRates,
     evidence: {
       calculationAnchors: record.calculationAnchors,
       externalEvidence: record.externalEvidence,
@@ -496,6 +508,19 @@ export function buildResearchCsv(
   }
   for (const entry of record.coverage) {
     rows.push(...driverCsvRows(locale, "coverage", entry, entry.status));
+    for (const anchor of entry.anchors) {
+      rows.push(
+        csvRow(locale, {
+          section: "coverage_anchor",
+          record_id: entry.id,
+          field_id: anchor.path,
+          status: entry.status,
+          evidence_class: anchor.evidenceClass,
+          evidence_ids: anchor.evidenceIds.join(";"),
+          localized_label: (tx.drivers as Record<string, string>)[entry.id],
+        })
+      );
+    }
   }
   for (const dimension of record.nonMonetizedDimensions) {
     for (const alternativeId of ALTERNATIVE_IDS) {
@@ -569,6 +594,19 @@ export function buildResearchCsv(
       localized_label: lookupModelCopy(locale, assumptions.bypass.reasonKey),
     })
   );
+
+  for (const [roleId, rate] of Object.entries(record.roleHourlyRates)) {
+    rows.push(
+      calibratedCsvRow(
+        locale,
+        "role_hourly_rate",
+        roleId,
+        "hourlyRate",
+        rate,
+        roleLabel(locale, roleId)
+      )
+    );
+  }
 
   for (const anchor of record.calculationAnchors) {
     rows.push(
@@ -764,6 +802,80 @@ export function buildResearchCsv(
       );
     }
   }
+  if (migration.postMigrationEdits.length === 0) {
+    rows.push(
+      csvRow(locale, {
+        section: "post_migration_edit",
+        record_id: "post_migration_edits",
+        field_id: "postMigrationEdits",
+        value: 0,
+        status: "none",
+        localized_label: tx.words.noPostMigrationEdits,
+      })
+    );
+  } else {
+    for (const edit of migration.postMigrationEdits) {
+      const recordId = edit.provenance.sourceField;
+      rows.push(
+        calibratedCsvRow(
+          locale,
+          "post_migration_edit",
+          recordId,
+          "before",
+          edit.before,
+          tx.fields.beforeEdit
+        ),
+        calibratedCsvRow(
+          locale,
+          "post_migration_edit",
+          recordId,
+          "after",
+          edit.after,
+          tx.fields.afterEdit
+        )
+      );
+      const provenanceValues: Array<[
+        string,
+        string,
+        string,
+      ]> = [
+        ["field", edit.field, tx.fields.field],
+        ["sourceField", edit.provenance.sourceField, tx.fields.sourceField],
+        [
+          "materializedPaths",
+          edit.materializedPaths.join(";"),
+          tx.fields.materializedPaths,
+        ],
+        ["sourceClass", edit.provenance.sourceClass, tx.fields.sourceClass],
+        [
+          "sourceSchemaVersion",
+          edit.provenance.sourceSchemaVersion,
+          tx.fields.sourceSchemaVersion,
+        ],
+        [
+          "legacyScenarioId",
+          edit.provenance.legacyScenarioId,
+          tx.fields.legacyScenarioId,
+        ],
+        [
+          "originalDisposition",
+          edit.provenance.originalDisposition,
+          tx.fields.originalDisposition,
+        ],
+      ];
+      for (const [fieldId, value, label] of provenanceValues) {
+        rows.push(
+          csvRow(locale, {
+            section: "post_migration_edit",
+            record_id: recordId,
+            field_id: fieldId,
+            value,
+            localized_label: label,
+          })
+        );
+      }
+    }
+  }
 
   return `${[
     RESEARCH_CSV_HEADERS.join(","),
@@ -883,6 +995,20 @@ export function buildResearchMarkdown(
         `- ${(tx.drivers as Record<string, string>)[entry.id]}: ${tx.words.included}`
     ),
     "",
+    `| ${tx.fields.driver} | ${tx.fields.path} | ${tx.fields.evidenceStatus} | ${tx.fields.evidenceIds} |`,
+    "|---|---|---|---|",
+    ...record.coverage.flatMap((entry) =>
+      entry.anchors.map(
+        (anchor) =>
+          `| ${(tx.drivers as Record<string, string>)[entry.id]} | \`${markdownCell(
+            anchor.path
+          )}\` | ${tx.evidenceClasses[anchor.evidenceClass]} | ${
+            anchor.evidenceIds.map((id) => `\`${markdownCell(id)}\``).join(", ") ||
+            tx.words.noEvidenceIds
+          } |`
+      )
+    ),
+    "",
     `## ${tx.sections.nonMonetized}`,
     "",
     ...record.nonMonetizedDimensions.map((dimension) => {
@@ -957,6 +1083,21 @@ export function buildResearchMarkdown(
       locale,
       record.assumptions.bypass.reasonKey
     )} |`,
+    "",
+    `### ${tx.fields.roleHourlyRates}`,
+    "",
+    `| ${tx.fields.role} | ${tx.range.low} / ${tx.range.central} / ${tx.range.high} | ${tx.fields.evidenceStatus} | ${tx.fields.evidenceIds} |`,
+    "|---|---|---|---|",
+    ...Object.entries(record.roleHourlyRates).map(
+      ([roleId, rate]) =>
+        `| ${markdownRoleLabel(locale, roleId)} | ${rangeText(
+          rate,
+          locale
+        )} | ${tx.evidenceClasses[rate.evidenceClass]} | ${
+          rate.evidenceIds.map((id) => `\`${markdownCell(id)}\``).join(", ") ||
+          tx.words.noEvidenceIds
+        } |`
+    ),
     "",
     `## ${tx.sections.calculationAnchors}`,
     "",
@@ -1055,6 +1196,38 @@ export function buildResearchMarkdown(
           ),
         ]
       : []),
+    "",
+    `### ${tx.sections.postMigrationEdits}`,
+    "",
+    ...(record.metadata.migration.postMigrationEdits.length === 0
+      ? [tx.words.noPostMigrationEdits]
+      : [
+          `| ${tx.fields.sourceField} | ${tx.fields.materializedPaths} | ${tx.fields.before} | ${tx.fields.beforeEvidence} | ${tx.fields.after} | ${tx.fields.afterEvidence} | ${tx.fields.provenance} |`,
+          "|---|---|---|---|---|---|---|",
+          ...record.metadata.migration.postMigrationEdits.map((edit) => {
+            const evidenceCell = (value: CalibratedValue): string =>
+              `${tx.evidenceClasses[value.evidenceClass]} (\`${value.evidenceClass}\`); ${
+                value.evidenceIds
+                  .map((id) => `\`${markdownCell(id)}\``)
+                  .join(", ") || tx.words.noEvidenceIds
+              }`;
+            const paths = edit.materializedPaths
+              .map((path) => `\`${markdownCell(path)}\``)
+              .join(", ");
+            const provenance = `${tx.migrationSourceClasses[edit.provenance.sourceClass]} (\`${edit.provenance.sourceClass}\`), \`${edit.provenance.sourceSchemaVersion}\`, \`${markdownCell(
+              edit.provenance.legacyScenarioId
+            )}\`, ${
+              tx.migrationDispositions[edit.provenance.originalDisposition]
+            } (\`${edit.provenance.originalDisposition}\`)`;
+            return `| \`${markdownCell(
+              edit.provenance.sourceField
+            )}\` | ${paths} | ${rangeText(edit.before, locale)} | ${evidenceCell(
+              edit.before
+            )} | ${rangeText(edit.after, locale)} | ${evidenceCell(
+              edit.after
+            )} | ${provenance} |`;
+          }),
+        ]),
     "",
   ];
   return lines.join("\n");

@@ -15,10 +15,36 @@ import {
 import { calculateComparison } from "@/lib/model-v2/engine";
 import { migrateLegacyCalculatorParams } from "@/lib/model-v2/legacy-migration";
 import {
+  createScenarioDraftFromLegacyMigration,
+  type LegacyMigrationDraftReady,
+} from "@/lib/model-v2/legacy-migration-draft";
+import {
   SCENARIO_V2_IDS,
   SCENARIOS_V2,
   createScenarioDraft,
 } from "@/lib/model-v2/scenarios";
+
+function userFixed(value: number, evidenceIds: string[] = []) {
+  return {
+    low: value,
+    central: value,
+    high: value,
+    rangeKind: "fixed" as const,
+    evidenceClass: "user_input" as const,
+    evidenceIds,
+  };
+}
+
+function confirmedPartialMigration(): LegacyMigrationDraftReady {
+  const migration = migrateLegacyCalculatorParams(
+    new URLSearchParams({ sid: "erp" })
+  );
+  const adapted = createScenarioDraftFromLegacyMigration(migration, true);
+  if (adapted.status !== "ready") {
+    throw new Error("Expected a confirmed partial migration fixture");
+  }
+  return adapted;
+}
 
 function competitionCost(
   input: ReturnType<typeof buildCalculationInputFromDraft>,
@@ -182,6 +208,200 @@ describe("model 2.3 draft calculation materialisation", () => {
         confirmed: true,
       } as CalculationInputGateV2)
     ).toThrow(/ambiguous/i);
+  });
+
+  it("accepts a confirmed partial migration edit and materialises the edited value", () => {
+    const adapted = confirmedPartialMigration();
+    const draft = structuredClone(adapted.draft);
+    draft.economicAssumptions.contractValue = userFixed(
+      4_200_000,
+      ["user.contract-value"]
+    );
+
+    const input = buildCalculationInputFromDraft(draft, adapted.gate);
+
+    expect(competitionCost(input, "adaptiveCompliant").central).toBe(252_000);
+  });
+
+  it("requires primitive confirmation and the original unmodified adapter audit", () => {
+    const adapted = confirmedPartialMigration();
+    const runtimeGate = structuredClone(adapted.gate) as unknown as Record<
+      string,
+      unknown
+    >;
+    runtimeGate.confirmed = 1;
+    expect(() =>
+      buildCalculationInputFromDraft(
+        adapted.draft,
+        runtimeGate as unknown as CalculationInputGateV2
+      )
+    ).toThrow(/confirmation/i);
+
+    const forgedAudit = structuredClone(adapted.gate);
+    forgedAudit.audit.retainedLegacyInputs.contractValue += 1;
+    expect(() =>
+      buildCalculationInputFromDraft(adapted.draft, forgedAudit)
+    ).toThrow(/audit.*retained inputs/i);
+  });
+
+  it.each([
+    ["source schema", (result: Record<string, unknown>) => {
+      result.sourceSchemaVersion = "runtime-forged";
+    }],
+    ["readiness", (result: Record<string, unknown>) => {
+      result.readinessInferred = true;
+    }],
+    ["calculation status", (result: Record<string, unknown>) => {
+      result.canCalculate = true;
+    }],
+    ["confirmation fields", (result: Record<string, unknown>) => {
+      result.fieldsRequiringConfirmation = [];
+    }],
+    ["validation errors", (result: Record<string, unknown>) => {
+      result.validationErrors = [];
+    }],
+  ] as const)("rejects forged partial-migration %s invariants", (_label, mutate) => {
+    const adapted = confirmedPartialMigration();
+    mutate(adapted.gate.result as unknown as Record<string, unknown>);
+
+    expect(() =>
+      buildCalculationInputFromDraft(adapted.draft, adapted.gate)
+    ).toThrow(/legacy migration|canonical|invariant/i);
+  });
+
+  it.each([
+    [
+      "gate root",
+      (adapted: LegacyMigrationDraftReady) => {
+        (adapted.gate as unknown as Record<string, unknown>).postMigrationEdits = [];
+      },
+    ],
+    [
+      "migration result",
+      (adapted: LegacyMigrationDraftReady) => {
+        (adapted.gate.result as unknown as Record<string, unknown>).postMigrationEdits = [];
+      },
+    ],
+    [
+      "migration audit",
+      (adapted: LegacyMigrationDraftReady) => {
+        (adapted.gate.audit as unknown as Record<string, unknown>).postMigrationEdits = [];
+      },
+    ],
+  ] as const)("rejects a caller-added postMigrationEdits list at the %s", (_label, mutate) => {
+    const adapted = confirmedPartialMigration();
+    mutate(adapted);
+
+    expect(() =>
+      buildCalculationInputFromDraft(adapted.draft, adapted.gate)
+    ).toThrow(/legacy migration|canonical|audit/i);
+  });
+
+  it("rejects an edited value that retains imported evidence provenance", () => {
+    const adapted = confirmedPartialMigration();
+    const draft = structuredClone(adapted.draft);
+    draft.economicAssumptions.contractValue = userFixed(4_200_000, [
+      "legacy-v1.erp.retainedLegacyInputs.contractValue",
+    ]);
+
+    expect(() =>
+      buildCalculationInputFromDraft(draft, adapted.gate)
+    ).toThrow(/evidence|user/i);
+  });
+
+  it.each(["empirical_anchor", "official_case", "legal_rule"] as const)(
+    "rejects an edited materialised value claiming %s provenance",
+    (evidenceClass) => {
+      const adapted = confirmedPartialMigration();
+      const draft = structuredClone(adapted.draft);
+      draft.economicAssumptions.contractValue = {
+        ...userFixed(4_200_000),
+        evidenceClass,
+      };
+
+      expect(() =>
+        buildCalculationInputFromDraft(draft, adapted.gate)
+      ).toThrow(/evidence|user_input/i);
+    }
+  );
+
+  it("rejects an edited user input that cites a registry evidence identifier", () => {
+    const adapted = confirmedPartialMigration();
+    const draft = structuredClone(adapted.draft);
+    draft.economicAssumptions.contractValue = userFixed(4_200_000, [
+      "szucs_discretion_price_2024",
+    ]);
+
+    expect(() =>
+      buildCalculationInputFromDraft(draft, adapted.gate)
+    ).toThrow(/evidence|user/i);
+  });
+
+  it("rejects divergent submitted daily-cost mirrors", () => {
+    const adapted = confirmedPartialMigration();
+    const draft = structuredClone(adapted.draft);
+    draft.economicAssumptions.dailyCostOfInaction = userFixed(1_001);
+    draft.dailyCostOfInaction = userFixed(1_002);
+
+    expect(() =>
+      buildCalculationInputFromDraft(draft, adapted.gate)
+    ).toThrow(/daily.*mirror|dailyCostOfInaction/i);
+  });
+
+  it("rejects a partial migration draft missing one materialised role rate", () => {
+    const adapted = confirmedPartialMigration();
+    const draft = structuredClone(adapted.draft);
+    delete draft.roleHourlyRates.executive;
+
+    expect(() =>
+      buildCalculationInputFromDraft(draft, adapted.gate)
+    ).toThrow(/roleHourlyRates\.executive|role rate|materialised/i);
+  });
+
+  it("rejects an invalid negative edited calibrated range", () => {
+    const adapted = confirmedPartialMigration();
+    const draft = structuredClone(adapted.draft);
+    draft.roleHourlyRates.buyer = userFixed(-1);
+
+    expect(() =>
+      buildCalculationInputFromDraft(draft, adapted.gate)
+    ).toThrow(/negative|calibrated|range/i);
+  });
+
+  it("rejects an unknown runtime range kind and additional calibrated-value fields", () => {
+    const unknownRange = confirmedPartialMigration();
+    const unknownRangeDraft = structuredClone(unknownRange.draft);
+    (
+      unknownRangeDraft.economicAssumptions.contractValue as unknown as Record<
+        string,
+        unknown
+      >
+    ).rangeKind = "runtime_unknown";
+    unknownRangeDraft.economicAssumptions.contractValue.low = 4_200_000;
+    unknownRangeDraft.economicAssumptions.contractValue.central = 4_200_000;
+    unknownRangeDraft.economicAssumptions.contractValue.high = 4_200_000;
+    unknownRangeDraft.economicAssumptions.contractValue.evidenceIds = [
+      "user.contract-value",
+    ];
+
+    expect(() =>
+      buildCalculationInputFromDraft(unknownRangeDraft, unknownRange.gate)
+    ).toThrow(/rangeKind|canonical|calibrated/i);
+
+    const additionalField = confirmedPartialMigration();
+    const additionalFieldDraft = structuredClone(additionalField.draft);
+    additionalFieldDraft.economicAssumptions.contractValue = userFixed(
+      4_200_000,
+      ["user.contract-value"]
+    );
+    (
+      additionalFieldDraft.economicAssumptions
+        .contractValue as unknown as Record<string, unknown>
+    ).postMigrationEdits = [{ caller: "forged" }];
+
+    expect(() =>
+      buildCalculationInputFromDraft(additionalFieldDraft, additionalField.gate)
+    ).toThrow(/canonical|calibrated|postMigrationEdits/i);
   });
 
   it("rejects unsupported fixed metadata and non-zero amendment or TCO semantics", () => {
