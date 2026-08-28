@@ -1255,3 +1255,464 @@ const navigationEn = {
 
 export const navigationT = { pl: navigationPl, en: navigationEn } as const;
 export type NavigationLabelKey = keyof typeof navigationPl;
+
+const modelV2Pl = {
+  scenarios: {
+    sourcePublisher: "Rejestr modelu ProcuraCost",
+    fleet_tco_reframing: {
+      name: "Flota: przeformułowanie TCO",
+      description:
+        "Zakup floty z jawnym kosztem zwłoki i oddzielonym założeniem wartości cyklu życia.",
+      sourceTitle: "Scenariusz 2.2.2: zakup floty pojazdów",
+      assumptionLabel: "Przeniesione założenia scenariusza floty",
+      assumptionDetail:
+        "Wartość kontraktu, koszt dnia, stawki ról i przebieg procesu są zakresami założeń przeniesionymi z modelu 2.2.2. Nie są obserwacją empiryczną.",
+    },
+    erp_transformation_discovery: {
+      name: "Transformacja ERP: etap odkrywania",
+      description:
+        "Zakup systemu ERP, w którym definicja potrzeb i kontakt z rynkiem są widocznymi elementami procesu.",
+      sourceTitle: "Scenariusz 2.2.2: kontrakt IT i ERP",
+      assumptionLabel: "Przeniesione założenia scenariusza ERP",
+      assumptionDetail:
+        "Wartość kontraktu, koszt dnia, stawki ról i czasy czynności zachowano jako jawne zakresy założeń modelu 2.2.2.",
+    },
+    logistics_service_redesign: {
+      name: "Przeprojektowanie usługi logistycznej",
+      description:
+        "Złożona usługa logistyczna porównana przy oddzielnych projektach przebiegu i umowy.",
+      sourceTitle: "Scenariusz 2.2.2: usługi logistyczne",
+      assumptionLabel: "Przeniesione założenia scenariusza logistycznego",
+      assumptionDetail:
+        "Wartości ekonomiczne i czasy procesu pochodzą z rejestru scenariuszy 2.2.2 i pozostają założeniami do potwierdzenia.",
+    },
+    critical_material_continuity: {
+      name: "Ciągłość dostaw materiału krytycznego",
+      description:
+        "Zakup materiału, w którym koszt dnia opisuje ryzyko przerwania ciągłości, a nie premię cenową.",
+      sourceTitle: "Scenariusz 2.2.2: materiały produkcyjne",
+      assumptionLabel: "Przeniesione założenia ciągłości dostaw",
+      assumptionDetail:
+        "Koszt dnia i pozostałe wartości są założeniami ekonomiki zakładu przeniesionymi z modelu 2.2.2, nie pomiarem przestoju.",
+    },
+    public_it_open_with_market_consultation: {
+      name: "Publiczne IT: przetarg nieograniczony z konsultacjami",
+      description:
+        "Dwa zgodne z PZP projekty procesu dla tego samego zakupu IT, z identycznymi obowiązkowymi terminami.",
+      sourceTitle: "Scenariusz 2.2.2: publiczny zakup IT",
+      assumptionLabel: "Przeniesione założenia publicznego zakupu IT",
+      assumptionDetail:
+        "Wartości ekonomiczne i czasy pracy są założeniami scenariusza. Terminy PZP pochodzą oddzielnie z wersjonowanego zbioru reguł prawnych.",
+    },
+    stable_private_standard_service: {
+      name: "Stabilna standardowa usługa prywatna",
+      description:
+        "Scenariusz kontrolny do sprawdzenia procesu na dojrzałym rynku przy zerowym centralnym koszcie zwłoki.",
+      sourceTitle: "Scenariusz 2.2.2: stabilny zakup kontrolny",
+      assumptionLabel: "Przeniesione założenia stabilnego zakupu",
+      assumptionDetail:
+        "Dojrzałość rynku, mapy procesu i wartości ekonomiczne są deklarowanymi założeniami kontrolnymi, nie wynikami badania.",
+    },
+    stable_capex_replacement: {
+      name: "Stabilna inwestycja odtworzeniowa CAPEX",
+      description:
+        "Zakup środka trwałego z jawną mapą bramek inwestycyjnych i neutralnym zerowym centrum różnic TCO oraz aneksów.",
+      sourceTitle: "Scenariusz 2.2.2: inwestycja CAPEX",
+      assumptionLabel: "Przeniesione założenia inwestycji CAPEX",
+      assumptionDetail:
+        "Wartość kontraktu, koszt dnia, stawki i czasy są zakresami założeń przeniesionymi z modelu 2.2.2.",
+    },
+    discovery_solution_codesign: {
+      name: "Odkrywanie i współprojektowanie rozwiązania",
+      description:
+        "Scenariusz, w którym wariant adaptacyjny kupuje uczenie się dłuższym i bardziej pracochłonnym procesem.",
+      sourceTitle: "Scenariusz 2.2.2: zakup odkrywczy",
+      assumptionLabel: "Przeniesione założenia zakupu odkrywczego",
+      assumptionDetail:
+        "Dłuższa mapa wariantu adaptacyjnego jest falsyfikowalnym założeniem scenariusza, a nie obserwowanym efektem metody.",
+    },
+    catalog_calloff_control: {
+      name: "Kontrola zamówienia katalogowego",
+      description:
+        "Realizacja z umowy ramowej przy identycznych mapach i bez różnicy konkurencji między wariantami.",
+      sourceTitle: "Scenariusz 2.2.2: zamówienie z katalogu",
+      assumptionLabel: "Przeniesione założenia zamówienia katalogowego",
+      assumptionDetail:
+        "Wartości i identyczne mapy są jawnymi założeniami kontrolnymi. Nie reprezentują wpływu wdrożenia systemu.",
+    },
+    mrp_release_control: {
+      name: "Kontrola zwolnienia zlecenia MRP",
+      description:
+        "Realizacja zakontraktowanego zapotrzebowania MRP przy identycznych mapach obu wariantów.",
+      sourceTitle: "Scenariusz 2.2.2: zlecenie MRP",
+      assumptionLabel: "Przeniesione założenia zlecenia MRP",
+      assumptionDetail:
+        "Wartości i identyczne mapy są założeniami kontrolnymi. Gotowość organizacyjna nie jest z nich wnioskowana.",
+    },
+  },
+  evidence: {
+    californiaModular: {
+      sourceTitle: "California Redefines State Technology Procurement",
+      publisher: "California Department of Technology",
+      supported:
+        "Źródło opisuje modułowe dzielenie dużych systemów, możliwość zmiany kursu oraz udział mniejszych dostawców.",
+      unsupported:
+        "Nie identyfikuje przyczynowego wpływu tej metody na koszt ani czas scenariusza ProcuraCost.",
+      population: "Zamówienia technologiczne administracji stanu Kalifornia",
+      assumption:
+        "Przykład wspiera opis mechanizmu jakościowego. Nie wyznacza zakresu liczbowego.",
+    },
+    oecdRvul: {
+      sourceTitle:
+        "Lessons learnt from the implementation of the pilot projects of strategic procurement: Public Procurement in Lithuania",
+      publisher: "OECD",
+      supported:
+        "Przykład RVUL opisuje prawie rok pracy nad zdefiniowaniem problemu i przygotowaniem konsultacji rynkowych.",
+      unsupported:
+        "Nie szacuje kosztu, oszczędności ani uniwersalnego czasu fazy odkrywania.",
+      population:
+        "Pilotaż zamówienia innowacyjnego w Republican Vilnius University Hospital w Litwie",
+      assumption:
+        "Czas konkretnego pilotażu nie jest przenoszony do map scenariuszy jako kalibracja.",
+    },
+    uzpConsultation: {
+      sourceTitle: "Wstępne konsultacje rynkowe",
+      publisher: "Urząd Zamówień Publicznych",
+      supported:
+        "Źródło opisuje konsultacje jako sposób poznania rozwiązań technicznych, ekonomicznych i organizacyjnych przed postępowaniem.",
+      unsupported:
+        "Nie podaje wpływu konsultacji na koszt, czas ani wynik konkretnego postępowania.",
+      population: "Zamawiający i wykonawcy objęci polskim Prawem zamówień publicznych",
+      assumption:
+        "Źródło wyznacza dopuszczalny mechanizm jakościowy, nie wartość parametru ekonomicznego.",
+    },
+    ecInnovation: {
+      sourceTitle: "Guidance on Innovation Procurement",
+      publisher: "Komisja Europejska",
+      supported:
+        "Wytyczne opisują praktyczne narzędzia zamówień innowacyjnych, w tym konsultacje rynkowe i dostęp do rozwiązań oferowanych przez rynek.",
+      unsupported:
+        "Wytyczne nie są prawnie wiążącą wykładnią i nie kalibrują efektu kosztowego ProcuraCost.",
+      population: "Nabywcy publiczni i dostawcy działający w Unii Europejskiej",
+      assumption:
+        "Przykłady jakościowe nie są podstawą zakresów liczbowych modelu.",
+    },
+    szucs: {
+      sourceTitle: "Discretion and favoritism in public procurement",
+      publisher: "Journal of the European Economic Association",
+      supported:
+        "Badanie identyfikuje kanał cenowy dyskrecji w węgierskich zamówieniach poniżej progu 25 mln HUF.",
+      unsupported:
+        "Nie identyfikuje wpływu projektu przebiegu procesu ani transferu do wszystkich jurysdykcji i progów.",
+      population:
+        "Węgierskie zamówienia publiczne poniżej progu procedury zaproszeniowej",
+      assumption:
+        "Zakres stresu 2, 6 i 9 procent jest jawnym transferem scenariuszowym, nie estymacją dla Polski.",
+    },
+  },
+  workflow: {
+    defineNeed: "Zdefiniowanie potrzeby",
+    engageMarket: "Kontakt z rynkiem",
+    evaluateAndAward: "Ocena i wybór",
+    marketConsultation: "Wstępne konsultacje rynkowe",
+    evaluateOffers: "Ocena ofert",
+    award: "Zawarcie umowy",
+    steps: {
+      rfi: "Rozpoznanie rynku",
+      rfq: "Zapytanie ofertowe i ocena ofert",
+      internal_approval: "Wewnętrzne zatwierdzenie",
+      negotiation: "Negocjacje umowy",
+      legal_review: "Przegląd prawny",
+      signing: "Podpisanie umowy",
+      needs_analysis: "Analiza potrzeb i wstępne konsultacje rynkowe",
+      procurement_documents: "Przygotowanie dokumentów zamówienia",
+      bid_evaluation: "Ocena ofert",
+      clarifications: "Wyjaśnienia treści ofert",
+      award_committee: "Komisja przetargowa",
+      contract_signing: "Podpisanie i rejestracja umowy",
+      requirements: "Wymagania i rozpoznanie rynku",
+      evaluation: "Ocena, negocjacje i wybór",
+      approval: "Zatwierdzenie",
+      contract: "Przygotowanie umowy",
+      business_case: "Uzasadnienie biznesowe i budżet CAPEX",
+      technical_spec: "Specyfikacja techniczna",
+      capex_committee: "Komitet CAPEX",
+      vendor_selection: "Wybór i ocena dostawcy",
+      final_approval: "Ostateczne zatwierdzenie zarządu",
+      problem_framing: "Zdefiniowanie problemu",
+      market_codesign: "Współprojektowanie z rynkiem",
+      rework_round: "Runda przeprojektowania",
+      need_identification: "Identyfikacja potrzeby",
+      catalog_selection: "Wybór z katalogu",
+      po_approval: "Zatwierdzenie zamówienia",
+      mrp_trigger: "Sygnał MRP",
+      po_generation: "Generowanie i weryfikacja zamówienia",
+      goods_receipt: "Potwierdzenie odbioru",
+    },
+    legal: {
+      pzpOpen: {
+        bidSubmission: "Obowiązkowy termin składania ofert",
+        standstill: "Obowiązkowy termin przed zawarciem umowy",
+      },
+    },
+  },
+  reasons: {
+    bypassNotMonetized:
+      "Obejście nie jest monetyzowane bez zaobserwowanej lub podanej przez użytkownika częstości.",
+  },
+  validation: {
+    missingField: "Brakuje wymaganego pola stanu kalkulatora.",
+    invalidSchemaVersion: "Wersja schematu odnośnika nie jest obsługiwana.",
+    invalidModelVersion: "Wersja modelu odnośnika nie jest obsługiwana.",
+    invalidCalibrationId: "Identyfikator kalibracji odnośnika nie jest obsługiwany.",
+    unknownScenario: "Identyfikator scenariusza nie istnieje w rejestrze modelu 2.3.",
+    unknownBoundary: "Identyfikator ram prawnych i ładu zakupowego jest nieznany.",
+    unknownProcedure: "Identyfikator rodziny procedury jest nieznany.",
+    unknownArchetype: "Identyfikator archetypu zakupu jest nieznany.",
+    unknownExecutionChannel: "Identyfikator kanału realizacji zakupu jest nieznany.",
+    unknownSystemSupport: "Identyfikator wsparcia systemowego jest nieznany.",
+    unknownWorkflowDesign: "Identyfikator projektu przebiegu procesu jest nieznany.",
+    unknownContractDesign: "Identyfikator konstrukcji umowy jest nieznany.",
+    axisMismatch: "Osie odnośnika nie odpowiadają wybranemu scenariuszowi.",
+    legacyMissingScenario: "Stary odnośnik nie zawiera identyfikatora scenariusza.",
+    legacyUnknownScenario: "Stary odnośnik wskazuje nieznany scenariusz.",
+    legacyCustomScenario:
+      "Własnego starego scenariusza nie można odtworzyć bez potwierdzonej mapy procesu.",
+    legacyConfirmationRequired:
+      "Część starego odnośnika wymaga jawnego potwierdzenia przed obliczeniem.",
+  },
+} as const;
+
+type WidenModelV2Copy<T> = {
+  [K in keyof T]: T[K] extends string ? string : WidenModelV2Copy<T[K]>;
+};
+
+const modelV2En: WidenModelV2Copy<typeof modelV2Pl> = {
+  scenarios: {
+    sourcePublisher: "ProcuraCost model registry",
+    fleet_tco_reframing: {
+      name: "Fleet TCO reframing",
+      description:
+        "Fleet procurement with an explicit delay cost and a separate lifecycle-value assumption.",
+      sourceTitle: "Model 2.2.2 scenario: vehicle fleet procurement",
+      assumptionLabel: "Retained fleet scenario assumptions",
+      assumptionDetail:
+        "Contract value, daily cost, role rates and workflow are assumption ranges retained from model 2.2.2. They are not empirical observations.",
+    },
+    erp_transformation_discovery: {
+      name: "ERP transformation discovery",
+      description:
+        "ERP procurement in which problem definition and market engagement are explicit parts of the workflow.",
+      sourceTitle: "Model 2.2.2 scenario: IT and ERP contract",
+      assumptionLabel: "Retained ERP scenario assumptions",
+      assumptionDetail:
+        "Contract value, daily cost, role rates and activity times remain explicit assumption ranges retained from model 2.2.2.",
+    },
+    logistics_service_redesign: {
+      name: "Logistics service redesign",
+      description:
+        "A complex logistics service compared with separate workflow and contract designs.",
+      sourceTitle: "Model 2.2.2 scenario: logistics services",
+      assumptionLabel: "Retained logistics scenario assumptions",
+      assumptionDetail:
+        "Economic values and process times come from the 2.2.2 scenario registry and remain assumptions requiring confirmation.",
+    },
+    critical_material_continuity: {
+      name: "Critical material continuity",
+      description:
+        "A material purchase in which the daily cost represents continuity risk rather than a price premium.",
+      sourceTitle: "Model 2.2.2 scenario: production materials",
+      assumptionLabel: "Retained supply-continuity assumptions",
+      assumptionDetail:
+        "The daily cost and other values are plant-economics assumptions retained from model 2.2.2, not measured downtime.",
+    },
+    public_it_open_with_market_consultation: {
+      name: "Public IT: open procedure with market consultation",
+      description:
+        "Two PZP-compliant workflow designs for the same IT purchase with identical mandatory periods.",
+      sourceTitle: "Model 2.2.2 scenario: public IT procurement",
+      assumptionLabel: "Retained public IT procurement assumptions",
+      assumptionDetail:
+        "Economic values and work times are scenario assumptions. PZP periods come separately from the versioned legal ruleset.",
+    },
+    stable_private_standard_service: {
+      name: "Stable private standard service",
+      description:
+        "A control scenario for a mature market with a zero central delay cost.",
+      sourceTitle: "Model 2.2.2 scenario: stable purchase control",
+      assumptionLabel: "Retained stable-purchase assumptions",
+      assumptionDetail:
+        "Market maturity, workflow maps and economic values are declared control assumptions, not research findings.",
+    },
+    stable_capex_replacement: {
+      name: "Stable CAPEX replacement",
+      description:
+        "A fixed-asset purchase with explicit investment gates and neutral zero central TCO and amendment differentials.",
+      sourceTitle: "Model 2.2.2 scenario: CAPEX investment",
+      assumptionLabel: "Retained CAPEX investment assumptions",
+      assumptionDetail:
+        "Contract value, daily cost, rates and activity times are assumption ranges retained from model 2.2.2.",
+    },
+    discovery_solution_codesign: {
+      name: "Discovery and solution co-design",
+      description:
+        "A scenario in which the adaptive alternative buys learning through a longer, more labour-intensive process.",
+      sourceTitle: "Model 2.2.2 scenario: discovery purchase",
+      assumptionLabel: "Retained discovery-purchase assumptions",
+      assumptionDetail:
+        "The longer adaptive map is a falsifiable scenario assumption, not an observed effect of a method.",
+    },
+    catalog_calloff_control: {
+      name: "Catalog call-off control",
+      description:
+        "Framework execution with identical maps and no competition difference between the alternatives.",
+      sourceTitle: "Model 2.2.2 scenario: catalog order",
+      assumptionLabel: "Retained catalog-order assumptions",
+      assumptionDetail:
+        "The values and identical maps are explicit control assumptions. They do not represent the effect of system implementation.",
+    },
+    mrp_release_control: {
+      name: "MRP release control",
+      description:
+        "Execution of a contracted MRP requirement with identical maps for both alternatives.",
+      sourceTitle: "Model 2.2.2 scenario: MRP order",
+      assumptionLabel: "Retained MRP-order assumptions",
+      assumptionDetail:
+        "The values and identical maps are control assumptions. Organisational readiness is not inferred from them.",
+    },
+  },
+  evidence: {
+    californiaModular: {
+      sourceTitle: "California Redefines State Technology Procurement",
+      publisher: "California Department of Technology",
+      supported:
+        "The source describes breaking large systems into modules, the ability to change course and participation by smaller suppliers.",
+      unsupported:
+        "It does not identify a causal cost or duration effect for a ProcuraCost scenario.",
+      population: "California state-government technology procurement",
+      assumption:
+        "The example supports a qualitative mechanism. It does not set a numerical range.",
+    },
+    oecdRvul: {
+      sourceTitle:
+        "Lessons learnt from the implementation of the pilot projects of strategic procurement: Public Procurement in Lithuania",
+      publisher: "OECD",
+      supported:
+        "The RVUL example describes almost a year of work to define the problem and prepare a market consultation.",
+      unsupported:
+        "It does not estimate a cost, saving or universal duration for discovery work.",
+      population:
+        "An innovation-procurement pilot at Republican Vilnius University Hospital in Lithuania",
+      assumption:
+        "The duration of the specific pilot is not transferred to scenario maps as a calibration.",
+    },
+    uzpConsultation: {
+      sourceTitle: "Preliminary market consultation",
+      publisher: "Polish Public Procurement Office",
+      supported:
+        "The source describes consultation as a way to learn about technical, economic and organisational solutions before a procedure.",
+      unsupported:
+        "It does not report the effect of consultation on cost, duration or the outcome of a particular procedure.",
+      population:
+        "Contracting authorities and suppliers within Polish public procurement law",
+      assumption:
+        "The source establishes a qualitative mechanism, not an economic parameter value.",
+    },
+    ecInnovation: {
+      sourceTitle: "Guidance on Innovation Procurement",
+      publisher: "European Commission",
+      supported:
+        "The guidance describes practical innovation-procurement tools, including market consultation and access to solutions available from the market.",
+      unsupported:
+        "The guidance is not a legally binding interpretation and does not calibrate a ProcuraCost cost effect.",
+      population: "Public buyers and suppliers operating in the European Union",
+      assumption:
+        "Qualitative examples are not used as the basis of numerical model ranges.",
+    },
+    szucs: {
+      sourceTitle: "Discretion and favoritism in public procurement",
+      publisher: "Journal of the European Economic Association",
+      supported:
+        "The study identifies a price channel of discretion in Hungarian procurement below the HUF 25 million threshold.",
+      unsupported:
+        "It does not identify the effect of workflow design or transfer to every jurisdiction and threshold.",
+      population:
+        "Hungarian public contracts below the invitational-procedure threshold",
+      assumption:
+        "The 2, 6 and 9 per cent stress range is an explicit scenario transfer, not an estimate for Poland.",
+    },
+  },
+  workflow: {
+    defineNeed: "Define the need",
+    engageMarket: "Engage the market",
+    evaluateAndAward: "Evaluate and select",
+    marketConsultation: "Preliminary market consultation",
+    evaluateOffers: "Evaluate tenders",
+    award: "Conclude the contract",
+    steps: {
+      rfi: "Market sounding",
+      rfq: "Request for quotation and tender evaluation",
+      internal_approval: "Internal approval",
+      negotiation: "Contract negotiation",
+      legal_review: "Legal review",
+      signing: "Contract signing",
+      needs_analysis: "Needs analysis and preliminary market consultation",
+      procurement_documents: "Prepare procurement documents",
+      bid_evaluation: "Tender evaluation",
+      clarifications: "Tender clarifications",
+      award_committee: "Award committee",
+      contract_signing: "Contract signing and registration",
+      requirements: "Requirements and market sounding",
+      evaluation: "Evaluation, negotiation and selection",
+      approval: "Approval",
+      contract: "Prepare the contract",
+      business_case: "Business case and CAPEX budget",
+      technical_spec: "Technical specification",
+      capex_committee: "CAPEX committee",
+      vendor_selection: "Supplier selection and evaluation",
+      final_approval: "Final board approval",
+      problem_framing: "Problem definition",
+      market_codesign: "Co-design with the market",
+      rework_round: "Re-scoping round",
+      need_identification: "Identify the need",
+      catalog_selection: "Catalog selection",
+      po_approval: "Purchase-order approval",
+      mrp_trigger: "MRP trigger",
+      po_generation: "Purchase-order generation and verification",
+      goods_receipt: "Goods receipt confirmation",
+    },
+    legal: {
+      pzpOpen: {
+        bidSubmission: "Mandatory tender-submission period",
+        standstill: "Mandatory standstill before contract conclusion",
+      },
+    },
+  },
+  reasons: {
+    bypassNotMonetized:
+      "Bypass is not monetised without an observed or user-supplied rate.",
+  },
+  validation: {
+    missingField: "A required calculator-state field is missing.",
+    invalidSchemaVersion: "The link schema version is not supported.",
+    invalidModelVersion: "The link model version is not supported.",
+    invalidCalibrationId: "The link calibration identifier is not supported.",
+    unknownScenario: "The scenario identifier is not in the model 2.3 registry.",
+    unknownBoundary: "The legal and governance boundary identifier is unknown.",
+    unknownProcedure: "The procedure-family identifier is unknown.",
+    unknownArchetype: "The purchase-archetype identifier is unknown.",
+    unknownExecutionChannel: "The purchase execution-channel identifier is unknown.",
+    unknownSystemSupport: "The system-support identifier is unknown.",
+    unknownWorkflowDesign: "The workflow-design identifier is unknown.",
+    unknownContractDesign: "The contract-design identifier is unknown.",
+    axisMismatch: "The link axes do not match the selected scenario.",
+    legacyMissingScenario: "The legacy link has no scenario identifier.",
+    legacyUnknownScenario: "The legacy link refers to an unknown scenario.",
+    legacyCustomScenario:
+      "A legacy custom scenario cannot be reconstructed without a confirmed process map.",
+    legacyConfirmationRequired:
+      "Part of the legacy link requires explicit confirmation before calculation.",
+  },
+};
+
+export const modelV2T = { pl: modelV2Pl, en: modelV2En } as const;
