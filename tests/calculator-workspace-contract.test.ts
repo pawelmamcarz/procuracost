@@ -12,7 +12,10 @@ import {
   processMapIssueFromEngine,
   submitCalculatorWorkspace,
 } from "@/components/calculator-v2/workspace-validation";
-import { bootstrapCalculatorUrl } from "@/components/calculator-v2/url-bootstrap";
+import {
+  adaptLegacyCalculatorBootstrap,
+  bootstrapCalculatorUrl,
+} from "@/components/calculator-v2/url-bootstrap";
 import { calculatorV2T } from "@/lib/i18n";
 import {
   createScenarioDraft,
@@ -52,6 +55,46 @@ function issueCodes(state: CalculatorWorkspaceState): string[] {
   return deriveCalculatorWorkspaceValidation(state).issues.map(
     ({ code }) => code
   );
+}
+
+function exactFleetLegacyParams(): URLSearchParams {
+  return new URLSearchParams({
+    sid: "fleet",
+    pt: "private_formal",
+    tl: "partial_erp",
+    cv: "5000000",
+    tco: "2",
+    dur: "2",
+    dci: "5000",
+    rc: "150000",
+    bae: "500000",
+    sh: "1:900,3:800,1:1200,1:900,1:1500,1:2500",
+  });
+}
+
+function readyExactLegacy() {
+  const bootstrap = bootstrapCalculatorUrl(exactFleetLegacyParams());
+  if (
+    bootstrap.origin !== "legacy" ||
+    bootstrap.adaptation.status !== "ready"
+  ) {
+    throw new Error("Expected exact ready legacy fixture");
+  }
+  return bootstrap.adaptation;
+}
+
+function readyPartialLegacy() {
+  const params = exactFleetLegacyParams();
+  params.set("cv", "5100000");
+  const bootstrap = bootstrapCalculatorUrl(params);
+  if (bootstrap.origin !== "legacy") {
+    throw new Error("Expected partial legacy fixture");
+  }
+  const adaptation = adaptLegacyCalculatorBootstrap(bootstrap.result, true);
+  if (adaptation.status !== "ready") {
+    throw new Error("Expected confirmed ready partial fixture");
+  }
+  return adaptation;
 }
 
 describe("calculator workspace validation and submit contract", () => {
@@ -233,6 +276,155 @@ describe("calculator workspace validation and submit contract", () => {
       deriveCalculatorWorkspaceValidation(migrationState).canSubmit
     ).toBe(false);
   });
+
+  it.each([
+    ["exact", readyExactLegacy],
+    ["partial", readyPartialLegacy],
+  ] as const)(
+    "blocks a ready %s legacy adaptation when its audited gate is missing",
+    (_status, readyMigration) => {
+      const migration = readyMigration();
+      const state = createCalculatorWorkspaceState(migration.draft, {
+        urlOrigin: "legacy",
+        migration,
+      });
+
+      const validation = deriveCalculatorWorkspaceValidation(state);
+      const submitted = submitCalculatorWorkspace(state);
+
+      expect(validation.canSubmit).toBe(false);
+      expect(validation.issues).toContainEqual(
+        expect.objectContaining({
+          source: "workspace-source",
+          code: "incoherent_workspace_source",
+        })
+      );
+      expect(submitted.status).toBe("blocked");
+      expect(submitted.state.record).toBeNull();
+    }
+  );
+
+  it.each([
+    [
+      "empty origin with a v2 gate",
+      () => {
+        const result = decodeV2CalculatorParams(
+          encodeV2CalculatorState(stateForScenarioV2("fleet_tco_reframing"))
+        );
+        return createCalculatorWorkspaceState(
+          createScenarioDraft("fleet_tco_reframing"),
+          {
+            urlOrigin: "empty",
+            urlGate: { kind: "v2_url", result },
+          }
+        );
+      },
+    ],
+    [
+      "v2 origin without a v2 gate",
+      () =>
+        createCalculatorWorkspaceState(
+          createScenarioDraft("fleet_tco_reframing"),
+          { urlOrigin: "v2" }
+        ),
+    ],
+    [
+      "v2 origin with a legacy adaptation and gate",
+      () => {
+        const migration = readyExactLegacy();
+        return createCalculatorWorkspaceState(migration.draft, {
+          urlOrigin: "v2",
+          urlGate: migration.gate,
+          migration,
+        });
+      },
+    ],
+    [
+      "v2 origin with a malformed runtime v2 result",
+      () =>
+        createCalculatorWorkspaceState(
+          createScenarioDraft("fleet_tco_reframing"),
+          {
+            urlOrigin: "v2",
+            urlGate: {
+              kind: "v2_url",
+              result: { status: "runtime_unknown" },
+            } as unknown as NonNullable<CalculatorWorkspaceState["urlGate"]>,
+          }
+        ),
+    ],
+  ] as const)("fails closed for %s", (_label, stateFactory) => {
+    const state = stateFactory();
+
+    expect(issueCodes(state)).toContain("incoherent_workspace_source");
+    expect(submitCalculatorWorkspace(state).status).toBe("blocked");
+  });
+
+  it("requires a ready legacy adaptation to match its gate and fresh adapter result", () => {
+    const migration = readyExactLegacy();
+    const state = createCalculatorWorkspaceState(migration.draft, {
+      urlOrigin: "legacy",
+      urlGate: migration.gate,
+      migration,
+    });
+    if (state.migration?.status !== "ready") {
+      throw new Error("Expected ready state migration");
+    }
+    state.migration.audit.retainedLegacyInputs.contractValue += 1;
+
+    expect(issueCodes(state)).toContain("incoherent_workspace_source");
+    expect(submitCalculatorWorkspace(state).status).toBe("blocked");
+  });
+
+  it("keeps a runtime-forged blocked legacy source non-calculable", () => {
+    const bootstrap = bootstrapCalculatorUrl(
+      new URLSearchParams({ sid: "not-registered" })
+    );
+    if (bootstrap.origin !== "legacy") {
+      throw new Error("Expected blocked legacy fixture");
+    }
+    const migration = {
+      ...structuredClone(bootstrap.adaptation),
+      issues: [],
+    } as typeof bootstrap.adaptation;
+    const state = createCalculatorWorkspaceState(
+      createScenarioDraft("fleet_tco_reframing"),
+      {
+        urlOrigin: "legacy",
+        migration,
+      }
+    );
+
+    expect(issueCodes(state)).toContain("incoherent_workspace_source");
+    expect(submitCalculatorWorkspace(state).status).toBe("blocked");
+  });
+
+  it.each(["legal_wait", "runtime_unknown"])(
+    "blocks an unlocked runtime draft step kind %s",
+    (kind) => {
+      const draft = createScenarioDraft("fleet_tco_reframing");
+      const step = draft.alternatives.formalSequential.workflowDesign.steps.find(
+        (candidate) => !candidate.lockedLegalProvenance
+      );
+      if (!step) throw new Error("Expected an editable step");
+      step.kind = kind as typeof step.kind;
+      const state = createCalculatorWorkspaceState(draft);
+
+      const validation = deriveCalculatorWorkspaceValidation(state);
+
+      expect(validation.canSubmit).toBe(false);
+      expect(validation.issues).toContainEqual(
+        expect.objectContaining({
+          source: "editor",
+          code: "invalid_step_kind",
+          alternativeId: "formalSequential",
+          stepId: step.id,
+          field: "kind",
+        })
+      );
+      expect(submitCalculatorWorkspace(state).status).toBe("blocked");
+    }
+  );
 
   it("permits a valid native state and atomically creates one decision record with reveal focus", () => {
     const state = createCalculatorWorkspaceState(

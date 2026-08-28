@@ -5,15 +5,18 @@ import {
   assertValidCalibratedValue,
   buildCalculationInputFromDraft,
   buildDecisionRecordV2,
+  createScenarioDraftFromLegacyMigration,
   resolveLegalWaits,
   validateProcessMap,
   type AlternativeId,
   type CalibratedValue,
   type ProcessMapValidationCode,
   type ProcessMapValidationIssue,
+  type LegacyMigrationResult,
 } from "@/lib/model-v2";
 
 import {
+  isEditableProcessStepKind,
   USER_DEFINED_STEP_LABEL_KEY,
   type CalculatorWorkspaceState,
 } from "./editor-state";
@@ -22,11 +25,13 @@ import type {
   ContextUiIssue,
   CustomLabelUiIssue,
   DesignUiIssue,
+  EditorUiIssue,
   MigrationUiIssue,
   ProcessMapUiIssue,
   RangeUiIssue,
   SubmitUiIssue,
   UrlUiIssue,
+  WorkspaceSourceUiIssue,
 } from "./issues";
 
 export const PROCESS_MAP_VALIDATION_CODES = [
@@ -161,7 +166,8 @@ function collectRangeIssues(state: CalculatorWorkspaceState): RangeUiIssue[] {
 
 function collectUrlIssues(state: CalculatorWorkspaceState): UrlUiIssue[] {
   if (state.urlGate?.kind !== "v2_url") return [];
-  return state.urlGate.result.status === "invalid"
+  return state.urlGate.result.status === "invalid" &&
+    Array.isArray(state.urlGate.result.validationErrors)
     ? state.urlGate.result.validationErrors.map((issue) => ({
         source: "url",
         code: issue.code,
@@ -175,13 +181,139 @@ function collectUrlIssues(state: CalculatorWorkspaceState): UrlUiIssue[] {
 function collectMigrationIssues(
   state: CalculatorWorkspaceState
 ): MigrationUiIssue[] {
-  if (!state.migration || state.migration.status === "ready") return [];
+  if (
+    !state.migration ||
+    state.migration.status === "ready" ||
+    !Array.isArray(state.migration.issues)
+  ) {
+    return [];
+  }
   return state.migration.issues.map((issue) => ({
     source: "migration",
     code: issue.code,
     field: issue.field,
     messageKey: issue.messageKey,
   }));
+}
+
+function workspaceSourceIssue(): WorkspaceSourceUiIssue {
+  return {
+    source: "workspace-source",
+    code: "incoherent_workspace_source",
+    messageKey: "calculatorV2.validation.incoherentWorkspaceSource",
+  };
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function hasGateKind<Kind extends "v2_url" | "legacy_migration">(
+  value: unknown,
+  kind: Kind
+): value is { kind: Kind; result: Record<string, unknown> } {
+  return isRecord(value) && value.kind === kind && isRecord(value.result);
+}
+
+function hasV2GateShape(value: unknown): boolean {
+  if (!hasGateKind(value, "v2_url")) return false;
+  const result = value.result;
+  if (!isRecord(result) || !Array.isArray(result.validationErrors)) {
+    return false;
+  }
+  if (result.status === "valid") {
+    return (
+      result.canCalculate === true &&
+      result.validationErrors.length === 0 &&
+      isRecord(result.state)
+    );
+  }
+  return result.status === "invalid" && result.canCalculate === false;
+}
+
+function sameRuntimeContract(left: unknown, right: unknown): boolean {
+  try {
+    return JSON.stringify(left) === JSON.stringify(right);
+  } catch {
+    return false;
+  }
+}
+
+function collectWorkspaceSourceIssues(
+  state: CalculatorWorkspaceState
+): WorkspaceSourceUiIssue[] {
+  if (state.urlOrigin === "empty") {
+    return state.urlGate === undefined && state.migration === null
+      ? []
+      : [workspaceSourceIssue()];
+  }
+
+  if (state.urlOrigin === "v2") {
+    return hasV2GateShape(state.urlGate) && state.migration === null
+      ? []
+      : [workspaceSourceIssue()];
+  }
+
+  if (state.urlOrigin !== "legacy" || !isRecord(state.migration)) {
+    return [workspaceSourceIssue()];
+  }
+  if (state.migration.status === "blocked") {
+    return state.urlGate === undefined &&
+      Array.isArray(state.migration.issues) &&
+      state.migration.issues.length > 0
+      ? []
+      : [workspaceSourceIssue()];
+  }
+  if (state.migration.status !== "ready") {
+    return [workspaceSourceIssue()];
+  }
+  if (!hasGateKind(state.urlGate, "legacy_migration")) {
+    return [workspaceSourceIssue()];
+  }
+
+  try {
+    const gate = state.urlGate as Extract<
+      NonNullable<CalculatorWorkspaceState["urlGate"]>,
+      { kind: "legacy_migration" }
+    >;
+    const adaptation = createScenarioDraftFromLegacyMigration(
+      gate.result as LegacyMigrationResult,
+      gate.confirmed === true
+    );
+    return adaptation.status === "ready" &&
+      sameRuntimeContract(state.migration, adaptation) &&
+      sameRuntimeContract(gate, adaptation.gate)
+      ? []
+      : [workspaceSourceIssue()];
+  } catch {
+    return [workspaceSourceIssue()];
+  }
+}
+
+function collectStepKindIssues(
+  state: CalculatorWorkspaceState
+): EditorUiIssue[] {
+  return ALTERNATIVE_IDS.flatMap((alternativeId) =>
+    state.draft.alternatives[alternativeId].workflowDesign.steps.flatMap(
+      (step): EditorUiIssue[] => {
+        const validKind = step.lockedLegalProvenance
+          ? step.kind === "legal_wait"
+          : isEditableProcessStepKind(step.kind);
+        return validKind
+          ? []
+          : [
+              {
+                source: "editor",
+                code: "invalid_step_kind",
+                messageKey: "calculatorV2.validation.invalidStepKind",
+                alternativeId,
+                stepId: step.id,
+                field: "kind",
+              },
+            ];
+      }
+    )
+  );
 }
 
 function collectDesignIssues(state: CalculatorWorkspaceState): DesignUiIssue[] {
@@ -259,11 +391,13 @@ export function deriveCalculatorWorkspaceValidation(
 ): CalculatorWorkspaceValidation {
   const issues: CalculatorUiIssue[] = [
     ...state.issues,
+    ...collectWorkspaceSourceIssues(state),
     ...collectUrlIssues(state),
     ...collectMigrationIssues(state),
     ...collectRangeIssues(state),
     ...collectDesignIssues(state),
     ...collectCustomLabelIssues(state),
+    ...collectStepKindIssues(state),
   ];
 
   let expectedLegalWaits: ReturnType<typeof resolveLegalWaits> | undefined;
@@ -379,6 +513,8 @@ export function calculatorIssueCopy(
       return validation.incompatibleWorkflowDesign;
     case "incompatible_contract_design":
       return validation.incompatibleContractDesign;
+    case "incoherent_workspace_source":
+      return validation.incoherentWorkspaceSource;
     case "calculation_rejected":
       return validation.calculationRejected;
   }

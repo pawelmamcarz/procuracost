@@ -175,6 +175,8 @@ const calculatorV2Pl = {
       "Konstrukcja umowy nie należy do tej ścieżki i scenariusza bazowego.",
     calculationRejected:
       "Stan porównania nie spełnia kontraktu obliczeniowego modelu 2.3.",
+    incoherentWorkspaceSource:
+      "Źródło stanu kalkulatora jest niespójne. Otwórz ponownie pierwotny link albo wybierz scenariusz bazowy.",
     processMap: {
       duplicate_step:
         "Dwa kroki mają ten sam identyfikator. Nadaj każdemu krokowi odrębną tożsamość.",
@@ -224,6 +226,8 @@ const calculatorV2En = {
       "The contract design does not belong to this alternative and base scenario.",
     calculationRejected:
       "The comparison state does not satisfy the model 2.3 calculation contract.",
+    incoherentWorkspaceSource:
+      "The calculator source state is inconsistent. Reopen the original link or select a base scenario.",
     processMap: {
       duplicate_step:
         "Two steps use the same identifier. Give each step a distinct identity.",

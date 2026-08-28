@@ -19,6 +19,23 @@ import type { CalculatorUrlOrigin } from "./url-bootstrap";
 
 export const USER_DEFINED_STEP_LABEL_KEY = "workflow.steps.userDefined";
 
+export const EDITABLE_PROCESS_STEP_KINDS = [
+  "activity",
+  "approval",
+  "milestone",
+] as const satisfies readonly Exclude<ProcessMapStepKind, "legal_wait">[];
+
+export function isEditableProcessStepKind(
+  value: unknown
+): value is (typeof EDITABLE_PROCESS_STEP_KINDS)[number] {
+  return (
+    typeof value === "string" &&
+    EDITABLE_PROCESS_STEP_KINDS.includes(
+      value as (typeof EDITABLE_PROCESS_STEP_KINDS)[number]
+    )
+  );
+}
+
 export type CalculatorFocusTarget =
   | { kind: "step-node"; alternativeId: AlternativeId; stepId: string }
   | { kind: "step-label"; alternativeId: AlternativeId; stepId: string }
@@ -433,7 +450,7 @@ export function calculatorWorkspaceReducer(
         action.stepId
       );
       if ("source" in current) return rejectEditorAction(state, current);
-      if (action.kind === "legal_wait") {
+      if (!isEditableProcessStepKind(action.kind)) {
         return rejectEditorAction(
           state,
           editorIssue(

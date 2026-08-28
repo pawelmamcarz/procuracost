@@ -355,28 +355,31 @@ describe("calculator v2 editor state", () => {
     );
   });
 
-  it("rejects legal_wait as a user-editable step kind", () => {
-    const initial = createCalculatorWorkspaceState(
-      createScenarioDraft("fleet_tco_reframing")
-    );
-    const step = firstEditableStep(initial.draft);
+  it.each(["legal_wait", "runtime_unknown"])(
+    "rejects runtime step kind %s as user-editable",
+    (kind) => {
+      const initial = createCalculatorWorkspaceState(
+        createScenarioDraft("fleet_tco_reframing")
+      );
+      const step = firstEditableStep(initial.draft);
 
-    const next = calculatorWorkspaceReducer(initial, {
-      type: "edit-step-kind",
-      alternativeId: "formalSequential",
-      stepId: step.id,
-      kind: "legal_wait",
-    } as unknown as CalculatorWorkspaceAction);
-
-    expect(next.draft).toEqual(initial.draft);
-    expect(next.issues).toContainEqual(
-      expect.objectContaining({
-        source: "editor",
-        code: "invalid_step_kind",
+      const next = calculatorWorkspaceReducer(initial, {
+        type: "edit-step-kind",
+        alternativeId: "formalSequential",
         stepId: step.id,
-      })
-    );
-  });
+        kind,
+      } as unknown as CalculatorWorkspaceAction);
+
+      expect(next.draft).toEqual(initial.draft);
+      expect(next.issues).toContainEqual(
+        expect.objectContaining({
+          source: "editor",
+          code: "invalid_step_kind",
+          stepId: step.id,
+        })
+      );
+    }
+  );
 
   it("does not expose a drag-only command", () => {
     expect(CALCULATOR_WORKSPACE_ACTION_TYPES).not.toContain("drag-step");

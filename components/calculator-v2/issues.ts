@@ -90,6 +90,12 @@ export interface SubmitUiIssue extends IssueLocation {
   messageKey: "calculatorV2.validation.calculationRejected";
 }
 
+export interface WorkspaceSourceUiIssue extends IssueLocation {
+  source: "workspace-source";
+  code: "incoherent_workspace_source";
+  messageKey: "calculatorV2.validation.incoherentWorkspaceSource";
+}
+
 export type CalculatorUiIssue =
   | EditorUiIssue
   | ContextUiIssue
@@ -99,4 +105,5 @@ export type CalculatorUiIssue =
   | RangeUiIssue
   | CustomLabelUiIssue
   | DesignUiIssue
+  | WorkspaceSourceUiIssue
   | SubmitUiIssue;
