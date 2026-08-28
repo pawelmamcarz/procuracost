@@ -106,6 +106,59 @@ describe("model 2.3 pure PDF copy", () => {
     );
   });
 
+  it("preserves an ordinary step label key and explicit null legal lock", () => {
+    const copy = buildPdfCopy(fleetRecord(), "en", EXPORTED_AT);
+    const step = copy.alternatives[0].workflowSteps.find(
+      ({ label }) => label === "Market sounding"
+    );
+
+    expect(step).toMatchObject({
+      labelKey: "workflow.steps.rfi",
+      locked: false,
+      lockedLegalProvenance: null,
+    });
+  });
+
+  it("clones the complete locked PZP step provenance in isolation", () => {
+    const record = buildDecisionRecordV2(
+      createScenarioDraft("public_it_open_with_market_consultation")
+    );
+    const copy = buildPdfCopy(record, "en", EXPORTED_AT);
+    const sourceStep = record.alternatives.formalSequential.workflow.steps.find(
+      ({ lockedLegalProvenance }) =>
+        lockedLegalProvenance?.ruleId === "pl-pzp-art-138-1"
+    );
+    const copiedStep = copy.alternatives[0].workflowSteps.find(
+      ({ id }) => id === sourceStep?.id
+    );
+
+    expect(copiedStep).toMatchObject({
+      labelKey: "workflow.legal.pzpOpen.bidSubmission",
+      locked: true,
+      lockedLegalProvenance: {
+        legalRulesetId: "pl-pzp-2026-2027",
+        ruleId: "pl-pzp-art-138-1",
+        provision: "PZP art. 138 ust. 1",
+        initiatedOn: "2026-08-28",
+        lockedActiveDays: 0,
+        lockedQueueDays: 35,
+      },
+    });
+    expect(copiedStep?.lockedLegalProvenance).not.toBe(
+      sourceStep?.lockedLegalProvenance
+    );
+
+    if (!sourceStep?.lockedLegalProvenance || !copiedStep?.lockedLegalProvenance) {
+      throw new Error("Expected locked provenance in source and PDF copy");
+    }
+    sourceStep.lockedLegalProvenance.provision = "mutated source";
+    expect(copiedStep.lockedLegalProvenance.provision).toBe(
+      "PZP art. 138 ust. 1"
+    );
+    copiedStep.lockedLegalProvenance.ruleId = "mutated copy";
+    expect(sourceStep.lockedLegalProvenance.ruleId).toBe("pl-pzp-art-138-1");
+  });
+
   it("states positive, negative, zero and crossing-zero comparisons neutrally", () => {
     expect(buildPdfCopy(recordWithComparison(1250, 500, 2000), "en", EXPORTED_AT).comparisonSummary).toContain(
       "costs 1,250.00 PLN more"
@@ -156,6 +209,7 @@ describe("model 2.3 pure PDF copy", () => {
 
     expect(root).toEqual({
       id: "fixture.root",
+      labelKey: "workflow.steps.fixture_root",
       label: "Scope root",
       userLabel: "Scope root",
       kind: "activity",
@@ -179,6 +233,7 @@ describe("model 2.3 pure PDF copy", () => {
         high: "30.00 PLN",
       },
       locked: false,
+      lockedLegalProvenance: null,
       criticalPathCases: ["low", "central", "high"],
     });
   });

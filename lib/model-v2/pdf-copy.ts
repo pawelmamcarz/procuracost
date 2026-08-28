@@ -35,6 +35,7 @@ export interface PdfContextCopy extends PdfLabelValue {
 
 export interface PdfWorkflowStepCopy {
   id: string;
+  labelKey: DecisionProcessStep["labelKey"];
   label: string;
   userLabel: string | null;
   kind: string;
@@ -48,6 +49,7 @@ export interface PdfWorkflowStepCopy {
   }>;
   nonLabourCost: PdfRangeCopy;
   locked: boolean;
+  lockedLegalProvenance: DecisionProcessStep["lockedLegalProvenance"];
   criticalPathCases: DecisionProcessStep["criticalPathCases"];
 }
 
@@ -316,6 +318,7 @@ export function buildPdfCopy(
       },
       workflowSteps: alternative.workflow.steps.map((step) => ({
         id: step.id,
+        labelKey: step.labelKey,
         label: step.userLabel ?? lookupModelCopy(locale, step.labelKey),
         userLabel: step.userLabel,
         kind: step.kind,
@@ -329,6 +332,9 @@ export function buildPdfCopy(
         })),
         nonLabourCost: formatRange(step.nonLabourCost, locale, true),
         locked: step.lockedLegalProvenance !== null,
+        lockedLegalProvenance: step.lockedLegalProvenance
+          ? { ...step.lockedLegalProvenance }
+          : null,
         criticalPathCases: [...step.criticalPathCases],
       })),
     } satisfies PdfAlternativeCopy;
