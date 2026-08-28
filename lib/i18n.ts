@@ -731,6 +731,9 @@ const researchExportV2Pl = {
     path: "Ścieżka danych",
     evidenceIds: "Identyfikatory dowodów",
     constructs: "Konstrukty",
+    predecessorIds: "Identyfikatory poprzedników",
+    criticalPathCases: "Warianty ścieżki krytycznej",
+    stepKind: "Rodzaj kroku",
   },
   axes: {
     legalGovernanceBoundary: "Ramy prawne i ład zakupowy",
@@ -908,6 +911,9 @@ const researchExportV2En = {
     path: "Data path",
     evidenceIds: "Evidence identifiers",
     constructs: "Constructs",
+    predecessorIds: "Predecessor identifiers",
+    criticalPathCases: "Critical-path cases",
+    stepKind: "Step kind",
   },
   axes: {
     legalGovernanceBoundary: "Legal and governance boundary",

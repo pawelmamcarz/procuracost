@@ -382,6 +382,26 @@ export function buildResearchCsv(
     for (const step of alternative.workflow.steps) {
       const stepLabel = step.userLabel ?? lookupModelCopy(locale, step.labelKey);
       rows.push(
+        csvRow(locale, {
+          section: "workflow_step",
+          record_id: step.id,
+          alternative_id: alternativeId,
+          field_id: "predecessorIds",
+          value: step.predecessorIds.join(";"),
+          status: step.kind,
+          label_key: step.labelKey,
+          localized_label: tx.fields.predecessorIds,
+        }),
+        csvRow(locale, {
+          section: "workflow_step",
+          record_id: step.id,
+          alternative_id: alternativeId,
+          field_id: "criticalPathCases",
+          value: step.criticalPathCases.join(";"),
+          status: step.kind,
+          label_key: step.labelKey,
+          localized_label: tx.fields.criticalPathCases,
+        }),
         calibratedCsvRow(
           locale,
           "workflow_step",
@@ -757,9 +777,17 @@ export function buildResearchMarkdown(
     ...ALTERNATIVE_IDS.flatMap((alternativeId) => [
       `**${tx.alternatives[alternativeId]}**`,
       "",
+      `| ${tx.fields.field} | ${tx.fields.value} | ${tx.fields.stepKind} | ${tx.fields.predecessorIds} | ${tx.fields.criticalPathCases} |`,
+      "|---|---|---|---|---|",
       ...record.alternatives[alternativeId].workflow.steps.map((step) => {
         const label = step.userLabel ?? lookupModelCopy(locale, step.labelKey);
-        return `- ${markdownCell(label)} (\`${step.id}\`)`;
+        const predecessorIds = step.predecessorIds.length
+          ? step.predecessorIds.map((id) => `\`${markdownCell(id)}\``).join("; ")
+          : tx.words.notApplicable;
+        const criticalPathCases = step.criticalPathCases.length
+          ? step.criticalPathCases.join("; ")
+          : tx.words.notApplicable;
+        return `| ${markdownCell(label)} | \`${markdownCell(step.id)}\` | ${step.kind} | ${predecessorIds} | ${criticalPathCases} |`;
       }),
       "",
     ]),

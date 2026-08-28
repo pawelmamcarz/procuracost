@@ -6,6 +6,7 @@ import {
 } from "@/lib/model-v2/pdf-copy";
 import { buildDecisionRecordV2 } from "@/lib/model-v2/decision-record";
 import { createScenarioDraft } from "@/lib/model-v2/scenarios";
+import { decisionRecordWithTopology } from "@/tests/fixtures/branched-decision-record-v2";
 
 const EXPORTED_AT = "2026-08-28T14:05:06.000Z";
 
@@ -141,6 +142,74 @@ describe("model 2.3 pure PDF copy", () => {
     ).toMatchObject({
       label: "Catalogue selection",
     });
+  });
+
+  it("exposes every cost, topology, authorship and critical-path field for a workflow step", () => {
+    const copy = buildPdfCopy(
+      decisionRecordWithTopology("branched"),
+      "en",
+      EXPORTED_AT
+    );
+    const root = copy.alternatives[0].workflowSteps.find(
+      ({ id }) => id === "fixture.root"
+    );
+
+    expect(root).toEqual({
+      id: "fixture.root",
+      label: "Scope root",
+      userLabel: "Scope root",
+      kind: "activity",
+      predecessors: [],
+      predecessorIds: [],
+      activeDays: { low: "1.00", central: "1.00", high: "1.00" },
+      queueDays: { low: "0.50", central: "0.50", high: "0.50" },
+      roleHours: [
+        {
+          roleId: "buyer",
+          hours: { low: "1.00", central: "2.00", high: "3.00" },
+        },
+        {
+          roleId: "lawyer",
+          hours: { low: "0.50", central: "0.50", high: "0.50" },
+        },
+      ],
+      nonLabourCost: {
+        low: "10.00 PLN",
+        central: "20.00 PLN",
+        high: "30.00 PLN",
+      },
+      locked: false,
+      criticalPathCases: ["low", "central", "high"],
+    });
+  });
+
+  it("keeps same-step branched and sequential workflow maps distinguishable in PDF copy", () => {
+    const branched = buildPdfCopy(
+      decisionRecordWithTopology("branched"),
+      "en",
+      EXPORTED_AT
+    ).alternatives[0].workflowSteps;
+    const sequential = buildPdfCopy(
+      decisionRecordWithTopology("sequential"),
+      "en",
+      EXPORTED_AT
+    ).alternatives[0].workflowSteps;
+
+    expect(branched.find(({ id }) => id === "fixture.finish")).toMatchObject({
+      predecessorIds: ["fixture.long", "fixture.short"],
+      criticalPathCases: ["low", "central", "high"],
+    });
+    expect(branched.find(({ id }) => id === "fixture.long")).toMatchObject({
+      criticalPathCases: ["central"],
+    });
+    expect(branched.find(({ id }) => id === "fixture.short")).toMatchObject({
+      criticalPathCases: ["low", "high"],
+    });
+    expect(sequential.find(({ id }) => id === "fixture.finish")).toMatchObject({
+      predecessorIds: ["fixture.short"],
+      criticalPathCases: ["low", "central", "high"],
+    });
+    expect(sequential).not.toEqual(branched);
   });
 
   it("blocks PDF copy and filenames for unconfirmed or ambiguous migration", () => {

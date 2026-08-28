@@ -7,6 +7,7 @@ import {
 import type { CalibratedValue, RangeValues } from "./calibrated-value";
 import type {
   DecisionAxisRecord,
+  DecisionProcessStep,
   DecisionRecordMigrationMetadata,
   DecisionRecordV2,
 } from "./decision-record";
@@ -35,11 +36,19 @@ export interface PdfContextCopy extends PdfLabelValue {
 export interface PdfWorkflowStepCopy {
   id: string;
   label: string;
+  userLabel: string | null;
   kind: string;
   predecessors: string[];
+  predecessorIds: string[];
   activeDays: PdfRangeCopy;
   queueDays: PdfRangeCopy;
+  roleHours: Array<{
+    roleId: string;
+    hours: PdfRangeCopy;
+  }>;
+  nonLabourCost: PdfRangeCopy;
   locked: boolean;
+  criticalPathCases: DecisionProcessStep["criticalPathCases"];
 }
 
 export interface PdfAlternativeCopy {
@@ -308,11 +317,19 @@ export function buildPdfCopy(
       workflowSteps: alternative.workflow.steps.map((step) => ({
         id: step.id,
         label: step.userLabel ?? lookupModelCopy(locale, step.labelKey),
+        userLabel: step.userLabel,
         kind: step.kind,
         predecessors: [...step.predecessorIds],
+        predecessorIds: [...step.predecessorIds],
         activeDays: formatRange(step.activeDays, locale, false),
         queueDays: formatRange(step.queueDays, locale, false),
+        roleHours: Object.entries(step.roleHours).map(([roleId, hours]) => ({
+          roleId,
+          hours: formatRange(hours, locale, false),
+        })),
+        nonLabourCost: formatRange(step.nonLabourCost, locale, true),
         locked: step.lockedLegalProvenance !== null,
+        criticalPathCases: [...step.criticalPathCases],
       })),
     } satisfies PdfAlternativeCopy;
   });

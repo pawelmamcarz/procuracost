@@ -9,6 +9,7 @@ import {
   buildResearchMarkdown,
   researchExportBaseName,
 } from "@/lib/research-export";
+import { decisionRecordWithTopology } from "@/tests/fixtures/branched-decision-record-v2";
 
 const EXPORTED_AT = "2026-08-28T14:05:06.000Z";
 
@@ -208,6 +209,48 @@ describe("model 2.3 pure research exports", () => {
     expect(markdown).toContain("Catalogue call-off control");
     expect(markdown).toContain("Catalogue selection");
     expect(markdown).not.toMatch(/\bcatalog\b/i);
+  });
+
+  it("serialises predecessor IDs and case-specific critical paths in stable CSV rows", () => {
+    const csv = buildResearchCsv(decisionRecordWithTopology("branched"), "en");
+
+    expect(csv).toContain(
+      "workflow_step,fixture.finish,formalSequential,predecessorIds,fixture.long;fixture.short,,,,milestone,,,,workflow.steps.fixture_finish,Predecessor identifiers,en\r\n"
+    );
+    expect(csv).toContain(
+      "workflow_step,fixture.long,formalSequential,criticalPathCases,central,,,,approval,,,,workflow.steps.fixture_long,Critical-path cases,en\r\n"
+    );
+    expect(csv).toContain(
+      "workflow_step,fixture.short,formalSequential,criticalPathCases,low;high,,,,activity,,,,workflow.steps.fixture_short,Critical-path cases,en\r\n"
+    );
+  });
+
+  it("keeps same-step branched and sequential workflow maps distinguishable in Markdown", () => {
+    const branched = buildResearchMarkdown(
+      decisionRecordWithTopology("branched"),
+      "en"
+    );
+    const sequential = buildResearchMarkdown(
+      decisionRecordWithTopology("sequential"),
+      "en"
+    );
+
+    expect(branched).toContain(
+      "| Finish | `fixture.finish` | milestone | `fixture.long`; `fixture.short` | low; central; high |"
+    );
+    expect(branched).toContain(
+      "| Long review | `fixture.long` | approval | `fixture.root` | central |"
+    );
+    expect(branched).toContain(
+      "| Variable review | `fixture.short` | activity | `fixture.root` | low; high |"
+    );
+    expect(sequential).toContain(
+      "| Finish | `fixture.finish` | milestone | `fixture.short` | low; central; high |"
+    );
+    expect(sequential).toContain(
+      "| Variable review | `fixture.short` | activity | `fixture.long` | low; central; high |"
+    );
+    expect(sequential).not.toBe(branched);
   });
 
   it("does not reintroduce legacy axes or prescriptive result fields", () => {
