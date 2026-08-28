@@ -9,6 +9,8 @@ Task 5A2 is implemented and verified on `codex/model-2-3`.
 - Commit message: `feat: add model 2.3 process-map workspace`
 - Reviewer-fix commit: `a8974328ed3762eb342128f3591c03876668cd1b`
 - Reviewer-fix message: `fix: harden calculator workspace contracts`
+- Reviewer-fix round 2 commit: `0d99f86b32ab704cb55f85f12a922ee8c48bc494`
+- Reviewer-fix round 2 message: `fix: restore result region focusability`
 - Worktree: `/private/tmp/procuracost-model-2-3`
 
 No public calculator client or route was cut over. No final decision-record
@@ -31,11 +33,13 @@ one `CalculatorResultBoundary` with:
 - `id="decision-record"`;
 - `role="region"`;
 - `aria-labelledby="decision-record-heading"`;
+- `tabIndex={-1}`;
 - one `data-result-reveal="true"` boundary.
 
 The declarative decision-record focus target resolves to the labelled
 `decision-record-heading`, which is programmatically focusable with
-`tabIndex={-1}`. The surrounding article remains the labelled region.
+`tabIndex={-1}`. The surrounding article remains the labelled,
+programmatically focusable region, but is not the reveal target.
 
 The public owner bootstraps the current query after hydration through the
 reviewed URL decoder and `createRenderableCalculatorWorkspaceState()`. Invalid
@@ -189,6 +193,28 @@ Final reviewer-fix focused gate:
 ```text
 Test Files 8 passed (8)
 Tests 114 passed (114)
+exit 0
+```
+
+### Reviewer fix round 2
+
+One static regression first failed because the result article retained its
+stable ID, region role and heading relationship but no longer had
+`tabIndex={-1}`. The minimal fix restored article focusability while keeping
+`calculatorFocusTargetElementId({ kind: "decision-record" })` resolved to the
+separately focusable `decision-record-heading`.
+
+```text
+npm test -- tests/calculator-workspace-ui.test.ts tests/calculator-focus-contract.test.ts
+Test Files 2 passed (2)
+Tests 16 passed (16)
+exit 0
+
+./node_modules/.bin/tsc --noEmit
+exit 0
+
+npm run lint
+eslint
 exit 0
 ```
 
