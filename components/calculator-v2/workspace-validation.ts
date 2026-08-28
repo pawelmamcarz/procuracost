@@ -1,18 +1,23 @@
 import { calculatorV2T, modelV2T, type Lang } from "@/lib/i18n";
 import {
   CONTRACT_DESIGN_REGISTRY,
+  V2_URL_KEYS,
   WORKFLOW_DESIGN_REGISTRY,
   assertValidCalibratedValue,
   buildCalculationInputFromDraft,
   buildDecisionRecordV2,
   createScenarioDraftFromLegacyMigration,
   resolveLegalWaits,
+  stateForScenarioV2,
   validateProcessMap,
   type AlternativeId,
   type CalibratedValue,
   type ProcessMapValidationCode,
   type ProcessMapValidationIssue,
   type LegacyMigrationResult,
+  type ScenarioV2Id,
+  type V2UrlValidationCode,
+  type V2UrlValidationError,
 } from "@/lib/model-v2";
 
 import {
@@ -48,6 +53,29 @@ const ALTERNATIVE_IDS: AlternativeId[] = [
   "formalSequential",
   "adaptiveCompliant",
 ];
+
+const V2_URL_VALIDATION_CODES = [
+  "missing_field",
+  "unsupported_version",
+  "unknown_id",
+  "scenario_mismatch",
+] as const satisfies readonly V2UrlValidationCode[];
+
+const V2_URL_VALIDATION_MESSAGE_KEYS = [
+  "validation.missingField",
+  "validation.invalidSchemaVersion",
+  "validation.invalidModelVersion",
+  "validation.invalidCalibrationId",
+  "validation.unknownScenario",
+  "validation.unknownBoundary",
+  "validation.unknownProcedure",
+  "validation.unknownArchetype",
+  "validation.unknownExecutionChannel",
+  "validation.unknownSystemSupport",
+  "validation.unknownWorkflowDesign",
+  "validation.unknownContractDesign",
+  "validation.axisMismatch",
+] as const;
 
 export interface CalculatorWorkspaceValidation {
   canSubmit: boolean;
@@ -168,13 +196,19 @@ function collectUrlIssues(state: CalculatorWorkspaceState): UrlUiIssue[] {
   if (state.urlGate?.kind !== "v2_url") return [];
   return state.urlGate.result.status === "invalid" &&
     Array.isArray(state.urlGate.result.validationErrors)
-    ? state.urlGate.result.validationErrors.map((issue) => ({
-        source: "url",
-        code: issue.code,
-        field: issue.field,
-        value: issue.value,
-        messageKey: issue.messageKey,
-      }))
+    ? state.urlGate.result.validationErrors.flatMap((issue) =>
+        isV2UrlValidationError(issue)
+          ? [
+              {
+                source: "url" as const,
+                code: issue.code,
+                field: issue.field,
+                value: issue.value,
+                messageKey: issue.messageKey,
+              },
+            ]
+          : []
+      )
     : [];
 }
 
@@ -208,6 +242,53 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
 }
 
+function hasExactKeys(
+  value: Record<string, unknown>,
+  expectedKeys: readonly string[]
+): boolean {
+  const actualKeys = Object.keys(value).sort();
+  const sortedExpected = [...expectedKeys].sort();
+  return (
+    actualKeys.length === sortedExpected.length &&
+    actualKeys.every((key, index) => key === sortedExpected[index])
+  );
+}
+
+function isV2UrlValidationError(
+  value: unknown
+): value is V2UrlValidationError {
+  if (!isRecord(value)) return false;
+  return (
+    hasExactKeys(value, ["code", "field", "value", "messageKey"]) &&
+    typeof value.code === "string" &&
+    V2_URL_VALIDATION_CODES.includes(
+      value.code as (typeof V2_URL_VALIDATION_CODES)[number]
+    ) &&
+    typeof value.field === "string" &&
+    V2_URL_KEYS.includes(value.field as (typeof V2_URL_KEYS)[number]) &&
+    (value.value === null || typeof value.value === "string") &&
+    typeof value.messageKey === "string" &&
+    V2_URL_VALIDATION_MESSAGE_KEYS.includes(
+      value.messageKey as (typeof V2_URL_VALIDATION_MESSAGE_KEYS)[number]
+    )
+  );
+}
+
+function isCanonicalV2State(value: unknown): boolean {
+  if (!isRecord(value) || typeof value.scenarioId !== "string") return false;
+  try {
+    const canonical = stateForScenarioV2(value.scenarioId as ScenarioV2Id);
+    return (
+      hasExactKeys(value, Object.keys(canonical)) &&
+      Object.entries(canonical).every(
+        ([field, expected]) => value[field] === expected
+      )
+    );
+  } catch {
+    return false;
+  }
+}
+
 function hasGateKind<Kind extends "v2_url" | "legacy_migration">(
   value: unknown,
   kind: Kind
@@ -223,12 +304,24 @@ function hasV2GateShape(value: unknown): boolean {
   }
   if (result.status === "valid") {
     return (
+      hasExactKeys(result, [
+        "status",
+        "canCalculate",
+        "state",
+        "validationErrors",
+      ]) &&
       result.canCalculate === true &&
       result.validationErrors.length === 0 &&
-      isRecord(result.state)
+      isCanonicalV2State(result.state)
     );
   }
-  return result.status === "invalid" && result.canCalculate === false;
+  return (
+    result.status === "invalid" &&
+    hasExactKeys(result, ["status", "canCalculate", "validationErrors"]) &&
+    result.canCalculate === false &&
+    result.validationErrors.length > 0 &&
+    result.validationErrors.every(isV2UrlValidationError)
+  );
 }
 
 function sameRuntimeContract(left: unknown, right: unknown): boolean {

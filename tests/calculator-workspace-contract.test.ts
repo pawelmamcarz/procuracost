@@ -27,7 +27,42 @@ import {
   type ProcessMapValidationCode,
   type ProcessMapValidationIssue,
   type ScenarioDraft,
+  type V2CalculatorUrlState,
 } from "@/lib/model-v2";
+
+const V2_STATE_FIELDS = [
+  "schemaVersion",
+  "modelVersion",
+  "calibrationId",
+  "scenarioId",
+  "governanceBoundaryId",
+  "procedureFamilyId",
+  "purchaseArchetypeId",
+  "executionChannelId",
+  "systemSupportId",
+  "workflowDesignFormalId",
+  "workflowDesignAdaptiveId",
+  "contractDesignFormalId",
+  "contractDesignAdaptiveId",
+] as const satisfies readonly (keyof V2CalculatorUrlState)[];
+
+const NON_CANONICAL_V2_VALUES: ReadonlyArray<
+  readonly [keyof V2CalculatorUrlState, unknown]
+> = [
+  ["schemaVersion", 999],
+  ["modelVersion", "runtime-model"],
+  ["calibrationId", "runtime-calibration"],
+  ["scenarioId", "erp_transformation_discovery"],
+  ["governanceBoundaryId", "pzp_classic_eu"],
+  ["procedureFamilyId", "pzp_open"],
+  ["purchaseArchetypeId", "complex_service"],
+  ["executionChannelId", "custom"],
+  ["systemSupportId", "manual"],
+  ["workflowDesignFormalId", "runtime.workflow.formal"],
+  ["workflowDesignAdaptiveId", "runtime.workflow.adaptive"],
+  ["contractDesignFormalId", "runtime.contract.formal"],
+  ["contractDesignAdaptiveId", "runtime.contract.adaptive"],
+];
 
 function fixed(value: number): CalibratedValue {
   return {
@@ -95,6 +130,44 @@ function readyPartialLegacy() {
     throw new Error("Expected confirmed ready partial fixture");
   }
   return adaptation;
+}
+
+function validFleetV2Result() {
+  const result = decodeV2CalculatorParams(
+    encodeV2CalculatorState(stateForScenarioV2("fleet_tco_reframing"))
+  );
+  if (result.status !== "valid") {
+    throw new Error("Expected valid native v2 fixture");
+  }
+  return structuredClone(result);
+}
+
+function stateWithRuntimeV2Result(result: unknown): CalculatorWorkspaceState {
+  return createCalculatorWorkspaceState(
+    createScenarioDraft("fleet_tco_reframing"),
+    {
+      urlOrigin: "v2",
+      urlGate: {
+        kind: "v2_url",
+        result,
+      } as unknown as NonNullable<CalculatorWorkspaceState["urlGate"]>,
+    }
+  );
+}
+
+function expectSourceBlockedWithoutThrow(state: CalculatorWorkspaceState): void {
+  let validation: ReturnType<typeof deriveCalculatorWorkspaceValidation> | undefined;
+  expect(() => {
+    validation = deriveCalculatorWorkspaceValidation(state);
+  }).not.toThrow();
+  expect(validation).toMatchObject({ canSubmit: false });
+  expect(validation?.issues).toContainEqual(
+    expect.objectContaining({
+      source: "workspace-source",
+      code: "incoherent_workspace_source",
+    })
+  );
+  expect(submitCalculatorWorkspace(state).status).toBe("blocked");
 }
 
 describe("calculator workspace validation and submit contract", () => {
@@ -359,6 +432,105 @@ describe("calculator workspace validation and submit contract", () => {
     expect(issueCodes(state)).toContain("incoherent_workspace_source");
     expect(submitCalculatorWorkspace(state).status).toBe("blocked");
   });
+
+  it.each(NON_CANONICAL_V2_VALUES)(
+    "blocks a forged valid v2 result with non-canonical %s",
+    (field, value) => {
+      const result = validFleetV2Result();
+      (result.state as unknown as Record<string, unknown>)[field] = value;
+
+      expectSourceBlockedWithoutThrow(stateWithRuntimeV2Result(result));
+    }
+  );
+
+  it.each(V2_STATE_FIELDS)(
+    "blocks a forged valid v2 result missing %s",
+    (field) => {
+      const result = validFleetV2Result();
+      delete (result.state as unknown as Record<string, unknown>)[field];
+
+      expectSourceBlockedWithoutThrow(stateWithRuntimeV2Result(result));
+    }
+  );
+
+  it("blocks a forged valid v2 result with an additional state field", () => {
+    const result = validFleetV2Result();
+    (result.state as unknown as Record<string, unknown>).runtimeExtra = true;
+
+    expectSourceBlockedWithoutThrow(stateWithRuntimeV2Result(result));
+  });
+
+  it.each([
+    ["null entry", [null]],
+    ["non-object entry", ["invalid"]],
+    ["missing entry fields", [{}]],
+    [
+      "unknown error code",
+      [
+        {
+          code: "runtime_code",
+          field: "sid",
+          value: "x",
+          messageKey: "validation.unknownId",
+        },
+      ],
+    ],
+    [
+      "unknown error field",
+      [
+        {
+          code: "unknown_id",
+          field: "runtime_field",
+          value: "x",
+          messageKey: "validation.unknownId",
+        },
+      ],
+    ],
+    [
+      "non-string message key",
+      [
+        {
+          code: "unknown_id",
+          field: "sid",
+          value: "x",
+          messageKey: null,
+        },
+      ],
+    ],
+    [
+      "unknown message key",
+      [
+        {
+          code: "unknown_id",
+          field: "sid",
+          value: "x",
+          messageKey: "validation.runtimeUnknown",
+        },
+      ],
+    ],
+    [
+      "non-scalar field value",
+      [
+        {
+          code: "unknown_id",
+          field: "sid",
+          value: { runtime: true },
+          messageKey: "validation.unknownScenario",
+        },
+      ],
+    ],
+  ] as const)(
+    "does not throw and blocks malformed v2 validation errors: %s",
+    (_label, validationErrors) => {
+      const result = validFleetV2Result() as unknown as Record<string, unknown>;
+      result.status = "invalid";
+      result.canCalculate = false;
+      delete result.state;
+      result.validationErrors = structuredClone(validationErrors);
+
+      expectSourceBlockedWithoutThrow(stateWithRuntimeV2Result(result));
+    }
+  );
 
   it("requires a ready legacy adaptation to match its gate and fresh adapter result", () => {
     const migration = readyExactLegacy();
