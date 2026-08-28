@@ -9,6 +9,8 @@ import {
   migrateLegacyCalculatorParams,
   type LegacyMigrationDraftBlocked,
   type LegacyMigrationDraftReady,
+  type LegacyMigrationDraftResult,
+  type LegacyMigrationResult,
   type LegacyRetainedInputField,
 } from "@/lib/model-v2";
 import { SCENARIOS } from "@/lib/scenarios";
@@ -21,6 +23,19 @@ const STAKEHOLDER_ROLES = [
   "manager",
   "executive",
 ] as const;
+
+const NON_LITERAL_CONFIRMATIONS = [
+  ["false", false],
+  ["undefined", undefined],
+  ["number one", 1],
+  ["yes string", "yes"],
+  ["Boolean object", new Boolean(false)],
+] as const;
+
+const runtimeLegacyAdapter = createScenarioDraftFromLegacyMigration as unknown as (
+  migration: LegacyMigrationResult,
+  confirmed?: unknown
+) => LegacyMigrationDraftResult;
 
 function legacyParams(alias: string): URLSearchParams {
   const scenario = SCENARIOS.find(({ id }) => id === alias);
@@ -131,6 +146,41 @@ describe("model 2.3 lossless legacy migration draft adapter", () => {
     expect(result.audit?.retainedLegacyInputs).toEqual(
       SCENARIOS.find(({ id }) => id === "erp")?.inputs
     );
+  });
+
+  it.each(NON_LITERAL_CONFIRMATIONS)(
+    "requires primitive literal true and blocks runtime confirmation value %s",
+    (_label, confirmed) => {
+      const migration = migrateLegacyCalculatorParams(
+        new URLSearchParams({ sid: "erp" })
+      );
+
+      const result = blocked(runtimeLegacyAdapter(migration, confirmed));
+
+      expect(result.draft).toBeNull();
+      expect(result.gate).toBeNull();
+      expect(result.issues).toContainEqual(
+        expect.objectContaining({
+          code: "confirmation_required",
+          field: "retainedLegacyInputs.contractValue",
+        })
+      );
+    }
+  );
+
+  it("keeps exact and ambiguous outcomes independent of confirmation runtime values", () => {
+    const exact = migrateLegacyCalculatorParams(legacyParams("fleet"));
+    const ambiguous = migrateLegacyCalculatorParams(
+      new URLSearchParams({ sid: "not-registered" })
+    );
+    const expectedAmbiguous = runtimeLegacyAdapter(ambiguous);
+
+    for (const [, confirmed] of NON_LITERAL_CONFIRMATIONS) {
+      expect(runtimeLegacyAdapter(exact, confirmed).status).toBe("ready");
+      expect(runtimeLegacyAdapter(ambiguous, confirmed)).toEqual(
+        expectedAmbiguous
+      );
+    }
   });
 
   it("rejects a forged exact-migration audit instead of exporting unrelated retained values", () => {

@@ -361,7 +361,7 @@ function readyResult(
     gate: {
       kind: "legacy_migration",
       result,
-      ...(confirmed ? { confirmed } : {}),
+      ...(confirmed === true ? { confirmed } : {}),
       audit: gateAudit,
     },
     audit: structuredClone(audit),
@@ -431,7 +431,7 @@ export function createScenarioDraftFromLegacyMigration(
       audit
     );
   }
-  if (!confirmed) {
+  if (confirmed !== true) {
     return blockedResult(confirmationIssues(migration), audit);
   }
 
