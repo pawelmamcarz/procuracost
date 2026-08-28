@@ -160,7 +160,87 @@ describe("model 2.3 legacy URL migration", () => {
     }
   });
 
-  it("returns partial and exposes confirmation fields for a changed legacy axis", () => {
+  it("treats an alias-only legacy link as partial and blocked", () => {
+    const migration = migrateLegacyCalculatorParams(
+      new URLSearchParams({ sid: "erp" })
+    );
+
+    expect(migration.status).toBe("partial");
+    expect(migration.canCalculate).toBe(false);
+    expect(migration.fieldsRequiringConfirmation).toContain(
+      "workflowDesignFormalId"
+    );
+    expect(migration.fieldsRequiringConfirmation).toContain(
+      "retainedLegacyInputs.contractValue"
+    );
+    expect(migration.fieldsRequiringConfirmation).toContain(
+      "retainedLegacyInputs.stakeholders.requestor.count"
+    );
+  });
+
+  it.each([
+    ["pt", "workflowDesignFormalId"],
+    ["tl", "systemSupportId"],
+    ["cv", "retainedLegacyInputs.contractValue"],
+    ["tco", "retainedLegacyInputs.tcoHorizonYears"],
+    ["dur", "retainedLegacyInputs.contractDurationYears"],
+    ["dci", "retainedLegacyInputs.dailyCostOfInaction"],
+    ["rc", "retainedLegacyInputs.renegotiationCost"],
+    ["bae", "retainedLegacyInputs.bypassAuditExposure"],
+    ["sh", "retainedLegacyInputs.stakeholders.requestor.count"],
+  ] as const)(
+    "blocks a truncated legacy permalink missing %s",
+    (missingKey, expectedField) => {
+      const scenario = SCENARIOS.find(({ id }) => id === "erp")!;
+      const params = encodeInputsToParams(scenario.inputs, scenario.id);
+      params.delete(missingKey);
+
+      const migration = migrateLegacyCalculatorParams(params);
+
+      expect(migration.status).toBe("partial");
+      expect(migration.canCalculate).toBe(false);
+      expect(migration.fieldsRequiringConfirmation).toContain(expectedField);
+      expect(migration.validationErrors).toContainEqual(
+        expect.objectContaining({
+          code: "confirmation_required",
+          field: expectedField,
+          value: null,
+        })
+      );
+    }
+  );
+
+  it("enumerates both designs and preserves a changed legacy process type", () => {
+    const scenario = SCENARIOS.find(({ id }) => id === "fleet")!;
+    const params = encodeInputsToParams(scenario.inputs, scenario.id);
+    params.set("pt", "pzp_krajowy");
+
+    const migration = migrateLegacyCalculatorParams(params);
+
+    expect(migration.status).toBe("partial");
+    expect(migration.canCalculate).toBe(false);
+    expect(migration.readinessInferred).toBe(false);
+    expect(migration.fieldsRequiringConfirmation).toEqual([
+      "governanceBoundaryId",
+      "procedureFamilyId",
+      "purchaseArchetypeId",
+      "executionChannelId",
+      "workflowDesignFormalId",
+      "workflowDesignAdaptiveId",
+      "contractDesignFormalId",
+      "contractDesignAdaptiveId",
+    ]);
+    expect(migration.validationErrors.map(({ field }) => field)).toEqual(
+      migration.fieldsRequiringConfirmation
+    );
+    if (migration.status === "partial") {
+      expect(migration.draftState.retainedLegacyInputs.processType).toBe(
+        "pzp_krajowy"
+      );
+    }
+  });
+
+  it("enumerates retained workflow assumptions and preserves a changed technology level", () => {
     const scenario = SCENARIOS.find(({ id }) => id === "fleet")!;
     const params = encodeInputsToParams(scenario.inputs, scenario.id);
     params.set("tl", "manual");
@@ -170,28 +250,137 @@ describe("model 2.3 legacy URL migration", () => {
     expect(migration.status).toBe("partial");
     expect(migration.canCalculate).toBe(false);
     expect(migration.readinessInferred).toBe(false);
-    expect(migration.fieldsRequiringConfirmation).toContain("systemSupportId");
+    expect(migration.fieldsRequiringConfirmation).toEqual([
+      "systemSupportId",
+      "retainedProcessMap.formalSequential",
+      "retainedProcessMap.adaptiveCompliant",
+      "retainedRoleEffort.formalSequential",
+      "retainedRoleEffort.adaptiveCompliant",
+      "retainedNonLabourCost.formalSequential",
+      "retainedNonLabourCost.adaptiveCompliant",
+    ]);
     expect(migration.fieldsRequiringConfirmation).not.toContain("readiness");
-    expect(migration.validationErrors).toContainEqual({
-      code: "confirmation_required",
-      field: "ss",
-      value: "manual",
-      messageKey: "validation.legacyConfirmationRequired",
-    });
+    expect(migration.validationErrors.map(({ field }) => field)).toEqual(
+      migration.fieldsRequiringConfirmation
+    );
+    if (migration.status === "partial") {
+      expect(migration.draftState.retainedLegacyInputs.techLevel).toBe(
+        "manual"
+      );
+    }
   });
 
-  it("returns partial for changed economics without defaulting the old value", () => {
+  it("keeps separate paths and draft values for multiple changed economics", () => {
     const scenario = SCENARIOS.find(({ id }) => id === "erp")!;
     const params = encodeInputsToParams(scenario.inputs, scenario.id);
+    params.set("cv", "3750000");
+    params.set("tco", "4");
+    params.set("dur", "1.5");
     params.set("dci", "9999");
+    params.set("rc", "425000");
+    params.set("bae", "475000");
+    params.set("dr", "7");
+    params.set("st", "direct");
+    params.set("pp", "upstream");
 
     const migration = migrateLegacyCalculatorParams(params);
 
     expect(migration.status).toBe("partial");
     expect(migration.canCalculate).toBe(false);
-    expect(migration.fieldsRequiringConfirmation).toContain(
-      "economicAssumptions"
+    expect(migration.fieldsRequiringConfirmation).toEqual([
+      "retainedLegacyInputs.contractValue",
+      "retainedLegacyInputs.tcoHorizonYears",
+      "retainedLegacyInputs.contractDurationYears",
+      "retainedLegacyInputs.dailyCostOfInaction",
+      "retainedLegacyInputs.renegotiationCost",
+      "retainedLegacyInputs.bypassAuditExposure",
+      "retainedLegacyInputs.discountRatePct",
+      "retainedLegacyInputs.spendType",
+      "retainedLegacyInputs.processPhase",
+    ]);
+    expect(migration.validationErrors.map(({ field }) => field)).toEqual(
+      migration.fieldsRequiringConfirmation
     );
+    if (migration.status === "partial") {
+      expect(migration.draftState.retainedLegacyInputs).toMatchObject({
+        contractValue: 3_750_000,
+        tcoHorizonYears: 4,
+        contractDurationYears: 1.5,
+        dailyCostOfInaction: 9_999,
+        renegotiationCost: 425_000,
+        bypassAuditExposure: 475_000,
+        discountRatePct: 7,
+        spendType: "direct",
+        processPhase: "upstream",
+      });
+    }
+  });
+
+  it("preserves and identifies each changed stakeholder leaf", () => {
+    const scenario = SCENARIOS.find(({ id }) => id === "erp")!;
+    const params = encodeInputsToParams(scenario.inputs, scenario.id);
+    params.set(
+      "sh",
+      "3:1200,2:1350,1:1500,1:1000,2:1800,1:3000"
+    );
+
+    const migration = migrateLegacyCalculatorParams(params);
+
+    expect(migration.status).toBe("partial");
+    expect(migration.canCalculate).toBe(false);
+    expect(migration.fieldsRequiringConfirmation).toEqual([
+      "retainedLegacyInputs.stakeholders.requestor.count",
+      "retainedLegacyInputs.stakeholders.buyer.dailyRate",
+    ]);
+    expect(migration.validationErrors.map(({ field }) => field)).toEqual(
+      migration.fieldsRequiringConfirmation
+    );
+    if (migration.status === "partial") {
+      expect(migration.draftState.retainedLegacyInputs.stakeholders).toMatchObject(
+        {
+          requestor: { count: 3, dailyRate: 1200 },
+          buyer: { count: 2, dailyRate: 1350 },
+        }
+      );
+    }
+  });
+
+  it.each([
+    ["pt", "not-a-process"],
+    ["tl", "not-a-technology"],
+    ["cv", "not-a-number"],
+    ["sh", "broken-stakeholders"],
+  ])("returns ambiguous for an unrecognized %s value", (field, value) => {
+    const scenario = SCENARIOS.find(({ id }) => id === "erp")!;
+    const params = encodeInputsToParams(scenario.inputs, scenario.id);
+    params.set(field, value);
+
+    const migration = migrateLegacyCalculatorParams(params);
+
+    expect(migration.status).toBe("ambiguous");
+    expect(migration.canCalculate).toBe(false);
+    expect(migration.validationErrors).toContainEqual({
+      code: "invalid_legacy_value",
+      field,
+      value,
+      messageKey: "validation.legacyInvalidValue",
+    });
+    expect(validationCopyExists("validation.legacyInvalidValue")).toBe(true);
+  });
+
+  it("keeps dr, st, and pp optional for an otherwise complete legacy link", () => {
+    const scenario = SCENARIOS.find(
+      ({ id }) => id === "governance_control"
+    )!;
+    const params = encodeInputsToParams(scenario.inputs, scenario.id);
+    params.delete("dr");
+    params.delete("st");
+    params.delete("pp");
+
+    const migration = migrateLegacyCalculatorParams(params);
+
+    expect(migration.status).toBe("exact");
+    expect(migration.canCalculate).toBe(true);
   });
 
   it.each([

@@ -1480,6 +1480,8 @@ const modelV2Pl = {
       "Własnego starego scenariusza nie można odtworzyć bez potwierdzonej mapy procesu.",
     legacyConfirmationRequired:
       "Część starego odnośnika wymaga jawnego potwierdzenia przed obliczeniem.",
+    legacyInvalidValue:
+      "Stary odnośnik zawiera wartość, której nie można jednoznacznie przenieść.",
   },
 } as const;
 
@@ -1712,6 +1714,8 @@ const modelV2En: WidenModelV2Copy<typeof modelV2Pl> = {
       "A legacy custom scenario cannot be reconstructed without a confirmed process map.",
     legacyConfirmationRequired:
       "Part of the legacy link requires explicit confirmation before calculation.",
+    legacyInvalidValue:
+      "The legacy link contains a value that cannot be migrated unambiguously.",
   },
 };
 

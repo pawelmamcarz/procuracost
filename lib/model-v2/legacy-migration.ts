@@ -1,4 +1,10 @@
 import type { ProcurementInputs, StakeholderRole } from "../calculations";
+import {
+  PROCESS_TEMPLATES,
+  TECH_LEVELS,
+  type ProcessType,
+  type TechLevelId,
+} from "../process-templates";
 import { SCENARIOS as LEGACY_SCENARIOS } from "../scenarios";
 import {
   stateForScenarioV2,
@@ -13,6 +19,29 @@ export type LegacyConfirmationField =
   | "purchaseArchetypeId"
   | "executionChannelId"
   | "systemSupportId"
+  | "workflowDesignFormalId"
+  | "workflowDesignAdaptiveId"
+  | "contractDesignFormalId"
+  | "contractDesignAdaptiveId"
+  | "retainedProcessMap.formalSequential"
+  | "retainedProcessMap.adaptiveCompliant"
+  | "retainedRoleEffort.formalSequential"
+  | "retainedRoleEffort.adaptiveCompliant"
+  | "retainedNonLabourCost.formalSequential"
+  | "retainedNonLabourCost.adaptiveCompliant"
+  | `retainedLegacyInputs.${
+      | "contractValue"
+      | "tcoHorizonYears"
+      | "contractDurationYears"
+      | "dailyCostOfInaction"
+      | "renegotiationCost"
+      | "bypassAuditExposure"
+      | "discountRatePct"
+      | "spendType"
+      | "processPhase"}`
+  | `retainedLegacyInputs.stakeholders.${StakeholderRole}.${
+      | "count"
+      | "dailyRate"}`
   | "workflowDesign"
   | "contractDesign"
   | "economicAssumptions";
@@ -84,6 +113,7 @@ export interface LegacyMigrationValidationError {
     | "missing_legacy_scenario"
     | "unknown_legacy_scenario"
     | "custom_legacy_scenario"
+    | "invalid_legacy_value"
     | "confirmation_required";
   field: string;
   value: string | null;
@@ -109,7 +139,11 @@ export interface ExactLegacyMigration extends LegacyMigrationBase {
 export interface PartialLegacyMigration extends LegacyMigrationBase {
   status: "partial";
   canCalculate: false;
-  draftState: V2CalculatorUrlState;
+  draftState: LegacyMigrationDraftState;
+}
+
+export interface LegacyMigrationDraftState extends V2CalculatorUrlState {
+  retainedLegacyInputs: ProcurementInputs;
 }
 
 export interface AmbiguousLegacyMigration extends LegacyMigrationBase {
@@ -131,53 +165,86 @@ const STAKEHOLDER_ROLE_ORDER: StakeholderRole[] = [
   "executive",
 ];
 
-const ECONOMIC_PARAM_KEYS = [
-  "cv",
-  "tco",
-  "dur",
-  "dci",
-  "rc",
-  "bae",
-  "dr",
-  "st",
-  "pp",
-  "sh",
-] as const;
+const PROCESS_TYPE_CONFIRMATION_FIELDS: LegacyConfirmationField[] = [
+  "governanceBoundaryId",
+  "procedureFamilyId",
+  "purchaseArchetypeId",
+  "executionChannelId",
+  "workflowDesignFormalId",
+  "workflowDesignAdaptiveId",
+  "contractDesignFormalId",
+  "contractDesignAdaptiveId",
+];
 
-type LegacyEconomicParam = (typeof ECONOMIC_PARAM_KEYS)[number];
+const TECH_LEVEL_CONFIRMATION_FIELDS: LegacyConfirmationField[] = [
+  "systemSupportId",
+  "retainedProcessMap.formalSequential",
+  "retainedProcessMap.adaptiveCompliant",
+  "retainedRoleEffort.formalSequential",
+  "retainedRoleEffort.adaptiveCompliant",
+  "retainedNonLabourCost.formalSequential",
+  "retainedNonLabourCost.adaptiveCompliant",
+];
 
-function legacyEconomicParamValue(
-  inputs: ProcurementInputs,
-  key: LegacyEconomicParam
-): string | null {
-  switch (key) {
-    case "cv":
-      return String(inputs.contractValue);
-    case "tco":
-      return String(inputs.tcoHorizonYears);
-    case "dur":
-      return String(inputs.contractDurationYears);
-    case "dci":
-      return String(inputs.dailyCostOfInaction);
-    case "rc":
-      return String(inputs.renegotiationCost);
-    case "bae":
-      return String(inputs.bypassAuditExposure);
-    case "dr":
-      return inputs.discountRatePct === undefined
-        ? null
-        : String(inputs.discountRatePct);
-    case "st":
-      return inputs.spendType ?? null;
-    case "pp":
-      return inputs.processPhase ?? null;
-    case "sh":
-      return STAKEHOLDER_ROLE_ORDER.map(
-        (role) =>
-          `${inputs.stakeholders[role].count}:${inputs.stakeholders[role].dailyRate}`
-      ).join(",");
-  }
-}
+const CORE_ECONOMIC_CONFIRMATION_FIELDS = {
+  cv: "retainedLegacyInputs.contractValue",
+  tco: "retainedLegacyInputs.tcoHorizonYears",
+  dur: "retainedLegacyInputs.contractDurationYears",
+  dci: "retainedLegacyInputs.dailyCostOfInaction",
+  rc: "retainedLegacyInputs.renegotiationCost",
+  bae: "retainedLegacyInputs.bypassAuditExposure",
+} as const satisfies Record<string, LegacyConfirmationField>;
+
+type NumericLegacyInputKey =
+  | "contractValue"
+  | "tcoHorizonYears"
+  | "contractDurationYears"
+  | "dailyCostOfInaction"
+  | "renegotiationCost"
+  | "bypassAuditExposure"
+  | "discountRatePct";
+
+const NUMERIC_PARAM_SPECS: Array<{
+  compactField: string;
+  inputField: NumericLegacyInputKey;
+  confirmationField: LegacyConfirmationField;
+}> = [
+  {
+    compactField: "cv",
+    inputField: "contractValue",
+    confirmationField: "retainedLegacyInputs.contractValue",
+  },
+  {
+    compactField: "tco",
+    inputField: "tcoHorizonYears",
+    confirmationField: "retainedLegacyInputs.tcoHorizonYears",
+  },
+  {
+    compactField: "dur",
+    inputField: "contractDurationYears",
+    confirmationField: "retainedLegacyInputs.contractDurationYears",
+  },
+  {
+    compactField: "dci",
+    inputField: "dailyCostOfInaction",
+    confirmationField: "retainedLegacyInputs.dailyCostOfInaction",
+  },
+  {
+    compactField: "rc",
+    inputField: "renegotiationCost",
+    confirmationField: "retainedLegacyInputs.renegotiationCost",
+  },
+  {
+    compactField: "bae",
+    inputField: "bypassAuditExposure",
+    confirmationField: "retainedLegacyInputs.bypassAuditExposure",
+  },
+  {
+    compactField: "dr",
+    inputField: "discountRatePct",
+    confirmationField: "retainedLegacyInputs.discountRatePct",
+  },
+];
 
 function addConfirmation(
   fields: LegacyConfirmationField[],
@@ -197,10 +264,72 @@ function addConfirmation(
   }
 }
 
+function addMissingCoreConfirmations(
+  params: URLSearchParams,
+  fields: LegacyConfirmationField[],
+  errors: LegacyMigrationValidationError[]
+): void {
+  const addMissing = (field: LegacyConfirmationField): void =>
+    addConfirmation(fields, errors, field, field, null);
+
+  if (!params.get("pt")) {
+    PROCESS_TYPE_CONFIRMATION_FIELDS.forEach(addMissing);
+  }
+  if (!params.get("tl")) {
+    TECH_LEVEL_CONFIRMATION_FIELDS.forEach(addMissing);
+  }
+  for (const [compactField, field] of Object.entries(
+    CORE_ECONOMIC_CONFIRMATION_FIELDS
+  )) {
+    if (!params.get(compactField)) addMissing(field);
+  }
+  if (!params.get("sh")) {
+    for (const role of STAKEHOLDER_ROLE_ORDER) {
+      addMissing(`retainedLegacyInputs.stakeholders.${role}.count`);
+      addMissing(`retainedLegacyInputs.stakeholders.${role}.dailyRate`);
+    }
+  }
+}
+
+function isKnownProcessType(
+  value: string
+): value is Exclude<ProcessType, "custom"> {
+  return Object.hasOwn(PROCESS_TEMPLATES, value);
+}
+
+function isKnownTechLevel(value: string): value is TechLevelId {
+  return Object.hasOwn(TECH_LEVELS, value);
+}
+
+function parseNonNegativeNumber(value: string): number | null {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) && parsed >= 0 ? parsed : null;
+}
+
+function parseStakeholders(
+  value: string
+): ProcurementInputs["stakeholders"] | null {
+  const parts = value.split(",");
+  if (parts.length !== STAKEHOLDER_ROLE_ORDER.length) return null;
+
+  const stakeholders = {} as ProcurementInputs["stakeholders"];
+  for (const [index, role] of STAKEHOLDER_ROLE_ORDER.entries()) {
+    const pair = parts[index].split(":");
+    if (pair.length !== 2) return null;
+    const count = parseNonNegativeNumber(pair[0]);
+    const dailyRate = parseNonNegativeNumber(pair[1]);
+    if (count === null || dailyRate === null) return null;
+    stakeholders[role] = { count, dailyRate };
+  }
+  return stakeholders;
+}
+
 function ambiguousMigration(
   legacyScenarioId: string | null,
   code: LegacyMigrationValidationError["code"],
-  messageKey: string
+  messageKey: string,
+  field = "sid",
+  value: string | null = legacyScenarioId
 ): AmbiguousLegacyMigration {
   return {
     status: "ambiguous",
@@ -222,12 +351,26 @@ function ambiguousMigration(
     validationErrors: [
       {
         code,
-        field: "sid",
-        value: legacyScenarioId,
+        field,
+        value,
         messageKey,
       },
     ],
   };
+}
+
+function invalidLegacyValueMigration(
+  legacyScenarioId: string,
+  field: string,
+  value: string
+): AmbiguousLegacyMigration {
+  return ambiguousMigration(
+    legacyScenarioId,
+    "invalid_legacy_value",
+    "validation.legacyInvalidValue",
+    field,
+    value
+  );
 }
 
 export function migrateLegacyCalculatorParams(
@@ -263,54 +406,151 @@ export function migrateLegacyCalculatorParams(
 
   const fieldsRequiringConfirmation: LegacyConfirmationField[] = [];
   const validationErrors: LegacyMigrationValidationError[] = [];
+  addMissingCoreConfirmations(
+    params,
+    fieldsRequiringConfirmation,
+    validationErrors
+  );
+  const retainedLegacyInputs = structuredClone(legacyScenario.inputs);
   const legacyProcessType = params.get("pt");
-  if (
-    legacyProcessType !== null &&
-    legacyProcessType !== mapping.legacyProcessType
-  ) {
-    for (const [field, compactField] of [
-      ["governanceBoundaryId", "gb"],
-      ["procedureFamilyId", "pf"],
-      ["purchaseArchetypeId", "pa"],
-      ["executionChannelId", "ec"],
-      ["workflowDesign", "wdf"],
-    ] as const) {
-      addConfirmation(
-        fieldsRequiringConfirmation,
-        validationErrors,
-        field,
-        compactField,
+  if (legacyProcessType) {
+    if (!isKnownProcessType(legacyProcessType)) {
+      return invalidLegacyValueMigration(
+        legacyScenarioId,
+        "pt",
         legacyProcessType
       );
+    }
+    retainedLegacyInputs.processType = legacyProcessType;
+    if (legacyProcessType !== mapping.legacyProcessType) {
+      for (const field of PROCESS_TYPE_CONFIRMATION_FIELDS) {
+        addConfirmation(
+          fieldsRequiringConfirmation,
+          validationErrors,
+          field,
+          field,
+          legacyProcessType
+        );
+      }
     }
   }
 
   const legacyTechLevel = params.get("tl");
-  if (
-    legacyTechLevel !== null &&
-    legacyTechLevel !== mapping.legacyTechLevel
-  ) {
-    addConfirmation(
-      fieldsRequiringConfirmation,
-      validationErrors,
-      "systemSupportId",
-      "ss",
-      legacyTechLevel
-    );
+  if (legacyTechLevel) {
+    if (!isKnownTechLevel(legacyTechLevel)) {
+      return invalidLegacyValueMigration(
+        legacyScenarioId,
+        "tl",
+        legacyTechLevel
+      );
+    }
+    retainedLegacyInputs.techLevel = legacyTechLevel;
+    if (legacyTechLevel !== mapping.legacyTechLevel) {
+      for (const field of TECH_LEVEL_CONFIRMATION_FIELDS) {
+        addConfirmation(
+          fieldsRequiringConfirmation,
+          validationErrors,
+          field,
+          field,
+          legacyTechLevel
+        );
+      }
+    }
   }
 
-  for (const key of ECONOMIC_PARAM_KEYS) {
-    if (
-      params.has(key) &&
-      params.get(key) !== legacyEconomicParamValue(legacyScenario.inputs, key)
-    ) {
+  for (const {
+    compactField,
+    inputField,
+    confirmationField,
+  } of NUMERIC_PARAM_SPECS) {
+    const rawValue = params.get(compactField);
+    if (rawValue === null || rawValue === "") continue;
+    const parsedValue = parseNonNegativeNumber(rawValue);
+    if (parsedValue === null) {
+      return invalidLegacyValueMigration(
+        legacyScenarioId,
+        compactField,
+        rawValue
+      );
+    }
+    retainedLegacyInputs[inputField] = parsedValue;
+    if (parsedValue !== legacyScenario.inputs[inputField]) {
       addConfirmation(
         fieldsRequiringConfirmation,
         validationErrors,
-        "economicAssumptions",
-        "economicAssumptions",
-        params.get(key)
+        confirmationField,
+        confirmationField,
+        rawValue
       );
+    }
+  }
+
+  const spendType = params.get("st");
+  if (spendType !== null) {
+    if (spendType !== "direct" && spendType !== "indirect") {
+      return invalidLegacyValueMigration(legacyScenarioId, "st", spendType);
+    }
+    retainedLegacyInputs.spendType = spendType;
+    if (spendType !== legacyScenario.inputs.spendType) {
+      addConfirmation(
+        fieldsRequiringConfirmation,
+        validationErrors,
+        "retainedLegacyInputs.spendType",
+        "retainedLegacyInputs.spendType",
+        spendType
+      );
+    }
+  }
+
+  const processPhase = params.get("pp");
+  if (processPhase !== null) {
+    if (processPhase !== "upstream" && processPhase !== "downstream") {
+      return invalidLegacyValueMigration(
+        legacyScenarioId,
+        "pp",
+        processPhase
+      );
+    }
+    retainedLegacyInputs.processPhase = processPhase;
+    if (processPhase !== legacyScenario.inputs.processPhase) {
+      addConfirmation(
+        fieldsRequiringConfirmation,
+        validationErrors,
+        "retainedLegacyInputs.processPhase",
+        "retainedLegacyInputs.processPhase",
+        processPhase
+      );
+    }
+  }
+
+  const stakeholderValue = params.get("sh");
+  if (stakeholderValue) {
+    const stakeholders = parseStakeholders(stakeholderValue);
+    if (!stakeholders) {
+      return invalidLegacyValueMigration(
+        legacyScenarioId,
+        "sh",
+        stakeholderValue
+      );
+    }
+    retainedLegacyInputs.stakeholders = stakeholders;
+    for (const role of STAKEHOLDER_ROLE_ORDER) {
+      for (const property of ["count", "dailyRate"] as const) {
+        if (
+          stakeholders[role][property] !==
+          legacyScenario.inputs.stakeholders[role][property]
+        ) {
+          const field =
+            `retainedLegacyInputs.stakeholders.${role}.${property}` as const;
+          addConfirmation(
+            fieldsRequiringConfirmation,
+            validationErrors,
+            field,
+            field,
+            String(stakeholders[role][property])
+          );
+        }
+      }
     }
   }
 
@@ -324,7 +564,7 @@ export function migrateLegacyCalculatorParams(
       readinessInferred: false,
       fieldsRequiringConfirmation,
       validationErrors,
-      draftState: targetState,
+      draftState: { ...targetState, retainedLegacyInputs },
     };
   }
 
