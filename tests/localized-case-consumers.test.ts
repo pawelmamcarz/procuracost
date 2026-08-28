@@ -1,25 +1,21 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
+
 import EnCaseStudiesPage from "@/app/(en)/en/case-studies/page";
-import * as pdfExport from "@/components/PDFExport";
-import HeroSummary from "@/components/cost-comparison/HeroSummary";
-import { calculateCosts } from "@/lib/calculations";
-import { SCENARIOS, type Scenario } from "@/lib/scenarios";
+import DecisionRecord from "@/components/decision-record/DecisionRecord";
+import EvidenceDocket from "@/components/evidence/EvidenceDocket";
+import {
+  buildDecisionRecordV2,
+  buildPdfCopy,
+  createScenarioDraft,
+} from "@/lib/model-v2";
+import { SCENARIOS } from "@/lib/scenarios";
 
-type PdfCaseStudyRenderer = (
-  doc: unknown,
-  caseStudy: NonNullable<Scenario["caseStudy"]>,
-  lang: "pl" | "en",
-  box: { x: number; y: number; width: number },
-) => void;
+const EXPORTED_AT = "2026-08-28T14:05:06.000Z";
 
-function distinctCaseStudyScenario() {
-  return SCENARIOS.find((scenario) =>
-    scenario.caseStudy
-      && scenario.caseStudy.title !== scenario.caseStudy.titleEn
-      && scenario.caseStudy.source !== scenario.caseStudy.sourceEn,
-  )!;
+function fleetRecord() {
+  return buildDecisionRecordV2(createScenarioDraft("fleet_tco_reframing"));
 }
 
 function renderedText(markup: string) {
@@ -30,9 +26,11 @@ function renderedText(markup: string) {
     .replaceAll("&quot;", '"');
 }
 
-describe("localized English case-study consumers", () => {
+describe("localised English evidence consumers", () => {
   it("renders English titles and sources on the English case-study page", () => {
-    const markup = renderedText(renderToStaticMarkup(createElement(EnCaseStudiesPage)));
+    const markup = renderedText(
+      renderToStaticMarkup(createElement(EnCaseStudiesPage))
+    );
 
     for (const scenario of SCENARIOS) {
       if (!scenario.caseStudy) continue;
@@ -45,43 +43,53 @@ describe("localized English case-study consumers", () => {
     }
   });
 
-  it("renders English case evidence in the English calculator result", () => {
-    const scenario = distinctCaseStudyScenario();
-    const markup = renderedText(renderToStaticMarkup(createElement(HeroSummary, {
-      result: calculateCosts(scenario.inputs),
-      scenario,
-      inputs: scenario.inputs,
-      lang: "en",
-    })));
+  it("renders English model 2.3 record and supplied evidence copy", () => {
+    const record = fleetRecord();
+    const english = buildPdfCopy(record, "en", EXPORTED_AT);
+    const polish = buildPdfCopy(record, "pl", EXPORTED_AT);
+    const recordMarkup = renderedText(
+      renderToStaticMarkup(
+        createElement(DecisionRecord, { lang: "en", record })
+      )
+    );
+    const evidenceMarkup = renderedText(
+      renderToStaticMarkup(
+        createElement(EvidenceDocket, {
+          lang: "en",
+          records: record.externalEvidence,
+          variant: "full",
+        })
+      )
+    );
 
-    expect(markup).toContain(scenario.caseStudy!.titleEn);
-    expect(markup).toContain(scenario.caseStudy!.sourceEn);
-    expect(markup).not.toContain(scenario.caseStudy!.title);
-    expect(markup).not.toContain(scenario.caseStudy!.source);
+    expect(recordMarkup).toContain(english.scenarioName);
+    expect(recordMarkup).not.toContain(polish.scenarioName);
+    expect(recordMarkup).toContain(english.externalEvidence[0].supportedClaim);
+    expect(recordMarkup).not.toContain(
+      polish.externalEvidence[0].supportedClaim
+    );
+    expect(evidenceMarkup).toContain(
+      english.externalEvidence[0].unsupportedClaim
+    );
+    expect(evidenceMarkup).not.toContain(
+      polish.externalEvidence[0].unsupportedClaim
+    );
   });
 
-  it("draws English case evidence into an English PDF", () => {
-    const renderCaseStudyPdf = (pdfExport as typeof pdfExport & {
-      renderCaseStudyPdf?: PdfCaseStudyRenderer;
-    }).renderCaseStudyPdf;
-    expect(renderCaseStudyPdf).toBeTypeOf("function");
+  it("builds complete British-English PDF copy without legacy case-study prose", () => {
+    const record = fleetRecord();
+    const english = buildPdfCopy(record, "en", EXPORTED_AT);
+    const polish = buildPdfCopy(record, "pl", EXPORTED_AT);
+    const allEnglishCopy = JSON.stringify(english);
 
-    const drawnText: string[] = [];
-    const doc = {
-      setFillColor() {},
-      setDrawColor() {},
-      roundedRect() {},
-      setTextColor() {},
-      setFontSize() {},
-      text(value: string) { drawnText.push(value); },
-    };
-    const scenario = distinctCaseStudyScenario();
-    renderCaseStudyPdf!(doc, scenario.caseStudy!, "en", { x: 18, y: 24, width: 174 });
-    const output = drawnText.join("\n");
-
-    expect(output).toContain(scenario.caseStudy!.titleEn);
-    expect(output).toContain(`Source: ${scenario.caseStudy!.sourceEn}`);
-    expect(output).not.toContain(scenario.caseStudy!.title);
-    expect(output).not.toContain(scenario.caseStudy!.source);
+    expect(english.title).toBe("ProcuraCost model 2.3 decision record");
+    expect(english.pageLabel(2, 4)).toBe("Page 2 of 4");
+    expect(english.externalEvidence[0].supportedClaim).not.toBe(
+      polish.externalEvidence[0].supportedClaim
+    );
+    expect(english.sectionLabels.coverage).toBe("Monetisation coverage");
+    expect(allEnglishCopy).toMatch(/non-monetised/i);
+    expect(allEnglishCopy).not.toMatch(/\bmonetized\b/i);
+    expect(allEnglishCopy).not.toContain(polish.scenarioName);
   });
 });

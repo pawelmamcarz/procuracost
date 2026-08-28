@@ -9,6 +9,8 @@ import {
 } from "react";
 import { ArrowRight, Clipboard, FileCheck2 } from "lucide-react";
 
+import DecisionRecord from "@/components/decision-record/DecisionRecord";
+import DecisionRecordActions from "@/components/decision-record/DecisionRecordActions";
 import { calculatorV2T, type Lang } from "@/lib/i18n";
 import {
   MODEL_V2_METADATA,
@@ -343,7 +345,6 @@ export interface CalculatorWorkspaceProps {
 }
 
 export default function CalculatorWorkspace({ lang }: CalculatorWorkspaceProps) {
-  const tx = calculatorV2T[lang];
   const didBootstrapUrl = useRef(false);
   const [state, setState] = useState(() =>
     createCalculatorWorkspaceState(createScenarioDraft(DEFAULT_SCENARIO_V2_ID))
@@ -410,13 +411,11 @@ export default function CalculatorWorkspace({ lang }: CalculatorWorkspaceProps) 
       onStateChange={updateState}
       resultSlot={
         state.record ? (
-          <h2
-            className="text-xl font-bold text-gray-900"
-            id={CALCULATOR_RESULT_HEADING_ID}
-            tabIndex={-1}
-          >
-            {tx.workspace.recordBoundaryTitle}
-          </h2>
+          <DecisionRecord
+            actions={<DecisionRecordActions lang={lang} record={state.record} />}
+            lang={lang}
+            record={state.record}
+          />
         ) : undefined
       }
       state={state}

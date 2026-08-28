@@ -553,10 +553,11 @@ function buildStepRecord(
   step: ProcessMapStep,
   result: AlternativeCostResult
 ): DecisionProcessStep {
+  const userLabel = step.userLabel?.trim();
   return {
     id: step.id,
     labelKey: step.labelKey,
-    userLabel: step.userLabel ?? null,
+    userLabel: userLabel || null,
     predecessorIds: [...step.predecessorIds],
     activeDays: structuredClone(step.activeDays),
     queueDays: structuredClone(step.queueDays),

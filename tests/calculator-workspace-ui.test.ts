@@ -4,6 +4,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 
 import { AlternativeDesignControls } from "@/components/calculator-v2/AlternativeDesignControls";
+import DecisionRecord from "@/components/decision-record/DecisionRecord";
 import {
   CALCULATOR_RESULT_HEADING_ID,
   CalculatorResultBoundary,
@@ -189,6 +190,31 @@ describe("calculator workspace UI", () => {
     expect(html).toContain('data-result-reveal="true"');
     expect(html).toContain("Decision record fixture");
     expect(html.match(/data-result-reveal/g)).toHaveLength(1);
+  });
+
+  it("keeps editable and read-only process-rail identifiers unique after result reveal", () => {
+    const valid = createCalculatorWorkspaceState(
+      createScenarioDraft("fleet_tco_reframing")
+    );
+    const submitted = submitCalculatorWorkspace(valid);
+    if (submitted.status !== "submitted" || !submitted.state.record) {
+      throw new Error("Expected valid record fixture");
+    }
+    const html = renderWorkspace(
+      submitted.state,
+      "en",
+      createElement(DecisionRecord, {
+        lang: "en",
+        record: submitted.state.record,
+      })
+    );
+    const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]);
+    const duplicates = ids.filter((id, index) => ids.indexOf(id) !== index);
+
+    expect(duplicates).toEqual([]);
+    expect(ids.some((id) => id.startsWith("decision-record-process-step-"))).toBe(
+      true
+    );
   });
 
   it("keeps invalid v2 and blocked legacy URLs renderable but fail-closed", () => {

@@ -17,6 +17,7 @@ interface ProcessStepNodeProps {
   mode: "editable" | "read-only";
   mobile?: boolean;
   focusIdSuffix?: string;
+  idPrefix?: string;
   onSelect?: () => void;
 }
 
@@ -44,6 +45,7 @@ export function ProcessStepNode({
   mode,
   mobile = false,
   focusIdSuffix = "",
+  idPrefix,
   onSelect,
 }: ProcessStepNodeProps) {
   const rows = statusRows(node);
@@ -61,6 +63,7 @@ export function ProcessStepNode({
       "border-t-[3px] border-t-green-500",
     mobile && node.parallel && "ml-4 w-[calc(100%-1rem)]"
   );
+  const domId = `${idPrefix ? `${idPrefix}-` : ""}process-step-${alternativeId}-${node.stepId}${focusIdSuffix}`;
   const content = (
     <>
       <span className="font-mono text-[11px] text-gray-500">
@@ -97,7 +100,7 @@ export function ProcessStepNode({
       <article
         aria-label={node.accessibleName}
         className={className}
-        id={`process-step-${alternativeId}-${node.stepId}${focusIdSuffix}`}
+        id={domId}
         tabIndex={0}
       >
         {content}
@@ -112,7 +115,7 @@ export function ProcessStepNode({
       className={className}
       data-alternative={alternativeId}
       data-step-id={node.stepId}
-      id={`process-step-${alternativeId}-${node.stepId}${focusIdSuffix}`}
+      id={domId}
       onClick={onSelect}
       type="button"
     >

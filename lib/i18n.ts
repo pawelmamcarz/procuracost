@@ -1698,6 +1698,11 @@ const pdfExportV2Pl = {
       central: "Centralny",
       high: "Wysoki",
     },
+    rangeKinds: {
+      fixed: "Stała wartość",
+      calibrated: "Skalibrowany",
+      stress: "Zakres skrajny",
+    },
     alternatives: {
       formalSequential: "Formalna ścieżka sekwencyjna",
       adaptiveCompliant: "Adaptacyjna ścieżka zgodna z ramami",
@@ -1773,6 +1778,20 @@ const pdfExportV2Pl = {
       legal_wait: "Obowiązkowe oczekiwanie",
       milestone: "Kamień milowy",
     },
+    constructs: {
+      workflow_duration: "czas przebiegu procesu",
+      role_effort: "nakład pracy ról",
+      problem_definition: "zdefiniowanie problemu",
+      market_consultation: "konsultacje rynkowe",
+      modular_contracting: "modułowa konstrukcja umowy",
+      supplier_access: "dostęp dostawców",
+      competition_transfer: "transfer konkurencji cenowej",
+      contract_adaptability: "zdolność dostosowania umowy",
+      contract_amendment: "aneksowanie umowy",
+      tco: "całkowity koszt posiadania",
+      informal_bypass: "zakup poza zatwierdzonym procesem",
+      innovation_procurement: "zamówienia innowacyjne",
+    },
     roles: {
       requestor: "Wnioskodawca biznesowy",
       buyer: "Kupiec",
@@ -1822,6 +1841,11 @@ const pdfExportV2En = {
       low: "Low",
       central: "Central",
       high: "High",
+    },
+    rangeKinds: {
+      fixed: "Fixed value",
+      calibrated: "Calibrated",
+      stress: "Stress range",
     },
     alternatives: {
       formalSequential: "Formal sequential alternative",
@@ -1898,6 +1922,20 @@ const pdfExportV2En = {
       legal_wait: "Mandatory wait",
       milestone: "Milestone",
     },
+    constructs: {
+      workflow_duration: "workflow duration",
+      role_effort: "role effort",
+      problem_definition: "problem definition",
+      market_consultation: "market consultation",
+      modular_contracting: "modular contracting",
+      supplier_access: "supplier access",
+      competition_transfer: "price-competition transfer",
+      contract_adaptability: "contract adaptability",
+      contract_amendment: "contract amendment",
+      tco: "total cost of ownership",
+      informal_bypass: "off-process purchasing",
+      innovation_procurement: "innovation procurement",
+    },
     roles: {
       requestor: "Business requestor",
       buyer: "Buyer",
@@ -1922,6 +1960,265 @@ const pdfExportV2En = {
 } satisfies PdfExportV2Shape;
 
 export const pdfExportV2T = { pl: pdfExportV2Pl, en: pdfExportV2En } as const;
+
+const decisionRecordPl = {
+  eyebrow: "Zapis porównania",
+  sections: {
+    summary: "Różnica kosztu i zakres",
+    alternatives: "Porównywane alternatywy",
+    drivers: "Analiza czynników kosztowych",
+    coverage: "Zakres monetyzacji",
+    assumptions: "Założenia rekordu",
+    evidence: "Dowody zewnętrzne",
+    reference: "Porównanie ze scenariuszem referencyjnym",
+    actions: "Eksport i nota metodologiczna",
+  },
+  delta: {
+    identity:
+      "Koszt formalnej ścieżki sekwencyjnej minus koszt adaptacyjnej ścieżki zgodnej z ramami",
+    centralLabel: "Centralna różnica kosztu",
+    outerRangeLabel: "Zewnętrzny zakres różnicy",
+    positive:
+      "Formalna ścieżka sekwencyjna ma wyższy centralny koszt całkowity.",
+    negative:
+      "Adaptacyjna ścieżka zgodna z ramami ma wyższy centralny koszt całkowity.",
+    zero: "Centralne koszty całkowite są równe.",
+    crossing:
+      "Znak zmienia się w podanych zakresach. Model nie wskazuje stabilnej kolejności kosztów.",
+    stable:
+      "Znak jest stabilny w podanych zakresach. Nie jest to dowód statystyczny.",
+  },
+  alternatives: {
+    total: "Koszt całkowity",
+    duration: "Czas ścieżki krytycznej",
+    days: "dni",
+    stepCount: "Liczba kroków procesu",
+    lockCount: "Zablokowane obowiązkowe oczekiwania",
+    steps: "Kroki przebiegu procesu",
+    userLabel: "Nazwa nadana przez użytkownika",
+    baseLabel: "Nazwa projektu bazowego",
+  },
+  drivers: {
+    formal: "Formalna ścieżka sekwencyjna",
+    adaptive: "Adaptacyjna ścieżka zgodna z ramami",
+    contribution: "Wkład w różnicę kosztu",
+    directionFormal:
+      "Ten czynnik zwiększa centralną różnicę po stronie formalnej ścieżki sekwencyjnej.",
+    directionAdaptive:
+      "Ten czynnik zwiększa centralną różnicę po stronie adaptacyjnej ścieżki zgodnej z ramami.",
+    directionEqual:
+      "Ten czynnik nie zmienia centralnej różnicy między alternatywami.",
+  },
+  coverage: {
+    included: "Ujęte w sumie pieniężnej",
+    nonMonetized: "Raportowane bez monetyzacji",
+    contributionRange: "Zakres wkładu w różnicę kosztu",
+    evidenceClasses: "Klasy źródeł",
+    evidenceIdentifiers: "Identyfikatory dowodów",
+    noEvidenceIdentifiers: "Brak identyfikatorów dowodów",
+  },
+  assumptions: {
+    summary: (retained: number, userSupplied: number) =>
+      `Przeniesione założenia: ${retained}. Wartości podane przez użytkownika: ${userSupplied}.`,
+    context: "Wspólny kontekst zakupu",
+    economics: "Założenia ekonomiczne",
+    designs: "Projekty alternatyw",
+    roleRates: "Stawki godzinowe ról",
+    evidenceClass: "Klasa źródła",
+    pathCompetitionDiffers:
+      "Czy konkurencja cenowa różni się między alternatywami",
+    competitionTransferNotApplicable:
+      "Zakres transferu konkurencji nie ma zastosowania",
+    yes: "tak",
+    no: "nie",
+  },
+  evidence: {
+    supported: "Zakres wspierany przez źródło",
+    unsupported: "Czego źródło nie wspiera",
+    population: "Jurysdykcja lub populacja",
+    source: "Źródło",
+    publisher: "Wydawca",
+    constructs: "Konstrukty użyte w tym rekordzie",
+    openSource: "Otwórz źródło w nowej karcie",
+    externalLink: (title: string) => `${title}. Otwiera się w nowej karcie.`,
+    constructsById: {
+      workflow_duration: "czas przebiegu procesu",
+      role_effort: "nakład pracy ról",
+      problem_definition: "zdefiniowanie problemu",
+      market_consultation: "konsultacje rynkowe",
+      modular_contracting: "modułowa konstrukcja umowy",
+      supplier_access: "dostęp dostawców",
+      competition_transfer: "transfer konkurencji cenowej",
+      contract_adaptability: "zdolność dostosowania umowy",
+      contract_amendment: "aneksowanie umowy",
+      tco: "całkowity koszt posiadania",
+      informal_bypass: "zakup poza zatwierdzonym procesem",
+      innovation_procurement: "zamówienia innowacyjne",
+    },
+  },
+  reference: {
+    subtitle: (denominator: string, unit: string) =>
+      `Wszystkie przedziały używają jednej skali symetrycznej względem zera. Jej granica wynosi ${denominator} ${unit}.`,
+    low: "Niski",
+    central: "Centralny",
+    high: "Wysoki",
+    active: "Aktywny scenariusz",
+    other: "Scenariusz referencyjny",
+    accessibleRange: (
+      scenario: string,
+      low: string,
+      central: string,
+      high: string,
+      unit: string
+    ) =>
+      `${scenario}. Niski: ${low} ${unit}. Centralny: ${central} ${unit}. Wysoki: ${high} ${unit}.`,
+  },
+  actions: {
+    researchLabel: "Pliki rekordu do analizy",
+    downloadPdf: "Pobierz PDF",
+    downloadJson: "Pobierz JSON",
+    downloadCsv: "Pobierz CSV",
+    downloadMarkdown: "Pobierz Markdown",
+    generatingPdf: "Tworzenie PDF",
+    pdfError:
+      "Nie udało się utworzyć PDF. Sprawdź połączenie i spróbuj ponownie.",
+    methodology:
+      "Rekord przedstawia deterministyczne wyniki i zadeklarowane zakresy modelu 2.3. Nie stanowi rekomendacji ani dowodu statystycznego.",
+  },
+} as const;
+
+type DecisionRecordShape = LangShape<typeof decisionRecordPl>;
+
+const decisionRecordEn = {
+  eyebrow: "Decision record",
+  sections: {
+    summary: "Cost difference and range",
+    alternatives: "Compared alternatives",
+    drivers: "Cost-driver analysis",
+    coverage: "Monetisation coverage",
+    assumptions: "Record assumptions",
+    evidence: "External evidence",
+    reference: "Reference scenario comparison",
+    actions: "Exports and methodology note",
+  },
+  delta: {
+    identity:
+      "Formal sequential total minus adaptive compliant total",
+    centralLabel: "Central cost difference",
+    outerRangeLabel: "Outer difference range",
+    positive:
+      "The formal sequential total is higher at the central assumptions.",
+    negative:
+      "The adaptive compliant total is higher at the central assumptions.",
+    zero: "The central totals are equal.",
+    crossing:
+      "The sign changes within the declared ranges. The model does not identify a stable cost ordering.",
+    stable:
+      "The sign is stable within the declared ranges; this is not statistical evidence.",
+  },
+  alternatives: {
+    total: "Total cost",
+    duration: "Critical-path duration",
+    days: "days",
+    stepCount: "Process step count",
+    lockCount: "Locked mandatory waits",
+    steps: "Procurement workflow steps",
+    userLabel: "User-supplied name",
+    baseLabel: "Base-design name",
+  },
+  drivers: {
+    formal: "Formal sequential alternative",
+    adaptive: "Adaptive compliant alternative",
+    contribution: "Contribution to the cost difference",
+    directionFormal:
+      "This driver increases the central difference on the formal sequential side.",
+    directionAdaptive:
+      "This driver increases the central difference on the adaptive compliant side.",
+    directionEqual:
+      "This driver does not change the central difference between the alternatives.",
+  },
+  coverage: {
+    included: "Included in the monetary total",
+    nonMonetized: "Reported but not monetised",
+    contributionRange: "Contribution range for the cost difference",
+    evidenceClasses: "Source classes",
+    evidenceIdentifiers: "Evidence identifiers",
+    noEvidenceIdentifiers: "No evidence identifiers",
+  },
+  assumptions: {
+    summary: (retained: number, userSupplied: number) =>
+      `Retained assumptions: ${retained}. User-supplied values: ${userSupplied}.`,
+    context: "Shared purchasing context",
+    economics: "Economic assumptions",
+    designs: "Alternative designs",
+    roleRates: "Role hourly rates",
+    evidenceClass: "Source class",
+    pathCompetitionDiffers:
+      "Whether price competition differs between alternatives",
+    competitionTransferNotApplicable:
+      "The competition-transfer range is not applicable",
+    yes: "yes",
+    no: "no",
+  },
+  evidence: {
+    supported: "Claim supported by the source",
+    unsupported: "What the source does not support",
+    population: "Jurisdiction or population",
+    source: "Source",
+    publisher: "Publisher",
+    constructs: "Constructs used in this record",
+    openSource: "Open source in a new tab",
+    externalLink: (title: string) => `${title}. Opens in a new tab.`,
+    constructsById: {
+      workflow_duration: "workflow duration",
+      role_effort: "role effort",
+      problem_definition: "problem definition",
+      market_consultation: "market consultation",
+      modular_contracting: "modular contracting",
+      supplier_access: "supplier access",
+      competition_transfer: "price-competition transfer",
+      contract_adaptability: "contract adaptability",
+      contract_amendment: "contract amendment",
+      tco: "total cost of ownership",
+      informal_bypass: "off-process purchasing",
+      innovation_procurement: "innovation procurement",
+    },
+  },
+  reference: {
+    subtitle: (denominator: string, unit: string) =>
+      `Every interval uses one zero-centred scale with a ${denominator} ${unit} outer bound.`,
+    low: "Low",
+    central: "Central",
+    high: "High",
+    active: "Active scenario",
+    other: "Reference scenario",
+    accessibleRange: (
+      scenario: string,
+      low: string,
+      central: string,
+      high: string,
+      unit: string
+    ) =>
+      `${scenario}. Low: ${low} ${unit}. Central: ${central} ${unit}. High: ${high} ${unit}.`,
+  },
+  actions: {
+    researchLabel: "Record files for analysis",
+    downloadPdf: "Download PDF",
+    downloadJson: "Download JSON",
+    downloadCsv: "Download CSV",
+    downloadMarkdown: "Download Markdown",
+    generatingPdf: "Generating PDF",
+    pdfError:
+      "The PDF could not be created. Check the connection and try again.",
+    methodology:
+      "The record reports deterministic results and declared model 2.3 ranges. It is neither a recommendation nor statistical evidence.",
+  },
+} satisfies DecisionRecordShape;
+
+export const decisionRecordT = {
+  pl: decisionRecordPl,
+  en: decisionRecordEn,
+} as const;
 
 const optimizerPl = {
   parametersTitle: "Parametry zakupu",

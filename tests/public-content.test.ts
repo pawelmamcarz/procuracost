@@ -212,6 +212,37 @@ describe("public editorial integrity", () => {
     expect(i18n.calculatorT.en.calculate).toBe("Compare costs");
   });
 
+  it("keeps the public decision-record dictionary paired, neutral and British-English", () => {
+    function leafPaths(value: unknown, path = ""): string[] {
+      if (typeof value === "string" || typeof value === "function") {
+        return [path];
+      }
+      if (!value || typeof value !== "object") return [];
+      return Object.entries(value).flatMap(([key, child]) =>
+        leafPaths(child, path ? `${path}.${key}` : key)
+      );
+    }
+
+    expect(leafPaths(i18n.decisionRecordT.pl).sort()).toEqual(
+      leafPaths(i18n.decisionRecordT.en).sort()
+    );
+    const neutralEnglish = Object.values(i18n.decisionRecordT.en.delta).join(
+      " "
+    );
+    expect(neutralEnglish).not.toMatch(
+      /\b(?:winner|optimal|recommended|saving|savings|loss|confidence)\b/i
+    );
+    expect(i18n.decisionRecordT.en.sections.coverage).toBe(
+      "Monetisation coverage"
+    );
+    expect(i18n.decisionRecordT.en.coverage.nonMonetized).toContain(
+      "not monetised"
+    );
+    expect(JSON.stringify(i18n.decisionRecordT.en)).not.toMatch(
+      /\b(?:monetized|materialized|labor)\b/i
+    );
+  });
+
   it("keeps Polish navigation labels in Polish", () => {
     const labels = navigationFor("pl").map((item) => item.label);
 

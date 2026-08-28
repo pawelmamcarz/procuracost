@@ -14,6 +14,7 @@ type ProcessRailProps =
   | {
       viewModel: ProcessRailViewModel;
       mode: "read-only";
+      idPrefix?: string;
     }
   | {
       viewModel: ProcessRailViewModel;
@@ -105,6 +106,7 @@ function DesktopLane({
             >
               <ProcessStepNode
                 alternativeId={lane.alternativeId}
+                idPrefix={props.mode === "read-only" ? props.idPrefix : undefined}
                 inspectorId={props.viewModel.inspectorId}
                 mode={props.mode}
                 node={node}
@@ -160,6 +162,7 @@ function MobileLane({
           <ProcessStepNode
             alternativeId={lane.alternativeId}
             focusIdSuffix="-mobile"
+            idPrefix={props.mode === "read-only" ? props.idPrefix : undefined}
             inspectorId={props.viewModel.inspectorId}
             mobile
             mode={props.mode}

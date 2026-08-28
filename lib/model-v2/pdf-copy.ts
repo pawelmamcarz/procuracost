@@ -27,6 +27,7 @@ import {
   type AlternativeId,
   type ProcessMapStepKind,
 } from "./domain";
+import type { EvidenceConstruct } from "./evidence";
 
 const ALTERNATIVE_IDS: AlternativeId[] = [
   "formalSequential",
@@ -168,6 +169,7 @@ export interface PdfPostMigrationEditCopy {
 
 export interface PdfRendererLabels {
   range: { low: string; central: string; high: string };
+  rangeKinds: Record<CalibratedValue["rangeKind"], string>;
   alternatives: Record<AlternativeId, string>;
   fields: {
     id: string;
@@ -235,6 +237,7 @@ export interface PdfRendererLabels {
     noPostMigrationEdits: string;
   };
   stepKinds: Record<ProcessMapStepKind, string>;
+  constructs: Record<EvidenceConstruct, string>;
   roles: Record<string, string>;
   migrationDispositions: Record<LegacyMigrationFieldDispositionKind, string>;
   migrationSourceClasses: Record<"post_migration_user_edit", string>;
@@ -553,6 +556,7 @@ export function buildPdfCopy(
       { label: tx.fields.legalRulesetId, value: record.metadata.legalRulesetId },
       { label: tx.fields.scenarioId, value: record.metadata.scenarioId },
       { label: tx.fields.currency, value: record.metadata.currency },
+      { label: tx.fields.locale, value: locale },
       { label: pdfTx.exportedAt, value: formatIsoDate(exportedAt, locale) },
     ],
     context: record.axes.map((axis) => ({
