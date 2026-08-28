@@ -25,6 +25,44 @@ export const EVIDENCE_CONSTRUCTS = [
 
 export type EvidenceConstruct = (typeof EVIDENCE_CONSTRUCTS)[number];
 
+export type PractitionerSourceRefId =
+  | "professionalisation"
+  | "friction_mapping"
+  | "marginal_requirements"
+  | "operational_purchasing"
+  | "requirements_blind_spots"
+  | "internal_challenger"
+  | "internal_ambassador"
+  | "champion_continuity"
+  | "legacy_procedure"
+  | "policy_boundary"
+  | "tco"
+  | "bielik"
+  | "category_transfer"
+  | "data_math_separation";
+
+export interface PractitionerSourceRef {
+  id: PractitionerSourceRefId;
+  startSeconds: number;
+  endSeconds?: number;
+  url: string;
+}
+
+export interface PractitionerSource {
+  id: "procurement-beyond-8";
+  kind: "practitioner_interview";
+  title: "Procurement&Beyond, odcinek 8. Nawet najlepsze narzędzie nie uratuje złego wdrożenia.";
+  author: "Procurement&Beyond";
+  url: "https://www.youtube.com/watch?v=5KYUdTLlvvg";
+  publishedAt: "2026-08-26";
+  durationSeconds: 4026;
+  transcriptKind: "youtube_auto_captions_pl";
+  transcriptHumanVerified: false;
+  calibrationEligible: false;
+  permittedUse: "question_design_and_hypothesis_generation_only";
+  refs: readonly PractitionerSourceRef[];
+}
+
 export interface EvidenceSourceMetadata {
   titleKey: string;
   publisherKey: string;
@@ -144,6 +182,56 @@ export const EVIDENCE_REGISTRY: EvidenceRecord[] = [
     constructs: ["competition_transfer"],
     assumptionKeys: ["evidence.szucs.assumption"],
   },
+];
+
+const PROCUREMENT_BEYOND_8_VIDEO_ID = "5KYUdTLlvvg";
+
+function practitionerRef(
+  id: PractitionerSourceRefId,
+  startSeconds: number,
+  endSeconds: number,
+): PractitionerSourceRef {
+  return {
+    id,
+    startSeconds,
+    endSeconds,
+    url: `https://youtu.be/${PROCUREMENT_BEYOND_8_VIDEO_ID}?t=${startSeconds}`,
+  };
+}
+
+export const PROCUREMENT_BEYOND_8: PractitionerSource = {
+  id: "procurement-beyond-8",
+  kind: "practitioner_interview",
+  title:
+    "Procurement&Beyond, odcinek 8. Nawet najlepsze narzędzie nie uratuje złego wdrożenia.",
+  author: "Procurement&Beyond",
+  url: "https://www.youtube.com/watch?v=5KYUdTLlvvg",
+  publishedAt: "2026-08-26",
+  durationSeconds: 4026,
+  transcriptKind: "youtube_auto_captions_pl",
+  transcriptHumanVerified: false,
+  calibrationEligible: false,
+  permittedUse: "question_design_and_hypothesis_generation_only",
+  refs: [
+    practitionerRef("professionalisation", 271, 408),
+    practitionerRef("friction_mapping", 592, 656),
+    practitionerRef("marginal_requirements", 946, 1017),
+    practitionerRef("operational_purchasing", 1023, 1068),
+    practitionerRef("requirements_blind_spots", 1074, 1103),
+    practitionerRef("internal_challenger", 1639, 1689),
+    practitionerRef("internal_ambassador", 1707, 1746),
+    practitionerRef("champion_continuity", 1781, 1789),
+    practitionerRef("legacy_procedure", 2385, 2495),
+    practitionerRef("policy_boundary", 2614, 2659),
+    practitionerRef("tco", 2863, 2954),
+    practitionerRef("bielik", 3539, 3649),
+    practitionerRef("category_transfer", 3678, 3807),
+    practitionerRef("data_math_separation", 3810, 3954),
+  ],
+};
+
+export const PRACTITIONER_SOURCES: readonly PractitionerSource[] = [
+  PROCUREMENT_BEYOND_8,
 ];
 
 export function evidenceRecordById(id: string): EvidenceRecord | undefined {

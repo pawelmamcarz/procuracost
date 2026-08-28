@@ -24,6 +24,8 @@ export const SITE_ROUTES: readonly SiteRoute[] = [
   { key: "optimizer", pl: "/optimizer", en: "/en/optimizer", nav: { pl: "optimizer", en: "optimizer" }, sitemap: true },
   { key: "caseStudies", pl: "/case-studies", en: "/en/case-studies", sitemap: true },
   { key: "assessment", pl: "/assessment", en: "/en/assessment", nav: { pl: "assessment", en: "assessment" }, sitemap: true },
+  { key: "readiness", pl: "/readiness", en: "/en/readiness", sitemap: false },
+  { key: "procurementBeyond8", pl: "/practice/procurement-beyond-8", en: "/en/practice/procurement-beyond-8", sitemap: false },
   { key: "team", pl: "/team", en: "/en/team", sitemap: true },
   { key: "methodology", pl: "/methodology", en: "/en/methodology", sitemap: true },
   { key: "model", pl: "/model", en: "/en/model", nav: { pl: "model", en: "model" }, sitemap: true },

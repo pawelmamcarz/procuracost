@@ -6,6 +6,25 @@ describe("public route contract", () => {
   it("keeps language switches on the equivalent route", () => {
     expect(localizedCounterpart("/calculator", "en")).toBe("/en/calculator");
     expect(localizedCounterpart("/en/model/assumptions", "pl")).toBe("/model/assumptions");
+    expect(localizedCounterpart("/readiness", "en")).toBe("/en/readiness");
+    expect(localizedCounterpart("/en/practice/procurement-beyond-8", "pl")).toBe(
+      "/practice/procurement-beyond-8",
+    );
+  });
+
+  it("registers readiness and practitioner material without primary navigation or indexing", () => {
+    expect(SITE_ROUTES.find(({ key }) => key === "readiness")).toEqual({
+      key: "readiness",
+      pl: "/readiness",
+      en: "/en/readiness",
+      sitemap: false,
+    });
+    expect(SITE_ROUTES.find(({ key }) => key === "procurementBeyond8")).toEqual({
+      key: "procurementBeyond8",
+      pl: "/practice/procurement-beyond-8",
+      en: "/en/practice/procurement-beyond-8",
+      sitemap: false,
+    });
   });
 
   it("passes query strings and fragments through the chrome language switch", () => {
