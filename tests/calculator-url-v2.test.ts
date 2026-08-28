@@ -368,6 +368,53 @@ describe("model 2.3 legacy URL migration", () => {
     expect(validationCopyExists("validation.legacyInvalidValue")).toBe(true);
   });
 
+  it.each([
+    ["governance_control", "dci", " "],
+    ["governance_control", "tco", "\t"],
+    ["catalog", "rc", "\n"],
+  ])(
+    "rejects whitespace in zero-valued legacy economics (%s.%s)",
+    (scenarioId, field, value) => {
+      const scenario = SCENARIOS.find(({ id }) => id === scenarioId)!;
+      const params = encodeInputsToParams(scenario.inputs, scenario.id);
+      params.set(field, value);
+
+      const migration = migrateLegacyCalculatorParams(params);
+
+      expect(migration.status).toBe("ambiguous");
+      expect(migration.canCalculate).toBe(false);
+      expect(migration.validationErrors).toContainEqual({
+        code: "invalid_legacy_value",
+        field,
+        value,
+        messageKey: "validation.legacyInvalidValue",
+      });
+    }
+  );
+
+  it.each([
+    ["catalog", "2:800,1:800, :1200,0:900,1:1500,0:2500"],
+    ["mrp", "1:800,1:800,0:1200,0:900,\t:1500,0:2500"],
+  ])(
+    "rejects whitespace in a zero-count stakeholder leaf (%s)",
+    (scenarioId, value) => {
+      const scenario = SCENARIOS.find(({ id }) => id === scenarioId)!;
+      const params = encodeInputsToParams(scenario.inputs, scenario.id);
+      params.set("sh", value);
+
+      const migration = migrateLegacyCalculatorParams(params);
+
+      expect(migration.status).toBe("ambiguous");
+      expect(migration.canCalculate).toBe(false);
+      expect(migration.validationErrors).toContainEqual({
+        code: "invalid_legacy_value",
+        field: "sh",
+        value,
+        messageKey: "validation.legacyInvalidValue",
+      });
+    }
+  );
+
   it("keeps dr, st, and pp optional for an otherwise complete legacy link", () => {
     const scenario = SCENARIOS.find(
       ({ id }) => id === "governance_control"
