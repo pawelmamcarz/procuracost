@@ -64,6 +64,7 @@ export function CalculatorResultBoundary({
       data-result-reveal="true"
       id={CALCULATOR_RESULT_REGION_ID}
       role="region"
+      tabIndex={-1}
     >
       {children}
     </article>

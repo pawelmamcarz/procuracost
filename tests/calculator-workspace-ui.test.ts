@@ -158,7 +158,7 @@ describe("calculator workspace UI", () => {
     expect(html).not.toContain("Share comparison");
   });
 
-  it("provides a typed result slot inside the single focusable reveal boundary", () => {
+  it("keeps a programmatically focusable labelled region around the focusable result heading", () => {
     const valid = createCalculatorWorkspaceState(
       createScenarioDraft("fleet_tco_reframing")
     );
@@ -177,8 +177,9 @@ describe("calculator workspace UI", () => {
     );
     const html = renderWorkspace(submitted.state, "en", slot);
 
-    expect(html).toContain('id="decision-record"');
-    expect(html).toContain('role="region"');
+    expect(html).toMatch(
+      /<article(?=[^>]*aria-labelledby="decision-record-heading")(?=[^>]*id="decision-record")(?=[^>]*role="region")(?=[^>]*tabindex="-1")[^>]*>/
+    );
     expect(html).toMatch(
       /id="decision-record-heading" tabindex="-1"/
     );
