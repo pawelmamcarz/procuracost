@@ -37,6 +37,10 @@ export const SCENARIO_V2_IDS = [
 ] as const;
 
 export type ScenarioV2Id = (typeof SCENARIO_V2_IDS)[number];
+export type WorkflowDesignIdV2 =
+  `${ScenarioV2Id}.workflow.${AlternativeId}`;
+export type ContractDesignIdV2 =
+  `${ScenarioV2Id}.contract.${AlternativeId}`;
 
 export interface ScenarioSourceMetadata {
   titleKey: string;
@@ -56,8 +60,8 @@ export interface ScenarioAssumptionRecord {
 }
 
 export interface ScenarioDesignIds {
-  workflow: Record<AlternativeId, string>;
-  contract: Record<AlternativeId, string>;
+  workflow: Record<AlternativeId, WorkflowDesignIdV2>;
+  contract: Record<AlternativeId, ContractDesignIdV2>;
 }
 
 export interface ScenarioEconomicAssumptions {
@@ -91,6 +95,7 @@ export interface ScenarioDraft
   extends Omit<ComparisonCalculationInput, "context"> {
   kind: "user_draft";
   derivedFromScenarioId: ScenarioV2Id;
+  designIds: ScenarioDesignIds;
   context: ModelContextV2;
   economicAssumptions: ScenarioEconomicAssumptions;
 }
@@ -417,12 +422,12 @@ function buildScenario(seed: ScenarioSeed): ScenarioV2 {
     evidenceIds: [...seed.evidenceIds],
     designIds: {
       workflow: {
-        formalSequential: `${seed.id}.workflow.formalSequential`,
-        adaptiveCompliant: `${seed.id}.workflow.adaptiveCompliant`,
+        formalSequential: `${seed.id}.workflow.formalSequential` as WorkflowDesignIdV2,
+        adaptiveCompliant: `${seed.id}.workflow.adaptiveCompliant` as WorkflowDesignIdV2,
       },
       contract: {
-        formalSequential: `${seed.id}.contract.formalSequential`,
-        adaptiveCompliant: `${seed.id}.contract.adaptiveCompliant`,
+        formalSequential: `${seed.id}.contract.formalSequential` as ContractDesignIdV2,
+        adaptiveCompliant: `${seed.id}.contract.adaptiveCompliant` as ContractDesignIdV2,
       },
     },
     context,
@@ -724,6 +729,7 @@ export function createScenarioDraft(id: ScenarioV2Id): ScenarioDraft {
   return {
     kind: "user_draft",
     derivedFromScenarioId: id,
+    designIds: structuredClone(scenario.designIds),
     ...input,
     context: structuredClone(scenario.context),
     dailyCostOfInaction: economicAssumptions.dailyCostOfInaction,

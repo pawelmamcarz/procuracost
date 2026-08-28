@@ -100,6 +100,7 @@ export type ProcessMapStepKind =
 export interface ProcessMapStep {
   id: string;
   labelKey: string;
+  userLabel?: string;
   predecessorIds: string[];
   activeDays: CalibratedValue;
   queueDays: CalibratedValue;

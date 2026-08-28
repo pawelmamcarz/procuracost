@@ -14,7 +14,9 @@ import {
 import {
   SCENARIOS_V2,
   scenarioV2ById,
+  type ContractDesignIdV2,
   type ScenarioV2Id,
+  type WorkflowDesignIdV2,
 } from "./scenarios";
 
 export const V2_URL_KEYS = [
@@ -45,10 +47,10 @@ export interface V2CalculatorUrlState {
   purchaseArchetypeId: PurchaseArchetypeId;
   executionChannelId: ExecutionChannelId;
   systemSupportId: SystemSupportId;
-  workflowDesignFormalId: string;
-  workflowDesignAdaptiveId: string;
-  contractDesignFormalId: string;
-  contractDesignAdaptiveId: string;
+  workflowDesignFormalId: WorkflowDesignIdV2;
+  workflowDesignAdaptiveId: WorkflowDesignIdV2;
+  contractDesignFormalId: ContractDesignIdV2;
+  contractDesignAdaptiveId: ContractDesignIdV2;
 }
 
 export type V2UrlValidationCode =
@@ -261,10 +263,10 @@ function validateKnownValues(
     );
   }
 
-  const knownWorkflowIds = new Set(
+  const knownWorkflowIds = new Set<string>(
     SCENARIOS_V2.flatMap(({ designIds }) => Object.values(designIds.workflow))
   );
-  const knownContractIds = new Set(
+  const knownContractIds = new Set<string>(
     SCENARIOS_V2.flatMap(({ designIds }) => Object.values(designIds.contract))
   );
   for (const field of ["wdf", "wda"] as const) {
