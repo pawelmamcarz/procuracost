@@ -198,6 +198,41 @@ describe("model 2.3 legal resolution", () => {
       })
     ).toThrow(/initiatedOn.*ruleset/i);
   });
+
+  it("fails closed when pzp_basic omits the procurement object", () => {
+    expect(() =>
+      resolveLegalWaits({
+        boundaryId: "pzp_classic_national",
+        procedureFamilyId: "pzp_basic",
+        initiatedOn: "2026-08-28",
+        legalRulesetId: "pl-pzp-2026-2027",
+        buyerRegime: "classic",
+        communicationMethod: "electronic",
+      })
+    ).toThrow(/procurementObject.*required.*pzp_basic/i);
+  });
+
+  it.each([
+    ["pzp_classic_national", "pzp_basic"],
+    ["pzp_classic_eu", "pzp_open"],
+    ["pzp_classic_eu", "pzp_restricted"],
+  ] as const)(
+    "fails closed when %s/%s omits the communication method",
+    (boundaryId, procedureFamilyId) => {
+      expect(() =>
+        resolveLegalWaits({
+          boundaryId,
+          procedureFamilyId,
+          initiatedOn: "2026-08-28",
+          legalRulesetId: "pl-pzp-2026-2027",
+          buyerRegime: "classic",
+          procurementObject: "supplies_services",
+        })
+      ).toThrow(
+        new RegExp(`communicationMethod.*required.*${procedureFamilyId}`, "i")
+      );
+    }
+  );
 });
 
 describe("model 2.3 process-map validation", () => {
@@ -224,6 +259,7 @@ describe("model 2.3 process-map validation", () => {
       initiatedOn: "2026-08-28",
       legalRulesetId: "pl-pzp-2026-2027",
       buyerRegime: "classic",
+      communicationMethod: "electronic",
     });
     const steps = waits.map((wait) => createLockedLegalWaitStep(wait));
 
@@ -244,6 +280,7 @@ describe("model 2.3 process-map validation", () => {
       initiatedOn: "2026-08-28",
       legalRulesetId: "pl-pzp-2026-2027",
       buyerRegime: "classic",
+      communicationMethod: "electronic",
     });
     const steps = [createLockedLegalWaitStep(waits[0])];
 
@@ -259,6 +296,7 @@ describe("model 2.3 process-map validation", () => {
       initiatedOn: "2026-08-28",
       legalRulesetId: "pl-pzp-2026-2027",
       buyerRegime: "classic",
+      communicationMethod: "electronic",
     });
     const steps = waits.map((wait, index) =>
       createLockedLegalWaitStep(

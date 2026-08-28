@@ -73,7 +73,7 @@ function fixedLegalValue(days: number, evidenceId: string): CalibratedValue {
 }
 
 function legalWaitDefinitions(context: LegalContext): LegalWaitDefinition[] {
-  const electronic = (context.communicationMethod ?? "electronic") === "electronic";
+  const electronic = context.communicationMethod === "electronic";
 
   switch (context.procedureFamilyId) {
     case "pzp_basic":
@@ -166,6 +166,24 @@ export function resolveLegalWaits(context: LegalContext): ResolvedLegalWait[] {
     context.buyerRegime !== "classic"
   ) {
     throw new Error("Classic PZP boundaries require the classic buyer regime");
+  }
+
+  if (
+    context.procedureFamilyId === "pzp_basic" &&
+    context.procurementObject === undefined
+  ) {
+    throw new Error("procurementObject is required for pzp_basic");
+  }
+
+  if (
+    ["pzp_basic", "pzp_open", "pzp_restricted"].includes(
+      context.procedureFamilyId
+    ) &&
+    context.communicationMethod === undefined
+  ) {
+    throw new Error(
+      `communicationMethod is required for ${context.procedureFamilyId}`
+    );
   }
 
   return legalWaitDefinitions(context).map((definition) => ({
