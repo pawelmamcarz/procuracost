@@ -8,5 +8,6 @@ export * from "./engine";
 export * from "./evidence";
 export * from "./legacy-migration";
 export * from "./legal";
+export * from "./pdf-copy";
 export * from "./process-map";
 export * from "./scenarios";
