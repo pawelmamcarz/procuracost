@@ -97,7 +97,7 @@ describe("model 2.3 draft calculation materialisation", () => {
       high: 720_000,
       rangeKind: "stress",
       evidenceClass: "empirical_anchor",
-      evidenceIds: ["user.contract-value", "szucs_discretion_price_2024"],
+      evidenceIds: ["szucs_discretion_price_2024"],
     });
     expect(JSON.stringify(SCENARIOS_V2)).toBe(sourceBefore);
     expect(JSON.stringify(sibling)).toBe(siblingBefore);

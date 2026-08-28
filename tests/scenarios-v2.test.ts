@@ -75,8 +75,31 @@ describe("model 2.3 canonical scenarios", () => {
     expect(draft.context).toEqual(source.context);
     expect(draft.economicAssumptions).toEqual(source.economicAssumptions);
     expect(draft.economicAssumptions).not.toBe(source.economicAssumptions);
-    expect(draft.dailyCostOfInaction).toBe(
+    expect(draft.dailyCostOfInaction).toEqual(
       draft.economicAssumptions.dailyCostOfInaction
+    );
+    expect(draft.dailyCostOfInaction).not.toBe(
+      draft.economicAssumptions.dailyCostOfInaction
+    );
+    const assumptionCentral =
+      draft.economicAssumptions.dailyCostOfInaction.central;
+    draft.dailyCostOfInaction.central = assumptionCentral + 1;
+    draft.dailyCostOfInaction.evidenceIds.push("draft.materialized-edit");
+    expect(draft.economicAssumptions.dailyCostOfInaction.central).toBe(
+      assumptionCentral
+    );
+    expect(
+      draft.economicAssumptions.dailyCostOfInaction.evidenceIds
+    ).not.toContain("draft.materialized-edit");
+
+    const materializedHigh = draft.dailyCostOfInaction.high;
+    draft.economicAssumptions.dailyCostOfInaction.high = materializedHigh + 1;
+    draft.economicAssumptions.dailyCostOfInaction.evidenceIds.push(
+      "draft.assumption-edit"
+    );
+    expect(draft.dailyCostOfInaction.high).toBe(materializedHigh);
+    expect(draft.dailyCostOfInaction.evidenceIds).not.toContain(
+      "draft.assumption-edit"
     );
     expect(SCENARIOS_V2).toHaveLength(10);
   });

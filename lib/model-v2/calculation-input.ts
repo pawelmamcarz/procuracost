@@ -12,6 +12,10 @@ import {
   type ContractCostDimensionId,
   type ContractDesign,
 } from "./domain";
+import {
+  resolveContractDesign,
+  resolveWorkflowDesign,
+} from "./design-registry";
 import type { ComparisonCalculationInput } from "./engine";
 import type { LegacyMigrationResult } from "./legacy-migration";
 import { resolveLegalWaits } from "./legal";
@@ -40,14 +44,6 @@ const ALTERNATIVE_IDS: AlternativeId[] = [
 
 function cloneValue(value: CalibratedValue): CalibratedValue {
   return { ...value, evidenceIds: [...value.evidenceIds] };
-}
-
-function uniqueEvidenceIds(...lists: readonly string[][]): string[] {
-  const ids = new Set<string>();
-  for (const list of lists) {
-    for (const id of list) ids.add(id);
-  }
-  return [...ids];
 }
 
 function assertNonNegativeValue(
@@ -88,17 +84,13 @@ function derivedCompetitionCost(
   rate: CalibratedValue,
   zero: boolean
 ): CalibratedValue {
-  const evidenceIds = uniqueEvidenceIds(
-    contractValue.evidenceIds,
-    rate.evidenceIds
-  );
   return {
     low: zero ? 0 : contractValue.low * rate.low,
     central: zero ? 0 : contractValue.central * rate.central,
     high: zero ? 0 : contractValue.high * rate.high,
     rangeKind: "stress",
     evidenceClass: rate.evidenceClass,
-    evidenceIds,
+    evidenceIds: [...rate.evidenceIds],
   };
 }
 
@@ -250,6 +242,16 @@ export function buildCalculationInputFromDraft(
   const expectedLegalWaits = resolveLegalWaits(draft.context);
   const alternatives = structuredClone(draft.alternatives);
   for (const alternative of ALTERNATIVE_IDS) {
+    resolveWorkflowDesign(
+      draft.designIds.workflow[alternative],
+      draft.derivedFromScenarioId,
+      alternative
+    );
+    resolveContractDesign(
+      draft.designIds.contract[alternative],
+      draft.derivedFromScenarioId,
+      alternative
+    );
     alternatives[alternative].contractDesign = materializeContractDesign(
       draft,
       alternative

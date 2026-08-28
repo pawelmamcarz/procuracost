@@ -732,7 +732,9 @@ export function createScenarioDraft(id: ScenarioV2Id): ScenarioDraft {
     designIds: structuredClone(scenario.designIds),
     ...input,
     context: structuredClone(scenario.context),
-    dailyCostOfInaction: economicAssumptions.dailyCostOfInaction,
+    dailyCostOfInaction: structuredClone(
+      economicAssumptions.dailyCostOfInaction
+    ),
     economicAssumptions,
   };
 }

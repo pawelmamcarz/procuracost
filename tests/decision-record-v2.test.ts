@@ -4,7 +4,6 @@ import { buildCalculationInputFromDraft } from "@/lib/model-v2/calculation-input
 import {
   buildDecisionRecordV2,
   migrationMetadataFromCalculationGate,
-  nativeV2MigrationMetadata,
 } from "@/lib/model-v2/decision-record";
 import { calculateComparison } from "@/lib/model-v2/engine";
 import { migrateLegacyCalculatorParams } from "@/lib/model-v2/legacy-migration";
@@ -24,13 +23,7 @@ function recordFor(scenarioId: ScenarioV2Id) {
     draft,
     calculationInput,
     calculationResult,
-    record: buildDecisionRecordV2({
-      scenario,
-      source: draft,
-      calculationInput,
-      calculationResult,
-      migration: nativeV2MigrationMetadata(),
-    }),
+    record: buildDecisionRecordV2(draft),
   };
 }
 
@@ -175,20 +168,62 @@ describe("model 2.3 neutral decision record", () => {
     ).toBe(false);
   });
 
+  it("keeps retained and user contract values separate from empirical rate anchors", () => {
+    const retainedDraft = createScenarioDraft("fleet_tco_reframing");
+    const retainedContractValue = structuredClone(
+      retainedDraft.economicAssumptions.contractValue
+    );
+    const retainedRecord = buildDecisionRecordV2(retainedDraft);
+
+    expect(retainedRecord.assumptions.contractValue).toEqual(
+      retainedContractValue
+    );
+    expect(retainedRecord.assumptions.contractValue.evidenceClass).toBe(
+      "retained_legacy_assumption"
+    );
+    expect(
+      retainedRecord.calculationAnchors.some(
+        ({ evidenceClass, evidenceIds }) =>
+          evidenceClass === "empirical_anchor" &&
+          evidenceIds.some((id) => retainedContractValue.evidenceIds.includes(id))
+      )
+    ).toBe(false);
+
+    const userDraft = createScenarioDraft("fleet_tco_reframing");
+    userDraft.economicAssumptions.contractValue = {
+      low: 2_000_000,
+      central: 4_000_000,
+      high: 8_000_000,
+      rangeKind: "stress",
+      evidenceClass: "user_input",
+      evidenceIds: ["user.contract-value"],
+    };
+    const userRecord = buildDecisionRecordV2(userDraft);
+
+    expect(userRecord.assumptions.contractValue).toEqual(
+      userDraft.economicAssumptions.contractValue
+    );
+    expect(
+      userRecord.calculationAnchors.some(
+        ({ evidenceClass, evidenceIds }) =>
+          evidenceClass === "empirical_anchor" &&
+          evidenceIds.includes("user.contract-value")
+      )
+    ).toBe(false);
+    expect(
+      userRecord.calculationAnchors.some(
+        ({ evidenceClass, evidenceIds }) =>
+          evidenceClass === "empirical_anchor" &&
+          evidenceIds.includes("szucs_discretion_price_2024")
+      )
+    ).toBe(true);
+  });
+
   it("preserves user-authored labels and critical-path membership without printing label keys as labels", () => {
-    const scenario = scenarioV2ById("fleet_tco_reframing")!;
     const draft = createScenarioDraft("fleet_tco_reframing");
     draft.alternatives.formalSequential.workflowDesign.steps[0].userLabel =
       "Review scope with operations";
-    const calculationInput = buildCalculationInputFromDraft(draft);
-    const calculationResult = calculateComparison(calculationInput);
-    const record = buildDecisionRecordV2({
-      scenario,
-      source: draft,
-      calculationInput,
-      calculationResult,
-      migration: nativeV2MigrationMetadata(),
-    });
+    const record = buildDecisionRecordV2(draft);
     const step = record.alternatives.formalSequential.workflow.steps[0];
 
     expect(step.userLabel).toBe("Review scope with operations");
@@ -225,6 +260,21 @@ describe("model 2.3 neutral decision record", () => {
       confirmed: true,
       legacyScenarioId: "erp",
     });
+    expect(
+      buildDecisionRecordV2(
+        createScenarioDraft("erp_transformation_discovery"),
+        {
+          kind: "legacy_migration",
+          result: partial,
+          confirmed: true,
+        }
+      ).metadata.migration
+    ).toMatchObject({
+      sourceSchemaVersion: "legacy-v1",
+      status: "partial",
+      confirmed: true,
+      legacyScenarioId: "erp",
+    });
     expect(() =>
       migrationMetadataFromCalculationGate({
         kind: "legacy_migration",
@@ -235,46 +285,42 @@ describe("model 2.3 neutral decision record", () => {
   });
 
   it("stays swap-neutral and exposes no prescriptive result field", () => {
-    const {
-      scenario,
-      draft,
-      calculationInput,
-      calculationResult,
-      record,
-    } = recordFor("fleet_tco_reframing");
-    const swappedInput = {
-      ...calculationInput,
-      alternatives: {
-        formalSequential: calculationInput.alternatives.adaptiveCompliant,
-        adaptiveCompliant: calculationInput.alternatives.formalSequential,
-      },
-    };
+    const draft = createScenarioDraft("fleet_tco_reframing");
+    draft.economicAssumptions.pathCompetitionDiffers = false;
+    draft.economicAssumptions.competitionTransferRate = null;
+    for (const alternative of [
+      "formalSequential",
+      "adaptiveCompliant",
+    ] as const) {
+      const competition = draft.alternatives[
+        alternative
+      ].contractDesign.dimensions.find(
+        ({ id }) => id === "competition_transfer"
+      );
+      if (!competition || competition.status !== "monetized") {
+        throw new Error("Fixture requires a monetized competition dimension");
+      }
+      competition.cost = {
+        ...competition.cost,
+        low: 0,
+        central: 0,
+        high: 0,
+      };
+    }
+    const record = buildDecisionRecordV2(draft);
     const swappedDraft = structuredClone(draft);
-    swappedDraft.designIds = {
-      workflow: {
-        formalSequential: draft.designIds.workflow.adaptiveCompliant,
-        adaptiveCompliant: draft.designIds.workflow.formalSequential,
-      },
-      contract: {
-        formalSequential: draft.designIds.contract.adaptiveCompliant,
-        adaptiveCompliant: draft.designIds.contract.formalSequential,
-      },
+    swappedDraft.alternatives = {
+      formalSequential: structuredClone(draft.alternatives.adaptiveCompliant),
+      adaptiveCompliant: structuredClone(draft.alternatives.formalSequential),
     };
-    const swappedResult = calculateComparison(swappedInput);
-    const swappedRecord = buildDecisionRecordV2({
-      scenario,
-      source: swappedDraft,
-      calculationInput: swappedInput,
-      calculationResult: swappedResult,
-      migration: nativeV2MigrationMetadata(),
-    });
+    const swappedRecord = buildDecisionRecordV2(swappedDraft);
 
     expect(swappedRecord.comparison.deltaCost).toBe(
       -record.comparison.deltaCost
     );
     expect(swappedRecord.comparison.deltaCostOuterEnvelope).toEqual({
-      low: -calculationResult.deltaCostOuterEnvelope.high,
-      high: -calculationResult.deltaCostOuterEnvelope.low,
+      low: -record.comparison.deltaCostOuterEnvelope.high,
+      high: -record.comparison.deltaCostOuterEnvelope.low,
     });
     expect(
       swappedRecord.drivers.map(({ id, contribution }) => [
@@ -298,5 +344,68 @@ describe("model 2.3 neutral decision record", () => {
     ]) {
       expect(keys).not.toContain(forbidden);
     }
+  });
+
+  it("atomically rematerialises edited assumptions before calculating the record", () => {
+    const draft = createScenarioDraft("fleet_tco_reframing");
+    draft.economicAssumptions.dailyCostOfInaction = {
+      low: 100,
+      central: 100,
+      high: 100,
+      rangeKind: "fixed",
+      evidenceClass: "user_input",
+      evidenceIds: ["user.daily-cost"],
+    };
+
+    const record = buildDecisionRecordV2(draft);
+
+    expect(record.assumptions.dailyCostOfInaction.central).toBe(100);
+    expect(record.alternatives.formalSequential.result.delayCost.central).toBe(
+      4_400
+    );
+    expect(record.alternatives.adaptiveCompliant.result.delayCost.central).toBe(
+      2_400
+    );
+    expect(
+      record.drivers.find(({ id }) => id === "delay_cost")?.contribution.central
+    ).toBe(2_000);
+  });
+
+  it("derives axes from the same draft and rejects mismatched design identities", () => {
+    const draft = createScenarioDraft("fleet_tco_reframing");
+    draft.context.purchaseArchetypeId = "complex_service";
+
+    expect(
+      buildDecisionRecordV2(draft).axes.find(
+        ({ id }) => id === "purchaseArchetype"
+      )?.value
+    ).toBe("complex_service");
+
+    draft.designIds.workflow.formalSequential =
+      draft.designIds.workflow.adaptiveCompliant;
+    expect(() => buildDecisionRecordV2(draft)).toThrow(
+      /workflow design.*formalSequential/i
+    );
+  });
+
+  it("does not accept detached scenario/input/result payloads", () => {
+    const draft = createScenarioDraft("fleet_tco_reframing");
+    const calculationInput = buildCalculationInputFromDraft(draft);
+    const calculationResult = calculateComparison(calculationInput);
+    const detached = {
+      scenario: scenarioV2ById("fleet_tco_reframing")!,
+      source: draft,
+      calculationInput,
+      calculationResult: {
+        ...calculationResult,
+        deltaCost: calculationResult.deltaCost + 1,
+      },
+    };
+
+    expect(() =>
+      buildDecisionRecordV2(
+        detached as unknown as Parameters<typeof buildDecisionRecordV2>[0]
+      )
+    ).toThrow(/ScenarioDraft/i);
   });
 });

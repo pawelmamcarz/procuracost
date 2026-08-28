@@ -3,19 +3,22 @@ import type {
   EvidenceClass,
   RangeValues,
 } from "./calibrated-value";
-import type { CalculationInputGateV2 } from "./calculation-input";
+import {
+  buildCalculationInputFromDraft,
+  type CalculationInputGateV2,
+} from "./calculation-input";
 import {
   MODEL_V2_METADATA,
   type AlternativeId,
   type ContractCostDimensionId,
   type LockedLegalProvenance,
-  type ModelContextV2,
   type ProcessMapStep,
 } from "./domain";
-import type {
-  AlternativeCostResult,
-  ComparisonCalculationInput,
-  ComparisonCalculationResult,
+import {
+  calculateComparison,
+  type AlternativeCostResult,
+  type ComparisonCalculationInput,
+  type ComparisonCalculationResult,
 } from "./engine";
 import {
   EVIDENCE_REGISTRY,
@@ -30,6 +33,7 @@ import type {
   ScenarioV2Id,
   WorkflowDesignIdV2,
 } from "./scenarios";
+import { scenarioV2ById } from "./scenarios";
 
 const ALTERNATIVE_IDS: AlternativeId[] = [
   "formalSequential",
@@ -148,14 +152,6 @@ export interface DecisionRecordV2 {
   externalEvidence: EvidenceRecord[];
   retainedAssumptions: ScenarioAssumptionRecord[];
   legalProvenance: LegalProvenanceRecord[];
-}
-
-export interface BuildDecisionRecordV2Args {
-  scenario: ScenarioV2;
-  source: ScenarioV2 | ScenarioDraft;
-  calculationInput: ComparisonCalculationInput;
-  calculationResult: ComparisonCalculationResult;
-  migration: DecisionRecordMigrationMetadata;
 }
 
 export function nativeV2MigrationMetadata(): DecisionRecordMigrationMetadata {
@@ -441,54 +437,29 @@ function buildStepRecord(
   };
 }
 
-function sourceScenarioId(source: ScenarioV2 | ScenarioDraft): ScenarioV2Id {
-  return source.kind === "registry_scenario"
-    ? source.id
-    : source.derivedFromScenarioId;
-}
-
-function assertRecordInputs(args: BuildDecisionRecordV2Args): ModelContextV2 {
-  const context = args.source.context;
-  if (
-    sourceScenarioId(args.source) !== args.scenario.id ||
-    context.schemaVersion !== MODEL_V2_METADATA.schemaVersion ||
-    context.modelVersion !== MODEL_V2_METADATA.modelVersion ||
-    context.calibrationId !== MODEL_V2_METADATA.calibrationId ||
-    context.legalRulesetId !== MODEL_V2_METADATA.legalRulesetId
-  ) {
-    throw new Error("Decision record source metadata is inconsistent");
-  }
-  if (
-    args.calculationInput.context.legalRulesetId !== context.legalRulesetId ||
-    args.calculationInput.context.boundaryId !== context.boundaryId ||
-    args.calculationInput.context.procedureFamilyId !==
-      context.procedureFamilyId ||
-    args.calculationInput.context.initiatedOn !== context.initiatedOn
-  ) {
-    throw new Error("Decision record calculation context is inconsistent");
-  }
-  return context;
-}
-
-export function buildDecisionRecordV2(
-  args: BuildDecisionRecordV2Args
+function assembleDecisionRecordV2(
+  scenario: ScenarioV2,
+  source: ScenarioDraft,
+  calculationInput: ComparisonCalculationInput,
+  calculationResult: ComparisonCalculationResult,
+  migration: DecisionRecordMigrationMetadata
 ): DecisionRecordV2 {
-  const context = assertRecordInputs(args);
-  const anchors = collectCalculationAnchors(args.calculationInput);
-  const drivers = buildDrivers(args.calculationInput, args.calculationResult);
+  const context = source.context;
+  const anchors = collectCalculationAnchors(calculationInput);
+  const drivers = buildDrivers(calculationInput, calculationResult);
   const alternatives = Object.fromEntries(
     ALTERNATIVE_IDS.map((alternative) => {
-      const result = args.calculationResult[alternative];
+      const result = calculationResult[alternative];
       return [
         alternative,
         {
           id: alternative,
           designIds: {
-            workflowDesignId: args.source.designIds.workflow[alternative],
-            contractDesignId: args.source.designIds.contract[alternative],
+            workflowDesignId: source.designIds.workflow[alternative],
+            contractDesignId: source.designIds.contract[alternative],
           },
           workflow: {
-            steps: args.calculationInput.alternatives[
+            steps: calculationInput.alternatives[
               alternative
             ].workflowDesign.steps.map((step) => buildStepRecord(step, result)),
           },
@@ -504,9 +475,9 @@ export function buildDecisionRecordV2(
       modelVersion: MODEL_V2_METADATA.modelVersion,
       calibrationId: MODEL_V2_METADATA.calibrationId,
       legalRulesetId: MODEL_V2_METADATA.legalRulesetId,
-      scenarioId: args.scenario.id,
+      scenarioId: scenario.id,
       currency: "PLN",
-      migration: structuredClone(args.migration),
+      migration: structuredClone(migration),
     },
     axes: [
       { id: "legalGovernanceBoundary", value: context.boundaryId },
@@ -519,20 +490,45 @@ export function buildDecisionRecordV2(
     alternatives,
     comparison: {
       operation: "formalSequential_minus_adaptiveCompliant",
-      deltaCost: args.calculationResult.deltaCost,
+      deltaCost: calculationResult.deltaCost,
       deltaCostOuterEnvelope: {
-        ...args.calculationResult.deltaCostOuterEnvelope,
+        ...calculationResult.deltaCostOuterEnvelope,
       },
     },
     drivers,
-    coverage: buildCoverage(args.calculationInput, args.calculationResult),
-    nonMonetizedDimensions: buildNonMonetizedDimensions(
-      args.calculationResult
-    ),
-    assumptions: structuredClone(args.source.economicAssumptions),
+    coverage: buildCoverage(calculationInput, calculationResult),
+    nonMonetizedDimensions: buildNonMonetizedDimensions(calculationResult),
+    assumptions: structuredClone(source.economicAssumptions),
     calculationAnchors: anchors,
-    externalEvidence: buildExternalEvidence(args.scenario, anchors),
-    retainedAssumptions: structuredClone(args.scenario.assumptions),
-    legalProvenance: buildLegalProvenance(args.calculationInput),
+    externalEvidence: buildExternalEvidence(scenario, anchors),
+    retainedAssumptions: structuredClone(scenario.assumptions),
+    legalProvenance: buildLegalProvenance(calculationInput),
   };
+}
+
+export function buildDecisionRecordV2(
+  draft: ScenarioDraft,
+  gate?: CalculationInputGateV2
+): DecisionRecordV2 {
+  if (!draft || draft.kind !== "user_draft") {
+    throw new Error("Decision record requires one ScenarioDraft source");
+  }
+  const scenario = scenarioV2ById(draft.derivedFromScenarioId);
+  if (!scenario) {
+    throw new Error(
+      `Unknown model 2.3 scenario: ${draft.derivedFromScenarioId}`
+    );
+  }
+  const calculationInput = buildCalculationInputFromDraft(draft, gate);
+  const calculationResult = calculateComparison(calculationInput);
+  const migration = gate
+    ? migrationMetadataFromCalculationGate(gate)
+    : nativeV2MigrationMetadata();
+  return assembleDecisionRecordV2(
+    scenario,
+    draft,
+    calculationInput,
+    calculationResult,
+    migration
+  );
 }
