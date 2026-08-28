@@ -1,17 +1,38 @@
 import { describe, expect, it } from "vitest";
 
+import { encodeInputsToParams } from "@/components/calculator-url";
 import {
   buildPdfCopy,
   pdfExportFilename,
 } from "@/lib/model-v2/pdf-copy";
 import { buildDecisionRecordV2 } from "@/lib/model-v2/decision-record";
+import {
+  createScenarioDraftFromLegacyMigration,
+  migrateLegacyCalculatorParams,
+} from "@/lib/model-v2";
 import { createScenarioDraft } from "@/lib/model-v2/scenarios";
+import { SCENARIOS } from "@/lib/scenarios";
 import { decisionRecordWithTopology } from "@/tests/fixtures/branched-decision-record-v2";
 
 const EXPORTED_AT = "2026-08-28T14:05:06.000Z";
 
 function fleetRecord() {
   return buildDecisionRecordV2(createScenarioDraft("fleet_tco_reframing"));
+}
+
+function migratedRecord() {
+  const scenario = SCENARIOS.find(({ id }) => id === "erp")!;
+  const params = encodeInputsToParams(scenario.inputs, scenario.id);
+  params.set("cv", "3750000");
+  params.set("dci", "9999");
+  const adaptation = createScenarioDraftFromLegacyMigration(
+    migrateLegacyCalculatorParams(params),
+    true
+  );
+  if (adaptation.status !== "ready") {
+    throw new Error("Expected representable partial migration fixture");
+  }
+  return buildDecisionRecordV2(adaptation.draft, adaptation.gate);
 }
 
 function recordWithComparison(
@@ -86,6 +107,48 @@ describe("model 2.3 pure PDF copy", () => {
     expect(copy.context[0].label).toBe("Ramy prawne i ład zakupowy");
     expect(copy.alternatives[0].label).toBe("Formalna ścieżka sekwencyjna");
     expect(copy.nonMonetizedDimensions[0].status).toBe("niemonetyzowany");
+  });
+
+  it("preserves retained and materialised legacy values in isolated PDF copy data", () => {
+    const record = migratedRecord();
+    const copy = buildPdfCopy(record, "en", EXPORTED_AT);
+
+    expect(copy.migrationAudit).toMatchObject({
+      sourceClass: "legacy_migration_input",
+      retainedLegacyInputs: {
+        contractValue: 3_750_000,
+        dailyCostOfInaction: 9_999,
+      },
+    });
+    expect(copy.migrationAudit?.fieldDispositions).toContainEqual(
+      expect.objectContaining({
+        field: "contractValue",
+        disposition: "materialised",
+        retainedValue: 3_750_000,
+        materializedPaths: ["economicAssumptions.contractValue"],
+        provenance: expect.objectContaining({
+          sourceField: "retainedLegacyInputs.contractValue",
+        }),
+      })
+    );
+    expect(copy.externalEvidence.map(({ id }) => id)).not.toContain(
+      "legacy-v1.erp.retainedLegacyInputs.contractValue"
+    );
+    expect(copy.retainedAssumptions.map(({ id }) => id)).not.toContain(
+      "legacy-v1.erp.retainedLegacyInputs.contractValue"
+    );
+
+    if (!record.metadata.migration.audit || !copy.migrationAudit) {
+      throw new Error("Expected migration audit in record and PDF copy");
+    }
+    record.metadata.migration.audit.retainedLegacyInputs.contractValue = 1;
+    expect(copy.migrationAudit.retainedLegacyInputs.contractValue).toBe(
+      3_750_000
+    );
+    copy.migrationAudit.fieldDispositions[0].materializedPaths.push("mutated");
+    expect(
+      record.metadata.migration.audit.fieldDispositions[0].materializedPaths
+    ).not.toContain("mutated");
   });
 
   it("preserves complete locked legal provenance without mixing it into evidence", () => {

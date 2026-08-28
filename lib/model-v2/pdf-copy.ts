@@ -11,6 +11,7 @@ import type {
   DecisionRecordMigrationMetadata,
   DecisionRecordV2,
 } from "./decision-record";
+import type { LegacyMigrationAudit } from "./legacy-migration-draft";
 import { MODEL_V2_METADATA, type AlternativeId } from "./domain";
 
 const ALTERNATIVE_IDS: AlternativeId[] = [
@@ -152,6 +153,7 @@ export interface PdfCopyV2 {
   retainedAssumptions: PdfRetainedAssumptionCopy[];
   legalProvenance: PdfLegalProvenanceCopy[];
   migration: PdfLabelValue[];
+  migrationAudit: LegacyMigrationAudit | null;
 }
 
 function assertPdfRecord(record: DecisionRecordV2): void {
@@ -529,5 +531,8 @@ export function buildPdfCopy(
           tx.words.notApplicable,
       },
     ],
+    migrationAudit: migration.audit
+      ? structuredClone(migration.audit)
+      : null,
   };
 }

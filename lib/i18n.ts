@@ -688,6 +688,7 @@ const researchExportV2Pl = {
     retainedAssumptions: "Przeniesione założenia modelu 2.2.2",
     legalProvenance: "Pochodzenie reguł prawnych",
     migration: "Migracja danych wejściowych",
+    migrationAudit: "Audyt przeniesionych danych wejściowych",
   },
   fields: {
     schemaVersion: "Wersja schematu",
@@ -734,6 +735,12 @@ const researchExportV2Pl = {
     predecessorIds: "Identyfikatory poprzedników",
     criticalPathCases: "Warianty ścieżki krytycznej",
     stepKind: "Rodzaj kroku",
+    disposition: "Dyspozycja migracyjna",
+    retainedValue: "Przeniesiona wartość",
+    changedFromLegacyScenario: "Zmieniono względem starego scenariusza",
+    materializedPaths: "Ścieżki materializacji",
+    sourceClass: "Klasa źródła",
+    sourceField: "Pole źródłowe",
   },
   axes: {
     legalGovernanceBoundary: "Ramy prawne i ład zakupowy",
@@ -868,6 +875,7 @@ const researchExportV2En = {
     retainedAssumptions: "Retained model 2.2.2 assumptions",
     legalProvenance: "Legal provenance",
     migration: "Input migration",
+    migrationAudit: "Retained legacy input audit",
   },
   fields: {
     schemaVersion: "Schema version",
@@ -914,6 +922,12 @@ const researchExportV2En = {
     predecessorIds: "Predecessor identifiers",
     criticalPathCases: "Critical-path cases",
     stepKind: "Step kind",
+    disposition: "Migration disposition",
+    retainedValue: "Retained value",
+    changedFromLegacyScenario: "Changed from legacy scenario",
+    materializedPaths: "Materialised paths",
+    sourceClass: "Source class",
+    sourceField: "Source field",
   },
   axes: {
     legalGovernanceBoundary: "Legal and governance boundary",
@@ -1894,6 +1908,8 @@ const modelV2Pl = {
       "Część starego odnośnika wymaga jawnego potwierdzenia przed obliczeniem.",
     legacyInvalidValue:
       "Stary odnośnik zawiera wartość, której nie można jednoznacznie przenieść.",
+    legacyUnrepresentableChangedField:
+      "Zmienione pole starego modelu nie ma zgodnej reprezentacji w modelu 2.3.",
   },
 } as const;
 
@@ -2128,6 +2144,8 @@ const modelV2En: WidenModelV2Copy<typeof modelV2Pl> = {
       "Part of the legacy link requires explicit confirmation before calculation.",
     legacyInvalidValue:
       "The legacy link contains a value that cannot be migrated unambiguously.",
+    legacyUnrepresentableChangedField:
+      "The changed legacy field has no compatible representation in model 2.3.",
   },
 };
 

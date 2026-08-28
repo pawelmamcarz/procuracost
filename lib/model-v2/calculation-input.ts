@@ -18,6 +18,10 @@ import {
 } from "./design-registry";
 import type { ComparisonCalculationInput } from "./engine";
 import type { LegacyMigrationResult } from "./legacy-migration";
+import {
+  createScenarioDraftFromLegacyMigration,
+  type LegacyMigrationAudit,
+} from "./legacy-migration-draft";
 import { resolveLegalWaits } from "./legal";
 import { assertValidProcessMap } from "./process-map";
 import {
@@ -35,6 +39,7 @@ export type CalculationInputGateV2 =
       kind: "legacy_migration";
       result: LegacyMigrationResult;
       confirmed?: boolean;
+      audit?: LegacyMigrationAudit;
     };
 
 const ALTERNATIVE_IDS: AlternativeId[] = [
@@ -200,14 +205,14 @@ function assertGateScenario(
 
 function assertGateAllowsCalculation(
   gate: CalculationInputGateV2 | undefined,
-  scenarioId: ScenarioV2Id
+  draft: ScenarioDraft
 ): void {
   if (!gate) return;
   if (gate.kind === "v2_url") {
     if (gate.result.status !== "valid" || !gate.result.canCalculate) {
       throw new Error("V2 URL gate is blocked by validation errors");
     }
-    assertGateScenario(gate.result.state, scenarioId);
+    assertGateScenario(gate.result.state, draft.derivedFromScenarioId);
     return;
   }
 
@@ -218,10 +223,63 @@ function assertGateAllowsCalculation(
   if (migration.status === "partial" && gate.confirmed !== true) {
     throw new Error("Partial legacy migration requires explicit confirmation");
   }
+  if (!gate.audit) {
+    throw new Error("Legacy migration requires adapter-provided audit data");
+  }
   assertGateScenario(
     migration.status === "exact" ? migration.state : migration.draftState,
-    scenarioId
+    draft.derivedFromScenarioId
   );
+  const adapted = createScenarioDraftFromLegacyMigration(
+    migration,
+    migration.status === "partial"
+  );
+  if (adapted.status !== "ready") {
+    const fields = adapted.issues.map(({ field }) => field).join(", ");
+    throw new Error(
+      `Confirmed legacy migration remains blocked by: ${fields}`
+    );
+  }
+  if (JSON.stringify(gate.audit) !== JSON.stringify(adapted.audit)) {
+    throw new Error(
+      "Legacy migration adapter audit does not match retained inputs"
+    );
+  }
+  if (migration.status === "partial") {
+    const mappedValues: Array<[
+      string,
+      CalibratedValue,
+      CalibratedValue,
+    ]> = [
+      [
+        "contractValue",
+        draft.economicAssumptions.contractValue,
+        adapted.draft.economicAssumptions.contractValue,
+      ],
+      [
+        "dailyCostOfInaction",
+        draft.economicAssumptions.dailyCostOfInaction,
+        adapted.draft.economicAssumptions.dailyCostOfInaction,
+      ],
+      [
+        "dailyCostOfInaction",
+        draft.dailyCostOfInaction,
+        adapted.draft.dailyCostOfInaction,
+      ],
+      ...Object.keys(adapted.draft.roleHourlyRates).map((role) => [
+        `stakeholders.${role}.dailyRate`,
+        draft.roleHourlyRates[role],
+        adapted.draft.roleHourlyRates[role],
+      ] as [string, CalibratedValue, CalibratedValue]),
+    ];
+    for (const [field, actual, expected] of mappedValues) {
+      if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+        throw new Error(
+          `Draft does not match retained legacy input ${field}`
+        );
+      }
+    }
+  }
 }
 
 export function buildCalculationInputFromDraft(
@@ -229,7 +287,7 @@ export function buildCalculationInputFromDraft(
   gate?: CalculationInputGateV2
 ): ComparisonCalculationInput {
   assertFixedMetadata(draft);
-  assertGateAllowsCalculation(gate, draft.derivedFromScenarioId);
+  assertGateAllowsCalculation(gate, draft);
   assertNonNegativeValue(
     draft.economicAssumptions.contractValue,
     "contractValue"

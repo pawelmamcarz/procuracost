@@ -1,7 +1,13 @@
 import { describe, expect, it } from "vitest";
 
+import { encodeInputsToParams } from "@/components/calculator-url";
 import { buildDecisionRecordV2 } from "@/lib/model-v2/decision-record";
+import {
+  createScenarioDraftFromLegacyMigration,
+  migrateLegacyCalculatorParams,
+} from "@/lib/model-v2";
 import { createScenarioDraft } from "@/lib/model-v2/scenarios";
+import { SCENARIOS } from "@/lib/scenarios";
 import {
   RESEARCH_CSV_HEADERS,
   buildResearchCsv,
@@ -15,6 +21,21 @@ const EXPORTED_AT = "2026-08-28T14:05:06.000Z";
 
 function fleetRecord() {
   return buildDecisionRecordV2(createScenarioDraft("fleet_tco_reframing"));
+}
+
+function migratedRecord() {
+  const scenario = SCENARIOS.find(({ id }) => id === "erp")!;
+  const params = encodeInputsToParams(scenario.inputs, scenario.id);
+  params.set("cv", "3750000");
+  params.set("dci", "9999");
+  const adaptation = createScenarioDraftFromLegacyMigration(
+    migrateLegacyCalculatorParams(params),
+    true
+  );
+  if (adaptation.status !== "ready") {
+    throw new Error("Expected representable partial migration fixture");
+  }
+  return buildDecisionRecordV2(adaptation.draft, adaptation.gate);
 }
 
 function recordWithComparison(
@@ -82,6 +103,50 @@ describe("model 2.3 pure research exports", () => {
     expect(payload.migration).toEqual(record.metadata.migration);
     expect(record).toEqual(before);
     expect(JSON.parse(JSON.stringify(payload))).toEqual(payload);
+  });
+
+  it("preserves the complete migration audit in JSON, CSV and both Markdown locales", () => {
+    const record = migratedRecord();
+    const payload = buildResearchJson(record, "en", EXPORTED_AT);
+    const csv = buildResearchCsv(record, "en");
+    const english = buildResearchMarkdown(record, "en");
+    const polish = buildResearchMarkdown(record, "pl");
+
+    expect(payload.migration.audit).toEqual(record.metadata.migration.audit);
+    expect(payload.migration.audit).not.toBe(record.metadata.migration.audit);
+    expect(payload.migration.audit?.retainedLegacyInputs).toMatchObject({
+      contractValue: 3_750_000,
+      dailyCostOfInaction: 9_999,
+    });
+    expect(payload.migration.audit?.fieldDispositions).toContainEqual(
+      expect.objectContaining({
+        field: "contractValue",
+        disposition: "materialised",
+        retainedValue: 3_750_000,
+        materializedPaths: ["economicAssumptions.contractValue"],
+      })
+    );
+    expect(csv).toContain(
+      "migration_input,retainedLegacyInputs.contractValue,,contractValue,3750000"
+    );
+    expect(csv).toContain(
+      "migration_input,retainedLegacyInputs.contractValue,,sourceClass,legacy_migration_input"
+    );
+    expect(csv).not.toContain(",materialised,legacy_migration_input,");
+    expect(csv).toContain(
+      "migration_input,retainedLegacyInputs.stakeholders.requestor.dailyRate"
+    );
+    expect(csv).not.toContain(
+      "external_evidence,legacy-v1.erp.retainedLegacyInputs.contractValue"
+    );
+    expect(english).toContain("### Retained legacy input audit");
+    expect(english).toContain(
+      "`retainedLegacyInputs.contractValue` | `materialised` | 3750000"
+    );
+    expect(polish).toContain("### Audyt przeniesionych danych wejściowych");
+    expect(polish).toContain(
+      "`retainedLegacyInputs.dailyCostOfInaction` | `materialised` | 9999"
+    );
   });
 
   it("uses one exact base filename across locales", () => {

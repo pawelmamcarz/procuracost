@@ -179,6 +179,14 @@ function markdownCell(value: string): string {
   return value.replace(/\|/g, "\\|").replace(/\r?\n/g, "<br>");
 }
 
+function migrationAuditValue(value: unknown): string {
+  if (value === null || value === undefined) return "null";
+  if (typeof value === "string" || typeof value === "number") {
+    return String(value);
+  }
+  return JSON.stringify(value);
+}
+
 function csvEscape(value: CsvRow[CsvHeader]): string {
   if (value === null || value === undefined) return "";
   const text = String(value);
@@ -718,6 +726,44 @@ export function buildResearchCsv(
       })
     );
   }
+  if (migration.audit) {
+    for (const entry of migration.audit.fieldDispositions) {
+      rows.push(
+        csvRow(locale, {
+          section: "migration_input",
+          record_id: entry.provenance.sourceField,
+          field_id: entry.field,
+          value: migrationAuditValue(entry.retainedValue),
+          status: entry.disposition,
+          localized_label: tx.fields.retainedValue,
+        }),
+        csvRow(locale, {
+          section: "migration_input",
+          record_id: entry.provenance.sourceField,
+          field_id: "changedFromLegacyScenario",
+          value: entry.changedFromLegacyScenario,
+          status: entry.disposition,
+          localized_label: tx.fields.changedFromLegacyScenario,
+        }),
+        csvRow(locale, {
+          section: "migration_input",
+          record_id: entry.provenance.sourceField,
+          field_id: "materializedPaths",
+          value: entry.materializedPaths.join(";"),
+          status: entry.disposition,
+          localized_label: tx.fields.materializedPaths,
+        }),
+        csvRow(locale, {
+          section: "migration_input",
+          record_id: entry.provenance.sourceField,
+          field_id: "sourceClass",
+          value: entry.provenance.sourceClass,
+          status: entry.disposition,
+          localized_label: tx.fields.sourceClass,
+        })
+      );
+    }
+  }
 
   return `${[
     RESEARCH_CSV_HEADERS.join(","),
@@ -990,6 +1036,25 @@ export function buildResearchMarkdown(
       record.metadata.migration.fieldsRequiringConfirmation.join(", ") ||
       tx.words.notApplicable
     }`,
+    ...(record.metadata.migration.audit
+      ? [
+          "",
+          `### ${tx.sections.migrationAudit}`,
+          "",
+          `| ${tx.fields.sourceField} | ${tx.fields.disposition} | ${tx.fields.retainedValue} | ${tx.fields.changedFromLegacyScenario} | ${tx.fields.materializedPaths} |`,
+          "| --- | --- | ---: | --- | --- |",
+          ...record.metadata.migration.audit.fieldDispositions.map(
+            (entry) =>
+              `| \`${entry.provenance.sourceField}\` | \`${entry.disposition}\` | ${markdownCell(
+                migrationAuditValue(entry.retainedValue)
+              )} | ${entry.changedFromLegacyScenario ? tx.words.yes : tx.words.no} | ${
+                entry.materializedPaths.length > 0
+                  ? entry.materializedPaths.map((path) => `\`${path}\``).join(", ")
+                  : tx.words.notApplicable
+              } |`
+          ),
+        ]
+      : []),
     "",
   ];
   return lines.join("\n");

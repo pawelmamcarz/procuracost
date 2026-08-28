@@ -24,6 +24,10 @@ import {
   EVIDENCE_REGISTRY,
   type EvidenceRecord,
 } from "./evidence";
+import {
+  createScenarioDraftFromLegacyMigration,
+  type LegacyMigrationAudit,
+} from "./legacy-migration-draft";
 import type {
   ContractDesignIdV2,
   ScenarioAssumptionRecord,
@@ -61,6 +65,7 @@ export interface DecisionRecordMigrationMetadata {
   confirmed: true;
   legacyScenarioId: string | null;
   fieldsRequiringConfirmation: string[];
+  audit: LegacyMigrationAudit | null;
 }
 
 export type MonetaryDriverId =
@@ -161,6 +166,7 @@ export function nativeV2MigrationMetadata(): DecisionRecordMigrationMetadata {
     confirmed: true,
     legacyScenarioId: null,
     fieldsRequiringConfirmation: [],
+    audit: null,
   };
 }
 
@@ -181,12 +187,28 @@ export function migrationMetadataFromCalculationGate(
   if (migration.status === "partial" && gate.confirmed !== true) {
     throw new Error("Partial legacy migration requires explicit confirmation");
   }
+  if (!gate.audit) {
+    throw new Error("Legacy migration requires adapter-provided audit data");
+  }
+  const adapted = createScenarioDraftFromLegacyMigration(
+    migration,
+    migration.status === "partial"
+  );
+  if (
+    adapted.status !== "ready" ||
+    JSON.stringify(gate.audit) !== JSON.stringify(adapted.audit)
+  ) {
+    throw new Error(
+      "Legacy migration adapter audit does not match retained inputs"
+    );
+  }
   return {
     sourceSchemaVersion: migration.sourceSchemaVersion,
     status: migration.status,
     confirmed: true,
     legacyScenarioId: migration.legacyScenarioId,
     fieldsRequiringConfirmation: [...migration.fieldsRequiringConfirmation],
+    audit: structuredClone(gate.audit),
   };
 }
 

@@ -7,6 +7,7 @@ import {
 } from "@/lib/model-v2/decision-record";
 import { calculateComparison } from "@/lib/model-v2/engine";
 import { migrateLegacyCalculatorParams } from "@/lib/model-v2/legacy-migration";
+import { createScenarioDraftFromLegacyMigration } from "@/lib/model-v2/legacy-migration-draft";
 import {
   createScenarioDraft,
   scenarioV2ById,
@@ -54,6 +55,7 @@ describe("model 2.3 neutral decision record", () => {
         confirmed: true,
         legacyScenarioId: null,
         fieldsRequiringConfirmation: [],
+        audit: null,
       },
     });
     expect(record.axes).toEqual([
@@ -248,32 +250,38 @@ describe("model 2.3 neutral decision record", () => {
         confirmed: false,
       })
     ).toThrow(/confirmation/i);
-    expect(
+    expect(() =>
       migrationMetadataFromCalculationGate({
         kind: "legacy_migration",
         result: partial,
         confirmed: true,
       })
+    ).toThrow(/adapter.*audit/i);
+    const adapted = createScenarioDraftFromLegacyMigration(partial, true);
+    expect(adapted.status).toBe("ready");
+    if (adapted.status !== "ready") {
+      throw new Error("Expected confirmed canonical partial migration to adapt");
+    }
+    expect(
+      migrationMetadataFromCalculationGate(adapted.gate)
     ).toMatchObject({
       sourceSchemaVersion: "legacy-v1",
       status: "partial",
       confirmed: true,
       legacyScenarioId: "erp",
+      audit: adapted.audit,
     });
     expect(
       buildDecisionRecordV2(
-        createScenarioDraft("erp_transformation_discovery"),
-        {
-          kind: "legacy_migration",
-          result: partial,
-          confirmed: true,
-        }
+        adapted.draft,
+        adapted.gate
       ).metadata.migration
     ).toMatchObject({
       sourceSchemaVersion: "legacy-v1",
       status: "partial",
       confirmed: true,
       legacyScenarioId: "erp",
+      audit: adapted.audit,
     });
     expect(() =>
       migrationMetadataFromCalculationGate({
