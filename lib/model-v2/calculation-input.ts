@@ -17,11 +17,6 @@ import {
   resolveWorkflowDesign,
 } from "./design-registry";
 import type { ComparisonCalculationInput } from "./engine";
-import type { LegacyMigrationResult } from "./legacy-migration";
-import {
-  type LegacyMigrationAudit,
-  validateLegacyMigrationDraftForCalculation,
-} from "./legacy-migration-draft";
 import { resolveLegalWaits } from "./legal";
 import { assertValidProcessMap } from "./process-map";
 import {
@@ -30,17 +25,10 @@ import {
   type ScenarioV2Id,
 } from "./scenarios";
 
-export type CalculationInputGateV2 =
-  | {
-      kind: "v2_url";
-      result: V2CalculatorUrlDecodeResult;
-    }
-  | {
-      kind: "legacy_migration";
-      result: LegacyMigrationResult;
-      confirmed?: boolean;
-      audit?: LegacyMigrationAudit;
-    };
+export interface NativeCalculationInputGateV2 {
+  kind: "v2_url";
+  result: V2CalculatorUrlDecodeResult;
+}
 
 const ALTERNATIVE_IDS: AlternativeId[] = [
   "formalSequential",
@@ -204,38 +192,24 @@ function assertGateScenario(
 }
 
 function assertGateAllowsCalculation(
-  gate: CalculationInputGateV2 | undefined,
+  gate: NativeCalculationInputGateV2 | undefined,
   draft: ScenarioDraft
 ): void {
   if (!gate) return;
-  if (gate.kind === "v2_url") {
-    if (gate.result.status !== "valid" || !gate.result.canCalculate) {
-      throw new Error("V2 URL gate is blocked by validation errors");
-    }
-    assertGateScenario(gate.result.state, draft.derivedFromScenarioId);
-    return;
+  if (gate.kind !== "v2_url") {
+    throw new Error(
+      "Native calculation accepts only a v2 URL gate; use the explicit legacy adapter"
+    );
   }
-
-  const migration = gate.result;
-  if (migration.status === "ambiguous") {
-    throw new Error("Ambiguous legacy migration cannot be calculated");
+  if (gate.result.status !== "valid" || !gate.result.canCalculate) {
+    throw new Error("V2 URL gate is blocked by validation errors");
   }
-  if (migration.status === "partial" && gate.confirmed !== true) {
-    throw new Error("Partial legacy migration requires explicit confirmation");
-  }
-  if (!gate.audit) {
-    throw new Error("Legacy migration requires adapter-provided audit data");
-  }
-  validateLegacyMigrationDraftForCalculation(draft, gate);
-  assertGateScenario(
-    migration.status === "exact" ? migration.state : migration.draftState,
-    draft.derivedFromScenarioId
-  );
+  assertGateScenario(gate.result.state, draft.derivedFromScenarioId);
 }
 
 export function buildCalculationInputFromDraft(
   draft: ScenarioDraft,
-  gate?: CalculationInputGateV2
+  gate?: NativeCalculationInputGateV2
 ): ComparisonCalculationInput {
   assertFixedMetadata(draft);
   assertGateAllowsCalculation(gate, draft);

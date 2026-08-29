@@ -2,10 +2,8 @@ import {
   assertValidCalibratedValue,
   type AlternativeId,
   type CalibratedValue,
-  type CalculationInputGateV2,
   type ComparisonAlternatives,
   type DecisionRecordV2,
-  type LegacyMigrationDraftResult,
   type ModelContextV2,
   type ProcessMapStep,
   type ProcessMapStepKind,
@@ -13,6 +11,10 @@ import {
   type ScenarioEconomicAssumptions,
   type ScenarioV2Id,
 } from "@/lib/model-v2";
+import type {
+  CalculationInputGateV2,
+  LegacyMigrationDraftResult,
+} from "@/lib/model-v2/legacy-adapter";
 
 import type { CalculatorUiIssue, EditorUiIssue } from "./issues";
 import type { CalculatorUrlOrigin } from "./url-bootstrap";

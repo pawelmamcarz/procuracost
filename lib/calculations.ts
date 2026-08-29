@@ -38,7 +38,7 @@ import {
   getStaffContextMultiplier,
   ProcessStep,
 } from "./process-templates";
-import { MODEL_VERSION } from "./version";
+import { LEGACY_MODEL_VERSION } from "./version";
 
 export type { ProcessType, TechLevelId, StakeholderRole };
 
@@ -625,7 +625,7 @@ function calculateCostsForEvidenceCase(
     rigidDays,
     flexibleDays,
     trace: {
-      modelVersion: MODEL_VERSION,
+      modelVersion: LEGACY_MODEL_VERSION,
       sanitizedInputs: {
         contractValue,
         tcoHorizonYears,

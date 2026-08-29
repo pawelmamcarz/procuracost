@@ -5,17 +5,53 @@ import { SCENARIOS } from "@/lib/scenarios";
 import { buildCalculationInputFromDraft } from "@/lib/model-v2/calculation-input";
 import { stateForScenarioV2 } from "@/lib/model-v2/calculator-url";
 import {
-  buildDecisionRecordV2,
-  migrationMetadataFromCalculationGate,
+  buildDecisionRecordV2 as buildNativeDecisionRecordV2,
+  type DecisionRecordMigrationMetadata,
+  type DecisionRecordV2,
 } from "@/lib/model-v2/decision-record";
 import { calculateComparison } from "@/lib/model-v2/engine";
-import { migrateLegacyCalculatorParams } from "@/lib/model-v2/legacy-migration";
-import { createScenarioDraftFromLegacyMigration } from "@/lib/model-v2/legacy-migration-draft";
+import {
+  buildDecisionRecordFromLegacyMigration,
+  createScenarioDraftFromLegacyMigration,
+  migrateLegacyCalculatorParams,
+  migrationMetadataFromLegacyCalculationGate as migrationMetadataFromLegacyGate,
+} from "@/lib/model-v2/legacy-adapter";
 import {
   createScenarioDraft,
   scenarioV2ById,
+  type ScenarioDraft,
   type ScenarioV2Id,
 } from "@/lib/model-v2/scenarios";
+
+const migrationMetadataFromCalculationGate =
+  migrationMetadataFromLegacyGate as unknown as (
+    gate: unknown,
+    draft?: ScenarioDraft
+  ) => DecisionRecordMigrationMetadata;
+
+function buildDecisionRecordV2(
+  draft: ScenarioDraft,
+  gate?: unknown
+): DecisionRecordV2 {
+  if (
+    gate &&
+    typeof gate === "object" &&
+    (gate as { kind?: unknown }).kind === "legacy_migration"
+  ) {
+    return (
+      buildDecisionRecordFromLegacyMigration as unknown as (
+        source: ScenarioDraft,
+        sourceGate: unknown
+      ) => DecisionRecordV2
+    )(draft, gate);
+  }
+  return (
+    buildNativeDecisionRecordV2 as unknown as (
+      source: ScenarioDraft,
+      sourceGate?: unknown
+    ) => DecisionRecordV2
+  )(draft, gate);
+}
 
 function recordFor(scenarioId: ScenarioV2Id) {
   const scenario = scenarioV2ById(scenarioId)!;

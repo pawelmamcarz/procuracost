@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 
 import {
   calculatorWorkspaceReducer,
@@ -17,10 +17,10 @@ import {
   createRenderableCalculatorWorkspaceState,
 } from "@/components/calculator-v2/workspace-bootstrap";
 import {
-  adaptLegacyCalculatorBootstrap,
   bootstrapCalculatorUrl,
 } from "@/components/calculator-v2/url-bootstrap";
 import { calculatorV2T } from "@/lib/i18n";
+import { loadLegacyAdapter } from "@/lib/load-legacy-adapter";
 import {
   createScenarioDraft,
   decodeV2CalculatorParams,
@@ -33,6 +33,14 @@ import {
   type ScenarioDraft,
   type V2CalculatorUrlState,
 } from "@/lib/model-v2";
+import {
+  createScenarioDraftFromLegacyMigration,
+  migrateLegacyCalculatorParams,
+} from "@/lib/model-v2/legacy-adapter";
+
+beforeAll(async () => {
+  await loadLegacyAdapter();
+});
 
 const V2_STATE_FIELDS = [
   "schemaVersion",
@@ -112,24 +120,22 @@ function exactFleetLegacyParams(): URLSearchParams {
 }
 
 function readyExactLegacy() {
-  const bootstrap = bootstrapCalculatorUrl(exactFleetLegacyParams());
-  if (
-    bootstrap.origin !== "legacy" ||
-    bootstrap.adaptation.status !== "ready"
-  ) {
+  const adaptation = createScenarioDraftFromLegacyMigration(
+    migrateLegacyCalculatorParams(exactFleetLegacyParams())
+  );
+  if (adaptation.status !== "ready") {
     throw new Error("Expected exact ready legacy fixture");
   }
-  return bootstrap.adaptation;
+  return adaptation;
 }
 
 function readyPartialLegacy() {
   const params = exactFleetLegacyParams();
   params.set("cv", "5100000");
-  const bootstrap = bootstrapCalculatorUrl(params);
-  if (bootstrap.origin !== "legacy") {
-    throw new Error("Expected partial legacy fixture");
-  }
-  const adaptation = adaptLegacyCalculatorBootstrap(bootstrap.result, true);
+  const adaptation = createScenarioDraftFromLegacyMigration(
+    migrateLegacyCalculatorParams(params),
+    true
+  );
   if (adaptation.status !== "ready") {
     throw new Error("Expected confirmed ready partial fixture");
   }
@@ -323,7 +329,7 @@ describe("calculator workspace validation and submit contract", () => {
     expect(validation.issues.every((issue) => !("message" in issue))).toBe(true);
   });
 
-  it("keeps an unknown native URL ID and unconfirmed migration visibly blocked", () => {
+  it("keeps an unknown native URL ID and unconfirmed migration visibly blocked", async () => {
     const invalidParams = encodeV2CalculatorState(
       stateForScenarioV2("fleet_tco_reframing")
     );
@@ -336,7 +342,9 @@ describe("calculator workspace validation and submit contract", () => {
         urlGate: { kind: "v2_url", result: invalidResult },
       }
     );
-    const partial = bootstrapCalculatorUrl(new URLSearchParams({ sid: "erp" }));
+    const partial = await bootstrapCalculatorUrl(
+      new URLSearchParams({ sid: "erp" })
+    );
     if (partial.origin !== "legacy") throw new Error("Expected legacy state");
     const migrationState = createCalculatorWorkspaceState(
       createScenarioDraft("erp_transformation_discovery"),
@@ -552,8 +560,8 @@ describe("calculator workspace validation and submit contract", () => {
     expect(submitCalculatorWorkspace(state).status).toBe("blocked");
   });
 
-  it("keeps a runtime-forged blocked legacy source non-calculable", () => {
-    const bootstrap = bootstrapCalculatorUrl(
+  it("keeps a runtime-forged blocked legacy source non-calculable", async () => {
+    const bootstrap = await bootstrapCalculatorUrl(
       new URLSearchParams({ sid: "not-registered" })
     );
     if (bootstrap.origin !== "legacy") {
@@ -602,8 +610,8 @@ describe("calculator workspace validation and submit contract", () => {
     }
   );
 
-  it("confirms, edits and submits a partial legacy workspace with eight model-derived edits", () => {
-    const bootstrap = bootstrapCalculatorUrl(
+  it("confirms, edits and submits a partial legacy workspace with eight model-derived edits", async () => {
+    const bootstrap = await bootstrapCalculatorUrl(
       new URLSearchParams({ sid: "erp" })
     );
     if (bootstrap.origin !== "legacy" || bootstrap.result.status !== "partial") {
@@ -672,8 +680,8 @@ describe("calculator workspace validation and submit contract", () => {
     );
   });
 
-  it("edits and submits an exact legacy workspace without fabricating a migration overlay", () => {
-    const bootstrap = bootstrapCalculatorUrl(exactFleetLegacyParams());
+  it("edits and submits an exact legacy workspace without fabricating a migration overlay", async () => {
+    const bootstrap = await bootstrapCalculatorUrl(exactFleetLegacyParams());
     if (bootstrap.origin !== "legacy") {
       throw new Error("Expected an exact legacy bootstrap");
     }

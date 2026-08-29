@@ -1,9 +1,9 @@
-import {
-  createScenarioDraft,
-  createScenarioDraftFromLegacyMigration,
-  type LegacyMigrationResult,
-  type PartialLegacyMigration,
-} from "@/lib/model-v2";
+import { getLoadedLegacyAdapter } from "@/lib/load-legacy-adapter";
+import { createScenarioDraft } from "@/lib/model-v2";
+import type {
+  LegacyMigrationResult,
+  PartialLegacyMigration,
+} from "@/lib/model-v2/legacy-adapter";
 
 import {
   createCalculatorWorkspaceState,
@@ -46,7 +46,14 @@ export function applyLegacyMigrationConfirmation(
   result: LegacyMigrationResult,
   confirmed: boolean
 ): CalculatorWorkspaceState {
-  const adaptation = createScenarioDraftFromLegacyMigration(result, confirmed);
+  const adapter = getLoadedLegacyAdapter();
+  if (!adapter) {
+    throw new Error("Legacy adapter must be loaded before confirmation");
+  }
+  const adaptation = adapter.createScenarioDraftFromLegacyMigration(
+    result,
+    confirmed
+  );
   if (adaptation.status === "ready") {
     return {
       ...createCalculatorWorkspaceState(adaptation.draft, {

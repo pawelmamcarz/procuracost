@@ -1,8 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
-  buildCalculationInputFromDraft,
-  type CalculationInputGateV2,
+  buildCalculationInputFromDraft as buildNativeCalculationInputFromDraft,
 } from "@/lib/model-v2/calculation-input";
 import { decodeV2CalculatorParams } from "@/lib/model-v2/calculator-url";
 import {
@@ -12,7 +11,14 @@ import {
   resolveContractDesign,
   resolveWorkflowDesign,
 } from "@/lib/model-v2/design-registry";
-import { calculateComparison } from "@/lib/model-v2/engine";
+import {
+  calculateComparison,
+  type ComparisonCalculationInput,
+} from "@/lib/model-v2/engine";
+import {
+  buildCalculationInputFromLegacyMigration,
+  type CalculationInputGateV2,
+} from "@/lib/model-v2/legacy-adapter";
 import { migrateLegacyCalculatorParams } from "@/lib/model-v2/legacy-migration";
 import {
   createScenarioDraftFromLegacyMigration,
@@ -22,7 +28,32 @@ import {
   SCENARIO_V2_IDS,
   SCENARIOS_V2,
   createScenarioDraft,
+  type ScenarioDraft,
 } from "@/lib/model-v2/scenarios";
+
+function buildCalculationInputFromDraft(
+  draft: ScenarioDraft,
+  gate?: unknown
+): ComparisonCalculationInput {
+  if (
+    gate &&
+    typeof gate === "object" &&
+    (gate as { kind?: unknown }).kind === "legacy_migration"
+  ) {
+    return (
+      buildCalculationInputFromLegacyMigration as unknown as (
+        source: ScenarioDraft,
+        sourceGate: unknown
+      ) => ComparisonCalculationInput
+    )(draft, gate);
+  }
+  return (
+    buildNativeCalculationInputFromDraft as unknown as (
+      source: ScenarioDraft,
+      sourceGate?: unknown
+    ) => ComparisonCalculationInput
+  )(draft, gate);
+}
 
 function userFixed(value: number, evidenceIds: string[] = []) {
   return {

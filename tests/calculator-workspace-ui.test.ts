@@ -1,14 +1,16 @@
 import { readFileSync } from "node:fs";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 
 import { AlternativeDesignControls } from "@/components/calculator-v2/AlternativeDesignControls";
 import DecisionRecord from "@/components/decision-record/DecisionRecord";
-import {
+import CalculatorWorkspace, {
   CALCULATOR_RESULT_HEADING_ID,
   CalculatorResultBoundary,
+  CalculatorWorkspaceBootstrapStatus,
   CalculatorWorkspaceView,
+  resolveCalculatorWorkspaceBootstrap,
 } from "@/components/calculator-v2/CalculatorWorkspace";
 import {
   calculatorWorkspaceReducer,
@@ -26,11 +28,16 @@ import {
   submitCalculatorWorkspace,
 } from "@/components/calculator-v2/workspace-validation";
 import { calculatorV2T } from "@/lib/i18n";
+import { loadLegacyAdapter } from "@/lib/load-legacy-adapter";
 import {
   createScenarioDraft,
   encodeV2CalculatorState,
   stateForScenarioV2,
 } from "@/lib/model-v2";
+
+beforeAll(async () => {
+  await loadLegacyAdapter();
+});
 
 function renderWorkspace(
   state = createCalculatorWorkspaceState(
@@ -217,16 +224,16 @@ describe("calculator workspace UI", () => {
     );
   });
 
-  it("keeps invalid v2 and blocked legacy URLs renderable but fail-closed", () => {
+  it("keeps invalid v2 and blocked legacy URLs renderable but fail-closed", async () => {
     const invalidV2Params = encodeV2CalculatorState(
       stateForScenarioV2("fleet_tco_reframing")
     );
     invalidV2Params.set("sid", "unknown-scenario");
     const invalidV2 = createRenderableCalculatorWorkspaceState(
-      bootstrapCalculatorUrl(invalidV2Params)
+      await bootstrapCalculatorUrl(invalidV2Params)
     );
     const blockedLegacy = createRenderableCalculatorWorkspaceState(
-      bootstrapCalculatorUrl(new URLSearchParams({ sid: "custom" }))
+      await bootstrapCalculatorUrl(new URLSearchParams({ sid: "custom" }))
     );
 
     expect(invalidV2.draft.derivedFromScenarioId).toBe(
@@ -277,13 +284,72 @@ describe("calculator workspace UI", () => {
     );
 
     expect(source).toContain("bootstrapCalculatorUrl(");
-    expect(source).toContain("createRenderableCalculatorWorkspaceState(");
+    expect(source).toContain("resolveCalculatorWorkspaceBootstrap(");
+    expect(source).toContain("= createRenderableCalculatorWorkspaceState");
+    expect(source).toMatch(/\.then\([\s\S]*?\)\s*\.catch\(/);
     expect(source).toContain("window.location.search");
     expect(source).not.toContain("useSearchParams");
+    expect(source).not.toContain("didBootstrapUrl");
+    expect(source).not.toMatch(/\buseRef\s*\(/);
+    expect(source).toContain("let cancelled = false");
+    expect(source).toContain("if (cancelled) return");
+    expect(source).toMatch(/return \(\) => \{\s*cancelled = true;/);
   });
 
-  it("renders explicit partial-legacy confirmation with localised field names", () => {
-    const bootstrap = bootstrapCalculatorUrl(
+  it("blocks default-scenario interaction while URL classification is pending", () => {
+    const html = renderToStaticMarkup(
+      createElement(CalculatorWorkspace, { lang: "en" })
+    );
+
+    expect(html).toContain('data-calculator-bootstrap="pending"');
+    expect(html).toContain(calculatorV2T.en.workspace.loadingUrl);
+    expect(html).not.toContain("<form");
+    expect(html).not.toContain("Procurement process cost comparison");
+  });
+
+  it.each([
+    ["pl", calculatorV2T.pl.workspace.urlBootstrapFailed],
+    ["en", calculatorV2T.en.workspace.urlBootstrapFailed],
+  ] as const)("renders a localized fail-closed %s bootstrap error", (lang, copy) => {
+    const html = renderToStaticMarkup(
+      createElement(CalculatorWorkspaceBootstrapStatus, {
+        lang,
+        status: "failed",
+      })
+    );
+
+    expect(html).toContain('data-calculator-bootstrap="failed"');
+    expect(html).toContain('role="alert"');
+    expect(html).toContain(copy);
+    expect(html).not.toContain("<form");
+  });
+
+  it("turns a bootstrap transform exception into the localized failed state", async () => {
+    const bootstrap = await bootstrapCalculatorUrl(new URLSearchParams());
+    const resolution = await resolveCalculatorWorkspaceBootstrap(
+      Promise.resolve(bootstrap),
+      () => {
+        throw new Error("synthetic render-state transform failure");
+      }
+    );
+
+    expect(resolution).toEqual({ status: "failed" });
+    if (resolution.status !== "failed") {
+      throw new Error("Expected the bootstrap resolution to fail closed");
+    }
+    const html = renderToStaticMarkup(
+      createElement(CalculatorWorkspaceBootstrapStatus, {
+        lang: "en",
+        status: resolution.status,
+      })
+    );
+    expect(html).toContain(calculatorV2T.en.workspace.urlBootstrapFailed);
+    expect(html).not.toContain(calculatorV2T.en.workspace.loadingUrl);
+    expect(html).not.toContain("<form");
+  });
+
+  it("renders explicit partial-legacy confirmation with localised field names", async () => {
+    const bootstrap = await bootstrapCalculatorUrl(
       new URLSearchParams({ sid: "erp" })
     );
     if (
@@ -314,10 +380,12 @@ describe("calculator workspace UI", () => {
     );
   });
 
-  it("materialises a confirmed representable migration and keeps an unrepresentable one blocked", () => {
+  it("materialises a confirmed representable migration and keeps an unrepresentable one blocked", async () => {
     const representableParams = exactFleetLegacyParams();
     representableParams.set("cv", "5100000");
-    const representableBootstrap = bootstrapCalculatorUrl(representableParams);
+    const representableBootstrap = await bootstrapCalculatorUrl(
+      representableParams
+    );
     if (representableBootstrap.origin !== "legacy") {
       throw new Error("Expected representable legacy fixture");
     }
@@ -339,7 +407,7 @@ describe("calculator workspace UI", () => {
 
     const blockedParams = exactFleetLegacyParams();
     blockedParams.set("tco", "4");
-    const blockedBootstrap = bootstrapCalculatorUrl(blockedParams);
+    const blockedBootstrap = await bootstrapCalculatorUrl(blockedParams);
     if (blockedBootstrap.origin !== "legacy") {
       throw new Error("Expected blocked legacy fixture");
     }
@@ -352,10 +420,10 @@ describe("calculator workspace UI", () => {
     expect(deriveCalculatorWorkspaceValidation(blocked).canSubmit).toBe(false);
   });
 
-  it("keeps a blocked partial-migration control mounted and focused until adaptation is ready", () => {
+  it("keeps a blocked partial-migration control mounted and focused until adaptation is ready", async () => {
     const blockedParams = exactFleetLegacyParams();
     blockedParams.set("tco", "4");
-    const blockedBootstrap = bootstrapCalculatorUrl(blockedParams);
+    const blockedBootstrap = await bootstrapCalculatorUrl(blockedParams);
     if (
       blockedBootstrap.origin !== "legacy" ||
       blockedBootstrap.result.status !== "partial"
@@ -394,7 +462,7 @@ describe("calculator workspace UI", () => {
 
     const readyParams = exactFleetLegacyParams();
     readyParams.set("cv", "5100000");
-    const readyBootstrap = bootstrapCalculatorUrl(readyParams);
+    const readyBootstrap = await bootstrapCalculatorUrl(readyParams);
     if (
       readyBootstrap.origin !== "legacy" ||
       readyBootstrap.result.status !== "partial"

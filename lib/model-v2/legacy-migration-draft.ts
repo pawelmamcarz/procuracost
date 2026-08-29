@@ -5,7 +5,6 @@ import {
   type CalibratedValue,
 } from "./calibrated-value";
 import { stateForScenarioV2 } from "./calculator-url";
-import type { CalculationInputGateV2 } from "./calculation-input";
 import {
   migrateLegacyCalculatorParams,
   type AmbiguousLegacyMigration,
@@ -137,10 +136,12 @@ export type LegacyMigrationDraftIssue =
       messageKey: "validation.legacyUnrepresentableChangedField";
     };
 
-export type LegacyMigrationCalculationGate = Extract<
-  CalculationInputGateV2,
-  { kind: "legacy_migration" }
-> & { audit: LegacyMigrationAudit };
+export interface LegacyMigrationCalculationGate {
+  kind: "legacy_migration";
+  result: LegacyMigrationResult;
+  confirmed?: boolean;
+  audit: LegacyMigrationAudit;
+}
 
 export interface LegacyMigrationDraftReady {
   status: "ready";
@@ -793,10 +794,7 @@ function assertAuthenticLegacyMigrationResult(
 }
 
 function assertCanonicalLegacyResultValues(
-  result: Extract<
-    CalculationInputGateV2,
-    { kind: "legacy_migration" }
-  >["result"]
+  result: LegacyMigrationCalculationGate["result"]
 ): void {
   if (
     result.sourceSchemaVersion !== "legacy-v1" ||
@@ -838,7 +836,7 @@ function assertCanonicalLegacyResultValues(
 }
 
 function assertCanonicalLegacyGateShape(
-  gate: Extract<CalculationInputGateV2, { kind: "legacy_migration" }>
+  gate: LegacyMigrationCalculationGate
 ): void {
   assertNoPostMigrationEditInput(gate);
   if (!isRecord(gate.result)) {
@@ -992,7 +990,7 @@ function assertMaterializedAuditContract(audit: LegacyMigrationAudit): void {
 
 export function validateLegacyMigrationDraftForCalculation(
   draft: ScenarioDraft,
-  gate: Extract<CalculationInputGateV2, { kind: "legacy_migration" }>
+  gate: LegacyMigrationCalculationGate
 ): ValidatedLegacyMigrationDraft {
   if (!gate || gate.kind !== "legacy_migration") {
     throw new Error("Legacy migration validation requires a legacy gate");

@@ -4,7 +4,6 @@ import {
   type FormEvent,
   type ReactNode,
   useEffect,
-  useRef,
   useState,
 } from "react";
 import { ArrowRight, Clipboard, FileCheck2 } from "lucide-react";
@@ -15,9 +14,9 @@ import { calculatorV2T, type Lang } from "@/lib/i18n";
 import {
   MODEL_V2_METADATA,
   createScenarioDraft,
-  type LegacyMigrationResult,
   type ScenarioV2Id,
 } from "@/lib/model-v2";
+import type { LegacyMigrationResult } from "@/lib/model-v2/legacy-adapter";
 
 import { AlternativeDesignControls } from "./AlternativeDesignControls";
 import { CalculatorValidationSummary } from "./CalculatorValidationSummary";
@@ -38,6 +37,7 @@ import { partitionCalculatorIssues } from "./validation-presentation";
 import {
   DEFAULT_SCENARIO_V2_ID,
   bootstrapCalculatorUrl,
+  type CalculatorUrlBootstrap,
 } from "./url-bootstrap";
 import {
   deriveCalculatorWorkspaceValidation,
@@ -344,29 +344,108 @@ export interface CalculatorWorkspaceProps {
   lang: Lang;
 }
 
+export interface CalculatorWorkspaceBootstrapStatusProps {
+  lang: Lang;
+  status: "pending" | "failed";
+}
+
+export type CalculatorWorkspaceBootstrapResolution =
+  | {
+      status: "ready";
+      bootstrap: CalculatorUrlBootstrap;
+      state: CalculatorWorkspaceState;
+    }
+  | { status: "failed" };
+
+export async function resolveCalculatorWorkspaceBootstrap(
+  bootstrapTask: Promise<CalculatorUrlBootstrap>,
+  transform: (
+    bootstrap: CalculatorUrlBootstrap
+  ) => CalculatorWorkspaceState = createRenderableCalculatorWorkspaceState
+): Promise<CalculatorWorkspaceBootstrapResolution> {
+  try {
+    const bootstrap = await bootstrapTask;
+    return {
+      status: "ready",
+      bootstrap,
+      state: transform(bootstrap),
+    };
+  } catch {
+    return { status: "failed" };
+  }
+}
+
+export function CalculatorWorkspaceBootstrapStatus({
+  lang,
+  status,
+}: CalculatorWorkspaceBootstrapStatusProps) {
+  const failed = status === "failed";
+  return (
+    <section
+      aria-busy={failed ? undefined : true}
+      aria-live="polite"
+      className="border-y border-gray-200 py-10"
+      data-calculator-bootstrap={status}
+      role={failed ? "alert" : "status"}
+    >
+      <p className="max-w-3xl text-sm leading-relaxed text-gray-600">
+        {failed
+          ? calculatorV2T[lang].workspace.urlBootstrapFailed
+          : calculatorV2T[lang].workspace.loadingUrl}
+      </p>
+    </section>
+  );
+}
+
 export default function CalculatorWorkspace({ lang }: CalculatorWorkspaceProps) {
-  const didBootstrapUrl = useRef(false);
   const [state, setState] = useState(() =>
     createCalculatorWorkspaceState(createScenarioDraft(DEFAULT_SCENARIO_V2_ID))
   );
+  const [bootstrapStatus, setBootstrapStatus] = useState<
+    "pending" | "ready" | "failed"
+  >("pending");
   const [migrationResult, setMigrationResult] =
     useState<CalculatorMigrationControl["result"] | null>(null);
   const [migrationConfirmed, setMigrationConfirmed] = useState(false);
 
   useEffect(() => {
-    if (didBootstrapUrl.current) return;
-    didBootstrapUrl.current = true;
-    const bootstrap = bootstrapCalculatorUrl(
-      new URLSearchParams(window.location.search)
-    );
-    setState(createRenderableCalculatorWorkspaceState(bootstrap));
-    setMigrationResult(
-      bootstrap.origin === "legacy" && bootstrap.result.status === "partial"
-        ? bootstrap.result
-        : null
-    );
-    setMigrationConfirmed(false);
+    let cancelled = false;
+    void resolveCalculatorWorkspaceBootstrap(
+      bootstrapCalculatorUrl(new URLSearchParams(window.location.search))
+    )
+      .then((resolution) => {
+        if (cancelled) return;
+        if (resolution.status === "failed") {
+          setBootstrapStatus("failed");
+          return;
+        }
+        const { bootstrap } = resolution;
+        setState(resolution.state);
+        setMigrationResult(
+          bootstrap.origin === "legacy" &&
+            bootstrap.result.status === "partial"
+            ? bootstrap.result
+            : null
+        );
+        setMigrationConfirmed(false);
+        setBootstrapStatus("ready");
+      })
+      .catch(() => {
+        if (!cancelled) setBootstrapStatus("failed");
+      });
+    return () => {
+      cancelled = true;
+    };
   }, []);
+
+  if (bootstrapStatus !== "ready") {
+    return (
+      <CalculatorWorkspaceBootstrapStatus
+        lang={lang}
+        status={bootstrapStatus}
+      />
+    );
+  }
 
   const copyBaseScenario = async () => {
     const params = buildBaseScenarioShareParams(state.draft);

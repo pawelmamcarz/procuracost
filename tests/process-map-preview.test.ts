@@ -22,9 +22,9 @@ describe("process-map calculation preview controller", () => {
     expect(preview.adaptiveCompliant.length).toBeGreaterThan(0);
   });
 
-  it("fails closed for a blocked URL gate and renders no critical highlight", () => {
+  it("fails closed for a blocked URL gate and renders no critical highlight", async () => {
     const blocked = createRenderableCalculatorWorkspaceState(
-      bootstrapCalculatorUrl(new URLSearchParams({ sid: "custom" }))
+      await bootstrapCalculatorUrl(new URLSearchParams({ sid: "custom" }))
     );
 
     expect(deriveProcessMapCriticalPathPreview(blocked)).toEqual({

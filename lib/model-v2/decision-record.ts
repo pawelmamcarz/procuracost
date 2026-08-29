@@ -5,7 +5,7 @@ import type {
 } from "./calibrated-value";
 import {
   buildCalculationInputFromDraft,
-  type CalculationInputGateV2,
+  type NativeCalculationInputGateV2,
 } from "./calculation-input";
 import {
   MODEL_V2_METADATA,
@@ -24,11 +24,9 @@ import {
   EVIDENCE_REGISTRY,
   type EvidenceRecord,
 } from "./evidence";
-import {
-  createScenarioDraftFromLegacyMigration,
-  type LegacyMigrationAudit,
-  type PostMigrationEditRecord,
-  validateLegacyMigrationDraftForCalculation,
+import type {
+  LegacyMigrationAudit,
+  PostMigrationEditRecord,
 } from "./legacy-migration-draft";
 import type {
   ContractDesignIdV2,
@@ -173,56 +171,6 @@ export function nativeV2MigrationMetadata(): DecisionRecordMigrationMetadata {
     fieldsRequiringConfirmation: [],
     audit: null,
     postMigrationEdits: [],
-  };
-}
-
-export function migrationMetadataFromCalculationGate(
-  gate: CalculationInputGateV2,
-  draft?: ScenarioDraft
-): DecisionRecordMigrationMetadata {
-  if (gate.kind === "v2_url") {
-    if (gate.result.status !== "valid" || !gate.result.canCalculate) {
-      throw new Error("V2 URL gate is blocked by validation errors");
-    }
-    return nativeV2MigrationMetadata();
-  }
-
-  const migration = gate.result;
-  if (migration.status === "ambiguous") {
-    throw new Error("Ambiguous legacy migration cannot produce a decision record");
-  }
-  if (migration.status === "partial" && gate.confirmed !== true) {
-    throw new Error("Partial legacy migration requires explicit confirmation");
-  }
-  if (!gate.audit) {
-    throw new Error("Legacy migration requires adapter-provided audit data");
-  }
-  const baseline = draft
-    ? null
-    : migration.status === "partial"
-      ? createScenarioDraftFromLegacyMigration(migration, true)
-      : createScenarioDraftFromLegacyMigration(migration);
-  if (baseline && baseline.status !== "ready") {
-    throw new Error("Legacy migration cannot produce record metadata");
-  }
-  const validated = validateLegacyMigrationDraftForCalculation(
-    draft ?? baseline!.draft,
-    gate
-  );
-  const validatedMigration = validated.adapted.gate.result;
-  if (validatedMigration.status === "ambiguous") {
-    throw new Error("Ambiguous legacy migration cannot produce record metadata");
-  }
-  return {
-    sourceSchemaVersion: validated.adapted.audit.sourceSchemaVersion,
-    status: validatedMigration.status,
-    confirmed: true,
-    legacyScenarioId: validated.adapted.audit.legacyScenarioId,
-    fieldsRequiringConfirmation: [
-      ...validatedMigration.fieldsRequiringConfirmation,
-    ],
-    audit: structuredClone(validated.adapted.audit),
-    postMigrationEdits: structuredClone(validated.postMigrationEdits),
   };
 }
 
@@ -643,9 +591,10 @@ function assembleDecisionRecordV2(
   };
 }
 
-export function buildDecisionRecordV2(
+function buildDecisionRecordWithMetadata(
   draft: ScenarioDraft,
-  gate?: CalculationInputGateV2
+  migration: DecisionRecordMigrationMetadata,
+  gate?: NativeCalculationInputGateV2
 ): DecisionRecordV2 {
   if (!draft || draft.kind !== "user_draft") {
     throw new Error("Decision record requires one ScenarioDraft source");
@@ -658,14 +607,27 @@ export function buildDecisionRecordV2(
   }
   const calculationInput = buildCalculationInputFromDraft(draft, gate);
   const calculationResult = calculateComparison(calculationInput);
-  const migration = gate
-    ? migrationMetadataFromCalculationGate(gate, draft)
-    : nativeV2MigrationMetadata();
   return assembleDecisionRecordV2(
     scenario,
     draft,
     calculationInput,
     calculationResult,
     migration
+  );
+}
+
+export function buildDecisionRecordV2(
+  draft: ScenarioDraft,
+  gate?: NativeCalculationInputGateV2
+): DecisionRecordV2 {
+  if (gate && gate.kind !== "v2_url") {
+    throw new Error(
+      "Native decision-record builder accepts only a v2 URL gate; use the explicit legacy adapter"
+    );
+  }
+  return buildDecisionRecordWithMetadata(
+    draft,
+    nativeV2MigrationMetadata(),
+    gate
   );
 }

@@ -15,13 +15,15 @@ import {
 } from "@/components/calculator-v2/editor-state";
 import { submitCalculatorWorkspace } from "@/components/calculator-v2/workspace-validation";
 import {
-  buildDecisionRecordV2,
   buildPdfCopy,
   createScenarioDraft,
-  createScenarioDraftFromLegacyMigration,
-  migrateLegacyCalculatorParams,
   type PdfCopyV2,
 } from "@/lib/model-v2";
+import {
+  buildDecisionRecordFromLegacyMigration,
+  createScenarioDraftFromLegacyMigration,
+  migrateLegacyCalculatorParams,
+} from "@/lib/model-v2/legacy-adapter";
 import {
   buildResearchCsv,
   buildResearchJson,
@@ -103,7 +105,7 @@ function editedPartialDecisionRecord() {
     evidenceClass: "user_input",
     evidenceIds: ["user.contract-value"],
   };
-  return buildDecisionRecordV2(draft, adaptation.gate);
+  return buildDecisionRecordFromLegacyMigration(draft, adaptation.gate);
 }
 
 describe("decision-record download actions", () => {

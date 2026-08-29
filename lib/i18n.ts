@@ -374,6 +374,9 @@ const calculatorV2Pl = {
   },
   workspace: {
     title: "Porównanie kosztów procesu zakupowego",
+    loadingUrl: "Wczytywanie stanu kalkulatora.",
+    urlBootstrapFailed:
+      "Nie udało się bezpiecznie wczytać stanu kalkulatora z odnośnika. Odśwież stronę albo usuń parametry z adresu.",
     introduction:
       "Model porównuje dwie dopuszczalne alternatywy w tych samych ramach prawnych i ładu. Nie zakłada preferowanego wyniku.",
     modelLabel: "Model",
@@ -603,6 +606,9 @@ const calculatorV2En = {
   },
   workspace: {
     title: "Procurement process cost comparison",
+    loadingUrl: "Loading the calculator state.",
+    urlBootstrapFailed:
+      "The calculator state could not be loaded safely from this link. Refresh the page or remove the address parameters.",
     introduction:
       "The model compares two lawful alternatives within the same legal and governance boundary. It does not prefer either outcome.",
     modelLabel: "Model",

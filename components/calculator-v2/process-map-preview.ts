@@ -1,11 +1,13 @@
 import {
-  buildCalculationInputFromDraft,
   calculateComparison,
   type AlternativeId,
 } from "@/lib/model-v2";
 
 import type { CalculatorWorkspaceState } from "./editor-state";
-import { deriveCalculatorWorkspaceValidation } from "./workspace-validation";
+import {
+  buildWorkspaceCalculationInput,
+  deriveCalculatorWorkspaceValidation,
+} from "./workspace-validation";
 
 export type ProcessMapCriticalPathPreview = Record<
   AlternativeId,
@@ -27,10 +29,7 @@ export function deriveProcessMapCriticalPathPreview(
   }
 
   try {
-    const input = buildCalculationInputFromDraft(
-      state.draft,
-      state.urlGate
-    );
+    const input = buildWorkspaceCalculationInput(state);
     const result = calculateComparison(input);
     return {
       formalSequential: [

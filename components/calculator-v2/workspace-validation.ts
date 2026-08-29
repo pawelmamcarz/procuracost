@@ -1,4 +1,5 @@
 import { calculatorV2T, modelV2T, type Lang } from "@/lib/i18n";
+import { getLoadedLegacyAdapter } from "@/lib/load-legacy-adapter";
 import {
   CONTRACT_DESIGN_REGISTRY,
   V2_URL_KEYS,
@@ -6,7 +7,6 @@ import {
   assertValidCalibratedValue,
   buildCalculationInputFromDraft,
   buildDecisionRecordV2,
-  createScenarioDraftFromLegacyMigration,
   resolveLegalWaits,
   stateForScenarioV2,
   validateProcessMap,
@@ -14,11 +14,13 @@ import {
   type CalibratedValue,
   type ProcessMapValidationCode,
   type ProcessMapValidationIssue,
-  type LegacyMigrationResult,
+  type ComparisonCalculationInput,
+  type DecisionRecordV2,
   type ScenarioV2Id,
   type V2UrlValidationCode,
   type V2UrlValidationError,
 } from "@/lib/model-v2";
+import type { LegacyMigrationResult } from "@/lib/model-v2/legacy-adapter";
 
 import {
   isEditableProcessStepKind,
@@ -384,11 +386,13 @@ function collectWorkspaceSourceIssues(
   }
 
   try {
+    const adapter = getLoadedLegacyAdapter();
+    if (!adapter) return [workspaceSourceIssue()];
     const gate = state.urlGate as Extract<
       NonNullable<CalculatorWorkspaceState["urlGate"]>,
       { kind: "legacy_migration" }
     >;
-    const adaptation = createScenarioDraftFromLegacyMigration(
+    const adaptation = adapter.createScenarioDraftFromLegacyMigration(
       gate.result as LegacyMigrationResult,
       gate.confirmed === true
     );
@@ -400,6 +404,34 @@ function collectWorkspaceSourceIssues(
   } catch {
     return [workspaceSourceIssue()];
   }
+}
+
+export function buildWorkspaceCalculationInput(
+  state: CalculatorWorkspaceState
+): ComparisonCalculationInput {
+  const gate = state.urlGate;
+  if (gate?.kind === "legacy_migration") {
+    const adapter = getLoadedLegacyAdapter();
+    if (!adapter) {
+      throw new Error("Legacy adapter is not loaded");
+    }
+    return adapter.buildCalculationInputFromLegacyMigration(state.draft, gate);
+  }
+  return buildCalculationInputFromDraft(state.draft, gate);
+}
+
+function buildWorkspaceDecisionRecord(
+  state: CalculatorWorkspaceState
+): DecisionRecordV2 {
+  const gate = state.urlGate;
+  if (gate?.kind === "legacy_migration") {
+    const adapter = getLoadedLegacyAdapter();
+    if (!adapter) {
+      throw new Error("Legacy adapter is not loaded");
+    }
+    return adapter.buildDecisionRecordFromLegacyMigration(state.draft, gate);
+  }
+  return buildDecisionRecordV2(state.draft, gate);
 }
 
 function collectStepKindIssues(
@@ -545,7 +577,7 @@ export function deriveCalculatorWorkspaceValidation(
   let combined = uniqueIssues(issues);
   if (combined.length === 0) {
     try {
-      buildCalculationInputFromDraft(state.draft, state.urlGate);
+      buildWorkspaceCalculationInput(state);
     } catch {
       const issue: SubmitUiIssue = {
         source: "submit",
@@ -566,7 +598,7 @@ export function submitCalculatorWorkspace(
     return { status: "blocked", state, issues: validation.issues };
   }
   try {
-    const record = buildDecisionRecordV2(state.draft, state.urlGate);
+    const record = buildWorkspaceDecisionRecord(state);
     return {
       status: "submitted",
       state: {

@@ -1,10 +1,10 @@
 import type {
   AlternativeId,
-  LegacyMigrationDraftIssueCode,
   ProcessMapValidationCode,
   V2UrlField,
   V2UrlValidationCode,
 } from "@/lib/model-v2";
+import type { LegacyMigrationDraftIssueCode } from "@/lib/model-v2/legacy-adapter";
 
 interface IssueLocation {
   alternativeId?: AlternativeId;

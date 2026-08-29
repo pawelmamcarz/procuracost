@@ -9,9 +9,10 @@ import {
 } from "@/lib/model-v2/pdf-copy";
 import { buildDecisionRecordV2 } from "@/lib/model-v2/decision-record";
 import {
+  buildDecisionRecordFromLegacyMigration,
   createScenarioDraftFromLegacyMigration,
   migrateLegacyCalculatorParams,
-} from "@/lib/model-v2";
+} from "@/lib/model-v2/legacy-adapter";
 import { createScenarioDraft } from "@/lib/model-v2/scenarios";
 import { SCENARIOS } from "@/lib/scenarios";
 import { decisionRecordWithTopology } from "@/tests/fixtures/branched-decision-record-v2";
@@ -34,7 +35,10 @@ function migratedRecord() {
   if (adaptation.status !== "ready") {
     throw new Error("Expected representable partial migration fixture");
   }
-  return buildDecisionRecordV2(adaptation.draft, adaptation.gate);
+  return buildDecisionRecordFromLegacyMigration(
+    adaptation.draft,
+    adaptation.gate
+  );
 }
 
 function userFixed(value: number, evidenceId = "") {
@@ -75,7 +79,7 @@ function editedPartialFixture() {
   return {
     adaptation,
     draft,
-    record: buildDecisionRecordV2(draft, adaptation.gate),
+    record: buildDecisionRecordFromLegacyMigration(draft, adaptation.gate),
   };
 }
 
@@ -92,7 +96,7 @@ function exactEditedRecord() {
   const draft = structuredClone(adaptation.draft);
   draft.economicAssumptions.contractValue = userFixed(5_500_000);
   draft.roleHourlyRates.buyer = userFixed(321, "user.hourly-rate.buyer");
-  return buildDecisionRecordV2(draft, adaptation.gate);
+  return buildDecisionRecordFromLegacyMigration(draft, adaptation.gate);
 }
 
 function leafPaths(value: unknown, path = ""): string[] {

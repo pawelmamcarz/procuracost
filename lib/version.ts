@@ -9,6 +9,9 @@ export {
 
 export const VERSION = resolveSiteVersion(process.env.NEXT_PUBLIC_VERSION);
 
-// Semantic version of the quantitative model. Bump whenever formulas,
-// parameters, or interpretation of outputs change.
-export const MODEL_VERSION = "2.2.2";
+// Immutable compatibility identity for the archived model 2.2.2 runtime.
+export const LEGACY_MODEL_VERSION = "2.2.2" as const;
+
+// Active public model version. This is the only model-version literal to bump
+// when the model 2.3 release is cut over.
+export const MODEL_VERSION = "2.2.2" as const;

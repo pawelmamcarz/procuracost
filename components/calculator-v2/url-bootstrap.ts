@@ -1,16 +1,17 @@
 import {
   V2_URL_KEYS,
   createScenarioDraft,
-  createScenarioDraftFromLegacyMigration,
   decodeV2CalculatorParams,
-  migrateLegacyCalculatorParams,
-  type CalculationInputGateV2,
-  type LegacyMigrationDraftResult,
-  type LegacyMigrationResult,
   type ScenarioDraft,
   type ScenarioV2Id,
   type V2CalculatorUrlDecodeResult,
 } from "@/lib/model-v2";
+import { loadLegacyAdapter } from "@/lib/load-legacy-adapter";
+import type {
+  CalculationInputGateV2,
+  LegacyMigrationDraftResult,
+  LegacyMigrationResult,
+} from "@/lib/model-v2/legacy-adapter";
 
 export const DEFAULT_SCENARIO_V2_ID =
   "fleet_tco_reframing" as const satisfies ScenarioV2Id;
@@ -30,11 +31,6 @@ export const LEGACY_CALCULATOR_KEYS = [
   "pp",
   "sh",
 ] as const;
-
-const RECOGNISED_CALCULATOR_KEYS = new Set<string>([
-  ...V2_URL_KEYS,
-  ...LEGACY_CALCULATOR_KEYS,
-]);
 
 export type CalculatorUrlOrigin = "empty" | "v2" | "legacy";
 
@@ -60,22 +56,32 @@ export type CalculatorUrlBootstrap =
         | null;
     };
 
-function hasRecognisedCalculatorKey(params: URLSearchParams): boolean {
-  return [...params.keys()].some((key) => RECOGNISED_CALCULATOR_KEYS.has(key));
+export function classifyCalculatorUrl(
+  params: URLSearchParams
+): CalculatorUrlOrigin {
+  if (params.has("sv")) return "v2";
+  if (LEGACY_CALCULATOR_KEYS.some((key) => params.has(key))) {
+    return "legacy";
+  }
+  if (V2_URL_KEYS.some((key) => params.has(key))) return "legacy";
+  return "empty";
 }
 
-export function adaptLegacyCalculatorBootstrap(
+export async function adaptLegacyCalculatorBootstrap(
   result: LegacyMigrationResult,
   confirmed = false
-): LegacyMigrationDraftResult {
+): Promise<LegacyMigrationDraftResult> {
+  const { createScenarioDraftFromLegacyMigration } =
+    await loadLegacyAdapter();
   return createScenarioDraftFromLegacyMigration(result, confirmed);
 }
 
-export function bootstrapCalculatorUrl(
+export async function bootstrapCalculatorUrl(
   params: URLSearchParams,
   defaultScenarioId: ScenarioV2Id = DEFAULT_SCENARIO_V2_ID
-): CalculatorUrlBootstrap {
-  if (!hasRecognisedCalculatorKey(params)) {
+): Promise<CalculatorUrlBootstrap> {
+  const origin = classifyCalculatorUrl(params);
+  if (origin === "empty") {
     return {
       origin: "empty",
       draft: createScenarioDraft(defaultScenarioId),
@@ -83,7 +89,7 @@ export function bootstrapCalculatorUrl(
     };
   }
 
-  if (params.has("sv")) {
+  if (origin === "v2") {
     const result = decodeV2CalculatorParams(params);
     return {
       origin: "v2",
@@ -96,8 +102,9 @@ export function bootstrapCalculatorUrl(
     };
   }
 
+  const { migrateLegacyCalculatorParams } = await loadLegacyAdapter();
   const result = migrateLegacyCalculatorParams(params);
-  const adaptation = adaptLegacyCalculatorBootstrap(result);
+  const adaptation = await adaptLegacyCalculatorBootstrap(result);
   return {
     origin: "legacy",
     result,

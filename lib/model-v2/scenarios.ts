@@ -11,19 +11,17 @@ import type {
 import { MODEL_V2_METADATA } from "./domain";
 import type { ComparisonCalculationInput } from "./engine";
 import type { EvidenceConstruct } from "./evidence";
+import { deepFreeze } from "./deep-freeze";
 import { resolveLegalWaits } from "./legal";
 import { createLockedLegalWaitStep } from "./process-map";
 import {
-  PROCESS_TEMPLATES,
-  TECH_LEVELS,
-  deriveStepTimings,
-  type ProcessStep as LegacyProcessStep,
-  type ProcessType as LegacyProcessType,
-  type StakeholderRole as LegacyStakeholderRole,
-  type TechLevelId as LegacyTechLevelId,
-} from "../process-templates";
+  RETAINED_SUPPORT_PROFILES,
+  RETAINED_WORKFLOW_TEMPLATES,
+  type RetainedRoleId,
+  type RetainedWorkflowTemplateId,
+} from "./retained-workflow-seeds";
 
-export const SCENARIO_V2_IDS = [
+export const SCENARIO_V2_IDS = deepFreeze([
   "fleet_tco_reframing",
   "erp_transformation_discovery",
   "logistics_service_redesign",
@@ -34,7 +32,7 @@ export const SCENARIO_V2_IDS = [
   "discovery_solution_codesign",
   "catalog_calloff_control",
   "mrp_release_control",
-] as const;
+] as const);
 
 export type ScenarioV2Id = (typeof SCENARIO_V2_IDS)[number];
 export type WorkflowDesignIdV2 =
@@ -114,8 +112,7 @@ interface ScenarioSeed {
   contractValue: number;
   dailyCostOfInaction: number;
   roleDailyRates: Record<string, number>;
-  legacyProcessType: Exclude<LegacyProcessType, "custom">;
-  legacyTechLevel: LegacyTechLevelId;
+  retainedWorkflowTemplateId: RetainedWorkflowTemplateId;
   pathCompetitionDiffers: boolean;
   evidenceIds: string[];
   constructs: EvidenceConstruct[];
@@ -177,24 +174,16 @@ function zeroCompetitionCost(
     : retainedValue(0, evidenceId);
 }
 
-function v2StepId(step: LegacyProcessStep): string {
-  return step.id === "siwz_prep" ? "procurement_documents" : step.id;
-}
-
-function workflowFromLegacyTemplate(
+function workflowFromRetainedSeed(
   scenarioId: ScenarioV2Id,
   alternative: AlternativeId,
-  processType: Exclude<LegacyProcessType, "custom">,
-  techLevelId: LegacyTechLevelId,
+  templateId: RetainedWorkflowTemplateId,
   assumptionId: string,
   context: ModelContextV2,
   sharedStepIds: boolean
 ): WorkflowDesign {
-  const techLevel = TECH_LEVELS[techLevelId];
-  const timings = deriveStepTimings(
-    PROCESS_TEMPLATES[processType],
-    techLevel.timeMultiplier
-  ).steps;
+  const template = RETAINED_WORKFLOW_TEMPLATES[templateId];
+  const supportProfile = RETAINED_SUPPORT_PROFILES[context.systemSupportId];
   const expectedLegalWaits = resolveLegalWaits(context);
   const namespace = sharedStepIds ? "shared" : alternative;
   const steps: ProcessMapStep[] = [];
@@ -202,13 +191,12 @@ function workflowFromLegacyTemplate(
   let legalWaitIndex = 0;
   let toolCostAssigned = false;
 
-  for (const timing of timings) {
-    const legacyStep = timing.step;
-    if (legacyStep.mandatoryWait) {
+  for (const seedStep of template.steps) {
+    if (seedStep.kind === "legal_wait_slot") {
       const wait = expectedLegalWaits[legalWaitIndex];
-      if (!wait) {
+      if (!wait || !wait.id.endsWith(`.${seedStep.slotId}`)) {
         throw new Error(
-          `Missing fixed legal rule for retained step ${legacyStep.id}`
+          `Missing fixed legal rule for retained slot ${seedStep.slotId}`
         );
       }
       const legalStep = createLockedLegalWaitStep(
@@ -225,53 +213,53 @@ function workflowFromLegacyTemplate(
       continue;
     }
 
-    const activeDays =
+    const baseActiveDays =
       alternative === "formalSequential"
-        ? timing.rigidDays
-        : timing.flexibleDays;
-    if (activeDays === null) continue;
+        ? seedStep.formalDays
+        : seedStep.adaptiveDays;
+    const activeDays = baseActiveDays * supportProfile.timeMultiplier;
 
     const effortRatio =
       alternative === "adaptiveCompliant" &&
-      legacyStep.flexibleDays !== null &&
-      legacyStep.rigidDays > 0
-        ? legacyStep.flexibleDays / legacyStep.rigidDays
+      seedStep.formalDays > 0
+        ? seedStep.adaptiveDays / seedStep.formalDays
         : 1;
     const roleHours = Object.fromEntries(
       (
-        Object.entries(legacyStep.participation) as [
-          LegacyStakeholderRole,
+        Object.entries(seedStep.roleHours) as [
+          RetainedRoleId,
           number,
         ][]
       ).map(([roleId, hours]) => [
         roleId,
         retainedValue(
-          hours * effortRatio * techLevel.timeMultiplier,
+          hours * effortRatio * supportProfile.timeMultiplier,
           assumptionId
         ),
       ])
     );
-    const consumesEffort = Object.values(legacyStep.participation).some(
+    const consumesEffort = Object.values(seedStep.roleHours).some(
       (hours) => Number.isFinite(hours) && hours > 0
     );
     const toolCost = toolCostAssigned
       ? 0
       : context.executionChannelId === "catalog_calloff" ||
           context.executionChannelId === "mrp_release"
-        ? techLevel.toolCostPerOperationalOrder
-        : techLevel.toolCostPerProcess;
+        ? supportProfile.toolCostPerOperationalOrder
+        : supportProfile.toolCostPerSourcingEvent;
     toolCostAssigned = true;
 
     const step: ProcessMapStep = {
-      id: `${scenarioId}.${namespace}.${v2StepId(legacyStep)}`,
-      labelKey: `workflow.steps.${v2StepId(legacyStep)}`,
+      id: `${scenarioId}.${namespace}.${seedStep.id}`,
+      labelKey: `workflow.steps.${seedStep.id}`,
       predecessorIds: predecessorId ? [predecessorId] : [],
       activeDays: retainedValue(activeDays, assumptionId),
       queueDays: retainedValue(0, assumptionId),
       roleHours,
       nonLabourCost: retainedValue(
-        (consumesEffort ? activeDays * techLevel.coordCostPerDay : 0) +
-          toolCost,
+        (consumesEffort
+          ? activeDays * supportProfile.coordinationCostPerActiveDay
+          : 0) + toolCost,
         assumptionId
       ),
       kind: "activity",
@@ -343,20 +331,18 @@ function buildScenario(seed: ScenarioSeed): ScenarioV2 {
     initiatedOn: INITIATED_ON,
   };
   const sharedStepIds = !seed.pathCompetitionDiffers;
-  const formalWorkflow = workflowFromLegacyTemplate(
+  const formalWorkflow = workflowFromRetainedSeed(
     seed.id,
     "formalSequential",
-    seed.legacyProcessType,
-    seed.legacyTechLevel,
+    seed.retainedWorkflowTemplateId,
     assumptionId,
     context,
     sharedStepIds
   );
-  const adaptiveWorkflow = workflowFromLegacyTemplate(
+  const adaptiveWorkflow = workflowFromRetainedSeed(
     seed.id,
     "adaptiveCompliant",
-    seed.legacyProcessType,
-    seed.legacyTechLevel,
+    seed.retainedWorkflowTemplateId,
     assumptionId,
     context,
     sharedStepIds
@@ -474,8 +460,7 @@ const SCENARIO_SEEDS: ScenarioSeed[] = [
     contractValue: 5_000_000,
     dailyCostOfInaction: 5_000,
     roleDailyRates: DEFAULT_ROLE_RATES,
-    legacyProcessType: "private_formal",
-    legacyTechLevel: "partial_erp",
+    retainedWorkflowTemplateId: "strategic_private_formal",
     pathCompetitionDiffers: true,
     evidenceIds: ["ec_innovation_procurement_guidance"],
     constructs: ["workflow_duration", "tco", "contract_adaptability"],
@@ -500,8 +485,7 @@ const SCENARIO_SEEDS: ScenarioSeed[] = [
       manager: 1_800,
       executive: 3_000,
     },
-    legacyProcessType: "private_formal",
-    legacyTechLevel: "sourcing_tool",
+    retainedWorkflowTemplateId: "strategic_private_formal",
     pathCompetitionDiffers: true,
     evidenceIds: [
       "california_modular_it_procurement",
@@ -533,8 +517,7 @@ const SCENARIO_SEEDS: ScenarioSeed[] = [
       manager: 1_600,
       executive: 2_800,
     },
-    legacyProcessType: "private_formal",
-    legacyTechLevel: "partial_erp",
+    retainedWorkflowTemplateId: "strategic_private_formal",
     pathCompetitionDiffers: true,
     evidenceIds: ["ec_innovation_procurement_guidance"],
     constructs: ["workflow_duration", "contract_adaptability"],
@@ -559,8 +542,7 @@ const SCENARIO_SEEDS: ScenarioSeed[] = [
       manager: 1_400,
       executive: 2_500,
     },
-    legacyProcessType: "private_formal",
-    legacyTechLevel: "manual",
+    retainedWorkflowTemplateId: "strategic_private_formal",
     pathCompetitionDiffers: true,
     evidenceIds: [],
     constructs: ["workflow_duration", "contract_adaptability"],
@@ -581,8 +563,7 @@ const SCENARIO_SEEDS: ScenarioSeed[] = [
     contractValue: 5_000_000,
     dailyCostOfInaction: 10_000,
     roleDailyRates: { ...DEFAULT_ROLE_RATES, buyer: 900, lawyer: 1_300 },
-    legacyProcessType: "pzp_eu",
-    legacyTechLevel: "partial_erp",
+    retainedWorkflowTemplateId: "pzp_open",
     pathCompetitionDiffers: true,
     evidenceIds: [
       "oecd_rvul_problem_definition",
@@ -609,8 +590,7 @@ const SCENARIO_SEEDS: ScenarioSeed[] = [
     contractValue: 5_000_000,
     dailyCostOfInaction: 0,
     roleDailyRates: DEFAULT_ROLE_RATES,
-    legacyProcessType: "policy_only",
-    legacyTechLevel: "end_to_end",
+    retainedWorkflowTemplateId: "policy_control",
     pathCompetitionDiffers: true,
     evidenceIds: [COMPETITION_EVIDENCE_ID],
     constructs: ["workflow_duration", "competition_transfer"],
@@ -635,8 +615,7 @@ const SCENARIO_SEEDS: ScenarioSeed[] = [
       manager: 1_600,
       executive: 3_000,
     },
-    legacyProcessType: "capex",
-    legacyTechLevel: "partial_erp",
+    retainedWorkflowTemplateId: "capex_replacement",
     pathCompetitionDiffers: true,
     evidenceIds: ["ec_innovation_procurement_guidance"],
     constructs: ["workflow_duration", "tco", "contract_amendment"],
@@ -661,8 +640,7 @@ const SCENARIO_SEEDS: ScenarioSeed[] = [
       manager: 1_600,
       executive: 2_800,
     },
-    legacyProcessType: "discovery",
-    legacyTechLevel: "partial_erp",
+    retainedWorkflowTemplateId: "discovery_codesign",
     pathCompetitionDiffers: true,
     evidenceIds: [
       "oecd_rvul_problem_definition",
@@ -683,8 +661,7 @@ const SCENARIO_SEEDS: ScenarioSeed[] = [
     contractValue: 50_000,
     dailyCostOfInaction: 500,
     roleDailyRates: { ...DEFAULT_ROLE_RATES, requestor: 800 },
-    legacyProcessType: "catalog_order",
-    legacyTechLevel: "end_to_end",
+    retainedWorkflowTemplateId: "catalog_calloff",
     pathCompetitionDiffers: false,
     evidenceIds: [],
     constructs: ["workflow_duration"],
@@ -702,19 +679,22 @@ const SCENARIO_SEEDS: ScenarioSeed[] = [
     contractValue: 500_000,
     dailyCostOfInaction: 8_000,
     roleDailyRates: { ...DEFAULT_ROLE_RATES, requestor: 800 },
-    legacyProcessType: "mrp_order",
-    legacyTechLevel: "end_to_end",
+    retainedWorkflowTemplateId: "mrp_release",
     pathCompetitionDiffers: false,
     evidenceIds: [],
     constructs: ["workflow_duration"],
   },
 ];
 
-export const SCENARIOS_V2: ScenarioV2[] = SCENARIO_SEEDS.map(buildScenario);
+export const SCENARIOS_V2: readonly ScenarioV2[] = deepFreeze(
+  SCENARIO_SEEDS.map(buildScenario)
+);
 
-export const LEGACY_SCENARIO_ALIASES = Object.fromEntries(
-  SCENARIOS_V2.map((scenario) => [scenario.legacyAliases[0], scenario.id])
-) as Record<string, ScenarioV2Id>;
+export const LEGACY_SCENARIO_ALIASES = deepFreeze(
+  Object.fromEntries(
+    SCENARIOS_V2.map((scenario) => [scenario.legacyAliases[0], scenario.id])
+  ) as Record<string, ScenarioV2Id>
+);
 
 export function scenarioV2ById(id: string): ScenarioV2 | undefined {
   return SCENARIOS_V2.find((scenario) => scenario.id === id);

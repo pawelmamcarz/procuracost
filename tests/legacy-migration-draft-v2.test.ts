@@ -2,20 +2,65 @@ import { describe, expect, it } from "vitest";
 
 import { encodeInputsToParams } from "@/components/calculator-url";
 import {
-  buildCalculationInputFromDraft,
-  buildDecisionRecordV2,
+  buildCalculationInputFromDraft as buildNativeCalculationInputFromDraft,
+  buildDecisionRecordV2 as buildNativeDecisionRecordV2,
   createScenarioDraft,
+  type CalibratedValue,
+  type ComparisonCalculationInput,
+  type DecisionRecordV2,
+  type ScenarioDraft,
+} from "@/lib/model-v2";
+import {
+  buildCalculationInputFromLegacyMigration,
+  buildDecisionRecordFromLegacyMigration,
   createScenarioDraftFromLegacyMigration,
   migrateLegacyCalculatorParams,
-  type CalibratedValue,
   validateLegacyMigrationDraftForCalculation,
   type LegacyMigrationDraftBlocked,
   type LegacyMigrationDraftReady,
   type LegacyMigrationDraftResult,
   type LegacyMigrationResult,
   type LegacyRetainedInputField,
-} from "@/lib/model-v2";
+} from "@/lib/model-v2/legacy-adapter";
 import { SCENARIOS } from "@/lib/scenarios";
+
+function buildCalculationInputFromDraft(
+  draft: ScenarioDraft,
+  gate?: unknown
+): ComparisonCalculationInput {
+  if (
+    gate &&
+    typeof gate === "object" &&
+    (gate as { kind?: unknown }).kind === "legacy_migration"
+  ) {
+    return (
+      buildCalculationInputFromLegacyMigration as unknown as (
+        source: ScenarioDraft,
+        sourceGate: unknown
+      ) => ComparisonCalculationInput
+    )(draft, gate);
+  }
+  return buildNativeCalculationInputFromDraft(draft);
+}
+
+function buildDecisionRecordV2(
+  draft: ScenarioDraft,
+  gate?: unknown
+): DecisionRecordV2 {
+  if (
+    gate &&
+    typeof gate === "object" &&
+    (gate as { kind?: unknown }).kind === "legacy_migration"
+  ) {
+    return (
+      buildDecisionRecordFromLegacyMigration as unknown as (
+        source: ScenarioDraft,
+        sourceGate: unknown
+      ) => DecisionRecordV2
+    )(draft, gate);
+  }
+  return buildNativeDecisionRecordV2(draft);
+}
 
 const STAKEHOLDER_ROLES = [
   "requestor",

@@ -4,6 +4,7 @@ import {
   DEFAULT_SCENARIO_V2_ID,
   adaptLegacyCalculatorBootstrap,
   bootstrapCalculatorUrl,
+  classifyCalculatorUrl,
 } from "@/components/calculator-v2/url-bootstrap";
 import {
   encodeV2CalculatorState,
@@ -29,8 +30,8 @@ describe("calculator v2 URL bootstrap", () => {
   it.each([
     ["tracking only", new URLSearchParams({ utm_source: "newsletter" })],
     ["unrelated only", new URLSearchParams({ panel: "evidence" })],
-  ])("treats %s query state as empty and opens the declared default", (_label, params) => {
-    const result = bootstrapCalculatorUrl(params);
+  ])("treats %s query state as empty and opens the declared default", async (_label, params) => {
+    const result = await bootstrapCalculatorUrl(params);
 
     expect(result).toMatchObject({
       origin: "empty",
@@ -44,8 +45,8 @@ describe("calculator v2 URL bootstrap", () => {
 
   it.each(["", "1", "unsupported"])(
     "uses the v2 decoder for a present sv=%j without legacy fallback",
-    (schemaVersion) => {
-      const result = bootstrapCalculatorUrl(
+    async (schemaVersion) => {
+      const result = await bootstrapCalculatorUrl(
         new URLSearchParams({ sv: schemaVersion, sid: "fleet" })
       );
 
@@ -59,12 +60,12 @@ describe("calculator v2 URL bootstrap", () => {
     }
   );
 
-  it("creates the matching draft and v2 gate for a valid native URL", () => {
+  it("creates the matching draft and v2 gate for a valid native URL", async () => {
     const params = encodeV2CalculatorState(
       stateForScenarioV2("public_it_open_with_market_consultation")
     );
 
-    const result = bootstrapCalculatorUrl(params);
+    const result = await bootstrapCalculatorUrl(params);
 
     expect(result).toMatchObject({
       origin: "v2",
@@ -80,8 +81,9 @@ describe("calculator v2 URL bootstrap", () => {
     ["v2-era state without sv", new URLSearchParams({ mv: "2.3.0" })],
     ["unknown legacy scenario", new URLSearchParams({ sid: "unknown" })],
     ["missing legacy scenario", new URLSearchParams({ cv: "1000" })],
-  ])("routes recognised %s through explicit blocked migration", (_label, params) => {
-    const result = bootstrapCalculatorUrl(params);
+  ])("routes recognised %s through explicit blocked migration", async (_label, params) => {
+    expect(classifyCalculatorUrl(params)).toBe("legacy");
+    const result = await bootstrapCalculatorUrl(params);
 
     expect(result).toMatchObject({
       origin: "legacy",
@@ -92,8 +94,8 @@ describe("calculator v2 URL bootstrap", () => {
     });
   });
 
-  it("uses the reviewed adapter for an exact legacy link without confirmation", () => {
-    const result = bootstrapCalculatorUrl(exactFleetLegacyParams());
+  it("uses the reviewed adapter for an exact legacy link without confirmation", async () => {
+    const result = await bootstrapCalculatorUrl(exactFleetLegacyParams());
 
     expect(result).toMatchObject({
       origin: "legacy",
@@ -112,10 +114,10 @@ describe("calculator v2 URL bootstrap", () => {
     });
   });
 
-  it("materialises a representable partial migration only through the reviewed adapter", () => {
+  it("materialises a representable partial migration only through the reviewed adapter", async () => {
     const params = exactFleetLegacyParams();
     params.set("cv", "5100000");
-    const initial = bootstrapCalculatorUrl(params);
+    const initial = await bootstrapCalculatorUrl(params);
 
     expect(initial).toMatchObject({
       origin: "legacy",
@@ -124,7 +126,7 @@ describe("calculator v2 URL bootstrap", () => {
     });
     if (initial.origin !== "legacy") throw new Error("Expected legacy bootstrap");
 
-    const confirmed = adaptLegacyCalculatorBootstrap(initial.result, true);
+    const confirmed = await adaptLegacyCalculatorBootstrap(initial.result, true);
 
     expect(confirmed).toMatchObject({
       status: "ready",
@@ -141,13 +143,13 @@ describe("calculator v2 URL bootstrap", () => {
     });
   });
 
-  it("keeps confirmation from silently dropping an unrepresentable legacy change", () => {
+  it("keeps confirmation from silently dropping an unrepresentable legacy change", async () => {
     const params = exactFleetLegacyParams();
     params.set("tco", "4");
-    const initial = bootstrapCalculatorUrl(params);
+    const initial = await bootstrapCalculatorUrl(params);
     if (initial.origin !== "legacy") throw new Error("Expected legacy bootstrap");
 
-    const confirmed = adaptLegacyCalculatorBootstrap(initial.result, true);
+    const confirmed = await adaptLegacyCalculatorBootstrap(initial.result, true);
 
     expect(confirmed).toMatchObject({
       status: "blocked",
@@ -162,13 +164,13 @@ describe("calculator v2 URL bootstrap", () => {
     });
   });
 
-  it("ignores unrelated query parameters alongside valid calculator state", () => {
+  it("ignores unrelated query parameters alongside valid calculator state", async () => {
     const params = encodeV2CalculatorState(
       stateForScenarioV2("fleet_tco_reframing")
     );
     params.set("utm_campaign", "model-2-3");
 
-    expect(bootstrapCalculatorUrl(params)).toMatchObject({
+    await expect(bootstrapCalculatorUrl(params)).resolves.toMatchObject({
       origin: "v2",
       result: { status: "valid" },
       draft: { derivedFromScenarioId: "fleet_tco_reframing" },

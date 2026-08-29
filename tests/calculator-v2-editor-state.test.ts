@@ -35,7 +35,8 @@ function firstEditableStep(
 function withRecord(
   state: CalculatorWorkspaceState
 ): CalculatorWorkspaceState {
-  return { ...state, record: buildDecisionRecordV2(state.draft, state.urlGate) };
+  const gate = state.urlGate?.kind === "v2_url" ? state.urlGate : undefined;
+  return { ...state, record: buildDecisionRecordV2(state.draft, gate) };
 }
 
 function userRange(value: number): CalibratedValue {
@@ -246,7 +247,8 @@ describe("calculator v2 editor state", () => {
     expect(
       firstEditableStep(undone.draft).userLabel
     ).toBe("Commercial review");
-    const record = buildDecisionRecordV2(undone.draft, undone.urlGate);
+    const gate = undone.urlGate?.kind === "v2_url" ? undone.urlGate : undefined;
+    const record = buildDecisionRecordV2(undone.draft, gate);
     expect(
       record.alternatives.formalSequential.workflow.steps.find(
         (candidate) => candidate.id === step.id

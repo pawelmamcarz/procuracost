@@ -1,7 +1,7 @@
 import { CircleAlert } from "lucide-react";
 
 import { calculatorV2T, type Lang } from "@/lib/i18n";
-import type { PartialLegacyMigration } from "@/lib/model-v2";
+import type { PartialLegacyMigration } from "@/lib/model-v2/legacy-adapter";
 
 export interface LegacyMigrationConfirmationProps {
   lang: Lang;
