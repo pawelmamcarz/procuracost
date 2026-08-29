@@ -1,8 +1,22 @@
-import { MODEL_VERSION } from "./version";
+import { LEGACY_MODEL_VERSION, MODEL_VERSION } from "./version";
 import type { DecisionMapRowId } from "./decision-map";
 import { MODEL_V2_METADATA } from "./model-v2/domain";
 
 export type Lang = "pl" | "en";
+
+const ogPl = {
+  supportLine:
+    "Dwa zgodne projekty przebiegu procesu. Jeden jawny rachunek kosztu.",
+} as const;
+
+type OgShape = LangShape<typeof ogPl>;
+
+const ogEn = {
+  supportLine:
+    "Two compliant workflow designs. One transparent cost record.",
+} satisfies OgShape;
+
+export const ogT = { pl: ogPl, en: ogEn } as const;
 
 // Enforces that a translation object for one language has exactly the same
 // key structure (and function signatures) as the other, a key added to
@@ -791,15 +805,15 @@ const homePl = {
     modelVersionLabel: "Wersja modelu",
     modelVersion: MODEL_VERSION,
     modelVersionDisplay: `Model ${MODEL_VERSION}`,
-    uncertaintyLabel: "Zakres niepewności",
-    uncertaintyValue: "Dowody × założenia strukturalne",
+    uncertaintyLabel: "Deklarowany zakres scenariusza",
+    uncertaintyValue: "niski · centralny · wysoki",
     winnerLabel: "Kierunek różnicy",
     winnerValue: "Nie jest założony",
     note:
-      "Wynik centralny jest jednym punktem. Zakres łączy niepewność dowodową z kosztem dnia i czasami etapów. Może objąć oba znaki. Różnica dni pomnożona przez koszt dnia podany przez użytkownika jest tożsamością rachunkową, nie efektem empirycznym.",
+      "Wynik centralny jest jednym punktem. Zakres propaguje jawnie zadeklarowane wartości niskie i wysokie danych wejściowych; nie jest przedziałem ufności ani mnożnikiem jakości dowodów. Może objąć oba znaki. Różnica dni pomnożona przez koszt dnia podany przez użytkownika jest tożsamością rachunkową, nie efektem empirycznym.",
   },
   jobs: {
-    eyebrow: "Trzy zadania",
+    eyebrow: "Narzędzia do decyzji zakupowej",
     title: "Zacznij od decyzji, którą masz podjąć",
     items: [
       {
@@ -955,15 +969,15 @@ const homeEn = {
     modelVersionLabel: "Model version",
     modelVersion: MODEL_VERSION,
     modelVersionDisplay: `Model ${MODEL_VERSION}`,
-    uncertaintyLabel: "Uncertainty range",
-    uncertaintyValue: "Evidence × structural assumptions",
+    uncertaintyLabel: "Declared scenario range",
+    uncertaintyValue: "low · central · high",
     winnerLabel: "Direction of difference",
     winnerValue: "Not assumed",
     note:
-      "The central result is one point. The range combines evidence uncertainty with the daily cost and step durations. It may span both signs. The day difference multiplied by the user-supplied daily cost is an accounting identity, not an empirical effect.",
+      "The central result is one point. The range propagates explicitly declared low and high input values; it is neither a confidence interval nor an evidence-quality multiplier. It may span both signs. The day difference multiplied by the user-supplied daily cost is an accounting identity, not an empirical effect.",
   },
   jobs: {
-    eyebrow: "Three jobs",
+    eyebrow: "Procurement decision tools",
     title: "Start with the decision you need to make",
     items: [
       {
@@ -1168,6 +1182,11 @@ const researchPaperEn = {
       href: "https://doi.org/10.1093/jeea/jvad017",
     },
     {
+      label:
+        "Beuve, J., Moszoro, M., and Saussier, S. (2023). Political Contestability and Contract Rigidity: An Analysis of Procurement Contracts. Journal of Law, Economics, and Organization, 39(2), 316-348.",
+      href: "https://doi.org/10.1093/jleo/ewab039",
+    },
+    {
       label: "Public Procurement Office: Preliminary market consultation",
       href: "https://www.gov.pl/web/uzp/wstepne-konsultacje-rynkowe",
     },
@@ -1322,7 +1341,7 @@ const comparisonPl = {
   matrixNoContextNote: "Macierz pokazuje wszystkie kombinacje technologii × trybu procesu dla wybranego typu zakupu.",
   matrixColorLegend: "Neutralna skala wielkości: szary oznacza niższą wartość liczbową, a niebieski wyższą. Wiersz podświetlony wskazuje aktualne ustawienie. Wartości uwzględniają efekty Spend Type × Process Phase.",
   appliedMultipliersTitle: "Zastosowane mnożniki kontekstu",
-  appliedMultipliersNote: `Model ${MODEL_VERSION} stosuje szerokie mnożniki kontekstu wyłącznie do nakładu pracy i niepracowniczego narzutu koordynacyjnego. Pozostałe mechanizmy mają odrębne profile; 1,00 oznacza brak korekty.`,
+  appliedMultipliersNote: `Model ${LEGACY_MODEL_VERSION} stosuje szerokie mnożniki kontekstu wyłącznie do nakładu pracy i niepracowniczego narzutu koordynacyjnego. Pozostałe mechanizmy mają odrębne profile; 1,00 oznacza brak korekty.`,
   // Sub-breakdown
   staffCost: "Kadra (godziny × stawki)",
   coordCost: "Narzut administracyjny (bez pracy ról)",
@@ -1426,7 +1445,7 @@ const comparisonEn = {
   matrixNoContextNote: "Matrix shows all technology × process mode combinations for the selected procurement type.",
   matrixColorLegend: "Neutral magnitude scale: gray indicates a lower numeric value and blue a higher one. The highlighted row marks the current selection. Values include Spend Type × Process Phase effects.",
   appliedMultipliersTitle: "Applied context multipliers",
-  appliedMultipliersNote: `Model ${MODEL_VERSION} applies broad context multipliers only to staff effort and non-labor coordination overhead. Other mechanisms use separate profiles; 1.00 means no adjustment.`,
+  appliedMultipliersNote: `Model ${LEGACY_MODEL_VERSION} applies broad context multipliers only to staff effort and non-labor coordination overhead. Other mechanisms use separate profiles; 1.00 means no adjustment.`,
   staffCost: "Staff (hours × rates)",
   coordCost: "Administrative overhead (excluding role labor)",
   toolCost: "Tool license",
@@ -1980,7 +1999,7 @@ const siteMetadataPl = {
   home: {
     title: "ProcuraCost | Porównanie kosztów procesu zakupowego",
     description:
-      "Porównaj sumy, deklarowany zakres scenariusza, czynniki kosztowe, pokrycie monetyzacji i wymiary niewycenione.",
+      "Porównaj sumy, deklarowany zakres scenariusza, czynniki kosztowe, pokrycie monetyzacji i wymiary niemonetyzowane.",
   },
   calculator: {
     title: "Kalkulator procesu zakupowego | ProcuraCost",
@@ -2009,7 +2028,7 @@ const siteMetadataEn = {
   home: {
     title: "ProcuraCost | Procurement workflow cost comparison",
     description:
-      "Compare totals, the declared scenario range, cost drivers, monetisation coverage and unpriced dimensions.",
+      "Compare totals, the declared scenario range, cost drivers, monetisation coverage and non-monetised dimensions.",
   },
   calculator: {
     title: "Procurement workflow calculator | ProcuraCost",
@@ -2054,7 +2073,7 @@ const modelOverviewPl = {
       label: "02 / dwa projekty",
       title: "Przebieg procesu i konstrukcja umowy",
       body:
-        "Każda alternatywa ma własną mapę czynności, zależności, czasu pracy, oczekiwania i kosztów nieosobowych. Konstrukcja umowy pozostaje osobnym wymiarem i nie jest zastępowana etykietą technologii.",
+        "Każda alternatywa ma własną mapę czynności i zależności oraz zakresy czasu pracy, oczekiwania i kosztów nieosobowych. Konstrukcja umowy pozostaje osobnym wymiarem i nie jest zastępowana etykietą technologii.",
     },
     costRecord: {
       label: "03 / jawny rachunek",
@@ -2167,7 +2186,7 @@ const methodologyOverviewPl = {
     },
     {
       title: "Zapisz granice wyniku",
-      body: "Rekord decyzji zachowuje osie, oba projekty, pokrycie monetyzacji, wymiary niewycenione, założenia, źródła, pochodzenie prawne i historię migracji.",
+      body: "Rekord decyzji zachowuje osie, oba projekty, pokrycie monetyzacji, wymiary niemonetyzowane, założenia, źródła, pochodzenie prawne i historię migracji.",
     },
   ],
   examplesTitle: "Kiedy adaptacja wnosi wartość, a kiedy nie jest potrzebna",
@@ -2273,7 +2292,7 @@ const methodologyOverviewEn = {
     },
     {
       title: "Record the result boundary",
-      body: "The decision record preserves axes, both designs, monetisation coverage, unpriced dimensions, assumptions, sources, legal provenance and migration history.",
+      body: "The decision record preserves axes, both designs, monetisation coverage, non-monetised dimensions, assumptions, sources, legal provenance and migration history.",
     },
   ],
   examplesTitle: "When adaptation adds value and when it is unnecessary",

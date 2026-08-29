@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
 import ReadinessDiagnostic from "@/components/ReadinessDiagnostic";
 import { readinessT } from "@/lib/i18n";
+import { localizedPageMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = readinessT.pl.metadata;
+export const metadata: Metadata = localizedPageMetadata({
+  lang: "pl",
+  routeKey: "readiness",
+  ...readinessT.pl.metadata,
+});
 
 export default function ReadinessPage() {
   const tx = readinessT.pl;

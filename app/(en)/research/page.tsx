@@ -1,9 +1,16 @@
+import type { Metadata } from "next";
+
 import PrintButton from "./PrintButton";
 import { researchPaperT } from "@/lib/i18n";
+import { localizedPageMetadata } from "@/lib/page-metadata";
 
 const tx = researchPaperT.en;
 
-export const metadata = tx.metadata;
+export const metadata: Metadata = localizedPageMetadata({
+  lang: "en",
+  routeKey: "research",
+  ...tx.metadata,
+});
 
 export default function ResearchPage() {
   return (

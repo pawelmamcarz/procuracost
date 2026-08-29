@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 
 import OpenGraphBoundaryMark from "@/components/OpenGraphBoundaryMark";
+import { ogT } from "@/lib/i18n";
 import { MODEL_V2_METADATA } from "@/lib/model-v2/domain";
 
 import { TAGLINE_EN } from "../../seo-config";
@@ -74,7 +75,7 @@ export default function Image() {
               marginTop: 28,
             }}
           >
-            Two compliant process designs. One transparent cost record.
+            {ogT.en.supportLine}
           </div>
         </div>
         <div

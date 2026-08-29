@@ -13,6 +13,11 @@ export type Episode = {
   thesisEn: string;
   practiceNote: string;
   practiceNoteEn: string;
+  source?: {
+    href: string;
+    label: string;
+    labelEn: string;
+  };
   youtubeId?: string;
   spotifyUrl?: string;
   appleUrl?: string;
@@ -56,6 +61,11 @@ export const EPISODES: Episode[] = [
       "Ekspozycję konkurencyjną mierz niezależnie od projektu przebiegu procesu. Transfer wyniku poza badaną populację wymaga jawnego założenia.",
     practiceNoteEn:
       "Measure competition exposure independently of workflow design. Transfer beyond the studied population requires an explicit assumption.",
+    source: {
+      href: "https://doi.org/10.1093/jeea/jvad017",
+      label: "Szucs (2024), publikacja źródłowa",
+      labelEn: "Szucs (2024), primary publication",
+    },
   },
   {
     number: 3,
@@ -74,6 +84,11 @@ export const EPISODES: Episode[] = [
       "Rejestruj konstrukcję klauzul niezależnie od liczby czynności, nakładu pracy i czasu postępowania.",
     practiceNoteEn:
       "Record clause design independently of activity count, role effort and procurement duration.",
+    source: {
+      href: "https://doi.org/10.1093/jleo/ewab039",
+      label: "Beuve, Moszoro i Saussier (2023), publikacja źródłowa",
+      labelEn: "Beuve, Moszoro and Saussier (2023), primary publication",
+    },
   },
   {
     number: 4,

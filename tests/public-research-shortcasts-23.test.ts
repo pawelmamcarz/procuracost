@@ -90,6 +90,34 @@ describe("model 2.3 research and editorial routes", () => {
     expect(EPISODES[0].titleEn).toContain(MODEL_V2_METADATA.modelVersion);
   });
 
+  it("links every exact empirical claim to its primary publication", () => {
+    const szucs = EPISODES.find(({ slug }) => slug === "szucs-konkurencja-i-dyskrecja");
+    const beuve = EPISODES.find(({ slug }) => slug === "beuve-sztywnosc-kontraktu");
+
+    expect(szucs?.source).toEqual({
+      href: "https://doi.org/10.1093/jeea/jvad017",
+      label: "Szucs (2024), publikacja źródłowa",
+      labelEn: "Szucs (2024), primary publication",
+    });
+    expect(beuve?.source).toEqual({
+      href: "https://doi.org/10.1093/jleo/ewab039",
+      label: "Beuve, Moszoro i Saussier (2023), publikacja źródłowa",
+      labelEn: "Beuve, Moszoro and Saussier (2023), primary publication",
+    });
+
+    const researchMarkup = renderToStaticMarkup(createElement(ResearchPage));
+    const polishMarkup = renderToStaticMarkup(createElement(ShortcastyPage));
+    const englishMarkup = renderToStaticMarkup(createElement(ShortcastyEnPage));
+
+    for (const href of [szucs!.source!.href, beuve!.source!.href]) {
+      expect(researchMarkup).toContain(`href="${href}"`);
+      expect(polishMarkup).toContain(`href="${href}"`);
+      expect(englishMarkup).toContain(`href="${href}"`);
+    }
+    expect(polishMarkup).toContain(szucs!.source!.label);
+    expect(englishMarkup).toContain(szucs!.source!.labelEn);
+  });
+
   it("renders paired planned-topic copy without exposing unpublished detail links", () => {
     const polishMarkup = renderToStaticMarkup(createElement(ShortcastyPage));
     const englishMarkup = renderToStaticMarkup(createElement(ShortcastyEnPage));

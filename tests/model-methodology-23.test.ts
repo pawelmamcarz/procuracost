@@ -88,6 +88,7 @@ describe("public model 2.3 explanation", () => {
       expect(markup, lang).not.toMatch(
         /seven cost dimensions|siedem wymiarów kosztu|optimizer|optymalizator|95% confidence|95% ufności|statistically significant|istotn(?:y|a|e) statystycznie/i
       );
+      expect(decodedMarkup, lang).not.toMatch(/wymiary niewycenione|unpriced dimensions/i);
       expect(markup, lang).not.toMatch(/<table|bg-gradient|shadow-/);
     }
   });
@@ -104,9 +105,13 @@ describe("public model 2.3 explanation", () => {
       expect(source, path).toMatch(/Overview/);
       expect(source, path).not.toMatch(/Szucs|Beuve|siedem wymiarów|Seven cost/);
     }
-    expect(plModelMetadata).toEqual(modelOverviewT.pl.metadata);
-    expect(enModelMetadata).toEqual(modelOverviewT.en.metadata);
-    expect(plMethodologyMetadata).toEqual(methodologyOverviewT.pl.metadata);
-    expect(enMethodologyMetadata).toEqual(methodologyOverviewT.en.metadata);
+    expect(plModelMetadata).toMatchObject(modelOverviewT.pl.metadata);
+    expect(enModelMetadata).toMatchObject(modelOverviewT.en.metadata);
+    expect(plMethodologyMetadata).toMatchObject(methodologyOverviewT.pl.metadata);
+    expect(enMethodologyMetadata).toMatchObject(methodologyOverviewT.en.metadata);
+    expect(plModelMetadata.alternates).toMatchObject({ canonical: "/model" });
+    expect(enModelMetadata.alternates).toMatchObject({ canonical: "/en/model" });
+    expect(plMethodologyMetadata.alternates).toMatchObject({ canonical: "/methodology" });
+    expect(enMethodologyMetadata.alternates).toMatchObject({ canonical: "/en/methodology" });
   });
 });

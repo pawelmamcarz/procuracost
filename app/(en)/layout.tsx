@@ -21,17 +21,6 @@ const ibmPlexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   ...siteMetadataT.en.root,
-  openGraph: {
-    ...siteMetadataT.en.root,
-    url: "/en",
-    siteName: "ProcuraCost",
-    locale: "en_GB",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    ...siteMetadataT.en.root,
-  },
 };
 
 export default function EnRootLayout({ children }: { children: React.ReactNode }) {

@@ -61,7 +61,7 @@ describe("public route contract", () => {
     ]);
   });
 
-  it("owns the exact indexable route set and excludes aliases and Shortcasts", () => {
+  it("owns the exact indexable route set and excludes aliases", () => {
     expect(sitemapPaths()).toEqual([
       "/", "/en",
       "/calculator", "/en/calculator",
@@ -76,9 +76,8 @@ describe("public route contract", () => {
       "/model/assumptions", "/en/model/assumptions",
       "/research",
       "/research-agenda",
+      "/shortcasty", "/en/shortcasty",
     ]);
     expect(sitemapPaths()).not.toContain("/en/research");
-    expect(sitemapPaths()).not.toContain("/shortcasty");
-    expect(sitemapPaths()).not.toContain("/en/shortcasty");
   });
 });

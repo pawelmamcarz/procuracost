@@ -107,7 +107,7 @@ describe("model 2.3 compact homepage data", () => {
 });
 
 describe("compact homepage presentation", () => {
-  it("keeps paired copy and the exact neutral three-job terminology", () => {
+  it("keeps paired copy, decision-tool framing and an explicit scenario range", () => {
     expect(leafPaths(homeT.en).sort()).toEqual(leafPaths(homeT.pl).sort());
     expect(homeT.pl.hero.title).toBe(
       "Porównaj koszt dwóch dopuszczalnych projektów procesu zakupowego."
@@ -121,6 +121,18 @@ describe("compact homepage presentation", () => {
     expect(homeT.en.neutrality).toBe(
       "The model permits either direction of difference. The sign is not assumed."
     );
+    expect(homeT.pl.jobs.eyebrow).toBe("Narzędzia do decyzji zakupowej");
+    expect(homeT.en.jobs.eyebrow).toBe("Procurement decision tools");
+    expect(homeT.pl.modelContract).toMatchObject({
+      uncertaintyLabel: "Deklarowany zakres scenariusza",
+      uncertaintyValue: "niski · centralny · wysoki",
+    });
+    expect(homeT.en.modelContract).toMatchObject({
+      uncertaintyLabel: "Declared scenario range",
+      uncertaintyValue: "low · central · high",
+    });
+    expect(JSON.stringify(homeT.pl.modelContract)).not.toContain("Dowody ×");
+    expect(JSON.stringify(homeT.en.modelContract)).not.toContain("Evidence ×");
     expect(homeT.pl.jobs.items.map(({ label }) => label)).toEqual([
       "Porównaj koszt",
       "Porównaj dopasowanie",

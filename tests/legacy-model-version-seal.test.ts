@@ -47,6 +47,19 @@ describe("legacy model version seal", () => {
     expect(source).toContain("Run: npm run map:legacy.");
   });
 
+  it("labels dormant decision-map copy with the immutable legacy identity", () => {
+    const source = fs.readFileSync(
+      path.join(process.cwd(), "lib/i18n.ts"),
+      "utf8",
+    );
+
+    expect(source).toContain(
+      'import { LEGACY_MODEL_VERSION, MODEL_VERSION } from "./version";',
+    );
+    expect(source).toContain("`Model ${LEGACY_MODEL_VERSION} stosuje szerokie mnożniki");
+    expect(source).toContain("`Model ${LEGACY_MODEL_VERSION} applies broad context multipliers");
+  });
+
   it("keeps model 2.2.2 traces independent from the native 2.3 model", () => {
     expect(LEGACY_MODEL_VERSION).toBe("2.2.2");
     expect(MODEL_VERSION).toBe("2.3.0");

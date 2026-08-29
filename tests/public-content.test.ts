@@ -462,13 +462,15 @@ describe("public editorial integrity", () => {
     expect(markup).not.toContain(firstEpisode.thesis);
   });
 
-  it("uses solid analytical Shortcast heroes", () => {
+  it("uses linear analytical Shortcast indexes", () => {
     const polishMarkup = renderToStaticMarkup(createElement(ShortcastyPage));
     const englishMarkup = renderToStaticMarkup(createElement(ShortcastyEnPage));
 
     for (const markup of [polishMarkup, englishMarkup]) {
-      expect(markup).toContain("bg-blue-600");
+      expect(markup).toContain('data-editorial-index="shortcasts"');
+      expect(markup).toContain("border-y");
       expect(markup).not.toContain("bg-gradient");
+      expect(markup).not.toContain("shadow");
     }
   });
 
@@ -490,7 +492,7 @@ describe("public editorial integrity", () => {
     }
   });
 
-  it("uses a solid analytical hero on a published Polish Shortcast detail", async () => {
+  it("uses an editorial record on a published Polish Shortcast detail", async () => {
     const episode = EPISODES[0];
     const previousPublishedAt = episode.publishedAt;
     episode.publishedAt = "2026-08-25";
@@ -501,7 +503,10 @@ describe("public editorial integrity", () => {
       });
       const markup = renderToStaticMarkup(page);
 
-      expect(markup).toContain("bg-blue-600");
+      expect(markup).toContain('data-editorial-detail="shortcast"');
+      expect(markup).toContain("border-y");
+      expect(markup).not.toContain("rounded-2xl bg-blue-600");
+      expect(markup).not.toMatch(/rounded-xl border border-(?:gray|green|blue)/);
       expect(markup).not.toContain("bg-gradient");
       expect(markup).toContain(episode.title);
     } finally {

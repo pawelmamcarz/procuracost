@@ -46,7 +46,7 @@ export default function NavBar({ brand, items, lang, langSwitch, labels, pathnam
   }, [open]);
 
   return (
-    <nav aria-label={labels.primaryNavigation} className="border-b border-gray-200 bg-white px-4 py-3 shadow-sm sm:px-6">
+    <nav aria-label={labels.primaryNavigation} className="border-b border-gray-200 bg-white px-4 py-3 sm:px-6">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-6">
         <Link href={brand.href} className="shrink-0 text-xl font-bold tracking-tight text-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
           {brand.label}

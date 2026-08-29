@@ -1,14 +1,18 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { researchAgendaT } from "@/lib/i18n";
 import { MODEL_V2_METADATA } from "@/lib/model-v2/domain";
+import { localizedPageMetadata } from "@/lib/page-metadata";
 
 const tx = researchAgendaT.pl;
 const modelVersion = MODEL_V2_METADATA.modelVersion;
 
-export const metadata = {
+export const metadata: Metadata = localizedPageMetadata({
+  lang: "pl",
+  routeKey: "researchAgenda",
   title: tx.metadataTitle(modelVersion),
   description: tx.metadataDescription(modelVersion),
-};
+});
 
 export default function ResearchAgendaPage() {
   return (
