@@ -52,7 +52,7 @@ export default function NavBar({ brand, items, lang, langSwitch, labels, pathnam
           {brand.label}
         </Link>
 
-        <div className="hidden items-center gap-4 whitespace-nowrap text-sm text-gray-600 xl:flex">
+        <div className="hidden items-center gap-4 whitespace-nowrap text-sm text-gray-600 lg:flex">
           {items.map((item) => (
             <Link
               key={item.href}
@@ -70,7 +70,7 @@ export default function NavBar({ brand, items, lang, langSwitch, labels, pathnam
 
         <button
           type="button"
-          className="rounded-lg border border-gray-200 p-2 text-gray-600 hover:border-blue-300 hover:text-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 xl:hidden"
+          className="rounded-lg border border-gray-200 p-2 text-gray-600 hover:border-blue-300 hover:text-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 lg:hidden"
           onClick={() => setOpen((v) => !v)}
           aria-controls={mobileMenuId}
           aria-expanded={open}
@@ -89,7 +89,7 @@ export default function NavBar({ brand, items, lang, langSwitch, labels, pathnam
       </div>
 
       {open && (
-        <div id={mobileMenuId} className="mx-auto mt-3 grid max-w-7xl grid-cols-1 gap-1 border-t border-gray-100 pt-3 pb-2 text-sm text-gray-700 sm:grid-cols-2 xl:hidden">
+        <div id={mobileMenuId} className="mx-auto mt-3 grid max-w-7xl grid-cols-1 gap-1 border-t border-gray-100 pt-3 pb-2 text-sm text-gray-700 sm:grid-cols-2 lg:hidden">
           {items.map((item) => (
             <Link
               key={item.href}

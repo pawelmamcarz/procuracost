@@ -50,13 +50,13 @@ describe("public route contract", () => {
     expect(navigationFor("pl")).toEqual([
       { href: "/calculator", label: "Kalkulator", highlight: true },
       { href: "/optimizer", label: "Warunki zastosowania", highlight: undefined },
-      { href: "/assessment", label: "Profil projektu procesu zakupowego", highlight: undefined },
+      { href: "/assessment", label: "Profil procesu", highlight: undefined },
       { href: "/model", label: "Model", highlight: undefined },
     ]);
     expect(navigationFor("en")).toEqual([
       { href: "/en/calculator", label: "Calculator", highlight: true },
       { href: "/en/optimizer", label: "Suitability comparison", highlight: undefined },
-      { href: "/en/assessment", label: "Procurement process design profile", highlight: undefined },
+      { href: "/en/assessment", label: "Process profile", highlight: undefined },
       { href: "/en/model", label: "Model", highlight: undefined },
     ]);
   });
