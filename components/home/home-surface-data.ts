@@ -54,7 +54,6 @@ export function buildCompactHomeRail(lang: Lang): ProcessRailViewModel {
           id: "formal-check",
           label: labels.formalCheck,
           predecessorIds: ["formal-frame"],
-          locked: true,
           critical: true,
         },
         {

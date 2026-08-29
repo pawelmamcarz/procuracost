@@ -654,7 +654,7 @@ export default function ModelAssumptionsPage({ lang }: { lang: Lang }) {
   ] as const;
 
   return (
-    <main
+    <div
       className="mx-auto max-w-7xl px-6 py-12 sm:py-16 lg:px-8"
       data-model-assumptions-ledger="true"
     >
@@ -747,6 +747,6 @@ export default function ModelAssumptionsPage({ lang }: { lang: Lang }) {
           {copy.methodologyLink}
         </Link>
       </section>
-    </main>
+    </div>
   );
 }

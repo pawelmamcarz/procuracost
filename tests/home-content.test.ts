@@ -60,7 +60,7 @@ describe("model 2.3 compact homepage data", () => {
     }
   });
 
-  it("builds one illustrative two-lane rail with split, merge, lock and critical states but no timing claim", () => {
+  it("keeps the illustrative legal control on the shared boundary without an asymmetric lane lock", () => {
     const viewModel = buildCompactHomeRail("en");
     const html = renderToStaticMarkup(
       createElement(ProcessRail, {
@@ -73,10 +73,17 @@ describe("model 2.3 compact homepage data", () => {
     expect(viewModel.lanes.formalSequential.nodes).toHaveLength(4);
     expect(viewModel.lanes.adaptiveCompliant.nodes).toHaveLength(4);
     expect(
+      Object.fromEntries(
+        Object.entries(viewModel.lanes).map(([lane, { nodes }]) => [
+          lane,
+          nodes.filter(({ locked }) => locked).length,
+        ])
+      )
+    ).toEqual({ formalSequential: 0, adaptiveCompliant: 0 });
+    expect(
       Object.values(viewModel.lanes).flatMap(({ nodes }) => nodes)
     ).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ locked: true, lockText: "Locked legal wait" }),
         expect.objectContaining({ parallel: true, parallelText: "Parallel branch" }),
         expect.objectContaining({ merge: true }),
         expect.objectContaining({ critical: true, criticalText: "Critical path" }),
@@ -87,7 +94,7 @@ describe("model 2.3 compact homepage data", () => {
     expect(html).toContain("Adaptive compliant alternative");
     expect(html).toContain("Split");
     expect(html).toContain("Merge");
-    expect(html).toContain("Locked legal wait");
+    expect(html).not.toContain("Locked legal wait");
     expect(html).toContain("Critical path");
     expect(html).not.toMatch(/active days|queue days|active \+|days,/i);
     for (const node of Object.values(viewModel.lanes).flatMap(

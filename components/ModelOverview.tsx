@@ -27,7 +27,7 @@ export default function ModelOverview({ lang }: { lang: Lang }) {
   const tx = modelOverviewT[lang];
 
   return (
-    <main className="mx-auto max-w-5xl px-5 py-10 sm:px-8 sm:py-14">
+    <div className="mx-auto max-w-5xl px-5 py-10 sm:px-8 sm:py-14">
       <header className="border-b border-gray-200 pb-10">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
           {tx.eyebrow}
@@ -86,6 +86,6 @@ export default function ModelOverview({ lang }: { lang: Lang }) {
           ))}
         </div>
       </nav>
-    </main>
+    </div>
   );
 }

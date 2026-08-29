@@ -223,7 +223,7 @@ export default function SuitabilityComparison({
   }
 
   return (
-    <main className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
+    <div className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
       <header className="max-w-3xl">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
           {copy.badge}
@@ -503,6 +503,6 @@ export default function SuitabilityComparison({
         </div>
         </>
       )}
-    </main>
+    </div>
   );
 }

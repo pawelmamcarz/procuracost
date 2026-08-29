@@ -5,6 +5,10 @@ import AppShell from "@/components/AppShell";
 import AssessmentQuiz from "@/components/AssessmentQuiz";
 import EvidenceFieldHome from "@/components/EvidenceFieldHome";
 import MechanismsEvidencePage from "@/components/MechanismsEvidencePage";
+import MethodologyOverview from "@/components/MethodologyOverview";
+import ModelAssumptionsPage from "@/components/ModelAssumptionsPage";
+import ModelOverview from "@/components/ModelOverview";
+import SuitabilityComparison from "@/components/SuitabilityComparison";
 import TeamPage from "@/components/TeamPage";
 import { assessmentT, homeT, mechanismsEvidenceT } from "@/lib/i18n";
 
@@ -33,6 +37,30 @@ describe("AppShell landmark contract", () => {
     const markup = renderPageInShell(createElement(EvidenceFieldHome, { lang: "pl" }), "pl");
 
     expect(markup).toContain(homeT.pl.hero.title);
+    expect(markup.match(/<main\b/g)).toHaveLength(1);
+  });
+
+  it.each([
+    {
+      path: "/model",
+      page: createElement(ModelOverview, { lang: "pl" }),
+    },
+    {
+      path: "/methodology",
+      page: createElement(MethodologyOverview, { lang: "pl" }),
+    },
+    {
+      path: "/optimizer",
+      page: createElement(SuitabilityComparison, { lang: "pl" }),
+    },
+    {
+      path: "/model/assumptions",
+      page: createElement(ModelAssumptionsPage, { lang: "pl" }),
+    },
+  ])("owns the only main landmark around $path", ({ path, page }) => {
+    pathname = path;
+    const markup = renderPageInShell(page, "pl");
+
     expect(markup.match(/<main\b/g)).toHaveLength(1);
   });
 
