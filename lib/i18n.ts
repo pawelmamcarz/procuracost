@@ -343,6 +343,8 @@ const calculatorV2Pl = {
     activeWork: "Praca aktywna",
     queue: "Oczekiwanie i kolejka",
     predecessors: "Poprzednicy",
+    requiredLegalSequence:
+      "Wymagane następstwo po obowiązkowym terminie prawnym",
     roleHours: "Godziny pracy ról",
     nonLabourCost: "Koszt pozapracowniczy",
     rangeEvidence: "Zakres i nota dowodowa",
@@ -404,6 +406,8 @@ const calculatorV2Pl = {
     scenarioDescription: "Opis scenariusza",
     scenarioEvidence: "Klasa źródła scenariusza",
     retainedAssumption: "Przeniesione założenie modelu 2.2.2",
+    registeredContextNote:
+      "Granica prawna, procedura, archetyp, kanał realizacji, wsparcie systemowe i kwalifikatory PZP są ładowane razem z zarejestrowanymi projektami obu wariantów. Aby je zmienić, wybierz inny scenariusz bazowy.",
     legalConstraints: "Rozstrzygnięte obowiązkowe ograniczenia prawne",
     noLegalWaits: "W tym kontekście model nie wyznacza obowiązkowych terminów prawnych.",
     waitDuration: (days: string) => `${days} dni oczekiwania`,
@@ -477,6 +481,8 @@ const calculatorV2Pl = {
   validation: {
     lockedStep:
       "Ten krok wynika z wybranego zbioru reguł prawnych i nie można go edytować ani usunąć.",
+    requiredLegalAncestor:
+      "Ta zmiana usunęłaby wymagane następstwo po obowiązkowym terminie prawnym.",
     unknownStep: "Wybrany krok nie istnieje już w tej mapie procesu.",
     unknownRole: "Wybrana rola nie istnieje w zestawie stawek tego scenariusza.",
     invalidCalibratedRange:
@@ -491,6 +497,8 @@ const calculatorV2Pl = {
       "Krok użytkownika może być czynnością, zatwierdzeniem albo kamieniem milowym.",
     illegalContext:
       "Wybrany kontekst jest niedopuszczalny albo wykracza poza zakres zbioru reguł prawnych.",
+    registeredDesignRequired:
+      "Zmiana zarejestrowanego kontekstu wymaga innego kompletnego projektu procesu. Wybierz zgodny scenariusz bazowy.",
     incompatibleLockedWaitShape:
       "Ta zmiana wymaga innego układu obowiązkowych terminów. Wybierz zgodny scenariusz bazowy.",
     contextReconciliationFailed:
@@ -513,6 +521,10 @@ const calculatorV2Pl = {
         "Zależności tworzą cykl. Usuń poprzednika, który prowadzi z powrotem do tego kroku.",
       invalid_value:
         "Krok zawiera nieprawidłowy zakres. Popraw wartości niską, centralną i wysoką.",
+      invalid_required_legal_dependency_contract:
+        "Mapa nie zachowuje pełnego zarejestrowanego kontraktu zależności prawnych. Wczytaj ponownie zgodny scenariusz bazowy.",
+      missing_required_legal_ancestor:
+        "Krok nie następuje już po wymaganym terminie prawnym. Przywróć zależność prowadzącą od zablokowanego terminu.",
       invalid_locked_legal_wait:
         "Obowiązkowy termin został zmieniony. Przywróć wartości i pochodzenie ze zbioru reguł prawnych.",
       missing_locked_legal_wait:
@@ -585,6 +597,7 @@ const calculatorV2En = {
     activeWork: "Active work",
     queue: "Waiting and queue",
     predecessors: "Predecessors",
+    requiredLegalSequence: "Required sequence after a mandatory legal wait",
     roleHours: "Role hours",
     nonLabourCost: "Non-labour cost",
     rangeEvidence: "Range and evidence note",
@@ -645,6 +658,8 @@ const calculatorV2En = {
     scenarioDescription: "Scenario description",
     scenarioEvidence: "Scenario source class",
     retainedAssumption: "Retained model 2.2.2 assumption",
+    registeredContextNote:
+      "The legal boundary, procedure, archetype, execution channel, system support and PZP qualifiers are loaded with the registered designs for both alternatives. Select another base scenario to change them.",
     legalConstraints: "Resolved mandatory legal constraints",
     noLegalWaits: "The model resolves no mandatory legal waits for this context.",
     waitDuration: (days: string) => `${days} days waiting`,
@@ -717,6 +732,8 @@ const calculatorV2En = {
   validation: {
     lockedStep:
       "This step is fixed by the selected legal ruleset and cannot be edited or removed.",
+    requiredLegalAncestor:
+      "This change would remove a required sequence after a mandatory legal wait.",
     unknownStep: "The selected step is no longer present in this process map.",
     unknownRole: "The selected role is not present in this scenario's rate set.",
     invalidCalibratedRange:
@@ -731,6 +748,8 @@ const calculatorV2En = {
       "A user step may be an activity, approval or milestone.",
     illegalContext:
       "The selected context is unlawful or outside the coverage of the legal ruleset.",
+    registeredDesignRequired:
+      "Changing the registered context requires another complete workflow design. Select a compatible base scenario.",
     incompatibleLockedWaitShape:
       "This change requires a different mandatory-wait structure. Select a compatible base scenario.",
     contextReconciliationFailed:
@@ -753,6 +772,10 @@ const calculatorV2En = {
         "The dependencies form a cycle. Remove the predecessor that leads back to this step.",
       invalid_value:
         "The step contains an invalid range. Correct its low, central and high values.",
+      invalid_required_legal_dependency_contract:
+        "The map does not retain its complete registered legal-dependency contract. Reload a compatible base scenario.",
+      missing_required_legal_ancestor:
+        "The step no longer follows its required legal wait. Restore a dependency path from the locked wait.",
       invalid_locked_legal_wait:
         "A mandatory wait has been changed. Restore the values and provenance from the legal ruleset.",
       missing_locked_legal_wait:

@@ -92,6 +92,34 @@ A legal-wait step has fixed low, central and high values, zero active days and
 the same queue days in both alternatives. It cannot be edited, removed or
 scaled by system support.
 
+The registered workflow design also declares the activities that must remain
+downstream of a legal wait. In the current PZP-open designs, tender evaluation
+must follow the bid-submission period and contract conclusion must follow the
+standstill. The relationship is an ancestry constraint, not necessarily a
+direct edge, so a user may add an intermediate activity without moving the
+governed activity before the mandatory wait. Removing the governed activity or
+the complete dependency path fails validation.
+
+For workflows with mandatory legal waits, the calculation engine resolves the
+dependency contract from the workflow's registered design identity. Editable
+dependency metadata is not a source of authority. A `ScenarioDraft` must first
+pass `buildCalculationInputFromDraft`. The resulting object is deeply frozen
+and recorded by identity in a module-private materialisation registry. The
+engine resolves its scenario identity, revalidates the registered context and
+rejects copied objects before calculating. Validation and materialisation use
+one plain structured snapshot of the complete draft and URL gate, preventing
+different reads of accessor-backed input from crossing the boundary.
+
+The calculator changes the legal boundary, procedure family, purchase
+archetype, execution channel and system support only by loading a complete
+registered base scenario for both alternatives. The initiation date may update
+legal provenance only when the legal-wait
+identifiers remain compatible with the loaded design. All other context fields,
+including PZP qualifiers, require a complete registered scenario. PZP basic and
+restricted procedures remain available in the separate suitability comparison,
+but are not exposed as editable calculator contexts until complete workflow-design
+bundles exist.
+
 ## 4. Range and evidence semantics
 
 Every numerical input has:
@@ -133,7 +161,8 @@ A workflow is a directed acyclic graph. Every step records:
 - locked legal provenance where applicable.
 
 The engine rejects cycles, unknown predecessors, duplicate step identifiers and
-changes to a legal lock.
+changes to a legal lock. It also rejects a missing activity or dependency path
+declared by the registered design as requiring a legal-wait ancestor.
 
 For range case `r`, the finish time of step `s` is:
 

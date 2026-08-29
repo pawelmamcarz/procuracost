@@ -111,6 +111,33 @@ describe("calculator workspace UI", () => {
     );
   });
 
+  it("loads design-shaping context atomically from registered base scenarios", () => {
+    const html = renderWorkspace();
+
+    expect(html.match(/<select/g)).toHaveLength(1);
+    expect(html).toContain(
+      "The legal boundary, procedure, archetype, execution channel, system support and PZP qualifiers are loaded with the registered designs for both alternatives. Select another base scenario to change them."
+    );
+    expect(html).not.toContain('value="pzp_basic"');
+    expect(html).not.toContain('value="pzp_restricted"');
+    expect(html).toContain('type="date"');
+  });
+
+  it("discloses registered PZP qualifiers that determine the legal waits", () => {
+    const html = renderWorkspace(
+      createCalculatorWorkspaceState(
+        createScenarioDraft("public_it_open_with_market_consultation")
+      )
+    );
+
+    expect(html).toContain("Contracting authority regime");
+    expect(html).toContain("Classic contracting authority");
+    expect(html).toContain("Procurement object");
+    expect(html).toContain("Supplies or services");
+    expect(html).toContain("Communication method");
+    expect(html).toContain("Electronic communication");
+  });
+
   it("shows compatible workflow and contract IDs as read-only provenance without design selectors", () => {
     const state = createCalculatorWorkspaceState(
       createScenarioDraft("fleet_tco_reframing")

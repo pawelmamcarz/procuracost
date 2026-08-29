@@ -25,6 +25,7 @@ export * from "./legal";
 export * from "./mechanism-workflow-seeds";
 export * from "./pdf-copy";
 export * from "./process-map";
+export * from "./registered-context";
 export * from "./retained-workflow-seeds";
 export * from "./scenarios";
 export * from "./suitability";

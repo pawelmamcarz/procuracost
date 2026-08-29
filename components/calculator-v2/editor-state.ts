@@ -1,5 +1,6 @@
 import {
   assertValidCalibratedValue,
+  validateProcessMap,
   type AlternativeId,
   type CalibratedValue,
   type ComparisonAlternatives,
@@ -208,6 +209,8 @@ function editorIssue(
 ): EditorUiIssue {
   const messageKeys: Record<EditorUiIssue["code"], EditorUiIssue["messageKey"]> = {
     locked_step: "calculatorV2.validation.lockedStep",
+    required_legal_ancestor:
+      "calculatorV2.validation.requiredLegalAncestor",
     unknown_step: "calculatorV2.validation.unknownStep",
     unknown_role: "calculatorV2.validation.unknownRole",
     invalid_calibrated_range:
@@ -406,6 +409,20 @@ function removeStep(
   const closestPredecessor = removed.predecessorIds.find((predecessorId) =>
     steps.some(({ id }) => id === predecessorId)
   );
+  const legalDependencyIssue = validateProcessMap(
+    draft.alternatives[alternativeId].workflowDesign
+  ).find(({ code }) => code === "missing_required_legal_ancestor");
+  if (legalDependencyIssue) {
+    return rejectEditorAction(
+      state,
+      editorIssue(
+        "required_legal_ancestor",
+        alternativeId,
+        stepId,
+        "predecessorIds"
+      )
+    );
+  }
   return acceptedMapEdit(state, draft, alternativeId, {
     selectedAlternative: alternativeId,
     selectedStepId: closestPredecessor ?? null,
@@ -472,15 +489,34 @@ export function calculatorWorkspaceReducer(
         }
       );
     }
-    case "edit-step-predecessors":
-      return mapStepEdit(
+    case "edit-step-predecessors": {
+      const current = editableStepOrRejection(
         state,
         action.alternativeId,
-        action.stepId,
-        (step) => {
-          step.predecessorIds = unique(action.predecessorIds);
-        }
+        action.stepId
       );
+      if ("source" in current) return rejectEditorAction(state, current);
+      const draft = structuredClone(state.draft);
+      const workflow =
+        draft.alternatives[action.alternativeId].workflowDesign;
+      const step = workflow.steps.find(({ id }) => id === action.stepId)!;
+      step.predecessorIds = unique(action.predecessorIds);
+      const legalDependencyIssue = validateProcessMap(workflow).find(
+        ({ code }) => code === "missing_required_legal_ancestor"
+      );
+      if (legalDependencyIssue) {
+        return rejectEditorAction(
+          state,
+          editorIssue(
+            "required_legal_ancestor",
+            action.alternativeId,
+            action.stepId,
+            "predecessorIds"
+          )
+        );
+      }
+      return acceptedMapEdit(state, draft, action.alternativeId);
+    }
     case "edit-step-range": {
       const current = editableStepOrRejection(
         state,

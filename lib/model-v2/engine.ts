@@ -3,16 +3,20 @@ import {
   type CalibratedValue,
   type RangeValues,
 } from "./calibrated-value";
+import { assertMaterializedCalculationInputIntegrity } from "./calculation-input";
 import type {
   ComparisonAlternatives,
   ContractDesign,
   ContractCostDimensionId,
-  LegalContext,
+  ModelContextV2,
   ProcessMapStep,
   WorkflowDesign,
 } from "./domain";
+import { resolveRegisteredWorkflowDesign } from "./design-registry";
 import { resolveLegalWaits, type ResolvedLegalWait } from "./legal";
 import { assertValidProcessMap } from "./process-map";
+import { assertSameRegisteredScenarioContext } from "./registered-context";
+import { scenarioV2ById, type ScenarioV2Id } from "./scenarios";
 
 type RangeCase = keyof RangeValues;
 const RANGE_CASES: RangeCase[] = ["low", "central", "high"];
@@ -33,7 +37,9 @@ export interface AlternativeCostResult {
 }
 
 export interface ComparisonCalculationInput {
-  context: LegalContext;
+  kind: "materialized_calculation_input";
+  registeredScenarioId: ScenarioV2Id;
+  context: ModelContextV2;
   alternatives: ComparisonAlternatives;
   roleHourlyRates: Record<string, CalibratedValue>;
   dailyCostOfInaction: CalibratedValue;
@@ -112,7 +118,25 @@ function calculateAlternative(
   roleHourlyRates: Record<string, CalibratedValue>,
   dailyCostOfInaction: CalibratedValue
 ): AlternativeCostResult {
-  assertValidProcessMap(workflowDesign, expectedLegalWaits);
+  const hasLockedLegalWait = workflowDesign.steps.some(
+    ({ lockedLegalProvenance }) => lockedLegalProvenance !== undefined
+  );
+  let registeredDependencies = workflowDesign.requiredLegalDependencies;
+  if (hasLockedLegalWait) {
+    if (!workflowDesign.registeredDesignId) {
+      throw new Error(
+        "A workflow with mandatory legal waits requires registered design provenance"
+      );
+    }
+    registeredDependencies = resolveRegisteredWorkflowDesign(
+      workflowDesign.registeredDesignId
+    ).requiredLegalDependencies ?? [];
+  }
+  assertValidProcessMap(
+    workflowDesign,
+    expectedLegalWaits,
+    registeredDependencies
+  );
   assertValidCalibratedValue(dailyCostOfInaction, "dailyCostOfInaction");
   if (dailyCostOfInaction.low < 0) {
     throw new Error("dailyCostOfInaction cannot be negative");
@@ -208,7 +232,33 @@ function calculateAlternative(
   };
 }
 
-export function calculateComparison(
+function assertTrustedCalculationInput(
+  input: ComparisonCalculationInput
+): void {
+  if (
+    (input as ComparisonCalculationInput & { kind?: unknown }).kind !==
+    "materialized_calculation_input"
+  ) {
+    throw new Error(
+      "calculateComparison requires a materialized calculation input"
+    );
+  }
+  const registeredScenario = scenarioV2ById(input.registeredScenarioId);
+  if (!registeredScenario) {
+    throw new Error(
+      `Unknown registered model 2.3 scenario: ${String(input.registeredScenarioId)}`
+    );
+  }
+  assertSameRegisteredScenarioContext(
+    input.context,
+    registeredScenario.context
+  );
+  if (input !== registeredScenario.calculationInput) {
+    assertMaterializedCalculationInputIntegrity(input);
+  }
+}
+
+function calculateComparisonCore(
   input: ComparisonCalculationInput
 ): ComparisonCalculationResult {
   const expectedLegalWaits = resolveLegalWaits(input.context);
@@ -237,4 +287,24 @@ export function calculateComparison(
       high: formalSequential.totalCost.high - adaptiveCompliant.totalCost.low,
     },
   };
+}
+
+export function calculateComparison(
+  input: ComparisonCalculationInput
+): ComparisonCalculationResult {
+  assertTrustedCalculationInput(input);
+  return calculateComparisonCore(input);
+}
+
+export function calculateSwappedComparisonForDiagnostics(
+  input: ComparisonCalculationInput
+): ComparisonCalculationResult {
+  assertTrustedCalculationInput(input);
+  return calculateComparisonCore({
+    ...input,
+    alternatives: {
+      formalSequential: input.alternatives.adaptiveCompliant,
+      adaptiveCompliant: input.alternatives.formalSequential,
+    },
+  });
 }

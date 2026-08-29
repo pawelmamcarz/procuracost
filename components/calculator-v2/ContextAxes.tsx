@@ -2,15 +2,11 @@ import {
   calculatorV2T,
   modelV2T,
   researchExportV2T,
+  suitabilityT,
   type Lang,
 } from "@/lib/i18n";
 import {
-  EXECUTION_CHANNEL_IDS,
-  LEGAL_GOVERNANCE_BOUNDARY_IDS,
-  PROCEDURE_FAMILY_IDS,
-  PURCHASE_ARCHETYPE_IDS,
   SCENARIOS_V2,
-  SYSTEM_SUPPORT_IDS,
   resolveLegalWaits,
   type ModelContextV2,
   type ScenarioV2Id,
@@ -19,13 +15,7 @@ import {
 import type { CalculatorWorkspaceState } from "./editor-state";
 import { resolveProcessStepLabel } from "../process-map/rail-view-model";
 
-export type EditableContextAxis =
-  | "boundaryId"
-  | "procedureFamilyId"
-  | "purchaseArchetypeId"
-  | "executionChannelId"
-  | "systemSupportId"
-  | "initiatedOn";
+export type EditableContextAxis = "initiatedOn";
 
 export interface ContextAxesProps {
   lang: Lang;
@@ -61,6 +51,7 @@ export function ContextAxes({
   const tx = calculatorV2T[lang].workspace;
   const axes = researchExportV2T[lang].axes;
   const scenario = scenarioCopy(state.scenarioId, lang);
+  const suitability = suitabilityT[lang];
   let legalWaits: ReturnType<typeof resolveLegalWaits> | null = null;
   try {
     legalWaits = resolveLegalWaits(state.draft.context);
@@ -69,37 +60,60 @@ export function ContextAxes({
   }
   const selectClass =
     "min-h-11 w-full rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500";
-  const fields = [
+  const contextRows = [
     {
-      field: "boundaryId" as const,
       label: axes.legalGovernanceBoundary,
-      value: state.draft.context.boundaryId,
-      ids: LEGAL_GOVERNANCE_BOUNDARY_IDS,
+      value: axisValueLabel(state.draft.context.boundaryId, lang),
     },
     {
-      field: "procedureFamilyId" as const,
       label: axes.procedureFamily,
-      value: state.draft.context.procedureFamilyId,
-      ids: PROCEDURE_FAMILY_IDS,
+      value: axisValueLabel(state.draft.context.procedureFamilyId, lang),
     },
     {
-      field: "purchaseArchetypeId" as const,
       label: axes.purchaseArchetype,
-      value: state.draft.context.purchaseArchetypeId,
-      ids: PURCHASE_ARCHETYPE_IDS,
+      value: axisValueLabel(state.draft.context.purchaseArchetypeId, lang),
     },
     {
-      field: "executionChannelId" as const,
       label: axes.executionChannel,
-      value: state.draft.context.executionChannelId,
-      ids: EXECUTION_CHANNEL_IDS,
+      value: axisValueLabel(state.draft.context.executionChannelId, lang),
     },
     {
-      field: "systemSupportId" as const,
       label: axes.systemSupport,
-      value: state.draft.context.systemSupportId,
-      ids: SYSTEM_SUPPORT_IDS,
+      value: axisValueLabel(state.draft.context.systemSupportId, lang),
     },
+    ...(state.draft.context.buyerRegime
+      ? [
+          {
+            label: suitability.fields.buyerRegime,
+            value:
+              suitability.options.buyerRegime[
+                state.draft.context.buyerRegime
+              ],
+          },
+        ]
+      : []),
+    ...(state.draft.context.procurementObject
+      ? [
+          {
+            label: suitability.fields.procurementObject,
+            value:
+              suitability.options.procurementObject[
+                state.draft.context.procurementObject
+              ],
+          },
+        ]
+      : []),
+    ...(state.draft.context.communicationMethod
+      ? [
+          {
+            label: suitability.fields.communicationMethod,
+            value:
+              suitability.options.communicationMethod[
+                state.draft.context.communicationMethod
+              ],
+          },
+        ]
+      : []),
   ];
 
   return (
@@ -140,27 +154,23 @@ export function ContextAxes({
         </dl>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        {fields.map(({ field, label, value, ids }) => (
-          <label className="block space-y-1" key={field}>
-            <span className="block text-xs font-medium text-gray-600">
-              {label}
-            </span>
-            <select
-              className={selectClass}
-              onChange={(event) =>
-                onContextChange(field, event.currentTarget.value)
-              }
-              value={value}
+      <div className="space-y-4">
+        <p className="max-w-3xl text-xs leading-relaxed text-gray-600">
+          {tx.registeredContextNote}
+        </p>
+        <dl className="divide-y divide-gray-100 border-y border-gray-200">
+          {contextRows.map(({ label, value }) => (
+            <div
+              className="grid gap-1 py-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] sm:gap-6"
+              key={label}
             >
-              {ids.map((id) => (
-                <option key={id} value={id}>
-                  {axisValueLabel(id, lang)}
-                </option>
-              ))}
-            </select>
-          </label>
-        ))}
+              <dt className="text-xs font-medium text-gray-600">{label}</dt>
+              <dd className="text-sm text-gray-900">
+                {value}
+              </dd>
+            </div>
+          ))}
+        </dl>
         <label className="block space-y-1">
           <span className="block text-xs font-medium text-gray-600">
             {axes.initiatedOn}

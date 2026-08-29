@@ -43,8 +43,14 @@ export type MechanismWorkflowSeedStep =
   | MechanismWorkflowActivitySeed
   | MechanismLegalWaitSlot;
 
+export interface MechanismWorkflowLegalDependencySeed {
+  legalWaitSlotId: RetainedLegalWaitSlotId;
+  governedActivityId: string;
+}
+
 export interface MechanismWorkflowTemplate {
   steps: readonly MechanismWorkflowSeedStep[];
+  requiredLegalDependencies?: readonly MechanismWorkflowLegalDependencySeed[];
 }
 
 function activity(
@@ -243,6 +249,16 @@ export const MECHANISM_WORKFLOW_TEMPLATES = deepFreeze({
         lawyer: 8,
         executive: 2,
       }),
+    ],
+    requiredLegalDependencies: [
+      {
+        legalWaitSlotId: "bid_submission",
+        governedActivityId: "public_it_bid_evaluation",
+      },
+      {
+        legalWaitSlotId: "standstill",
+        governedActivityId: "public_it_contract_signing",
+      },
     ],
   },
 } as const satisfies Record<

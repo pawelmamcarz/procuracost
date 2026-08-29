@@ -16,6 +16,10 @@ import {
   applyLegacyMigrationConfirmation,
   createRenderableCalculatorWorkspaceState,
 } from "@/components/calculator-v2/workspace-bootstrap";
+import type {
+  ContextUiIssue,
+  EditorUiIssue,
+} from "@/components/calculator-v2/issues";
 import {
   bootstrapCalculatorUrl,
 } from "@/components/calculator-v2/url-bootstrap";
@@ -205,6 +209,58 @@ describe("calculator workspace validation and submit contract", () => {
         expect(copy.length).toBeGreaterThan(20);
       }
     }
+  });
+
+  it("maps legal dependency and registered-design guards to paired PL and EN copy", () => {
+    const issues: Array<EditorUiIssue | ContextUiIssue> = [
+      {
+        source: "editor",
+        code: "required_legal_ancestor",
+        messageKey: "calculatorV2.validation.requiredLegalAncestor",
+      },
+      {
+        source: "context",
+        code: "registered_design_required",
+        messageKey: "calculatorV2.validation.registeredDesignRequired",
+      },
+    ];
+
+    for (const issue of issues) {
+      expect(calculatorIssueCopy(issue, "pl").length).toBeGreaterThan(20);
+      expect(calculatorIssueCopy(issue, "en").length).toBeGreaterThan(20);
+      expect(calculatorIssueCopy(issue, "pl")).not.toBe(
+        calculatorIssueCopy(issue, "en")
+      );
+    }
+  });
+
+  it("blocks submission when editable dependency metadata and its governed edge are removed", () => {
+    const draft = createScenarioDraft(
+      "public_it_open_with_market_consultation"
+    );
+    const workflow = draft.alternatives.formalSequential.workflowDesign;
+    const signing = workflow.steps.find(({ id }) =>
+      id.endsWith(".public_it_contract_signing")
+    );
+    if (!signing) throw new Error("Expected the public IT signing step");
+    signing.predecessorIds = [];
+    workflow.requiredLegalDependencies =
+      workflow.requiredLegalDependencies?.filter(
+        ({ stepId }) => stepId !== signing.id
+      );
+    const state = createCalculatorWorkspaceState(draft);
+
+    const validation = deriveCalculatorWorkspaceValidation(state);
+
+    expect(validation.canSubmit).toBe(false);
+    expect(validation.issues).toContainEqual(
+      expect.objectContaining({
+        source: "process-map",
+        code: "invalid_required_legal_dependency_contract",
+        alternativeId: "formalSequential",
+      })
+    );
+    expect(submitCalculatorWorkspace(state).status).toBe("blocked");
   });
 
   it.each([

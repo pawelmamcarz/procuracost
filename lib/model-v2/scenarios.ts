@@ -6,6 +6,7 @@ import type {
   ModelContextV2,
   NonMonetizedContractDimension,
   ProcessMapStep,
+  RequiredLegalDependency,
   WorkflowDesign,
 } from "./domain";
 import { MODEL_V2_METADATA } from "./domain";
@@ -16,6 +17,7 @@ import { resolveLegalWaits } from "./legal";
 import {
   MECHANISM_WORKFLOW_EVIDENCE_ID,
   MECHANISM_WORKFLOW_TEMPLATES,
+  type MechanismWorkflowLegalDependencySeed,
   type MechanismWorkflowScenarioId,
   type MechanismWorkflowTemplate,
 } from "./mechanism-workflow-seeds";
@@ -98,7 +100,10 @@ export interface ScenarioV2 {
 }
 
 export interface ScenarioDraft
-  extends Omit<ComparisonCalculationInput, "context"> {
+  extends Omit<
+    ComparisonCalculationInput,
+    "kind" | "registeredScenarioId" | "context"
+  > {
   kind: "user_draft";
   derivedFromScenarioId: ScenarioV2Id;
   designIds: ScenarioDesignIds;
@@ -227,7 +232,8 @@ function workflowFromSeed(
   valueFor: (value: number) => CalibratedValue,
   context: ModelContextV2,
   namespace: "shared" | AlternativeId,
-  sourceLabel: "retained" | "mechanism"
+  sourceLabel: "retained" | "mechanism",
+  dependencySeeds: readonly MechanismWorkflowLegalDependencySeed[] = []
 ): WorkflowDesign {
   const supportProfile = RETAINED_SUPPORT_PROFILES[context.systemSupportId];
   const expectedLegalWaits = resolveLegalWaits(context);
@@ -315,7 +321,29 @@ function workflowFromSeed(
     );
   }
 
-  return { steps };
+  const requiredLegalDependencies: RequiredLegalDependency[] =
+    dependencySeeds.map(({ legalWaitSlotId, governedActivityId }) => {
+      const ancestor = expectedLegalWaits.find(({ id }) =>
+        id.endsWith(`.${legalWaitSlotId}`)
+      );
+      const stepId = `${scenarioId}.${namespace}.${governedActivityId}`;
+      if (!ancestor || !steps.some(({ id }) => id === stepId)) {
+        throw new Error(
+          `${sourceLabel} process map has an invalid legal dependency seed`
+        );
+      }
+      return { stepId, ancestorId: ancestor.id };
+    });
+
+  return {
+    steps,
+    ...(requiredLegalDependencies.length
+      ? {
+          requiredLegalDependencies,
+          registeredDesignId: `${scenarioId}.workflow.${alternative}`,
+        }
+      : {}),
+  };
 }
 
 function workflowFromRetainedSeed(
@@ -343,14 +371,18 @@ function workflowFromMechanismSeed(
   assumptionId: string,
   context: ModelContextV2
 ): WorkflowDesign {
+  const template = MECHANISM_WORKFLOW_TEMPLATES[scenarioId];
   return workflowFromSeed(
     scenarioId,
     alternative,
-    MECHANISM_WORKFLOW_TEMPLATES[scenarioId],
+    template,
     (value) => illustrativeWorkflowValue(value, assumptionId),
     context,
     alternative,
-    "mechanism"
+    "mechanism",
+    "requiredLegalDependencies" in template
+      ? template.requiredLegalDependencies
+      : []
   );
 }
 
@@ -532,6 +564,8 @@ function buildScenario(seed: ScenarioSeed): ScenarioV2 {
       bypass,
     },
     calculationInput: {
+      kind: "materialized_calculation_input",
+      registeredScenarioId: seed.id,
       context,
       alternatives,
       roleHourlyRates,
@@ -822,13 +856,17 @@ export function createScenarioDraft(id: ScenarioV2Id): ScenarioDraft {
   const scenario = scenarioV2ById(id);
   if (!scenario) throw new Error(`Unknown model 2.3 scenario: ${id}`);
 
-  const input = structuredClone(scenario.calculationInput);
+  const {
+    alternatives,
+    roleHourlyRates,
+  } = structuredClone(scenario.calculationInput);
   const economicAssumptions = structuredClone(scenario.economicAssumptions);
   return {
     kind: "user_draft",
     derivedFromScenarioId: id,
     designIds: structuredClone(scenario.designIds),
-    ...input,
+    alternatives,
+    roleHourlyRates,
     context: structuredClone(scenario.context),
     dailyCostOfInaction: structuredClone(
       economicAssumptions.dailyCostOfInaction

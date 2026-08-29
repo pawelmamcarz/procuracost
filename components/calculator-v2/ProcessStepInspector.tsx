@@ -1,11 +1,13 @@
 import { LockKeyhole, Trash2 } from "lucide-react";
 
 import { calculatorV2T, type Lang } from "@/lib/i18n";
-import type {
-  AlternativeId,
-  CalibratedValue,
-  EvidenceClass,
-  ProcessMapStep,
+import {
+  validateProcessMap,
+  type AlternativeId,
+  type CalibratedValue,
+  type EvidenceClass,
+  type ProcessMapStep,
+  type WorkflowDesign,
 } from "@/lib/model-v2";
 
 import {
@@ -210,6 +212,29 @@ function evidenceSummary(step: ProcessMapStep): {
   };
 }
 
+function removingPredecessorBreaksLegalDependency(
+  workflow: WorkflowDesign,
+  stepId: string,
+  predecessorId: string
+): boolean {
+  const candidate = {
+    ...workflow,
+    steps: workflow.steps.map((step) =>
+      step.id === stepId
+        ? {
+            ...step,
+            predecessorIds: step.predecessorIds.filter(
+              (id) => id !== predecessorId
+            ),
+          }
+        : step
+    ),
+  };
+  return validateProcessMap(candidate).some(
+    ({ code }) => code === "missing_required_legal_ancestor"
+  );
+}
+
 export function ProcessStepInspector({
   lang,
   state,
@@ -220,6 +245,9 @@ export function ProcessStepInspector({
   const alternativeId = state.selectedAlternative;
   const workflow = state.draft.alternatives[alternativeId].workflowDesign;
   const step = workflow.steps.find(({ id }) => id === state.selectedStepId);
+  const governedByLegalDependency = workflow.requiredLegalDependencies?.some(
+    ({ stepId }) => stepId === step?.id
+  );
 
   return (
     <aside
@@ -369,6 +397,13 @@ export function ProcessStepInspector({
                 </legend>
                 {workflow.steps.map((candidate) => {
                   const checked = step.predecessorIds.includes(candidate.id);
+                  const dependencyLocked =
+                    checked &&
+                    removingPredecessorBreaksLegalDependency(
+                      workflow,
+                      step.id,
+                      candidate.id
+                    );
                   return (
                     <label
                       className="flex min-h-11 items-start gap-3 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700"
@@ -377,7 +412,7 @@ export function ProcessStepInspector({
                       <input
                         checked={checked}
                         className="mt-1 h-4 w-4 accent-blue-600"
-                        disabled={candidate.id === step.id}
+                        disabled={candidate.id === step.id || dependencyLocked}
                         onChange={(event) => {
                           const next = event.currentTarget.checked
                             ? [...step.predecessorIds, candidate.id]
@@ -480,20 +515,30 @@ export function ProcessStepInspector({
               <p className="text-xs leading-relaxed text-gray-500">
                 {tx.appliesImmediately}
               </p>
-              <button
-                className="inline-flex min-h-11 items-center gap-2 text-sm font-medium text-gray-600 underline decoration-gray-300 underline-offset-4 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                onClick={() =>
-                  onAction({
-                    type: "remove-step",
-                    alternativeId,
-                    stepId: step.id,
-                  })
-                }
-                type="button"
-              >
-                <Trash2 aria-hidden="true" className="h-4 w-4" />
-                {tx.removeStep}
-              </button>
+              {governedByLegalDependency ? (
+                <p className="flex items-start gap-2 border-l-2 border-amber-400 pl-3 text-xs leading-relaxed text-amber-800">
+                  <LockKeyhole
+                    aria-hidden="true"
+                    className="mt-0.5 h-3.5 w-3.5 shrink-0"
+                  />
+                  <span>{tx.requiredLegalSequence}</span>
+                </p>
+              ) : (
+                <button
+                  className="inline-flex min-h-11 items-center gap-2 text-sm font-medium text-gray-600 underline decoration-gray-300 underline-offset-4 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                  onClick={() =>
+                    onAction({
+                      type: "remove-step",
+                      alternativeId,
+                      stepId: step.id,
+                    })
+                  }
+                  type="button"
+                >
+                  <Trash2 aria-hidden="true" className="h-4 w-4" />
+                  {tx.removeStep}
+                </button>
+              )}
             </>
           )}
         </div>
