@@ -14,7 +14,10 @@ import {
   PRACTITIONER_SOURCES,
   PROCUREMENT_BEYOND_8,
 } from "@/lib/model-v2/evidence";
-import { READINESS_DOMAINS } from "@/lib/readiness";
+import {
+  READINESS_CHECKLIST_PROVENANCE,
+  READINESS_DOMAINS,
+} from "@/lib/readiness";
 import { EPISODES } from "@/lib/shortcasty";
 
 const EXPECTED_REFS = [
@@ -82,12 +85,20 @@ describe("Procurement&Beyond episode 8 source boundary", () => {
     expect(PRACTITIONER_SOURCES).toEqual([PROCUREMENT_BEYOND_8]);
   });
 
-  it("resolves every readiness source reference without entering calibration or Shortcasty", () => {
+  it("keeps thematic interview references separate from the authored checklist", () => {
     const sourceRefIds = new Set(PROCUREMENT_BEYOND_8.refs.map(({ id }) => id));
 
-    for (const question of READINESS_DOMAINS.flatMap(({ questions }) => questions)) {
-      expect(question.sourceRefIds.length, question.id).toBeGreaterThan(0);
-      expect(question.sourceRefIds.every((id) => sourceRefIds.has(id)), question.id).toBe(true);
+    for (const domain of READINESS_DOMAINS) {
+      expect(domain.thematicSourceRefIds.length, domain.id).toBeGreaterThan(0);
+      expect(
+        domain.thematicSourceRefIds.every((id) => sourceRefIds.has(id)),
+        domain.id,
+      ).toBe(true);
+      for (const question of domain.questions) {
+        expect(question.checklistProvenanceId).toBe(
+          READINESS_CHECKLIST_PROVENANCE.id,
+        );
+      }
     }
 
     expect(EVIDENCE_REGISTRY.some(({ id }) => id === "procurement-beyond-8")).toBe(false);
@@ -114,6 +125,14 @@ describe("bilingual practitioner material", () => {
     expect(practiceT.en.sourceNote).toContain("practitioner interview");
     expect(practiceT.pl.sourceNote).not.toContain("wywiad ekspercki");
     expect(practiceT.en.sourceNote).not.toContain("expert interview");
+    expect(practiceT.pl.sourceNote).toMatch(
+      /lista kontrolna.*opracowana przez autora.*hipotez/i,
+    );
+    expect(practiceT.en.sourceNote).toMatch(
+      /checklist was authored.*operational hypotheses/i,
+    );
+    expect(practiceT.pl.sourceNote).toMatch(/wyłącznie kontekst tematyczny/i);
+    expect(practiceT.en.sourceNote).toMatch(/thematic context only/i);
     expect(practiceT.pl.bielikTcoBoundary).toMatch(/model językowy nie oblicza wyniku/i);
     expect(practiceT.en.bielikTcoBoundary).toMatch(
       /language model does not calculate the result/i,

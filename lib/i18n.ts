@@ -4790,228 +4790,217 @@ const readinessPl = {
   eyebrow: "Diagnostyka wdrożeniowa",
   title: "Gotowość organizacyjna do wdrożenia",
   subtitle:
-    "Osiem obszarów wymagających oceny przed wyborem systemu i rozpoczęciem konfiguracji. Wynik nie jest audytem dojrzałości i nie zmienia modelu kosztowego ProcuraCost.",
+    "Osiem obszarów do samoopisu przed wyborem systemu i rozpoczęciem konfiguracji. Zestawienie nie jest audytem dojrzałości i nie zmienia modelu kosztowego ProcuraCost.",
   duration: "Odpowiedzi pozostają wyłącznie w tej karcie przeglądarki.",
   progress: (current: number, total: number) => `Domena ${current} z ${total}`,
   previous: "Wstecz",
   next: "Dalej",
-  showResult: "Pokaż wynik",
-  returnToResult: "Wróć do wyniku",
+  showSummary: "Pokaż zestawienie",
+  returnToSummary: "Wróć do zestawienia",
   editDomain: "Edytuj domenę",
   startOver: "Zacznij od nowa",
-  domainSummary: "Status ośmiu domen",
-  correctiveAction: "Działanie korygujące",
+  domainSummary: "Deklaracje według obszaru",
+  nextStep: "Możliwy kolejny krok",
   calculatorCta: "Otwórz kalkulator bez wstępnych danych",
   practiceCta: "Zobacz materiał Procurement&Beyond #8",
   sourceNote:
-    "Źródłem pytań jest rozmowa branżowa Procurement&Beyond #8 z Pawłem Mamcarzem. Dostępny transkrypt pochodzi z automatycznych napisów YouTube i nie został zweryfikowany przez człowieka. Materiał służy wyłącznie do formułowania pytań i hipotez; nie wyznacza progów, wag ani parametrów modelu ProcuraCost.",
-  statuses: {
-    blocked: "BLOKADA",
-    risk: "RYZYKO",
-    ready: "GOTOWY",
+    "Lista kontrolna została opracowana przez autora jako zbiór hipotez operacyjnych do samoopisu i rozmowy wewnętrznej. Rozmowa branżowa Procurement&Beyond #8 z Pawłem Mamcarzem stanowi wyłącznie kontekst tematyczny; jej fragmenty nie są dowodem dla poszczególnych kryteriów. Automatyczny transkrypt YouTube nie został zweryfikowany przez człowieka. Materiał nie wyznacza progów, wag ani parametrów modelu ProcuraCost.",
+  responseLabels: {
+    not_met: "Niespełnione",
+    to_complete: "Do uzupełnienia",
+    confirmed: "Potwierdzone",
   },
-  results: {
-    ready: {
-      headline: "Gotowy do kontrolowanego startu",
-      body:
-        "Wszystkie osiem domen spełnia warunki oceniane w tej diagnostyce. Organizacja może rozpocząć kontrolowany wybór systemu lub pilotaż, zachowując dokumenty potwierdzające odpowiedzi. Wynik nie gwarantuje powodzenia wdrożenia.",
-    },
-    risk: {
-      headline: "Gotowość warunkowa",
-      body:
-        "Nie ma blokady, ale co najmniej jedna domena wymaga działania. Można kontynuować doprecyzowanie potrzeb i wymagań albo ograniczony pilotaż. Przed wdrożeniem w pełnym zakresie każde ryzyko musi mieć właściciela, termin usunięcia i akceptację sponsora.",
-    },
-    blocked: {
-      headline: "Blokada wdrożenia",
-      body:
-        "Brakuje co najmniej jednego warunku koniecznego. Nie należy rozpoczynać pełnej konfiguracji ani wdrożenia. Dopuszczalne są wyłącznie prace potrzebne do zamknięcia blokad, po których diagnostykę należy powtórzyć.",
-    },
+  summary: {
+    eyebrow: "Samoopis warunków",
+    title: "Zestawienie deklaracji",
+    body:
+      "Zestawienie odtwarza wyłącznie deklaracje użytkownika. Jest samoopisem, nie jest walidacją organizacji ani prognozą powodzenia i nie stanowi rekomendacji rozpoczęcia, kontynuowania lub wstrzymania wdrożenia.",
   },
   domains: {
     purpose: {
       label: "Cel biznesowy i nieefektywność procesu",
-      riskAction: "Uzupełnić zwięzłą definicję problemu oraz wartości bazowe i docelowe mierników.",
-      blockedAction:
-        "Wstrzymać wybór systemu. Wskazać najistotniejsze źródła nieefektywności i potwierdzić ich koszt lub wpływ operacyjny.",
+      toCompleteAction: "Uzupełnić zwięzłą definicję problemu oraz wartości bazowe i docelowe mierników.",
+      notMetAction:
+        "Opisać najistotniejsze źródła nieefektywności i potwierdzić ich koszt lub wpływ operacyjny przed rozstrzygnięciem wyboru systemu.",
     },
     ownership: {
       label: "Właściciel biznesowy i mandat",
-      riskAction:
+      toCompleteAction:
         "Uzgodnić zakres odpowiedzialności obejmujący mandat, dostępność, decyzje, zastępstwo i czas eskalacji.",
-      blockedAction:
+      notMetAction:
         "Wyznaczyć właściciela biznesowego i sponsora przed wyborem lub konfiguracją systemu.",
     },
     process: {
       label: "Pełny zakres procesu zakupowego",
-      riskAction:
+      toCompleteAction:
         "Uzupełnić mapę o zakupy operacyjne, wyjątki i odpowiedzialności. Rozstrzygnąć decyzje procesowe przed konfiguracją.",
-      blockedAction:
+      notMetAction:
         "Przeprowadzić warsztat mapowania stanu obecnego i projektowania procesu docelowego. Konfiguracja systemu nie może zastępować projektowania procesu.",
     },
     requirements: {
       label: "Wymagania i kontrolowane rozpoznanie potrzeb",
-      riskAction:
+      toCompleteAction:
         "Uzupełnić powiązanie wymaganie–problem–właściciel–kryterium odbioru oraz zaplanować kontrolowane rozpoznanie potrzeb.",
-      blockedAction:
-        "Wstrzymać finalną specyfikację. Najpierw potwierdzić potrzebę i kryteria wartości z użytkownikami oraz rynkiem.",
+      notMetAction:
+        "Rozpoznać potrzebę i kryteria wartości z użytkownikami oraz rynkiem przed zamknięciem specyfikacji.",
     },
     data_automation: {
       label: "Dane, integracje i odpowiedzialna automatyzacja",
-      riskAction:
+      toCompleteAction:
         "Wykonać próbę jakości danych i opisać zasady integracji. Dla AI zdefiniować test, właściciela, pochodzenie danych i procedurę postępowania awaryjnego.",
-      blockedAction:
-        "Usunąć nieokreślone obietnice AI z zakresu i zatrzymać konfigurację zależną od niepotwierdzonych danych.",
+      notMetAction:
+        "Oddzielić nieokreślone obietnice AI od uzgodnionego zakresu i opisać zależności od danych przed ich konfiguracją.",
     },
     governance: {
       label: "Polityka zakupowa, zgodność i zatwierdzenia",
-      riskAction:
+      toCompleteAction:
         "Oznaczyć źródło każdej kontroli i przeprowadzić test matrycy na zakupach o różnej wartości, ryzyku i trybie.",
-      blockedAction:
+      notMetAction:
         "Przeprojektować zasady nadzoru przed konfiguracją. Zachować wymogi zgodności, ale usunąć kroki bez właściciela i uzasadnienia.",
     },
     adoption: {
       label: "Adopcja i zdolność do zmiany",
-      riskAction:
+      toCompleteAction:
         "Przydzielić czas użytkownikom oraz ustalić plan testów akceptacyjnych i właścicieli komunikacji, szkoleń i wsparcia.",
-      blockedAction:
-        "Nie zatwierdzać uruchomienia produkcyjnego bez reprezentacji użytkowników, testu procesu i sposobu pomiaru obejść.",
+      notMetAction:
+        "Zapewnić reprezentację użytkowników, test procesu i sposób pomiaru obejść przed uruchomieniem produkcyjnym.",
     },
     value_rollout: {
       label: "TCO, uzasadnienie biznesowe i plan wdrożenia",
-      riskAction:
+      toCompleteAction:
         "Uzupełnić TCO o pominięte koszty i scenariusze. Nadać każdej fali mierzalne kryteria wejścia, wyjścia i zatrzymania.",
-      blockedAction:
-        "Wstrzymać wdrożenie w pełnym zakresie. Przygotować weryfikowalne uzasadnienie biznesowe i ograniczony pilotaż, który rozstrzygnie najważniejsze niewiadome.",
+      notMetAction:
+        "Przygotować weryfikowalne uzasadnienie biznesowe i zaplanować ograniczony pilotaż, który pozwoli rozstrzygnąć najważniejsze niewiadome.",
     },
   },
   questions: {
     "purpose.friction": {
       prompt: "Czy projekt rozwiązuje konkretną nieefektywność w określonym fragmencie procesu zakupowego?",
       answers: {
-        blocked: "Nie. Projekt zaczyna się od wybranego systemu albo ogólnego hasła „digitalizacja”.",
-        risk: "Problem jest opisany ogólnie, ale brakuje stanu bazowego, właściciela albo wpływu biznesowego.",
-        ready: "Tak. Wskazano etap procesu, właściciela, stan bazowy i mierzalny wpływ biznesowy.",
+        not_met: "Nie. Projekt zaczyna się od wybranego systemu albo ogólnego hasła „digitalizacja”.",
+        to_complete: "Problem jest opisany ogólnie, ale brakuje stanu bazowego, właściciela albo wpływu biznesowego.",
+        confirmed: "Tak. Wskazano etap procesu, właściciela, stan bazowy i mierzalny wpływ biznesowy.",
       },
     },
     "purpose.success": {
       prompt: "Czy przed startem uzgodniono mierzalne kryteria powodzenia?",
       answers: {
-        blocked: "Nie. Jedynym kryterium sukcesu jest uruchomienie systemu.",
-        risk: "Mierniki są wymienione, ale nie mają wartości bazowej, celu albo właściciela pomiaru.",
-        ready: "Tak. Uzgodnione mierniki mają wartość bazową, cel, termin i właściciela pomiaru.",
+        not_met: "Nie. Jedynym kryterium sukcesu jest uruchomienie systemu.",
+        to_complete: "Mierniki są wymienione, ale nie mają wartości bazowej, celu albo właściciela pomiaru.",
+        confirmed: "Tak. Uzgodnione mierniki mają wartość bazową, cel, termin i właściciela pomiaru.",
       },
     },
     "ownership.business_owner": {
       prompt:
         "Czy projekt ma nazwanego właściciela biznesowego, który rozumie proces zakupowy i może podejmować decyzje?",
       answers: {
-        blocked: "Nie. Właścicielem faktycznie jest dostawca, integrator albo IT.",
-        risk: "Osoba jest wskazana, ale nie ma wystarczającego mandatu, czasu albo wiedzy procesowej.",
-        ready: "Tak. Właściciel ma mandat, przydzielony czas, wiedzę procesową i odpowiada za wynik biznesowy.",
+        not_met: "Nie. Właścicielem faktycznie jest dostawca, integrator albo IT.",
+        to_complete: "Osoba jest wskazana, ale nie ma wystarczającego mandatu, czasu albo wiedzy procesowej.",
+        confirmed: "Tak. Właściciel ma mandat, przydzielony czas, wiedzę procesową i odpowiada za wynik biznesowy.",
       },
     },
     "ownership.sponsorship": {
       prompt: "Czy zapewniono ciągłość sponsorowania i jasną ścieżkę eskalacji?",
       answers: {
-        blocked: "Nie ma aktywnego sponsora ani osoby, która przejmie rolę w razie zmiany personalnej.",
-        risk: "Sponsor wspiera projekt nieformalnie, ale brak zastępstwa lub zasad podejmowania decyzji.",
-        ready: "Sponsor, zastępstwo, zakres decyzji i oczekiwany czas eskalacji są uzgodnione.",
+        not_met: "Nie ma aktywnego sponsora ani osoby, która przejmie rolę w razie zmiany personalnej.",
+        to_complete: "Sponsor wspiera projekt nieformalnie, ale brak zastępstwa lub zasad podejmowania decyzji.",
+        confirmed: "Sponsor, zastępstwo, zakres decyzji i oczekiwany czas eskalacji są uzgodnione.",
       },
     },
     "process.current_state": {
       prompt: "Czy zmapowano pełny przebieg obecnego procesu, wraz z wyjątkami i zakupami operacyjnymi?",
       answers: {
-        blocked: "Nie ma uzgodnionej i zweryfikowanej mapy procesu.",
-        risk: "Zmapowano główną ścieżkę lub wybór dostawcy, ale pominięto wyjątki, zamówienia, odbiór albo faktury.",
-        ready: "Mapa obejmuje proces od identyfikacji potrzeby do rozliczenia zakupu, a także role, systemy, dane, wyjątki i ręczne obejścia.",
+        not_met: "Nie ma uzgodnionej i zweryfikowanej mapy procesu.",
+        to_complete: "Zmapowano główną ścieżkę lub wybór dostawcy, ale pominięto wyjątki, zamówienia, odbiór albo faktury.",
+        confirmed: "Mapa obejmuje proces od identyfikacji potrzeby do rozliczenia zakupu, a także role, systemy, dane, wyjątki i ręczne obejścia.",
       },
     },
     "process.target_state": {
       prompt: "Czy proces docelowy uproszczono przed konfiguracją systemu?",
       answers: {
-        blocked: "Nie. System ma odtworzyć dotychczasową procedurę krok po kroku.",
-        risk: "Uproszczenia są planowane, ale nie rozstrzygnięto właścicieli, wyjątków lub kroków operacyjnych.",
-        ready: "Zatwierdzono proces docelowy, rozdzielono wymogi prawne od wewnętrznych i wskazano kroki możliwe do równoległego wykonania.",
+        not_met: "Nie. System ma odtworzyć dotychczasową procedurę krok po kroku.",
+        to_complete: "Uproszczenia są planowane, ale nie rozstrzygnięto właścicieli, wyjątków lub kroków operacyjnych.",
+        confirmed: "Zatwierdzono proces docelowy, rozdzielono wymogi prawne od wewnętrznych i wskazano kroki możliwe do równoległego wykonania.",
       },
     },
     "requirements.traceability": {
       prompt: "Czy każde wymaganie krytyczne jest powiązane z problemem biznesowym i sposobem odbioru?",
       answers: {
-        blocked: "Nie. Istnieje płaska lista funkcji oparta głównie na demo, nazwach modułów lub wyjątkowych wariantach.",
-        risk: "Wymagania są priorytetyzowane, ale część nie ma właściciela, uzasadnienia albo kryterium odbioru.",
-        ready: "Tak. Każde wymaganie krytyczne ma właściciela, uzasadnienie, priorytet i sprawdzalne kryterium odbioru.",
+        not_met: "Nie. Istnieje płaska lista funkcji oparta głównie na demo, nazwach modułów lub wyjątkowych wariantach.",
+        to_complete: "Wymagania są priorytetyzowane, ale część nie ma właściciela, uzasadnienia albo kryterium odbioru.",
+        confirmed: "Tak. Każde wymaganie krytyczne ma właściciela, uzasadnienie, priorytet i sprawdzalne kryterium odbioru.",
       },
     },
     "requirements.discovery": {
       prompt: "Czy wymagania są wystarczająco znane albo mają zaplanowaną ścieżkę ich odkrycia?",
       answers: {
-        blocked: "Potrzeba nie jest zrozumiana, ale oczekuje się od dostawcy konfiguracji rozwiązania docelowego.",
-        risk: "Niepewność jest znana, ale nie przewidziano czasu, prototypu ani kryteriów zakończenia prac rozpoznawczych.",
-        ready: "Wymaganie jest potwierdzone jako stabilne albo ma zaplanowane badanie użytkowników, dialog z rynkiem lub prototyp z kryteriami decyzji.",
+        not_met: "Potrzeba nie jest zrozumiana, ale oczekuje się od dostawcy konfiguracji rozwiązania docelowego.",
+        to_complete: "Niepewność jest znana, ale nie przewidziano czasu, prototypu ani kryteriów zakończenia prac rozpoznawczych.",
+        confirmed: "Wymaganie jest potwierdzone jako stabilne albo ma zaplanowane badanie użytkowników, dialog z rynkiem lub prototyp z kryteriami decyzji.",
       },
     },
     "data_automation.data": {
       prompt: "Czy znane są źródła danych, ich właściciele, jakość i docelowe integracje?",
       answers: {
-        blocked: "Nie wiadomo, skąd pochodzą kluczowe dane albo kto odpowiada za ich jakość.",
-        risk: "Systemy i interfejsy są znane, ale jakość danych, właściciele lub obsługa wyjątków nie zostały sprawdzone.",
-        ready: "Istnieje inwentaryzacja źródeł, właścicieli i interfejsów oraz wynik próby jakości na reprezentatywnej próbce.",
+        not_met: "Nie wiadomo, skąd pochodzą kluczowe dane albo kto odpowiada za ich jakość.",
+        to_complete: "Systemy i interfejsy są znane, ale jakość danych, właściciele lub obsługa wyjątków nie zostały sprawdzone.",
+        confirmed: "Istnieje inwentaryzacja źródeł, właścicieli i interfejsów oraz wynik próby jakości na reprezentatywnej próbce.",
       },
     },
     "data_automation.ai": {
       prompt: "Czy każde zastosowanie AI lub automatyzacji ma określone zadanie, sposób walidacji i bezpieczną procedurę awaryjną?",
       answers: {
-        blocked: "AI ma zastąpić brakujące wymagania, dane lub odpowiedzialność za decyzję.",
-        risk: "Jest ogólny pomysł „użycia AI”, ale bez testu jakości, właściciela i procedury awaryjnej.",
-        ready: "AI nie jest objęte zakresem albo każde zastosowanie ma określone dane wejściowe, wynik, próg akceptacji, właściciela po stronie organizacji i procedurę awaryjną.",
+        not_met: "AI ma zastąpić brakujące wymagania, dane lub odpowiedzialność za decyzję.",
+        to_complete: "Jest ogólny pomysł „użycia AI”, ale bez testu jakości, właściciela i procedury awaryjnej.",
+        confirmed: "AI nie jest objęte zakresem albo każde zastosowanie ma określone dane wejściowe, wynik, próg akceptacji, właściciela po stronie organizacji i procedurę awaryjną.",
       },
     },
     "governance.boundary": {
       prompt: "Czy polityka zakupowa definiuje granice kontroli, a każdy wymóg ma wskazane źródło?",
       answers: {
-        blocked: "Nie ma właściciela zgodności albo wszystkie historyczne kroki są traktowane jako obowiązkowe.",
-        risk: "Polityka istnieje, ale nie rozdziela wymogów prawa, uprawnień, ryzyka i lokalnego zwyczaju.",
-        ready: "Każda kontrola ma źródło, właściciela i uzasadnienie; granica obejmuje uprawnienia, konkurencję, etykę i dokumentację.",
+        not_met: "Nie ma właściciela zgodności albo wszystkie historyczne kroki są traktowane jako obowiązkowe.",
+        to_complete: "Polityka istnieje, ale nie rozdziela wymogów prawa, uprawnień, ryzyka i lokalnego zwyczaju.",
+        confirmed: "Każda kontrola ma źródło, właściciela i uzasadnienie; granica obejmuje uprawnienia, konkurencję, etykę i dokumentację.",
       },
     },
     "governance.approvals": {
       prompt: "Czy matryca zatwierdzeń jest proporcjonalna do wartości i ryzyka oraz przetestowana na realnych scenariuszach?",
       answers: {
-        blocked: "System musi bez zmian odtworzyć historyczną sekwencję albo brakuje ważnych uprawnień decyzyjnych.",
-        risk: "Matryca istnieje, ale ma wiele poziomów, niejasne wyjątki albo nie została przetestowana w pełnym przebiegu procesu.",
-        ready: "Liczba akceptacji jest minimalna i proporcjonalna, wyjątki są kontrolowane, a reprezentatywne scenariusze przeszły test.",
+        not_met: "System musi bez zmian odtworzyć historyczną sekwencję albo brakuje ważnych uprawnień decyzyjnych.",
+        to_complete: "Matryca istnieje, ale ma wiele poziomów, niejasne wyjątki albo nie została przetestowana w pełnym przebiegu procesu.",
+        confirmed: "Liczba akceptacji jest minimalna i proporcjonalna, wyjątki są kontrolowane, a reprezentatywne scenariusze przeszły test.",
       },
     },
     "adoption.users": {
       prompt: "Czy kluczowi użytkownicy mają realny udział w projektowaniu i testach oraz przydzielony na to czas?",
       answers: {
-        blocked: "Nie. Użytkownicy zobaczą rozwiązanie dopiero podczas szkolenia przed uruchomieniem produkcyjnym.",
-        risk: "Użytkownicy są konsultowani, ale późno, nieregularnie albo bez przydzielonego czasu.",
-        ready: "Reprezentanci wszystkich głównych ról uczestniczą w projektowaniu, testach i akceptacji procesu.",
+        not_met: "Nie. Użytkownicy zobaczą rozwiązanie dopiero podczas szkolenia przed uruchomieniem produkcyjnym.",
+        to_complete: "Użytkownicy są konsultowani, ale późno, nieregularnie albo bez przydzielonego czasu.",
+        confirmed: "Reprezentanci wszystkich głównych ról uczestniczą w projektowaniu, testach i akceptacji procesu.",
       },
     },
     "adoption.plan": {
       prompt: "Czy istnieje plan adopcji obejmujący komunikację, szkolenie, wsparcie i pomiar użycia?",
       answers: {
-        blocked: "Nie. Miarą sukcesu jest wyłącznie uruchomienie produkcyjne, a obejścia mailowe i arkuszowe nie będą mierzone.",
-        risk: "Plan zmiany istnieje, ale brakuje właścicieli, wsparcia po starcie albo mierników adopcji.",
-        ready: "Plan ma właścicieli, harmonogram, wsparcie po starcie i mierniki, takie jak udział transakcji w systemie, wyjątki i czas cyklu.",
+        not_met: "Nie. Miarą sukcesu jest wyłącznie uruchomienie produkcyjne, a obejścia mailowe i arkuszowe nie będą mierzone.",
+        to_complete: "Plan zmiany istnieje, ale brakuje właścicieli, wsparcia po starcie albo mierników adopcji.",
+        confirmed: "Plan ma właścicieli, harmonogram, wsparcie po starcie i mierniki, takie jak udział transakcji w systemie, wyjątki i czas cyklu.",
       },
     },
     "value_rollout.business_case": {
       prompt: "Czy uzasadnienie biznesowe obejmuje pełny koszt i niepewność, a nie tylko cenę licencji?",
       answers: {
-        blocked: "Nie ma uzasadnienia biznesowego albo oszczędności zadeklarowano bez danych i wskazania mechanizmu ich osiągnięcia.",
-        risk: "Ujęto główne koszty, ale pominięto integracje, zmianę organizacyjną, utrzymanie albo scenariusze niepewności.",
-        ready: "Uzasadnienie biznesowe obejmuje licencje, wdrożenie, integracje, zmianę organizacyjną, utrzymanie, ryzyko i mierzalną wartość w kilku scenariuszach.",
+        not_met: "Nie ma uzasadnienia biznesowego albo oszczędności zadeklarowano bez danych i wskazania mechanizmu ich osiągnięcia.",
+        to_complete: "Ujęto główne koszty, ale pominięto integracje, zmianę organizacyjną, utrzymanie albo scenariusze niepewności.",
+        confirmed: "Uzasadnienie biznesowe obejmuje licencje, wdrożenie, integracje, zmianę organizacyjną, utrzymanie, ryzyko i mierzalną wartość w kilku scenariuszach.",
       },
     },
     "value_rollout.rollout": {
       prompt: "Czy plan wdrożenia określa ograniczony pierwszy zakres, kryteria wyjścia i sposób zapewnienia ciągłości operacyjnej?",
       answers: {
-        blocked: "Plan zakłada nieodwracalne, jednorazowe uruchomienie w pełnym zakresie mimo otwartych blokad dotyczących procesu, danych lub adopcji.",
-        risk: "Są etapy, ale bez mierzalnych kryteriów decyzyjnych, zasad zatrzymania albo planu powrotu.",
-        ready: "Pilotaż lub pierwsza fala ma ograniczony zakres, kryteria wejścia i wyjścia, właścicieli oraz plan ciągłości i powrotu.",
+        not_met: "Plan zakłada nieodwracalne, jednorazowe uruchomienie w pełnym zakresie mimo nieuzupełnionych warunków dotyczących procesu, danych lub adopcji.",
+        to_complete: "Są etapy, ale bez mierzalnych kryteriów decyzyjnych, zasad zatrzymania albo planu powrotu.",
+        confirmed: "Pilotaż lub pierwsza fala ma ograniczony zakres, kryteria wejścia i wyjścia, właścicieli oraz plan ciągłości i powrotu.",
       },
     },
   },
@@ -5028,99 +5017,88 @@ const readinessEn = {
   eyebrow: "Implementation diagnostic",
   title: "Organisational implementation readiness",
   subtitle:
-    "Eight areas to assess before system selection and configuration. The result is not a maturity audit and does not change the ProcuraCost cost model.",
+    "Eight areas for organisational self-description before system selection and configuration. The summary is not a maturity audit and does not change the ProcuraCost cost model.",
   duration: "Answers remain only in this browser tab.",
   progress: (current: number, total: number) => `Domain ${current} of ${total}`,
   previous: "Back",
   next: "Continue",
-  showResult: "Show result",
-  returnToResult: "Return to result",
+  showSummary: "Show summary",
+  returnToSummary: "Return to summary",
   editDomain: "Edit domain",
   startOver: "Start over",
-  domainSummary: "Status of all eight domains",
-  correctiveAction: "Corrective action",
+  domainSummary: "Responses by area",
+  nextStep: "Possible next step",
   calculatorCta: "Open the calculator without pre-filled data",
   practiceCta: "View Procurement&Beyond episode 8 material",
   sourceNote:
-    "The source for these questions is a practitioner interview: Procurement&Beyond episode 8 with Paweł Mamcarz. The available transcript comes from automatic YouTube captions and has not been human verified. The material is used only to frame questions and hypotheses; it does not set thresholds, weights or ProcuraCost model parameters.",
-  statuses: {
-    blocked: "BLOCKED",
-    risk: "AT RISK",
-    ready: "READY",
+    "The checklist was authored as a set of operational hypotheses for self-description and internal discussion. Segments from the Procurement&Beyond episode 8 practitioner interview with Paweł Mamcarz provide thematic context only; they are not evidence for individual criteria. The automatic YouTube transcript has not been human verified. The material does not set thresholds, weights or ProcuraCost model parameters.",
+  responseLabels: {
+    not_met: "Not met",
+    to_complete: "Needs completion",
+    confirmed: "Confirmed",
   },
-  results: {
-    ready: {
-      headline: "Ready for a controlled start",
-      body:
-        "All eight domains meet the conditions assessed by this diagnostic. The organisation may begin controlled system selection or a pilot while retaining the evidence supporting its responses. The result does not guarantee implementation success.",
-    },
-    risk: {
-      headline: "Conditional readiness",
-      body:
-        "No blocker is present, but at least one domain requires action. Requirements clarification or a limited pilot may continue. Before implementation at full scale, every risk needs an owner, due date and sponsor acceptance.",
-    },
-    blocked: {
-      headline: "Implementation blocked",
-      body:
-        "At least one prerequisite is missing. Full-scale configuration or implementation should not begin. Only work required to close the blockers should continue, after which the diagnostic should be repeated.",
-    },
+  summary: {
+    eyebrow: "Self-description of conditions",
+    title: "Summary of responses",
+    body:
+      "This summary reproduces the user's declarations only. It is a self-description, not a validation of the organisation or a forecast of success, and it does not recommend starting, continuing or stopping implementation.",
   },
   domains: {
     purpose: {
       label: "Business objective and process inefficiency",
-      riskAction:
+      toCompleteAction:
         "Complete the problem statement and establish baseline and target values for the agreed measures.",
-      blockedAction:
-        "Pause system selection. Identify the most material process inefficiencies and validate their cost or operational impact.",
+      notMetAction:
+        "Identify the most material process inefficiencies and establish their cost or operational impact before system selection is concluded.",
     },
     ownership: {
       label: "Business ownership and mandate",
-      riskAction:
+      toCompleteAction:
         "Agree an ownership charter covering authority, capacity, decisions, succession and escalation time.",
-      blockedAction:
+      notMetAction:
         "Appoint a business owner and executive sponsor before selecting or configuring the system.",
     },
     process: {
       label: "Complete procurement process scope",
-      riskAction:
+      toCompleteAction:
         "Extend the map to cover operational purchasing, exceptions and accountabilities. Resolve process decisions before configuration.",
-      blockedAction:
+      notMetAction:
         "Run a current-state mapping and target-process design workshop. System configuration must not replace process design.",
     },
     requirements: {
       label: "Requirements and controlled clarification",
-      riskAction:
+      toCompleteAction:
         "Complete requirement-to-problem-to-owner-to-acceptance traceability and plan controlled clarification work.",
-      blockedAction:
-        "Pause the final specification. First validate the need and value criteria with users and the market.",
+      notMetAction:
+        "Clarify the need and value criteria with users and the market before finalising the specification.",
     },
     data_automation: {
       label: "Data, integrations and responsible automation",
-      riskAction:
+      toCompleteAction:
         "Run a data-quality sample and document integration contracts. For AI, define the test, owner, provenance and contingency procedure.",
-      blockedAction:
-        "Remove undefined AI promises from scope and stop configuration that depends on unverified data.",
+      notMetAction:
+        "Separate undefined AI promises from the agreed scope and document data dependencies before configuring them.",
     },
     governance: {
       label: "Policy, compliance and approvals",
-      riskAction:
+      toCompleteAction:
         "Document the source of every control and test the approval matrix across purchases with different values, risks and routes.",
-      blockedAction:
+      notMetAction:
         "Redesign governance before configuration. Preserve compliance boundaries while removing steps without an owner or rationale.",
     },
     adoption: {
       label: "Adoption and change capacity",
-      riskAction:
+      toCompleteAction:
         "Allocate user capacity and assign owners for user acceptance testing, communication, training and support.",
-      blockedAction:
-        "Do not approve production launch without user representation, process testing and a method for measuring workarounds.",
+      notMetAction:
+        "Provide user representation, process testing and a method for measuring workarounds before production launch.",
     },
     value_rollout: {
       label: "TCO, business justification and implementation plan",
-      riskAction:
+      toCompleteAction:
         "Complete TCO with omitted costs and scenarios. Give every wave measurable entry, exit and stop criteria.",
-      blockedAction:
-        "Pause implementation at full scale. Prepare a verifiable business justification and a limited pilot that resolves the most material unknowns.",
+      notMetAction:
+        "Prepare a verifiable business justification and plan a limited pilot to resolve the most material unknowns.",
     },
   },
   questions: {
@@ -5128,21 +5106,21 @@ const readinessEn = {
       prompt:
         "Does the project address a specific inefficiency in a defined part of the procurement process?",
       answers: {
-        blocked:
+        not_met:
           "No. The project starts with a selected tool or a general “digital transformation” objective.",
-        risk:
+        to_complete:
           "The problem is broadly described, but its baseline, owner or business impact is incomplete.",
-        ready:
+        confirmed:
           "Yes. The process stage, owner, baseline and measurable business impact are documented.",
       },
     },
     "purpose.success": {
       prompt: "Have measurable success criteria been agreed before the project starts?",
       answers: {
-        blocked: "No. Production launch is the only definition of success.",
-        risk:
+        not_met: "No. Production launch is the only definition of success.",
+        to_complete:
           "KPIs are listed, but their baseline, target or measurement owner is missing.",
-        ready:
+        confirmed:
           "Yes. The agreed measures have a baseline, target, measurement date and accountable owner.",
       },
     },
@@ -5150,22 +5128,22 @@ const readinessEn = {
       prompt:
         "Is there a named business owner who understands the procurement process and can make decisions?",
       answers: {
-        blocked:
+        not_met:
           "No. The vendor, implementation partner or IT function is effectively acting as the owner.",
-        risk:
+        to_complete:
           "A person is named, but lacks sufficient authority, capacity or process knowledge.",
-        ready:
+        confirmed:
           "Yes. The owner has authority, allocated capacity, process knowledge and accountability for the business outcome.",
       },
     },
     "ownership.sponsorship": {
       prompt: "Are executive sponsorship continuity and a clear escalation path in place?",
       answers: {
-        blocked:
+        not_met:
           "There is no active sponsor and no succession arrangement if the current owner leaves.",
-        risk:
+        to_complete:
           "The sponsor supports the project informally, but there is no deputy or decision protocol.",
-        ready:
+        confirmed:
           "The sponsor, deputy, decision rights and expected escalation time are agreed.",
       },
     },
@@ -5173,21 +5151,21 @@ const readinessEn = {
       prompt:
         "Has the complete current process been mapped, including exceptions and operational purchasing?",
       answers: {
-        blocked: "There is no agreed and verified current-state process map.",
-        risk:
+        not_met: "There is no agreed and verified current-state process map.",
+        to_complete:
           "The main path or supplier selection is mapped, but exceptions, orders, receipt or invoicing are omitted.",
-        ready:
+        confirmed:
           "The map covers the process from need identification through purchase settlement, together with roles, systems, data, exceptions and manual workarounds.",
       },
     },
     "process.target_state": {
       prompt: "Has the target process been simplified before system configuration?",
       answers: {
-        blocked:
+        not_met:
           "No. The system is expected to reproduce the current procedure step by step.",
-        risk:
+        to_complete:
           "Simplification is planned, but ownership, exceptions or operational steps remain unresolved.",
-        ready:
+        confirmed:
           "The target process is approved, legal requirements are separated from internal controls, and parallelisable steps are identified.",
       },
     },
@@ -5195,11 +5173,11 @@ const readinessEn = {
       prompt:
         "Is every critical requirement tied to a business problem and acceptance evidence?",
       answers: {
-        blocked:
+        not_met:
           "No. There is a flat feature list driven mainly by demos, module names or exceptional variants.",
-        risk:
+        to_complete:
           "Requirements are prioritised, but some lack an owner, rationale or acceptance criterion.",
-        ready:
+        confirmed:
           "Yes. Every critical requirement has an owner, rationale, priority and testable acceptance criterion.",
       },
     },
@@ -5207,22 +5185,22 @@ const readinessEn = {
       prompt:
         "Are requirements sufficiently defined, or is there a controlled plan to clarify them?",
       answers: {
-        blocked:
+        not_met:
           "The need is not understood, yet the vendor is expected to configure the final solution.",
-        risk:
+        to_complete:
           "Uncertainty is recognised, but no time, prototype or criteria for ending the clarification work are defined.",
-        ready:
+        confirmed:
           "The requirement is confirmed as stable, or user research, market engagement or a prototype is planned with decision criteria.",
       },
     },
     "data_automation.data": {
       prompt: "Are the data sources, owners, quality and target integrations known?",
       answers: {
-        blocked:
+        not_met:
           "The source of critical data or accountability for its quality is unknown.",
-        risk:
+        to_complete:
           "Systems and interfaces are known, but data quality, ownership or exception handling has not been verified.",
-        ready:
+        confirmed:
           "A source, owner and interface inventory exists, supported by a quality check on a representative sample.",
       },
     },
@@ -5230,11 +5208,11 @@ const readinessEn = {
       prompt:
         "Does every AI or automation use case have a defined task, validation method and safe contingency procedure?",
       answers: {
-        blocked:
+        not_met:
           "AI is expected to replace missing requirements, missing data or human accountability for the decision.",
-        risk:
+        to_complete:
           "There is a general intention to “use AI”, but no quality test, owner or contingency procedure.",
-        ready:
+        confirmed:
           "AI is out of scope, or every use case has defined inputs, outputs, acceptance criteria, a human owner and contingency procedure.",
       },
     },
@@ -5242,11 +5220,11 @@ const readinessEn = {
       prompt:
         "Does procurement policy define the control boundary, with a documented source for every constraint?",
       answers: {
-        blocked:
+        not_met:
           "There is no compliance owner, or every historical step is treated as mandatory.",
-        risk:
+        to_complete:
           "A policy exists, but it does not distinguish law, authority, risk and local convention.",
-        ready:
+        confirmed:
           "Every control has a source, owner and rationale; the boundary covers authority, competition, ethics and documentation.",
       },
     },
@@ -5254,11 +5232,11 @@ const readinessEn = {
       prompt:
         "Is the approval matrix proportionate to value and risk and tested on real scenarios?",
       answers: {
-        blocked:
+        not_met:
           "The system must reproduce the historical sequence unchanged, or essential decision authority is missing.",
-        risk:
+        to_complete:
           "The matrix exists, but has excessive levels, unclear exceptions or has not been tested across the complete process.",
-        ready:
+        confirmed:
           "Approvals are minimal and proportionate, exceptions are controlled, and representative scenarios have been tested.",
       },
     },
@@ -5266,11 +5244,11 @@ const readinessEn = {
       prompt:
         "Do key users have meaningful participation in design and testing, with allocated time?",
       answers: {
-        blocked:
+        not_met:
           "No. Users will first see the solution during training immediately before production launch.",
-        risk:
+        to_complete:
           "Users are consulted, but late, irregularly or without allocated capacity.",
-        ready:
+        confirmed:
           "Representatives of all key roles participate in process design, testing and acceptance.",
       },
     },
@@ -5278,11 +5256,11 @@ const readinessEn = {
       prompt:
         "Is there an adoption plan covering communication, training, support and usage measurement?",
       answers: {
-        blocked:
+        not_met:
           "No. Success ends at production launch, and email or spreadsheet workarounds will not be measured.",
-        risk:
+        to_complete:
           "A change plan exists, but ownership, post-launch support or adoption metrics are missing.",
-        ready:
+        confirmed:
           "The plan has owners, timing, post-launch support and metrics such as system transaction share, exceptions and cycle time.",
       },
     },
@@ -5290,11 +5268,11 @@ const readinessEn = {
       prompt:
         "Does the business justification cover full cost and uncertainty rather than licence price alone?",
       answers: {
-        blocked:
+        not_met:
           "There is no business justification, or savings are asserted without data and a defined mechanism.",
-        risk:
+        to_complete:
           "Major costs are included, but integration, organisational change, ongoing operation or uncertainty scenarios are omitted.",
-        ready:
+        confirmed:
           "The business justification covers licences, implementation, integration, organisational change, operation, risk and measurable value across multiple scenarios.",
       },
     },
@@ -5302,11 +5280,11 @@ const readinessEn = {
       prompt:
         "Does the implementation plan define a limited initial scope, exit criteria and arrangements for operational continuity?",
       answers: {
-        blocked:
-          "The plan assumes an irreversible, single full-scale launch despite unresolved process, data or adoption blockers.",
-        risk:
+        not_met:
+          "The plan assumes an irreversible, single full-scale launch despite unresolved conditions concerning process, data or adoption.",
+        to_complete:
           "Phases exist, but there are no measurable decision gates, stop rules or rollback plan.",
-        ready:
+        confirmed:
           "The pilot or first wave has a limited scope, entry and exit criteria, owners, and continuity and rollback arrangements.",
       },
     },
@@ -5426,7 +5404,7 @@ const practicePl = {
   bielikTcoBoundary:
     "Bielik może wspierać strukturyzowanie danych rynkowych. Obliczenia TCO wykonuje przejrzysty, deterministyczny model. Model językowy nie oblicza wyniku.",
   sourceNote:
-    "Źródłem pytań jest rozmowa branżowa Procurement&Beyond #8 z Pawłem Mamcarzem. Dostępny transkrypt pochodzi z automatycznych napisów YouTube i nie został zweryfikowany przez człowieka. Materiał służy wyłącznie do formułowania pytań i hipotez; nie wyznacza progów, wag ani parametrów modelu ProcuraCost.",
+    "Lista kontrolna ProcuraCost została opracowana przez autora jako zbiór hipotez operacyjnych; rozmowa branżowa Procurement&Beyond #8 z Pawłem Mamcarzem stanowi wyłącznie kontekst tematyczny dla projektowania pytań. Jej fragmenty nie dowodzą spełnienia poszczególnych kryteriów. Automatyczny transkrypt YouTube nie został zweryfikowany przez człowieka. Materiał nie wyznacza progów, wag ani parametrów modelu ProcuraCost.",
   readinessCta: "Przejdź do diagnostyki gotowości",
   calculatorCta: "Otwórz kalkulator",
 } as const;
@@ -5544,7 +5522,7 @@ const practiceEn = {
   bielikTcoBoundary:
     "Bielik may support market-data structuring. The transparent deterministic model performs the TCO calculation. The language model does not calculate the result.",
   sourceNote:
-    "The source for these questions is a practitioner interview: Procurement&Beyond episode 8 with Paweł Mamcarz. The available transcript comes from automatic YouTube captions and has not been human verified. The material is used only to frame questions and hypotheses; it does not set thresholds, weights or ProcuraCost model parameters.",
+    "The ProcuraCost checklist was authored as a set of operational hypotheses. The Procurement&Beyond episode 8 practitioner interview with Paweł Mamcarz provides thematic context only for question design; its segments do not evidence whether individual criteria are met. The automatic YouTube transcript has not been human verified. The material does not set thresholds, weights or ProcuraCost model parameters.",
   readinessCta: "Open the readiness diagnostic",
   calculatorCta: "Open the calculator",
 } satisfies PracticeShape;
