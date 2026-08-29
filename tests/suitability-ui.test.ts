@@ -65,6 +65,15 @@ describe("suitability comparison presentation", () => {
     expect(markup).toContain("Framework call-off");
     expect(markup).toContain("Condition to verify");
     expect(markup).toContain("Condition declared");
+    expect(markup).toContain("Procedure families: 3");
+    expect(markup).not.toContain("3 procedure families");
+
+    const polishMarkup = renderToStaticMarkup(
+      createElement(SuitabilityComparison, { lang: "pl", initialResult: result })
+    );
+    expect(polishMarkup).toContain("Liczba rodzin procedur: 3");
+    expect(polishMarkup).not.toContain("3 rodziny procedur");
+
     const privateMarkup = renderToStaticMarkup(
       createElement(SuitabilityComparison, {
         lang: "en",

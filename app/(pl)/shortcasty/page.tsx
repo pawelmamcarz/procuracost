@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { shortcastsT } from "@/lib/i18n";
+import { MODEL_V2_METADATA } from "@/lib/model-v2/domain";
 import { EPISODES } from "@/lib/shortcasty";
-import { MODEL_VERSION } from "@/lib/version";
+
+const modelVersion = MODEL_V2_METADATA.modelVersion;
 
 export const metadata = {
-  title: shortcastsT.pl.metadataTitle(MODEL_VERSION),
-  description: shortcastsT.pl.metadataDescription(MODEL_VERSION),
+  title: shortcastsT.pl.metadataTitle(modelVersion),
+  description: shortcastsT.pl.metadataDescription(modelVersion),
 };
 
 export default function ShortcastyPage() {
@@ -17,7 +19,7 @@ export default function ShortcastyPage() {
     <div className="mx-auto max-w-5xl px-6 py-12">
       <div className="rounded-2xl bg-blue-600 p-8 text-white">
         <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-blue-200">
-          {tx.badge(MODEL_VERSION)}
+          {tx.badge(modelVersion)}
         </p>
         <h1 className="text-3xl font-bold leading-tight">{tx.title}</h1>
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-blue-100">
@@ -47,6 +49,9 @@ export default function ShortcastyPage() {
                   <p className="mt-0.5 text-xs text-gray-500">
                     {episode.dimension} · {episode.focus}
                   </p>
+                  <p className="mt-1.5 text-xs leading-relaxed text-gray-500">
+                    {tx.practiceNoteLabel}: {episode.practiceNote}
+                  </p>
                 </div>
               </Link>
             ))}
@@ -73,6 +78,9 @@ export default function ShortcastyPage() {
                   {episode.dimension} · {episode.focus}
                 </p>
                 <p className="mt-1.5 text-xs leading-relaxed text-gray-500">{episode.thesis}</p>
+                <p className="mt-1.5 text-xs leading-relaxed text-gray-500">
+                  {tx.practiceNoteLabel}: {episode.practiceNote}
+                </p>
               </div>
             </div>
           ))}

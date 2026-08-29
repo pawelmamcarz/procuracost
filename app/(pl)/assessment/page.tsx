@@ -1,12 +1,8 @@
 import type { Metadata } from "next";
 import AssessmentQuiz from "@/components/AssessmentQuiz";
-import { MODEL_VERSION } from "@/lib/version";
+import { siteMetadataT } from "@/lib/i18n";
 
-export const metadata: Metadata = {
-  title: `Profil projektowania zakupów: ProcuraCost ${MODEL_VERSION}`,
-  description:
-    "Opisowy profil sekwencyjności i adaptacyjności procesu; nie jest walidowanym testem dojrzałości.",
-};
+export const metadata: Metadata = siteMetadataT.pl.processDesignProfile;
 
 export default function AssessmentPage() {
   return <AssessmentQuiz lang="pl" />;

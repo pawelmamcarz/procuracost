@@ -1,6 +1,6 @@
 "use client";
 
-export default function PrintButton() {
+export default function PrintButton({ label }: { label: string }) {
   return (
     <button
       onClick={() => window.print()}
@@ -19,7 +19,7 @@ export default function PrintButton() {
           d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.75 19.77m10.56-5.941l-.001 5.94M10.5 8.5h3M10.5 12h3M12 3v1m0 16v1m8.485-9H21M3 12H2.515M6.343 6.343l-.707-.707M17.657 6.343l.707-.707M6.343 17.657l-.707.707M17.657 17.657l.707.707"
         />
       </svg>
-      Print / Save as PDF
+      {label}
     </button>
   );
 }

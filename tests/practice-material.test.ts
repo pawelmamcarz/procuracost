@@ -45,6 +45,12 @@ function html(value: string): string {
   return value.replaceAll("&", "&amp;").replaceAll('"', "&quot;");
 }
 
+function stringLeaves(value: unknown): string[] {
+  if (typeof value === "string") return [value];
+  if (typeof value !== "object" || value === null) return [];
+  return Object.values(value).flatMap(stringLeaves);
+}
+
 describe("Procurement&Beyond episode 8 source boundary", () => {
   it("registers the exact non-calibrating practitioner source and timestamp ranges", () => {
     expect(PROCUREMENT_BEYOND_8).toMatchObject({
@@ -92,6 +98,26 @@ describe("Procurement&Beyond episode 8 source boundary", () => {
 describe("bilingual practitioner material", () => {
   it("keeps Polish and English practice copy structurally aligned", () => {
     expect(leafPaths(practiceT.en).sort()).toEqual(leafPaths(practiceT.pl).sort());
+  });
+
+  it("presents a practitioner interview in professional bilingual procurement language", () => {
+    const polishCopy = stringLeaves(practiceT.pl).join("\n");
+    const englishCopy = stringLeaves(practiceT.en).join("\n");
+
+    expect(polishCopy).not.toMatch(
+      /discovery|end-to-end|go-live|business case|rollout|big bang|source-to-pay|as-is\/to-be|fallback/i,
+    );
+    expect(englishCopy).not.toMatch(
+      /discovery|end-to-end|go-live|business case|rollout|big bang|source-to-pay|as-is\/to-be|fallback/i,
+    );
+    expect(practiceT.pl.sourceNote).toContain("rozmowa branżowa");
+    expect(practiceT.en.sourceNote).toContain("practitioner interview");
+    expect(practiceT.pl.sourceNote).not.toContain("wywiad ekspercki");
+    expect(practiceT.en.sourceNote).not.toContain("expert interview");
+    expect(practiceT.pl.bielikTcoBoundary).toMatch(/model językowy nie oblicza wyniku/i);
+    expect(practiceT.en.bielikTcoBoundary).toMatch(
+      /language model does not calculate the result/i,
+    );
   });
 
   it.each(["pl", "en"] as const)(

@@ -64,6 +64,12 @@ function objectKeys(value: unknown): string[] {
   return Object.entries(value).flatMap(([key, child]) => [key, ...objectKeys(child)]);
 }
 
+function stringLeaves(value: unknown): string[] {
+  if (typeof value === "string") return [value];
+  if (typeof value !== "object" || value === null) return [];
+  return Object.values(value).flatMap(stringLeaves);
+}
+
 describe("implementation readiness domain contract", () => {
   it("defines exactly eight ordered domains, two ordered questions each, and three statuses", () => {
     expect(READINESS_STATUSES).toEqual(["blocked", "risk", "ready"]);
@@ -90,6 +96,25 @@ describe("implementation readiness domain contract", () => {
         );
       }
     }
+  });
+
+  it("uses professional bilingual implementation language without unsupported precision", () => {
+    expect(readinessT.pl.title).toBe("Gotowość organizacyjna do wdrożenia");
+    expect(readinessT.en.title).toBe("Organisational implementation readiness");
+
+    const polishCopy = stringLeaves(readinessT.pl).join("\n");
+    const englishCopy = stringLeaves(readinessT.en).join("\n");
+
+    expect(polishCopy).not.toMatch(
+      /6[–-]8|minimalne warunki v1|\b1[–-]3\b|\b2[–-]4\b|discovery|end-to-end|go-live|business case|rollout|big bang|source-to-pay|as-is\/to-be|fallback/i,
+    );
+    expect(englishCopy).not.toMatch(
+      /6[–-]8|v1 minimum|one to three|two to four|discovery|end-to-end|go-live|business case|rollout|big bang|source-to-pay|as-is\/to-be|fallback/i,
+    );
+    expect(readinessT.pl.sourceNote).toContain("rozmowa branżowa");
+    expect(readinessT.en.sourceNote).toContain("practitioner interview");
+    expect(readinessT.pl.sourceNote).not.toContain("wywiad ekspercki");
+    expect(readinessT.en.sourceNote).not.toContain("expert interview");
   });
 
   it.each([

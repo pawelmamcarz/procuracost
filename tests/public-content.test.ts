@@ -13,9 +13,9 @@ import ResearchAgendaPage from "@/app/(pl)/research-agenda/page";
 import SiteFooter from "@/components/SiteFooter";
 import TeamPage from "@/components/TeamPage";
 import { PATHS } from "@/lib/optimizer";
+import { MODEL_V2_METADATA } from "@/lib/model-v2/domain";
 import { EPISODES } from "@/lib/shortcasty";
 import { navigationFor } from "@/lib/site-routes";
-import { MODEL_VERSION } from "@/lib/version";
 import { APPROVED_PUBLIC_EM_DASH_LINES } from "./fixtures/approved-public-em-dashes";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
@@ -49,6 +49,8 @@ const historicalI18nAllowList = [
 ] as const;
 
 const staleCurrentVersion = /\b(?:model 2\.1|modelu 2\.1|ProcuraCost 2\.1)\b/i;
+const historicalModel22Context =
+  /(?:przeniesion|historycz|scenariusz|założe|źródł|zachowan|retained|historical|scenario|assumption|source|previous)/i;
 const forbiddenTeamPhrases = [
   "pełne e2e kompletnego",
   "procurement ecosystem",
@@ -196,6 +198,24 @@ describe("public editorial integrity", () => {
       }
 
       expect(content, source.path).not.toMatch(staleCurrentVersion);
+    }
+  });
+
+  it("permits model 2.2.2 on public surfaces only as explicit provenance", async () => {
+    const currentFacingSources = (await readCurrentPublicSources()).filter((source) =>
+      source.path.startsWith("app/")
+      || source.path.startsWith("components/")
+      || ["lib/i18n.ts", "lib/scenarios.ts", "lib/shortcasty.ts"].includes(source.path),
+    );
+
+    for (const source of currentFacingSources) {
+      withoutCodeComments(source).split(/\r?\n/).forEach((line, index) => {
+        if (!line.includes("2.2.2")) return;
+        expect(
+          line,
+          `${source.path}:${index + 1} must identify model 2.2.2 as historical provenance`,
+        ).toMatch(historicalModel22Context);
+      });
     }
   });
 
@@ -354,13 +374,13 @@ describe("public editorial integrity", () => {
     ).researchAgendaT;
     expect(researchAgendaT).toBeDefined();
     expect(researchAgendaT?.pl.identificationRule)
-      .toContain("kontroluj wyniki ze względu na złożoność zakupu");
+      .toContain("we wspólnych ramach prawnych i ładu zakupowego");
 
     const markup = renderToStaticMarkup(createElement(ResearchAgendaPage));
     const copy = researchAgendaT!.pl;
 
     for (const value of [
-      copy.eyebrow(MODEL_VERSION),
+      copy.eyebrow(MODEL_V2_METADATA.modelVersion),
       copy.title,
       copy.intro,
       copy.prioritiesTitle,
@@ -368,7 +388,7 @@ describe("public editorial integrity", () => {
       copy.identificationTitle,
       copy.identificationRule,
       copy.statusTitle,
-      copy.status(MODEL_VERSION),
+      copy.status(MODEL_V2_METADATA.modelVersion),
       ...Object.values(copy.actions),
     ]) {
       expect(markup).toContain(value);
@@ -404,13 +424,13 @@ describe("public editorial integrity", () => {
   it("provides English content for every planned Shortcast", () => {
     expect(EPISODES).toEqual(expect.arrayContaining([
       expect.objectContaining({
-        titleEn: `ProcuraCost ${MODEL_VERSION}: what do we actually compare?`,
+        titleEn: `ProcuraCost ${MODEL_V2_METADATA.modelVersion}: what does the cost model compare?`,
         dimensionEn: "Methodology",
-        focusEn: "Methodological clarification",
+        focusEn: "Calculation contract",
       }),
       expect.objectContaining({
-        titleEn: "Szucs: what does discretion cost in contractor selection?",
-        dimensionEn: "Competition · Selection",
+        titleEn: "The Szucs study: discretion, competition and price",
+        dimensionEn: "Competition and contractor selection",
         focusEn: "Source review",
       }),
     ]));
@@ -419,6 +439,7 @@ describe("public editorial integrity", () => {
       expect(episode.titleEn).toEqual(expect.any(String));
       expect(episode.thesisEn).toEqual(expect.any(String));
       expect(episode.focusEn).toEqual(expect.any(String));
+      expect(episode.practiceNoteEn).toEqual(expect.any(String));
       expect(episode.titleEn).not.toBe(episode.title);
       expect(episode.thesisEn).not.toBe(episode.thesis);
     }

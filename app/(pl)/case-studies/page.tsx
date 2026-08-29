@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
 import MechanismsEvidencePage from "@/components/MechanismsEvidencePage";
+import { siteMetadataT } from "@/lib/i18n";
 
-export const metadata: Metadata = {
-  title: "Case studies: ProcuraCost",
-  description:
-    "Ilustracje mechanizmów zakupowych z jawnym oddzieleniem źródeł od wyników modelu.",
-};
+export const metadata: Metadata = siteMetadataT.pl.mechanismsEvidence;
 
 export default function CaseStudiesPage() {
   return <MechanismsEvidencePage lang="pl" />;

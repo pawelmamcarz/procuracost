@@ -1,10 +1,12 @@
 import { shortcastsT } from "@/lib/i18n";
+import { MODEL_V2_METADATA } from "@/lib/model-v2/domain";
 import { EPISODES } from "@/lib/shortcasty";
-import { MODEL_VERSION } from "@/lib/version";
+
+const modelVersion = MODEL_V2_METADATA.modelVersion;
 
 export const metadata = {
-  title: shortcastsT.en.metadataTitle(MODEL_VERSION),
-  description: shortcastsT.en.metadataDescription(MODEL_VERSION),
+  title: shortcastsT.en.metadataTitle(modelVersion),
+  description: shortcastsT.en.metadataDescription(modelVersion),
 };
 
 export default function ShortcastyEnPage() {
@@ -16,7 +18,7 @@ export default function ShortcastyEnPage() {
     <div className="mx-auto max-w-5xl px-6 py-12">
       <div className="rounded-2xl bg-blue-600 p-8 text-white">
         <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-blue-200">
-          {tx.badge(MODEL_VERSION)}
+          {tx.badge(modelVersion)}
         </p>
         <h1 className="text-3xl font-bold leading-tight">{tx.title}</h1>
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-blue-100">
@@ -41,6 +43,9 @@ export default function ShortcastyEnPage() {
                 <h2 className="mt-1 font-semibold text-gray-900">{episode.titleEn}</h2>
                 <p className="mt-1 text-sm text-gray-600">{episode.thesisEn}</p>
                 <p className="mt-2 text-xs text-gray-500">{tx.focusLabel}: {episode.focusEn}</p>
+                <p className="mt-2 text-xs text-gray-500">
+                  {tx.practiceNoteLabel}: {episode.practiceNoteEn}
+                </p>
               </article>
             ))}
           </div>
@@ -60,6 +65,9 @@ export default function ShortcastyEnPage() {
               <h2 className="mt-1 font-semibold text-gray-700">{episode.titleEn}</h2>
               <p className="mt-1 text-sm text-gray-600">{episode.thesisEn}</p>
               <p className="mt-2 text-xs text-gray-500">{tx.focusLabel}: {episode.focusEn}</p>
+              <p className="mt-2 text-xs text-gray-500">
+                {tx.practiceNoteLabel}: {episode.practiceNoteEn}
+              </p>
             </div>
           ))}
         </div>

@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { teamT, type Lang, type TeamCompetency, type TeamRole } from "@/lib/i18n";
 
 type TeamMember = {
@@ -111,6 +113,46 @@ export default function TeamPage({ lang }: { lang: Lang }) {
             </li>
           ))}
         </ul>
+      </section>
+
+      <section
+        aria-labelledby="team-implementation"
+        className="mt-12 grid gap-5 border-y border-gray-200 py-8 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] md:gap-10"
+      >
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-700">
+            {t.implementation.eyebrow}
+          </p>
+          <h2
+            id="team-implementation"
+            className="mt-2 text-xl font-semibold text-gray-900"
+          >
+            {t.implementation.title}
+          </h2>
+        </div>
+        <div>
+          <p className="text-sm leading-6 text-gray-600">
+            {t.implementation.body}
+          </p>
+          <div className="mt-4 flex flex-wrap gap-x-7 gap-y-2">
+            <Link
+              href={lang === "en" ? "/en/readiness" : "/readiness"}
+              className="min-h-11 border-b border-blue-300 py-3 text-sm font-semibold text-blue-700 hover:border-blue-700"
+            >
+              {t.implementation.readinessAction}
+            </Link>
+            <Link
+              href={
+                lang === "en"
+                  ? "/en/practice/procurement-beyond-8"
+                  : "/practice/procurement-beyond-8"
+              }
+              className="min-h-11 border-b border-blue-300 py-3 text-sm font-semibold text-blue-700 hover:border-blue-700"
+            >
+              {t.implementation.practiceAction}
+            </Link>
+          </div>
+        </div>
       </section>
     </div>
   );

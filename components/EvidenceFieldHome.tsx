@@ -216,6 +216,39 @@ export default function EvidenceFieldHome({ lang }: EvidenceFieldHomeProps) {
           {tx.evidenceRegister.allAction}
         </Link>
       </section>
+
+      <section
+        aria-labelledby="home-implementation-title"
+        className="grid gap-6 border-t border-gray-200 py-10 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] md:gap-10"
+      >
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">
+            {tx.implementation.eyebrow}
+          </p>
+          <h2
+            id="home-implementation-title"
+            className="mt-3 text-2xl font-bold tracking-tight text-gray-900"
+          >
+            {tx.implementation.title}
+          </h2>
+        </div>
+        <div>
+          <p className="text-sm leading-6 text-gray-600">
+            {tx.implementation.body}
+          </p>
+          <div className="mt-5 flex flex-wrap gap-x-7 gap-y-2">
+            <Link href={siteHref("readiness", lang)} className={textLinkClass}>
+              {tx.implementation.readinessAction}
+            </Link>
+            <Link
+              href={siteHref("procurementBeyond8", lang)}
+              className={textLinkClass}
+            >
+              {tx.implementation.practiceAction}
+            </Link>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

@@ -874,7 +874,7 @@ const homePl = {
     },
     methodology: {
       title: "Metodologia",
-      body: "Mechanizmy siedmiu wymiarów kosztu oraz granice interpretacji.",
+      body: "Kontrakt obliczeniowy, pokrycie monetyzacji i granice interpretacji.",
       action: "Przeczytaj metodologię",
     },
     paper: {
@@ -888,11 +888,19 @@ const homePl = {
       action: "Otwórz pakiet replikacyjny",
     },
   },
+  implementation: {
+    eyebrow: "Od modelu do wdrożenia",
+    title: "Koszt procesu i gotowość organizacyjna wymagają odrębnych ocen",
+    body:
+      "Porównanie kosztów nie potwierdza właścicielstwa, jakości wymagań, danych ani adopcji. Diagnostyka porządkuje te warunki, a materiał Procurement&Beyond pokazuje ich praktyczny kontekst.",
+    readinessAction: "Sprawdź gotowość organizacyjną do wdrożenia",
+    practiceAction: "Przejdź do materiału Procurement&Beyond",
+  },
   finalAction: {
     eyebrow: "Twój przypadek",
-    title: "Porównaj zakup na własnych założeniach.",
-    body: "Podaj wartość, typ procesu, koszt dnia, zespół i horyzont. Wynik pokaże punkt centralny oraz warunki, które mogą zmienić jego znak.",
-    action: "Policz własny scenariusz",
+    title: "Porównaj dwa projekty przebiegu własnego zakupu.",
+    body: "Ustal wspólną granicę, zaprojektuj obie mapy i zadeklaruj założenia kosztowe. Rekord pokaże wynik centralny, zakres scenariusza i granice monetyzacji.",
+    action: "Otwórz kalkulator",
   },
 } as const;
 
@@ -1030,7 +1038,7 @@ const homeEn = {
     },
     methodology: {
       title: "Methodology",
-      body: "Mechanisms behind the seven cost dimensions and limits on interpretation.",
+      body: "Calculation contract, monetisation coverage and interpretation limits.",
       action: "Read the methodology",
     },
     paper: {
@@ -1044,11 +1052,19 @@ const homeEn = {
       action: "Open replication package",
     },
   },
+  implementation: {
+    eyebrow: "From model to implementation",
+    title: "Process cost and organisational readiness require separate assessments",
+    body:
+      "A cost comparison does not establish ownership, requirement quality, data readiness or adoption. The diagnostic structures those conditions, while Procurement&Beyond material provides practitioner context.",
+    readinessAction: "Assess organisational implementation readiness",
+    practiceAction: "Open the Procurement&Beyond material",
+  },
   finalAction: {
     eyebrow: "Your case",
-    title: "Compare a purchase using your own assumptions.",
-    body: "Enter value, process type, daily cost, team, and horizon. The result reports a central point and the conditions that can change its sign.",
-    action: "Calculate your scenario",
+    title: "Compare two workflow designs for your purchase.",
+    body: "Set the shared boundary, design both maps and declare cost assumptions. The record reports the central result, scenario range and monetisation boundary.",
+    action: "Open the calculator",
   },
 } satisfies HomeShape;
 
@@ -1085,6 +1101,100 @@ export const mechanismsEvidenceT = {
   en: mechanismsEvidenceEn,
 } as const;
 
+const researchPaperEn = {
+  metadata: {
+    title: `Working paper: ProcuraCost model ${MODEL_V2_METADATA.modelVersion}`,
+    description:
+      "Working paper on the deterministic comparison of formal sequential and adaptive compliant procurement workflow designs.",
+  },
+  eyebrow: `Working paper / model ${MODEL_V2_METADATA.modelVersion}`,
+  provenance: `Native specification / ${MODEL_V2_METADATA.calibrationId} / ${MODEL_V2_METADATA.legalRulesetId}`,
+  printAction: "Print or save as PDF",
+  title:
+    "Procurement workflow design under a shared legal and governance boundary",
+  abstractTitle: "Abstract",
+  abstract: [
+    "ProcuraCost compares the declared cost of two lawful procurement workflow designs: formal sequential and adaptive compliant. Both alternatives retain the same legal and governance boundary, procedure family, initiation date and mandatory legal waits. The model therefore tests workflow and contract design without treating compliance as a variable to be relaxed.",
+    "The calculation is deterministic. Scenario values are starting assumptions with explicit provenance, not measured organisational effects or probability estimates. The model records the direction and range of the cost difference but does not select a procedure, infer implementation readiness or prescribe an outcome.",
+  ],
+  modelContract: {
+    title: "Calculation contract",
+    items: [
+      "Each alternative has its own directed process map with activities, dependencies, role effort, waiting time and non-labour cost.",
+      "Mandatory PZP periods come from the versioned legal ruleset. They remain locked and identical in both alternatives.",
+      "Total cost comprises role effort, non-labour cost, delay cost and explicitly monetised contract-design dimensions.",
+      "Informal process bypass remains non-monetised unless an observed or user-supplied basis is available.",
+      "Every decision record exposes the assumptions, calculation anchors, evidence class, legal provenance and dimensions outside monetisation.",
+    ],
+  },
+  resultBoundary: {
+    title: "Result and range",
+    formula:
+      "Delta C = total cost of the formal sequential alternative - total cost of the adaptive compliant alternative",
+    body:
+      "A positive value means that the formal sequential alternative has the higher declared cost. A negative value means that the adaptive compliant alternative has the higher declared cost. Low, central and high values form a scenario stress range, not a confidence interval. A range crossing zero shows that the direction changes within the declared assumptions.",
+  },
+  coverage: {
+    title: "Monetisation coverage",
+    body:
+      "The native record separates role cost, non-labour cost, delay cost, competition transfer, contract amendments and TCO. Contract-amendment and TCO differentials are zero in the canonical scenarios until a defensible basis is supplied. Informal bypass is reported as a non-monetised dimension.",
+  },
+  evidenceBoundary: {
+    title: "Evidence and transfer limits",
+    body:
+      "The evidence register distinguishes empirical anchors, official examples, retained scenario assumptions, practitioner observations and research hypotheses. Source relevance does not by itself justify numerical transfer.",
+    items: [
+      "Szucs provides the bounded empirical anchor for a competition-to-price channel in Hungarian procurement below the studied threshold. The 2, 6 and 9 per cent range is an explicit stress transfer, not an estimate for Poland.",
+      "Official material from UZP, the European Commission, OECD and California describes mechanisms such as market consultation, problem definition and modular contracting. It does not calibrate ProcuraCost cost effects.",
+      "Economic values and workflow seeds retained from model 2.2.2 remain labelled as historical scenario assumptions requiring organisational verification.",
+    ],
+  },
+  practitionerTitle: "Practitioner-material boundary",
+  practitionerBoundary:
+    "Procurement&Beyond episode 8 informs questions about process friction, internal ownership, requirements, TCO and responsible automation. It supports question design and hypothesis generation only. It does not calibrate thresholds, weights, ranges or expected implementation effects.",
+  scope: {
+    title: "Scope and limitations",
+    items: [
+      "The legal ruleset covers the stated classic procurement contexts initiated in 2026 or 2027. Sectoral, defence and security contexts fail closed.",
+      "Procedure-family suitability is compared separately and without scoring. Special procedures still require a competent legal assessment of their statutory grounds.",
+      "The output is an auditable cost record for scenario analysis. It is neither legal advice nor statistical validation of an organisational outcome.",
+    ],
+  },
+  referencesTitle: "Selected references",
+  references: [
+    {
+      label:
+        "Szucs, F. (2024). Discretion and Favoritism in Public Procurement. Journal of the European Economic Association, 22(1), 117-160.",
+      href: "https://doi.org/10.1093/jeea/jvad017",
+    },
+    {
+      label: "Public Procurement Office: Preliminary market consultation",
+      href: "https://www.gov.pl/web/uzp/wstepne-konsultacje-rynkowe",
+    },
+    {
+      label: "European Commission: Guidance on Innovation Procurement",
+      href: "https://public-buyers-community.ec.europa.eu/resources/guidance-innovation-procurement",
+    },
+    {
+      label: "OECD: Public Procurement in Lithuania, problem definition case",
+      href: "https://www.oecd.org/en/publications/public-procurement-in-lithuania_aa1b196c-en/full-report/component-8.html",
+    },
+    {
+      label: "California Department of Technology: Modular IT procurement",
+      href: "https://www.cdt.ca.gov/newsroom/2022/08/california-redefines-state-technology-procurement/",
+    },
+    {
+      label:
+        "Procurement&Beyond, episode 8: Even the best tool cannot rescue a poor implementation",
+      href: "https://www.youtube.com/watch?v=5KYUdTLlvvg",
+    },
+  ],
+  repositoryNote:
+    "The model register, deterministic replication artefacts and parameter documentation are maintained in the project repository.",
+} as const;
+
+export const researchPaperT = { en: researchPaperEn } as const;
+
 type ResearchAgendaCopy = {
   metadataTitle: (version: string) => string;
   metadataDescription: (version: string) => string;
@@ -1111,7 +1221,7 @@ const researchAgendaPl = {
   eyebrow: (version: string) => `Agenda badawcza · Model ${version}`,
   title: "Waliduj mechanizmy przed ich wyceną",
   intro:
-    "ProcuraCost jest przejrzystym modelem decyzyjnym, a nie zmierzonym efektem. Program empiryczny zaczyna się od oddzielnego pomiaru przebiegu pracy, konkurencji i konstrukcji kontraktu. Narzędzia badawcze wymagają przeglądu przed zbieraniem danych.",
+    "ProcuraCost jest przejrzystym modelem porównania kosztów, a nie oszacowanym efektem organizacyjnym. Program empiryczny zaczyna się od oddzielnego pomiaru przebiegu pracy, konkurencji i konstrukcji kontraktu. Narzędzia badawcze wymagają przeglądu przed rozpoczęciem zbierania danych.",
   prioritiesTitle: "Priorytety pomiaru",
   priorities: [
     "Przebieg pracy: znaczniki czasu, praca równoległa i godziny pracy według ról.",
@@ -1121,7 +1231,7 @@ const researchAgendaPl = {
   ],
   identificationTitle: "Reguła identyfikacji",
   identificationRule:
-    "Oszacuj wyniki składowe oddzielnie przed przeliczeniem ich na pieniądze. Porównuj zgodne z prawem ścieżki w tych samych granicach ładu i kontroli, kontroluj wyniki ze względu na złożoność zakupu i zachowuj możliwość odwrócenia znaku. Nie kalibruj danych tak, aby odtwarzały tezę Tunel–Pole.",
+    "Oszacuj wyniki składowe oddzielnie przed ich monetyzacją. Porównuj zgodne z prawem projekty procesu we wspólnych ramach prawnych i ładu zakupowego, uwzględniaj złożoność zakupu i zachowuj możliwość odwrócenia znaku. Nie dobieraj danych tak, aby odtwarzały tezę Tunel-Pole.",
   statusTitle: "Aktualny status",
   status: (version: string) =>
     `Nie zatwierdzono jeszcze ankiety dla modelu ${version}, prerejestracji ani protokołu konfirmacyjnego. Nowe narzędzia muszą wynikać z rozdzielonych konstruktów i przejść przegląd przed rekrutacją lub pozyskaniem danych.`,
@@ -1860,6 +1970,67 @@ const replicationPackageV2En = {
 export const replicationPackageV2T = {
   pl: replicationPackageV2Pl,
   en: replicationPackageV2En,
+} as const;
+
+const siteMetadataPl = {
+  root: {
+    title: "ProcuraCost: porównanie projektów procesu zakupowego",
+    description: `Porównaj dwa dopuszczalne projekty przebiegu procesu na deklarowanych założeniach modelu ${MODEL_V2_METADATA.modelVersion}.`,
+  },
+  home: {
+    title: "ProcuraCost | Porównanie kosztów procesu zakupowego",
+    description:
+      "Porównaj sumy, deklarowany zakres scenariusza, czynniki kosztowe, pokrycie monetyzacji i wymiary niewycenione.",
+  },
+  calculator: {
+    title: "Kalkulator procesu zakupowego | ProcuraCost",
+    description:
+      "Zaprojektuj dwie dopuszczalne mapy procesu i porównaj ich koszt w neutralnym rekordzie decyzji.",
+  },
+  mechanismsEvidence: {
+    title: "Mechanizmy i źródła | ProcuraCost",
+    description:
+      "Rejestr mechanizmów zakupowych z jawnym rozdzieleniem materiału źródłowego, założeń i wyników modelu.",
+  },
+  processDesignProfile: {
+    title: `Profil projektu procesu zakupowego | ProcuraCost ${MODEL_V2_METADATA.modelVersion}`,
+    description:
+      "Opisowy profil sekwencyjności i adaptacyjności projektu procesu; nie jest audytem ani walidowanym testem.",
+  },
+} as const;
+
+type SiteMetadataShape = LangShape<typeof siteMetadataPl>;
+
+const siteMetadataEn = {
+  root: {
+    title: "ProcuraCost: procurement workflow design comparison",
+    description: `Compare two lawful workflow designs under the declared assumptions of model ${MODEL_V2_METADATA.modelVersion}.`,
+  },
+  home: {
+    title: "ProcuraCost | Procurement workflow cost comparison",
+    description:
+      "Compare totals, the declared scenario range, cost drivers, monetisation coverage and unpriced dimensions.",
+  },
+  calculator: {
+    title: "Procurement workflow calculator | ProcuraCost",
+    description:
+      "Design two lawful process maps and compare their cost in a neutral decision record.",
+  },
+  mechanismsEvidence: {
+    title: "Mechanisms and evidence | ProcuraCost",
+    description:
+      "A procurement-mechanism register that separates source material, assumptions and model outputs.",
+  },
+  processDesignProfile: {
+    title: `Procurement process design profile | ProcuraCost ${MODEL_V2_METADATA.modelVersion}`,
+    description:
+      "A descriptive profile of sequencing and adaptability in workflow design; not an audit or validated test.",
+  },
+} satisfies SiteMetadataShape;
+
+export const siteMetadataT = {
+  pl: siteMetadataPl,
+  en: siteMetadataEn,
 } as const;
 
 const modelOverviewPl = {
@@ -2914,8 +3085,7 @@ const suitabilityPl = {
   resultsIntro:
     "Każdy wiersz ma ten sam status. Różnice dotyczą warunków zastosowania i obowiązkowych terminów.",
   equalStatus: "Równorzędny kandydat",
-  candidateCount: (count: number) =>
-    `${count} ${count === 1 ? "rodzina procedur" : "rodziny procedur"}`,
+  candidateCount: (count: number) => `Liczba rodzin procedur: ${count}`,
   criteriaTitle: "Warunki oceny",
   conditionsTitle: "Do potwierdzenia w organizacji",
   limitationsTitle: "Ograniczenia",
@@ -3095,7 +3265,7 @@ const suitabilityEn = {
   resultsTitle: "Equal-status procedure set covered by the model",
   resultsIntro: "Every row has the same status. Differences concern conditions of use and mandatory periods.",
   equalStatus: "Equal-status candidate",
-  candidateCount: (count: number) => `${count} procedure ${count === 1 ? "family" : "families"}`,
+  candidateCount: (count: number) => `Procedure families: ${count}`,
   criteriaTitle: "Assessment conditions",
   conditionsTitle: "To confirm within the organisation",
   limitationsTitle: "Limitations",
@@ -3467,31 +3637,69 @@ export const assessmentT = {
 } as const;
 
 const shortcastsPl = {
-  metadataTitle: (version: string) => `ProcuraCost ${version}: krótkie materiały metodologiczne`,
+  metadataTitle: (version: string) => `Noty metodologiczne modelu ${version} | ProcuraCost`,
   metadataDescription: (version: string) =>
-    `Planowana, ograniczona źródłowo seria o założeniach i niepewności modelu ProcuraCost ${version}.`,
-  badge: (version: string) => `Model ${version} · plan redakcyjny`,
-  title: "ProcuraCost: źródła i założenia",
+    `Planowana seria źródłowa o założeniach, granicach wnioskowania i interpretacji wyników modelu ProcuraCost ${version}.`,
+  badge: (version: string) => `Model ${version} / plan redakcyjny`,
+  title: "Noty metodologiczne ProcuraCost",
   intro:
-    "Planowana seria redakcyjna oddziela ustalenia źródłowe od kalibracji modelowej. Nie przedstawia wyników ProcuraCost jako zmierzonych efektów organizacyjnych.",
+    "Planowana seria oddziela ustalenia wynikające ze źródeł od założeń scenariuszowych. Wyniki ProcuraCost nie są przedstawiane jako zmierzone efekty organizacyjne ani rekomendacje proceduralne.",
   publishedMaterials: "Opublikowane materiały",
   plannedTopics: "Planowane tematy",
   focusLabel: "Temat",
+  practiceNoteLabel: "Znaczenie dla praktyki zakupowej",
+  detail: {
+    metadataTitle: (number: number, title: string, version: string) =>
+      `Odcinek ${number}: ${title} | ProcuraCost ${version}`,
+    back: (version: string) => `Noty metodologiczne ProcuraCost ${version}`,
+    episodeLabel: (number: number, dimension: string) =>
+      `Odcinek ${number} / ${dimension}`,
+    focusLabel: "Zakres",
+    thesisLabel: "Zakres ustalenia",
+    practiceNoteLabel: "Znaczenie dla praktyki zakupowej",
+    calculatorTitle: "Sprawdź wpływ założeń",
+    calculatorBody:
+      "Porównaj oba projekty procesu i sprawdź, które założenia zmieniają kierunek różnicy kosztów.",
+    calculatorCta: "Otwórz kalkulator ProcuraCost",
+    previous: "Poprzedni",
+    next: "Następny",
+    spotify: "Spotify",
+    applePodcasts: "Apple Podcasts",
+  },
 } as const;
 
 type ShortcastsShape = LangShape<typeof shortcastsPl>;
 
 const shortcastsEn = {
-  metadataTitle: (version: string) => `ProcuraCost ${version}: methodology shorts`,
+  metadataTitle: (version: string) => `Model ${version} methodology notes | ProcuraCost`,
   metadataDescription: (version: string) =>
-    `A planned, source-bounded editorial series about assumptions and uncertainty in the ProcuraCost ${version} model.`,
-  badge: (version: string) => `Model ${version} · editorial plan`,
-  title: "ProcuraCost: evidence and assumptions",
+    `A planned source-bounded series on assumptions, inference limits and interpretation of ProcuraCost model ${version}.`,
+  badge: (version: string) => `Model ${version} / editorial plan`,
+  title: "ProcuraCost methodology notes",
   intro:
-    "This planned editorial series separates source evidence from model calibration. It does not present ProcuraCost outputs as measured organizational effects.",
+    "The planned series separates source findings from scenario assumptions. ProcuraCost outputs are not presented as measured organisational effects or procedure recommendations.",
   publishedMaterials: "Published materials",
   plannedTopics: "Planned topics",
   focusLabel: "Focus",
+  practiceNoteLabel: "Procurement practice implication",
+  detail: {
+    metadataTitle: (number: number, title: string, version: string) =>
+      `Episode ${number}: ${title} | ProcuraCost ${version}`,
+    back: (version: string) => `ProcuraCost ${version} methodology notes`,
+    episodeLabel: (number: number, dimension: string) =>
+      `Episode ${number} / ${dimension}`,
+    focusLabel: "Scope",
+    thesisLabel: "Finding boundary",
+    practiceNoteLabel: "Procurement practice implication",
+    calculatorTitle: "Test the assumptions",
+    calculatorBody:
+      "Compare both workflow designs and identify which assumptions change the direction of the cost difference.",
+    calculatorCta: "Open the ProcuraCost calculator",
+    previous: "Previous",
+    next: "Next",
+    spotify: "Spotify",
+    applePodcasts: "Apple Podcasts",
+  },
 } satisfies ShortcastsShape;
 
 export const shortcastsT = { pl: shortcastsPl, en: shortcastsEn } as const;
@@ -3599,6 +3807,14 @@ const teamPl = {
   competenciesTitle: "Obszary pracy",
   linkedinLabel: "Profil LinkedIn",
   collectiveLabel: "Zespół ProcuraCost",
+  implementation: {
+    eyebrow: "Praktyka wdrożeniowa",
+    title: "Odpowiedzialność za model i odpowiedzialność za wdrożenie",
+    body:
+      "Model wspiera uporządkowanie porównania. Właściciel procesu nadal odpowiada za cel, wymagania, dane, decyzje, adopcję i mierzenie wartości.",
+    readinessAction: "Diagnostyka gotowości",
+    practiceAction: "Rozmowa Procurement&Beyond",
+  },
   roles: {
     procurement: "zakupy",
     analytics: "analityka",
@@ -3650,6 +3866,14 @@ const teamEn = {
   competenciesTitle: "Areas of work",
   linkedinLabel: "LinkedIn profile",
   collectiveLabel: "ProcuraCost team",
+  implementation: {
+    eyebrow: "Implementation practice",
+    title: "Accountability for the model and accountability for implementation",
+    body:
+      "The model structures a comparison. The process owner remains accountable for purpose, requirements, data, decisions, adoption and value measurement.",
+    readinessAction: "Readiness diagnostic",
+    practiceAction: "Procurement&Beyond conversation",
+  },
   roles: {
     procurement: "procurement",
     analytics: "analytics",
@@ -3692,6 +3916,13 @@ export type TeamRole = keyof typeof teamPl.roles;
 export type TeamCompetency = keyof typeof teamPl.competencies;
 
 const footerPl = {
+  otherProjects: "Inne projekty:",
+  modelNote:
+    "Deterministyczny model na jawnych założeniach; wyniki nie są estymatami empirycznymi",
+  resourceNavigation: "Materiały ProcuraCost",
+  methodology: "Źródła i metodologia",
+  readiness: "Gotowość do wdrożenia",
+  practice: "Procurement&Beyond #8",
   projectTitles: {
     silenceTax: "Kalkulator podatku od milczenia",
     carTco: "Kalkulator TCO samochodu",
@@ -3704,6 +3935,13 @@ const footerPl = {
 type FooterShape = LangShape<typeof footerPl>;
 
 const footerEn = {
+  otherProjects: "Other projects:",
+  modelNote:
+    "Deterministic model under declared assumptions; outputs are not empirical estimates",
+  resourceNavigation: "ProcuraCost resources",
+  methodology: "Sources and methodology",
+  readiness: "Implementation readiness",
+  practice: "Procurement&Beyond episode 8",
   projectTitles: {
     silenceTax: "Silence tax calculator",
     carTco: "Car TCO calculator",
@@ -4545,15 +4783,15 @@ export const modelAssumptionsT = {
 
 const readinessPl = {
   metadata: {
-    title: "Gotowość do wdrożenia systemu zakupowego | ProcuraCost",
+    title: "Gotowość organizacyjna do wdrożenia | ProcuraCost",
     description:
-      "Osiem jakościowych bramek gotowości przed wyborem i konfiguracją systemu zakupowego.",
+      "Osiem jakościowych obszarów oceny gotowości organizacji przed wyborem i konfiguracją systemu zakupowego.",
   },
   eyebrow: "Diagnostyka wdrożeniowa",
-  title: "Gotowość do wdrożenia systemu zakupowego",
+  title: "Gotowość organizacyjna do wdrożenia",
   subtitle:
-    "Osiem bramek przed wyborem narzędzia i rozpoczęciem konfiguracji. Wynik nie jest audytem dojrzałości i nie zmienia modelu kosztowego ProcuraCost.",
-  duration: "Około 6–8 minut. Odpowiedzi pozostają wyłącznie w tej karcie przeglądarki.",
+    "Osiem obszarów wymagających oceny przed wyborem systemu i rozpoczęciem konfiguracji. Wynik nie jest audytem dojrzałości i nie zmienia modelu kosztowego ProcuraCost.",
+  duration: "Odpowiedzi pozostają wyłącznie w tej karcie przeglądarki.",
   progress: (current: number, total: number) => `Domena ${current} z ${total}`,
   previous: "Wstecz",
   next: "Dalej",
@@ -4566,7 +4804,7 @@ const readinessPl = {
   calculatorCta: "Otwórz kalkulator bez wstępnych danych",
   practiceCta: "Zobacz materiał Procurement&Beyond #8",
   sourceNote:
-    "Pytania wykorzystują praktyczne obserwacje z rozmowy Procurement&Beyond #8 z Pawłem Mamcarzem. Materiał jest wywiadem eksperckim, a dostępny transkrypt został wygenerowany automatycznie przez YouTube. Służy do formułowania pytań i hipotez. Nie wyznacza progów, wag ani parametrów modelu ProcuraCost.",
+    "Źródłem pytań jest rozmowa branżowa Procurement&Beyond #8 z Pawłem Mamcarzem. Dostępny transkrypt pochodzi z automatycznych napisów YouTube i nie został zweryfikowany przez człowieka. Materiał służy wyłącznie do formułowania pytań i hipotez; nie wyznacza progów, wag ani parametrów modelu ProcuraCost.",
   statuses: {
     blocked: "BLOKADA",
     risk: "RYZYKO",
@@ -4576,12 +4814,12 @@ const readinessPl = {
     ready: {
       headline: "Gotowy do kontrolowanego startu",
       body:
-        "Wszystkie osiem domen spełnia minimalne warunki v1. Można przejść do kontrolowanego wyboru narzędzia lub pilota, zachowując wskazane dowody. Wynik nie gwarantuje sukcesu wdrożenia.",
+        "Wszystkie osiem domen spełnia warunki oceniane w tej diagnostyce. Organizacja może rozpocząć kontrolowany wybór systemu lub pilotaż, zachowując dokumenty potwierdzające odpowiedzi. Wynik nie gwarantuje powodzenia wdrożenia.",
     },
     risk: {
       headline: "Gotowość warunkowa",
       body:
-        "Nie ma blokady, ale co najmniej jedna domena wymaga działania. Można prowadzić discovery lub ograniczony pilot. Przed pełnym rolloutem każde ryzyko musi otrzymać właściciela, termin i akceptację sponsora.",
+        "Nie ma blokady, ale co najmniej jedna domena wymaga działania. Można kontynuować doprecyzowanie potrzeb i wymagań albo ograniczony pilotaż. Przed wdrożeniem w pełnym zakresie każde ryzyko musi mieć właściciela, termin usunięcia i akceptację sponsora.",
     },
     blocked: {
       headline: "Blokada wdrożenia",
@@ -4591,66 +4829,66 @@ const readinessPl = {
   },
   domains: {
     purpose: {
-      label: "Cel biznesowy i tarcie procesowe",
-      riskAction: "Uzupełnić jednostronicową definicję problemu, wartości bazowe i docelowe KPI.",
+      label: "Cel biznesowy i nieefektywność procesu",
+      riskAction: "Uzupełnić zwięzłą definicję problemu oraz wartości bazowe i docelowe mierników.",
       blockedAction:
-        "Wstrzymać wybór narzędzia. Zmapować 1–3 największe źródła tarcia i potwierdzić ich koszt lub wpływ operacyjny.",
+        "Wstrzymać wybór systemu. Wskazać najistotniejsze źródła nieefektywności i potwierdzić ich koszt lub wpływ operacyjny.",
     },
     ownership: {
       label: "Właściciel biznesowy i mandat",
       riskAction:
-        "Uzgodnić kartę właścicielstwa: mandat, dostępność, decyzje, zastępstwo i czas eskalacji.",
+        "Uzgodnić zakres odpowiedzialności obejmujący mandat, dostępność, decyzje, zastępstwo i czas eskalacji.",
       blockedAction:
-        "Wyznaczyć właściciela biznesowego i sponsora przed wyborem lub konfiguracją platformy.",
+        "Wyznaczyć właściciela biznesowego i sponsora przed wyborem lub konfiguracją systemu.",
     },
     process: {
-      label: "Zakres procesu end-to-end",
+      label: "Pełny zakres procesu zakupowego",
       riskAction:
-        "Uzupełnić mapę o P2P, wyjątki i odpowiedzialności. Zamknąć decyzje procesowe przed konfiguracją.",
+        "Uzupełnić mapę o zakupy operacyjne, wyjątki i odpowiedzialności. Rozstrzygnąć decyzje procesowe przed konfiguracją.",
       blockedAction:
-        "Przeprowadzić warsztat as-is/to-be i nie używać konfiguracji systemu jako substytutu projektowania procesu.",
+        "Przeprowadzić warsztat mapowania stanu obecnego i projektowania procesu docelowego. Konfiguracja systemu nie może zastępować projektowania procesu.",
     },
     requirements: {
-      label: "Wymagania i kontrolowane discovery",
+      label: "Wymagania i kontrolowane rozpoznanie potrzeb",
       riskAction:
-        "Uzupełnić ślad wymaganie–problem–właściciel–odbiór oraz zarezerwować kontrolowane discovery.",
+        "Uzupełnić powiązanie wymaganie–problem–właściciel–kryterium odbioru oraz zaplanować kontrolowane rozpoznanie potrzeb.",
       blockedAction:
         "Wstrzymać finalną specyfikację. Najpierw potwierdzić potrzebę i kryteria wartości z użytkownikami oraz rynkiem.",
     },
     data_automation: {
       label: "Dane, integracje i odpowiedzialna automatyzacja",
       riskAction:
-        "Wykonać próbę jakości danych i opisać kontrakty integracyjne. Dla AI zdefiniować test, właściciela, pochodzenie danych i fallback.",
+        "Wykonać próbę jakości danych i opisać zasady integracji. Dla AI zdefiniować test, właściciela, pochodzenie danych i procedurę postępowania awaryjnego.",
       blockedAction:
         "Usunąć nieokreślone obietnice AI z zakresu i zatrzymać konfigurację zależną od niepotwierdzonych danych.",
     },
     governance: {
-      label: "Polityka, compliance i zatwierdzenia",
+      label: "Polityka zakupowa, zgodność i zatwierdzenia",
       riskAction:
         "Oznaczyć źródło każdej kontroli i przeprowadzić test matrycy na zakupach o różnej wartości, ryzyku i trybie.",
       blockedAction:
-        "Przeprojektować governance przed konfiguracją. Zachować granice compliance, ale usunąć kroki bez właściciela i uzasadnienia.",
+        "Przeprojektować zasady nadzoru przed konfiguracją. Zachować wymogi zgodności, ale usunąć kroki bez właściciela i uzasadnienia.",
     },
     adoption: {
       label: "Adopcja i zdolność do zmiany",
       riskAction:
-        "Przydzielić czas użytkownikom, ustalić plan UAT i właścicieli komunikacji, szkoleń oraz wsparcia.",
+        "Przydzielić czas użytkownikom oraz ustalić plan testów akceptacyjnych i właścicieli komunikacji, szkoleń i wsparcia.",
       blockedAction:
-        "Nie zatwierdzać go-live bez reprezentacji użytkowników, testu procesu i sposobu pomiaru obejść.",
+        "Nie zatwierdzać uruchomienia produkcyjnego bez reprezentacji użytkowników, testu procesu i sposobu pomiaru obejść.",
     },
     value_rollout: {
-      label: "TCO, business case i rollout",
+      label: "TCO, uzasadnienie biznesowe i plan wdrożenia",
       riskAction:
         "Uzupełnić TCO o pominięte koszty i scenariusze. Nadać każdej fali mierzalne kryteria wejścia, wyjścia i zatrzymania.",
       blockedAction:
-        "Wstrzymać pełny rollout. Zbudować weryfikowalny business case i ograniczony pilot zamykający najważniejsze niewiadome.",
+        "Wstrzymać wdrożenie w pełnym zakresie. Przygotować weryfikowalne uzasadnienie biznesowe i ograniczony pilotaż, który rozstrzygnie najważniejsze niewiadome.",
     },
   },
   questions: {
     "purpose.friction": {
-      prompt: "Czy projekt rozwiązuje nazwane tarcie w konkretnym fragmencie procesu zakupowego?",
+      prompt: "Czy projekt rozwiązuje konkretną nieefektywność w określonym fragmencie procesu zakupowego?",
       answers: {
-        blocked: "Nie. Projekt zaczyna się od wybranego narzędzia albo ogólnego hasła „digitalizacja”.",
+        blocked: "Nie. Projekt zaczyna się od wybranego systemu albo ogólnego hasła „digitalizacja”.",
         risk: "Problem jest opisany ogólnie, ale brakuje stanu bazowego, właściciela albo wpływu biznesowego.",
         ready: "Tak. Wskazano etap procesu, właściciela, stan bazowy i mierzalny wpływ biznesowy.",
       },
@@ -4659,8 +4897,8 @@ const readinessPl = {
       prompt: "Czy przed startem uzgodniono mierzalne kryteria powodzenia?",
       answers: {
         blocked: "Nie. Jedynym kryterium sukcesu jest uruchomienie systemu.",
-        risk: "KPI są wymienione, ale nie mają wartości bazowej, celu albo właściciela pomiaru.",
-        ready: "Tak. Uzgodniono 2–4 KPI z wartością bazową, celem, terminem i właścicielem pomiaru.",
+        risk: "Mierniki są wymienione, ale nie mają wartości bazowej, celu albo właściciela pomiaru.",
+        ready: "Tak. Uzgodnione mierniki mają wartość bazową, cel, termin i właściciela pomiaru.",
       },
     },
     "ownership.business_owner": {
@@ -4681,11 +4919,11 @@ const readinessPl = {
       },
     },
     "process.current_state": {
-      prompt: "Czy stan obecny został zmapowany end-to-end, razem z wyjątkami i zakupami operacyjnymi?",
+      prompt: "Czy zmapowano pełny przebieg obecnego procesu, wraz z wyjątkami i zakupami operacyjnymi?",
       answers: {
         blocked: "Nie ma uzgodnionej i zweryfikowanej mapy procesu.",
-        risk: "Zmapowano główną ścieżkę lub sourcing, ale pominięto wyjątki, zamówienia, odbiór albo faktury.",
-        ready: "Mapa obejmuje source-to-pay, role, systemy, dane, wyjątki i ręczne obejścia.",
+        risk: "Zmapowano główną ścieżkę lub wybór dostawcy, ale pominięto wyjątki, zamówienia, odbiór albo faktury.",
+        ready: "Mapa obejmuje proces od identyfikacji potrzeby do rozliczenia zakupu, a także role, systemy, dane, wyjątki i ręczne obejścia.",
       },
     },
     "process.target_state": {
@@ -4708,7 +4946,7 @@ const readinessPl = {
       prompt: "Czy wymagania są wystarczająco znane albo mają zaplanowaną ścieżkę ich odkrycia?",
       answers: {
         blocked: "Potrzeba nie jest zrozumiana, ale oczekuje się od dostawcy konfiguracji rozwiązania docelowego.",
-        risk: "Niepewność jest znana, ale nie przewidziano czasu, prototypu ani reguł zakończenia discovery.",
+        risk: "Niepewność jest znana, ale nie przewidziano czasu, prototypu ani kryteriów zakończenia prac rozpoznawczych.",
         ready: "Wymaganie jest potwierdzone jako stabilne albo ma zaplanowane badanie użytkowników, dialog z rynkiem lub prototyp z kryteriami decyzji.",
       },
     },
@@ -4721,17 +4959,17 @@ const readinessPl = {
       },
     },
     "data_automation.ai": {
-      prompt: "Czy każde zastosowanie AI lub automatyzacji ma określone zadanie, walidację i bezpieczny fallback?",
+      prompt: "Czy każde zastosowanie AI lub automatyzacji ma określone zadanie, sposób walidacji i bezpieczną procedurę awaryjną?",
       answers: {
         blocked: "AI ma zastąpić brakujące wymagania, dane lub odpowiedzialność za decyzję.",
         risk: "Jest ogólny pomysł „użycia AI”, ale bez testu jakości, właściciela i procedury awaryjnej.",
-        ready: "AI nie jest w zakresie albo każde zastosowanie ma określone wejście, wynik, próg akceptacji, właściciela człowieka i fallback.",
+        ready: "AI nie jest objęte zakresem albo każde zastosowanie ma określone dane wejściowe, wynik, próg akceptacji, właściciela po stronie organizacji i procedurę awaryjną.",
       },
     },
     "governance.boundary": {
       prompt: "Czy polityka zakupowa definiuje granice kontroli, a każdy wymóg ma wskazane źródło?",
       answers: {
-        blocked: "Nie ma właściciela compliance albo wszystkie historyczne kroki są traktowane jako obowiązkowe.",
+        blocked: "Nie ma właściciela zgodności albo wszystkie historyczne kroki są traktowane jako obowiązkowe.",
         risk: "Polityka istnieje, ale nie rozdziela wymogów prawa, uprawnień, ryzyka i lokalnego zwyczaju.",
         ready: "Każda kontrola ma źródło, właściciela i uzasadnienie; granica obejmuje uprawnienia, konkurencję, etykę i dokumentację.",
       },
@@ -4740,14 +4978,14 @@ const readinessPl = {
       prompt: "Czy matryca zatwierdzeń jest proporcjonalna do wartości i ryzyka oraz przetestowana na realnych scenariuszach?",
       answers: {
         blocked: "System musi bez zmian odtworzyć historyczną sekwencję albo brakuje ważnych uprawnień decyzyjnych.",
-        risk: "Matryca istnieje, ale ma wiele poziomów, niejasne wyjątki albo nie została przetestowana end-to-end.",
+        risk: "Matryca istnieje, ale ma wiele poziomów, niejasne wyjątki albo nie została przetestowana w pełnym przebiegu procesu.",
         ready: "Liczba akceptacji jest minimalna i proporcjonalna, wyjątki są kontrolowane, a reprezentatywne scenariusze przeszły test.",
       },
     },
     "adoption.users": {
       prompt: "Czy kluczowi użytkownicy mają realny udział w projektowaniu i testach oraz przydzielony na to czas?",
       answers: {
-        blocked: "Nie. Użytkownicy zobaczą rozwiązanie dopiero na szkoleniu przed go-live.",
+        blocked: "Nie. Użytkownicy zobaczą rozwiązanie dopiero podczas szkolenia przed uruchomieniem produkcyjnym.",
         risk: "Użytkownicy są konsultowani, ale późno, nieregularnie albo bez przydzielonego czasu.",
         ready: "Reprezentanci wszystkich głównych ról uczestniczą w projektowaniu, testach i akceptacji procesu.",
       },
@@ -4755,25 +4993,25 @@ const readinessPl = {
     "adoption.plan": {
       prompt: "Czy istnieje plan adopcji obejmujący komunikację, szkolenie, wsparcie i pomiar użycia?",
       answers: {
-        blocked: "Nie. Sukces kończy się na go-live, a obejścia mailowe i arkuszowe nie będą mierzone.",
+        blocked: "Nie. Miarą sukcesu jest wyłącznie uruchomienie produkcyjne, a obejścia mailowe i arkuszowe nie będą mierzone.",
         risk: "Plan zmiany istnieje, ale brakuje właścicieli, wsparcia po starcie albo mierników adopcji.",
         ready: "Plan ma właścicieli, harmonogram, wsparcie po starcie i mierniki, takie jak udział transakcji w systemie, wyjątki i czas cyklu.",
       },
     },
     "value_rollout.business_case": {
-      prompt: "Czy business case obejmuje pełny koszt i niepewność, a nie tylko cenę licencji?",
+      prompt: "Czy uzasadnienie biznesowe obejmuje pełny koszt i niepewność, a nie tylko cenę licencji?",
       answers: {
-        blocked: "Nie ma business case albo oszczędności są zadeklarowane bez danych i mechanizmu.",
+        blocked: "Nie ma uzasadnienia biznesowego albo oszczędności zadeklarowano bez danych i wskazania mechanizmu ich osiągnięcia.",
         risk: "Ujęto główne koszty, ale pominięto integracje, zmianę organizacyjną, utrzymanie albo scenariusze niepewności.",
-        ready: "Business case obejmuje licencje, wdrożenie, integracje, zmianę, utrzymanie, ryzyko i mierzalną wartość w kilku scenariuszach.",
+        ready: "Uzasadnienie biznesowe obejmuje licencje, wdrożenie, integracje, zmianę organizacyjną, utrzymanie, ryzyko i mierzalną wartość w kilku scenariuszach.",
       },
     },
     "value_rollout.rollout": {
-      prompt: "Czy rollout ma ograniczony pierwszy zakres, kryteria wyjścia i plan ciągłości operacyjnej?",
+      prompt: "Czy plan wdrożenia określa ograniczony pierwszy zakres, kryteria wyjścia i sposób zapewnienia ciągłości operacyjnej?",
       answers: {
-        blocked: "Plan zakłada nieodwracalny big bang mimo otwartych blokad procesu, danych lub adopcji.",
-        risk: "Są etapy, ale bez mierzalnych bramek, zasad zatrzymania albo planu powrotu.",
-        ready: "Pilot lub pierwsza fala ma ograniczony zakres, kryteria wejścia i wyjścia, właścicieli oraz plan ciągłości i powrotu.",
+        blocked: "Plan zakłada nieodwracalne, jednorazowe uruchomienie w pełnym zakresie mimo otwartych blokad dotyczących procesu, danych lub adopcji.",
+        risk: "Są etapy, ale bez mierzalnych kryteriów decyzyjnych, zasad zatrzymania albo planu powrotu.",
+        ready: "Pilotaż lub pierwsza fala ma ograniczony zakres, kryteria wejścia i wyjścia, właścicieli oraz plan ciągłości i powrotu.",
       },
     },
   },
@@ -4783,15 +5021,15 @@ type ReadinessShape = LangShape<typeof readinessPl>;
 
 const readinessEn = {
   metadata: {
-    title: "Procurement System Implementation Readiness | ProcuraCost",
+    title: "Organisational implementation readiness | ProcuraCost",
     description:
-      "Eight qualitative readiness gates before selecting and configuring a procurement system.",
+      "Eight qualitative areas for assessing organisational readiness before selecting and configuring a procurement system.",
   },
   eyebrow: "Implementation diagnostic",
-  title: "Procurement System Implementation Readiness",
+  title: "Organisational implementation readiness",
   subtitle:
-    "Eight gates before tool selection and configuration. The result is not a maturity audit and does not change the ProcuraCost cost model.",
-  duration: "About 6–8 minutes. Answers remain only in this browser tab.",
+    "Eight areas to assess before system selection and configuration. The result is not a maturity audit and does not change the ProcuraCost cost model.",
+  duration: "Answers remain only in this browser tab.",
   progress: (current: number, total: number) => `Domain ${current} of ${total}`,
   previous: "Back",
   next: "Continue",
@@ -4804,7 +5042,7 @@ const readinessEn = {
   calculatorCta: "Open the calculator without pre-filled data",
   practiceCta: "View Procurement&Beyond episode 8 material",
   sourceNote:
-    "The questions draw on practitioner observations from Procurement&Beyond episode 8 with Paweł Mamcarz. This is an expert interview, and the available transcript was generated automatically by YouTube. It informs questions and hypotheses only. It does not set thresholds, weights or ProcuraCost model parameters.",
+    "The source for these questions is a practitioner interview: Procurement&Beyond episode 8 with Paweł Mamcarz. The available transcript comes from automatic YouTube captions and has not been human verified. The material is used only to frame questions and hypotheses; it does not set thresholds, weights or ProcuraCost model parameters.",
   statuses: {
     blocked: "BLOCKED",
     risk: "AT RISK",
@@ -4814,52 +5052,52 @@ const readinessEn = {
     ready: {
       headline: "Ready for a controlled start",
       body:
-        "All eight domains meet the v1 minimum. The organisation may proceed to controlled tool selection or a pilot while retaining the supporting evidence. The result does not guarantee implementation success.",
+        "All eight domains meet the conditions assessed by this diagnostic. The organisation may begin controlled system selection or a pilot while retaining the evidence supporting its responses. The result does not guarantee implementation success.",
     },
     risk: {
       headline: "Conditional readiness",
       body:
-        "No blocker is present, but at least one domain requires action. Discovery or a bounded pilot may continue. Before full rollout, every risk needs an owner, due date and sponsor acceptance.",
+        "No blocker is present, but at least one domain requires action. Requirements clarification or a limited pilot may continue. Before implementation at full scale, every risk needs an owner, due date and sponsor acceptance.",
     },
     blocked: {
       headline: "Implementation blocked",
       body:
-        "At least one prerequisite is missing. Full-scale configuration or rollout should not begin. Only work required to close the blockers should continue, after which the diagnostic should be repeated.",
+        "At least one prerequisite is missing. Full-scale configuration or implementation should not begin. Only work required to close the blockers should continue, after which the diagnostic should be repeated.",
     },
   },
   domains: {
     purpose: {
-      label: "Business purpose and process friction",
+      label: "Business objective and process inefficiency",
       riskAction:
-        "Complete a one-page problem statement and establish baseline and target KPI values.",
+        "Complete the problem statement and establish baseline and target values for the agreed measures.",
       blockedAction:
-        "Pause tool selection. Map the top one to three sources of friction and validate their cost or operational impact.",
+        "Pause system selection. Identify the most material process inefficiencies and validate their cost or operational impact.",
     },
     ownership: {
       label: "Business ownership and mandate",
       riskAction:
         "Agree an ownership charter covering authority, capacity, decisions, succession and escalation time.",
       blockedAction:
-        "Appoint a business owner and executive sponsor before selecting or configuring the platform.",
+        "Appoint a business owner and executive sponsor before selecting or configuring the system.",
     },
     process: {
-      label: "End-to-end process scope",
+      label: "Complete procurement process scope",
       riskAction:
-        "Extend the map to cover P2P, exceptions and accountabilities. Close process decisions before configuration.",
+        "Extend the map to cover operational purchasing, exceptions and accountabilities. Resolve process decisions before configuration.",
       blockedAction:
-        "Run an as-is/to-be design workshop and do not use system configuration as a substitute for process design.",
+        "Run a current-state mapping and target-process design workshop. System configuration must not replace process design.",
     },
     requirements: {
-      label: "Requirements and controlled discovery",
+      label: "Requirements and controlled clarification",
       riskAction:
-        "Complete requirement-to-problem-to-owner-to-acceptance traceability and reserve a controlled discovery phase.",
+        "Complete requirement-to-problem-to-owner-to-acceptance traceability and plan controlled clarification work.",
       blockedAction:
         "Pause the final specification. First validate the need and value criteria with users and the market.",
     },
     data_automation: {
       label: "Data, integrations and responsible automation",
       riskAction:
-        "Run a data-quality sample and document integration contracts. For AI, define the test, owner, provenance and fallback.",
+        "Run a data-quality sample and document integration contracts. For AI, define the test, owner, provenance and contingency procedure.",
       blockedAction:
         "Remove undefined AI promises from scope and stop configuration that depends on unverified data.",
     },
@@ -4873,22 +5111,22 @@ const readinessEn = {
     adoption: {
       label: "Adoption and change capacity",
       riskAction:
-        "Allocate user capacity and assign owners for UAT, communication, training and support.",
+        "Allocate user capacity and assign owners for user acceptance testing, communication, training and support.",
       blockedAction:
-        "Do not approve go-live without user representation, process testing and a method for measuring workarounds.",
+        "Do not approve production launch without user representation, process testing and a method for measuring workarounds.",
     },
     value_rollout: {
-      label: "TCO, business case and rollout",
+      label: "TCO, business justification and implementation plan",
       riskAction:
         "Complete TCO with omitted costs and scenarios. Give every wave measurable entry, exit and stop criteria.",
       blockedAction:
-        "Pause full rollout. Build a verifiable business case and a bounded pilot that resolves the most material unknowns.",
+        "Pause implementation at full scale. Prepare a verifiable business justification and a limited pilot that resolves the most material unknowns.",
     },
   },
   questions: {
     "purpose.friction": {
       prompt:
-        "Does the project address a named source of friction in a specific part of the procurement process?",
+        "Does the project address a specific inefficiency in a defined part of the procurement process?",
       answers: {
         blocked:
           "No. The project starts with a selected tool or a general “digital transformation” objective.",
@@ -4901,11 +5139,11 @@ const readinessEn = {
     "purpose.success": {
       prompt: "Have measurable success criteria been agreed before the project starts?",
       answers: {
-        blocked: "No. Going live is the only definition of success.",
+        blocked: "No. Production launch is the only definition of success.",
         risk:
           "KPIs are listed, but their baseline, target or measurement owner is missing.",
         ready:
-          "Yes. Two to four KPIs have a baseline, target, measurement date and accountable owner.",
+          "Yes. The agreed measures have a baseline, target, measurement date and accountable owner.",
       },
     },
     "ownership.business_owner": {
@@ -4933,13 +5171,13 @@ const readinessEn = {
     },
     "process.current_state": {
       prompt:
-        "Has the current process been mapped end to end, including exceptions and operational purchasing?",
+        "Has the complete current process been mapped, including exceptions and operational purchasing?",
       answers: {
         blocked: "There is no agreed and verified current-state process map.",
         risk:
-          "The main path or sourcing is mapped, but exceptions, orders, receipt or invoicing are omitted.",
+          "The main path or supplier selection is mapped, but exceptions, orders, receipt or invoicing are omitted.",
         ready:
-          "The map covers source-to-pay, roles, systems, data, exceptions and manual workarounds.",
+          "The map covers the process from need identification through purchase settlement, together with roles, systems, data, exceptions and manual workarounds.",
       },
     },
     "process.target_state": {
@@ -4967,12 +5205,12 @@ const readinessEn = {
     },
     "requirements.discovery": {
       prompt:
-        "Are requirements sufficiently known, or is there a planned path to discover them?",
+        "Are requirements sufficiently defined, or is there a controlled plan to clarify them?",
       answers: {
         blocked:
           "The need is not understood, yet the vendor is expected to configure the final solution.",
         risk:
-          "Uncertainty is recognised, but no time, prototype or discovery exit criteria are defined.",
+          "Uncertainty is recognised, but no time, prototype or criteria for ending the clarification work are defined.",
         ready:
           "The requirement is confirmed as stable, or user research, market engagement or a prototype is planned with decision criteria.",
       },
@@ -4990,14 +5228,14 @@ const readinessEn = {
     },
     "data_automation.ai": {
       prompt:
-        "Does every AI or automation use case have a defined task, validation method and safe fallback?",
+        "Does every AI or automation use case have a defined task, validation method and safe contingency procedure?",
       answers: {
         blocked:
           "AI is expected to replace missing requirements, missing data or human accountability for the decision.",
         risk:
-          "There is a general intention to “use AI”, but no quality test, owner or fallback procedure.",
+          "There is a general intention to “use AI”, but no quality test, owner or contingency procedure.",
         ready:
-          "AI is out of scope, or every use case has defined inputs, outputs, acceptance criteria, a human owner and fallback.",
+          "AI is out of scope, or every use case has defined inputs, outputs, acceptance criteria, a human owner and contingency procedure.",
       },
     },
     "governance.boundary": {
@@ -5019,7 +5257,7 @@ const readinessEn = {
         blocked:
           "The system must reproduce the historical sequence unchanged, or essential decision authority is missing.",
         risk:
-          "The matrix exists, but has excessive levels, unclear exceptions or has not been tested end to end.",
+          "The matrix exists, but has excessive levels, unclear exceptions or has not been tested across the complete process.",
         ready:
           "Approvals are minimal and proportionate, exceptions are controlled, and representative scenarios have been tested.",
       },
@@ -5029,7 +5267,7 @@ const readinessEn = {
         "Do key users have meaningful participation in design and testing, with allocated time?",
       answers: {
         blocked:
-          "No. Users will first see the solution during training immediately before go-live.",
+          "No. Users will first see the solution during training immediately before production launch.",
         risk:
           "Users are consulted, but late, irregularly or without allocated capacity.",
         ready:
@@ -5041,7 +5279,7 @@ const readinessEn = {
         "Is there an adoption plan covering communication, training, support and usage measurement?",
       answers: {
         blocked:
-          "No. Success ends at go-live, and email or spreadsheet workarounds will not be measured.",
+          "No. Success ends at production launch, and email or spreadsheet workarounds will not be measured.",
         risk:
           "A change plan exists, but ownership, post-launch support or adoption metrics are missing.",
         ready:
@@ -5050,26 +5288,26 @@ const readinessEn = {
     },
     "value_rollout.business_case": {
       prompt:
-        "Does the business case cover full cost and uncertainty rather than licence price alone?",
+        "Does the business justification cover full cost and uncertainty rather than licence price alone?",
       answers: {
         blocked:
-          "There is no business case, or savings are asserted without data and a defined mechanism.",
+          "There is no business justification, or savings are asserted without data and a defined mechanism.",
         risk:
           "Major costs are included, but integration, organisational change, ongoing operation or uncertainty scenarios are omitted.",
         ready:
-          "The business case covers licences, implementation, integration, change, operation, risk and measurable value across multiple scenarios.",
+          "The business justification covers licences, implementation, integration, organisational change, operation, risk and measurable value across multiple scenarios.",
       },
     },
     "value_rollout.rollout": {
       prompt:
-        "Does the rollout have a bounded first scope, exit criteria and an operational continuity plan?",
+        "Does the implementation plan define a limited initial scope, exit criteria and arrangements for operational continuity?",
       answers: {
         blocked:
-          "The plan assumes an irreversible big bang despite unresolved process, data or adoption blockers.",
+          "The plan assumes an irreversible, single full-scale launch despite unresolved process, data or adoption blockers.",
         risk:
-          "Phases exist, but there are no measurable gates, stop rules or fallback plan.",
+          "Phases exist, but there are no measurable decision gates, stop rules or rollback plan.",
         ready:
-          "The pilot or first wave has bounded scope, entry and exit criteria, owners, and continuity and fallback plans.",
+          "The pilot or first wave has a limited scope, entry and exit criteria, owners, and continuity and rollback arrangements.",
       },
     },
   },
@@ -5081,12 +5319,12 @@ const practicePl = {
   metadata: {
     title: "Procurement&Beyond #8: wdrożenie systemu zakupowego | ProcuraCost",
     description:
-      "Materiał praktyczny o tarciu procesu, właścicielstwie, wymaganiach, TCO i odpowiedzialnej automatyzacji.",
+      "Materiał praktyczny o nieefektywności procesu, odpowiedzialności biznesowej, wymaganiach, TCO i odpowiedzialnej automatyzacji.",
   },
   eyebrow: "Materiał praktyczny",
   title: "Nawet najlepsze narzędzie nie uratuje złego wdrożenia",
   subtitle:
-    "Przewodnik po obserwacjach z ósmego odcinka Procurement&Beyond i ich ograniczonym zastosowaniu w diagnostyce ProcuraCost.",
+    "Uporządkowany przegląd obserwacji z ósmego odcinka Procurement&Beyond oraz zasad ich wykorzystania w diagnostyce ProcuraCost.",
   recordingLanguageNotice:
     "Nagranie jest w języku polskim. Odnośniki czasowe prowadzą do konkretnych fragmentów rozmowy.",
   embedTitle:
@@ -5105,9 +5343,9 @@ const practicePl = {
         "Rozmowa rozróżnia pracę nadającą się do standaryzacji od sytuacji wymagających osądu eksperta.",
     },
     friction_mapping: {
-      title: "Tarcie procesu przed wyborem narzędzia",
+      title: "Nieefektywność procesu przed wyborem systemu",
       body:
-        "Punktem wyjścia jest rozpoznanie konkretnego tarcia procesu, a nie deklaracja wdrożenia wybranej platformy.",
+        "Punktem wyjścia jest rozpoznanie konkretnej nieefektywności procesu, a nie deklaracja wdrożenia wybranego systemu.",
     },
     marginal_requirements: {
       title: "Wymagania marginalne",
@@ -5115,9 +5353,9 @@ const practicePl = {
         "Fragment pokazuje ryzyko rozbudowy specyfikacji o szczegóły aukcyjne o niewielkim znaczeniu dla głównego problemu.",
     },
     operational_purchasing: {
-      title: "Zakupy operacyjne i zakres P2P",
+      title: "Zakupy operacyjne w pełnym przebiegu procesu",
       body:
-        "Sourcing nie wyczerpuje procesu. Zamówienia, odbiór, faktury i wyjątki wymagają jawnego miejsca w zakresie.",
+        "Wybór dostawcy nie wyczerpuje procesu zakupowego. Zamówienia, odbiór, faktury i wyjątki muszą być jednoznacznie ujęte w zakresie.",
     },
     requirements_blind_spots: {
       title: "Luki w specyfikacji",
@@ -5142,7 +5380,7 @@ const practicePl = {
     legacy_procedure: {
       title: "System nie powinien kopiować archaicznej sekwencji",
       body:
-        "Konfiguracja utrwalająca historyczne kroki bez ponownego uzasadnienia może cyfryzować tarcie zamiast je usuwać.",
+        "Konfiguracja utrwalająca historyczne kroki bez ponownego uzasadnienia może cyfryzować nieefektywność zamiast ją usuwać.",
     },
     policy_boundary: {
       title: "Polityka jako granica kontroli",
@@ -5152,7 +5390,7 @@ const practicePl = {
     tco: {
       title: "Pełny koszt zamiast ceny zakupu",
       body:
-        "Business case powinien odróżniać cenę zakupu od kosztów wdrożenia, integracji, utrzymania i zmiany.",
+        "Uzasadnienie biznesowe powinno odróżniać cenę zakupu od kosztów wdrożenia, integracji, utrzymania i zmiany organizacyjnej.",
     },
     bielik: {
       title: "Bielik i strukturyzowanie danych rynkowych",
@@ -5174,9 +5412,9 @@ const practicePl = {
     title: "Granica wykorzystania materiału",
     supportsTitle: "Co materiał wspiera",
     supports: [
-      "Projektowanie pytań o tarcie procesu, właścicielstwo, wymagania, dane, adopcję i TCO.",
+      "Projektowanie pytań o nieefektywność procesu, odpowiedzialność biznesową, wymagania, dane, adopcję i TCO.",
       "Formułowanie hipotez do późniejszego sprawdzenia na danych organizacji.",
-      "Planowanie warsztatów discovery, mapowania procesu i ograniczonego pilota.",
+      "Planowanie warsztatów rozpoznania potrzeb, mapowania procesu i ograniczonego pilotażu.",
     ],
     doesNotSupportTitle: "Czego materiał nie wspiera",
     doesNotSupport: [
@@ -5188,7 +5426,7 @@ const practicePl = {
   bielikTcoBoundary:
     "Bielik może wspierać strukturyzowanie danych rynkowych. Obliczenia TCO wykonuje przejrzysty, deterministyczny model. Model językowy nie oblicza wyniku.",
   sourceNote:
-    "Pytania wykorzystują praktyczne obserwacje z rozmowy Procurement&Beyond #8 z Pawłem Mamcarzem. Materiał jest wywiadem eksperckim, a dostępny transkrypt został wygenerowany automatycznie przez YouTube. Służy do formułowania pytań i hipotez. Nie wyznacza progów, wag ani parametrów modelu ProcuraCost.",
+    "Źródłem pytań jest rozmowa branżowa Procurement&Beyond #8 z Pawłem Mamcarzem. Dostępny transkrypt pochodzi z automatycznych napisów YouTube i nie został zweryfikowany przez człowieka. Materiał służy wyłącznie do formułowania pytań i hipotez; nie wyznacza progów, wag ani parametrów modelu ProcuraCost.",
   readinessCta: "Przejdź do diagnostyki gotowości",
   calculatorCta: "Otwórz kalkulator",
 } as const;
@@ -5199,12 +5437,12 @@ const practiceEn = {
   metadata: {
     title: "Procurement&Beyond episode 8: procurement system implementation | ProcuraCost",
     description:
-      "Practitioner material on process friction, ownership, requirements, TCO and responsible automation.",
+      "Practitioner material on process inefficiency, business ownership, requirements, TCO and responsible automation.",
   },
   eyebrow: "Practitioner material",
   title: "Even the best tool cannot rescue a poor implementation",
   subtitle:
-    "A guide to observations from Procurement&Beyond episode 8 and their bounded use in the ProcuraCost diagnostic.",
+    "A structured review of observations from Procurement&Beyond episode 8 and the conditions for using them in the ProcuraCost diagnostic.",
   recordingLanguageNotice:
     "The recording is in Polish. Timestamp links open the relevant parts of the conversation.",
   embedTitle:
@@ -5223,9 +5461,9 @@ const practiceEn = {
         "The conversation distinguishes work suited to standardisation from situations that require expert judgement.",
     },
     friction_mapping: {
-      title: "Process friction before tool selection",
+      title: "Process inefficiency before system selection",
       body:
-        "The starting point is a specific source of process friction, not a declaration that a chosen platform will be implemented.",
+        "The starting point is a specific process inefficiency, not a declaration that a chosen system will be implemented.",
     },
     marginal_requirements: {
       title: "Marginal requirements",
@@ -5233,9 +5471,9 @@ const practiceEn = {
         "This segment illustrates the risk of expanding a specification with auction details that have limited relevance to the main problem.",
     },
     operational_purchasing: {
-      title: "Operational purchasing and P2P scope",
+      title: "Operational purchasing in the complete process",
       body:
-        "Sourcing is not the whole process. Orders, receipt, invoices and exceptions need an explicit place in scope.",
+        "Supplier selection is not the whole procurement process. Orders, receipt, invoices and exceptions need an explicit place in scope.",
     },
     requirements_blind_spots: {
       title: "Specification blind spots",
@@ -5260,7 +5498,7 @@ const practiceEn = {
     legacy_procedure: {
       title: "A system should not copy an archaic sequence",
       body:
-        "Configuration that preserves historical steps without renewed justification may digitise friction instead of removing it.",
+        "Configuration that preserves historical steps without renewed justification may digitise inefficiency instead of removing it.",
     },
     policy_boundary: {
       title: "Policy as a control boundary",
@@ -5270,7 +5508,7 @@ const practiceEn = {
     tco: {
       title: "Full cost rather than purchase price",
       body:
-        "A business case should distinguish purchase price from implementation, integration, operating and change costs.",
+        "A business justification should distinguish purchase price from implementation, integration, operating and organisational-change costs.",
     },
     bielik: {
       title: "Bielik and market-data structuring",
@@ -5292,9 +5530,9 @@ const practiceEn = {
     title: "Boundary for using this material",
     supportsTitle: "What the material supports",
     supports: [
-      "Designing questions about process friction, ownership, requirements, data, adoption and TCO.",
+      "Designing questions about process inefficiency, business ownership, requirements, data, adoption and TCO.",
       "Forming hypotheses for later testing with organisational data.",
-      "Planning discovery workshops, process mapping and a bounded pilot.",
+      "Planning requirements-clarification workshops, process mapping and a limited pilot.",
     ],
     doesNotSupportTitle: "What the material does not support",
     doesNotSupport: [
@@ -5306,7 +5544,7 @@ const practiceEn = {
   bielikTcoBoundary:
     "Bielik may support market-data structuring. The transparent deterministic model performs the TCO calculation. The language model does not calculate the result.",
   sourceNote:
-    "The questions draw on practitioner observations from Procurement&Beyond episode 8 with Paweł Mamcarz. This is an expert interview, and the available transcript was generated automatically by YouTube. It informs questions and hypotheses only. It does not set thresholds, weights or ProcuraCost model parameters.",
+    "The source for these questions is a practitioner interview: Procurement&Beyond episode 8 with Paweł Mamcarz. The available transcript comes from automatic YouTube captions and has not been human verified. The material is used only to frame questions and hypotheses; it does not set thresholds, weights or ProcuraCost model parameters.",
   readinessCta: "Open the readiness diagnostic",
   calculatorCta: "Open the calculator",
 } satisfies PracticeShape;
