@@ -1,11 +1,8 @@
 import Link from "next/link";
 
+import BoundaryField from "@/components/BoundaryField";
 import EvidenceDocket from "@/components/evidence/EvidenceDocket";
-import {
-  buildCompactHomeRail,
-  homeEvidenceRecords,
-} from "@/components/home/home-surface-data";
-import { ProcessRail } from "@/components/process-map/ProcessRail";
+import { homeEvidenceRecords } from "@/components/home/home-surface-data";
 import { homeT, type Lang } from "@/lib/i18n";
 import { SITE_ROUTES } from "@/lib/site-routes";
 
@@ -33,7 +30,6 @@ function siteHref(key: string, lang: Lang) {
 
 export default function EvidenceFieldHome({ lang }: EvidenceFieldHomeProps) {
   const tx = homeT[lang];
-  const rail = buildCompactHomeRail(lang);
   const evidenceRecords = homeEvidenceRecords();
   const jobs = tx.jobs.items.map((copy, index) => ({
     copy,
@@ -81,35 +77,31 @@ export default function EvidenceFieldHome({ lang }: EvidenceFieldHomeProps) {
       </header>
 
       <section
-        aria-labelledby="home-process-rail-title"
+        aria-labelledby="home-topology-title"
         className="border-b border-gray-200 py-10"
-        data-home-process-rail
+        data-home-topology-section
       >
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">
-          {tx.rail.eyebrow}
+          {tx.boundary.eyebrow}
         </p>
         <div className="mt-3 grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(16rem,0.75fr)] md:items-end">
           <h2
-            id="home-process-rail-title"
+            id="home-topology-title"
             className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl"
           >
-            {tx.rail.title}
+            {tx.boundary.title}
           </h2>
-          <p className="text-sm leading-6 text-gray-600">{tx.rail.note}</p>
+          <p className="text-sm leading-6 text-gray-600">
+            {tx.boundary.note}
+          </p>
         </div>
-        <div className="mt-7">
-          <ProcessRail
-            viewModel={rail}
-            mode="read-only"
-            idPrefix="home-illustration"
-          />
-        </div>
+        <BoundaryField lang={lang} />
         <Link
           href={siteHref("calculator", lang)}
           className={"mt-4 " + textLinkClass}
-          data-home-rail-action
+          data-home-topology-action
         >
-          {tx.rail.action}
+          {tx.boundary.action}
         </Link>
       </section>
 

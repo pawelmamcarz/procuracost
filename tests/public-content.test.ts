@@ -296,7 +296,7 @@ describe("public editorial integrity", () => {
     for (const path of b2Files) {
       const source = await readPublicFile(path);
       expect(source, path).not.toMatch(
-        /@\/lib\/(?:calculations|scenarios|process-templates)|BoundaryField|DecisionMap|PROCESS_TYPE_META|TECH_LEVELS|\btotalScore\b|\bpct\b/
+        /@\/lib\/(?:calculations|scenarios|process-templates)|DecisionMap|PROCESS_TYPE_META|TECH_LEVELS|\btotalScore\b|\bpct\b/
       );
     }
   });

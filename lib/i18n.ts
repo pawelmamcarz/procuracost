@@ -810,34 +810,18 @@ const homePl = {
   neutrality:
     "Model dopuszcza oba kierunki różnicy. Znak wyniku nie jest założony.",
   boundary: {
-    eyebrow: "Granica decyzji",
-    title: "Dwie ścieżki. Ta sama granica zgodności.",
-    tunnelLabel: "Tunel",
-    tunnelDescription: "Sekwencyjna procedura",
-    boundaryLabel: "Granica dopuszczalności",
+    eyebrow: "Wspólna granica decyzji",
+    title: "Jedna granica. Dwa projekty przebiegu.",
+    tunnelLabel: "Formalna ścieżka sekwencyjna",
+    tunnelDescription: "Bramy prowadzą przez ustaloną kolejność.",
+    boundaryLabel: "Ramy prawne i ład zakupowy",
     notation: PHI_SET.pl,
-    fieldLabel: "Pole dopuszczalne",
-    fieldDescription: "Adaptacja w jawnych granicach",
-    caption:
-      "Pole nie oznacza dowolności. Obie ścieżki pozostają we wspólnej granicy uprawnień, konkurencji, etyki i dokumentacji.",
-  },
-  compactRail: {
-    steps: {
-      formalFrame: "Opis potrzeb i ram",
-      formalCheck: "Kontrola proceduralna",
-      formalEvaluation: "Ocena ofert",
-      formalAward: "Decyzja o udzieleniu",
-      adaptiveFrame: "Opis problemu i ram",
-      adaptiveMarket: "Konsultacje rynku",
-      adaptiveDesign: "Projekt rozwiązania",
-      adaptiveMerge: "Scalenie wymagań",
-    },
-  },
-  rail: {
-    eyebrow: "Projekt przebiegu procesu zakupowego",
-    title: "Dwie topologie pod wspólną granicą",
+    fieldLabel: "Adaptacyjna ścieżka zgodna z ramami",
+    fieldDescription: "Rozgałęzienia pozwalają iterować i ponownie scalać pracę.",
     note:
-      "Schemat ilustruje topologię przebiegu. Sam nie stanowi oszacowania czasu ani kosztu.",
+      "Schemat pokazuje konstrukcję pracy, nie wynik ani oszacowanie czasu lub kosztu.",
+    caption:
+      "Obie ścieżki pozostają w tych samych ramach uprawnień, konkurencji, etyki i dokumentacji.",
     action: "Otwórz edytowalne porównanie procesów",
   },
   modelContract: {
@@ -974,34 +958,18 @@ const homeEn = {
   neutrality:
     "The model permits either direction of difference. The sign is not assumed.",
   boundary: {
-    eyebrow: "Decision boundary",
-    title: "Two paths. The same compliance boundary.",
-    tunnelLabel: "Tunnel",
-    tunnelDescription: "Sequential procedure",
-    boundaryLabel: "Admissibility boundary",
+    eyebrow: "Shared decision boundary",
+    title: "One boundary. Two workflow designs.",
+    tunnelLabel: "Formal sequential alternative",
+    tunnelDescription: "Gates carry the work through an established sequence.",
+    boundaryLabel: "Legal and governance boundary",
     notation: PHI_SET.en,
-    fieldLabel: "Admissible field",
-    fieldDescription: "Adaptation within explicit bounds",
-    caption:
-      "A field does not mean unrestricted choice. Both paths remain inside the same boundary of authority, competition, ethics, and documentation.",
-  },
-  compactRail: {
-    steps: {
-      formalFrame: "Needs and boundary definition",
-      formalCheck: "Procedure check",
-      formalEvaluation: "Tender evaluation",
-      formalAward: "Award decision",
-      adaptiveFrame: "Problem and boundary definition",
-      adaptiveMarket: "Market consultation",
-      adaptiveDesign: "Solution design",
-      adaptiveMerge: "Requirements consolidation",
-    },
-  },
-  rail: {
-    eyebrow: "Procurement workflow design",
-    title: "Two topologies under one shared boundary",
+    fieldLabel: "Adaptive compliant alternative",
+    fieldDescription: "Branches allow work to iterate and rejoin.",
     note:
-      "The rail illustrates workflow topology. It is not, by itself, an estimate of time or cost.",
+      "The diagram shows how work is structured, not an outcome or an estimate of time or cost.",
+    caption:
+      "Both paths remain within the same boundaries of authority, competition, ethics and documentation.",
     action: "Open the editable process comparison",
   },
   modelContract: {
