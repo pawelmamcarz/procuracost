@@ -17,12 +17,14 @@ export interface EditorUiIssue extends IssueLocation {
   source: "editor";
   code:
     | "locked_step"
+    | "required_legal_ancestor"
     | "unknown_step"
     | "unknown_role"
     | "invalid_calibrated_range"
     | "invalid_step_kind";
   messageKey:
     | "calculatorV2.validation.lockedStep"
+    | "calculatorV2.validation.requiredLegalAncestor"
     | "calculatorV2.validation.unknownStep"
     | "calculatorV2.validation.unknownRole"
     | "calculatorV2.validation.invalidCalibratedRange"
@@ -33,10 +35,12 @@ export interface ContextUiIssue extends IssueLocation {
   source: "context";
   code:
     | "illegal_context"
+    | "registered_design_required"
     | "incompatible_locked_wait_shape"
     | "context_reconciliation_failed";
   messageKey:
     | "calculatorV2.validation.illegalContext"
+    | "calculatorV2.validation.registeredDesignRequired"
     | "calculatorV2.validation.incompatibleLockedWaitShape"
     | "calculatorV2.validation.contextReconciliationFailed";
 }

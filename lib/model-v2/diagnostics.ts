@@ -2,6 +2,7 @@ import { deepFreeze } from "./deep-freeze";
 import { MODEL_V2_METADATA, type AlternativeId } from "./domain";
 import {
   calculateComparison,
+  calculateSwappedComparisonForDiagnostics,
   type ComparisonCalculationInput,
   type ComparisonCalculationResult,
 } from "./engine";
@@ -270,17 +271,6 @@ export function renderDiagnosticsMarkdown(report: ModelDiagnosticsV2): string {
   ].join("\n");
 }
 
-function swappedInput(input: ComparisonCalculationInput): ComparisonCalculationInput {
-  const cloned = clone(input);
-  return {
-    ...cloned,
-    alternatives: {
-      formalSequential: cloned.alternatives.adaptiveCompliant,
-      adaptiveCompliant: cloned.alternatives.formalSequential,
-    },
-  };
-}
-
 function same(left: unknown, right: unknown): boolean {
   return JSON.stringify(left) === JSON.stringify(right);
 }
@@ -290,7 +280,7 @@ export function auditSwapSymmetry(
   explicitScenarioId?: string
 ): SwapAuditV2 {
   const original = calculateComparison(input);
-  const swapped = calculateComparison(swappedInput(input));
+  const swapped = calculateSwappedComparisonForDiagnostics(input);
   const failures: string[] = [];
   if (!same(swapped.formalSequential, original.adaptiveCompliant)) {
     failures.push("formalSequential result did not equal original adaptiveCompliant");

@@ -4,10 +4,12 @@ import {
   CONTRACT_DESIGN_REGISTRY,
   V2_URL_KEYS,
   WORKFLOW_DESIGN_REGISTRY,
+  assertRegisteredScenarioContext,
   assertValidCalibratedValue,
   buildCalculationInputFromDraft,
   buildDecisionRecordV2,
   resolveLegalWaits,
+  resolveWorkflowDesign,
   stateForScenarioV2,
   validateProcessMap,
   type AlternativeId,
@@ -47,6 +49,8 @@ export const PROCESS_MAP_VALIDATION_CODES = [
   "unknown_predecessor",
   "cycle",
   "invalid_value",
+  "invalid_required_legal_dependency_contract",
+  "missing_required_legal_ancestor",
   "invalid_locked_legal_wait",
   "missing_locked_legal_wait",
   "unexpected_locked_legal_wait",
@@ -119,6 +123,14 @@ function contextIssue(): ContextUiIssue {
     source: "context",
     code: "illegal_context",
     messageKey: "calculatorV2.validation.illegalContext",
+  };
+}
+
+function registeredContextIssue(): ContextUiIssue {
+  return {
+    source: "context",
+    code: "registered_design_required",
+    messageKey: "calculatorV2.validation.registeredDesignRequired",
   };
 }
 
@@ -498,12 +510,19 @@ function collectDesignIssues(state: CalculatorWorkspaceState): DesignUiIssue[] {
   return ALTERNATIVE_IDS.flatMap((alternativeId) => {
     const workflowId = state.draft.designIds.workflow[alternativeId];
     const contractId = state.draft.designIds.contract[alternativeId];
+    const workflow =
+      state.draft.alternatives[alternativeId].workflowDesign;
+    const requiresRegisteredProvenance = workflow.steps.some(
+      ({ lockedLegalProvenance }) => lockedLegalProvenance !== undefined
+    );
     const workflowCompatible = WORKFLOW_DESIGN_REGISTRY.some(
       (entry) =>
         entry.id === workflowId &&
         entry.scenarioId === state.scenarioId &&
         entry.alternativeId === alternativeId
-    );
+    ) &&
+      (!requiresRegisteredProvenance ||
+        workflow.registeredDesignId === workflowId);
     const contractCompatible = CONTRACT_DESIGN_REGISTRY.some(
       (entry) =>
         entry.id === contractId &&
@@ -579,6 +598,12 @@ export function deriveCalculatorWorkspaceValidation(
     ...collectStepKindIssues(state),
   ];
 
+  try {
+    assertRegisteredScenarioContext(state.draft);
+  } catch {
+    issues.push(registeredContextIssue());
+  }
+
   let expectedLegalWaits: ReturnType<typeof resolveLegalWaits> | undefined;
   try {
     expectedLegalWaits = resolveLegalWaits(state.draft.context);
@@ -589,10 +614,23 @@ export function deriveCalculatorWorkspaceValidation(
   for (const alternativeId of ALTERNATIVE_IDS) {
     const workflow =
       state.draft.alternatives[alternativeId].workflowDesign;
+    let registeredDependencies:
+      | ReturnType<typeof resolveWorkflowDesign>["requiredLegalDependencies"]
+      | undefined;
+    try {
+      registeredDependencies = resolveWorkflowDesign(
+        state.draft.designIds.workflow[alternativeId],
+        state.scenarioId,
+        alternativeId
+      ).requiredLegalDependencies;
+    } catch {
+      registeredDependencies = undefined;
+    }
     const knownIds = new Set(workflow.steps.map(({ id }) => id));
     for (const engineIssue of validateProcessMap(
       workflow,
-      expectedLegalWaits
+      expectedLegalWaits,
+      registeredDependencies
     )) {
       const step = engineIssue.stepId
         ? workflow.steps.find(({ id }) => id === engineIssue.stepId)
@@ -672,6 +710,8 @@ export function calculatorIssueCopy(
   switch (issue.code) {
     case "locked_step":
       return validation.lockedStep;
+    case "required_legal_ancestor":
+      return validation.requiredLegalAncestor;
     case "unknown_step":
       return validation.unknownStep;
     case "unknown_role":
@@ -688,6 +728,8 @@ export function calculatorIssueCopy(
       return validation.invalidStepKind;
     case "illegal_context":
       return validation.illegalContext;
+    case "registered_design_required":
+      return validation.registeredDesignRequired;
     case "incompatible_locked_wait_shape":
       return validation.incompatibleLockedWaitShape;
     case "context_reconciliation_failed":

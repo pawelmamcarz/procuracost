@@ -170,8 +170,15 @@ export interface ProcessMapStep {
   lockedLegalProvenance?: LockedLegalProvenance;
 }
 
+export interface RequiredLegalDependency {
+  stepId: string;
+  ancestorId: string;
+}
+
 export interface WorkflowDesign {
   steps: ProcessMapStep[];
+  requiredLegalDependencies?: RequiredLegalDependency[];
+  registeredDesignId?: string;
 }
 
 export type ContractCostDimensionId =
@@ -233,6 +240,10 @@ function cloneWorkflowDesign(design: WorkflowDesign): WorkflowDesign {
         ? { ...step.lockedLegalProvenance }
         : undefined,
     })),
+    requiredLegalDependencies: design.requiredLegalDependencies?.map(
+      (dependency) => ({ ...dependency })
+    ),
+    registeredDesignId: design.registeredDesignId,
   };
 }
 

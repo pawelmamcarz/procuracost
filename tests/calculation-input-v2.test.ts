@@ -13,6 +13,7 @@ import {
 } from "@/lib/model-v2/design-registry";
 import {
   calculateComparison,
+  calculateSwappedComparisonForDiagnostics,
   type ComparisonCalculationInput,
 } from "@/lib/model-v2/engine";
 import {
@@ -535,13 +536,7 @@ describe("model 2.3 draft calculation materialisation", () => {
       createScenarioDraft("fleet_tco_reframing")
     );
     const original = calculateComparison(input);
-    const swapped = calculateComparison({
-      ...input,
-      alternatives: {
-        formalSequential: input.alternatives.adaptiveCompliant,
-        adaptiveCompliant: input.alternatives.formalSequential,
-      },
-    });
+    const swapped = calculateSwappedComparisonForDiagnostics(input);
 
     expect(swapped.deltaCost).toBe(-original.deltaCost);
     expect(swapped.deltaCostOuterEnvelope).toEqual({
@@ -626,11 +621,14 @@ describe("model 2.3 design-domain prerequisites", () => {
 
     expect(materializedStep.labelKey).toBe(step.labelKey);
     expect(materializedStep.userLabel).toBe("Review, risk and scope");
-    materializedStep.userLabel = "Changed returned clone";
+    expect(Object.isFrozen(materializedStep)).toBe(true);
+    expect(() => {
+      materializedStep.userLabel = "Changed returned clone";
+    }).toThrow();
     expect(step.userLabel).toBe("Review, risk and scope");
   });
 
-  it("reconciles changed legal values identically and rejects a different lock shape", () => {
+  it("reconciles legal values symmetrically but rejects an unregistered context bundle", () => {
     const draft = createScenarioDraft(
       "public_it_open_with_market_consultation"
     );
@@ -654,7 +652,9 @@ describe("model 2.3 design-domain prerequisites", () => {
 
     draft.context = changedContext;
     draft.alternatives = alternatives;
-    expect(() => buildCalculationInputFromDraft(draft)).not.toThrow();
+    expect(() => buildCalculationInputFromDraft(draft)).toThrow(
+      /registered scenario context/i
+    );
 
     expect(() =>
       reconcileAlternativeLegalWaits(alternatives, {

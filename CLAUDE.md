@@ -63,7 +63,7 @@ Changes to procurement economics belong in pure model modules, not components.
   defence/security contexts fail closed. Legal waits are locked and identical
   in both alternatives.
 - **`process-map.ts`** validates directed acyclic workflow maps, predecessor
-  references and legal-step integrity.
+  references, legal-step integrity and registered legal-ancestor dependencies.
 - **`engine.ts`** calculates critical-path duration, role cost, non-labour cost,
   delay cost, monetised contract cost and the outer difference envelope.
 - **`scenarios.ts`** contains ten canonical starting points and their retained
@@ -125,6 +125,20 @@ because the client workspace reads URL state. V2 sharing uses
 `lib/model-v2/calculator-url.ts`. Any new public axis requires a codec update and
 a round-trip test. Legacy links pass through the explicit migration adapter;
 ambiguous migrations block calculation until the user confirms them.
+
+The legal boundary, procedure family and other design-shaping context axes are
+loaded atomically with a registered base scenario. Only compatible same-design
+legal updates, currently limited to the initiation date, may reconcile the
+existing maps. Legal ancestry metadata is checked against the immutable design
+registry before calculation; the mutable draft is not its own source of truth.
+`calculateComparison` accepts only the canonical registry object or a builder
+output recorded by object identity in the module-private materialisation
+registry. Builder outputs are deeply frozen before registration, while the
+engine also rechecks the registered scenario context, excluding only the
+permitted initiation-date update. Treat a materialised input as immutable: a
+raw draft or copied object must fail closed, and post-build mutation is
+impossible. The builder first takes one plain structured clone of the complete
+draft and URL gate; validation and materialisation use only that snapshot.
 
 `components/AppShell.tsx` renders the navigation and footer once per route-group
 layout. Change routes in `lib/site-routes.ts`, navigation labels in `lib/i18n.ts`

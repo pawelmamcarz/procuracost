@@ -785,19 +785,18 @@ describe("model 2.3 neutral decision record", () => {
     ).toBe(2_000);
   });
 
-  it("derives axes from the same draft and rejects mismatched design identities", () => {
+  it("rejects unregistered context drift and mismatched design identities", () => {
     const draft = createScenarioDraft("fleet_tco_reframing");
     draft.context.purchaseArchetypeId = "complex_service";
 
-    expect(
-      buildDecisionRecordV2(draft).axes.find(
-        ({ id }) => id === "purchaseArchetype"
-      )?.value
-    ).toBe("complex_service");
-
-    draft.designIds.workflow.formalSequential =
-      draft.designIds.workflow.adaptiveCompliant;
     expect(() => buildDecisionRecordV2(draft)).toThrow(
+      /registered scenario context/i
+    );
+
+    const mismatchedDesign = createScenarioDraft("fleet_tco_reframing");
+    mismatchedDesign.designIds.workflow.formalSequential =
+      mismatchedDesign.designIds.workflow.adaptiveCompliant;
+    expect(() => buildDecisionRecordV2(mismatchedDesign)).toThrow(
       /workflow design.*formalSequential/i
     );
   });

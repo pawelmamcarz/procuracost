@@ -325,6 +325,68 @@ describe("calculator v2 editor state", () => {
     );
   });
 
+  it("rejects removing the sole path from a required legal ancestor", () => {
+    const initial = withRecord(
+      createCalculatorWorkspaceState(
+        createScenarioDraft("public_it_open_with_market_consultation")
+      )
+    );
+    const signing = initial.draft.alternatives.formalSequential.workflowDesign.steps.find(
+      ({ id }) => id.endsWith(".public_it_contract_signing")
+    );
+    if (!signing) throw new Error("Expected the public IT signing step");
+
+    const next = calculatorWorkspaceReducer(initial, {
+      type: "edit-step-predecessors",
+      alternativeId: "formalSequential",
+      stepId: signing.id,
+      predecessorIds: [],
+    });
+
+    expect(next.draft).toBe(initial.draft);
+    expect(next.record).toBe(initial.record);
+    expect(next.undo).toBe(initial.undo);
+    expect(next.issues).toContainEqual(
+      expect.objectContaining({
+        source: "editor",
+        code: "required_legal_ancestor",
+        alternativeId: "formalSequential",
+        stepId: signing.id,
+        field: "predecessorIds",
+      })
+    );
+  });
+
+  it("rejects removing a step governed by a required legal dependency", () => {
+    const initial = withRecord(
+      createCalculatorWorkspaceState(
+        createScenarioDraft("public_it_open_with_market_consultation")
+      )
+    );
+    const signing = initial.draft.alternatives.formalSequential.workflowDesign.steps.find(
+      ({ id }) => id.endsWith(".public_it_contract_signing")
+    );
+    if (!signing) throw new Error("Expected the public IT signing step");
+
+    const next = calculatorWorkspaceReducer(initial, {
+      type: "remove-step",
+      alternativeId: "formalSequential",
+      stepId: signing.id,
+    });
+
+    expect(next.draft).toBe(initial.draft);
+    expect(next.record).toBe(initial.record);
+    expect(next.undo).toBe(initial.undo);
+    expect(next.issues).toContainEqual(
+      expect.objectContaining({
+        source: "editor",
+        code: "required_legal_ancestor",
+        alternativeId: "formalSequential",
+        stepId: signing.id,
+      })
+    );
+  });
+
   it.each([
     ["descending range", { ...userRange(1), low: 2 }],
     ["negative range", { ...userRange(0), low: -1 }],

@@ -16,9 +16,11 @@ import {
   resolveContractDesign,
   resolveWorkflowDesign,
 } from "./design-registry";
+import { deepFreeze } from "./deep-freeze";
 import type { ComparisonCalculationInput } from "./engine";
 import { resolveLegalWaits } from "./legal";
 import { assertValidProcessMap } from "./process-map";
+import { assertSameRegisteredScenarioContext } from "./registered-context";
 import {
   scenarioV2ById,
   type ScenarioDraft,
@@ -28,6 +30,26 @@ import {
 export interface NativeCalculationInputGateV2 {
   kind: "v2_url";
   result: V2CalculatorUrlDecodeResult;
+}
+
+const MATERIALIZED_INPUTS = new WeakSet<object>();
+
+function registerMaterializedCalculationInput(
+  input: ComparisonCalculationInput
+): ComparisonCalculationInput {
+  const immutableInput = deepFreeze(input);
+  MATERIALIZED_INPUTS.add(immutableInput);
+  return immutableInput;
+}
+
+export function assertMaterializedCalculationInputIntegrity(
+  input: ComparisonCalculationInput
+): void {
+  if (!MATERIALIZED_INPUTS.has(input)) {
+    throw new Error(
+      "Materialized calculation input is not registered by the calculation builder"
+    );
+  }
 }
 
 const ALTERNATIVE_IDS: AlternativeId[] = [
@@ -184,6 +206,20 @@ function assertFixedMetadata(draft: ScenarioDraft): void {
   }
 }
 
+export function assertRegisteredScenarioContext(draft: ScenarioDraft): void {
+  const scenario = scenarioV2ById(draft.derivedFromScenarioId);
+  if (!scenario) {
+    throw new Error(
+      `Unknown model 2.3 scenario: ${draft.derivedFromScenarioId}`
+    );
+  }
+  assertSameRegisteredScenarioContext(
+    draft.context,
+    scenario.context,
+    "Draft"
+  );
+}
+
 function assertGateScenario(
   state: V2CalculatorUrlState,
   scenarioId: ScenarioV2Id
@@ -222,46 +258,67 @@ export function buildCalculationInputFromDraft(
   draft: ScenarioDraft,
   gate?: NativeCalculationInputGateV2
 ): ComparisonCalculationInput {
-  assertFixedMetadata(draft);
-  assertGateAllowsCalculation(gate, draft);
+  const snapshot = structuredClone(draft);
+  const gateSnapshot = gate ? structuredClone(gate) : undefined;
+  if (snapshot.kind !== "user_draft") {
+    throw new Error("Calculation materialization requires a user draft");
+  }
+  assertFixedMetadata(snapshot);
+  assertRegisteredScenarioContext(snapshot);
+  assertGateAllowsCalculation(gateSnapshot, snapshot);
   assertNonNegativeValue(
-    draft.economicAssumptions.contractValue,
+    snapshot.economicAssumptions.contractValue,
     "contractValue"
   );
   assertNonNegativeValue(
-    draft.economicAssumptions.dailyCostOfInaction,
+    snapshot.economicAssumptions.dailyCostOfInaction,
     "dailyCostOfInaction"
   );
 
-  const expectedLegalWaits = resolveLegalWaits(draft.context);
-  const alternatives = structuredClone(draft.alternatives);
+  const expectedLegalWaits = resolveLegalWaits(snapshot.context);
+  const alternatives = snapshot.alternatives;
   for (const alternative of ALTERNATIVE_IDS) {
-    resolveWorkflowDesign(
-      draft.designIds.workflow[alternative],
-      draft.derivedFromScenarioId,
+    const registeredWorkflow = resolveWorkflowDesign(
+      snapshot.designIds.workflow[alternative],
+      snapshot.derivedFromScenarioId,
       alternative
     );
+    const workflow = alternatives[alternative].workflowDesign;
+    if (
+      workflow.steps.some(
+        ({ lockedLegalProvenance }) => lockedLegalProvenance !== undefined
+      ) &&
+      alternatives[alternative].workflowDesign.registeredDesignId !==
+        snapshot.designIds.workflow[alternative]
+    ) {
+      throw new Error(
+        `Workflow design provenance does not match the registered ${alternative} design`
+      );
+    }
     resolveContractDesign(
-      draft.designIds.contract[alternative],
-      draft.derivedFromScenarioId,
+      snapshot.designIds.contract[alternative],
+      snapshot.derivedFromScenarioId,
       alternative
     );
     alternatives[alternative].contractDesign = materializeContractDesign(
-      draft,
+      snapshot,
       alternative
     );
     assertValidProcessMap(
-      alternatives[alternative].workflowDesign,
-      expectedLegalWaits
+      workflow,
+      expectedLegalWaits,
+      registeredWorkflow.requiredLegalDependencies
     );
   }
 
-  return {
-    context: structuredClone(draft.context),
+  return registerMaterializedCalculationInput({
+    kind: "materialized_calculation_input",
+    registeredScenarioId: snapshot.derivedFromScenarioId,
+    context: snapshot.context,
     alternatives,
-    roleHourlyRates: structuredClone(draft.roleHourlyRates),
+    roleHourlyRates: snapshot.roleHourlyRates,
     dailyCostOfInaction: cloneValue(
-      draft.economicAssumptions.dailyCostOfInaction
+      snapshot.economicAssumptions.dailyCostOfInaction
     ),
-  };
+  });
 }

@@ -92,6 +92,19 @@ export function resolveWorkflowDesign(
   );
 }
 
+export function resolveRegisteredWorkflowDesign(id: string): WorkflowDesign {
+  const entry = WORKFLOW_DESIGN_REGISTRY.find(
+    (candidate) => candidate.id === id
+  );
+  if (!entry) throw new Error(`Unknown model 2.3 workflow design ${id}`);
+  const scenario = SCENARIOS_V2.find(
+    ({ id: candidateId }) => candidateId === entry.scenarioId
+  )!;
+  return structuredClone(
+    scenario.calculationInput.alternatives[entry.alternativeId].workflowDesign
+  );
+}
+
 export function resolveContractDesign(
   id: ContractDesignIdV2,
   scenarioId: ScenarioV2Id,
@@ -133,6 +146,10 @@ function reconcileWorkflowLegalWaits(
       replacement.userLabel = step.userLabel;
       return replacement;
     }),
+    requiredLegalDependencies: workflow.requiredLegalDependencies?.map(
+      (dependency) => ({ ...dependency })
+    ),
+    registeredDesignId: workflow.registeredDesignId,
   };
   assertValidProcessMap(reconciled, expected);
   return reconciled;

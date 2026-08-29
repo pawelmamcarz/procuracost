@@ -1,6 +1,7 @@
 import {
   reconcileAlternativeLegalWaits,
   resolveLegalWaits,
+  hasSameRegisteredScenarioContext,
   validateProcessMap,
   type AlternativeId,
   type ModelContextV2,
@@ -39,6 +40,8 @@ function contextIssue(code: ContextUiIssue["code"]): ContextUiIssue {
     ContextUiIssue["messageKey"]
   > = {
     illegal_context: "calculatorV2.validation.illegalContext",
+    registered_design_required:
+      "calculatorV2.validation.registeredDesignRequired",
     incompatible_locked_wait_shape:
       "calculatorV2.validation.incompatibleLockedWaitShape",
     context_reconciliation_failed:
@@ -79,6 +82,14 @@ export function applyLegalContextTransition(
       status: "rejected",
       state,
       issues: [contextIssue("illegal_context")],
+    };
+  }
+
+  if (!hasSameRegisteredScenarioContext(state.draft.context, nextContext)) {
+    return {
+      status: "rejected",
+      state,
+      issues: [contextIssue("registered_design_required")],
     };
   }
 

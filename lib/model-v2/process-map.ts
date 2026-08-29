@@ -2,7 +2,11 @@ import {
   assertValidCalibratedValue,
   type CalibratedValue,
 } from "./calibrated-value";
-import type { ProcessMapStep, WorkflowDesign } from "./domain";
+import type {
+  ProcessMapStep,
+  RequiredLegalDependency,
+  WorkflowDesign,
+} from "./domain";
 import type { ResolvedLegalWait } from "./legal";
 
 export type ProcessMapValidationCode =
@@ -10,6 +14,8 @@ export type ProcessMapValidationCode =
   | "unknown_predecessor"
   | "cycle"
   | "invalid_value"
+  | "invalid_required_legal_dependency_contract"
+  | "missing_required_legal_ancestor"
   | "invalid_locked_legal_wait"
   | "missing_locked_legal_wait"
   | "unexpected_locked_legal_wait";
@@ -146,6 +152,23 @@ function validateSelfLockedStep(
   }
 }
 
+function hasAncestor(
+  stepsById: ReadonlyMap<string, ProcessMapStep>,
+  step: ProcessMapStep,
+  ancestorId: string,
+  visited = new Set<string>()
+): boolean {
+  if (visited.has(step.id)) return false;
+  visited.add(step.id);
+  if (step.predecessorIds.includes(ancestorId)) return true;
+  return step.predecessorIds.some((predecessorId) => {
+    const predecessor = stepsById.get(predecessorId);
+    return predecessor
+      ? hasAncestor(stepsById, predecessor, ancestorId, visited)
+      : false;
+  });
+}
+
 function validateExpectedLegalWaits(
   steps: ProcessMapStep[],
   expectedLegalWaits: readonly ResolvedLegalWait[],
@@ -186,25 +209,11 @@ function validateExpectedLegalWaits(
     }
   }
 
-  const hasAncestor = (
-    step: ProcessMapStep,
-    ancestorId: string,
-    visited = new Set<string>()
-  ): boolean => {
-    if (visited.has(step.id)) return false;
-    visited.add(step.id);
-    if (step.predecessorIds.includes(ancestorId)) return true;
-    return step.predecessorIds.some((predecessorId) => {
-      const predecessor = stepsById.get(predecessorId);
-      return predecessor ? hasAncestor(predecessor, ancestorId, visited) : false;
-    });
-  };
-
   for (let index = 1; index < expectedLegalWaits.length; index += 1) {
     const wait = expectedLegalWaits[index];
     const previousWait = expectedLegalWaits[index - 1];
     const step = stepsById.get(wait.id);
-    if (step && !hasAncestor(step, previousWait.id)) {
+    if (step && !hasAncestor(stepsById, step, previousWait.id)) {
       issues.push({
         code: "invalid_locked_legal_wait",
         stepId: wait.id,
@@ -219,6 +228,60 @@ function validateExpectedLegalWaits(
         code: "unexpected_locked_legal_wait",
         stepId: step.id,
         message: `Process map contains unexpected locked legal wait ${step.id}`,
+      });
+    }
+  }
+}
+
+function validateRequiredLegalAncestors(
+  workflowDesign: WorkflowDesign,
+  issues: ProcessMapValidationIssue[],
+  expectedDependencies?: readonly RequiredLegalDependency[]
+): void {
+  const { steps } = workflowDesign;
+  const stepsById = new Map(steps.map((step) => [step.id, step]));
+  const declaredDependencies = workflowDesign.requiredLegalDependencies;
+  const dependencyKey = ({ stepId, ancestorId }: RequiredLegalDependency) =>
+    `${ancestorId}\u0000${stepId}`;
+  const sameContract =
+    expectedDependencies === undefined ||
+    JSON.stringify([...expectedDependencies].map(dependencyKey).sort()) ===
+      JSON.stringify([...(declaredDependencies ?? [])].map(dependencyKey).sort());
+  const dependencies = expectedDependencies ?? declaredDependencies ?? [];
+  const lockedStepIds = steps
+    .filter(({ lockedLegalProvenance }) => lockedLegalProvenance !== undefined)
+    .map(({ id }) => id);
+  const hasEditableProcessSteps = steps.some(
+    ({ lockedLegalProvenance }) => lockedLegalProvenance === undefined
+  );
+
+  if (
+    !sameContract ||
+    ((expectedDependencies !== undefined || hasEditableProcessSteps) &&
+      lockedStepIds.some(
+        (lockedStepId) =>
+          !dependencies.some(({ ancestorId }) => ancestorId === lockedStepId)
+      ))
+  ) {
+    issues.push({
+      code: "invalid_required_legal_dependency_contract",
+      message:
+        "Process map does not retain the complete registered legal dependency contract",
+    });
+  }
+
+  for (const dependency of dependencies) {
+    const step = stepsById.get(dependency.stepId);
+    const ancestor = stepsById.get(dependency.ancestorId);
+    if (
+      !step ||
+      !ancestor?.lockedLegalProvenance ||
+      !hasAncestor(stepsById, step, dependency.ancestorId)
+    ) {
+      issues.push({
+        code: "missing_required_legal_ancestor",
+        stepId: dependency.stepId,
+        message: `Step ${dependency.stepId} must follow locked legal step ${dependency.ancestorId}`,
       });
     }
   }
@@ -260,7 +323,8 @@ function validateCycles(
 
 export function validateProcessMap(
   workflowDesign: WorkflowDesign,
-  expectedLegalWaits?: readonly ResolvedLegalWait[]
+  expectedLegalWaits?: readonly ResolvedLegalWait[],
+  expectedRequiredLegalDependencies?: readonly RequiredLegalDependency[]
 ): ProcessMapValidationIssue[] {
   const issues: ProcessMapValidationIssue[] = [];
   const knownIds = new Set<string>();
@@ -291,6 +355,11 @@ export function validateProcessMap(
   }
 
   validateCycles(workflowDesign.steps, knownIds, issues);
+  validateRequiredLegalAncestors(
+    workflowDesign,
+    issues,
+    expectedRequiredLegalDependencies
+  );
   if (expectedLegalWaits) {
     validateExpectedLegalWaits(workflowDesign.steps, expectedLegalWaits, issues);
   }
@@ -300,9 +369,14 @@ export function validateProcessMap(
 
 export function assertValidProcessMap(
   workflowDesign: WorkflowDesign,
-  expectedLegalWaits?: readonly ResolvedLegalWait[]
+  expectedLegalWaits?: readonly ResolvedLegalWait[],
+  expectedRequiredLegalDependencies?: readonly RequiredLegalDependency[]
 ): void {
-  const issues = validateProcessMap(workflowDesign, expectedLegalWaits);
+  const issues = validateProcessMap(
+    workflowDesign,
+    expectedLegalWaits,
+    expectedRequiredLegalDependencies
+  );
   if (issues.length > 0) {
     throw new ProcessMapValidationError(issues);
   }

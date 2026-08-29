@@ -20,6 +20,19 @@ current errata are labelled explicitly.
   time.
 - Made supported PZP waits dated, sourced, non-editable and identical in both
   alternatives. Sectoral and defence/security contexts fail closed.
+- Locked the required ancestry from tender-submission and standstill periods to
+  the governed downstream activities. Removing a governed activity or its
+  complete legal dependency path now fails closed. The calculation boundary
+  checks the editable map against the registry-owned dependency contract, and
+  the engine accepts only canonical registry inputs or builder outputs recorded
+  by immutable object identity in a module-private materialisation registry.
+  Copies and coordinated scenario relabelling fail closed; registered builder
+  outputs are deeply frozen before calculation. Drafts and URL gates are read
+  into one plain snapshot before validation and materialisation.
+- Made design-shaping context changes atomic through registered base scenarios.
+  The calculator no longer exposes procedure or support combinations for which
+  it has no complete pair of workflow designs. PZP qualifiers are disclosed as
+  read-only context and only the initiation date reconciles in place.
 
 ### Cost and evidence contract
 

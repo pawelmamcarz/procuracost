@@ -14,7 +14,12 @@ import {
 } from "@/lib/model-v2/process-map";
 import type { CalibratedValue } from "@/lib/model-v2/calibrated-value";
 import type { ProcessMapStep } from "@/lib/model-v2/domain";
-import { calculateComparison } from "@/lib/model-v2/engine";
+import { buildCalculationInputFromDraft } from "@/lib/model-v2/calculation-input";
+import {
+  calculateComparison,
+  calculateSwappedComparisonForDiagnostics,
+} from "@/lib/model-v2/engine";
+import { createScenarioDraft } from "@/lib/model-v2/scenarios";
 
 function fixed(value: number): CalibratedValue {
   return {
@@ -370,22 +375,13 @@ describe("model 2.3 DAG engine", () => {
       ],
     };
     const emptyWorkflow: WorkflowDesign = { steps: [] };
-    const alternatives = createComparisonAlternatives({
-      formalSequential: workflowDesign,
-      adaptiveCompliant: emptyWorkflow,
-    });
+    const draft = createScenarioDraft("fleet_tco_reframing");
+    draft.alternatives.formalSequential.workflowDesign = workflowDesign;
+    draft.alternatives.adaptiveCompliant.workflowDesign = emptyWorkflow;
+    draft.roleHourlyRates = { buyer: fixed(100) };
+    draft.economicAssumptions.dailyCostOfInaction = fixed(100);
 
-    const result = calculateComparison({
-      context: {
-        boundaryId: "private_policy",
-        procedureFamilyId: "private_competitive",
-        initiatedOn: "2026-08-28",
-        legalRulesetId: "pl-pzp-2026-2027",
-      },
-      alternatives,
-      roleHourlyRates: { buyer: fixed(100) },
-      dailyCostOfInaction: fixed(100),
-    });
+    const result = calculateComparison(buildCalculationInputFromDraft(draft));
 
     expect(result.formalSequential.elapsedDays).toEqual({
       low: 9,
@@ -405,41 +401,22 @@ describe("model 2.3 DAG engine", () => {
   });
 
   it("reports unpriced dimensions and includes priced contract dimensions", () => {
-    const workflowDesign: WorkflowDesign = { steps: [] };
-    const contractDesign: ContractDesign = {
-      dimensions: [
-        {
-          id: "tco",
-          status: "monetized",
-          cost: calibrated(10, 20, 30),
-        },
-        {
-          id: "informal_bypass",
-          status: "notMonetized",
-          reasonKey: "model.dimensions.informalBypass.unpriced",
-          evidenceIds: ["fixture.bypass.observation-missing"],
-        },
-      ],
-    };
-    const alternatives = createComparisonAlternatives(
-      {
-        formalSequential: workflowDesign,
-        adaptiveCompliant: workflowDesign,
-      },
-      contractDesign
+    const draft = createScenarioDraft("fleet_tco_reframing");
+    draft.alternatives.formalSequential.workflowDesign = { steps: [] };
+    draft.alternatives.adaptiveCompliant.workflowDesign = { steps: [] };
+    draft.roleHourlyRates = {};
+    draft.economicAssumptions.contractValue = fixed(100);
+    draft.economicAssumptions.dailyCostOfInaction = fixed(0);
+    draft.economicAssumptions.pathCompetitionDiffers = true;
+    draft.economicAssumptions.competitionDisadvantagedAlternative =
+      "formalSequential";
+    draft.economicAssumptions.competitionTransferRate = calibrated(
+      0.1,
+      0.2,
+      0.3
     );
 
-    const result = calculateComparison({
-      context: {
-        boundaryId: "private_policy",
-        procedureFamilyId: "private_competitive",
-        initiatedOn: "2026-08-28",
-        legalRulesetId: "pl-pzp-2026-2027",
-      },
-      alternatives,
-      roleHourlyRates: {},
-      dailyCostOfInaction: fixed(0),
-    });
+    const result = calculateComparison(buildCalculationInputFromDraft(draft));
 
     expect(result.formalSequential.contractCost).toEqual({
       low: 10,
@@ -454,51 +431,31 @@ describe("model 2.3 DAG engine", () => {
     expect(result.formalSequential.nonMonetizedDimensions).toEqual([
       {
         id: "informal_bypass",
-        reasonKey: "model.dimensions.informalBypass.unpriced",
-        evidenceIds: ["fixture.bypass.observation-missing"],
+        reasonKey: "reasons.bypassNotMonetized",
+        evidenceIds: [],
       },
     ]);
   });
 
   it("preserves totals and reverses the outer envelope when paths are swapped", () => {
-    const workflowDesign: WorkflowDesign = { steps: [] };
-    const alternatives = createComparisonAlternatives({
-      formalSequential: workflowDesign,
-      adaptiveCompliant: workflowDesign,
-    });
-    alternatives.formalSequential.contractDesign.dimensions = [
-      {
-        id: "tco",
-        status: "monetized",
-        cost: calibrated(10, 20, 50),
-      },
-    ];
-    alternatives.adaptiveCompliant.contractDesign.dimensions = [
-      {
-        id: "tco",
-        status: "monetized",
-        cost: calibrated(5, 30, 40),
-      },
-    ];
+    const draft = createScenarioDraft("fleet_tco_reframing");
+    draft.alternatives.formalSequential.workflowDesign = { steps: [] };
+    draft.alternatives.adaptiveCompliant.workflowDesign = { steps: [] };
+    draft.roleHourlyRates = {};
+    draft.economicAssumptions.contractValue = fixed(100);
+    draft.economicAssumptions.dailyCostOfInaction = fixed(0);
+    draft.economicAssumptions.pathCompetitionDiffers = true;
+    draft.economicAssumptions.competitionDisadvantagedAlternative =
+      "formalSequential";
+    draft.economicAssumptions.competitionTransferRate = calibrated(
+      0.1,
+      0.2,
+      0.5
+    );
+    const input = buildCalculationInputFromDraft(draft);
 
-    const calculationBase = {
-      context: {
-        boundaryId: "private_policy" as const,
-        procedureFamilyId: "private_competitive" as const,
-        initiatedOn: "2026-08-28",
-        legalRulesetId: "pl-pzp-2026-2027" as const,
-      },
-      roleHourlyRates: {},
-      dailyCostOfInaction: fixed(0),
-    };
-    const original = calculateComparison({ ...calculationBase, alternatives });
-    const swapped = calculateComparison({
-      ...calculationBase,
-      alternatives: {
-        formalSequential: alternatives.adaptiveCompliant,
-        adaptiveCompliant: alternatives.formalSequential,
-      },
-    });
+    const original = calculateComparison(input);
+    const swapped = calculateSwappedComparisonForDiagnostics(input);
 
     expect(swapped.formalSequential.totalCost).toEqual(
       original.adaptiveCompliant.totalCost
@@ -506,9 +463,9 @@ describe("model 2.3 DAG engine", () => {
     expect(swapped.adaptiveCompliant.totalCost).toEqual(
       original.formalSequential.totalCost
     );
-    expect(original.deltaCost).toBe(-10);
-    expect(swapped.deltaCost).toBe(10);
-    expect(original.deltaCostOuterEnvelope).toEqual({ low: -30, high: 45 });
-    expect(swapped.deltaCostOuterEnvelope).toEqual({ low: -45, high: 30 });
+    expect(original.deltaCost).toBe(20);
+    expect(swapped.deltaCost).toBe(-20);
+    expect(original.deltaCostOuterEnvelope).toEqual({ low: 10, high: 50 });
+    expect(swapped.deltaCostOuterEnvelope).toEqual({ low: -50, high: -10 });
   });
 });

@@ -28,6 +28,8 @@ describe("explicit model 2.2.2 migration adapter", () => {
     expect(
       buildCalculationInputFromLegacyMigration(adapted.draft, adapted.gate)
     ).toEqual({
+      kind: "materialized_calculation_input",
+      registeredScenarioId: adapted.draft.derivedFromScenarioId,
       context: adapted.draft.context,
       alternatives: adapted.draft.alternatives,
       roleHourlyRates: adapted.draft.roleHourlyRates,

@@ -49,6 +49,26 @@ function renderLocked(lang: "pl" | "en" = "en") {
   );
 }
 
+function renderSigning(lang: "pl" | "en" = "en") {
+  const state = createCalculatorWorkspaceState(
+    createScenarioDraft("public_it_open_with_market_consultation")
+  );
+  const signing = state.draft.alternatives.formalSequential.workflowDesign.steps.find(
+    ({ id }) => id.endsWith(".public_it_contract_signing")
+  );
+  if (!signing) throw new Error("Expected the public IT signing step");
+  state.selectedAlternative = "formalSequential";
+  state.selectedStepId = signing.id;
+  return renderToStaticMarkup(
+    createElement(ProcessStepInspector, {
+      lang,
+      state,
+      issues: [],
+      onAction: () => {},
+    })
+  );
+}
+
 describe("process step inspector", () => {
   it("renders continuous editable fieldsets for identity, ranges, predecessors, roles and cost", () => {
     const html = renderEditable();
@@ -97,6 +117,16 @@ describe("process step inspector", () => {
     expect(html).not.toContain("drag handle");
   });
 
+  it("disables removal of the sole direct path from a required legal ancestor", () => {
+    const html = renderSigning();
+
+    expect(html).toMatch(
+      /<input[^>]+disabled=""[^>]+value="legal\.pzp_open\.standstill"/
+    );
+    expect(html).toContain("Required sequence after a mandatory legal wait");
+    expect(html).not.toContain("Remove step");
+  });
+
   it("renders a locked step as full read-only legal provenance with no edit or remove controls", () => {
     const html = renderLocked();
 
@@ -117,6 +147,7 @@ describe("process step inspector", () => {
   it("keeps Polish inspector copy fully localised", () => {
     const editable = renderEditable("pl");
     const locked = renderLocked("pl");
+    const signing = renderSigning("pl");
 
     expect(editable).toContain("Edytuj krok");
     expect(editable).toContain("Wnioskodawca biznesowy");
@@ -125,5 +156,11 @@ describe("process step inspector", () => {
     expect(locked).toContain("Zablokowany termin prawny");
     expect(locked).toContain("Podstawa prawna");
     expect(locked).not.toContain("Legal provision");
+    expect(signing).toContain(
+      "Wymagane następstwo po obowiązkowym terminie prawnym"
+    );
+    expect(signing).not.toContain(
+      "Required sequence after a mandatory legal wait"
+    );
   });
 });
