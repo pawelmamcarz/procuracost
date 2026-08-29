@@ -55,7 +55,7 @@ function DesktopLane({
     <div className="hidden lg:block">
       <div
         aria-label={lane.viewportLabel}
-        className="overflow-x-auto rounded-md border-y border-gray-200 py-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+        className="overflow-x-auto border-y border-gray-200 py-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
         role="region"
         tabIndex={0}
       >
@@ -217,20 +217,47 @@ function Lane({ lane, props }: { lane: ProcessRailLaneViewModel; props: ProcessR
 
 export function ProcessRail(props: ProcessRailProps) {
   return (
-    <div>
-      <div className="flex items-center gap-3 border-t-2 border-amber-400 py-3 text-amber-900">
-        <LockKeyhole aria-hidden="true" className="h-4 w-4 shrink-0" />
-        <p className="text-xs font-semibold uppercase tracking-wide">
-          {props.viewModel.boundaryLabel}
-        </p>
-      </div>
-      {LANE_ORDER.map((alternativeId) => (
-        <Lane
-          key={alternativeId}
-          lane={props.viewModel.lanes[alternativeId]}
-          props={props}
+    <div className="relative" data-boundary-geometry="chamfered">
+      <svg
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 h-full w-full"
+        focusable="false"
+        preserveAspectRatio="none"
+        viewBox="0 0 1000 100"
+      >
+        <path
+          className="fill-amber-50/30 stroke-amber-400"
+          d="M 26 1 H 968 L 999 18 V 82 L 968 99 H 26 L 1 82 V 18 Z"
+          data-boundary-outline="shared"
+          strokeLinejoin="round"
+          strokeWidth="1.5"
+          vectorEffect="non-scaling-stroke"
         />
-      ))}
+        <circle className="fill-amber-500" cx="26" cy="1" r="2.5" />
+        <circle className="fill-amber-500" cx="999" cy="18" r="2.5" />
+        <circle className="fill-amber-500" cx="968" cy="99" r="2.5" />
+        <circle className="fill-amber-500" cx="1" cy="82" r="2.5" />
+      </svg>
+      <div className="relative px-4 py-2 sm:px-6">
+        <div className="flex items-center gap-3 py-3 text-amber-900">
+          <span
+            aria-hidden="true"
+            className="flex h-8 w-8 rotate-45 items-center justify-center border border-amber-500 bg-amber-50"
+          >
+            <LockKeyhole className="h-4 w-4 -rotate-45" />
+          </span>
+          <p className="text-xs font-semibold uppercase tracking-wide">
+            {props.viewModel.boundaryLabel}
+          </p>
+        </div>
+        {LANE_ORDER.map((alternativeId) => (
+          <Lane
+            key={alternativeId}
+            lane={props.viewModel.lanes[alternativeId]}
+            props={props}
+          />
+        ))}
+      </div>
     </div>
   );
 }

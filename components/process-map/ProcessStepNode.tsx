@@ -38,6 +38,12 @@ function statusRows(node: ProcessRailNodeViewModel) {
   ].filter((status): status is NonNullable<typeof status> => status !== null);
 }
 
+function markerTone(alternativeId: AlternativeId): string {
+  return alternativeId === "formalSequential"
+    ? "border-red-500"
+    : "border-green-500";
+}
+
 export function ProcessStepNode({
   alternativeId,
   node,
@@ -50,9 +56,10 @@ export function ProcessStepNode({
 }: ProcessStepNodeProps) {
   const rows = statusRows(node);
   const className = cn(
-    "relative flex min-h-[88px] w-full flex-col gap-1 rounded-md border bg-white p-3 text-left text-gray-900",
+    "relative isolate flex min-h-[88px] w-full flex-col gap-1 border-0 border-b border-gray-200 bg-gray-50/90 px-3 pb-3 pt-4 text-left text-gray-900",
+    "[clip-path:polygon(0_0,calc(100%_-_12px)_0,100%_12px,100%_100%,0_100%)]",
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2",
-    node.selected && "border-blue-500 bg-blue-50",
+    node.selected && "border-b-blue-500 bg-blue-50",
     node.locked && "border-l-4 border-l-amber-400",
     node.invalid && !node.locked && "border-l-4 border-l-amber-400",
     node.critical &&
@@ -66,8 +73,20 @@ export function ProcessStepNode({
   const domId = `${idPrefix ? `${idPrefix}-` : ""}process-step-${alternativeId}-${node.stepId}${focusIdSuffix}`;
   const content = (
     <>
-      <span className="font-mono text-[11px] text-gray-500">
-        {String(node.position).padStart(2, "0")}
+      <span className="flex items-center gap-2">
+        <span
+          aria-hidden="true"
+          className={cn(
+            "inline-flex h-3 w-3 shrink-0 rotate-45 items-center justify-center border-2 bg-white",
+            markerTone(alternativeId)
+          )}
+          data-node-marker="diamond"
+        >
+          <span className="h-1 w-1 bg-gray-700" />
+        </span>
+        <span className="font-mono text-[11px] text-gray-500">
+          {String(node.position).padStart(2, "0")}
+        </span>
       </span>
       <span className="break-words text-sm font-semibold leading-snug">
         {node.label}
@@ -102,6 +121,7 @@ export function ProcessStepNode({
       <article
         aria-label={node.accessibleName}
         className={className}
+        data-node-geometry="instrument"
         id={domId}
         tabIndex={0}
       >
@@ -115,6 +135,7 @@ export function ProcessStepNode({
       aria-label={node.accessibleName}
       aria-pressed={node.selected}
       className={className}
+      data-node-geometry="instrument"
       data-alternative={alternativeId}
       data-step-id={node.stepId}
       id={domId}

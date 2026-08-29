@@ -242,6 +242,18 @@ describe("process rail UI", () => {
     expect(html).not.toContain("<table");
   });
 
+  it("uses a shared geometric boundary and instrument-style nodes instead of basic framed boxes", () => {
+    const html = renderRail();
+
+    expect(html).toContain('data-boundary-geometry="chamfered"');
+    expect(html).toContain('data-boundary-outline="shared"');
+    expect(html).toContain('data-node-geometry="instrument"');
+    expect(html).toContain('data-node-marker="diamond"');
+    expect(html).not.toContain(
+      "rounded-md border bg-white p-3 text-left"
+    );
+  });
+
   it("keeps every editable node a native button with explicit non-colour status text", () => {
     const html = renderRail();
 
