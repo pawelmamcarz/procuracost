@@ -24,7 +24,7 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { calculateCosts, type ProcurementInputs } from "../lib/calculations";
 import type { ProcessType, TechLevelId } from "../lib/process-templates";
-import { MODEL_VERSION } from "../lib/version";
+import { LEGACY_MODEL_VERSION } from "../lib/version";
 
 const STAKE: ProcurementInputs["stakeholders"] = {
   requestor: { count: 1, dailyRate: 900 },
@@ -126,7 +126,7 @@ for (const type of Object.keys(CV_GRID) as Array<Exclude<ProcessType, "custom">>
 const lines: string[] = [];
 const P = (s: string) => { console.log(s); lines.push(s); };
 
-P(`# Mapa progów decyzyjnych (model ${MODEL_VERSION})`);
+P(`# Mapa progów decyzyjnych (archiwalny model ${LEGACY_MODEL_VERSION})`);
 P("");
 P("> Wyniki deterministyczne przy ustandaryzowanych wejściach porównawczych (czas trwania 2 lata,");
 P("> koszt aneksu 4% CV, ekspozycja 10% CV, stawki domyślne, dyskonto 4%). To NIE są scenariusze");

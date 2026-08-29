@@ -14,4 +14,4 @@ export const LEGACY_MODEL_VERSION = "2.2.2" as const;
 
 // Active public model version. This is the only model-version literal to bump
 // when the model 2.3 release is cut over.
-export const MODEL_VERSION = "2.2.2" as const;
+export const MODEL_VERSION = "2.3.0" as const;

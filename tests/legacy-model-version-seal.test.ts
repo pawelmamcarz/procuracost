@@ -25,10 +25,24 @@ describe("legacy model version seal", () => {
     }
   );
 
+  it("keeps the dormant legacy threshold generator on the immutable legacy identity", () => {
+    const source = fs.readFileSync(
+      path.join(process.cwd(), "scripts/decision-map.ts"),
+      "utf8"
+    );
+
+    expect(source).toContain(
+      'import { LEGACY_MODEL_VERSION } from "../lib/version";'
+    );
+    expect(source).toMatch(/\bLEGACY_MODEL_VERSION\b/g);
+    expect(source).not.toMatch(/\bMODEL_VERSION\b/);
+  });
+
   it("keeps model 2.2.2 traces independent from the native 2.3 model", () => {
     expect(LEGACY_MODEL_VERSION).toBe("2.2.2");
-    expect(MODEL_VERSION).toBe("2.2.2");
+    expect(MODEL_VERSION).toBe("2.3.0");
     expect(MODEL_V2_METADATA.modelVersion).toBe("2.3.0");
+    expect(MODEL_VERSION).toBe(MODEL_V2_METADATA.modelVersion);
 
     const trace = calculateCosts(SCENARIOS[0].inputs).trace;
     expect(trace.modelVersion).toBe(LEGACY_MODEL_VERSION);
