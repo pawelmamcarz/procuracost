@@ -11,7 +11,7 @@
     "recompute": "tsx scripts/recompute.ts",
     "sweep": "tsx scripts/symmetry-sweep.ts",
     "replicate": "tsx scripts/generate-replication.ts",
-    "map": "tsx scripts/decision-map.ts"
+    "map:legacy": "tsx scripts/decision-map.ts"
   },
   "dependencies": {
     "@radix-ui/react-select": "^2.2.6",

@@ -18,7 +18,7 @@
 // stakeholder rates, 4% discount. The map is legality-aware: pzp_krajowy appears only
 // in its statutory 170k–EU band, pzp_eu only at/above the EU threshold.
 //
-// Run: npm run map. Writes replication/outputs/decision-thresholds.md.
+// Run: npm run map:legacy. Writes the legacy replication/outputs/decision-thresholds.md.
 
 import { mkdirSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";

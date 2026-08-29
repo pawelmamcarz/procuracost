@@ -36,6 +36,15 @@ describe("legacy model version seal", () => {
     );
     expect(source).toMatch(/\bLEGACY_MODEL_VERSION\b/g);
     expect(source).not.toMatch(/\bMODEL_VERSION\b/);
+
+    const packageJson = JSON.parse(
+      fs.readFileSync(path.join(process.cwd(), "package.json"), "utf8")
+    ) as { scripts: Record<string, string> };
+    expect(packageJson.scripts.map).toBeUndefined();
+    expect(packageJson.scripts["map:legacy"]).toBe(
+      "tsx scripts/decision-map.ts"
+    );
+    expect(source).toContain("Run: npm run map:legacy.");
   });
 
   it("keeps model 2.2.2 traces independent from the native 2.3 model", () => {
