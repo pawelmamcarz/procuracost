@@ -1,4 +1,13 @@
-import type { WorkflowDesign } from "@/lib/model-v2";
+export interface RailTopologyStep {
+  id: string;
+  predecessorIds: readonly string[];
+  locked?: boolean;
+  lockedLegalProvenance?: unknown;
+}
+
+export interface RailTopology {
+  steps: readonly RailTopologyStep[];
+}
 
 export interface RailStepTextData {
   label: string;
@@ -43,7 +52,7 @@ export interface RailLayout {
   connectors: RailLayoutConnector[];
 }
 
-function stableTopologicalStepIds(workflow: WorkflowDesign): string[] {
+function stableTopologicalStepIds(workflow: RailTopology): string[] {
   const stepIds = workflow.steps.map(({ id }) => id);
   const knownIds = new Set(stepIds);
   const sourceIndex = new Map(stepIds.map((id, index) => [id, index]));
@@ -85,7 +94,7 @@ function stableTopologicalStepIds(workflow: WorkflowDesign): string[] {
 }
 
 export function deriveRailLayout(
-  workflow: WorkflowDesign,
+  workflow: RailTopology,
   options: RailLayoutOptions
 ): RailLayout {
   const orderedIds = stableTopologicalStepIds(workflow);
@@ -139,7 +148,8 @@ export function deriveRailLayout(
       branchCount: branchIds.length,
       parallel: branchIds.length > 1,
       merge: knownPredecessorCount > 1,
-      locked: step.lockedLegalProvenance !== undefined,
+      locked:
+        step.locked === true || step.lockedLegalProvenance !== undefined,
       critical: criticalIds.has(stepId),
       invalid: invalidIds.has(stepId),
       selected: options.selectedStepId === stepId,

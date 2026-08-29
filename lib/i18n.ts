@@ -303,6 +303,14 @@ const calculatorV2Pl = {
       predecessors: string
     ) =>
       `${alternative}, krok ${position}, ${label}${status ? `, ${status}` : ""}, ${active} dni pracy aktywnej, ${queue} dni oczekiwania, poprzednicy: ${predecessors}.`,
+    accessibleNodeWithoutTiming: (
+      alternative: string,
+      position: number,
+      label: string,
+      status: string,
+      predecessors: string
+    ) =>
+      `${alternative}, krok ${position}, ${label}${status ? `, ${status}` : ""}, poprzednicy: ${predecessors}.`,
   },
   inspector: {
     title: "Edytuj krok",
@@ -525,6 +533,14 @@ const calculatorV2En = {
       predecessors: string
     ) =>
       `${alternative}, step ${position}, ${label}${status ? `, ${status}` : ""}, ${active} active days, ${queue} queue days, predecessors: ${predecessors}.`,
+    accessibleNodeWithoutTiming: (
+      alternative: string,
+      position: number,
+      label: string,
+      status: string,
+      predecessors: string
+    ) =>
+      `${alternative}, step ${position}, ${label}${status ? `, ${status}` : ""}, predecessors: ${predecessors}.`,
   },
   inspector: {
     title: "Edit step",
@@ -722,13 +738,15 @@ export const PHI_SET = {
 const homePl = {
   hero: {
     eyebrow: "Model decyzji zakupowych",
-    title: "Porównaj koszt dwóch dopuszczalnych ścieżek zakupu.",
+    title: "Porównaj koszt dwóch dopuszczalnych projektów procesu zakupowego.",
     tagline: "Tunel ma ściany. Pole ma horyzont.",
     description:
-      "Wprowadź parametry realnego zakupu. Model zestawi ścieżkę formalną i adaptacyjną, pokaże składniki kosztu oraz pełny zakres niepewności.",
-    primaryAction: "Policz własny scenariusz",
-    secondaryAction: "Jak czytać wynik",
+      "Ustaw wspólne ramy, osobno zaprojektuj przebieg procesu i umowę dla obu alternatyw, a następnie odczytaj wynik w zakresie niskim, centralnym i wysokim.",
+    primaryAction: "Porównaj koszty",
+    secondaryAction: "Zobacz mechanizmy i źródła",
   },
+  neutrality:
+    "Model dopuszcza oba kierunki różnicy. Znak wyniku nie jest założony.",
   boundary: {
     eyebrow: "Granica decyzji",
     title: "Dwie ścieżki. Ta sama granica zgodności.",
@@ -741,6 +759,25 @@ const homePl = {
     caption:
       "Pole nie oznacza dowolności. Obie ścieżki pozostają we wspólnej granicy uprawnień, konkurencji, etyki i dokumentacji.",
   },
+  compactRail: {
+    steps: {
+      formalFrame: "Opis potrzeb i ram",
+      formalCheck: "Kontrola proceduralna",
+      formalEvaluation: "Ocena ofert",
+      formalAward: "Decyzja o udzieleniu",
+      adaptiveFrame: "Opis problemu i ram",
+      adaptiveMarket: "Konsultacje rynku",
+      adaptiveDesign: "Projekt rozwiązania",
+      adaptiveMerge: "Scalenie wymagań",
+    },
+  },
+  rail: {
+    eyebrow: "Projekt przebiegu procesu zakupowego",
+    title: "Dwie topologie pod wspólną granicą",
+    note:
+      "Schemat ilustruje topologię przebiegu. Sam nie stanowi oszacowania czasu ani kosztu.",
+    action: "Otwórz edytowalne porównanie procesów",
+  },
   modelContract: {
     eyebrow: "Kontrakt modelu",
     title: "Co wynik mówi, a czego nie rozstrzyga",
@@ -749,29 +786,53 @@ const homePl = {
     modelVersionDisplay: `Model ${MODEL_VERSION}`,
     uncertaintyLabel: "Zakres niepewności",
     uncertaintyValue: "Dowody × założenia strukturalne",
-    winnerLabel: "Założony zwycięzca",
-    winnerValue: "Brak",
+    winnerLabel: "Kierunek różnicy",
+    winnerValue: "Nie jest założony",
     note:
       "Wynik centralny jest jednym punktem. Zakres łączy niepewność dowodową z kosztem dnia i czasami etapów. Może objąć oba znaki. Różnica dni pomnożona przez koszt dnia podany przez użytkownika jest tożsamością rachunkową, nie efektem empirycznym.",
   },
   jobs: {
     eyebrow: "Trzy zadania",
     title: "Zacznij od decyzji, którą masz podjąć",
+    items: [
+      {
+        label: "Porównaj koszt",
+        body: "Zaprojektuj dwie dopuszczalne alternatywy i odczytaj różnicę w zakresie niskim, centralnym i wysokim.",
+        action: "Otwórz porównanie kosztów",
+      },
+      {
+        label: "Porównaj dopasowanie",
+        body: "Zestaw warunki dopasowania dopuszczalnych ścieżek bez punktacji ani rekomendacji.",
+        action: "Otwórz porównanie dopasowania",
+      },
+      {
+        label: "Opisz profil projektu procesu",
+        body: "Opisz dziesięć wymiarów przebiegu bez punktacji, poziomu dojrzałości ani zalecanej ścieżki.",
+        action: "Otwórz profil procesu",
+      },
+    ],
     compare: {
       label: "Porównaj koszty",
       body: "Policz ten sam zakup dla ścieżki formalnej i adaptacyjnej. Zobacz składniki, zakres oraz próg zmiany wyniku.",
       action: "Otwórz kalkulator",
     },
     choose: {
-      label: "Wybierz ścieżkę",
-      body: "Sprawdź ilustracyjny, regułowy ranking legalnie dostępnych ścieżek i jego wrażliwość na wagi. Optymalizator nie był walidowany na danych wynikowych.",
-      action: "Otwórz optymalizator",
+      label: "Porównaj dopasowanie",
+      body: "Zestaw warunki dopasowania dopuszczalnych ścieżek bez punktacji ani rekomendacji.",
+      action: "Otwórz porównanie dopasowania",
     },
     assess: {
       label: "Oceń proces",
       body: "Opisz sposób pracy organizacji. Samoocena jest opisowa i nie stanowi audytu ani walidacji.",
       action: "Przejdź do samooceny",
     },
+  },
+  evidenceRegister: {
+    eyebrow: "Mechanizmy i źródła",
+    title: "Cztery oficjalne rekordy do interpretacji mechanizmów",
+    description:
+      "Każdy rekord oddziela to, co źródło wspiera, od tego, czego nie rozstrzyga. Rejestr nie przypisuje organizacji wyniku modelu.",
+    allAction: "Otwórz pełny rejestr mechanizmów i źródeł",
   },
   scenarios: {
     eyebrow: "Porównywalne rekordy",
@@ -833,13 +894,15 @@ type HomeShape = LangShape<typeof homePl>;
 const homeEn = {
   hero: {
     eyebrow: "Procurement decision model",
-    title: "Compare the cost of two admissible procurement paths.",
+    title: "Compare the cost of two lawful procurement workflow designs.",
     tagline: "A tunnel has walls. A field has a horizon.",
     description:
-      "Enter the parameters of a real purchase. The model compares formal and adaptive paths, shows each cost component, and reports the full uncertainty range.",
-    primaryAction: "Calculate your scenario",
-    secondaryAction: "How to read the result",
+      "Set the shared boundary, design the workflow and contract for each alternative separately, then read the result under low, central, and high assumptions.",
+    primaryAction: "Compare costs",
+    secondaryAction: "View mechanisms and evidence",
   },
+  neutrality:
+    "The model permits either direction of difference. The sign is not assumed.",
   boundary: {
     eyebrow: "Decision boundary",
     title: "Two paths. The same compliance boundary.",
@@ -852,6 +915,25 @@ const homeEn = {
     caption:
       "A field does not mean unrestricted choice. Both paths remain inside the same boundary of authority, competition, ethics, and documentation.",
   },
+  compactRail: {
+    steps: {
+      formalFrame: "Needs and boundary definition",
+      formalCheck: "Procedure check",
+      formalEvaluation: "Tender evaluation",
+      formalAward: "Award decision",
+      adaptiveFrame: "Problem and boundary definition",
+      adaptiveMarket: "Market consultation",
+      adaptiveDesign: "Solution design",
+      adaptiveMerge: "Requirements consolidation",
+    },
+  },
+  rail: {
+    eyebrow: "Procurement workflow design",
+    title: "Two topologies under one shared boundary",
+    note:
+      "The rail illustrates workflow topology. It is not, by itself, an estimate of time or cost.",
+    action: "Open the editable process comparison",
+  },
   modelContract: {
     eyebrow: "Model contract",
     title: "What the result says and what it does not settle",
@@ -860,29 +942,53 @@ const homeEn = {
     modelVersionDisplay: `Model ${MODEL_VERSION}`,
     uncertaintyLabel: "Uncertainty range",
     uncertaintyValue: "Evidence × structural assumptions",
-    winnerLabel: "Assumed winner",
-    winnerValue: "None",
+    winnerLabel: "Direction of difference",
+    winnerValue: "Not assumed",
     note:
       "The central result is one point. The range combines evidence uncertainty with the daily cost and step durations. It may span both signs. The day difference multiplied by the user-supplied daily cost is an accounting identity, not an empirical effect.",
   },
   jobs: {
     eyebrow: "Three jobs",
     title: "Start with the decision you need to make",
+    items: [
+      {
+        label: "Compare cost",
+        body: "Design two lawful alternatives and read the difference under low, central, and high assumptions.",
+        action: "Open the cost comparison",
+      },
+      {
+        label: "Compare suitability",
+        body: "Compare the suitability conditions of lawful routes without scoring or a recommendation.",
+        action: "Open the suitability comparison",
+      },
+      {
+        label: "Describe the process design profile",
+        body: "Describe ten workflow dimensions without a score, maturity level or prescribed route.",
+        action: "Open the process profile",
+      },
+    ],
     compare: {
       label: "Compare costs",
       body: "Calculate the same purchase for formal and adaptive paths. Inspect the components, range, and result-switching threshold.",
       action: "Open calculator",
     },
     choose: {
-      label: "Choose a path",
-      body: "Review an illustrative, rule-based ranking of legally available paths and its sensitivity to weights. The optimizer has not been validated on outcome data.",
-      action: "Open optimizer",
+      label: "Compare suitability",
+      body: "Compare the suitability conditions of lawful routes without scoring or a recommendation.",
+      action: "Open the suitability comparison",
     },
     assess: {
       label: "Assess a process",
       body: "Describe how the organisation works. The self-assessment is descriptive, not an audit or validation.",
       action: "Open self-assessment",
     },
+  },
+  evidenceRegister: {
+    eyebrow: "Mechanisms and evidence",
+    title: "Four official records for interpreting mechanisms",
+    description:
+      "Each record separates what the source supports from what it does not establish. The register assigns no model outcome to an organisation.",
+    allAction: "Open the full mechanisms and evidence register",
   },
   scenarios: {
     eyebrow: "Comparable records",
@@ -940,6 +1046,37 @@ const homeEn = {
 } satisfies HomeShape;
 
 export const homeT = { pl: homePl, en: homeEn } as const;
+
+const mechanismsEvidencePl = {
+  eyebrow: "Rejestr dowodowy",
+  title: "Mechanizmy i źródła",
+  introduction:
+    "Rejestr porządkuje źródła używane do opisu mechanizmów i założeń. Nie przypisuje opisanym instytucjom wyniku obliczonego przez ProcuraCost.",
+  registerTitle: "Zakres wsparcia i granice interpretacji",
+  registerDescription:
+    "Najpierw znajdują się cztery oficjalne rekordy, a następnie empiryczny punkt odniesienia dotyczący transferu konkurencji na cenę.",
+  scopeNote:
+    "Każdy rekord oddziela mechanizm wspierany przez źródło od wniosku, którego źródło nie pozwala wyprowadzić.",
+} as const;
+
+type MechanismsEvidenceShape = LangShape<typeof mechanismsEvidencePl>;
+
+const mechanismsEvidenceEn = {
+  eyebrow: "Evidence register",
+  title: "Mechanisms and evidence",
+  introduction:
+    "The register organises sources used to describe mechanisms and assumptions. It assigns no ProcuraCost calculation outcome to the institutions described.",
+  registerTitle: "Support and interpretation limits",
+  registerDescription:
+    "Four official records appear first, followed by the empirical anchor for the transfer from competition to price.",
+  scopeNote:
+    "Each record separates the mechanism supported by the source from the conclusion that the source does not establish.",
+} satisfies MechanismsEvidenceShape;
+
+export const mechanismsEvidenceT = {
+  pl: mechanismsEvidencePl,
+  en: mechanismsEvidenceEn,
+} as const;
 
 type ResearchAgendaCopy = {
   metadataTitle: (version: string) => string;
@@ -2338,185 +2475,263 @@ const optimizerEn = {
 
 export const optimizerT = { pl: optimizerPl, en: optimizerEn } as const;
 
-const assessmentPl = {
-  title: "Profil projektowania zakupów",
-  subtitle: "10 pytań o sekwencyjność, kontrolę i adaptację. To samoocena, nie walidowany audyt.",
-  badge: `Samoocena ${MODEL_VERSION}`,
-  questionOf: (n: number, total: number) => `Pytanie ${n} z ${total}`,
-  never: "Nigdy",
-  sometimes: "Zależy / czasem",
-  always: "Tak / zawsze",
-  showResult: "Pokaż wynik →",
-  restart: "Zacznij od nowa",
-  yourScore: "Twój wynik",
-  outOf: "/ 20 pkt",
-  levels: {
-    pipe: {
-      label: "Profil formalny",
-      color: "red",
-      headline: "Proces jest głównie formalny i sekwencyjny.",
-      desc: "Taki profil może chronić konkurencję i audytowalność; osobno zmierz czas, wysiłek i faktyczne obejścia.",
-    },
-    transition: {
-      label: "Profil mieszany",
-      color: "amber",
-      headline: "Organizacja łączy ścieżki sekwencyjne i adaptacyjne.",
-      desc: "Porównuj wyniki w podobnych kategoriach i nie zakładaj, że jeden format jest zawsze lepszy.",
-    },
-    field: {
-      label: "Profil adaptacyjny",
-      color: "green",
-      headline: "Proces dopuszcza dużą zdolność adaptacji.",
-      desc: "Sprawdź, czy elastyczności towarzyszą skuteczna konkurencja, dokumentacja i kontrola konfliktów interesów.",
-    },
+
+const processProfilePl = {
+  badge: "Opis projektu procesu",
+  title: "Profil projektu procesu zakupowego",
+  subtitle:
+    "Opisz dziesięć wymiarów przebiegu. Orientacje sekwencyjna, mieszana i adaptacyjna nie są skalą od gorszego do lepszego.",
+  orientations: {
+    sequential: "Sekwencyjna",
+    mixed: "Mieszana",
+    adaptive: "Adaptacyjna",
   },
-  ctaCalculator: "Oblicz koszty w kalkulatorze →",
-  ctaResearch: "Przeczytaj artykuł naukowy →",
+  selectedOrientation: (orientation: string) =>
+    `Wybrana orientacja: ${orientation}`,
+  selected: "Wybrano",
+  unanswered: "Nie wybrano orientacji",
+  answeredCount: (answered: number, total: number) =>
+    `Opisano ${answered} z ${total} wymiarów`,
   questions: [
     {
-      q: "Gdy dostawca proponuje szybszą metodę zakupu, kupiec może ją zaakceptować?",
-      dim: "Elastyczność procesu",
-      answers: ["Nigdy: tylko zatwierdzona procedura", "Tak, z dodatkowym approvalem", "Tak, jeśli spełnia kryteria polityki"],
+      dimension: "Logika prowadzenia i kolejność",
+      prompt: "Jak zaprojektowano zależności między krokami procesu?",
+      answers: [
+        "Zatwierdzona mapa prowadzi przez jedną sekwencję z pełnym śladem wykonania.",
+        "Zatwierdzona mapa łączy sekwencje i równoległe odcinki w stałych punktach scalenia.",
+        "Reguły zależności pozwalają dobrać kolejność, a decyzja o przebiegu jest zapisywana.",
+      ],
     },
     {
-      q: "Czy organizacja rozróżnia ustawowe okresy oczekiwania od własnych terminów i kolejek akceptacyjnych?",
-      dim: "Źródło ograniczeń czasu",
-      answers: ["Nie: wszystkie traktujemy jako obowiązkowe", "Częściowo", "Tak: każde ograniczenie ma wskazane źródło"],
+      dimension: "Źródło kontroli",
+      prompt: "Skąd wynikają obowiązujące ograniczenia procesu?",
+      answers: [
+        "Wymogi prawa i polityki są przełożone na zatwierdzoną sekwencję kontroli.",
+        "Wymogi prawa pozostają stałe, a polityka wskazuje skonfigurowane warianty między nimi.",
+        "Wymogi prawa i polityki są zapisane jako granice oraz reguły wyboru przebiegu.",
+      ],
     },
     {
-      q: "Pod presją czasu kupcy najczęściej:",
-      dim: "Zachowanie pod presją",
-      answers: ["Obchodzą proces poza kontrolą (mail/telefon/Excel)", "Eskalują do przełożonego", "Wybierają udokumentowaną alternatywną ścieżkę w tej samej granicy kontroli"],
+      dimension: "Niepełne wymagania",
+      prompt: "Jak proces obsługuje wymaganie, którego nie da się opisać w całości na początku?",
+      answers: [
+        "Dedykowany etap definicji kończy się zatwierdzonym opisem przed uruchomieniem dalszej sekwencji.",
+        "Etapy rozpoznania i definicji mają osobne bramki, po których następuje stały przebieg.",
+        "Wymaganie jest doprecyzowywane iteracyjnie między udokumentowanymi bramkami decyzji.",
+      ],
     },
     {
-      q: "Jak zatwierdzane są zakupy powyżej progu uprawnień?",
-      dim: "Mechanizm zatwierdzania",
-      answers: ["Papierowe podpisy zbierane po kolei", "Email do kolejnych osób", "Automatyczny workflow w systemie ERP/P2P"],
+      dimension: "Rozpoznanie rynku",
+      prompt: "Jak zaplanowano kontakt z rynkiem przed wyborem rozwiązania?",
+      answers: [
+        "Analiza rynku jest zamykana w określonym etapie przed zatwierdzeniem opisu.",
+        "Konsultacja odbywa się w określonej bramce, po której opis zostaje ustalony.",
+        "Kilka kontrolowanych etapów kontaktu z rynkiem zasila kolejne decyzje projektowe.",
+      ],
     },
     {
-      q: "Za co przede wszystkim oceniany jest kupiec?",
-      dim: "KPI kupca",
-      answers: ["Zgodność z procedurą i dokumentacją", "Oba kryteria równie ważne", "Wynik: oszczędności, czas, jakość kontraktu"],
+      dimension: "Topologia zatwierdzeń",
+      prompt: "Jak przebiegają zatwierdzenia biznesowe, zakupowe i kontrolne?",
+      answers: [
+        "Zatwierdzenia następują kolejno według zatwierdzonej macierzy uprawnień.",
+        "Stałe grupy zatwierdzeń przebiegają równolegle i spotykają się w zapisanej bramce.",
+        "Reguły ryzyka dobierają konfigurację zatwierdzeń, a wybrana konfiguracja pozostaje w śladzie decyzji.",
+      ],
     },
     {
-      q: "Czy kontrakty mają proporcjonalne do ryzyka mechanizmy przeglądu i kontrolowanej zmiany?",
-      dim: "Adaptacyjność kontraktu",
-      answers: ["Nie: używamy jednego sztywnego wzorca", "Tylko w wybranych kategoriach", "Tak: mechanizmy wynikają z ryzyka i przedmiotu"],
+      dimension: "Projekt zmiany umowy",
+      prompt: "Jak umowa reguluje przegląd i kontrolowaną zmianę?",
+      answers: [
+        "Stały zakres jest chroniony formalną procedurą zmiany i rejestrem zatwierdzeń.",
+        "Zdefiniowane elementy mają zaplanowane terminy przeglądu, a pozostałe używają formalnej procedury zmiany.",
+        "Moduły umowy mają opisane opcje, limity oraz procedury zatwierdzania kontrolowanej zmiany.",
+      ],
     },
     {
-      q: "Dostawcy skarżą się na złożoność procesu zakupowego?",
-      dim: "Doświadczenie dostawcy",
-      answers: ["Tak, regularnie", "Sporadycznie", "Rzadko: uważają nasz proces za sprawny"],
+      dimension: "Wyjątki i eskalacja",
+      prompt: "Jak proces obsługuje odchylenia od zaplanowanego przebiegu?",
+      answers: [
+        "Odchylenie uruchamia jedną formalną procedurę wyjątku przed wznowieniem sekwencji.",
+        "Każda kategoria wyjątku ma skonfigurowaną ścieżkę eskalacji i powrotu.",
+        "Brama decyzyjna wybiera udokumentowany wariant, właściciela i warunki powrotu.",
+      ],
     },
     {
-      q: "Kupiec może zamawiać standardowe pozycje z katalogu lub przez e-auction bez pełnej procedury?",
-      dim: "Ścieżki operacyjne (downstream)",
-      answers: ["Nie: każdy zakup przez tę samą procedurę", "Tylko poniżej określonego progu wartości", "Tak: mamy dedykowane ścieżki dla katalogów i MRP"],
+      dimension: "Routing strategiczny i operacyjny",
+      prompt: "Jak rozdzielono zakupy strategiczne od zamówień operacyjnych?",
+      answers: [
+        "Każdy kanał ma odrębną, zatwierdzoną sekwencję strategiczną albo operacyjną.",
+        "Wspólne bramki ładu prowadzą do skonfigurowanych wariantów dla kanałów realizacji.",
+        "Archetyp zakupu i kanał realizacji wybierają mapę zależności oraz wymagany ślad decyzji.",
+      ],
     },
     {
-      q: "System IT pokrywa cały cykl zakupowy (P2P)?",
-      dim: "Poziom technologiczny",
-      answers: ["Głównie Excel i email", "Częściowy ERP: sourcing lub PO, nie całość", "End-to-end: od zapotrzebowania do faktury w jednym systemie"],
+      dimension: "Kontrole systemowe i wybór przebiegu",
+      prompt: "Jaką rolę pełni system zakupowy w projekcie procesu?",
+      answers: [
+        "System egzekwuje jedną sekwencję, uprawnienia, walidacje danych i ślad audytowy.",
+        "System egzekwuje uprawnienia i walidacje w kilku skonfigurowanych wariantach.",
+        "System egzekwuje granice i dane oraz zapisuje uzasadnienie przebiegu wybranego przez uprawniony zespół.",
+      ],
     },
     {
-      q: "Polityka zakupowa określa granice (co i dlaczego), nie kroki (jak i w jakiej kolejności)?",
-      dim: "Model polityki vs procedury",
-      answers: ["Nie: mamy procedurę krok po kroku", "Częściowo: polityka istnieje, ale procedury dominują", "Tak: polityka wyznacza granice, kupiec decyduje o ścieżce"],
+      dimension: "Pomiar i pochodzenie danych",
+      prompt: "Jak dokumentowane są założenia, decyzje i wyniki procesu?",
+      answers: [
+        "Rejestr bazowy łączy każdy krok stałej sekwencji z wykonawcą, datą i podstawą.",
+        "Rejestr wariantów łączy wybraną konfigurację z krokami, decyzjami i źródłami.",
+        "Rejestr decyzji o zmianie łączy przebieg z przesłanką, właścicielem i skutkiem.",
+      ],
     },
   ],
+  result: {
+    eyebrow: "Opis przebiegu",
+    title: "Rozkład orientacji projektu procesu",
+    countsTitle: "Liczba wymiarów według orientacji",
+    selectionsTitle: "Opis dziesięciu wymiarów",
+    description:
+      "Profil pokazuje, gdzie projekt procesu jest sekwencyjny, mieszany lub adaptacyjny. Nie mierzy dojrzałości organizacji i nie wyznacza zalecanej ścieżki.",
+    validationCaveat:
+      "Profil ma charakter opisowy i nie jest zwalidowanym narzędziem oceny.",
+  },
+  actions: {
+    calculator: "Porównaj koszt dwóch projektów procesu",
+    readiness: "Sprawdź gotowość organizacyjną do wdrożenia",
+    restart: "Wyczyść profil i zacznij od nowa",
+  },
 } as const;
 
-type AssessmentShape = LangShape<typeof assessmentPl>;
+type ProcessProfileCopyShape = LangShape<typeof processProfilePl>;
 
-const assessmentEn = {
-  title: "Procurement Design Profile",
-  subtitle: "10 questions about sequencing, control and adaptability. This is a self-assessment, not a validated audit.",
-  badge: `Model ${MODEL_VERSION} self-assessment`,
-  questionOf: (n: number, total: number) => `Question ${n} of ${total}`,
-  never: "Never",
-  sometimes: "Sometimes / depends",
-  always: "Yes / always",
-  showResult: "Show result →",
-  restart: "Start over",
-  yourScore: "Your score",
-  outOf: "/ 20 pts",
-  levels: {
-    pipe: {
-      label: "Formal profile",
-      color: "red",
-      headline: "Your process is mainly formal and sequential.",
-      desc: "This can protect competition and auditability; measure timing, effort and actual bypass separately.",
-    },
-    transition: {
-      label: "Mixed profile",
-      color: "amber",
-      headline: "The organization combines sequential and adaptive paths.",
-      desc: "Compare outcomes in similar categories and do not assume one format is always superior.",
-    },
-    field: {
-      label: "Adaptive profile",
-      color: "green",
-      headline: "Your process allows substantial adaptation.",
-      desc: "Verify that adaptability is paired with effective competition, documentation and conflict controls.",
-    },
+const processProfileEn = {
+  badge: "Workflow design description",
+  title: "Procurement process design profile",
+  subtitle:
+    "Describe ten workflow dimensions. Sequential, mixed and adaptive orientations are descriptive categories, not a better-to-worse scale.",
+  orientations: {
+    sequential: "Sequential",
+    mixed: "Mixed",
+    adaptive: "Adaptive",
   },
-  ctaCalculator: "Calculate costs in the calculator →",
-  ctaResearch: "Read the academic paper →",
+  selectedOrientation: (orientation: string) =>
+    `Selected orientation: ${orientation}`,
+  selected: "Selected",
+  unanswered: "No orientation selected",
+  answeredCount: (answered: number, total: number) =>
+    `${answered} of ${total} dimensions described`,
   questions: [
     {
-      q: "When a supplier proposes a faster procurement method, can the buyer accept it?",
-      dim: "Process flexibility",
-      answers: ["Never: only the approved procedure", "Yes, with additional approval", "Yes, if it meets policy criteria"],
+      dimension: "Routing logic and sequence",
+      prompt: "How are dependencies between workflow steps designed?",
+      answers: [
+        "An approved map follows one sequence with a complete execution trail.",
+        "An approved map combines sequences and parallel sections at fixed merge gates.",
+        "Dependency rules permit route selection and record the resulting workflow decision.",
+      ],
     },
     {
-      q: "Does the organization distinguish statutory waiting periods from internal timelines and approval queues?",
-      dim: "Source of timing constraints",
-      answers: ["No: all are treated as mandatory", "Partly", "Yes: every constraint has a documented source"],
+      dimension: "Source of controls",
+      prompt: "Where do the workflow constraints come from?",
+      answers: [
+        "Legal and policy requirements are translated into an approved control sequence.",
+        "Legal requirements remain fixed while policy identifies configured variants between them.",
+        "Legal and policy requirements are expressed as boundaries and workflow-selection rules.",
+      ],
     },
     {
-      q: "Under time pressure, buyers typically:",
-      dim: "Behaviour under pressure",
-      answers: ["Work outside controls (email/phone/Excel)", "Escalate to a manager", "Choose a documented alternative path within the same control boundary"],
+      dimension: "Incomplete requirements",
+      prompt: "How does the workflow handle a requirement that cannot be fully specified at the outset?",
+      answers: [
+        "A dedicated definition stage ends with an approved specification before the remaining sequence starts.",
+        "Discovery and definition have separate gates followed by a fixed workflow.",
+        "The requirement is refined iteratively between documented decision gates.",
+      ],
     },
     {
-      q: "How are purchases above the authorisation threshold approved?",
-      dim: "Approval mechanism",
-      answers: ["Paper signatures collected sequentially", "Email chain to successive approvers", "Automated ERP/P2P workflow"],
+      dimension: "Market engagement",
+      prompt: "How is market contact planned before a solution is selected?",
+      answers: [
+        "Market analysis closes at a defined stage before the specification is approved.",
+        "Consultation occurs at a defined gate after which the specification is fixed.",
+        "Several controlled market-engagement stages inform successive design decisions.",
+      ],
     },
     {
-      q: "What is the buyer primarily evaluated on?",
-      dim: "Buyer KPIs",
-      answers: ["Procedural compliance and documentation", "Both criteria equally", "Outcomes: savings, lead time, contract quality"],
+      dimension: "Approval topology",
+      prompt: "How do business, procurement and control approvals proceed?",
+      answers: [
+        "Approvals follow an approved sequence under the delegation-of-authority matrix.",
+        "Fixed approval groups run in parallel and meet at a recorded gate.",
+        "Risk rules select an approval configuration and the selected configuration remains in the decision trail.",
+      ],
     },
     {
-      q: "Do contracts include risk-proportionate review and controlled-change mechanisms?",
-      dim: "Contract adaptability",
-      answers: ["No: one rigid template is used", "Only in selected categories", "Yes: mechanisms follow risk and subject matter"],
+      dimension: "Contract-change design",
+      prompt: "How does the contract govern review and controlled change?",
+      answers: [
+        "Fixed scope is protected by a formal change procedure and approval register.",
+        "Defined elements have scheduled reviews while the remainder uses the formal change procedure.",
+        "Contract modules have stated options, limits and approval procedures for controlled change.",
+      ],
     },
     {
-      q: "Do suppliers complain about the complexity of your procurement process?",
-      dim: "Supplier experience",
-      answers: ["Yes, regularly", "Occasionally", "Rarely: they find our process efficient"],
+      dimension: "Exceptions and escalation",
+      prompt: "How does the workflow handle departures from the planned route?",
+      answers: [
+        "A departure invokes one formal exception procedure before the sequence resumes.",
+        "Each exception category has a configured escalation and return route.",
+        "A decision gate selects a documented variant, owner and return conditions.",
+      ],
     },
     {
-      q: "Can the buyer order standard items from a catalog or via e-auction without a full procedure?",
-      dim: "Operational paths (downstream)",
-      answers: ["No: every purchase goes through the same procedure", "Only below a certain value threshold", "Yes: we have dedicated paths for catalogs and MRP"],
+      dimension: "Strategic and operational routing",
+      prompt: "How are strategic purchases separated from operational orders?",
+      answers: [
+        "Each channel has its own approved strategic or operational sequence.",
+        "Shared governance gates lead to configured variants for each execution channel.",
+        "The purchase archetype and execution channel select a dependency map and required decision trail.",
+      ],
     },
     {
-      q: "Does the IT system cover the full procurement cycle (P2P)?",
-      dim: "Technology level",
-      answers: ["Mainly Excel and email", "Partial ERP: sourcing or PO, not both", "End-to-end: from requisition to invoice in one system"],
+      dimension: "System controls and workflow choice",
+      prompt: "What role does the procurement system play in workflow design?",
+      answers: [
+        "The system enforces one sequence, authorisations, data validation and an audit trail.",
+        "The system enforces authorisations and data validation across configured workflow variants.",
+        "The system enforces boundaries and data and records why an authorised team selected the workflow.",
+      ],
     },
     {
-      q: "Does the procurement policy define boundaries (what & why), not steps (how & in what order)?",
-      dim: "Policy vs procedure model",
-      answers: ["No: we have a step-by-step procedure", "Partially: policy exists but procedures dominate", "Yes: policy sets boundaries, buyer decides the path"],
+      dimension: "Measurement and provenance",
+      prompt: "How are workflow assumptions, decisions and outcomes documented?",
+      answers: [
+        "A baseline ledger links every fixed-sequence step to its actor, date and basis.",
+        "A variant ledger links the selected configuration to steps, decisions and sources.",
+        "A change-decision ledger links the workflow to its reason, owner and effect.",
+      ],
     },
   ],
-} satisfies AssessmentShape;
+  result: {
+    eyebrow: "Workflow description",
+    title: "Distribution of workflow orientations",
+    countsTitle: "Dimensions by orientation",
+    selectionsTitle: "Selected design by dimension",
+    description:
+      "The profile shows where the workflow design is sequential, mixed, or adaptive. It does not measure organisational maturity or prescribe a route.",
+    validationCaveat:
+      "The profile is descriptive and has not been validated as an assessment instrument.",
+  },
+  actions: {
+    calculator: "Compare the cost of two workflow designs",
+    readiness: "Assess organisational implementation readiness",
+    restart: "Clear the profile and start again",
+  },
+} satisfies ProcessProfileCopyShape;
 
-export const assessmentT = { pl: assessmentPl, en: assessmentEn } as const;
+export const assessmentT = {
+  pl: processProfilePl,
+  en: processProfileEn,
+} as const;
 
 const shortcastsPl = {
   metadataTitle: (version: string) => `ProcuraCost ${version}: krótkie materiały metodologiczne`,

@@ -7,6 +7,7 @@ import type {
 
 import {
   deriveRailLayout,
+  type RailLayout,
   type RailLayoutConnector,
   type RailLayoutNode,
   type RailStepTextData,
@@ -69,6 +70,19 @@ export interface BuildProcessRailViewModelOptions {
   selectedStepId: string | null;
   criticalPathStepIds: Record<AlternativeId, readonly string[]>;
   invalidStepIds: Record<AlternativeId, readonly string[]>;
+}
+
+export interface IllustrativeProcessRailStep {
+  id: string;
+  label: string;
+  predecessorIds: readonly string[];
+  locked?: boolean;
+  critical?: boolean;
+}
+
+export interface BuildIllustrativeProcessRailViewModelOptions {
+  lang: Lang;
+  lanes: Record<AlternativeId, readonly IllustrativeProcessRailStep[]>;
 }
 
 const ALTERNATIVE_IDS: AlternativeId[] = [
@@ -177,44 +191,26 @@ function connectorPath(
   return `M ${startX} ${startY} H ${midpoint} V ${endY} H ${endX}`;
 }
 
-function buildLane(
-  options: BuildProcessRailViewModelOptions,
-  alternativeId: AlternativeId
+interface CentralTiming {
+  activeCentral: string;
+  queueCentral: string;
+  elapsedCentral: string;
+}
+
+function decorateLane(
+  lang: Lang,
+  alternativeId: AlternativeId,
+  layout: RailLayout,
+  timingByStepId: ReadonlyMap<string, CentralTiming> | null
 ): ProcessRailLaneViewModel {
-  const { lang } = options;
   const tx = calculatorV2T[lang];
-  const workflow = options.workflows[alternativeId];
-  const layout = deriveRailLayout(workflow, {
-    textByStepId: textByStepId(
-      workflow,
-      alternativeId,
-      lang,
-      options.selectedAlternative === alternativeId,
-      options.selectedStepId,
-      options.criticalPathStepIds[alternativeId],
-      options.invalidStepIds[alternativeId]
-    ),
-    selectedStepId:
-      options.selectedAlternative === alternativeId
-        ? options.selectedStepId
-        : null,
-    criticalPathStepIds: options.criticalPathStepIds[alternativeId],
-    invalidStepIds: options.invalidStepIds[alternativeId],
-  });
   const nodes = layout.nodes.map((node, index): ProcessRailNodeViewModel => {
-    const activeCentral = formatNumber(
-      workflow.steps.find(({ id }) => id === node.stepId)!.activeDays.central,
-      lang
-    );
-    const queueCentral = formatNumber(
-      workflow.steps.find(({ id }) => id === node.stepId)!.queueDays.central,
-      lang
-    );
-    const elapsedCentral = formatNumber(
-      workflow.steps.find(({ id }) => id === node.stepId)!.activeDays.central +
-        workflow.steps.find(({ id }) => id === node.stepId)!.queueDays.central,
-      lang
-    );
+    const timing = timingByStepId?.get(node.stepId) ?? {
+      activeCentral: "",
+      queueCentral: "",
+      elapsedCentral: "",
+    };
+    const { activeCentral, queueCentral, elapsedCentral } = timing;
     const statuses = [
       node.criticalText,
       node.parallel ? tx.rail.parallelBranch : null,
@@ -228,23 +224,35 @@ function buildLane(
     return {
       ...node,
       position: index + 1,
-      accessibleName: tx.rail.accessibleNode(
-        tx.alternatives[alternativeId],
-        index + 1,
-        node.label,
-        statuses.join(", "),
-        activeCentral,
-        queueCentral,
-        predecessors
-      ),
+      accessibleName:
+        timingByStepId === null
+          ? tx.rail.accessibleNodeWithoutTiming(
+              tx.alternatives[alternativeId],
+              index + 1,
+              node.label,
+              statuses.join(", "),
+              predecessors
+            )
+          : tx.rail.accessibleNode(
+              tx.alternatives[alternativeId],
+              index + 1,
+              node.label,
+              statuses.join(", "),
+              activeCentral,
+              queueCentral,
+              predecessors
+            ),
       activeCentral,
       queueCentral,
       elapsedCentral,
-      timingSummary: tx.rail.timingSummary(
-        activeCentral,
-        queueCentral,
-        elapsedCentral
-      ),
+      timingSummary:
+        timingByStepId === null
+          ? ""
+          : tx.rail.timingSummary(
+              activeCentral,
+              queueCentral,
+              elapsedCentral
+            ),
       parallelText: node.parallel ? tx.rail.parallelBranch : null,
       predecessorSummary: `${tx.rail.predecessors}: ${
         predecessors
@@ -292,6 +300,98 @@ function buildLane(
   };
 }
 
+function buildLane(
+  options: BuildProcessRailViewModelOptions,
+  alternativeId: AlternativeId
+): ProcessRailLaneViewModel {
+  const { lang } = options;
+  const workflow = options.workflows[alternativeId];
+  const layout = deriveRailLayout(workflow, {
+    textByStepId: textByStepId(
+      workflow,
+      alternativeId,
+      lang,
+      options.selectedAlternative === alternativeId,
+      options.selectedStepId,
+      options.criticalPathStepIds[alternativeId],
+      options.invalidStepIds[alternativeId]
+    ),
+    selectedStepId:
+      options.selectedAlternative === alternativeId
+        ? options.selectedStepId
+        : null,
+    criticalPathStepIds: options.criticalPathStepIds[alternativeId],
+    invalidStepIds: options.invalidStepIds[alternativeId],
+  });
+  const timingByStepId = new Map(
+    workflow.steps.map((step) => {
+      const activeCentral = formatNumber(step.activeDays.central, lang);
+      const queueCentral = formatNumber(step.queueDays.central, lang);
+      return [
+        step.id,
+        {
+          activeCentral,
+          queueCentral,
+          elapsedCentral: formatNumber(
+            step.activeDays.central + step.queueDays.central,
+            lang
+          ),
+        },
+      ];
+    })
+  );
+
+  return decorateLane(lang, alternativeId, layout, timingByStepId);
+}
+
+function buildIllustrativeLane(
+  options: BuildIllustrativeProcessRailViewModelOptions,
+  alternativeId: AlternativeId
+): ProcessRailLaneViewModel {
+  const tx = calculatorV2T[options.lang];
+  const steps = options.lanes[alternativeId];
+  const labelById = new Map(steps.map(({ id, label }) => [id, label]));
+  const criticalPathStepIds = steps
+    .filter(({ critical }) => critical === true)
+    .map(({ id }) => id);
+  const text = Object.fromEntries(
+    steps.map((step) => {
+      const predecessorNames = step.predecessorIds.map(
+        (id) => labelById.get(id) ?? tx.rail.unknownPredecessor
+      );
+      return [
+        step.id,
+        {
+          label: step.label,
+          predecessorNames,
+          lockText: step.locked ? tx.rail.lockedLegalWait : null,
+          criticalText: step.critical ? tx.rail.criticalPath : null,
+          invalidText: null,
+          selectedText: null,
+          accessibleName: "",
+        } satisfies RailStepTextData,
+      ];
+    })
+  );
+  const layout = deriveRailLayout(
+    {
+      steps: steps.map(({ id, predecessorIds, locked }) => ({
+        id,
+        predecessorIds: [...predecessorIds],
+        locked,
+      })),
+    },
+    {
+      textByStepId: text,
+      selectedStepId: null,
+      criticalPathStepIds,
+      invalidStepIds: [],
+    }
+  );
+
+  return decorateLane(options.lang, alternativeId, layout, null);
+}
+
 export function buildProcessRailViewModel(
   options: BuildProcessRailViewModelOptions
 ): ProcessRailViewModel {
@@ -302,6 +402,21 @@ export function buildProcessRailViewModel(
       ALTERNATIVE_IDS.map((alternativeId) => [
         alternativeId,
         buildLane(options, alternativeId),
+      ])
+    ) as Record<AlternativeId, ProcessRailLaneViewModel>,
+  };
+}
+
+export function buildIllustrativeProcessRailViewModel(
+  options: BuildIllustrativeProcessRailViewModelOptions
+): ProcessRailViewModel {
+  return {
+    boundaryLabel: calculatorV2T[options.lang].rail.boundary,
+    inspectorId: "process-step-inspector",
+    lanes: Object.fromEntries(
+      ALTERNATIVE_IDS.map((alternativeId) => [
+        alternativeId,
+        buildIllustrativeLane(options, alternativeId),
       ])
     ) as Record<AlternativeId, ProcessRailLaneViewModel>,
   };

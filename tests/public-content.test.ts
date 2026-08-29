@@ -243,6 +243,54 @@ describe("public editorial integrity", () => {
     );
   });
 
+  it("keeps the B2 profile and mechanisms terminology exact and paired", () => {
+    function leafPaths(value: unknown, path = ""): string[] {
+      if (typeof value === "string" || typeof value === "function") {
+        return [path];
+      }
+      if (!value || typeof value !== "object") return [];
+      return Object.entries(value).flatMap(([key, child]) =>
+        leafPaths(child, path ? `${path}.${key}` : key)
+      );
+    }
+
+    expect(i18n.assessmentT.pl.title).toBe(
+      "Profil projektu procesu zakupowego"
+    );
+    expect(i18n.assessmentT.en.title).toBe(
+      "Procurement process design profile"
+    );
+    expect(i18n.mechanismsEvidenceT.pl.title).toBe("Mechanizmy i źródła");
+    expect(i18n.mechanismsEvidenceT.en.title).toBe(
+      "Mechanisms and evidence"
+    );
+    expect(leafPaths(i18n.assessmentT.pl).sort()).toEqual(
+      leafPaths(i18n.assessmentT.en).sort()
+    );
+    expect(leafPaths(i18n.mechanismsEvidenceT.pl).sort()).toEqual(
+      leafPaths(i18n.mechanismsEvidenceT.en).sort()
+    );
+  });
+
+  it("keeps legacy calculations and scoring imports out of the B2 public surfaces", async () => {
+    const b2Files = [
+      "components/EvidenceFieldHome.tsx",
+      "components/AssessmentQuiz.tsx",
+      "components/MechanismsEvidencePage.tsx",
+      "app/(pl)/assessment/page.tsx",
+      "app/(en)/en/assessment/page.tsx",
+      "app/(pl)/case-studies/page.tsx",
+      "app/(en)/en/case-studies/page.tsx",
+    ] as const;
+
+    for (const path of b2Files) {
+      const source = await readPublicFile(path);
+      expect(source, path).not.toMatch(
+        /@\/lib\/(?:calculations|scenarios|process-templates)|BoundaryField|DecisionMap|PROCESS_TYPE_META|TECH_LEVELS|\btotalScore\b|\bpct\b/
+      );
+    }
+  });
+
   it("keeps Polish navigation labels in Polish", () => {
     const labels = navigationFor("pl").map((item) => item.label);
 

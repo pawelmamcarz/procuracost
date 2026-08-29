@@ -72,9 +72,11 @@ export function ProcessStepNode({
       <span className="break-words text-sm font-semibold leading-snug">
         {node.label}
       </span>
-      <span className="font-mono text-[11px] leading-relaxed text-gray-600">
-        {node.timingSummary}
-      </span>
+      {node.timingSummary ? (
+        <span className="font-mono text-[11px] leading-relaxed text-gray-600">
+          {node.timingSummary}
+        </span>
+      ) : null}
       {rows.map(({ text, Icon, tone }) => (
         <span
           className={cn("flex items-center gap-1 text-[11px] font-medium", tone)}

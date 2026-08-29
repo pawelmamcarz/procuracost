@@ -1,9 +1,11 @@
+import { readFileSync } from "node:fs";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 
 import { ProcessRail } from "@/components/process-map/ProcessRail";
 import {
+  buildIllustrativeProcessRailViewModel,
   buildProcessRailViewModel,
   type ProcessRailViewModel,
 } from "@/components/process-map/rail-view-model";
@@ -110,6 +112,83 @@ function renderRail(model = viewModel()) {
 }
 
 describe("process rail UI", () => {
+  it("keeps the original model-backed builder contract timing-always", () => {
+    const source = readFileSync(
+      "components/process-map/rail-view-model.ts",
+      "utf8"
+    );
+
+    expect(source).not.toContain("includeTiming");
+  });
+
+  it("builds a timing-free illustrative rail from presentation topology only", () => {
+    const model = buildIllustrativeProcessRailViewModel({
+      lang: "en",
+      lanes: {
+        formalSequential: [
+          { id: "frame", label: "Frame", predecessorIds: [], critical: true },
+          {
+            id: "legal",
+            label: "Legal review",
+            predecessorIds: ["frame"],
+            locked: true,
+            critical: true,
+          },
+          {
+            id: "award",
+            label: "Award",
+            predecessorIds: ["legal"],
+            critical: true,
+          },
+        ],
+        adaptiveCompliant: [
+          { id: "frame", label: "Frame", predecessorIds: [], critical: true },
+          {
+            id: "market",
+            label: "Market engagement",
+            predecessorIds: ["frame"],
+            critical: true,
+          },
+          {
+            id: "design",
+            label: "Design",
+            predecessorIds: ["frame"],
+          },
+          {
+            id: "award",
+            label: "Award",
+            predecessorIds: ["market", "design"],
+            critical: true,
+          },
+        ],
+      },
+    });
+
+    expect(model.lanes.formalSequential.nodes).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          stepId: "legal",
+          locked: true,
+          lockText: "Locked legal wait",
+          critical: true,
+        }),
+      ])
+    );
+    expect(model.lanes.adaptiveCompliant.nodes).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ stepId: "market", parallel: true }),
+        expect.objectContaining({ stepId: "award", merge: true }),
+      ])
+    );
+    for (const node of Object.values(model.lanes).flatMap(({ nodes }) => nodes)) {
+      expect(node.timingSummary).toBe("");
+      expect(node.activeCentral).toBe("");
+      expect(node.queueCentral).toBe("");
+      expect(node.elapsedCentral).toBe("");
+      expect(node.accessibleName).not.toMatch(/active days|queue days/i);
+    }
+  });
+
   it("exports one resolved view model with professional lane labels and graph geometry", () => {
     const model = viewModel();
 
