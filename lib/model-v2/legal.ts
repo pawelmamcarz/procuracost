@@ -1,11 +1,17 @@
 import type { CalibratedValue } from "./calibrated-value";
 import {
   MODEL_V2_METADATA,
+  isBuyerRegime,
+  isCommunicationMethod,
+  isLegalGovernanceBoundaryId,
+  isProcurementObject,
+  isProcedureFamilyId,
   type LegalContext,
   type LegalGovernanceBoundaryId,
   type LockedLegalProvenance,
   type ProcedureFamilyId,
 } from "./domain";
+import { deepFreeze } from "./deep-freeze";
 
 export interface ResolvedLegalWait {
   id: string;
@@ -14,10 +20,12 @@ export interface ResolvedLegalWait {
   provenance: LockedLegalProvenance;
 }
 
-const ALLOWED_PROCEDURES: Record<
+export const PROCEDURE_CANDIDATES_BY_BOUNDARY: Readonly<
+  Record<
   LegalGovernanceBoundaryId,
   readonly ProcedureFamilyId[]
-> = {
+  >
+> = deepFreeze({
   private_policy: [
     "private_competitive",
     "private_negotiated",
@@ -31,7 +39,7 @@ const ALLOWED_PROCEDURES: Record<
   ],
   pzp_classic_national: ["pzp_basic", "framework_calloff"],
   pzp_classic_eu: ["pzp_open", "pzp_restricted", "framework_calloff"],
-};
+});
 
 interface LegalWaitDefinition {
   suffix: string;
@@ -41,7 +49,10 @@ interface LegalWaitDefinition {
   evidenceId: string;
 }
 
-function assertInitiatedOnIsCovered(initiatedOn: string): void {
+export function assertInitiatedOnIsCovered(initiatedOn: unknown): asserts initiatedOn is string {
+  if (typeof initiatedOn !== "string") {
+    throw new Error("initiatedOn must be an ISO calendar date (YYYY-MM-DD)");
+  }
   if (!/^\d{4}-\d{2}-\d{2}$/.test(initiatedOn)) {
     throw new Error("initiatedOn must be an ISO calendar date (YYYY-MM-DD)");
   }
@@ -59,6 +70,14 @@ function assertInitiatedOnIsCovered(initiatedOn: string): void {
       "initiatedOn is outside the pl-pzp-2026-2027 ruleset coverage"
     );
   }
+}
+
+export function procedureCandidatesForBoundary(
+  boundaryId: unknown
+): readonly ProcedureFamilyId[] | null {
+  return isLegalGovernanceBoundaryId(boundaryId)
+    ? PROCEDURE_CANDIDATES_BY_BOUNDARY[boundaryId]
+    : null;
 }
 
 function fixedLegalValue(days: number, evidenceId: string): CalibratedValue {
@@ -146,6 +165,28 @@ export function resolveLegalWaits(context: LegalContext): ResolvedLegalWait[] {
 
   assertInitiatedOnIsCovered(context.initiatedOn);
 
+  if (!isLegalGovernanceBoundaryId(context.boundaryId)) {
+    throw new Error(`Unsupported legal boundary: ${String(context.boundaryId)}`);
+  }
+  if (!isProcedureFamilyId(context.procedureFamilyId)) {
+    throw new Error(`Unsupported procedure family: ${String(context.procedureFamilyId)}`);
+  }
+  if (context.buyerRegime !== undefined && !isBuyerRegime(context.buyerRegime)) {
+    throw new Error(`Unsupported buyer regime: ${String(context.buyerRegime)}`);
+  }
+  if (
+    context.procurementObject !== undefined &&
+    !isProcurementObject(context.procurementObject)
+  ) {
+    throw new Error(`Unsupported procurement object: ${String(context.procurementObject)}`);
+  }
+  if (
+    context.communicationMethod !== undefined &&
+    !isCommunicationMethod(context.communicationMethod)
+  ) {
+    throw new Error(`Unsupported communication method: ${String(context.communicationMethod)}`);
+  }
+
   if (
     context.buyerRegime === "sectoral" ||
     context.buyerRegime === "defence_security"
@@ -154,7 +195,7 @@ export function resolveLegalWaits(context: LegalContext): ResolvedLegalWait[] {
   }
 
   if (
-    !ALLOWED_PROCEDURES[context.boundaryId].includes(context.procedureFamilyId)
+    !PROCEDURE_CANDIDATES_BY_BOUNDARY[context.boundaryId].includes(context.procedureFamilyId)
   ) {
     throw new Error(
       `Procedure ${context.procedureFamilyId} is not lawful under boundary ${context.boundaryId}`

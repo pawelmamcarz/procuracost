@@ -26,3 +26,4 @@ export * from "./pdf-copy";
 export * from "./process-map";
 export * from "./retained-workflow-seeds";
 export * from "./scenarios";
+export * from "./suitability";

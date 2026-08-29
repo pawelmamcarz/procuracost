@@ -20,6 +20,7 @@ const CODE_EXTENSIONS = [
 const LEGACY_RUNTIME_MODULES = [
   "lib/calculations.ts",
   "lib/decision-map.ts",
+  "lib/optimizer.ts",
   "lib/scenarios.ts",
   "lib/process-templates.ts",
   "lib/model-v2/legacy-migration.ts",
@@ -199,6 +200,28 @@ function forbiddenDynamicClosures(
 }
 
 describe("model 2.3 runtime dependency boundary", () => {
+  it("keeps both localized suitability route closures statically native", () => {
+    const graph = traceRuntimeGraph([
+      "app/(pl)/layout.tsx",
+      "app/(pl)/optimizer/page.tsx",
+      "app/(en)/layout.tsx",
+      "app/(en)/en/optimizer/page.tsx",
+    ]);
+    const reached = reachedRepoPaths(graph);
+
+    expect(
+      reached.filter((file) =>
+        LEGACY_RUNTIME_MODULES.includes(
+          file as (typeof LEGACY_RUNTIME_MODULES)[number]
+        )
+      )
+    ).toEqual([]);
+    expect(reached).toContain("components/SuitabilityComparison.tsx");
+    expect(reached).not.toContain("components/PathOptimizer.tsx");
+    expect(graph.dynamicEdges).toEqual([]);
+    expect(graph.computedRequires).toEqual([]);
+  });
+
   it("keeps both localized assumptions route closures statically native", () => {
     const graph = traceRuntimeGraph([
       "app/(pl)/layout.tsx",

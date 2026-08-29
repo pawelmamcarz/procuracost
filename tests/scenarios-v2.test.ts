@@ -272,6 +272,69 @@ describe("model 2.3 canonical scenarios", () => {
 });
 
 describe("model 2.3 evidence registry", () => {
+  it("links scenario evidence only where at least one supported construct intersects", () => {
+    for (const scenario of SCENARIOS_V2) {
+      for (const evidenceId of scenario.evidenceIds) {
+        const evidence = EVIDENCE_REGISTRY.find(({ id }) => id === evidenceId)!;
+        expect(
+          evidence.constructs.some((construct) =>
+            scenario.constructs.includes(construct)
+          ),
+          `${scenario.id}: ${evidenceId}`
+        ).toBe(true);
+      }
+    }
+
+    expect(
+      SCENARIOS_V2.find(({ id }) => id === "stable_capex_replacement")
+        ?.evidenceIds
+    ).toEqual([]);
+    expect(
+      SCENARIOS_V2.find(({ id }) => id === "discovery_solution_codesign")
+        ?.constructs
+    ).toContain("market_consultation");
+    const discovery = SCENARIOS_V2.find(
+      ({ id }) => id === "discovery_solution_codesign"
+    )!;
+    const commission = EVIDENCE_REGISTRY.find(
+      ({ id }) => id === "ec_innovation_procurement_guidance"
+    )!;
+    expect(
+      discovery.constructs.filter((construct) =>
+        commission.constructs.includes(construct)
+      )
+    ).toEqual(["market_consultation"]);
+    expect(discovery.constructs).not.toContain("innovation_procurement");
+    expect(discovery.constructs).not.toContain("contract_adaptability");
+  });
+
+  it("never uses official-case records as numeric calibration evidence", () => {
+    const officialIds = new Set(OFFICIAL_EVIDENCE_IDS);
+
+    function visit(value: unknown, path: string): void {
+      if (!value || typeof value !== "object") return;
+      const candidate = value as Record<string, unknown>;
+      if (
+        typeof candidate.low === "number" &&
+        typeof candidate.central === "number" &&
+        typeof candidate.high === "number" &&
+        Array.isArray(candidate.evidenceIds)
+      ) {
+        expect(
+          candidate.evidenceIds.filter((id): id is string =>
+            typeof id === "string" && officialIds.has(id as never)
+          ),
+          path
+        ).toEqual([]);
+      }
+      for (const [key, child] of Object.entries(candidate)) {
+        visit(child, `${path}.${key}`);
+      }
+    }
+
+    visit(SCENARIOS_V2, "SCENARIOS_V2");
+  });
+
   it("contains the four required official records with bounded provenance", () => {
     expect(OFFICIAL_EVIDENCE_IDS).toEqual([
       "california_modular_it_procurement",

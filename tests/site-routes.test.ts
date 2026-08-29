@@ -49,13 +49,13 @@ describe("public route contract", () => {
   it("exposes the exact manager-first primary navigation", () => {
     expect(navigationFor("pl")).toEqual([
       { href: "/calculator", label: "Kalkulator", highlight: true },
-      { href: "/optimizer", label: "Optymalizator", highlight: undefined },
+      { href: "/optimizer", label: "Warunki zastosowania", highlight: undefined },
       { href: "/assessment", label: "Ocena dojrzałości", highlight: undefined },
       { href: "/model", label: "Model", highlight: undefined },
     ]);
     expect(navigationFor("en")).toEqual([
       { href: "/en/calculator", label: "Calculator", highlight: true },
-      { href: "/en/optimizer", label: "Optimizer", highlight: undefined },
+      { href: "/en/optimizer", label: "Suitability comparison", highlight: undefined },
       { href: "/en/assessment", label: "Maturity Assessment", highlight: undefined },
       { href: "/en/model", label: "Model", highlight: undefined },
     ]);

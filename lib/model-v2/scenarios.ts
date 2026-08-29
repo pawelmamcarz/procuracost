@@ -617,7 +617,7 @@ const SCENARIO_SEEDS: ScenarioSeed[] = [
     },
     retainedWorkflowTemplateId: "capex_replacement",
     pathCompetitionDiffers: true,
-    evidenceIds: ["ec_innovation_procurement_guidance"],
+    evidenceIds: [],
     constructs: ["workflow_duration", "tco", "contract_amendment"],
   },
   {
@@ -646,7 +646,12 @@ const SCENARIO_SEEDS: ScenarioSeed[] = [
       "oecd_rvul_problem_definition",
       "ec_innovation_procurement_guidance",
     ],
-    constructs: ["workflow_duration", "problem_definition", "role_effort"],
+    constructs: [
+      "workflow_duration",
+      "problem_definition",
+      "market_consultation",
+      "role_effort",
+    ],
   },
   {
     id: "catalog_calloff_control",

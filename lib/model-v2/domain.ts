@@ -1,23 +1,24 @@
 import type { CalibratedValue } from "./calibrated-value";
+import { deepFreeze } from "./deep-freeze";
 
-export const MODEL_V2_METADATA = {
+export const MODEL_V2_METADATA = deepFreeze({
   schemaVersion: 2,
   modelVersion: "2.3.0",
   calibrationId: "source-scenario-2026-08-28",
   legalRulesetId: "pl-pzp-2026-2027",
-} as const;
+} as const);
 
-export const LEGAL_GOVERNANCE_BOUNDARY_IDS = [
+export const LEGAL_GOVERNANCE_BOUNDARY_IDS = deepFreeze([
   "private_policy",
   "public_internal_rules",
   "pzp_classic_national",
   "pzp_classic_eu",
-] as const;
+] as const);
 
 export type LegalGovernanceBoundaryId =
   (typeof LEGAL_GOVERNANCE_BOUNDARY_IDS)[number];
 
-export const PROCEDURE_FAMILY_IDS = [
+export const PROCEDURE_FAMILY_IDS = deepFreeze([
   "private_competitive",
   "private_negotiated",
   "public_internal_competitive",
@@ -26,42 +27,101 @@ export const PROCEDURE_FAMILY_IDS = [
   "pzp_restricted",
   "framework_calloff",
   "custom_lawful",
-] as const;
+] as const);
 
 export type ProcedureFamilyId = (typeof PROCEDURE_FAMILY_IDS)[number];
 
-export const PURCHASE_ARCHETYPE_IDS = [
+export const PURCHASE_ARCHETYPE_IDS = deepFreeze([
   "standardized_recurring",
   "incomplete_requirement",
   "complex_service",
   "continuity_critical",
   "capital_investment",
-] as const;
+] as const);
 
 export type PurchaseArchetypeId = (typeof PURCHASE_ARCHETYPE_IDS)[number];
 
-export const EXECUTION_CHANNEL_IDS = [
+export const EXECUTION_CHANNEL_IDS = deepFreeze([
   "sourcing_event",
   "catalog_calloff",
   "mrp_release",
   "custom",
-] as const;
+] as const);
 
 export type ExecutionChannelId = (typeof EXECUTION_CHANNEL_IDS)[number];
 
-export const SYSTEM_SUPPORT_IDS = [
+export const SYSTEM_SUPPORT_IDS = deepFreeze([
   "manual",
   "sourcing_platform",
   "transactional_erp",
   "integrated_source_to_pay",
-] as const;
+] as const);
 
 export type SystemSupportId = (typeof SYSTEM_SUPPORT_IDS)[number];
 
 export type AlternativeId = "formalSequential" | "adaptiveCompliant";
-export type BuyerRegime = "classic" | "sectoral" | "defence_security";
-export type ProcurementObject = "supplies_services" | "works";
-export type CommunicationMethod = "electronic" | "other";
+
+export const BUYER_REGIME_IDS = deepFreeze([
+  "classic",
+  "sectoral",
+  "defence_security",
+] as const);
+export type BuyerRegime = (typeof BUYER_REGIME_IDS)[number];
+
+export const PROCUREMENT_OBJECT_IDS = deepFreeze([
+  "supplies_services",
+  "works",
+] as const);
+export type ProcurementObject = (typeof PROCUREMENT_OBJECT_IDS)[number];
+
+export const COMMUNICATION_METHOD_IDS = deepFreeze([
+  "electronic",
+  "other",
+] as const);
+export type CommunicationMethod = (typeof COMMUNICATION_METHOD_IDS)[number];
+
+function isMember<const T extends readonly string[]>(
+  values: T,
+  value: unknown
+): value is T[number] {
+  return typeof value === "string" && values.includes(value as T[number]);
+}
+
+export function isLegalGovernanceBoundaryId(
+  value: unknown
+): value is LegalGovernanceBoundaryId {
+  return isMember(LEGAL_GOVERNANCE_BOUNDARY_IDS, value);
+}
+
+export function isProcedureFamilyId(value: unknown): value is ProcedureFamilyId {
+  return isMember(PROCEDURE_FAMILY_IDS, value);
+}
+
+export function isPurchaseArchetypeId(value: unknown): value is PurchaseArchetypeId {
+  return isMember(PURCHASE_ARCHETYPE_IDS, value);
+}
+
+export function isExecutionChannelId(value: unknown): value is ExecutionChannelId {
+  return isMember(EXECUTION_CHANNEL_IDS, value);
+}
+
+export function isSystemSupportId(value: unknown): value is SystemSupportId {
+  return isMember(SYSTEM_SUPPORT_IDS, value);
+}
+
+export function isBuyerRegime(value: unknown): value is BuyerRegime {
+  return isMember(BUYER_REGIME_IDS, value);
+}
+
+export function isProcurementObject(value: unknown): value is ProcurementObject {
+  return isMember(PROCUREMENT_OBJECT_IDS, value);
+}
+
+export function isCommunicationMethod(
+  value: unknown
+): value is CommunicationMethod {
+  return isMember(COMMUNICATION_METHOD_IDS, value);
+}
 
 export interface LegalContext {
   boundaryId: LegalGovernanceBoundaryId;

@@ -294,7 +294,7 @@ describe("public editorial integrity", () => {
   it("keeps Polish navigation labels in Polish", () => {
     const labels = navigationFor("pl").map((item) => item.label);
 
-    expect(labels).toEqual(["Kalkulator", "Optymalizator", "Ocena dojrzałości", "Model"]);
+    expect(labels).toEqual(["Kalkulator", "Warunki zastosowania", "Ocena dojrzałości", "Model"]);
     expect(labels).not.toEqual(expect.arrayContaining(["Research paper", "Methodology"]));
   });
 
