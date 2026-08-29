@@ -1862,6 +1862,326 @@ export const replicationPackageV2T = {
   en: replicationPackageV2En,
 } as const;
 
+const modelOverviewPl = {
+  metadata: {
+    title: "Model i założenia | ProcuraCost",
+    description:
+      "Kontrakt obliczeniowy, zakres dowodowy i ograniczenia modelu ProcuraCost 2.3.",
+  },
+  eyebrow: `Model ${MODEL_V2_METADATA.modelVersion}`,
+  title: "Model i założenia",
+  intro:
+    "ProcuraCost porównuje dwa dopuszczalne projekty przebiegu procesu zakupowego. Nie wybiera procedury za użytkownika i nie zakłada kierunku różnicy kosztu.",
+  sections: {
+    legalBoundary: {
+      label: "01 / wspólna granica",
+      title: "Ramy prawne i ład zakupowy",
+      body:
+        "Obie alternatywy korzystają z tej samej rodziny procedury, daty wszczęcia i reguł prawnych. Obowiązkowe terminy PZP są zablokowane, udokumentowane i identyczne po obu stronach porównania.",
+    },
+    workflowDesign: {
+      label: "02 / dwa projekty",
+      title: "Przebieg procesu i konstrukcja umowy",
+      body:
+        "Każda alternatywa ma własną mapę czynności, zależności, czasu pracy, oczekiwania i kosztów nieosobowych. Konstrukcja umowy pozostaje osobnym wymiarem i nie jest zastępowana etykietą technologii.",
+    },
+    costRecord: {
+      label: "03 / jawny rachunek",
+      title: "Rekord kosztu i pokrycia",
+      body:
+        "Silnik sumuje koszt pracy ról, koszt nieosobowy, koszt zwłoki oraz wyłącznie jawnie monetyzowane wymiary kontraktowe. Rekord pokazuje też czynniki nieobjęte wyceną i źródło każdego założenia.",
+    },
+    evidenceBoundary: {
+      label: "04 / granica wnioskowania",
+      title: "Założenia, źródła i obserwacje praktyczne",
+      body:
+        "Dowody zewnętrzne, założenia przeniesione i obserwacje praktyczne mają odrębne statusy. Materiał Procurement&Beyond pomaga projektować pytania o wdrożenie, ale nie ustala parametrów ani zakresów modelu kosztowego.",
+    },
+  },
+  rangeTitle: "Jak czytać wynik",
+  rangeDisclosure:
+    "Delta oznacza koszt alternatywy formalnej i sekwencyjnej pomniejszony o koszt alternatywy adaptacyjnej i zgodnej. Zakres niski, centralny i wysoki jest deklarowanym stresem scenariuszowym, a nie oszacowaniem prawdopodobieństwa. Przecięcie zera oznacza, że kierunek różnicy zależy od przyjętych wartości.",
+  actionsTitle: "Materiały do decyzji",
+  actions: {
+    assumptions: "Rejestr założeń",
+    methodology: "Metoda obliczeń",
+    evidence: "Mechanizmy i źródła",
+    readiness: "Gotowość organizacyjna do wdrożenia",
+    practice: "Procurement&Beyond, odcinek 8",
+  },
+} as const;
+
+type ModelOverviewShape = LangShape<typeof modelOverviewPl>;
+
+const modelOverviewEn = {
+  metadata: {
+    title: "Model and assumptions | ProcuraCost",
+    description:
+      "Calculation contract, evidence boundary and limitations of ProcuraCost model 2.3.",
+  },
+  eyebrow: `Model ${MODEL_V2_METADATA.modelVersion}`,
+  title: "Model and assumptions",
+  intro:
+    "ProcuraCost compares two lawful procurement workflow designs. It does not select a procedure for the user or assume the direction of the cost difference.",
+  sections: {
+    legalBoundary: {
+      label: "01 / shared boundary",
+      title: "Legal and governance boundary",
+      body:
+        "Both alternatives use the same procedure family, initiation date and legal rules. Mandatory PZP periods are locked, documented and identical on both sides of the comparison.",
+    },
+    workflowDesign: {
+      label: "02 / two designs",
+      title: "Workflow and contract design",
+      body:
+        "Each alternative has its own map of activities, dependencies, effort, waiting and non-labour cost. Contract design remains a separate dimension and is not replaced by a technology label.",
+    },
+    costRecord: {
+      label: "03 / explicit calculation",
+      title: "Cost and coverage record",
+      body:
+        "The engine adds role effort, non-labour cost, delay cost and only explicitly monetised contract dimensions. The record also identifies factors outside monetisation and the source of each assumption.",
+    },
+    evidenceBoundary: {
+      label: "04 / inference boundary",
+      title: "Assumptions, sources and practitioner observations",
+      body:
+        "External evidence, retained assumptions and practitioner observations have separate statuses. Procurement&Beyond material informs implementation questions but does not set cost-model parameters or ranges.",
+    },
+  },
+  rangeTitle: "How to read the result",
+  rangeDisclosure:
+    "Delta is the cost of the formal sequential alternative minus the cost of the adaptive compliant alternative. Low, central and high values form a declared scenario stress range, not a probability estimate. A range crossing zero means that the direction of difference depends on the declared values.",
+  actionsTitle: "Decision materials",
+  actions: {
+    assumptions: "Assumptions register",
+    methodology: "Calculation method",
+    evidence: "Mechanisms and evidence",
+    readiness: "Organisational implementation readiness",
+    practice: "Procurement&Beyond episode 8",
+  },
+} satisfies ModelOverviewShape;
+
+export const modelOverviewT = {
+  pl: modelOverviewPl,
+  en: modelOverviewEn,
+} as const;
+
+const methodologyOverviewPl = {
+  metadata: {
+    title: "Metodologia modelu 2.3 | ProcuraCost",
+    description:
+      "Deterministyczne porównanie dwóch dopuszczalnych projektów procesu zakupowego.",
+  },
+  eyebrow: `Metodologia / model ${MODEL_V2_METADATA.modelVersion}`,
+  title: "Metoda porównania bez zaszytego kierunku wyniku",
+  intro:
+    "Model rozdziela zgodność prawną, projekt przebiegu procesu, konstrukcję umowy, kanał realizacji i wsparcie systemowe. Każda z tych decyzji pozostaje widoczna w rekordzie.",
+  steps: [
+    {
+      title: "Ustal wspólną granicę",
+      body: "Wybierz ramy prawne i ład zakupowy, rodzinę procedury oraz datę wszczęcia. Kontekst spoza obsługiwanego zakresu jest odrzucany, a nie uzupełniany domysłem.",
+    },
+    {
+      title: "Zaprojektuj obie mapy",
+      body: "Dla każdej alternatywy zdefiniuj czynności, poprzedniki, pracę aktywną, oczekiwanie, role i koszt nieosobowy. Czas wynika z najdłuższej ścieżki w grafie zależności.",
+    },
+    {
+      title: "Zablokuj reguły prawne",
+      body: "Wymagane terminy są rozwiązywane z wersjonowanego zbioru reguł, mają jawne pochodzenie i nie podlegają skróceniu przez wsparcie systemowe.",
+    },
+    {
+      title: "Oblicz każdą alternatywę",
+      body: "Koszt całkowity obejmuje pracę ról, koszt nieosobowy, iloczyn czasu i dziennego kosztu zwłoki oraz jawnie wycenione elementy konstrukcji umowy.",
+    },
+    {
+      title: "Zapisz granice wyniku",
+      body: "Rekord decyzji zachowuje osie, oba projekty, pokrycie monetyzacji, wymiary niewycenione, założenia, źródła, pochodzenie prawne i historię migracji.",
+    },
+  ],
+  examplesTitle: "Kiedy adaptacja wnosi wartość, a kiedy nie jest potrzebna",
+  examplesIntro:
+    "Scenariusze są przykładami mechanizmów, nie rekomendacjami ani dowodem wyniku. Pokazują warunki, które należy sprawdzić przed zaprojektowaniem przebiegu zakupu.",
+  exampleGroups: {
+    adaptiveUse: {
+      title: "Warunki uzasadniające pracę adaptacyjną",
+      items: [
+        {
+          scenarioId: "erp_transformation_discovery",
+          title: "Transformacja ERP z niepełnym wymaganiem",
+          body: "Iteracyjne rozpoznanie integracji i potrzeb użytkowników ma sens, gdy rozwiązania docelowego nie da się rzetelnie opisać przed kontaktem z rynkiem.",
+        },
+        {
+          scenarioId: "logistics_service_redesign",
+          title: "Przeprojektowanie usługi logistycznej",
+          body: "Adaptacja pomaga, gdy model operacyjny, SLA i podział odpowiedzialności wymagają wspólnej weryfikacji. Sam scenariusz nie przesądza o niższym koszcie.",
+        },
+        {
+          scenarioId: "public_it_open_with_market_consultation",
+          title: "Publiczne IT z wstępnymi konsultacjami rynkowymi",
+          body: "Konsultacje mogą doprecyzować potrzebę przed przetargiem nieograniczonym. Ustawowe terminy składania ofert i standstill pozostają jednakowe dla obu alternatyw.",
+        },
+        {
+          scenarioId: "discovery_solution_codesign",
+          title: "Współprojektowanie rozwiązania",
+          body: "Uczenie się z rynkiem może celowo zwiększyć czas i nakład pracy. Jest uzasadnione tylko wtedy, gdy wartość informacji przewyższa koszt tej dodatkowej pracy.",
+        },
+      ],
+    },
+    stableUse: {
+      title: "Warunki, w których dodatkowa adaptacja nie rozwiązuje problemu",
+      items: [
+        {
+          scenarioId: "stable_private_standard_service",
+          title: "Stabilna usługa standardowa",
+          body: "Przy znanym wymaganiu i powtarzalnym rynku najpierw należy uprościć przebieg i kontrolę, zamiast dodawać discovery bez wskazanego ryzyka.",
+        },
+        {
+          scenarioId: "stable_capex_replacement",
+          title: "Odtworzeniowa inwestycja CAPEX",
+          body: "Znana specyfikacja i istotne bramki inwestycyjne mogą uzasadniać sekwencyjne decyzje. Wsparcie systemowe nie usuwa wartości kontroli właścicielskiej.",
+        },
+        {
+          scenarioId: "catalog_calloff_control / mrp_release_control",
+          title: "Realizacja z katalogu albo MRP",
+          body: "Dostawca, cena i warunki są już zakontraktowane. Właściwym problemem jest sprawna realizacja transakcji i obsługa wyjątków, nie ponowne projektowanie sourcingu.",
+        },
+      ],
+    },
+  },
+  deltaTitle: "Tożsamość porównania",
+  deltaIdentity:
+    "ΔC = koszt alternatywy formalnej i sekwencyjnej − koszt alternatywy adaptacyjnej i zgodnej",
+  deltaExplanation:
+    "Zamiana alternatyw odwraca znak delty i jej zewnętrzny zakres. Test nie narzuca liczby przypadków po żadnej stronie zera.",
+  rangeBoundary:
+    "Zakres niski, centralny i wysoki jest deklarowanym zakresem scenariusza, nie przedziałem ufności ani prognozą prawdopodobieństwa.",
+  legalTitle: "Granica prawna",
+  legalBoundary:
+    "Model obsługuje wskazane zakupy klasyczne. Konteksty sektorowe oraz obronności i bezpieczeństwa są celowo odrzucane. Dobór procedury szczególnej nadal wymaga oceny przesłanek przez właściwą osobę.",
+  practitionerTitle: "Granica materiału praktycznego",
+  practitionerBoundary:
+    "Obserwacje z Procurement&Beyond, odcinek 8, wspierają pytania o tarcie procesu, właścicielstwo, wymagania, TCO i odpowiedzialną automatyzację. Nie są dowodem skuteczności wdrożeń i nie kalibrują modelu kosztowego.",
+  actions: {
+    model: "Model i założenia",
+    calculator: "Kalkulator",
+    readiness: "Diagnostyka gotowości",
+    practice: "Materiał praktyczny",
+    research: "Artykuł badawczy i bibliografia",
+  },
+} as const;
+
+type MethodologyOverviewShape = LangShape<typeof methodologyOverviewPl>;
+
+const methodologyOverviewEn = {
+  metadata: {
+    title: "Model 2.3 methodology | ProcuraCost",
+    description:
+      "Deterministic comparison of two lawful procurement workflow designs.",
+  },
+  eyebrow: `Methodology / model ${MODEL_V2_METADATA.modelVersion}`,
+  title: "A comparison method without a built-in result direction",
+  intro:
+    "The model separates legal compliance, procurement workflow design, contract design, execution channel and system support. Each decision remains visible in the record.",
+  steps: [
+    {
+      title: "Set the shared boundary",
+      body: "Select the legal and governance boundary, procedure family and initiation date. Context outside the supported scope is rejected rather than completed by assumption.",
+    },
+    {
+      title: "Design both maps",
+      body: "For each alternative, define activities, predecessors, active work, waiting, roles and non-labour cost. Duration follows the longest path through the dependency graph.",
+    },
+    {
+      title: "Lock legal rules",
+      body: "Required periods are resolved from a versioned ruleset, retain explicit provenance and cannot be shortened by system support.",
+    },
+    {
+      title: "Calculate each alternative",
+      body: "Total cost comprises role effort, non-labour cost, elapsed time multiplied by the declared daily cost of inaction, and explicitly priced contract-design elements.",
+    },
+    {
+      title: "Record the result boundary",
+      body: "The decision record preserves axes, both designs, monetisation coverage, unpriced dimensions, assumptions, sources, legal provenance and migration history.",
+    },
+  ],
+  examplesTitle: "When adaptation adds value and when it is unnecessary",
+  examplesIntro:
+    "The scenarios illustrate mechanisms rather than recommendations or observed outcomes. They show conditions to test before designing the procurement workflow.",
+  exampleGroups: {
+    adaptiveUse: {
+      title: "Conditions that justify adaptive work",
+      items: [
+        {
+          scenarioId: "erp_transformation_discovery",
+          title: "ERP transformation with an incomplete requirement",
+          body: "Iterative discovery of integrations and user needs is relevant when the target solution cannot be specified responsibly before market engagement.",
+        },
+        {
+          scenarioId: "logistics_service_redesign",
+          title: "Logistics service redesign",
+          body: "Adaptation helps when the operating model, service levels and allocation of responsibility need joint validation. The scenario does not establish lower cost.",
+        },
+        {
+          scenarioId: "public_it_open_with_market_consultation",
+          title: "Public IT with preliminary market consultation",
+          body: "Consultation can clarify the need before an open procedure. Statutory submission and standstill periods remain identical for both alternatives.",
+        },
+        {
+          scenarioId: "discovery_solution_codesign",
+          title: "Solution co-design",
+          body: "Learning with the market can deliberately add time and effort. It is justified only when the value of information exceeds the cost of that additional work.",
+        },
+      ],
+    },
+    stableUse: {
+      title: "Conditions where more adaptation does not address the problem",
+      items: [
+        {
+          scenarioId: "stable_private_standard_service",
+          title: "Stable standard service",
+          body: "With a known requirement and repeatable market, simplify workflow and controls before adding discovery without a defined risk.",
+        },
+        {
+          scenarioId: "stable_capex_replacement",
+          title: "Replacement capital investment",
+          body: "A known specification and material investment gates may justify sequential decisions. System support does not remove the value of accountable control.",
+        },
+        {
+          scenarioId: "catalog_calloff_control / mrp_release_control",
+          title: "Catalogue or MRP execution",
+          body: "Supplier, price and terms are already contracted. The relevant problem is efficient transaction execution and exception handling, not redesigning sourcing.",
+        },
+      ],
+    },
+  },
+  deltaTitle: "Comparison identity",
+  deltaIdentity:
+    "ΔC = cost of the formal sequential alternative − cost of the adaptive compliant alternative",
+  deltaExplanation:
+    "Swapping the alternatives reverses the delta and its outer range. The test imposes no quota on either side of zero.",
+  rangeBoundary:
+    "Low, central and high values form a declared scenario range, not a confidence interval or probability forecast.",
+  legalTitle: "Legal boundary",
+  legalBoundary:
+    "The model supports the stated classic procurement contexts. Sectoral, defence and security contexts fail closed. Selecting a special procedure still requires assessment of its legal grounds by an authorised person.",
+  practitionerTitle: "Practitioner-material boundary",
+  practitionerBoundary:
+    "Observations from Procurement&Beyond episode 8 inform questions about process friction, ownership, requirements, TCO and responsible automation. They are not evidence of implementation effectiveness and do not calibrate the cost model.",
+  actions: {
+    model: "Model and assumptions",
+    calculator: "Calculator",
+    readiness: "Readiness diagnostic",
+    practice: "Practitioner material",
+    research: "Working paper and references",
+  },
+} satisfies MethodologyOverviewShape;
+
+export const methodologyOverviewT = {
+  pl: methodologyOverviewPl,
+  en: methodologyOverviewEn,
+} as const;
+
 const pdfExportV2Pl = {
   title: "Rekord decyzji modelu ProcuraCost 2.3",
   pageLabel: (page: number, total: number) => `Strona ${page} z ${total}`,
@@ -3400,7 +3720,7 @@ const navigationPl = {
   calculator: "Kalkulator",
   optimizer: "Warunki zastosowania",
   caseStudies: "Scenariusze",
-  assessment: "Ocena dojrzałości",
+  assessment: "Profil projektu procesu zakupowego",
   team: "Zespół",
   research: "Artykuł naukowy",
   researchAgenda: "Agenda badawcza",
@@ -3418,7 +3738,7 @@ const navigationEn = {
   calculator: "Calculator",
   optimizer: "Suitability comparison",
   caseStudies: "Scenarios",
-  assessment: "Maturity Assessment",
+  assessment: "Procurement process design profile",
   team: "Team",
   research: "Research paper",
   researchAgenda: "Agenda",

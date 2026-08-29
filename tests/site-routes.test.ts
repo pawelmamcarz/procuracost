@@ -12,18 +12,18 @@ describe("public route contract", () => {
     );
   });
 
-  it("registers readiness and practitioner material without primary navigation or indexing", () => {
+  it("registers readiness and practitioner material outside primary navigation but in discovery", () => {
     expect(SITE_ROUTES.find(({ key }) => key === "readiness")).toEqual({
       key: "readiness",
       pl: "/readiness",
       en: "/en/readiness",
-      sitemap: false,
+      sitemap: true,
     });
     expect(SITE_ROUTES.find(({ key }) => key === "procurementBeyond8")).toEqual({
       key: "procurementBeyond8",
       pl: "/practice/procurement-beyond-8",
       en: "/en/practice/procurement-beyond-8",
-      sitemap: false,
+      sitemap: true,
     });
   });
 
@@ -50,13 +50,13 @@ describe("public route contract", () => {
     expect(navigationFor("pl")).toEqual([
       { href: "/calculator", label: "Kalkulator", highlight: true },
       { href: "/optimizer", label: "Warunki zastosowania", highlight: undefined },
-      { href: "/assessment", label: "Ocena dojrzałości", highlight: undefined },
+      { href: "/assessment", label: "Profil projektu procesu zakupowego", highlight: undefined },
       { href: "/model", label: "Model", highlight: undefined },
     ]);
     expect(navigationFor("en")).toEqual([
       { href: "/en/calculator", label: "Calculator", highlight: true },
       { href: "/en/optimizer", label: "Suitability comparison", highlight: undefined },
-      { href: "/en/assessment", label: "Maturity Assessment", highlight: undefined },
+      { href: "/en/assessment", label: "Procurement process design profile", highlight: undefined },
       { href: "/en/model", label: "Model", highlight: undefined },
     ]);
   });
@@ -68,6 +68,8 @@ describe("public route contract", () => {
       "/optimizer", "/en/optimizer",
       "/case-studies", "/en/case-studies",
       "/assessment", "/en/assessment",
+      "/readiness", "/en/readiness",
+      "/practice/procurement-beyond-8", "/en/practice/procurement-beyond-8",
       "/team", "/en/team",
       "/methodology", "/en/methodology",
       "/model", "/en/model",
