@@ -72,6 +72,16 @@ export interface RangeUiIssue extends IssueLocation {
     | "calculatorV2.validation.competitionTransferOutOfBounds";
 }
 
+export interface EconomicAssumptionUiIssue extends IssueLocation {
+  source: "economic-assumption";
+  code:
+    | "competition_disadvantaged_alternative_required"
+    | "competition_disadvantaged_alternative_not_applicable";
+  messageKey:
+    | "calculatorV2.validation.competitionDisadvantagedAlternativeRequired"
+    | "calculatorV2.validation.competitionDisadvantagedAlternativeNotApplicable";
+}
+
 export interface CustomLabelUiIssue extends IssueLocation {
   source: "custom-label";
   code: "blank_custom_label";
@@ -107,6 +117,7 @@ export type CalculatorUiIssue =
   | MigrationUiIssue
   | ProcessMapUiIssue
   | RangeUiIssue
+  | EconomicAssumptionUiIssue
   | CustomLabelUiIssue
   | DesignUiIssue
   | WorkspaceSourceUiIssue

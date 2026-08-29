@@ -43,11 +43,6 @@ const currentPublicFiles = [
   "lib/scenarios.ts",
 ] as const;
 
-const historicalI18nAllowList = [
-  "Wpisanie 0 odtwarza niedyskontowany model 2.1.",
-  "Entering 0 reproduces the undiscounted 2.1 model.",
-] as const;
-
 const staleCurrentVersion = /\b(?:model 2\.1|modelu 2\.1|ProcuraCost 2\.1)\b/i;
 const historicalModel22Context =
   /(?:przeniesion|historycz|scenariusz|założe|źródł|zachowan|retained|historical|scenario|assumption|source|previous)/i;
@@ -192,12 +187,7 @@ describe("public editorial integrity", () => {
     );
 
     for (const source of currentFacingSources) {
-      let content = source.content;
-      for (const historicalSentence of historicalI18nAllowList) {
-        content = content.replaceAll(historicalSentence, "");
-      }
-
-      expect(content, source.path).not.toMatch(staleCurrentVersion);
+      expect(source.content, source.path).not.toMatch(staleCurrentVersion);
     }
   });
 

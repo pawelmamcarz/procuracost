@@ -1,203 +1,272 @@
-# Procedural Rigidity and Adaptive Procurement: A Transparent Decision Model
+# Procurement Workflow Design Under a Shared Governance Boundary
 
-**Working paper — draft for review**
-**Model:** ProcuraCost 2.2.2
-**Updated:** 27 July 2026
+**Working paper, draft for review**
+
+**Model:** ProcuraCost 2.3.0
+
+**Updated:** 29 August 2026
 
 ## Abstract
 
-Procurement policy, procurement procedure, competition, and contract design are related but distinct. Earlier versions of ProcuraCost collapsed them into one rigidity index and therefore overstated what the cited literature could support. This paper presents a corrected seven-dimension decision model comparing a formal/sequential path with an adaptive/compliant path for the same purchase. Both paths must satisfy the same legal and governance boundary; in public procurement, flexibility means lawful design within PZP rather than a `policy-only` exemption.
+Procurement policy, legal constraints, procedure family, workflow design, contract design and system support are related but distinct. ProcuraCost 2.3.0 compares a formal/sequential workflow with an adaptive/compliant workflow for the same purchase inside one legal and governance boundary. Each alternative has an explicit directed process map and contract design. The model calculates critical-path duration, role cost, non-labour cost, delay cost and supported contract-cost allocations. It reports non-monetised dimensions rather than assigning unsupported values.
 
-The model monetizes staff effort, administrative overhead, delay, supplier-selection risk, incremental formal-amendment cost, foregone lifecycle value, and bypass exposure. Empirical estimates are used only for the construct and population they actually measure. Weakly identified quantities—especially TCO capture and bypass rates—enter as broad scenarios rather than precise predictions. Results are reported as a central estimate plus a stress envelope over both evidence-facing parameters and the structural inputs that carry most of the result. The Tunnel–Field proposition therefore survives as a conditional hypothesis: adaptive procurement is advantageous when avoidable workflow delay and adaptation costs exceed the governance value of formal competition and control. It is not a universal result.
+The calculation is deterministic and conditional on declared inputs. Values are explicitly classified as fixed, calibrated or stress values; non-fixed ranges are not statistical confidence intervals. Mandatory legal waits are resolved from a dated ruleset, locked in both alternatives and excluded from system-support scaling. The difference is always defined as formal/sequential total minus adaptive/compliant total, and the engine is tested by swapping the alternatives. ProcuraCost is therefore a decision model, not an estimator of realised procurement outcomes and not evidence that one workflow causes a lower cost.
+
+Ten reference scenarios provide structured starting points. They include cases in which learning during procurement may have a useful mechanism, cases in which it may add time and effort, and two operational controls with identical maps. Official cases and practitioner observations are used to frame mechanisms and research questions. They do not determine scenario values unless a separate evidence record explicitly permits that use.
 
 ## 1. Research question and claim boundary
 
 The research question is:
 
-> Under comparable governance and market conditions, when does a more prescribed procurement workflow create greater total cost than a more adaptive but fully compliant workflow?
+> Under a shared legal and governance boundary, when does the design of a procurement workflow change total modelled cost, and which inputs carry that difference?
 
-ProcuraCost is a transparent decision model, not an estimator trained or validated on procurement outcomes. Its outputs are conditional calculations under declared assumptions. It cannot establish that one path causes lower cost in Poland or elsewhere.
+ProcuraCost does not answer which procedure an organisation should select. It does not infer legal admissibility from a cost result, infer organisational readiness from system support, or convert a practitioner account into a calibration parameter. Public-procurement comparisons must remain within the applicable PZP context. A comparison between a lawful competitive procedure and an unavailable exemption is outside the model boundary.
+
+The output supports four narrower tasks:
+
+1. make the compared process maps and legal waits explicit;
+2. identify the cost drivers and assumptions responsible for a difference;
+3. disclose monetary coverage and dimensions left outside the calculation;
+4. formulate questions that can be tested against event-level procurement data.
 
 ## 2. Conceptual framework
 
-A **policy** defines constraints and objectives: authority, competition, ethics, documentation, and value for money. A **procedure** orders activities used to satisfy those constraints. Multiple procedures may be lawful under the same policy, but discretion is not automatically beneficial: it can improve adaptation while weakening competition or enabling favoritism.
+A procurement policy defines objectives and constraints. A legal and governance boundary specifies authority, competition, ethics, documentation and other applicable obligations. A procedure family identifies an admissible method. A procurement workflow design orders and connects the work performed within that method. A contract design allocates commercial and adaptation mechanisms. The purchase execution channel and system support describe how the work is carried out.
 
-The Tunnel–Field metaphor describes workflow topology only:
+Model 2.3.0 therefore records six decision areas separately:
 
-- a **tunnel** is sequential, gate-heavy, and difficult to resequence;
-- a **field** allows alternative paths inside continuously enforced boundaries.
+- **Legal and governance boundary:** private policy, public internal rules, PZP classic national or PZP classic EU.
+- **Purchase archetype:** standardised recurring purchase, incomplete requirement, complex service, continuity-critical purchase or capital investment.
+- **Procurement workflow design:** an independent directed process map for each alternative.
+- **Purchase execution channel:** sourcing event, catalogue call-off, MRP release or a declared custom channel.
+- **System support:** manual, sourcing platform, transactional ERP or integrated source-to-pay.
+- **Contract design:** competition transfer, contract amendment, TCO and informal bypass dimensions, each with an explicit monetary status.
 
-The metaphor does not imply that a field lacks controls or that a tunnel always performs worse. For public procurement, both alternatives must remain inside PZP. A counterfactual that compares an EU-threshold tender with an unlawful direct award is inadmissible.
+The Tunnel and Field metaphor is secondary. A tunnel represents a prescribed sequence. A field represents alternative sequencing inside the same enforced boundary. The metaphor does not imply that adaptive work lacks controls or that sequential work is intrinsically inefficient.
 
 Five constructs must not be conflated:
 
-1. procedural workflow burden;
-2. intensity and effectiveness of competition;
-3. contractual rigidity and adaptability;
-4. technology-enabled controls;
-5. discretion and favoritism risk.
+1. workflow burden and critical-path duration;
+2. competitive access and supplier selection;
+3. contractual adaptability;
+4. system-enabled execution and controls;
+5. organisational implementation readiness.
 
 ## 3. Evidence audit
 
-### 3.1 Supplier selection and discretion
+### 3.1 Competition transfer
 
-Szucs (2024) studies a Hungarian reform that made a high-discretion invitational procedure available below a value threshold of 25 million HUF (about 90,000 USD). Because contract values were manipulated around the threshold, the raw discontinuity is not a valid causal RDD. The paper uses policy timing and a structural selection correction. Its structural estimates indicate that discretion increases prices by about **6%** and lowers the average total factor productivity of selected contractors by about **10%**; the invalid raw discontinuity reports roughly 32%.
+Szucs (2024) studies a Hungarian reform that made a high-discretion invitational procedure available below a value threshold of 25 million HUF. The paper uses policy timing and a structural selection correction because contract values were manipulated around the threshold. Its structural estimates indicate approximately 6% higher prices and selection of contractors with 28% lower productivity under discretion. The probability that a right-connected firm wins rises by approximately 11 percentage points. The raw discontinuity is not a valid causal regression discontinuity design and reports different magnitudes.
 
-> **Correction (model 2.2).** Model 2.1 reported the productivity effect as 28% and asserted that the earlier figure of approximately 10% had been an error. That was backwards. 10% is the paper's structural estimate; 28 percentage points is a different quantity in the same paper — the increase in the probability that a politically connected firm wins under a high-discretion procedure. The erroneous figure propagated to the binding foundation document, the parameter table, three public pages and the README, and is corrected in all of them. See `CHANGELOG.md`.
+ProcuraCost monetises the price channel only. Productivity remains a separate outcome because converting it into contract-value loss would require another unsupported mapping and could double count the price effect. The active 2%, 6% and 9% range is a declared transfer stress. It applies only where the compared alternatives genuinely differ in competitive access. It is not a Polish estimate and is not a general coefficient for adaptive procurement.
 
-The model monetizes the price channel only. Productivity remains a separate observed outcome because converting it into contract-value loss would double count and require another unsupported mapping. Transfer is a scenario, not a measurement, and it is a demanding one in two respects: the estimate is identified on Hungarian public contracts, and it is identified *below* a threshold that in Polish terms sits at or under the 170,000 PLN application threshold — far below every EU threshold to which the model's `pzp_eu` profile applies. The 2–9% range represents that transfer uncertainty.
+**Historical correction:** model 2.1 described the productivity effect as 28%, which was correct. Model 2.2 incorrectly changed it to 10% and incorrectly assigned 28 percentage points to the connected-winner outcome. Model 2.3 restores the source interpretation: 28% lower contractor productivity and an approximately 11-percentage-point increase in the probability that a right-connected firm wins. This correction does not change the native calculation because model 2.3 monetises only the declared 2%, 6% and 9% transfer stress for the price channel.
 
-### 3.2 Contractual rigidity and renegotiation
+### 3.2 Contract amendments
 
-Beuve, Moszoro, and Spiller (2023) examine French car-park contracts. Their 2SLS/IV result is an increase of **0.077–0.105 formal amendments per contract-year** for a simultaneous one-standard-deviation increase in **each** of the seven z-scored categories that make up their rigidity index, with rigidity instrumented by political contestability. It is a frequency, not a percentage-point event probability; it is not the effect of a one-standard-deviation move on the summed index; and it does not measure procurement workflow formality.
+Beuve, Moszoro and Spiller (2023) examine French car-park contracts. Their 2SLS/IV result is an increase of 0.077 to 0.105 formal amendments per contract-year for a simultaneous one-standard-deviation increase in each of seven z-scored rigidity categories. It is a frequency, not an event probability. It does not measure procurement workflow formality and it cannot be applied directly to a hand-authored zero-to-one profile.
 
-ProcuraCost applies it only to a separate contract-rigidity profile and multiplies by contract duration and a user-supplied cost per amendment. **The transfer is weaker than model 2.1 presented it**, and the weakness is a unit mismatch rather than a population one. The model multiplies the slope by a hand-authored 0–1 calibration profile that is not a z-score, so it implicitly equates "profile = 1.0" with the seven-category shift the authors estimate. No conversion between those scales exists. The slope is therefore reclassified here as a **calibration assumption with an external order-of-magnitude anchor**, not as a transferred estimate — and only the *difference* between the two paths is interpretable, because the estimate is incremental and the model supplies no baseline level.
+Earlier ProcuraCost versions used the study as an order-of-magnitude anchor. Native model 2.3.0 does not allocate a contract-amendment differential. The central, low and high values remain zero until a supported signed allocation convention is introduced. The study remains relevant to research design, not to the active scenario calculation.
 
-### 3.3 Administrative cost, delay, TCO, and bypass
+### 3.3 Administrative effort and delay
 
-The European Commission's 2011 study estimates the total authority-and-supplier cost of EU procedures. Model 2.1 described it as an "external sanity-check" although no comparison had been carried out; **the check was performed in the 2.2.2 calibration audit, against the full report, and the model passes it**: the pzp_eu template implies 23.8 authority-side person-days per EU-threshold procedure (16.8–33.0 across technology levels) against the study's median 22 / mean 36 person-days (pp. 84–85), and per-procedure process cost of 0.3–2.2% of contract value against the study's ~0.3% authority-side aggregate and APQC's 0.5–1.96%-of-spend band. The non-labour overheads (500 / 200 / 100 / 20 PLN per day) remain declared assumptions with no direct benchmark; the nearest anchor is the 25–30% Standard-Cost-Model uplift the study itself applies (fn. 40). Full reconciliation: `docs/research/CALIBRATION_BENCHMARKS.md`. The same study also reports that restrictions on the exercise of discretion are associated with higher average contract prices; that finding cuts against the discretion-premium channel this model imports from Szucs, and is recorded here rather than omitted.
+The European Commission's 2011 study estimates authority and supplier effort for EU procurement procedures. The model 2.2.2 calibration audit compared the former `pzp_eu` template with the full report and found its authority-side person-days within the report's published distribution. That audit supports order of magnitude only. It does not validate the active 2.3 process maps, non-labour overheads or role rates.
 
-Coviello and Mariniello (2014) show in Italian public works that publicity increased participation and did not worsen delivery delay; this contradicts any blanket claim that competition itself causes delay. ProcuraCost attributes delay to modeled workflow duration, not to competition.
+Delay remains an accounting identity between critical-path elapsed days and a declared cost per day of inaction. It is not a measured effect of procedure type. Coviello and Mariniello (2014) found that publicity increased participation without worsening delivery delay in their setting. That result is inconsistent with any blanket claim that competition itself causes delay.
 
-No verified peer-reviewed source supports a universal 10% annual TCO saving or a 30% cumulative rule. Those values are removed from the baseline. The revised cumulative scenario range is 0–15% and is explicitly an assumption.
+**Historical calibration result:** under the model 2.2.2 combined stress envelope, all ten then-active scenarios crossed zero. Where workflow duration differed, the delay bucket carried most of the absolute central difference, while the process bucket alone favoured the formal path in seven scenarios. These figures describe the archived 2.2.2 templates and must not be presented as results of the native 2.3 scenario registry.
 
-Lipsky (1980), Vaughan (1996), and Holmström and Milgrom (1991) motivate possible workarounds and distorted incentives, but none provides a bypass probability. The former sigmoid predicting about 86% bypass is removed; broad observable-rate scenarios are used instead.
+### 3.4 TCO and informal bypass
 
-## 4. Model
+No verified peer-reviewed source supports a universal TCO saving rate for adaptive procurement. Native model 2.3.0 therefore allocates no TCO differential. The fleet scenario frames which lifecycle inputs should be assembled, but it does not assume that one workflow captures more value.
 
-For path \(j \in \{F,A\}\), where F is formal/sequential and A is adaptive/compliant:
+Lipsky (1980), Vaughan (1996), and Holmström and Milgrom (1991) can motivate hypotheses about workarounds and distorted incentives. They do not provide an informal-bypass probability. Native model 2.3.0 discloses informal bypass as a non-monetised dimension. Any future allocation would require observed or user-supplied evidence and a new signed allocation convention.
+
+### 3.5 Official cases
+
+The active evidence registry includes four official sources:
+
+- California's account of modular technology procurement, used to frame modular contracting, supplier access and contract adaptability;
+- the OECD account of problem definition in Lithuania's Road Vehicle Register, used to frame problem definition, market consultation and role effort;
+- the Polish Public Procurement Office material on preliminary market consultation, used to frame lawful market learning;
+- European Commission guidance on innovation procurement, used to frame innovation procurement, market consultation and contract adaptability.
+
+These sources support the existence of mechanisms and implementation questions. They do not establish the monetary values in a ProcuraCost scenario and do not prove a causal advantage for the adaptive/compliant alternative.
+
+## 4. Native model 2.3.0
+
+### 4.1 Process maps and critical path
+
+For alternative \(j \in \{F,A\}\), the workflow is a directed acyclic graph. Each step contains calibrated active days, queue days, role hours and non-labour cost. Its predecessor identifiers define the graph.
+
+For range case \(k \in \{low, central, high\}\), the finish time of step \(s\) is:
 
 \[
-C_j = C_{staff,j}+C_{admin,j}+d_jc_d+B\pi_j
-+\lambda_jc_{amend}AF(r,H)+\frac{Bs_{TCO}}{3}AF(r,\min(H_{TCO},3))(1-q_j)+p_jE_j
+t_{s,j}^{k}=a_{s,j}^{k}+q_{s,j}^{k}+\max_{p\in pred(s)}t_{p,j}^{k}.
 \]
 
-and
+The elapsed duration \(T_j^k\) is the maximum finish time across the map. Role and non-labour costs include all steps, not only the critical path:
 
 \[
-\Delta C = C_F-C_A.
+C_{role,j}^{k}=\sum_s\sum_r h_{s,r,j}^{k}w_r^{k},
+\qquad
+C_{nonlab,j}^{k}=\sum_s n_{s,j}^{k}.
 \]
 
-A positive value favors the adaptive path; a negative value favors the formal path.
-Here \(AF(r,n)\) is the annuity factor, \(\lambda_j\) is the incremental annual
-formal-amendment frequency, \(s_{TCO}\) is the declared three-year lifecycle
-pool, and \(q_j\) is the share captured by path \(j\). Both lifecycle channels
-are discounted to present value at award.
-
-**ΔC is reported decomposed, not as a single number.** The seven terms have three different time bases and three very different standards of evidence, and summing them concealed which one was doing the work:
+Delay cost is:
 
 \[
-\Delta C = \underbrace{\Delta C_{process}}_{\text{staff, admin, selection, bypass}} + \underbrace{(d_F-d_A)\,c_d}_{\text{delay}} + \underbrace{\Delta C_{lifecycle}}_{\text{amendments, TCO}}
+C_{delay,j}^{k}=T_j^k c_d^k.
 \]
 
-The middle term is an **accounting identity** between a day count taken from the model's own step templates and a price per day supplied by the user. It is not a modeled or measured effect, and it must not be read as one. In the seven fixed reference scenarios where the two paths differ in duration (excluding the editable `custom` seed) it carries **68.3–99.6%** of |ΔC| after the 2.2.2 calibration audit (up to 96–99.6% in the stoppage-framed scenarios). Model 2.1 reported only the sum, so headline figures such as "Δ = 73.9% of the adaptive total" described the size of a user's assumption about delay, not the cost of a procedure.
+The engine rejects cycles, unknown predecessors, invalid calibrated ranges, missing role rates and modifications to locked legal waits.
 
-Excluding that identity, the formal path is **cheaper on process cost in seven of the ten** built-in scenarios. That is the more informative and more falsifiable statement, and it reverses the direction a reader would infer from the 2.1 headline.
+Five mechanism-specific maps use a mixed provenance contract. Fleet, ERP,
+logistics and critical-material maps retain the former `44/24` aggregate base-day
+totals; public IT retains `42/26` non-legal days. Model 2.3 introduces the step
+order, division of those totals across steps and role-hour allocations as
+`illustrative_scenario` inputs. Retained support multipliers, coordination costs
+and tool costs are then applied to those allocations. The internal provenance
+record discloses this composition. Official cases support only the named
+mechanisms; they provide none of these numerical inputs.
 
-- **Staff:** activity hours by role at a loaded rate, times two declared broad context factors and the technology multiplier. Hours are a whole-role total; role headcount is descriptive and does not multiply the cost of a fixed workload. Mandatory legal waits do not disappear and are not compressed by technology.
-- **Admin:** non-labor administrative overhead over *active* days, plus equal tool cost when both paths use the same technology; it excludes role hours already counted under staff. A statutory wait consumes calendar time without consuming coordination effort.
-- **Delay:** elapsed days times a user-supplied daily cost of inaction.
-- **Selection:** contract value times the discretion price scenario and residual competition risk.
-- **Amendments:** annual formal-amendment frequency \(\lambda_j\) times a user-supplied cost per amendment and the annuity factor over contract duration.
-- **TCO:** a declared three-year cumulative savings-pool scenario, converted to an annual flow and discounted over the shorter of the user horizon and three years, times the share each path fails to capture; the central scenario is zero because no transferable estimate was identified.
-- **Bypass:** user-supplied exposure times a scenario rate, scaled by system controls.
+### 4.2 Contract cost and monetary coverage
 
-The shared baseline acquisition price is not added to either side: only modeled incremental selection loss enters the comparison. The central break-even daily inaction cost is \(-\Delta C_{non-delay}/(d_F-d_A)\) when the two paths differ in duration. It is reported **unclamped**, together with a status that says how to read it: a threshold above zero means the delay bucket decides, while a negative threshold means the formal path already costs more with the delay bucket removed entirely. Model 2.1 clamped the value at zero, which made those two cases indistinguishable and produced a figure that was 0 or undefined in every published scenario.
+Contract design contains four named dimensions: competition transfer, contract amendment, TCO and informal bypass. Every dimension must be either monetised with a traceable calibrated value or reported as not monetised with a reason.
 
-The low-delta scenario strengthens the governance case for formality: high discretion premium, no imported renegotiation effect, no TCO benefit, and a higher adaptive bypass rate. The high-delta scenario strengthens the adaptability case. These bounds are stress scenarios, not statistical intervals.
+The alternative total is:
 
-### 4.1 Structural asymmetry of the comparison
+\[
+C_j^k=C_{role,j}^{k}+C_{nonlab,j}^{k}+C_{delay,j}^{k}+C_{contract,j}^{k}.
+\]
 
-The model is designed to permit either path to win, and the parameters have not been tuned to protect the thesis. But **the architecture is not symmetric**, and a reader is entitled to know that before interpreting a sign:
+In the native starting points, competition transfer is the only non-zero contract allocation. It appears only in the stable standard-service sensitivity, which explicitly compares open policy-qualified competition with a restricted shortlist or incumbent continuation and identifies the restricted alternative. The allocation can be reversed or removed; it is never inferred from a workflow label. Contract amendment and TCO are fixed at zero. Informal bypass is not monetised.
 
-- In seven standard process profiles, the adaptive path has no more modeled days and the profile table assigns it lower contract rigidity and higher lifecycle capture. These are calibration choices, not findings. The `discovery` profile is the explicit counterexample: adaptive learning is slower and more effortful while the formal path freezes the requirement early.
-- Selection can favour formality and is bounded by contract value × the discretion premium × the residual competition gap. For `pzp_eu` that ceiling is about **0.3% of contract value**; the delay channel, by contrast, scales without a model-imposed ceiling in the daily cost supplied by the user.
-- In the central case, two of the seven dimensions are identically zero: the TCO pool is zero and both bypass rates are 0.05, so the bypass difference vanishes. Five dimensions are active centrally, not seven.
+The decision record lists a calculation anchor for every included monetary
+input. It separately lists internal workflow provenance, external evidence,
+retained assumptions and non-monetised dimensions. Reproducing the arithmetic
+therefore does not imply that every input is empirically estimated.
 
-The sign is therefore driven mainly by the modeled day difference, the user-supplied cost of a day, and the selection channel. Under the 2.2.2 combined envelope all ten fixed reference scenarios cross zero, while the process bucket alone favours formality in seven of ten. The model does not identify a robust winner in its reference scenarios.
+### 4.3 Difference and range semantics
 
-**Through model 2.1 the published sensitivity sweep could not detect this, and that limitation was undocumented.** Across 11,340 configurations the central result favoured the formal path in 1,482 of them, but *no* configuration favoured it robustly — that is, the pro-adaptive extreme of the envelope never favoured formality. The cause was the templates rather than the evidence: every step of every template had `flexibleDays ≤ rigidDays`, so both the low and the high case were asked from a pro-adaptive process baseline. `EVIDENCE_CASES` perturbs five scalars — the discretion premium, the rigidity slope, the TCO pool and the two bypass rates — and leaves the step-day templates and the daily cost of inaction untouched. "Robustly favours adaptive" and "robustly favours formal" were therefore not equally hard questions, and reporting them side by side implied that they were.
+The comparison identity is:
 
-Model 2.2 adds the `discovery` process type, in which the requirement emerges during the procurement and adaptive execution is genuinely **slower and more effortful** — co-design with suppliers, a re-scoping round, sometimes an abandoned negotiation — while the formal path freezes the requirement early and pays with a worse specification and weaker lifecycle capture. The sweep can now fail in both directions, which is the minimum a symmetry claim requires.
+\[
+\Delta C=C_F-C_A.
+\]
 
-### 4.2 Two axes of uncertainty
+Positive and negative signs are both admissible. The outer envelope is calculated conservatively from the two alternative ranges:
 
-Model 2.2.1 widens the reported envelope to cover a second axis, because the first one bracketed the wrong quantities:
+\[
+\Delta C_{low}=C_F^{low}-C_A^{high},
+\qquad
+\Delta C_{high}=C_F^{high}-C_A^{low}.
+\]
 
-- **Evidence axis** — the five literature-facing scalars: the discretion premium, the rigidity slope, the TCO pool and the two bypass rates.
-- **Structural axis** — the daily cost of inaction (×0.25 to ×4) and non-mandatory step durations (×0.7 to ×1.3). Statutory PZP waits are invariant under both.
+This is a declared scenario envelope, not a confidence interval. Swapping the two alternatives must swap their results, negate the central difference and reverse the envelope. The test guards algebraic neutrality; it does not validate the calibration.
 
-The structural axis is not a pessimism exercise. The cost of a day is the least reliable number a user supplies and the model has no way to check it, while the step-day tables are the model's own untested assumptions. In the fixed reference scenarios where path durations differ, the delay bucket carries 68.3–99.6% of |ΔC| after the 2.2.2 audit. Bracketing the small quantities while freezing the large ones understated uncertainty exactly where the model is least defensible.
+### 4.4 Legal and governance boundary
 
-The effect is large and it goes against the thesis:
+Legal resolution uses the declared initiation date and the versioned `pl-pzp-2026-2027` ruleset. Mandatory waits include source provenance and fixed active and queue days. Where a wait applies, it appears with identical values in both alternatives and cannot be edited or removed. System support cannot shorten it.
 
-| | evidence axis only | both axes (2.2.2 calibration) |
-|---|---:|---:|
-| built-in scenarios crossing zero | 5 of 10 | **10 of 10** |
-| sweep: robustly favours formal | — | 1,042 of 12,960 |
-| sweep: robustly favours adaptive | — | 5,374 of 12,960 |
-| sweep: crosses zero | — | 6,544 of 12,960 |
+The current legal resolver covers classic procurement contexts within its declared national and EU scope. Sectoral and defence/security regimes fail closed. Missing public-procurement declarations and incompatible combinations also block calculation. ProcuraCost does not replace legal analysis.
 
-Under the audited calibration, **no built-in scenario identifies a robust winner** once the two dominant inputs are allowed to move within defensible bounds. That is the honest headline, and it is a weaker claim than any previous version of this project made.
+## 5. Reference scenarios and interpretation
 
-Two qualifications remain for the empirical agenda. Calibration should treat the day templates and the path profiles as the **primary objects of measurement**, because they — not the evidence anchors — carry the directional assumption; `discovery` is itself a modelling assumption, not an observation. And the ×0.25–×4 and ×0.7–×1.3 bounds are themselves declared judgements about how wrong an unmeasured input can be, not estimated intervals.
+The ten canonical scenarios are structured starting points:
 
-## 5. Interpretation
+1. `fleet_tco_reframing`
+2. `erp_transformation_discovery`
+3. `logistics_service_redesign`
+4. `critical_material_continuity`
+5. `public_it_open_with_market_consultation`
+6. `stable_private_standard_service`
+7. `stable_capex_replacement`
+8. `discovery_solution_codesign`
+9. `catalog_calloff_control`
+10. `mrp_release_control`
 
-The central output is useful only together with the scenario interval and component breakdown. If the interval crosses zero, the model does not identify a robust winner. If it does not cross zero, the sign is stable only within the declared bounds.
+Their economic values are labelled retained model 2.2.2 assumptions after
+migration into the native schema. For the first five scenarios, aggregate
+base-day totals are also retained, while step order, allocation of days and
+role-hour allocations are illustrative model 2.3 inputs. Official evidence
+attached to a scenario supports a mechanism, not the retained values or the new
+numerical allocations. Users must assess whether each assumption is defensible
+for the intended decision.
 
-The Tunnel–Field hypothesis is most plausible where:
+Adaptive work has a plausible procurement mechanism when requirements are incomplete, supplier input can improve problem definition, market consultation is lawful and useful, or contract design must accommodate learning. The ERP discovery, logistics redesign, public IT market-consultation and solution co-design scenarios are intended to expose those conditions. The solution co-design scenario also makes an important counterpoint: learning may add process time and role effort.
 
-- delay has a material and evidenced cost;
-- the adaptive design preserves effective competition;
-- requirements or contracts must change as information arrives;
-- internal data show meaningful workflow effort or bypass exposure.
+An adaptive workflow may add no distinct workflow value when the requirement is stable, the call-off is already governed by a framework or catalogue, or an MRP release simply executes an established commercial arrangement. The catalogue call-off and MRP release controls use identical maps and no supplier-access difference. They return equal alternative ranges, a zero central difference and a symmetric outer envelope. The stable standard-service starting scenario is a topology control only: its maps are identical, but it separately declares a restricted-access sensitivity and is therefore not a neutral total-cost control. The stable capital-replacement scenario also asks whether an adaptation mechanism is present rather than presuming one.
 
-Formality may dominate where:
+These are conditions for analysis, not procedure recommendations. The cost result does not determine legal availability, and organisational readiness is self-described separately.
 
-- the cost of delay is low;
-- competition and auditability materially constrain favoritism;
-- requirements and lifecycle costs are stable;
-- adaptive governance capability is weak.
+## 6. Suitability and implementation readiness
 
-## 6. Case evidence
+The suitability comparison presents candidate procedure families associated with the declared boundary; it does not establish legal availability. Every candidate receives the same six qualitative criteria: legal boundary, requirement definition, competitive access, execution channel, workflow learning and system support. Candidate rows have equal visual and logical status. System support cannot change the candidate set or legal waits. Procedures whose statutory grounds are not evaluated are disclosed as withheld rather than scored.
 
-Ryanair's 2003 annual report documents a 100-aircraft Boeing order and price concessions. It does not identify a causal effect of procurement flexibility. Swiss Casinos and Air France KLM Martinair reports describe rapid Lean Agile Procurement cycles, but they are practitioner cases, not independent comparative studies. Ferdows, Lewis, and Machuca describe Zara's responsive supply network, not an AI-procurement replacement of tenders. These cases motivate mechanisms only and are not evidence about PZP.
+Organisational implementation readiness is a separate self-description with eight domains and sixteen questions. The domains are purpose, ownership, process, requirements, data and automation, governance, adoption, and value and rollout. Each response is `not_met`, `to_complete` or `confirmed`. A complete response set returns counts by response and domain; an incomplete set returns no summary. The module does not infer an overall status, apply a worst-answer gate, validate the answers or issue a go/no-go decision. Its authored checklist is a hypothesis set rather than a validated instrument. There are no points, percentages, weights or benchmarks, and readiness never enters the cost model.
 
-## 7. Empirical agenda
+## 7. Practitioner observation and hypothesis development
 
-Validation requires event-level observations within organizations. The primary outcome should be procurement-cycle days from auditable timestamps. Secondary outcomes should include effort hours by role, bidder participation, price benchmarks, amendments, renegotiation cost, bypass evidence, audit findings, and supplier performance. Estimate components separately before monetization. Use within-organization and category controls where possible; do not calibrate against ProcuraCost's own output.
+[Procurement&Beyond, episode 8](https://www.youtube.com/watch?v=5KYUdTLlvvg), published on 26 August 2026, is treated as a practitioner interview. The available Polish transcript was generated automatically by YouTube and has not been human-verified. No verbatim quotation from that transcript is used here.
+
+The episode informs questions about:
+
+- whether a named internal owner can sustain the implementation and translate the process for users;
+- whether the organisation mapped process friction before selecting a system;
+- whether requirements focus on material operational purchasing rather than marginal feature requests;
+- whether obsolete approval chains are being reproduced in software instead of simplifying the policy and target process;
+- whether the business case measures whole-life cost and adoption, not only licence or implementation cost;
+- whether AI is confined to traceable support tasks, such as structuring market data, while a transparent deterministic model performs the TCO calculation.
+
+These observations support question design and hypothesis generation only. They do not set ProcuraCost thresholds, weights, workflow durations, role rates or calibration ranges. In particular, Bielik may help structure source data for review, but the language model does not calculate the ProcuraCost result.
+
+Testable hypotheses arising from this material include whether sustained internal ownership predicts adoption, whether pre-implementation friction mapping reduces unnecessary configuration, and whether policy simplification reduces approval burden without weakening boundary controls. These propositions require independent data.
+
+## 8. Empirical agenda
+
+Validation requires event-level observations within organisations. The primary outcome should be procurement-cycle duration from auditable timestamps. Secondary outcomes should include active effort hours by role, queue time, bidder participation, price benchmarks, contract amendments, renegotiation cost, lifecycle performance, process bypass evidence, audit findings and supplier performance.
+
+The empirical design should estimate components before monetisation. It should preserve the distinction between active work and waiting, record system support without treating it as readiness, and compare lawful alternatives within the same governance boundary. Within-organisation and category controls are preferable where available. ProcuraCost outputs must not be used as calibration targets for the same model.
+
+## 9. Reproducibility
+
+The native 2.3 replication generator produces exactly three deterministic artefacts: JSON, CSV and Markdown. The JSON bundle contains the full decision records, including assumptions, evidence, role rates, calculation anchors and legal provenance. The CSV preserves metadata, axes, alternatives, comparison, coverage, non-monetised dimensions and migration context in stable machine rows. The Markdown rendering presents the comparison, coverage, non-monetised dimensions, migration and legal provenance for human review. None contains a generation timestamp.
+
+`npm run recompute` audits canonical metadata, ordered ranges, the delta identity, neutral controls and locked legal waits. `npm run sweep` performs an alternative-swap symmetry audit. `npm run replicate` regenerates the three active artefacts from the native scenario registry and engine. These checks establish code-path consistency, not empirical validity.
 
 ## References
-
-Agile Business Consortium. (n.d.). *Case study: Swiss Casinos* [Practitioner case]. Accessed 14 July 2026. https://www.agilebusiness.org/resource/case-study-swiss-casinos.html
-
-Agile Business Consortium. (2021). *Air France uses Lean Agile Procurement to outsource a critical project* [Practitioner case]. https://www.agilebusiness.org/resource/air-france-uses-lean-agile-procurement-to-outsource-a-critical-project/
 
 Bajari, P., Houghton, S., & Tadelis, S. (2014). Bidding for incomplete contracts: An empirical analysis of adaptation costs. *American Economic Review, 104*(4), 1288–1319. https://doi.org/10.1257/aer.104.4.1288
 
 Beuve, J., Moszoro, M. W., & Spiller, P. T. (2023). Doing it by the book: Political contestability and public contract renegotiations. *Journal of Law, Economics, and Organization, 39*(1), 281–308. https://doi.org/10.1093/jleo/ewab039
 
+California Department of Technology. (2022). *California redefines state technology procurement*. https://www.cdt.ca.gov/newsroom/2022/08/california-redefines-state-technology-procurement/
+
 Coviello, D., & Mariniello, M. (2014). Publicity requirements in public procurement: Evidence from a regression discontinuity design. *Journal of Public Economics, 109*, 76–100. https://doi.org/10.1016/j.jpubeco.2013.10.008
 
 European Commission. (2011). *Public procurement in Europe: Cost and effectiveness* (PwC, London Economics, & Ecorys).
 
-Ferdows, K., Lewis, M. A., & Machuca, J. A. D. (2004, November). Rapid-fire fulfillment. *Harvard Business Review* (Reprint R0411G). https://hbr.org/2004/11/rapid-fire-fulfillment
+European Commission. (2021). *Guidance on innovation procurement*. https://public-buyers-community.ec.europa.eu/resources/guidance-innovation-procurement
 
 Fazekas, M., & Blum, J. R. (2021). *Improving public procurement outcomes: Review of tools and the state of the evidence base* (Policy Research Working Paper No. 9690). World Bank.
 
-Holmström, B., & Milgrom, P. (1991). Multitask principal–agent analyses: Incentive contracts, asset ownership, and job design. *Journal of Law, Economics, & Organization, 7*(Special Issue), 24–52. https://doi.org/10.1093/jleo/7.special_issue.24
+Holmström, B., & Milgrom, P. (1991). Multitask principal-agent analyses: Incentive contracts, asset ownership, and job design. *Journal of Law, Economics, & Organization, 7*(Special Issue), 24–52. https://doi.org/10.1093/jleo/7.special_issue.24
 
 Lipsky, M. (1980). *Street-level bureaucracy*. Russell Sage Foundation.
 
-Ryanair Holdings plc. (2003). *Annual report and financial statements 2003*. https://www.ryanair.com/doc/investor/2003/2003annualreport.pdf
+OECD. (n.d.). *Public procurement in Lithuania: Improving procurement approaches for the Road Vehicle Register*. https://www.oecd.org/en/publications/public-procurement-in-lithuania_aa1b196c-en/full-report/component-8.html
+
+Procurement&Beyond. (2026, August 26). *Odcinek 8. Nawet najlepsze narzędzie nie uratuje złego wdrożenia* [Practitioner interview]. https://www.youtube.com/watch?v=5KYUdTLlvvg
 
 Szucs, F. (2024). Discretion and favoritism in public procurement. *Journal of the European Economic Association, 22*(1), 117–160. https://doi.org/10.1093/jeea/jvad017
+
+Urząd Zamówień Publicznych. (n.d.). *Wstępne konsultacje rynkowe*. https://www.gov.pl/web/uzp/wstepne-konsultacje-rynkowe
 
 Vaughan, D. (1996). *The Challenger launch decision*. University of Chicago Press.
 
 ### Legal sources
 
-Ustawa z dnia 11 września 2019 r. – Prawo zamówień publicznych, as amended through 2026. The application threshold is 170,000 PLN net from 1 January 2026.
+Ustawa z dnia 11 września 2019 r. Prawo zamówień publicznych, as amended through 2026. The application threshold is 170,000 PLN net from 1 January 2026.
 
 Obwieszczenie Prezesa Urzędu Zamówień Publicznych z dnia 8 grudnia 2025 r., M.P. 2025 poz. 1247 (EU thresholds for 2026–2027).

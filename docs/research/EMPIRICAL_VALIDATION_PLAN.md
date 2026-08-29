@@ -1,350 +1,422 @@
 # Plan walidacji empirycznej ProcuraCost
 
-**Wersja:** 1.1 dla modelu 2.2.2 · 27 lipca 2026
-**Status:** projekt do oceny promotora. **Nie zawiera wyników — żadne dane nie zostały zebrane.**
-**Zastępuje:** materiały z `docs/archive/model-1.x/planning/`, napisane pod model 1.x i nieprzenośne.
+**Wersja dokumentu:** 2.0 dla modelu 2.3.0, 29 sierpnia 2026
+**Status:** projekt do oceny promotora. Nie zawiera wyników i nie opisuje
+zebranych danych.
+**Zastępuje:** aktywny plan dla modelu 2.2.2. Materiały modelu 1.x pozostają
+wyłącznie w archiwum.
 
----
+## 0. Cel i granica planu
 
-## 0. Po co ten dokument
+ProcuraCost 2.3 jest deterministycznym rachunkiem warunkowym. Pokazuje, co
+wynika z dwóch zadeklarowanych map przebiegu procesu, kosztu czasu, stawek,
+kosztów niepracowniczych i objętych monetyzacją elementów konstrukcji umowy.
+Nie pokazuje, co przeciętnie dzieje się w polskich zakupach i nie identyfikuje
+skutku przyczynowego.
 
-Model 2.2.2 jest rachunkiem warunkowym. Mówi, co wynika z założeń, a nie co dzieje się
-w polskich zamówieniach. Bez planu, który da się skrytykować przed zebraniem danych, cykl
-doktorski nie ma warstwy empirycznej — a `PHD_ROADMAP.md` sam nazywa tę fazę „the part the
-professor cares about most".
+Plan rozdziela cztery zadania:
 
-Dokument odpowiada na pięć pytań, które recenzent zada w tej kolejności:
-co jest zmienną objaśniającą, jak ją mierzę, skąd wiem, że efekt jest przyczynowy,
-ile obserwacji potrzebuję i co uznam za falsyfikację.
-
----
-
-## 1. Czego dokładnie dotyczy walidacja
-
-Model nie jest jednym twierdzeniem, więc nie ma jednej walidacji. Rozdzielam trzy poziomy,
-bo mają różną trudność i różny status:
-
-| Poziom | Pytanie | Wykonalne |
+| Poziom | Pytanie | Status |
 |---|---|---|
-| **A. Pomiar** | Czy preskryptywność projektu procesu da się rzetelnie zmierzyć *ex ante* z dokumentów organizacyjnych? | tak, i to jest warunek wstępny reszty |
-| **B. Asocjacja** | Czy bardziej preskryptywny projekt procesu wiąże się z dłuższym cyklem i większym nakładem pracy, przy kontroli złożoności? | tak |
-| **C. Przyczynowość** | Czy zmiana projektu procesu **powoduje** zmianę kosztu? | tylko warunkowo — patrz §5 |
+| A. Pomiar | Czy projekt przebiegu procesu można rzetelnie odtworzyć ex ante z dokumentów i logów? | warunek wstępny |
+| B. Mechanizmy | Czy cechy projektu procesu wiążą się z czasem, nakładem pracy, dostępem do rynku i zmianami umowy? | główny zakres badania |
+| C. Przyczynowość | Czy określona zmiana projektu procesu powoduje zmianę wyniku? | wyłącznie przy spełnieniu warunków identyfikacji |
+| D. Walidacja instrumentu | Czy komponenty rekordu decyzji przewidują odpowiadające im obserwowane komponenty lepiej niż prosta baza? | wyłącznie na próbie odłożonej |
 
-**Deklaruję wprost: rozprawa celuje w A i B, a C traktuje jako warunkowe.** Poprzednie wersje
-projektu sugerowały ambicję przyczynową bez planu identyfikacji. To był błąd i nie powtarzam go.
+Kalibracja nie jest walidacją. Odtworzenie wyniku z kodu potwierdza spójność
+obliczeń, nie trafność założeń.
 
-Osobno: **kalibracja modelu to nie to samo co jego walidacja.** Sprawdzenie, czy kalkulator
-odtwarza własne założenia, nie jest testem niczego.
+## 1. Jednostka analizy i obiekt porównania
 
----
+Podstawową jednostką analizy jest zdarzenie zakupowe od autoryzacji potrzeby do
+zawarcia umowy albo innego jasno zdefiniowanego zakończenia.
 
-## 2. Zmienna objaśniająca: prescriptiveness ścieżki
+Model 2.3 rozdziela:
 
-Największa luka poprzednich wersji: „sekwencyjność" była nazwą, nie zmienną.
+- ramy prawne i ład zakupowy;
+- rodzinę procedury;
+- archetyp zakupu;
+- kanał realizacji zakupu;
+- wsparcie systemowe;
+- projekt przebiegu procesu zakupowego;
+- konstrukcję umowy;
+- gotowość organizacyjną do wdrożenia.
 
-### 2.1 Definicja *ex ante*
+Badanie nie może zastąpić tych konstrukcji jedną etykietą procesu. Obowiązkowe
+terminy prawne należy identyfikować osobno i nie traktować ich jako przejawu
+preskryptywności organizacyjnej.
 
-Mierzę **prescriptiveness projektu procesu obowiązującego w chwili autoryzacji potrzeby**,
-a nie to, jak postępowanie faktycznie przebiegło. To rozróżnienie jest krytyczne: przebieg
-faktyczny jest współokreślony przez wynik, więc kodowanie go jako ekspozycji tworzy odwrotną
-przyczynowość.
+## 2. Ekspozycja badawcza
 
-Źródłem jest **macierz akceptacji i wersja polityki zakupowej obowiązująca w dniu
-`exposure_reference_at`** — dacie autoryzacji potrzeby, ustalanej przed obejrzeniem
-jakiegokolwiek wyniku.
+### 2.1 Indeks preskryptywności ex ante
 
-### 2.2 Składowe indeksu (5 pozycji, z-standaryzowane, sumowane)
+Na potrzeby badania proponowany jest indeks preskryptywności projektu przebiegu
+procesu obowiązującego w chwili autoryzacji potrzeby. Indeks jest ekspozycją
+badawczą. Nie jest parametrem modelu 2.3, wynikiem profilu w serwisie,
+miernikiem dojrzałości ani rekomendacją przebiegu.
 
-| # | Składowa | Operacjonalizacja | Źródło |
-|---|---|---|---|
-| 1 | Liczba bram decyzyjnych | liczba wymaganych akceptacji przed wszczęciem | macierz akceptacji |
-| 2 | Wymuszona sekwencja | liczba par etapów, których polityka zakazuje prowadzić równolegle | tekst polityki |
-| 3 | Głębokość eskalacji | liczba poziomów hierarchii wymaganych dla tej klasy wartości | macierz akceptacji |
-| 4 | Sztywność dokumentacji | liczba obowiązkowych artefaktów bez wariantu uproszczonego | tekst polityki |
-| 5 | Autonomia zespołu | odwrócona: czy zespół może zmienić zakres bez ponownej akceptacji | tekst polityki |
+Źródłem są wersje polityki zakupowej, macierzy uprawnień i skonfigurowanego
+obiegu zakupowego obowiązujące w dacie `exposure_reference_at`. Ta data musi być
+ustalona przed analizą wyników.
 
-Indeks opisuje wyłącznie projekt workflow. Nie zawiera konkurencji, sztywności
-klauzul ani wykorzystania technologii. Pięć składowych jest raportowanych także
-osobno; równe wagi zostają zamrożone przed analizą, a alternatywne ważenie ma
-status eksploracyjny.
+### 2.2 Proponowane składowe
 
-**Świadomie wykluczam z ekspozycji:** udział czasu oczekiwania i długość ścieżki krytycznej.
-Obie dzielą jednostki z wynikiem głównym i mechanicznie go ograniczają — wejście ich do
-ekspozycji byłoby regresją czasu na czas. Poprzedni szkic protokołu je zawierał.
+| Składowa | Operacjonalizacja | Źródło |
+|---|---|---|
+| Bramy decyzyjne | liczba wymaganych zatwierdzeń przed wszczęciem | macierz uprawnień |
+| Wymuszona sekwencja | liczba zależności, których nie wolno realizować równolegle | polityka i konfiguracja obiegu zakupowego |
+| Głębokość eskalacji | liczba poziomów uprawnień dla danej klasy wartości | macierz uprawnień |
+| Wymagane artefakty | liczba obowiązkowych dokumentów bez dopuszczonego wariantu uproszczonego | polityka |
+| Autonomia zespołu | odwrócona możliwość zmiany zakresu bez ponownego zatwierdzenia | polityka i log zmian |
 
-### 2.3 Reguły antywyciekowe
+Pozycje są standaryzowane i sumowane z równymi wagami wyłącznie po pozytywnym
+pilotażu pomiaru. Składowe należy również raportować osobno. Alternatywne wagi
+mają status eksploracyjny.
 
-1. Koder ekspozycji nie widzi żadnego wyniku (czasu, ceny, liczby ofert, aneksów).
-2. Kodowanie ekspozycji odbywa się z dokumentów datowanych **przed** `exposure_reference_at`.
-3. Podręcznik kodowania jest zamrożony i wersjonowany przed pierwszym kodowaniem.
-4. Co najmniej dwóch koderów, niezależnie; zgodność raportowana jako **Krippendorff α**,
-   prerejestrowany próg akceptacji **α ≥ 0,80** dla pozycji uznaniowych. Poniżej progu pozycja jest
-   przeprojektowana albo usunięta, nie uśredniona. Próg 0,80 jest konserwatywną
-   decyzją projektową, a nie uniwersalnym prawem dla każdego rodzaju kodowania.
+Z ekspozycji wyklucza się długość ścieżki krytycznej i udział czasu
+oczekiwania. Obie wielkości współtworzą wynik czasu, więc ich włączenie
+powodowałoby mechaniczne powiązanie ekspozycji z wynikiem.
 
----
+### 2.3 Reguły przeciwdziałające wyciekowi informacji
 
-## 3. Wynik główny i wyniki wtórne
+1. Koder ekspozycji nie widzi czasu, ceny, liczby ofert, aneksów ani wyniku
+   dostawy.
+2. Kodowanie wykorzystuje wyłącznie dokumenty obowiązujące nie później niż
+   `exposure_reference_at`.
+3. Podręcznik kodowania zostaje zamrożony przed pierwszym kodowaniem badania
+   właściwego.
+4. Co najmniej dwóch koderów pracuje niezależnie.
+5. Zgodność pozycji uznaniowych jest raportowana współczynnikiem Krippendorffa.
+   Próg `alpha >= 0,80` jest prerejestrowaną decyzją projektową. Pozycja poniżej
+   progu jest przeprojektowana albo usunięta, a nie uśredniona.
 
-**Wynik główny:** `log(dni cyklu zakupowego)` od autoryzacji potrzeby do podpisania umowy,
-z audytowalnych znaczników czasu.
+## 3. Hipotezy i dopasowanie do komponentów
 
-Logarytm, bo rozkład czasów cyklu jest prawoskośny, a interpretacja procentowa jest
-naturalniejsza niż w dniach dla zakupów różnej wielkości.
+- **H1a:** większa preskryptywność ex ante wiąże się z większą liczbą dni od
+  zatwierdzenia potrzeby do podpisania umowy, warunkowo względem złożoności,
+  granicy prawnej, rodziny procedury i liczby właściwych obowiązkowych dni
+  oczekiwania. **H1b:** przy tych samych kontrolach wiąże się z większą liczbą
+  godzin koordynacji kupca, prawnika i kierownika.
+- **H2:** szerszy dostęp do rynku określony ex ante wiąże się z większą liczbą
+  ważnych ofert i niższą ceną wyboru względem prerejestrowanego, niezależnego
+  benchmarku.
+- **H3:** większa sztywność klauzul zmiany określona ex ante wiąże się z większą
+  liczbą formalnych aneksów na rok kontraktu. Po uwzględnieniu konstrukcji
+  klauzul związek z liczbą bram procesu powinien mieścić się w prerejestrowanej
+  granicy równoważności.
+- **H4:** dla potrzeb sklasyfikowanych przed wyborem procesu jako niekompletne
+  adaptacyjne odkrywanie wiąże się z większym nakładem ról przed wszczęciem,
+  lecz z mniejszą liczbą dni wyjaśnień i ponownej pracy po rozpoczęciu
+  konkurencji niż projekt sekwencyjny. Obie interakcje powinny być nieobecne
+  albo mieścić się w prerejestrowanych granicach równoważności dla potrzeb
+  sklasyfikowanych jako stabilne.
+- **H5:** wyższy odsetek wymaganych kontroli faktycznie zarejestrowanych w
+  systemie wiąże się z mniejszą liczbą akceptacji lub zamówień poza systemem
+  oraz mniejszą liczbą braków w śladzie audytowym. Samo posiadanie systemu i
+  odpowiedzi o gotowości nie zastępują obserwacji użycia.
 
-**Wyniki wtórne, modelowane osobno, nigdy jako kontrole w modelu głównym:**
-liczba ofert ważnych · nakład pracy w godzinach wg roli · liczba i typ aneksów ·
-udokumentowane odstępstwa · ustalenia audytu · miary wykonania dostawy.
+Każda hipoteza wymaga odrębnego modelu i miar odpowiadających konkretnej
+konstrukcji. Nie wolno używać jednej miary jako ekspozycji i wyniku w tej samej
+specyfikacji.
 
-### 3.1 Kontrole i to, czego kontrolować nie wolno
+## 4. Przypadki ukierunkowujące pomiar
 
-| Dozwolone (przed-ekspozycyjne) | Zakazane (po-ekspozycyjne) |
+Scenariusze 2.3 służą do formułowania pytań i testów, nie jako obserwacje.
+
+### 4.1 Warunki z mechanizmem pracy adaptacyjnej
+
+- Transformacja ERP może wymagać wczesnego zdefiniowania problemu i modularnego
+  podejścia, gdy wymagania są niepełne.
+- Przeprojektowanie usługi logistycznej może wymagać kontaktu z rynkiem w celu
+  sprawdzenia poziomów usług, interfejsów danych i podziału ryzyka.
+- Publiczny zakup IT może korzystać ze wstępnych konsultacji rynkowych przed
+  postępowaniem otwartym, przy niezmiennych terminach ustawowych.
+- Odkrywanie i współprojektowanie rozwiązania może zwiększać czas i nakład pracy,
+  ponieważ uczenie się i ponowne określenie zakresu są odrębnymi czynnościami.
+
+### 4.2 Warunki bez odrębnego mechanizmu pracy
+
+- Stabilna, standardowa usługa może wymagać tych samych czynności w obu
+  projektach przebiegu.
+- Zamówienie katalogowe może mieć identyczną mapę po ustanowieniu umowy ramowej
+  i katalogu.
+- Zwolnienie zlecenia MRP może mieć identyczną mapę, gdy korzysta z obowiązującej
+  umowy i zatwierdzonych danych materiałowych.
+
+Scenariusz stabilnej usługi osobno deklaruje różnicę konkurencji i nie jest
+neutralną kontrolą kosztu całkowitego. Scenariusze katalogowy i MRP są
+neutralnymi kontrolami instrumentu. Równe mapy i brak różnicy konkurencji
+powinny dawać równy wynik.
+
+## 5. Wyniki
+
+### 5.1 Wynik główny
+
+`log(dni cyklu zakupowego)` od autoryzacji potrzeby do podpisania umowy, na
+podstawie audytowalnych znaczników czasu.
+
+Obowiązkowe terminy prawne pozostają częścią wyniku głównego. Zmienna
+`applicable_mandatory_wait_days` jest wyznaczana według stanu prawnego na dzień
+wszczęcia, granicy, rodziny procedury, przedmiotu zamówienia i sposobu
+komunikacji. Wchodzi do specyfikacji głównej jako jawna kontrola. Obserwacja bez
+danych pozwalających ją rozstrzygnąć nie trafia do estymacji H1. Analiza
+wrażliwości może odjąć wyłącznie te zidentyfikowane terminy; nie odejmuje
+pozostałych kolejek organizacyjnych.
+
+Transformacja logarytmiczna jest przyjętą decyzją modelową do oceny po
+pilotażu. Jeżeli dane nie spełnią jej przesłanek, zmiana musi zostać
+udokumentowana przed badaniem właściwym.
+
+### 5.2 Wyniki wtórne
+
+Modelowane osobno:
+
+- nakład pracy według roli;
+- liczba ważnych ofert;
+- cena względem benchmarku ustalonego ex ante;
+- liczba i typ aneksów;
+- udokumentowane odstępstwa od procesu;
+- ustalenia kontroli lub audytu;
+- miary wykonania dostawy.
+
+### 5.3 Zmienne kontrolne
+
+| Dozwolone przed ekspozycją | Niedozwolone jako kontrole po ekspozycji |
 |---|---|
-| wartość szacunkowa, CPV, złożoność techniczna, pilność deklarowana przed wszczęciem, rok, efekty stałe zamawiającego | **liczba ofert**, cena względem benchmarku, liczba aneksów, wynik dostawy |
+| wartość szacunkowa, kategoria CPV, złożoność techniczna, pilność zadeklarowana przed wszczęciem, rok, efekty stałe organizacji | liczba ofert, cena względem benchmarku, aneksy, wykonanie dostawy |
 
-**To jest korekta względem poprzedniego szkicu**, który umieszczał liczbę ofert w modelu czasu
-cyklu. Liczba ofert powstaje po publikacji, zależy od projektu procesu i mechanicznie wpływa
-na czas oceny — jest zmienną pośredniczącą, a kontrolowanie jej obciąża współczynnik główny
-(*post-treatment bias*). Liczba ofert jest zmienną zależną w modelu konkurencji (H2),
-nie kontrolą w modelu czasu (H1).
+Liczba ofert jest wynikiem w modelu konkurencji. Nie może równocześnie pełnić
+roli kontroli w modelu czasu, jeżeli projekt procesu mógł wpłynąć na dostęp do
+rynku lub pracochłonność oceny.
 
-W H2 ekspozycją są cechy dostępu do rynku ustalone przed złożeniem ofert, np.
-zakres publikacji, planowana liczba zaproszeń i restrykcyjność warunków udziału.
-Wynikami są liczba ważnych ofert i cena względem wcześniej ustalonego benchmarku.
-Liczba ofert nie może wystąpić jednocześnie jako miara „skutecznej konkurencji"
-i wynik tego samego modelu.
+Twierdzenia o braku samodzielnego efektu wymagają testu równoważności z
+prerejestrowanymi granicami praktycznymi. Wartość `p > 0,05` nie potwierdza
+braku efektu.
 
-H3 i H5 zawierają twierdzenia o braku samodzielnego efektu liczby bram oraz
-samego posiadania systemu. `p > 0,05` nie potwierdza takiego braku. Po pilotażu,
-ale przed estymacją zależności w badaniu właściwym, trzeba zamrozić praktyczne
-granice równoważności na podstawie znaczenia merytorycznego, nie zaobserwowanego
-efektu, i sprawdzić, czy cały przedział ufności mieści się w tych granicach. Dla
-H5 osobno raportowana jest interakcja z faktycznie zalogowanym użyciem kontroli.
+## 6. Warstwy danych
 
----
+### 6.1 Warstwa rejestrowa
 
-## 4. Warstwy danych
+BZP, TED i e-Zamówienia mogą dostarczyć identyfikatory, CPV, wartość, tryb, daty
+ogłoszenia i udzielenia, liczbę ofert, kryteria oraz opublikowane zmiany umowy.
 
-### Warstwa 1 — rejestrowa (BZP / TED / e-Zamówienia)
+Warstwa rejestrowa nie dostarcza pełnego projektu wewnętrznego, roboczogodzin,
+dziennych kosztów zwłoki, pełnego TCO ani obserwacji nieformalnych obejść. Służy
+do opisu populacji, doboru próby, oceny reprezentatywności i badań rozkładu
+wokół progów.
 
-Dostępna bez negocjacji. Daje: identyfikatory, CPV, wartość, tryb, daty ogłoszenia
-i udzielenia, liczbę ofert, kryteria, opublikowane zmiany umowy.
+### 6.2 Warstwa organizacyjna
 
-**Czego z niej nie da się odzyskać:** roboczogodzin, kosztu dnia zwłoki, pełnego TCO,
-jakości klauzul, obejść procesu i — co najważniejsze — **projektu procesu wewnętrznego**.
-Rejestr widzi postępowanie od wszczęcia; ekspozycja z §2 żyje przed wszczęciem.
+Wymagane, zależnie od hipotezy:
 
-Rola warstwy 1: opis populacji, dobór próby, sprawdzenie reprezentatywności organizacji
-z warstwy 2, testy gęstości przy progach.
+- logi obiegu zakupowego lub ERP ze znacznikami czasu;
+- wersjonowana macierz uprawnień;
+- wersjonowana polityka zakupowa;
+- konfiguracja systemowych bram i wyjątków;
+- ewidencja czasu pracy, jeżeli istnieje;
+- rejestr aneksów i odstępstw;
+- dokumenty zamówienia i dane wykonania.
 
-### Warstwa 2 — organizacyjna (wymaga dostępu)
+Cel rekrutacyjny dla pomiaru i asocjacji to 4 do 6 organizacji oraz co najmniej
+60 zdarzeń w każdej. Jest to cel wykonalności, nie dowód wystarczającej mocy.
+Wariant przyczynowy wymaga większej liczby niezależnych klastrów i porównywalnych
+interwencji. Ich liczbę określi symulacja po pilotażu.
 
-Jednostka analizy: **zdarzenie zakupowe**. Wymagane: logi workflow lub ERP ze znacznikami
-czasu, macierz akceptacji z datą wersji, polityka zakupowa z historią wersji, ewidencja czasu
-pracy (jeśli istnieje), rejestr aneksów, rejestr odstępstw.
+## 7. Strategie identyfikacji
 
-**Cel rekrutacyjny dla pomiaru i asocjacji:** 4–6 organizacji, po ≥ 60 zdarzeń każda,
-z historią wersji polityki. To nie jest wystarczająca z góry liczba klastrów do analizy
-przyczynowej. Rozszerzenie DiD wymaga dodatkowo jednorazowej, porównywalnej interwencji,
-zróżnicowanych terminów wdrożenia oraz grup jeszcze nieobjętych zmianą; wymaganą liczbę
-organizacji wyznaczy symulacja po pilotażu.
+### 7.1 Wariant A: dopasowane zdarzenia wewnątrz organizacji
 
----
+Podstawowa specyfikacja:
 
-## 5. Identyfikacja — trzy warianty o różnym statusie
+`log(dni) = beta x prescriptiveness + gamma'X + alpha_organizacja + delta_CPV + theta_rok + epsilon`
 
-### Wariant A — dopasowane zdarzenia wewnątrz organizacji *(bazowy)*
+Zdarzenia są porównywane wewnątrz organizacji i kategorii. Błędy standardowe są
+klastrowane na poziomie organizacji. Przy mniej niż 30 klastrach planowany jest
+wild cluster bootstrap. Przy 4 do 6 klastrach także ta korekta nie zapewnia
+pewnej inferencji, dlatego wyniki pozostają eksploracyjne i wymagają analizy
+leave-one-organisation-out.
 
-Porównanie podobnych zakupów w tej samej organizacji i kategorii, z efektami stałymi
-zamawiającego i kategorii CPV.
+Wariant identyfikuje asocjację warunkową. Nie rozwiązuje endogenicznego
+kierowania trudniejszych zakupów do bardziej preskryptywnego przebiegu.
 
-`log(dni) = β·prescriptiveness + γ'X + α_zamawiający + δ_CPV + θ_rok + ε`
+### 7.2 Wariant B: jednorazowa zmiana projektu procesu
 
-Błędy standardowe klastrowane na poziomie zamawiającego. Przy < 30 klastrach —
-*wild cluster bootstrap*. Przy zaledwie 4–6 klastrach także ta korekta nie daje
-pewnej inferencji: wyniki pozostają eksploracyjne i wymagają analizy
-*leave-one-organization-out*.
+Warunkowe rozszerzenie przyczynowe wymaga jasno zdefiniowanej, porównywalnej
+zmiany oraz grup jeszcze nieobjętych zmianą. Przy zróżnicowanych terminach
+można rozważyć estymator staggered DiD odporny na heterogeniczne efekty w
+czasie, na przykład Callaway-Sant'Anna lub Sun-Abraham. Naiwna regresja z
+dwukierunkowymi efektami stałymi nie jest specyfikacją domyślną.
 
-**Co identyfikuje:** asocjację warunkową. **Czego nie:** przyczynowości — wybór ścieżki jest
-endogeniczny, trudniejsze zakupy mogą trafiać na ścieżkę bardziej formalną.
-To jest poziom B, nie C.
+Wymagane są:
 
-### Wariant B — jednorazowa zmiana procesu *(warunkowe rozszerzenie przyczynowe)*
+- ocena trendów przed zmianą;
+- prerejestrowane okno antycypacji;
+- brak równoległej transformacji wpływającej na wynik;
+- wiarygodne grupy porównawcze;
+- udokumentowanie, jak interwencja zmieniła ekspozycję.
 
-Wykorzystuje moment, w którym organizacje wdrażają tę samą, jasno zdefiniowaną zmianę,
-np. uruchomienie modułu workflow z ustalonym zakresem albo jednokierunkowe uproszczenie
-macierzy akceptacji. Interwencja musi być stanem pochłaniającym: po wdrożeniu organizacja
-nie wraca w oknie badania do wcześniejszego projektu procesu.
+Brak widocznych różnic trendów przed zmianą nie dowodzi trendów równoległych.
+Wariant B staje się podstawą wnioskowania przyczynowego tylko wtedy, gdy dane
+spełnią warunki i symulacja wykaże użyteczną moc.
 
-Przy zróżnicowanych terminach i grupach jeszcze nieobjętych zmianą można zastosować
-*staggered DiD* z estymatorem odpornym na heterogeniczne efekty w czasie
-(Callaway–Sant'Anna albo Sun–Abraham; **nie** naiwną regresję z dwukierunkowymi efektami
-stałymi, która przy niejednoczesnym wejściu może tworzyć obciążone porównania).
-Estymandem jest wtedy grupowo-czasowy ATT interwencji dla `log(dni)`, a nie
-automatycznie współczynnik na jedno odchylenie indeksu prescriptiveness.
+### 7.3 Wariant C: próg ustawowy
 
-Wymagania: ocena trendów przed zmianą, brak antycypacji (okno wyłączenia ustalone przed
-analizą), brak równoległej transformacji wpływającej na wynik i wiarygodne grupy
-porównawcze. Brak różnic w trendach przed zmianą nie dowodzi założenia trendów
-równoległych. Wywiad z właścicielem procesu może ujawnić endogeniczną reakcję na wyniki,
-ale nie może sam potwierdzić egzogeniczności.
+Zmiana progu stosowania PZP ze 130 000 do 170 000 zł od 1 stycznia 2026,
+wskazana w dotychczasowym planie jako Dz.U. 2025 poz. 1173, może tworzyć
+nieciągłość. Przed wykorzystaniem należy ponownie zweryfikować podstawę prawną
+i brak innych zmian w tym samym czasie.
 
-Zwykłe aktualizacje polityki, które mogą zwiększać i zmniejszać preskryptywność, nie
-spełniają założenia stanu pochłaniającego. Są analizowane w wariancie A. Artykuł 3 opiera
-się na pomiarze i asocjacji; wariant B staje się osią przyczynową tylko wtedy, gdy dane
-spełnią powyższe warunki i symulacja wykaże wystarczającą moc.
+Analiza jest dopuszczalna wyłącznie po testach gęstości, ciągłości kowariat
+przed ekspozycją i ocenie sortowania wokół progu. Szucs (2024) pokazuje ryzyko
+manipulacji wartością przy progach w podobnej klasie danych. Usunięcie
+obserwacji najbliżej progu nie przywraca identyfikacji automatycznie. Wariant C
+nie stanowi podstawy planu głównego.
 
-### Wariant C — próg ustawowy *(warunkowy, prawdopodobnie odrzucony)*
+## 8. Wielkość próby i moc
 
-Zmiana progu stosowania PZP ze 130 000 na 170 000 zł od 1 stycznia 2026
-(Dz.U. 2025 poz. 1173) tworzy nieciągłość.
+### 8.1 Minimalny istotny efekt
 
-**Dopuszczalny wyłącznie po przejściu testów wstępnych:**
-test gęstości McCrary/Cattaneo–Jansson–Ma na manipulację wartością szacunkową;
-ciągłość kowariat przed-ekspozycyjnych przy progu; brak jednoczesnych zmian regulacyjnych.
+Dla wyniku czasu proponuje się MSI równy 10 procent na jedno odchylenie
+standardowe indeksu badawczego:
 
-Szucs (2024) jest tu **przestrogą, nie wzorem**: pokazał, że sortowanie przy progu unieważnia
-prosty RDD w dokładnie tej klasie danych. „Donut" wokół progu nie przywraca identyfikacji
-automatycznie. **Zakładam, że ten wariant nie przejdzie testów, i nie buduję na nim rozprawy.**
+`beta_MSI = ln(1,10) ~= 0,095`
 
----
+To decyzja projektowa do akceptacji przed zebraniem danych, a nie wartość
+pochodząca z benchmarku. Nakład pracy i każdy inny wynik wymagają własnego MSI
+w swojej skali. Wariant B wymaga odrębnego minimalnego istotnego ATT.
 
-## 6. Wielkość próby i moc testu
+### 8.2 Pilotaż i symulacja
 
-Poprzednie wersje deklarowały liczebność z uproszczonego wzoru. Poniżej reguła
-projektowa do oceny przed pilotażem.
+Pilotaż obejmuje planistycznie 2 organizacje po 25 zdarzeń. Służy wyłącznie do:
 
-### 6.1 Minimalny istotny efekt (MSI)
+- oceny wykonalności kodowania;
+- oszacowania `sd(log dni)` i ICC;
+- oceny kompletności logów;
+- rozpoznania rozkładu ekspozycji i struktury klastrów.
 
-Ustalam **MSI = 10% wydłużenia czasu cyklu** na jedno odchylenie standardowe
-indeksu prescriptiveness, czyli `β_MSI = ln(1,10) ≈ 0,095` w modelu logarytmicznym.
+Po pilotażu prerejestrowana symulacja Monte Carlo ma odtworzyć planowany
+estymator, liczbę i wielkość klastrów, terminy interwencji, braki danych i MSI.
+Raport powinien podać moc oraz minimalny wykrywalny efekt dla kilku wykonalnych
+wariantów liczby organizacji.
 
-Uzasadnienie: przy medianie cyklu ok. 60 dni to 6 dni. To próg istotności praktycznej,
-nie granica odróżniająca efekt od szumu statystycznego. Próg jest deklarowany **przed**
-zebraniem danych i wymaga akceptacji jako decyzja zarządczo-badawcza; nie pochodzi
-z zewnętrznego benchmarku.
+## 9. Prerejestracja
 
-Nakład pracy jest odrębnym wynikiem i wymaga własnego MSI, w jego własnej skali.
-Próg dla godzin zostanie ustalony po pilotażu, lecz przed estymacją zależności w
-badaniu właściwym i na podstawie znaczenia merytorycznego; `β_MSI` dla czasu nie
-może być mechanicznie użyty dla wysiłku.
+Przed estymacją badania właściwego należy zamrozić w OSF:
 
-Dla warunkowego wariantu B należy osobno prerejestrować minimalny istotny ATT
-interwencji. Nie wolno przeliczać go na `β_MSI` bez udokumentowania, o ile
-interwencja rzeczywiście zmieniła indeks prescriptiveness.
+- okno czasowe i populację;
+- skład ekspozycji;
+- wyniki i kontrole przed ekspozycją;
+- estymator i poziom klastrowania;
+- reguły wyłączeń i braków danych;
+- MSI i granice równoważności;
+- plan testów wielokrotnych;
+- kryteria przejścia z wariantu A do B;
+- reguły aktualizacji parametrów i próbę odłożoną.
 
-### 6.2 Moc: najpierw pilotaż, potem symulacja
+Analizy nieprzewidziane są oznaczane jako eksploracyjne. Dziennik odstępstw od
+planu jest publikowany także wtedy, gdy nie odnotowano odstępstw.
 
-Nie deklaruję zamkniętego `n` ani MDE przed pilotażem. Prosty wzór dla niezależnych
-obserwacji byłby tu fałszywie precyzyjny: nie uwzględnia korelacji ekspozycji z kontrolami,
-efektów stałych, nierównych klastrów, autokorelacji ani harmonogramu wdrożeń. Mnożenie go
-przez klasyczny *design effect* także nie odwzorowuje estymatora panelowego lub DiD.
+## 10. Walidacja komponentów modelu 2.3
 
-Pilotaż oszacuje `sd(log dni)`, ICC, rozkład ekspozycji, liczbę zdarzeń w okresach oraz
-korelację szeregową. Następnie prerejestrowana symulacja Monte Carlo odtworzy planowany
-estymator, układ klastrów, terminy interwencji, braki danych i efekt `β_MSI`. Raport poda
-moc dla kilku liczb organizacji i minimalny wykrywalny efekt przy α = 0,05.
+### 10.1 Kolejność
 
-**Wniosek znany już teraz:** moc wiąże przede wszystkim liczba organizacji i niezależnych
-terminów zmiany, nie liczba zdarzeń. Przy 4–6 organizacjach analiza przyczynowa jest
-eksploracyjna; nie ma podstaw do obiecywania wykrywalnego efektu 12–15% przed symulacją.
+1. **Rekonstrukcja:** czy z dokumentów można odtworzyć mapę kroków,
+   poprzedników, aktywnej pracy, kolejek i legalnych blokad?
+2. **Komponenty:** czy przewidywany czas i nakład pracy odpowiadają obserwowanym
+   komponentom na danych odłożonych?
+3. **Kalibracja zakresu:** jak często obserwacja mieści się w zadeklarowanym
+   zakresie oraz jak szeroki jest zakres względem rozrzutu obserwowanego?
+4. **Wartość dodana:** czy predykcja komponentu przewyższa prostą bazę, na
+   przykład medianę kategorii?
+5. **Błędy:** które elementy zawodzą, z rozbiciem na czas, role, koszty
+   niepracownicze i objęte monetyzacją elementy konstrukcji umowy?
 
-### 6.3 Pilotaż przed badaniem właściwym
+Parametry można aktualizować na próbie treningowej. Ocena końcowa wymaga próby
+odłożonej albo późniejszego okresu. Zakresów nie wolno poszerzać wyłącznie po
+to, aby poprawić odsetek pokrycia.
 
-2 organizacje × 25 zdarzeń. Cele: oszacować rzeczywiste `sd(log dni)` i ICC, sprawdzić
-wykonalność kodowania ekspozycji (α), zmierzyć kompletność logów. Bez testowania hipotez.
+### 10.2 Granica walidacji delty
 
----
+Pełna walidacja `deltaCost` wymaga wiarygodnego kontrfaktycznego porównania obu
+projektów procesu oraz niezależnie uzasadnionego dziennego kosztu zwłoki.
+Zwykły rejestr pojedynczego zdarzenia nie dostarcza żadnego z tych elementów.
 
-## 7. Prerejestracja
+Dziennego kosztu zwłoki nie można odzyskać bezpośrednio z BZP, TED ani typowych
+logów obiegu zakupowego. Wymaga osobnego protokołu z właścicielem wyniku biznesowego,
+prowadzonego przed poznaniem czasu badanego cyklu, z jawnym mechanizmem takim
+jak utracona marża, przestój lub koszt rozwiązania zastępczego. Do tego czasu
+kanał opóźnienia pozostaje wejściem użytkownika i jest raportowany oddzielnie.
 
-Przed jakąkolwiek estymacją, w OSF, z zamrożonym: definicją okna czasowego, składem indeksu
-ekspozycji, listą kontroli przed-ekspozycyjnych, estymatorem i poziomem klastrowania, regułą
-wyłączeń, MSI oraz progiem `n`. Analizy nieprzewidziane są oznaczane jako eksploracyjne.
+Koszt aneksów i TCO ma w natywnych scenariuszach różnicę równą zero.
+Nie wolno oceniać tych kanałów jako skalibrowanych prognoz. Nieformalne
+obejście procesu jest nieobjęte monetyzacją.
 
-Dziennik odstępstw od planu jest publikowany razem z wynikami — również wtedy, gdy odstępstw
-nie było.
+## 11. Warunki osłabienia hipotez
 
----
+Hipotezy słabną, jeżeli po uwzględnieniu złożoności i zgodnie z
+prerejestracją:
 
-## 8. Test modelu 2.2.2 na danych
+- H1a lub H1b osobno nie osiąga prerejestrowanego dodatniego MSI albo ma znak
+  przeciwny odpowiednio dla czasu i godzin koordynacji;
+- szerszy dostęp ex ante wiąże się z materialnie mniejszą liczbą ważnych ofert
+  albo wyższą ceną względem niezależnego benchmarku;
+- sztywność klauzul nie wiąże się dodatnio z liczbą aneksów na rok kontraktu lub
+  warunkowy efekt liczby bram wykracza poza granicę równoważności;
+- dla potrzeb niekompletnych interakcja adaptacyjnego odkrywania nie jest
+  dodatnia dla pracy przed wszczęciem i ujemna dla dni wyjaśnień oraz ponownej
+  pracy po rozpoczęciu konkurencji albo dla potrzeb stabilnych wykracza poza
+  granice równoważności;
+- odsetek zarejestrowanych kontroli nie wiąże się z mniejszą liczbą działań poza
+  systemem i braków śladu audytowego ponad informację o posiadaniu systemu;
+- model komponentowy nie przewyższa prerejestrowanej prostej bazy.
 
-Dopiero po estymacji składowych:
+Heterogeniczność nie jest automatycznie potwierdzeniem tezy. Musi odpowiadać
+prerejestrowanemu mechanizmowi i wystąpić na danych nieużytych do dopasowania.
+Wynik zerowy lub przeciwny pozostaje wynikiem badania.
 
-1. **Znak.** W ilu zdarzeniach model trafia w kierunek różnicy kosztu?
-2. **Kalibracja.** Czy obserwowany wynik mieści się w zakresie niski–wysoki? Samo pokrycie
-   nie wystarcza: dowolnie szeroki przedział zawsze pokrywa. Raportuję **szerokość** zakresu
-   względem rozrzutu obserwowanego.
-3. **Wartość dodana.** Porównanie z bazą naiwną — medianą kategorii. Model, który nie bije
-   mediany kategorii, nie ma uzasadnienia.
-4. **Które kanały zawodzą.** Osobno błąd dni, pracy, aneksów i wyniku netto.
+## 12. Materiał praktyczny jako źródło pytań
 
-Parametry można aktualizować na zbiorze treningowym; ocena końcowa wymaga próby odłożonej
-albo późniejszego okresu.
+[Procurement&Beyond, odcinek
+8](https://www.youtube.com/watch?v=5KYUdTLlvvg) wskazuje pytania o wewnętrznego
+właściciela wdrożenia, tarcie procesowe, dyscyplinę wymagań, zakupy operacyjne,
+uproszczenie polityki zakupowej, TCO i ograniczone zastosowanie AI. Materiał ma
+charakter wywiadu praktycznego, a transkrypcja pochodzi z automatycznych napisów
+w języku polskim.
 
-### 8.1 Czego ten test nie rozstrzygnie
+Materiał może służyć do projektowania pytań wywiadu i hipotez. Nie jest źródłem
+efektu, parametru, progu, odpowiedzi w samoopisie gotowości ani dowodu przyczynowego. Bielik może
+porządkować dane rynkowe do weryfikacji, ale rachunek wykonuje jawny model
+deterministyczny.
 
-`dailyCostOfInaction` — parametr stojący za kubełkiem zwłoki, który w stałych
-scenariuszach referencyjnych o różnych czasach ścieżek niesie 68,3–99,6% `|ΔC|`
-(po audycie kalibracji 2.2.2) — **nie jest odzyskiwalny
-z żadnej z dwóch warstw danych.** Żadna z siedmiu kategorii kodowania go nie mierzy.
+## 13. Harmonogram decyzyjny
 
-To jest najpoważniejsze ograniczenie całego projektu i wymaga osobnego rozwiązania:
-ustrukturyzowanego wywiadu z właścicielem biznesowym, prowadzonego **przed** poznaniem czasu
-cyklu, z jawnym rozliczeniem (utracona marża, przestój, koszt rozwiązania zastępczego).
-Do czasu jego opracowania kanał opóźnienia pozostaje parametryzowany przez użytkownika i musi
-być raportowany osobno — tak jak robi to model 2.2.2.
-
----
-
-## 9. Warunki falsyfikacji
-
-Teza słabnie, jeżeli — przy kontroli złożoności:
-
-- prescriptiveness nie ma materialnego dodatniego związku z czasem cyklu ani
-  nakładem pracy (dla każdego wyniku górna granica przedziału ufności jest
-  poniżej jego własnego prerejestrowanego MSI);
-- adaptacyjny przebieg systematycznie obniża liczbę ważnych ofert;
-- mechanizmy zmiany umowy nie poprawiają wykonania;
-- model nie bije mediany kategorii.
-
-Teza pozostaje sensowna przy efektach heterogenicznych: adaptacja pomaga tam, gdzie zwłoka
-jest kosztowna i zakres niepewny; formalność tam, gdzie ryzyko dyskrecji jest wysokie
-a wymagania stabilne.
-
-**Wynik zerowy jest publikowalny i będzie opublikowany.**
-
----
-
-## 10. Harmonogram
-
-| Miesiąc | Kamień milowy |
+| Okres | Rezultat |
 |---|---|
-| 1 | Podręcznik kodowania ekspozycji, zamrożony i przetestowany na dokumentach publicznych |
-| 1–2 | Rekrutacja organizacji; umowy o dostęp do danych; zgoda komisji etycznej |
-| 2 | Pilotaż (2 × 25 zdarzeń); oszacowanie `sd`, ICC i α |
-| 3 | Symulacja mocy na strukturze pilotażu; prerejestracja |
-| 3–5 | Kodowanie warstwy 2; równolegle pobranie i czyszczenie warstwy 1 |
-| 6 | Estymacja składowych; testy odporności |
-| 7 | Test modelu 2.2.2; artykuł 3 |
+| Miesiąc 1 | zamrożony podręcznik kodowania i test na dokumentach publicznych |
+| Miesiące 1 do 2 | rekrutacja, umowy dostępu, ocena etyczna i prawna |
+| Miesiąc 2 | pilotaż 2 razy 25 zdarzeń, zgodność koderów i kompletność danych |
+| Miesiąc 3 | symulacja mocy i prerejestracja |
+| Miesiące 3 do 5 | kodowanie danych organizacyjnych i przygotowanie warstwy rejestrowej |
+| Miesiąc 6 | estymacja komponentów i testy odporności |
+| Miesiąc 7 | walidacja na próbie odłożonej i przygotowanie artykułu 3 |
 
-**Ryzyko krytyczne:** rekrutacja organizacji. Bez 4–6 partnerów plan nie jest wykonalny
-w żadnym wariancie i trzeba zawęzić rozprawę do warstwy A (pomiar) plus studium wykonalności.
-To jest pytanie, na które potrzebuję odpowiedzi od promotora najwcześniej.
+Największym ryzykiem wykonalności jest dostęp do wersjonowanych danych
+organizacyjnych z kilku niezależnych organizacji. Jeżeli rekrutacja nie zapewni
+wystarczającej liczby klastrów, zakres należy ograniczyć do walidacji pomiaru,
+asocjacji i studium wykonalności.
 
----
+## 14. Etyka, bezpieczeństwo i replikacja
 
-## 11. Etyka i dane
+Dane organizacyjne mogą zawierać dane osobowe, tajemnice przedsiębiorstwa i
+sygnały nieprawidłowości. Przed pozyskaniem wymagane są odpowiednia podstawa
+prawna, minimalizacja, ograniczenie dostępu, plan retencji i ocena etyczna.
+Publikacja powinna wykorzystywać agregaty i kontrolę ryzyka identyfikacji
+zamawiającego, wnioskodawcy biznesowego i wykonawcy.
 
-Dane organizacyjne zawierają informacje osobowe, handlowe i potencjalne sygnały
-nieprawidłowości. Wymagana podstawa prawna, minimalizacja, kontrola dostępu i ocena etyczna
-**przed** pozyskaniem. Publikacja wyłącznie w agregatach, z procedurą ochrony przed
-identyfikacją zamawiającego i wykonawcy.
+Pakiet badawczy obejmuje słownik danych, kod pobrania i czyszczenia, manifest
+wersji źródeł, prerejestrację, skrypty tabel i dziennik odstępstw. Chronione dane
+surowe nie muszą być publiczne. Syntetyczny zestaw testowy powinien umożliwiać
+audyt kodu bez ujawniania danych organizacyjnych.
 
-Pakiet replikacyjny: słownik danych, kod pobrania i czyszczenia, manifest wersji źródeł,
-prerejestracja, skrypty tabel, dziennik odstępstw. Surowe dane chronione nie muszą być
-publiczne, ale **syntetyczny zestaw testowy musi umożliwiać audyt kodu** —
-zob. `replication/synthetic_data/`.
-
-Żadna tabela wynikowa nie jest wpisywana ręcznie: publikację generuje kod z zamrożonego
-zbioru analitycznego.
+Tabele wynikowe generuje kod ze wskazanego, zamrożonego zbioru analitycznego.
+Nie należy wpisywać ich ręcznie.

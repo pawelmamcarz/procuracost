@@ -1,72 +1,126 @@
 # Decyzje potrzebne od promotora
 
-## 1. Jednostka wkładu — deklaracja, nie pytanie
+## 1. Ocena deklarowanego wkładu
 
-Poprzednia wersja tego dokumentu prosiła promotora o rozstrzygnięcie, czym jest wkład
-kandydata. To było postawienie sprawy na głowie. Poniżej deklaracja; proszę o jej ocenę,
-a nie o jej sformułowanie.
+Deklarowanym wkładem cyklu jest rozdzielenie mechanizmów, które bywają
+ujmowane wspólnie, oraz zbudowanie audytowalnego testu dwóch projektów
+przebiegu procesu przy niezmiennych ramach prawnych i ładzie zakupowym.
 
-**Wkładem cyklu jest rozdzielenie konstruktów, które literatura zakupowa traktuje łącznie,
-oraz pokazanie — na własnym modelu — ile z popularnego argumentu o „koszcie procedury"
-znika po tym rozdzieleniu.**
-
-Wkłady poszczególnych artykułów:
-
-| Artykuł | Wkład |
+| Artykuł | Deklarowany wkład |
 |---|---|
-| 1 | Rozbicie „sztywności proceduralnej" na pięć osobno mierzalnych konstruktów i wykazanie, że główne kotwice empiryczne pola nie uprawniają do twierdzeń o konstrukcie, do którego są zwyczajowo używane. |
-| 2 | Audytowalna dekompozycja kosztu, która rozdziela to, co model wie, od tego, co zakłada — i pokazuje, że dominujący składnik wyniku jest tożsamością rachunkową, nie ustaleniem. |
-| 3 | Falsyfikowalny protokół pomiaru sekwencyjności *ex ante* na polskich zamówieniach, z deklarowanym MIE, rachunkiem mocy i strategią identyfikacji. |
+| 1 | Rozdzielenie granicy prawnej, topologii pracy, dostępu do rynku, konstrukcji umowy, systemu i gotowości oraz sformułowanie warunkowych propozycji. |
+| 2 | Natywny model 2.3 oparty na dwóch grafach procesu, jawnym zakresie monetyzacji, pochodzeniu założeń i symetrii po zamianie wariantów. |
+| 3 | Falsyfikowalny protokół pomiaru ex ante oraz walidacji komponentów na danych rejestrowych i organizacyjnych. |
 
-**Twierdzenie, które uważam za najmocniejsze i które chcę obronić:** po odjęciu tożsamości
-opóźnienia ścieżka formalna jest tańsza na koszcie procesu w siedmiu z dziesięciu
-scenariuszy wbudowanych. Teza Tunnel–Field w tej parametryzacji jest opowieścią o zwłoce,
-nie o koszcie procesu. To jest węższe i mniej efektowne niż to, od czego zaczynałem,
-ale sprawdzalne.
+**Decyzja:** czy ten zestaw tworzy spójny wkład cyklu doktorskiego, czy raczej
+jeden artykuł metodologiczny i osobny projekt empiryczny?
 
-**Pytanie do Pana:** czy to jest wkład wystarczający na cykl doktorski, czy raczej materiał
-na jeden dobry artykuł plus projekt empiryczny, który dopiero miałby stać się rozprawą.
+## 2. Zakres artykułów
 
-## 2. Zakres cyklu
+Do ustalenia:
 
-Czy artykuł 1 powinien pozostać po angielsku i mieć charakter koncepcyjny? Czy
-artykuł 2 ma być modelem decyzyjnym, czy wymaga pełnej estymacji? Czy artykuł 3
-może być protokołem/registered report przed dostępem do danych?
+- czy artykuł 1 pozostaje anglojęzycznym tekstem konceptualnym;
+- czy artykuł 2 ma być specyfikacją i audytem instrumentu, czy wymaga estymacji
+  przed wysłaniem;
+- czy artykuł 3 może być protokołem albo registered report przed uzyskaniem
+  pełnej próby;
+- który artykuł wyznacza dyscyplinę wiodącą i jakie elementy administracji
+  publicznej pozostają zakresem pomocniczym.
 
-## 3. Projekt identyfikacyjny
+## 3. Warunki mechanizmu
 
-Wybór między:
+Model rozróżnia przypadki, w których adaptacja ma obserwowalny mechanizm:
 
-- dopasowanymi zdarzeniami wewnątrz kilku organizacji;
-- panelem rejestrowym BZP/TED uzupełnionym danymi organizacyjnymi;
-- analizą progową tylko tam, gdzie przejdą testy manipulacji i ciągłości;
-- etapowym mixed methods z pilotażem przed badaniem potwierdzającym.
+- odkrywanie w transformacji ERP;
+- przeprojektowanie usługi logistycznej;
+- publiczny zakup IT ze wstępnymi konsultacjami;
+- odkrywanie i współprojektowanie, które może zwiększać czas i nakład.
 
-## 4. Dane i partnerzy — pytanie krytyczne
+Kontrole katalogu i MRP używają identycznych map i nie deklarują różnicy
+konkurencji. Stabilna standardowa usługa może nie mieć odrębnego mechanizmu
+pracy, ale jej scenariusz startowy osobno zakłada różnicę konkurencji.
 
-`docs/research/EMPIRICAL_VALIDATION_PLAN.md` pokazuje, że przy tej strukturze danych moc
-testu wiąże **liczba organizacji, nie liczba zdarzeń**: wariant przekrojowy wymagałby 25–30
-organizacji, wariant wewnątrzorganizacyjny — 4–6 partnerów z co najmniej dwiema zmianami
-wersji polityki w oknie obserwacji.
+**Decyzja:** czy taki dobór przypadków wystarcza do postawienia hipotez
+heterogenicznych, czy należy zawęzić artykuł 3 do jednego archetypu zakupu?
 
-Bez 4–6 partnerów plan nie jest wykonalny w żadnym wariancie i rozprawę trzeba zawęzić do
-warstwy pomiarowej plus studium wykonalności.
+## 4. Projekt identyfikacyjny
 
-**To jest pytanie, na które potrzebuję odpowiedzi najwcześniej.** Czy promotor może wesprzeć
-rekrutację organizacji, koderów i konsultację statystyczną — i czy przy realistycznej
-odpowiedzi negatywnej zawężony wariant nadal ma sens jako rozprawa?
+Warianty do oceny:
 
-## 5. Publikacja
+- dopasowane zdarzenia wewnątrz organizacji jako badanie asocjacji;
+- panel rejestrowy BZP i TED uzupełniony danymi organizacyjnymi;
+- staggered DiD wyłącznie przy porównywalnej, jasno datowanej interwencji;
+- analiza progowa tylko po testach manipulacji i ciągłości;
+- etapowy mixed methods z pilotażem pomiaru przed badaniem właściwym.
 
-Należy ustalić kolejność czasopism i kryterium „gotowości do wysłania”. Obecne
-teksty są pełnymi szkicami 2.1 do rozwinięcia po decyzjach metodologicznych, nie
-manuskryptami po recenzji wewnętrznej.
+**Decyzja:** który wariant jest główny, jakie kryteria dopuszczają wnioskowanie
+przyczynowe i co należy prerejestrować przed uzyskaniem danych?
 
-## 6. Decyzja go/no-go
+## 5. Dane i partnerzy
+
+Planistyczny cel dla pomiaru i asocjacji to 4 do 6 organizacji oraz co najmniej
+60 zdarzeń w każdej. Pilotaż ma objąć 2 organizacje po 25 zdarzeń. Te liczby są
+celami wykonalności, nie potwierdzeniem mocy. Wymaganą liczbę klastrów określi
+symulacja po pilotażu.
+
+Potrzebne decyzje:
+
+- czy promotor może wesprzeć rekrutację organizacji, koderów lub konsultację
+  statystyczną;
+- jaki minimalny dostęp do wersjonowanych polityk, macierzy uprawnień i logów
+  jest realistyczny;
+- czy przy niewystarczającej liczbie partnerów rozprawę należy ograniczyć do
+  walidacji pomiaru i studium wykonalności;
+- jaki standard anonimizacji, retencji i dostępu jest wymagany przed
+  pozyskaniem danych.
+
+## 6. Granica modelu
+
+Natywny model 2.3:
+
+- stosuje stres konkurencji wyłącznie tam, gdzie dostęp do rynku jest
+  zadeklarowany jako różny;
+- rozpoczyna różnice aneksów i TCO od zera;
+- pozostawia nieformalne obejście procesu poza monetyzacją;
+- zachowuje obowiązkowe terminy prawne w obu wariantach;
+- oznacza wartości przeniesione z 2.2.2 jako założenia historyczne;
+- oznacza nowe alokacje kroków, dni i godzin ról w pięciu mapach mechanizmowych
+  jako ilustracyjne wejścia 2.3;
+- nie wykorzystuje gotowości organizacyjnej do obliczania kosztu.
+
+**Decyzja:** czy kanał dziennego kosztu zwłoki pozostaje w modelu głównym jako
+jawne wejście użytkownika, czy powinien być analizowany wyłącznie w odrębnym
+module scenariuszowym do czasu opracowania protokołu jego pomiaru?
+
+## 7. Materiał praktyczny
+
+Procurement&Beyond odcinek 8 jest wykorzystywany do projektowania pytań o
+właściciela wdrożenia, tarcie, wymagania, zakupy operacyjne, politykę, TCO i
+ograniczone użycie AI. Nie jest źródłem parametrów.
+
+**Decyzja:** które z tych pytań powinny wejść do wywiadu jakościowego i jak
+oddzielić je od miar ilościowych, aby nie traktować obserwacji praktyka jako
+dowodu?
+
+## 8. Publikacja
+
+Należy ustalić:
+
+- kolejność czasopism;
+- kryterium gotowości do wysłania;
+- zakres wymaganej recenzji metodologicznej;
+- moment zamrożenia pakietu replikacyjnego;
+- czy i kiedy publikować wynik zerowy albo przeciwny.
+
+Obecne teksty są szkicami 2.3 do oceny, nie manuskryptami po recenzji
+wewnętrznej.
+
+## 9. Decyzja dalszego postępowania
 
 Po spotkaniu powinno być jasne, czy:
 
-- rozwijamy cykl w obecnej architekturze;
-- zawężamy go do jednego badania;
-- wykonujemy najpierw pilotaż wykonalności;
-- odkładamy monetyzację do czasu uzyskania danych komponentowych.
+- rozwijać cykl w obecnej architekturze;
+- zawęzić go do jednego archetypu lub jednego badania;
+- przeprowadzić najpierw pilotaż wykonalności;
+- odłożyć monetyzację wybranych kanałów do czasu danych;
+- zatrzymać projekt, jeżeli warunki identyfikacji i dostępu nie są osiągalne.

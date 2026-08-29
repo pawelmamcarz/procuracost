@@ -13,11 +13,18 @@ import type { ComparisonCalculationInput } from "./engine";
 import type { EvidenceConstruct } from "./evidence";
 import { deepFreeze } from "./deep-freeze";
 import { resolveLegalWaits } from "./legal";
+import {
+  MECHANISM_WORKFLOW_EVIDENCE_ID,
+  MECHANISM_WORKFLOW_TEMPLATES,
+  type MechanismWorkflowScenarioId,
+  type MechanismWorkflowTemplate,
+} from "./mechanism-workflow-seeds";
 import { createLockedLegalWaitStep } from "./process-map";
 import {
   RETAINED_SUPPORT_PROFILES,
   RETAINED_WORKFLOW_TEMPLATES,
   type RetainedRoleId,
+  type RetainedWorkflowTemplate,
   type RetainedWorkflowTemplateId,
 } from "./retained-workflow-seeds";
 
@@ -66,6 +73,7 @@ export interface ScenarioEconomicAssumptions {
   contractValue: CalibratedValue;
   dailyCostOfInaction: CalibratedValue;
   pathCompetitionDiffers: boolean;
+  competitionDisadvantagedAlternative: AlternativeId | null;
   competitionTransferRate: CalibratedValue | null;
   amendmentDifferential: CalibratedValue;
   tcoDifferential: CalibratedValue;
@@ -112,8 +120,10 @@ interface ScenarioSeed {
   contractValue: number;
   dailyCostOfInaction: number;
   roleDailyRates: Record<string, number>;
-  retainedWorkflowTemplateId: RetainedWorkflowTemplateId;
+  retainedWorkflowTemplateId?: RetainedWorkflowTemplateId;
+  mechanismWorkflowTemplateId?: MechanismWorkflowScenarioId;
   pathCompetitionDiffers: boolean;
+  competitionDisadvantagedAlternative: AlternativeId | null;
   evidenceIds: string[];
   constructs: EvidenceConstruct[];
 }
@@ -147,7 +157,21 @@ function retainedStressValue(
   };
 }
 
-function competitionRate(): CalibratedValue {
+function illustrativeWorkflowValue(
+  value: number,
+  assumptionId: string
+): CalibratedValue {
+  return {
+    low: value,
+    central: value,
+    high: value,
+    rangeKind: "calibrated",
+    evidenceClass: "illustrative_scenario",
+    evidenceIds: [MECHANISM_WORKFLOW_EVIDENCE_ID, assumptionId],
+  };
+}
+
+export function createCompetitionTransferStress(): CalibratedValue {
   return {
     low: 0.02,
     central: 0.06,
@@ -155,6 +179,28 @@ function competitionRate(): CalibratedValue {
     rangeKind: "stress",
     evidenceClass: "empirical_anchor",
     evidenceIds: [COMPETITION_EVIDENCE_ID],
+  };
+}
+
+export function selectCompetitionDisadvantagedAlternative(
+  assumptions: ScenarioEconomicAssumptions,
+  alternative: AlternativeId | null
+): ScenarioEconomicAssumptions {
+  return {
+    ...assumptions,
+    pathCompetitionDiffers: alternative !== null,
+    competitionDisadvantagedAlternative: alternative,
+    competitionTransferRate:
+      alternative === null
+        ? null
+        : assumptions.competitionTransferRate
+          ? {
+              ...assumptions.competitionTransferRate,
+              evidenceIds: [
+                ...assumptions.competitionTransferRate.evidenceIds,
+              ],
+            }
+          : createCompetitionTransferStress(),
   };
 }
 
@@ -174,18 +220,17 @@ function zeroCompetitionCost(
     : retainedValue(0, evidenceId);
 }
 
-function workflowFromRetainedSeed(
+function workflowFromSeed(
   scenarioId: ScenarioV2Id,
   alternative: AlternativeId,
-  templateId: RetainedWorkflowTemplateId,
-  assumptionId: string,
+  template: RetainedWorkflowTemplate | MechanismWorkflowTemplate,
+  valueFor: (value: number) => CalibratedValue,
   context: ModelContextV2,
-  sharedStepIds: boolean
+  namespace: "shared" | AlternativeId,
+  sourceLabel: "retained" | "mechanism"
 ): WorkflowDesign {
-  const template = RETAINED_WORKFLOW_TEMPLATES[templateId];
   const supportProfile = RETAINED_SUPPORT_PROFILES[context.systemSupportId];
   const expectedLegalWaits = resolveLegalWaits(context);
-  const namespace = sharedStepIds ? "shared" : alternative;
   const steps: ProcessMapStep[] = [];
   let predecessorId: string | null = null;
   let legalWaitIndex = 0;
@@ -196,7 +241,7 @@ function workflowFromRetainedSeed(
       const wait = expectedLegalWaits[legalWaitIndex];
       if (!wait || !wait.id.endsWith(`.${seedStep.slotId}`)) {
         throw new Error(
-          `Missing fixed legal rule for retained slot ${seedStep.slotId}`
+          `Missing fixed legal rule for ${sourceLabel} slot ${seedStep.slotId}`
         );
       }
       const legalStep = createLockedLegalWaitStep(
@@ -232,10 +277,7 @@ function workflowFromRetainedSeed(
         ][]
       ).map(([roleId, hours]) => [
         roleId,
-        retainedValue(
-          hours * effortRatio * supportProfile.timeMultiplier,
-          assumptionId
-        ),
+        valueFor(hours * effortRatio * supportProfile.timeMultiplier),
       ])
     );
     const consumesEffort = Object.values(seedStep.roleHours).some(
@@ -253,14 +295,13 @@ function workflowFromRetainedSeed(
       id: `${scenarioId}.${namespace}.${seedStep.id}`,
       labelKey: `workflow.steps.${seedStep.id}`,
       predecessorIds: predecessorId ? [predecessorId] : [],
-      activeDays: retainedValue(activeDays, assumptionId),
-      queueDays: retainedValue(0, assumptionId),
+      activeDays: valueFor(activeDays),
+      queueDays: valueFor(0),
       roleHours,
-      nonLabourCost: retainedValue(
+      nonLabourCost: valueFor(
         (consumesEffort
           ? activeDays * supportProfile.coordinationCostPerActiveDay
-          : 0) + toolCost,
-        assumptionId
+          : 0) + toolCost
       ),
       kind: "activity",
     };
@@ -270,21 +311,59 @@ function workflowFromRetainedSeed(
 
   if (legalWaitIndex !== expectedLegalWaits.length) {
     throw new Error(
-      `Retained process map omitted ${expectedLegalWaits.length - legalWaitIndex} fixed legal waits`
+      `${sourceLabel} process map omitted ${expectedLegalWaits.length - legalWaitIndex} fixed legal waits`
     );
   }
 
   return { steps };
 }
 
+function workflowFromRetainedSeed(
+  scenarioId: ScenarioV2Id,
+  alternative: AlternativeId,
+  templateId: RetainedWorkflowTemplateId,
+  assumptionId: string,
+  context: ModelContextV2,
+  sharedStepIds: boolean
+): WorkflowDesign {
+  return workflowFromSeed(
+    scenarioId,
+    alternative,
+    RETAINED_WORKFLOW_TEMPLATES[templateId],
+    (value) => retainedValue(value, assumptionId),
+    context,
+    sharedStepIds ? "shared" : alternative,
+    "retained"
+  );
+}
+
+function workflowFromMechanismSeed(
+  scenarioId: MechanismWorkflowScenarioId,
+  alternative: AlternativeId,
+  assumptionId: string,
+  context: ModelContextV2
+): WorkflowDesign {
+  return workflowFromSeed(
+    scenarioId,
+    alternative,
+    MECHANISM_WORKFLOW_TEMPLATES[scenarioId],
+    (value) => illustrativeWorkflowValue(value, assumptionId),
+    context,
+    alternative,
+    "mechanism"
+  );
+}
+
 function contractDesign(
   contractValue: number,
   assumptionId: string,
   pathCompetitionDiffers: boolean,
+  competitionDisadvantagedAlternative: AlternativeId | null,
   alternative: AlternativeId
 ): ContractDesign {
   const competitionCost =
-    pathCompetitionDiffers && alternative === "adaptiveCompliant"
+    pathCompetitionDiffers &&
+    alternative === competitionDisadvantagedAlternative
       ? {
           low: contractValue * 0.02,
           central: contractValue * 0.06,
@@ -330,39 +409,61 @@ function buildScenario(seed: ScenarioSeed): ScenarioV2 {
     ...seed.context,
     initiatedOn: INITIATED_ON,
   };
-  const sharedStepIds = !seed.pathCompetitionDiffers;
-  const formalWorkflow = workflowFromRetainedSeed(
-    seed.id,
-    "formalSequential",
-    seed.retainedWorkflowTemplateId,
-    assumptionId,
-    context,
-    sharedStepIds
-  );
-  const adaptiveWorkflow = workflowFromRetainedSeed(
-    seed.id,
-    "adaptiveCompliant",
-    seed.retainedWorkflowTemplateId,
-    assumptionId,
-    context,
-    sharedStepIds
-  );
+  const workflows = seed.mechanismWorkflowTemplateId
+    ? {
+        formalSequential: workflowFromMechanismSeed(
+          seed.mechanismWorkflowTemplateId,
+          "formalSequential",
+          assumptionId,
+          context
+        ),
+        adaptiveCompliant: workflowFromMechanismSeed(
+          seed.mechanismWorkflowTemplateId,
+          "adaptiveCompliant",
+          assumptionId,
+          context
+        ),
+      }
+    : seed.retainedWorkflowTemplateId
+      ? {
+          formalSequential: workflowFromRetainedSeed(
+            seed.id,
+            "formalSequential",
+            seed.retainedWorkflowTemplateId,
+            assumptionId,
+            context,
+            !seed.pathCompetitionDiffers
+          ),
+          adaptiveCompliant: workflowFromRetainedSeed(
+            seed.id,
+            "adaptiveCompliant",
+            seed.retainedWorkflowTemplateId,
+            assumptionId,
+            context,
+            !seed.pathCompetitionDiffers
+          ),
+        }
+      : (() => {
+          throw new Error(`Scenario ${seed.id} is missing a workflow seed`);
+        })();
   const alternatives: ComparisonAlternatives = {
     formalSequential: {
-      workflowDesign: formalWorkflow,
+      workflowDesign: workflows.formalSequential,
       contractDesign: contractDesign(
         seed.contractValue,
         assumptionId,
         seed.pathCompetitionDiffers,
+        seed.competitionDisadvantagedAlternative,
         "formalSequential"
       ),
     },
     adaptiveCompliant: {
-      workflowDesign: adaptiveWorkflow,
+      workflowDesign: workflows.adaptiveCompliant,
       contractDesign: contractDesign(
         seed.contractValue,
         assumptionId,
         seed.pathCompetitionDiffers,
+        seed.competitionDisadvantagedAlternative,
         "adaptiveCompliant"
       ),
     },
@@ -421,8 +522,10 @@ function buildScenario(seed: ScenarioSeed): ScenarioV2 {
       contractValue: retainedValue(seed.contractValue, assumptionId),
       dailyCostOfInaction,
       pathCompetitionDiffers: seed.pathCompetitionDiffers,
+      competitionDisadvantagedAlternative:
+        seed.competitionDisadvantagedAlternative,
       competitionTransferRate: seed.pathCompetitionDiffers
-        ? competitionRate()
+        ? createCompetitionTransferStress()
         : null,
       amendmentDifferential: zeroDifferential,
       tcoDifferential: retainedValue(0, assumptionId),
@@ -460,8 +563,9 @@ const SCENARIO_SEEDS: ScenarioSeed[] = [
     contractValue: 5_000_000,
     dailyCostOfInaction: 5_000,
     roleDailyRates: DEFAULT_ROLE_RATES,
-    retainedWorkflowTemplateId: "strategic_private_formal",
-    pathCompetitionDiffers: true,
+    mechanismWorkflowTemplateId: "fleet_tco_reframing",
+    pathCompetitionDiffers: false,
+    competitionDisadvantagedAlternative: null,
     evidenceIds: ["ec_innovation_procurement_guidance"],
     constructs: ["workflow_duration", "tco", "contract_adaptability"],
   },
@@ -485,8 +589,9 @@ const SCENARIO_SEEDS: ScenarioSeed[] = [
       manager: 1_800,
       executive: 3_000,
     },
-    retainedWorkflowTemplateId: "strategic_private_formal",
-    pathCompetitionDiffers: true,
+    mechanismWorkflowTemplateId: "erp_transformation_discovery",
+    pathCompetitionDiffers: false,
+    competitionDisadvantagedAlternative: null,
     evidenceIds: [
       "california_modular_it_procurement",
       "oecd_rvul_problem_definition",
@@ -517,8 +622,9 @@ const SCENARIO_SEEDS: ScenarioSeed[] = [
       manager: 1_600,
       executive: 2_800,
     },
-    retainedWorkflowTemplateId: "strategic_private_formal",
-    pathCompetitionDiffers: true,
+    mechanismWorkflowTemplateId: "logistics_service_redesign",
+    pathCompetitionDiffers: false,
+    competitionDisadvantagedAlternative: null,
     evidenceIds: ["ec_innovation_procurement_guidance"],
     constructs: ["workflow_duration", "contract_adaptability"],
   },
@@ -542,8 +648,9 @@ const SCENARIO_SEEDS: ScenarioSeed[] = [
       manager: 1_400,
       executive: 2_500,
     },
-    retainedWorkflowTemplateId: "strategic_private_formal",
-    pathCompetitionDiffers: true,
+    mechanismWorkflowTemplateId: "critical_material_continuity",
+    pathCompetitionDiffers: false,
+    competitionDisadvantagedAlternative: null,
     evidenceIds: [],
     constructs: ["workflow_duration", "contract_adaptability"],
   },
@@ -563,8 +670,9 @@ const SCENARIO_SEEDS: ScenarioSeed[] = [
     contractValue: 5_000_000,
     dailyCostOfInaction: 10_000,
     roleDailyRates: { ...DEFAULT_ROLE_RATES, buyer: 900, lawyer: 1_300 },
-    retainedWorkflowTemplateId: "pzp_open",
-    pathCompetitionDiffers: true,
+    mechanismWorkflowTemplateId: "public_it_open_with_market_consultation",
+    pathCompetitionDiffers: false,
+    competitionDisadvantagedAlternative: null,
     evidenceIds: [
       "oecd_rvul_problem_definition",
       "uzp_preliminary_market_consultation",
@@ -592,6 +700,7 @@ const SCENARIO_SEEDS: ScenarioSeed[] = [
     roleDailyRates: DEFAULT_ROLE_RATES,
     retainedWorkflowTemplateId: "policy_control",
     pathCompetitionDiffers: true,
+    competitionDisadvantagedAlternative: "adaptiveCompliant",
     evidenceIds: [COMPETITION_EVIDENCE_ID],
     constructs: ["workflow_duration", "competition_transfer"],
   },
@@ -616,7 +725,8 @@ const SCENARIO_SEEDS: ScenarioSeed[] = [
       executive: 3_000,
     },
     retainedWorkflowTemplateId: "capex_replacement",
-    pathCompetitionDiffers: true,
+    pathCompetitionDiffers: false,
+    competitionDisadvantagedAlternative: null,
     evidenceIds: [],
     constructs: ["workflow_duration", "tco", "contract_amendment"],
   },
@@ -641,7 +751,8 @@ const SCENARIO_SEEDS: ScenarioSeed[] = [
       executive: 2_800,
     },
     retainedWorkflowTemplateId: "discovery_codesign",
-    pathCompetitionDiffers: true,
+    pathCompetitionDiffers: false,
+    competitionDisadvantagedAlternative: null,
     evidenceIds: [
       "oecd_rvul_problem_definition",
       "ec_innovation_procurement_guidance",
@@ -668,6 +779,7 @@ const SCENARIO_SEEDS: ScenarioSeed[] = [
     roleDailyRates: { ...DEFAULT_ROLE_RATES, requestor: 800 },
     retainedWorkflowTemplateId: "catalog_calloff",
     pathCompetitionDiffers: false,
+    competitionDisadvantagedAlternative: null,
     evidenceIds: [],
     constructs: ["workflow_duration"],
   },
@@ -686,6 +798,7 @@ const SCENARIO_SEEDS: ScenarioSeed[] = [
     roleDailyRates: { ...DEFAULT_ROLE_RATES, requestor: 800 },
     retainedWorkflowTemplateId: "mrp_release",
     pathCompetitionDiffers: false,
+    competitionDisadvantagedAlternative: null,
     evidenceIds: [],
     constructs: ["workflow_duration"],
   },

@@ -143,16 +143,16 @@ describe("model 2.3 neutral decision record", () => {
     const { record } = recordFor("fleet_tco_reframing");
 
     expect(record.drivers.map(({ id }) => id)).toEqual([
-      "competition_transfer",
       "delay_cost",
       "role_cost",
       "non_labour_cost",
+      "competition_transfer",
       "contract_amendment",
       "tco",
     ]);
     expect(record.drivers[0]).toMatchObject({
-      id: "competition_transfer",
-      contribution: { low: -450_000, central: -300_000, high: -100_000 },
+      id: "delay_cost",
+      contribution: { central: 100_000 },
     });
     expect(record.coverage.map(({ id }) => id)).toEqual([
       "role_cost",
@@ -276,15 +276,24 @@ describe("model 2.3 neutral decision record", () => {
     ];
     for (const id of [
       "role_cost",
-      "non_labour_cost",
       "delay_cost",
+    ] as const) {
+      expect(evidenceClasses(id)).toEqual([
+        "illustrative_scenario",
+        "retained_legacy_assumption",
+      ]);
+    }
+    expect(evidenceClasses("non_labour_cost")).toEqual([
+      "illustrative_scenario",
+    ]);
+    for (const id of [
       "contract_amendment",
       "tco",
     ] as const) {
       expect(evidenceClasses(id)).toEqual(["retained_legacy_assumption"]);
     }
     expect(evidenceClasses("competition_transfer")).toEqual([
-      "empirical_anchor",
+      "retained_legacy_assumption",
     ]);
 
     const publicRecord = recordFor(
@@ -296,7 +305,13 @@ describe("model 2.3 neutral decision record", () => {
           .find(({ id }) => id === "delay_cost")!
           .anchors.map(({ evidenceClass }) => evidenceClass)
       )
-    ).toEqual(new Set(["retained_legacy_assumption", "legal_rule"]));
+    ).toEqual(
+      new Set([
+        "illustrative_scenario",
+        "retained_legacy_assumption",
+        "legal_rule",
+      ])
+    );
   });
 
   it("keeps coverage anchors isolated from global anchors and sibling rows", () => {
@@ -331,7 +346,9 @@ describe("model 2.3 neutral decision record", () => {
       "oecd_rvul_problem_definition",
       "uzp_preliminary_market_consultation",
       "ec_innovation_procurement_guidance",
-      "szucs_discretion_price_2024",
+    ]);
+    expect(record.internalEvidence.map(({ id }) => id)).toEqual([
+      "model_2_3_mechanism_workflow_allocations",
     ]);
     expect(record.retainedAssumptions.map(({ id }) => id)).toEqual([
       "scenario.public_it_open_with_market_consultation.retained-legacy",
@@ -349,7 +366,7 @@ describe("model 2.3 neutral decision record", () => {
           evidenceClass === "empirical_anchor" &&
           evidenceIds.includes("szucs_discretion_price_2024")
       )
-    ).toBe(true);
+    ).toBe(false);
     expect(
       record.externalEvidence.some(({ id }) =>
         id.startsWith("scenario.public_it_open_with_market_consultation")
@@ -361,7 +378,7 @@ describe("model 2.3 neutral decision record", () => {
   });
 
   it("keeps retained and user contract values separate from empirical rate anchors", () => {
-    const retainedDraft = createScenarioDraft("fleet_tco_reframing");
+    const retainedDraft = createScenarioDraft("stable_private_standard_service");
     const retainedContractValue = structuredClone(
       retainedDraft.economicAssumptions.contractValue
     );
@@ -381,7 +398,7 @@ describe("model 2.3 neutral decision record", () => {
       )
     ).toBe(false);
 
-    const userDraft = createScenarioDraft("fleet_tco_reframing");
+    const userDraft = createScenarioDraft("stable_private_standard_service");
     userDraft.economicAssumptions.contractValue = {
       low: 2_000_000,
       central: 4_000_000,
@@ -420,7 +437,7 @@ describe("model 2.3 neutral decision record", () => {
 
     expect(step.userLabel).toBe("Review scope with operations");
     expect(step.labelKey).toBe(
-      "workflow.steps.rfi"
+      "workflow.steps.fleet_operating_baseline"
     );
     expect(step.criticalPathCases).toEqual(["low", "central", "high"]);
   });
@@ -592,14 +609,14 @@ describe("model 2.3 neutral decision record", () => {
     );
   });
 
-  it("fails closed when a requested coverage path has no calculation anchor", () => {
+  it("fails closed when a requested coverage input loses provenance", () => {
     const draft = createScenarioDraft("fleet_tco_reframing");
     delete (
       draft.roleHourlyRates.buyer as unknown as Record<string, unknown>
     ).evidenceIds;
 
     expect(() => buildDecisionRecordV2(draft)).toThrow(
-      /missing calculation anchor roleHourlyRates\.buyer/i
+      /roleHourlyRates\.buyer must use valid evidence identifiers/i
     );
   });
 

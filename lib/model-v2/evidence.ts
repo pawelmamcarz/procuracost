@@ -1,3 +1,8 @@
+import {
+  MECHANISM_WORKFLOW_EVIDENCE_ID,
+  MECHANISM_WORKFLOW_SOURCE,
+} from "./mechanism-workflow-seeds";
+
 export const EVIDENCE_TYPES = [
   "empirical_anchor",
   "official_case",
@@ -71,7 +76,8 @@ export interface EvidenceSourceMetadata {
     | "official_webpage"
     | "official_report"
     | "peer_reviewed_article"
-    | "practitioner_report";
+    | "practitioner_report"
+    | "internal_model_record";
 }
 
 export interface EvidenceRecord {
@@ -92,6 +98,37 @@ export const OFFICIAL_EVIDENCE_IDS = [
   "uzp_preliminary_market_consultation",
   "ec_innovation_procurement_guidance",
 ] as const;
+
+export const INTERNAL_EVIDENCE_IDS = [
+  MECHANISM_WORKFLOW_EVIDENCE_ID,
+] as const;
+
+export const INTERNAL_EVIDENCE_REGISTRY: EvidenceRecord[] = [
+  {
+    id: MECHANISM_WORKFLOW_EVIDENCE_ID,
+    type: "illustrative_scenario",
+    sourceUrl: MECHANISM_WORKFLOW_SOURCE.sourceUrl,
+    source: {
+      titleKey: "evidence.mechanismWorkflow.sourceTitle",
+      publisherKey: "evidence.mechanismWorkflow.publisher",
+      publicationKind: "internal_model_record",
+    },
+    supportedClaimKey: "evidence.mechanismWorkflow.supported",
+    unsupportedClaimKey: "evidence.mechanismWorkflow.unsupported",
+    jurisdictionOrPopulationKey: "evidence.mechanismWorkflow.population",
+    constructs: [
+      "workflow_duration",
+      "role_effort",
+      "problem_definition",
+      "market_consultation",
+      "modular_contracting",
+      "supplier_access",
+      "contract_adaptability",
+      "tco",
+    ],
+    assumptionKeys: ["evidence.mechanismWorkflow.assumption"],
+  },
+];
 
 export const EVIDENCE_REGISTRY: EvidenceRecord[] = [
   {
@@ -235,5 +272,7 @@ export const PRACTITIONER_SOURCES: readonly PractitionerSource[] = [
 ];
 
 export function evidenceRecordById(id: string): EvidenceRecord | undefined {
-  return EVIDENCE_REGISTRY.find((record) => record.id === id);
+  return [...INTERNAL_EVIDENCE_REGISTRY, ...EVIDENCE_REGISTRY].find(
+    (record) => record.id === id
+  );
 }

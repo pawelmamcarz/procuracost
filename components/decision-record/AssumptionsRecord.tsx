@@ -108,6 +108,16 @@ export default function AssumptionsRecord({
       evidence: exportTx.words.notApplicable,
     },
     {
+      id: "competitionDisadvantagedAlternative",
+      label: exportTx.assumptions.competitionDisadvantagedAlternative,
+      value: assumptions.competitionDisadvantagedAlternative
+        ? exportTx.alternatives[
+            assumptions.competitionDisadvantagedAlternative
+          ]
+        : exportTx.words.notApplicable,
+      evidence: exportTx.words.notApplicable,
+    },
+    {
       id: "competitionTransferRate",
       label: exportTx.assumptions.competitionTransferRate,
       value: assumptions.competitionTransferRate

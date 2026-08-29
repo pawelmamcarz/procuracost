@@ -2,226 +2,283 @@
 tytuł: "Tunel czy pole? Jak skrócić zakupy bez osłabiania kontroli"
 magazyn: "Lepszy Biznes (All for One)"
 data: 2026-07
-model: "ProcuraCost 2.2.2"
+model: "ProcuraCost 2.3.0"
 status: "wersja do redakcji"
 ---
 
 # Tunel czy pole?
 
-## Jak skrócić zakupy bez osłabiania kontroli
+## Jak projektować przebieg zakupów bez osłabiania kontroli
 
-Cyfryzacja nie naprawi procesu, którego logiki nikt już nie potrafi wyjaśnić.
-Jeżeli organizacja przeniesie do systemu pięć formularzy, trzy ręczne akceptacje
-i dwukrotne przepisywanie tych samych danych, otrzyma ten sam proces, tylko z
-loginem i powiadomieniami. Wdrożenie workflow zaczyna tworzyć wartość dopiero
-wtedy, gdy firma rozdzieli potrzebne zabezpieczenia od odziedziczonej kolejności
-pracy.
+Cyfryzacja nie naprawi procesu, którego logiki nikt nie potrafi wyjaśnić.
+Przeniesienie do systemu pięciu formularzy, trzech ręcznych zatwierdzeń i
+dwukrotnego przepisywania danych utrwala ten sam problem w nowym interfejsie.
+Wartość powstaje dopiero wtedy, gdy organizacja oddzieli potrzebne
+zabezpieczenia od odziedziczonej kolejności pracy.
 
-To rozróżnienie jest szczególnie ważne w zakupach. Proces ma chronić budżet,
-wspierać uczciwą konkurencję, poprawiać jakość decyzji i pozostawiać ślad
-audytowy. Jednocześnie ma dostarczyć biznesowi to, czego potrzebuje, w czasie,
-który nadal pozwala wykorzystać szansę albo uniknąć przestoju. Szybkość bez
-kontroli bywa kosztowna. Tak samo kosztowna może być kontrola zaprojektowana
-jako ciąg oczekiwania.
+Proces zakupowy ma chronić budżet, zapewniać właściwy dostęp do konkurencji,
+wspierać jakość decyzji i pozostawiać ślad audytowy. Jednocześnie ma dostarczyć
+wnioskodawcy biznesowemu potrzebne rozwiązanie w czasie, który pozwala
+wykorzystać szansę albo uniknąć przestoju. Szybkość bez kontroli bywa kosztowna.
+Kontrola zbudowana głównie z kolejek może być równie kosztowna.
 
-Dlatego właściwe pytanie nie brzmi: „formalnie czy elastycznie?”. Brzmi: **które
-granice muszą pozostać niezmienne, a którą część pracy można uprościć,
-zrównoleglić albo prowadzić iteracyjnie?**
+Właściwe pytanie nie brzmi zatem: formalnie czy elastycznie. Brzmi:
 
-## Jedna polityka, różne drogi
+> Które granice muszą pozostać niezmienne, a którą pracę można uprościć,
+> prowadzić równolegle albo wykonywać iteracyjnie?
 
-Polityka zakupowa wyznacza granice: kto może zaciągać zobowiązania, kiedy trzeba
-zapewnić konkurencję, jakie dane należy udokumentować, jak rozdzielić role i kto
-może zaakceptować wyjątek. Workflow organizuje drogę wewnątrz tych granic.
+## Jedna granica, dwa projekty przebiegu
 
-Metafora tunelu i pola pomaga zobaczyć różnicę. Tunel prowadzi sprawę przez
-ustaloną sekwencję bramek. Pole dopuszcza kilka dróg, pracę równoległą i powrót
-do wcześniejszego założenia, ale nie usuwa granicy. W obu wariantach budżet,
-uprawnienia, konkurencja, etyka i dokumentacja pozostają obowiązujące.
+Polityka zakupowa określa między innymi uprawnienia, zasady konkurencji,
+wymagany ślad decyzji, rozdział ról i tryb obsługi wyjątków. Projekt przebiegu
+procesu zakupowego organizuje czynności wewnątrz tych ram.
 
-Krótki tunel dobrze obsługuje zakup standardowy: pozycję katalogową, odnowienie
-na uzgodnionych warunkach czy zamówienie do zatwierdzonego dostawcy. Powtarzalna
-transakcja nie potrzebuje za każdym razem zespołu ekspertów. Potrzebuje dobrych
-danych podstawowych, kontroli budżetu, zgodności zamówienia z umową oraz
-automatycznego skierowania wyjątku do właściwej osoby.
+Metafora tunelu i pola opisuje dwie geometrie pracy. Tunel prowadzi sprawę przez
+ustaloną sekwencję. Pole dopuszcza kilka kontrolowanych tras, pracę równoległą
+i powrót do wcześniejszego założenia. Nie usuwa jednak granicy. Uprawnienia,
+konkurencja, etyka i dokumentacja nadal obowiązują.
 
-Pole jest użyteczne wtedy, gdy rozwiązanie nie jest znane na początku. Przy
-wyborze systemu, usługi specjalistycznej albo technologii produkcyjnej rozmowy z
-rynkiem mogą zmienić rozumienie potrzeby, model rozliczenia i podział ryzyka.
-Biznes, zakupy, IT, finanse i prawnicy powinni wtedy pracować na wspólnym obrazie
-sprawy, zamiast kolejno przekazywać sobie zamrożony dokument.
+ProcuraCost 2.3 porównuje właśnie takie dwa warianty:
 
-Ważne zastrzeżenie: ścieżka adaptacyjna nie zawsze jest krótsza. Odkrywanie
-potrzeby, prototyp, dialog z dostawcami lub dodatkowa runda negocjacji mogą
-wydłużyć sourcing i zwiększyć nakład pracy. Taki wysiłek ma sens tylko wtedy,
-gdy kupuje wiedzę, która zmniejsza ryzyko złej specyfikacji, kosztownych zmian
-albo nietrafionego wdrożenia. „Elastycznie” nie może być synonimem „bez planu”.
+- formalny i sekwencyjny;
+- adaptacyjny i zgodny.
 
-## Cztery sytuacje zamiast jednej procedury
+Model nie zakłada, że drugi wariant jest szybszy albo tańszy. Oblicza skutki
+dwóch jawnych map przebiegu i dopuszcza wynik dodatni, ujemny lub zerowy.
+Obowiązkowe terminy prawne pozostają takie same po obu stronach.
 
-Przed konfiguracją systemu warto sklasyfikować zakupy na dwóch osiach:
-niepewności potrzeby oraz skutków błędu lub nadużycia. Powstaje prosta mapa
-decyzyjna:
+## Kiedy praca adaptacyjna ma konkretny mechanizm
 
-Niepewność wpływa na organizację pracy, a ryzyko — na siłę zabezpieczeń. Samo
-wysokie ryzyko nie jest argumentem za większą liczbą kroków; jest argumentem za
-lepszym dowodem, rozdziałem ról i właściwym punktem decyzji.
+Adaptacja ma znaczenie tylko wtedy, gdy zmienia pracę, zależności albo
+konstrukcję umowy.
 
-| Sytuacja | Zalecana organizacja pracy | Co powinien pilnować system |
-|---|---|---|
-| Niska niepewność, niskie ryzyko | krótka ścieżka standardowa | katalog, budżet, umowa oraz automatyczne zwolnienie lub skierowanie do akceptacji zgodnie z limitem |
-| Niska niepewność, wysokie ryzyko | przewidywalny tunel z kontrolami | rozdział ról, konkurencja, kompletność dowodów i eskalacja wyjątku |
-| Wysoka niepewność, umiarkowane ryzyko | praca równoległa i iteracyjna | wspólna dokumentacja, wersje wymagań, decyzje i odpowiedzialność |
-| Wysoka niepewność, wysokie ryzyko | etap odkrywczy, a potem formalny wybór | osobne bramki dla dialogu, budżetu, konkurencji, wyboru i zmian |
+### Transformacja ERP
 
-To heurystyka projektowa, nie automat podejmujący decyzję za kupca. Jej wartość
-polega na tym, że nie próbuje obsłużyć zakupu katalogowego i projektu
-transformacyjnego tą samą liczbą ekranów oraz akceptacji.
+Przy niepełnych wymaganiach wczesne definiowanie problemu i modułowe podejście
+mogą zmienić sposób opisu potrzeby oraz sprawdzania możliwości rynku. Nie jest
+to automatyczne skrócenie. To wcześniejsze wykonanie pracy, która w sztywnym
+przebiegu mogłaby pojawić się dopiero po wyborze rozwiązania.
 
-## Najpierw audyt ścieżki, potem konfiguracja
+### Przeprojektowanie usługi logistycznej
 
-Warsztat projektowy powinien zacząć się od kilku zakończonych zakupów, nie od
-listy funkcji systemu. W jednym pokoju warto zebrać biznes, zakupy, finanse,
-compliance, IT oraz właściciela danych. Mapa procesu powinna pokazać nie tylko
-czynności zapisane w procedurze, lecz także czas oczekiwania, wiadomości e-mail,
-arkusze pomocnicze, ponowne wprowadzanie danych, cofnięcia i decyzje podejmowane
-poza oficjalnym obiegiem.
+Kontakt z rynkiem może służyć sprawdzeniu poziomów usług, interfejsów danych,
+odpowiedzialności za ciągłość i sposobu rozliczania. Mechanizm istnieje wtedy,
+gdy ustalenia zmieniają mapę procesu lub projekt umowy. Sama zmiana etykiety z
+formalnej na adaptacyjną nie tworzy wartości.
 
-Pięć pytań szybko odsłania miejsca warte przeprojektowania:
+### Publiczny zakup IT
 
-1. Ile czasu zajmuje aktywna praca, a ile oczekiwanie na kolejną osobę?
-2. Jakie konkretne ryzyko ogranicza każda akceptacja?
-3. Jakiej nowej informacji dostarcza dana bramka?
+Wstępne konsultacje rynkowe mogą pomóc Zamawiającemu poznać dostępne
+rozwiązania techniczne, ekonomiczne i organizacyjne przed postępowaniem.
+Konsultacja nie skraca ustawowego terminu składania ofert ani obowiązkowego
+terminu oczekiwania przed zawarciem umowy.
+Usprawniać można pracę przygotowawczą, nie obowiązek prawny.
+
+### Odkrywanie i współprojektowanie
+
+Uczenie się, dialog i ponowne określenie zakresu są pracą. Mogą zwiększać czas
+i nakład zespołu. Taki wariant ma sens badawczy wtedy, gdy pozwala sprawdzić,
+czy dodatkowa wiedza wpływa później na wybór, wykonanie albo zmiany umowy.
+Dłuższy przebieg nie jest sam w sobie porażką, a krótszy nie jest sam w sobie
+sukcesem.
+
+## Kiedy odrębnego mechanizmu pracy nie ma
+
+Stabilna, standardowa usługa może wymagać tych samych czynności w obu
+wariantach. W scenariuszu referencyjnym ProcuraCost osobno pozostaje ryzyko
+różnicy konkurencji, dlatego nie jest to neutralna kontrola kosztu całkowitego.
+Zamówienie katalogowe po ustanowieniu umowy ramowej może mieć jedną
+krótką mapę. Zwolnienie zlecenia MRP może przebiegać identycznie, jeżeli
+korzysta z obowiązującej umowy i zatwierdzonych danych materiałowych.
+
+ProcuraCost traktuje katalog i MRP jako scenariusze kontrolne. Identyczne mapy
+dają równy wynik. To ważna kontrola jakości modelu: nazwa adaptacyjna nie
+powinna generować korzyści bez zmienionego mechanizmu.
+
+## Przed konfiguracją systemu
+
+Warsztat projektowy powinien zacząć się od kilku zakończonych zakupów, a nie od
+listy funkcji oprogramowania. Warto zebrać przedstawicieli biznesu, zakupów,
+finansów, zgodności, IT i właściciela danych. Mapa powinna ujawnić:
+
+- czynności i ich poprzedników;
+- czas aktywnej pracy i czas oczekiwania;
+- ponowne wprowadzanie tych samych danych;
+- przekazania między rolami;
+- cofnięcia i ponowne zatwierdzenia;
+- decyzje podejmowane poza oficjalnym obiegiem;
+- obowiązkowe terminy oraz źródło każdego wymagania.
+
+Pięć pytań pomaga ocenić każde miejsce tarcia:
+
+1. Jakie ryzyko kontroluje ten krok?
+2. Jaką nową informację wnosi?
+3. Czy można wykonać go równolegle z inną pracą?
 4. Co dzieje się po zmianie zakresu, ceny albo terminu?
-5. Czy system przechowuje dowód decyzji, czy tylko obraz formularza?
+5. Czy system zapisuje decyzję i jej podstawę, czy tylko formularz?
 
-Jeżeli dwie akceptacje kontrolują to samo ryzyko i korzystają z tych samych
-danych, jedna z nich może być zbędna. Jeżeli menedżer zatwierdza setki spraw,
-ale nie widzi, które przekraczają budżet lub odbiegają od umowy, problemem nie
-jest brak kolejnej bramki. Problemem jest brak reguły, która oddziela standard
-od wyjątku.
+Jeżeli dwie akceptacje używają tych samych danych i kontrolują to samo ryzyko,
+warto sprawdzić, czy obie są potrzebne. Jeżeli menedżer zatwierdza setki spraw
+bez wyróżnienia odchyleń od budżetu lub umowy, dodatkowa bramka nie rozwiązuje
+problemu. Potrzebna jest reguła oddzielająca standard od wyjątku.
 
-## Kontrola powinna działać w tle
+## Zakupy operacyjne wymagają osobnej architektury
 
-Niezależnie od tego, czy rdzeniem architektury jest SAP S/4HANA, platforma
-source-to-pay czy osobny silnik workflow, system powinien przejmować czynności,
-które da się wykonać jednoznacznie i powtarzalnie:
+Zamówienie katalogowe, zwolnienie MRP i strategiczne postępowanie nie powinny
+korzystać z jednej rozbudowanej ścieżki. Kanał realizacji zakupu jest odrębną
+decyzją od rodziny procedury i projektu pracy.
 
-- sprawdzać budżet, uprawnienia i progi decyzyjne;
-- pobierać dane kontrahenta, umowy i centrum kosztów z jednego źródła;
-- porównywać zapotrzebowanie, zamówienie, odbiór i fakturę;
-- wymuszać rozdział ról oraz wymagane deklaracje;
-- rejestrować wyjątek, jego uzasadnienie, właściciela i termin decyzji;
-- zachowywać historię zmian oraz dane potrzebne do pomiaru procesu.
+Dla transakcji operacyjnej system może automatycznie:
 
-Człowiek powinien pozostać tam, gdzie potrzebna jest ocena: przy opisie
-niestandardowej potrzeby, analizie rynku, negocjowaniu podziału ryzyka i
-rozstrzyganiu wyjątku. Automatyzacja nie polega na usunięciu odpowiedzialności,
-lecz na skierowaniu uwagi do spraw, które rzeczywiście jej wymagają.
+- sprawdzić budżet, uprawnienia i zgodność z umową;
+- pobrać zatwierdzone dane dostawcy, materiału i centrum kosztów;
+- porównać zapotrzebowanie, zamówienie, odbiór i fakturę;
+- skierować odchylenie do wskazanego właściciela;
+- zachować ślad zwolnienia i wyjątku.
+
+Człowiek pozostaje tam, gdzie potrzebna jest ocena: przy niestandardowej
+potrzebie, analizie rynku, negocjowaniu podziału ryzyka i rozstrzyganiu wyjątku.
+Automatyzacja nie usuwa odpowiedzialności. Kieruje uwagę do spraw, które jej
+wymagają.
+
+## Lider wdrożenia i gotowość organizacyjna
+
+W [8. odcinku
+Procurement&Beyond](https://www.youtube.com/watch?v=5KYUdTLlvvg) Paweł Mamcarz
+omawia między innymi rolę wewnętrznego lidera, mapowanie tarcia, wymagania,
+zakupy operacyjne, stare procedury i rozróżnienie pomiędzy narzędziem a
+wdrożeniem. Materiał ma charakter rozmowy praktycznej i korzysta z
+automatycznych napisów w języku polskim.
+
+Te obserwacje prowadzą do pytań, które warto zadać przed uruchomieniem projektu:
+
+- Czy jest właściciel wyniku i osoba zdolna utrzymać decyzje przez cały okres
+  wdrożenia?
+- Czy organizacja rozumie obecny proces i potrafi wskazać miejsca tarcia?
+- Czy wymagania odnoszą się do najważniejszych zakupów operacyjnych, czy do
+  marginalnych funkcji?
+- Czy polityka zakupowa opisuje potrzebne granice, czy wymusza historyczną
+  sekwencję?
+- Czy użytkownicy, dane i zasady kontroli są gotowe do konfiguracji oraz
+  wdrożenia?
+
+Są to hipotezy i pytania do samoopisu, nie empiryczne prawidłowości ustalone
+przez nagranie. ProcuraCost oddziela je od rachunku kosztowego. Niezależne
+narzędzie zapisuje odpowiedzi bez punktów, wag, oceny zbiorczej i wpływu na
+deltę kosztu.
 
 ## Uzasadnienie biznesowe bez fałszywej precyzji
 
-Obietnica „skrócimy zakupy o 30%” nie jest jeszcze uzasadnieniem biznesowym. Rachunek
-warto rozdzielić na trzy części, ponieważ każda opiera się na innych danych.
+Rachunek ProcuraCost 2.3 rozdziela cztery grupy:
 
-**Koszt procesu** obejmuje roboczogodziny i niepracowniczy koszt administracji.
-Można go oszacować na podstawie logów, udziału ról i stawek. **Koszt zwłoki** to
-różnica dni pomnożona przez możliwy do obrony koszt dnia: utraconą marżę,
-przestój, droższe rozwiązanie zastępcze albo odłożoną korzyść projektu.
-**Koszt cyklu życia** dotyczy skutków ujawniających się później, na przykład
-zmian umowy, błędnej specyfikacji lub wyniku dostawy.
+1. koszt pracy według roli;
+2. niepracowniczy koszt procesu;
+3. czas przebiegu pomnożony przez dzienny koszt zwłoki;
+4. objęte monetyzacją elementy konstrukcji umowy.
 
-Najłatwiej zawyżyć drugą część. Iloczyn dni i deklarowanego kosztu dnia jest
-tożsamością rachunkową, a nie wynikiem badania. Jeżeli właściciel biznesowy nie
-potrafi wyprowadzić tej kwoty z konkretnego mechanizmu, należy pokazać szeroki
-zakres albo pozostawić ją poza centralnym wariantem. Podobnie potencjalna
-wartość TCO i ryzyko obchodzenia procesu nie powinny udawać uniwersalnych
-benchmarków.
+Najłatwiej zawyżyć koszt zwłoki. Iloczyn dni i deklarowanego kosztu dnia jest
+tożsamością rachunkową, nie wynikiem badania. Wartość powinna wynikać z
+konkretnego mechanizmu, na przykład utraconej marży, przestoju albo kosztu
+rozwiązania zastępczego. Jeżeli nie można jej uzasadnić, należy pokazać zakres i
+ograniczyć interpretację.
 
-Równie ważne są mierniki ochronne. Krótszy cykl nie tworzy wartości, jeżeli
-spada liczba ważnych ofert, rośnie cena względem rynku, pogarsza się wynik
-dostawy lub znika ślad decyzji. Badania zamówień publicznych pokazują, że
-dyskrecja przy słabej konkurencji może podnosić ceny i pogarszać wybór
-wykonawcy. Nie wolno przenosić wielkości tych efektów wprost do prywatnej firmy,
-ale mechanizmu nie warto ignorować.
+Model stosuje zakres 0,25, 1 i 4 razy centralny koszt dnia jako jawny test
+warunkowy. To założenie, nie przedział ufności.
 
-ProcuraCost 2.2.2 stosuje właśnie taki rachunek warunkowy. Nie dowodzi, że pole
-jest tańsze. Po uwzględnieniu szerokiej niepewności kosztu dnia i czasów etapów
-każdy z dziesięciu scenariuszy referencyjnych dopuszcza zmianę znaku wyniku.
-To nie jest werdykt, lecz mapa informacji potrzebnych do decyzji. O wyborze
-ścieżki powinny rozstrzygać dane konkretnej organizacji, przede wszystkim koszt
-zwłoki, rzeczywisty przebieg pracy i jakość konkurencji.
+Kanał konkurencji wykorzystuje stres 2, 6 i 9 procent tylko wtedy, gdy dostęp do
+rynku rzeczywiście różni się między wariantami. Badanie Szucsa dotyczy
+określonej populacji węgierskich zamówień i nie stanowi estymaty dla Polski ani
+firm prywatnych.
 
-## Wyjątek jako czujnik procesu
+Różnice kosztu aneksów i TCO wynoszą w natywnych scenariuszach zero.
+Nieformalne obejście procesu pozostaje poza monetyzacją. Takie ograniczenie jest
+bardziej użyteczne niż pozorna precyzja oparta na uniwersalnym procencie.
 
-Dojrzały workflow nie próbuje wyeliminować wyjątków. Nadaje im nazwę i odrębną
-ścieżkę. Zakup pilny, jedyny możliwy dostawca, przekroczenie budżetu, zmiana
-zakresu czy odstępstwo od umowy ramowej wymagają innych dowodów i innych osób
-decyzyjnych.
+## TCO i ograniczone wykorzystanie AI
 
-Dla każdego typu wyjątku system powinien wskazać właściciela, wymagane
-uzasadnienie, dokumenty, termin oraz dalszy sposób monitorowania. Powtarzalny
-wyjątek jest danymi o projekcie procesu. Może oznaczać nieaktualną politykę,
-brak właściwej umowy ramowej, źle skonfigurowany katalog albo próg, który nie
-odpowiada rzeczywistemu ryzyku.
+Analiza TCO wymaga ujednoliconych danych o cenie, finansowaniu, użytkowaniu,
+energii lub paliwie, serwisie, ryzyku i wartości rezydualnej. Model językowy
+może pomóc wydobyć i uporządkować informacje z materiałów rynkowych, ale wynik
+musi mieć jawne źródła i przejść kontrolę człowieka.
 
-W sektorze publicznym taka elastyczność zawsze pozostaje wewnątrz Prawa zamówień
-publicznych. Praca równoległa nie skraca ustawowych terminów i nie tworzy
-podstawy do trybu wyjątkowego. Może natomiast usprawnić przygotowanie,
-uzgodnienia, współdzielenie danych i dokumentowanie decyzji. Podstawa prawna
-wyjątku musi być oceniona osobno, a nie ukryta w ogólnej konfiguracji systemu.
+W materiale Procurement&Beyond jako przykład pojawia się wykorzystanie modelu
+Bielik w projekcie „Czym pojadę”. Granica jest jednoznaczna: Bielik może
+strukturyzować dane. Przejrzysty model deterministyczny wykonuje rachunek TCO.
+Nie należy przypisywać modelowi językowemu obliczenia, którego nie można
+odtworzyć.
 
-## Pilotaż, który można uczciwie ocenić
+## Rejestr decyzji zamiast jednego werdyktu
 
-Nową ścieżkę najlepiej uruchomić w jednej kategorii albo dla jednego typu
-projektu. Przed startem trzeba zamrozić okres porównania, definicje mierników i
-warunki zatrzymania pilotażu. Limity, zasady konkurencji i wymagania
-dokumentacyjne powinny pozostać takie same; zmienia się organizacja pracy oraz
-wsparcie systemowe.
+Wynik powinien pokazywać więcej niż sumę. Rekord decyzji obejmuje:
 
-Wynik warto ocenić na jednym pulpicie:
+- zadeklarowany kontekst zakupu;
+- obie mapy przebiegu;
+- wartość centralną i zakres;
+- składniki różnicy;
+- zakres monetyzacji;
+- wymiary pozostawione poza rachunkiem;
+- założenia i źródła;
+- pochodzenie obowiązkowych terminów;
+- status migracji starszych danych.
 
-- czas całkowity, aktywna praca i oczekiwanie;
-- godziny zaangażowania według roli;
-- liczba ważnych ofert i cena względem uzgodnionego benchmarku;
-- liczba cofnięć, wyjątków i spraw poza workflow;
-- kompletność śladu decyzji;
-- zmiany umowy oraz wcześniej ustalony wynik dostawy;
-- faktyczne użycie automatycznych kontroli, a nie samo posiadanie licencji.
+Dodatnia delta oznacza, że przy zadeklarowanych wejściach wariant formalny ma
+wyższy koszt. Ujemna oznacza wyższy koszt wariantu adaptacyjnego. Zero i zmiana
+znaku w zakresie są pełnoprawnymi wynikami.
 
-Jeżeli cykl się skraca, ale konkurencja lub jakość dokumentacji spada, rozwiązania
-nie należy skalować bez korekty. Jeżeli adaptacyjna ścieżka trwa dłużej, lecz
-ogranicza koszt zmian i poprawia wynik dostawy, sama liczba dni nie wystarcza do
-jej odrzucenia. Decyzja powinna wynikać z całego profilu efektów, nie z jednego
-atrakcyjnego KPI.
+Porównanie przydatności procedur jest osobne i nie tworzy rankingu. Prawo,
+uwarunkowania zakupu i zdolność realizacji wymagają profesjonalnej oceny poza
+samym rachunkiem.
 
-## Tunel i pole w jednej architekturze
+## Pilotaż, który można ocenić
 
-Najdojrzalszy model nie wybiera jednej metafory dla wszystkich zakupów. Buduje
-krótkie tunele dla transakcji powtarzalnych, pola dla problemów wymagających
-odkrywania oraz rozwiązania etapowe tam, gdzie wysoka niepewność spotyka się z
-wysokim ryzykiem. Wspólne pozostają dane, granice i odpowiedzialność.
+Nowy przebieg warto pilotażowo zastosować do jednej kategorii lub jednego typu
+projektu. Przed startem należy zamrozić okres, mierniki, warunki zatrzymania i
+zakres zmiany. Zasady konkurencji, uprawnienia i wymagania dokumentacyjne
+powinny pozostać jawne.
 
-„Tunel ma ściany. Pole ma horyzont.” Technologia tworzy wartość wtedy, gdy
-potrafi obsłużyć oba: automatycznie przeprowadzić standard i bezpiecznie
-poprowadzić wyjątek. Dobry workflow nie zastępuje myślenia. Usuwa pracę, która
-go nie wymaga, i zostawia ludziom decyzje, które naprawdę wymagają wiedzy.
+Ocena powinna objąć:
+
+- czas całkowity, pracę aktywną i oczekiwanie;
+- godziny według roli;
+- liczbę ważnych ofert i cenę względem benchmarku ustalonego ex ante;
+- liczbę cofnięć, wyjątków i spraw poza oficjalnym obiegiem;
+- kompletność rejestru decyzji;
+- zmiany umowy i wcześniej ustalone wyniki dostawy;
+- faktyczne wykorzystanie kontroli systemowych.
+
+Krótszy cykl nie wystarcza, jeżeli pogarsza się dostęp do konkurencji lub
+kompletność dokumentacji. Dłuższy przebieg nie jest automatycznie zły, jeżeli
+jego zamierzonym mechanizmem jest uczenie się. Każdy efekt należy raportować
+osobno przed próbą monetyzacji.
+
+## Wspólna architektura
+
+Organizacja nie musi wybierać jednej metafory dla wszystkich zakupów. Może
+projektować krótkie, kontrolowane sekwencje dla transakcji powtarzalnych oraz
+procesy z jawnymi etapami odkrywania dla problemów niepewnych. Wspólne powinny
+pozostać dane, uprawnienia, reguły konkurencji i odpowiedzialność.
+
+„Tunel ma ściany. Pole ma horyzont.” Wartość tej metafory polega na rozdzieleniu
+granicy od drogi. Nie zastępuje ona mapy procesu, oceny prawnej ani danych.
 
 ## Źródła i granice twierdzeń
 
+- California Department of Technology. (2022). *California Redefines State
+  Technology Procurement*.
+  https://www.cdt.ca.gov/newsroom/2022/08/california-redefines-state-technology-procurement/
+- OECD. *Public Procurement in Lithuania*, przykład pilotażu RVUL.
+  https://www.oecd.org/en/publications/public-procurement-in-lithuania_aa1b196c-en/full-report/component-8.html
 - Szucs, F. (2024). *Discretion and Favoritism in Public Procurement*. Journal
-  of the European Economic Association, 22(1), 117–160.
+  of the European Economic Association, 22(1), 117-160.
   https://doi.org/10.1093/jeea/jvad017
-- Beuve, J., Moszoro, M. W. i Spiller, P. T. (2023). *Doing It by the Book:
-  Political Contestability and Public Contract Renegotiations*. Journal of Law,
-  Economics, and Organization, 39(1), 281–308.
-  https://doi.org/10.1093/jleo/ewab039
-- Coviello, D. i Mariniello, M. (2014). *Publicity Requirements in Public
-  Procurement*. Journal of Public Economics, 109, 76–100.
-  https://doi.org/10.1016/j.jpubeco.2013.10.008
+- Urząd Zamówień Publicznych. *Wstępne konsultacje rynkowe*.
+  https://www.gov.pl/web/uzp/wstepne-konsultacje-rynkowe
+- Komisja Europejska. *Guidance on Innovation Procurement*.
+  https://public-buyers-community.ec.europa.eu/resources/guidance-innovation-procurement
+- Procurement&Beyond, odcinek 8.
+  https://www.youtube.com/watch?v=5KYUdTLlvvg
 
-Przywołane badania dotyczą określonych populacji zamówień publicznych i nie
-wyznaczają uniwersalnego efektu dla przedsiębiorstw prywatnych. ProcuraCost jest
-narzędziem decyzyjnym, nie estymatorem przyczynowym. Profile ścieżek, czasy
-etapów, wartość TCO, częstość obejść oraz granice scenariuszy są założeniami do
-zastąpienia danymi organizacji. Obowiązkowe terminy PZP pozostają niezmienne.
+Przypadki oficjalne wspierają opis mechanizmu, nie wartości liczbowe
+ProcuraCost. Materiał praktyczny służy do projektowania pytań i hipotez, nie
+kalibracji. Model 2.3 jest narzędziem porównawczym, nie estymatorem przyczynowym
+ani poradą prawną.

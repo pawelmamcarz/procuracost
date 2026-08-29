@@ -283,6 +283,7 @@ export interface PdfCopyV2 {
   assumptions: PdfAssumptionCopy[];
   roleHourlyRates: PdfRoleHourlyRateCopy[];
   calculationAnchors: PdfCalculationAnchorCopy[];
+  internalEvidence: PdfEvidenceCopy[];
   externalEvidence: PdfEvidenceCopy[];
   retainedAssumptions: PdfRetainedAssumptionCopy[];
   legalProvenance: PdfLegalProvenanceCopy[];
@@ -497,6 +498,17 @@ export function buildPdfCopy(
       evidenceStatus: tx.words.notApplicable,
       evidenceIds: [],
     },
+    {
+      id: "competitionDisadvantagedAlternative",
+      label: tx.assumptions.competitionDisadvantagedAlternative,
+      value: assumptions.competitionDisadvantagedAlternative
+        ? tx.alternatives[
+            assumptions.competitionDisadvantagedAlternative
+          ]
+        : tx.words.notApplicable,
+      evidenceStatus: tx.words.notApplicable,
+      evidenceIds: [],
+    },
   ];
   if (assumptions.competitionTransferRate) {
     assumptionCopies.push(
@@ -540,6 +552,19 @@ export function buildPdfCopy(
   );
 
   const migration = record.metadata.migration;
+  const evidenceCopy = (
+    evidence: DecisionRecordV2["internalEvidence"][number]
+  ): PdfEvidenceCopy => ({
+    id: evidence.id,
+    type: tx.evidenceClasses[evidence.type],
+    title: lookupModelCopy(locale, evidence.source.titleKey),
+    supportedClaim: lookupModelCopy(locale, evidence.supportedClaimKey),
+    unsupportedClaim: lookupModelCopy(locale, evidence.unsupportedClaimKey),
+    population: lookupModelCopy(locale, evidence.jurisdictionOrPopulationKey),
+    constructs: [...evidence.constructs],
+    assumptionKeys: [...evidence.assumptionKeys],
+    sourceUrl: evidence.sourceUrl,
+  });
   return {
     filename: pdfExportFilename(record, locale),
     locale,
@@ -643,17 +668,8 @@ export function buildPdfCopy(
       )[anchor.evidenceClass],
       evidenceIds: [...anchor.evidenceIds],
     })),
-    externalEvidence: record.externalEvidence.map((evidence) => ({
-      id: evidence.id,
-      type: tx.evidenceClasses[evidence.type],
-      title: lookupModelCopy(locale, evidence.source.titleKey),
-      supportedClaim: lookupModelCopy(locale, evidence.supportedClaimKey),
-      unsupportedClaim: lookupModelCopy(locale, evidence.unsupportedClaimKey),
-      population: lookupModelCopy(locale, evidence.jurisdictionOrPopulationKey),
-      constructs: [...evidence.constructs],
-      assumptionKeys: [...evidence.assumptionKeys],
-      sourceUrl: evidence.sourceUrl,
-    })),
+    internalEvidence: record.internalEvidence.map(evidenceCopy),
+    externalEvidence: record.externalEvidence.map(evidenceCopy),
     retainedAssumptions: record.retainedAssumptions.map((assumption) => ({
       id: assumption.id,
       label: lookupModelCopy(locale, assumption.labelKey),

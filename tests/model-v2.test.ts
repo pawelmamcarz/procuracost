@@ -81,6 +81,45 @@ describe("model 2.3 calibrated values", () => {
       })
     ).toThrow(/fixed/i);
   });
+
+  it("rejects unknown range and evidence classes at runtime", () => {
+    const base = calibrated(1, 2, 3);
+
+    expect(() =>
+      assertValidCalibratedValue({
+        ...base,
+        rangeKind: "estimated" as CalibratedValue["rangeKind"],
+      })
+    ).toThrow(/range kind/i);
+    expect(() =>
+      assertValidCalibratedValue({
+        ...base,
+        evidenceClass: "anecdote" as CalibratedValue["evidenceClass"],
+      })
+    ).toThrow(/evidence class/i);
+  });
+
+  it("rejects malformed evidence identifiers while allowing an empty user-input list", () => {
+    expect(() =>
+      assertValidCalibratedValue({
+        ...calibrated(1, 2, 3),
+        evidenceIds: ["fixture.valid", ""],
+      })
+    ).toThrow(/evidence identifiers/i);
+    expect(() =>
+      assertValidCalibratedValue({
+        ...calibrated(1, 2, 3),
+        evidenceIds: "fixture.invalid" as unknown as string[],
+      })
+    ).toThrow(/evidence identifiers/i);
+    expect(() =>
+      assertValidCalibratedValue({
+        ...calibrated(1, 2, 3),
+        evidenceClass: "user_input",
+        evidenceIds: [],
+      })
+    ).not.toThrow();
+  });
 });
 
 describe("model 2.3 domain contract", () => {

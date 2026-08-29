@@ -152,7 +152,7 @@ describe("model 2.3 pure PDF copy", () => {
       "Adaptive compliant alternative",
     ]);
     expect(copy.alternatives[0].workflowSteps[0].label).toBe(
-      "Market sounding"
+      "Fleet operating baseline"
     );
     expect(copy.results[0].total.central).toMatch(/PLN$/);
     expect(copy.drivers.some(({ label }) => label === "Non-labour cost")).toBe(
@@ -160,6 +160,9 @@ describe("model 2.3 pure PDF copy", () => {
     );
     expect(copy.nonMonetizedDimensions[0].status).toBe("not monetised");
     expect(copy.calculationAnchors.length).toBeGreaterThan(0);
+    expect(copy.internalEvidence.map(({ id }) => id)).toEqual([
+      "model_2_3_mechanism_workflow_allocations",
+    ]);
     expect(copy.externalEvidence.length).toBeGreaterThan(0);
     expect(copy.retainedAssumptions.length).toBeGreaterThan(0);
     expect(copy.retainedAssumptions[0].evidenceStatus).toBe(
@@ -321,7 +324,7 @@ describe("model 2.3 pure PDF copy", () => {
     expect(copiedAnchor).toMatchObject({
       path: sourceAnchor.path,
       evidenceClass: sourceAnchor.evidenceClass,
-      evidenceStatus: "Retained model 2.2.2 assumption",
+      evidenceStatus: "Illustrative scenario",
       evidenceIds: sourceAnchor.evidenceIds,
     });
     expect(copiedAnchor).not.toBe(sourceAnchor);
@@ -498,11 +501,11 @@ describe("model 2.3 pure PDF copy", () => {
   it("preserves an ordinary step label key and explicit null legal lock", () => {
     const copy = buildPdfCopy(fleetRecord(), "en", EXPORTED_AT);
     const step = copy.alternatives[0].workflowSteps.find(
-      ({ label }) => label === "Market sounding"
+      ({ label }) => label === "Fleet operating baseline"
     );
 
     expect(step).toMatchObject({
-      labelKey: "workflow.steps.rfi",
+      labelKey: "workflow.steps.fleet_operating_baseline",
       locked: false,
       lockedLegalProvenance: null,
     });
@@ -583,6 +586,22 @@ describe("model 2.3 pure PDF copy", () => {
       )
     ).toMatchObject({
       label: "Catalogue selection",
+    });
+  });
+
+  it("exports the explicitly disadvantaged competition side", () => {
+    const record = buildDecisionRecordV2(
+      createScenarioDraft("stable_private_standard_service")
+    );
+    const copy = buildPdfCopy(record, "en", EXPORTED_AT);
+
+    expect(
+      copy.assumptions.find(
+        ({ id }) => id === "competitionDisadvantagedAlternative"
+      )
+    ).toMatchObject({
+      label: "Alternative with restricted supplier access",
+      value: "Adaptive compliant alternative",
     });
   });
 

@@ -18,10 +18,8 @@
 // stakeholder rates, 4% discount. The map is legality-aware: pzp_krajowy appears only
 // in its statutory 170k–EU band, pzp_eu only at/above the EU threshold.
 //
-// Run: npm run map:legacy. Writes the legacy replication/outputs/decision-thresholds.md.
+// Run: npm run map:legacy. Writes the legacy map to standard output only.
 
-import { mkdirSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
 import { calculateCosts, type ProcurementInputs } from "../lib/calculations";
 import type { ProcessType, TechLevelId } from "../lib/process-templates";
 import { LEGACY_MODEL_VERSION } from "../lib/version";
@@ -153,7 +151,4 @@ P("Kategoria odwrócona (discovery, Δdni < 0): ścieżka FORMALNA jest szybsza,
 P("koszt dnia, tym mocniej wygrywa formalna; adaptacja broni się tylko przy taniej zwłoce");
 P("i wysokiej wartości dopasowania (kanał TCO/cyklu życia w wysokim scenariuszu).");
 
-const outDir = resolve(process.cwd(), "replication/outputs");
-mkdirSync(outDir, { recursive: true });
-writeFileSync(resolve(outDir, "decision-thresholds.md"), lines.join("\n") + "\n");
-console.log("\nwritten: replication/outputs/decision-thresholds.md");
+process.stdout.write(`${lines.join("\n")}\n`);

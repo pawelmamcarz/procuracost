@@ -90,6 +90,19 @@ describe("neutral decision record UI", () => {
     expect(markup).not.toContain('<article data-decision-record="true"');
   });
 
+  it("names the explicitly disadvantaged competition side in the assumptions record", () => {
+    const markup = renderRecord(
+      buildDecisionRecordV2(
+        createScenarioDraft("stable_private_standard_service")
+      )
+    );
+    const assumptions = section(markup, "assumptions");
+
+    expect(assumptions).toMatch(
+      /Alternative with restricted supplier access[\s\S]*Adaptive compliant alternative/
+    );
+  });
+
   it("keeps the compatibility shell as one labelled result article", () => {
     const markup = renderToStaticMarkup(
       createElement(CostComparison, {
@@ -112,7 +125,7 @@ describe("neutral decision record UI", () => {
       },
     },
     {
-      label: "one edited competition-transfer rate used by both alternatives",
+      label: "one edited competition-transfer range",
       edit: (draft: ScenarioDraft, value: CalibratedValue) => {
         draft.economicAssumptions.competitionTransferRate = value;
       },
@@ -124,7 +137,7 @@ describe("neutral decision record UI", () => {
       },
     },
   ])("counts $label once from the atomic record", ({ edit }) => {
-    const draft = createScenarioDraft("fleet_tco_reframing");
+    const draft = createScenarioDraft("stable_private_standard_service");
     edit(draft, {
       low: 0.04,
       central: 0.06,
@@ -223,8 +236,8 @@ describe("neutral decision record UI", () => {
     );
 
     expect(alternatives).toContain("Supplier landscape review");
-    expect(alternatives).toContain("Market sounding");
-    expect(alternatives).not.toContain("workflow.steps.rfi");
+    expect(alternatives).toContain("Fleet market sounding");
+    expect(alternatives).not.toContain("workflow.steps.fleet_operating_baseline");
   });
 
   it("renders supplied driver contribution values unchanged and keeps non-monetised dimensions out of driver rows", () => {

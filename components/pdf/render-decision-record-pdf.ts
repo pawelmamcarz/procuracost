@@ -2,6 +2,7 @@ import type { jsPDF } from "jspdf";
 
 import type {
   PdfCopyV2,
+  PdfEvidenceCopy,
   PdfRangeCopy,
 } from "@/lib/model-v2";
 
@@ -99,6 +100,29 @@ export function renderDecisionRecordPdf(
 
   function rangeValue(label: string, range: PdfRangeCopy, indent = 0) {
     writeWrapped(`${label}: ${rangeDescription(range)}`, { indent });
+  }
+
+  function evidenceCollection(items: readonly PdfEvidenceCopy[]) {
+    for (const item of items) {
+      subheading(item.title);
+      labelValue(labels.fields.id, item.id, 4);
+      labelValue(labels.fields.evidenceClass, item.type, 4);
+      labelValue(labels.fields.supportedClaim, item.supportedClaim, 4);
+      labelValue(labels.fields.unsupportedClaim, item.unsupportedClaim, 4);
+      labelValue(labels.fields.population, item.population, 4);
+      listValue(
+        labels.fields.constructs,
+        item.constructs.map((construct) =>
+          labelledIdentifier(
+            (labels.constructs as Record<string, string>)[construct] ?? construct,
+            construct
+          )
+        ),
+        4
+      );
+      listValue(labels.fields.assumptionKeys, item.assumptionKeys, 4);
+      labelValue(labels.fields.source, item.sourceUrl, 4);
+    }
   }
 
   writeWrapped(copy.title, { size: 16, bold: true });
@@ -243,27 +267,11 @@ export function renderDecisionRecordPdf(
     listValue(labels.fields.evidenceIds, anchor.evidenceIds, 4);
   }
 
+  heading(copy.sectionLabels.internalEvidence);
+  evidenceCollection(copy.internalEvidence);
+
   heading(copy.sectionLabels.evidence);
-  for (const item of copy.externalEvidence) {
-    subheading(item.title);
-    labelValue(labels.fields.id, item.id, 4);
-    labelValue(labels.fields.evidenceClass, item.type, 4);
-    labelValue(labels.fields.supportedClaim, item.supportedClaim, 4);
-    labelValue(labels.fields.unsupportedClaim, item.unsupportedClaim, 4);
-    labelValue(labels.fields.population, item.population, 4);
-    listValue(
-      labels.fields.constructs,
-      item.constructs.map((construct) =>
-        labelledIdentifier(
-          (labels.constructs as Record<string, string>)[construct] ?? construct,
-          construct
-        )
-      ),
-      4
-    );
-    listValue(labels.fields.assumptionKeys, item.assumptionKeys, 4);
-    labelValue(labels.fields.source, item.sourceUrl, 4);
-  }
+  evidenceCollection(copy.externalEvidence);
 
   heading(copy.sectionLabels.retainedAssumptions);
   for (const item of copy.retainedAssumptions) {

@@ -22,6 +22,7 @@ import {
 } from "./engine";
 import {
   EVIDENCE_REGISTRY,
+  INTERNAL_EVIDENCE_REGISTRY,
   type EvidenceRecord,
 } from "./evidence";
 import type {
@@ -157,6 +158,7 @@ export interface DecisionRecordV2 {
   assumptions: ScenarioEconomicAssumptions;
   roleHourlyRates: Record<string, CalibratedValue>;
   calculationAnchors: CalculationAnchorRecord[];
+  internalEvidence: EvidenceRecord[];
   externalEvidence: EvidenceRecord[];
   retainedAssumptions: ScenarioAssumptionRecord[];
   legalProvenance: LegalProvenanceRecord[];
@@ -454,15 +456,16 @@ function collectCalculationAnchors(
   );
 }
 
-function buildExternalEvidence(
+function buildEvidenceRecords(
   scenario: ScenarioV2,
-  anchors: CalculationAnchorRecord[]
+  anchors: CalculationAnchorRecord[],
+  registry: readonly EvidenceRecord[]
 ): EvidenceRecord[] {
   const ids = new Set([
     ...scenario.evidenceIds,
     ...anchors.flatMap(({ evidenceIds }) => evidenceIds),
   ]);
-  return EVIDENCE_REGISTRY.filter(({ id }) => ids.has(id)).map((record) =>
+  return registry.filter(({ id }) => ids.has(id)).map((record) =>
     structuredClone(record)
   );
 }
@@ -530,6 +533,16 @@ function assembleDecisionRecordV2(
 ): DecisionRecordV2 {
   const context = source.context;
   const anchors = collectCalculationAnchors(calculationInput);
+  const internalEvidence = buildEvidenceRecords(
+    scenario,
+    anchors,
+    INTERNAL_EVIDENCE_REGISTRY
+  );
+  const externalEvidence = buildEvidenceRecords(
+    scenario,
+    anchors,
+    EVIDENCE_REGISTRY
+  );
   const drivers = buildDrivers(calculationInput, calculationResult);
   const alternatives = Object.fromEntries(
     ALTERNATIVE_IDS.map((alternative) => {
@@ -585,7 +598,8 @@ function assembleDecisionRecordV2(
     assumptions: structuredClone(source.economicAssumptions),
     roleHourlyRates: structuredClone(calculationInput.roleHourlyRates),
     calculationAnchors: anchors,
-    externalEvidence: buildExternalEvidence(scenario, anchors),
+    internalEvidence,
+    externalEvidence,
     retainedAssumptions: structuredClone(scenario.assumptions),
     legalProvenance: buildLegalProvenance(calculationInput),
   };

@@ -93,8 +93,8 @@ function competitionCost(
 describe("model 2.3 draft calculation materialisation", () => {
   it("rebuilds edited daily and competition economics without mutating registry or sibling drafts", () => {
     const sourceBefore = JSON.stringify(SCENARIOS_V2);
-    const draft = createScenarioDraft("fleet_tco_reframing");
-    const sibling = createScenarioDraft("fleet_tco_reframing");
+    const draft = createScenarioDraft("stable_private_standard_service");
+    const sibling = createScenarioDraft("stable_private_standard_service");
     const siblingBefore = JSON.stringify(sibling);
 
     draft.economicAssumptions.contractValue = {
@@ -158,6 +158,71 @@ describe("model 2.3 draft calculation materialisation", () => {
     });
     expect(JSON.stringify(SCENARIOS_V2)).toBe(sourceBefore);
     expect(JSON.stringify(sibling)).toBe(siblingBefore);
+  });
+
+  it("charges the explicitly disadvantaged alternative and preserves neutrality under a full label swap", () => {
+    const adaptiveDraft = createScenarioDraft(
+      "stable_private_standard_service"
+    );
+    adaptiveDraft.economicAssumptions.competitionDisadvantagedAlternative =
+      "adaptiveCompliant";
+    const adaptiveInput = buildCalculationInputFromDraft(adaptiveDraft);
+    const original = calculateComparison(adaptiveInput);
+
+    expect(competitionCost(adaptiveInput, "formalSequential").central).toBe(0);
+    expect(competitionCost(adaptiveInput, "adaptiveCompliant").central).toBe(
+      300_000
+    );
+
+    const formalDraft = structuredClone(adaptiveDraft);
+    formalDraft.economicAssumptions.competitionDisadvantagedAlternative =
+      "formalSequential";
+    const formalInput = buildCalculationInputFromDraft(formalDraft);
+
+    expect(competitionCost(formalInput, "formalSequential").central).toBe(
+      300_000
+    );
+    expect(competitionCost(formalInput, "adaptiveCompliant").central).toBe(0);
+
+    const swappedDraft = structuredClone(adaptiveDraft);
+    swappedDraft.alternatives = {
+      formalSequential: structuredClone(
+        adaptiveDraft.alternatives.adaptiveCompliant
+      ),
+      adaptiveCompliant: structuredClone(
+        adaptiveDraft.alternatives.formalSequential
+      ),
+    };
+    swappedDraft.economicAssumptions.competitionDisadvantagedAlternative =
+      "formalSequential";
+    const swapped = calculateComparison(
+      buildCalculationInputFromDraft(swappedDraft)
+    );
+
+    expect(swapped.deltaCost).toBe(-original.deltaCost);
+    expect(swapped.deltaCostOuterEnvelope).toEqual({
+      low: -original.deltaCostOuterEnvelope.high,
+      high: -original.deltaCostOuterEnvelope.low,
+    });
+  });
+
+  it("requires an explicit competition side exactly when the paths differ", () => {
+    const missingSide = createScenarioDraft(
+      "stable_private_standard_service"
+    );
+    missingSide.economicAssumptions.competitionDisadvantagedAlternative = null;
+    expect(() => buildCalculationInputFromDraft(missingSide)).toThrow(
+      /competitionDisadvantagedAlternative.*required/i
+    );
+
+    const unexpectedSide = createScenarioDraft("fleet_tco_reframing");
+    unexpectedSide.economicAssumptions.pathCompetitionDiffers = false;
+    unexpectedSide.economicAssumptions.competitionTransferRate = null;
+    unexpectedSide.economicAssumptions.competitionDisadvantagedAlternative =
+      "formalSequential";
+    expect(() => buildCalculationInputFromDraft(unexpectedSide)).toThrow(
+      /competitionDisadvantagedAlternative.*null/i
+    );
   });
 
   it("keeps bypass non-monetised and accepts only fixed legal waits", () => {
@@ -241,7 +306,7 @@ describe("model 2.3 draft calculation materialisation", () => {
     ).toThrow(/ambiguous/i);
   });
 
-  it("accepts a confirmed partial migration edit and materialises the edited value", () => {
+  it("accepts a confirmed partial migration edit without inventing competition stress", () => {
     const adapted = confirmedPartialMigration();
     const draft = structuredClone(adapted.draft);
     draft.economicAssumptions.contractValue = userFixed(
@@ -251,7 +316,8 @@ describe("model 2.3 draft calculation materialisation", () => {
 
     const input = buildCalculationInputFromDraft(draft, adapted.gate);
 
-    expect(competitionCost(input, "adaptiveCompliant").central).toBe(252_000);
+    expect(competitionCost(input, "formalSequential").central).toBe(0);
+    expect(competitionCost(input, "adaptiveCompliant").central).toBe(0);
   });
 
   it("requires primitive confirmation and the original unmodified adapter audit", () => {

@@ -38,7 +38,7 @@ const calculatorPl = {
   contractDuration: "Czas trwania kontraktu (lata)",
   discountRate: "Stopa dyskontowa (% rocznie)",
   discountRateTooltip:
-    "Realna roczna stopa dyskontowa dla przepływów cyklu życia (aneksy, TCO). Model sprowadza je do wartości bieżącej na moment udzielenia zamówienia. To jedyna baza czasowa całego rachunku. Domyślne 4% to realna finansowa stopa dyskontowa z wytycznych MFiPR 2021–2027 (stopa społeczna w tych samych wytycznych to 3%, właściwa dla oceny projektów publicznych). Jawne założenie, nie oszacowanie. Wpisanie 0 odtwarza niedyskontowany model 2.1.",
+    "Realna roczna stopa dyskontowa dla przepływów cyklu życia (aneksy, TCO). Model sprowadza je do wartości bieżącej na moment udzielenia zamówienia. To jedyna baza czasowa całego rachunku. Domyślne 4% to realna finansowa stopa dyskontowa z wytycznych MFiPR 2021–2027 (stopa społeczna w tych samych wytycznych to 3%, właściwa dla oceny projektów publicznych). Jawne założenie, nie oszacowanie. Wpisanie 0 wyłącza dyskontowanie.",
   bypassExposure: "Ryzyko audytowe przy obejściu (PLN)",
   bypassTooltip:
     "Szacowany koszt audytu, kary regulacyjne lub reputacyjne jeśli nieformalne obejście procedury zostanie odkryte. Wartość podaje użytkownik. Lipsky (1980) i Vaughan (1996) uzasadniają sam mechanizm obejścia, ale nie dostarczają ani jego kosztu, ani częstości.",
@@ -107,7 +107,7 @@ const calculatorEn = {
   contractDuration: "Contract duration (years)",
   discountRate: "Discount rate (% per year)",
   discountRateTooltip:
-    "Real annual discount rate for lifecycle flows (amendments, TCO). The model brings them to present value at award. This is the single time base for the whole calculation. The 4% default is the real financial discount rate from the Polish MFiPR 2021–2027 appraisal guidelines (the social rate in the same guidelines is 3%, appropriate for public-appraisal use). A declared assumption, not an estimate. Entering 0 reproduces the undiscounted 2.1 model.",
+    "Real annual discount rate for lifecycle flows (amendments, TCO). The model brings them to present value at award. This is the single time base for the whole calculation. The 4% default is the real financial discount rate from the Polish MFiPR 2021–2027 appraisal guidelines (the social rate in the same guidelines is 3%, appropriate for public-appraisal use). A declared assumption, not an estimate. Entering 0 disables discounting.",
   bypassExposure: "Audit exposure on bypass (PLN)",
   bypassTooltip:
     "Estimated audit cost, regulatory or reputational penalties if an informal procedure bypass is discovered. User-supplied. Lipsky (1980) and Vaughan (1996) motivate the bypass mechanism; neither supplies its cost or its rate.",
@@ -438,6 +438,11 @@ const calculatorV2Pl = {
     contractValue: "Wartość kontraktu",
     dailyCostOfDelay: "Dzienny koszt zwłoki",
     competitionTransfer: "Zakres transferu konkurencji cenowej",
+    competitionDisadvantagedAlternative:
+      "Wariant z ograniczonym dostępem dostawców",
+    noDeclaredCompetitionDifference: "Brak zadeklarowanej różnicy",
+    competitionDisadvantagedDisclosure:
+      "Zakres transferu jest doliczany wyłącznie do wskazanego wariantu. To jawne założenie kontrfaktyczne, a nie cecha etykiety procesu.",
     roleRates: "Stawki godzinowe ról",
     fixedDimensions: "Stała granica neutralności modelu",
     fixedNeutral: "Utrzymane centralnie na poziomie zero do czasu wskazania danych lub reguły alokacji.",
@@ -478,6 +483,10 @@ const calculatorV2Pl = {
       "Zakres musi zawierać nieujemne wartości w kolejności niska, centralna, wysoka.",
     competitionTransferOutOfBounds:
       "Zakres transferu konkurencji cenowej musi mieścić się od 0 do 1.",
+    competitionDisadvantagedAlternativeRequired:
+      "Przed obliczeniem wskaż wariant z ograniczonym dostępem dostawców.",
+    competitionDisadvantagedAlternativeNotApplicable:
+      "Wariant z ograniczonym dostępem dostawców musi pozostać pusty, gdy nie zadeklarowano różnicy między ścieżkami.",
     invalidStepKind:
       "Krok użytkownika może być czynnością, zatwierdzeniem albo kamieniem milowym.",
     illegalContext:
@@ -669,6 +678,11 @@ const calculatorV2En = {
     contractValue: "Contract value",
     dailyCostOfDelay: "Daily cost of delay",
     competitionTransfer: "Price-competition transfer range",
+    competitionDisadvantagedAlternative:
+      "Alternative with restricted supplier access",
+    noDeclaredCompetitionDifference: "No declared difference",
+    competitionDisadvantagedDisclosure:
+      "The declared transfer range is applied only to the selected alternative. This is an explicit counterfactual assumption, not a property of either workflow label.",
     roleRates: "Role hourly rates",
     fixedDimensions: "Fixed model-neutrality boundary",
     fixedNeutral: "Held centrally at zero until data or an allocation rule is supplied.",
@@ -709,6 +723,10 @@ const calculatorV2En = {
       "The range must contain non-negative values ordered low, central and high.",
     competitionTransferOutOfBounds:
       "The price-competition transfer range must stay between 0 and 1.",
+    competitionDisadvantagedAlternativeRequired:
+      "Select the alternative with restricted supplier access before calculation.",
+    competitionDisadvantagedAlternativeNotApplicable:
+      "The alternative with restricted supplier access must remain empty when no path difference is declared.",
     invalidStepKind:
       "A user step may be an activity, approval or milestone.",
     illegalContext:
@@ -904,10 +922,10 @@ const homePl = {
   },
   implementation: {
     eyebrow: "Od modelu do wdrożenia",
-    title: "Koszt procesu i gotowość organizacyjna wymagają odrębnych ocen",
+    title: "Rachunek kosztu i samoopis gotowości to odrębne analizy",
     body:
-      "Porównanie kosztów nie potwierdza właścicielstwa, jakości wymagań, danych ani adopcji. Diagnostyka porządkuje te warunki, a materiał Procurement&Beyond pokazuje ich praktyczny kontekst.",
-    readinessAction: "Sprawdź gotowość organizacyjną do wdrożenia",
+      "Porównanie kosztów nie potwierdza właścicielstwa, jakości wymagań, danych ani adopcji. Samoopis porządkuje deklarowane warunki, a materiał Procurement&Beyond pokazuje ich praktyczny kontekst.",
+    readinessAction: "Otwórz samoopis gotowości do wdrożenia",
     practiceAction: "Przejdź do materiału Procurement&Beyond",
   },
   finalAction: {
@@ -1068,10 +1086,10 @@ const homeEn = {
   },
   implementation: {
     eyebrow: "From model to implementation",
-    title: "Process cost and organisational readiness require separate assessments",
+    title: "Cost analysis and readiness self-description are separate exercises",
     body:
-      "A cost comparison does not establish ownership, requirement quality, data readiness or adoption. The diagnostic structures those conditions, while Procurement&Beyond material provides practitioner context.",
-    readinessAction: "Assess organisational implementation readiness",
+      "A cost comparison does not establish ownership, requirement quality, data readiness or adoption. The self-description structures declared conditions, while Procurement&Beyond material provides practitioner context.",
+    readinessAction: "Open the implementation-readiness self-description",
     practiceAction: "Open the Procurement&Beyond material",
   },
   finalAction: {
@@ -1156,11 +1174,11 @@ const researchPaperEn = {
   evidenceBoundary: {
     title: "Evidence and transfer limits",
     body:
-      "The evidence register distinguishes empirical anchors, official examples, retained scenario assumptions, practitioner observations and research hypotheses. Source relevance does not by itself justify numerical transfer.",
+      "The evidence register distinguishes empirical anchors, official examples, retained scenario assumptions, internal illustrative allocations, practitioner observations and research hypotheses. Source relevance does not by itself justify numerical transfer.",
     items: [
       "Szucs provides the bounded empirical anchor for a competition-to-price channel in Hungarian procurement below the studied threshold. The 2, 6 and 9 per cent range is an explicit stress transfer, not an estimate for Poland.",
       "Official material from UZP, the European Commission, OECD and California describes mechanisms such as market consultation, problem definition and modular contracting. It does not calibrate ProcuraCost cost effects.",
-      "Economic values and workflow seeds retained from model 2.2.2 remain labelled as historical scenario assumptions requiring organisational verification.",
+      "Economic values, hourly rates, aggregate day totals, system-support multipliers and coordination or tool-cost profiles retained from model 2.2.2 remain labelled historical assumptions. For the five mechanism scenarios, step order, day allocation and role-hour allocation are illustrative model 2.3 inputs; external cases support constructs only, not duration, effort or cost.",
     ],
   },
   practitionerTitle: "Practitioner-material boundary",
@@ -1183,7 +1201,7 @@ const researchPaperEn = {
     },
     {
       label:
-        "Beuve, J., Moszoro, M., and Saussier, S. (2023). Political Contestability and Contract Rigidity: An Analysis of Procurement Contracts. Journal of Law, Economics, and Organization, 39(2), 316-348.",
+        "Beuve, J., Moszoro, M. W., and Spiller, P. T. (2023). Doing It by the Book: Political Contestability and Public Contract Renegotiations. Journal of Law, Economics, and Organization, 39(1), 281-308.",
       href: "https://doi.org/10.1093/jleo/ewab039",
     },
     {
@@ -1523,6 +1541,7 @@ const researchExportV2Pl = {
     nonMonetized: "Wymiary niemonetyzowane",
     assumptions: "Założenia",
     calculationAnchors: "Kotwice obliczeniowe",
+    internalEvidence: "Wewnętrzne pochodzenie map przebiegu",
     externalEvidence: "Dowody zewnętrzne",
     retainedAssumptions: "Przeniesione założenia modelu 2.2.2",
     legalProvenance: "Pochodzenie reguł prawnych",
@@ -1651,6 +1670,8 @@ const researchExportV2Pl = {
     contractValue: "Wartość kontraktu",
     dailyCostOfInaction: "Dzienny koszt zwłoki",
     pathCompetitionDiffers: "Czy konkurencja między ścieżkami się różni",
+    competitionDisadvantagedAlternative:
+      "Wariant z ograniczonym dostępem dostawców",
     competitionTransferRate: "Zakres transferu konkurencji",
     amendmentDifferential: "Różnica kosztu aneksów",
     tcoDifferential: "Różnica alokacji TCO",
@@ -1740,6 +1761,7 @@ const researchExportV2En = {
     nonMonetized: "Non-monetised dimensions",
     assumptions: "Assumptions",
     calculationAnchors: "Calculation anchors",
+    internalEvidence: "Internal workflow provenance",
     externalEvidence: "External evidence",
     retainedAssumptions: "Retained model 2.2.2 assumptions",
     legalProvenance: "Legal provenance",
@@ -1868,6 +1890,8 @@ const researchExportV2En = {
     contractValue: "Contract value",
     dailyCostOfInaction: "Daily cost of delay",
     pathCompetitionDiffers: "Whether competition differs between alternatives",
+    competitionDisadvantagedAlternative:
+      "Alternative with restricted supplier access",
     competitionTransferRate: "Competition-transfer range",
     amendmentDifferential: "Contract-amendment cost difference",
     tcoDifferential: "TCO-allocation difference",
@@ -2209,7 +2233,7 @@ const methodologyOverviewPl = {
         {
           scenarioId: "public_it_open_with_market_consultation",
           title: "Publiczne IT z wstępnymi konsultacjami rynkowymi",
-          body: "Konsultacje mogą doprecyzować potrzebę przed przetargiem nieograniczonym. Ustawowe terminy składania ofert i standstill pozostają jednakowe dla obu alternatyw.",
+          body: "Konsultacje mogą doprecyzować potrzebę przed przetargiem nieograniczonym. Ustawowe terminy składania ofert i obowiązkowe terminy przed zawarciem umowy pozostają jednakowe dla obu alternatyw.",
         },
         {
           scenarioId: "discovery_solution_codesign",
@@ -2224,7 +2248,7 @@ const methodologyOverviewPl = {
         {
           scenarioId: "stable_private_standard_service",
           title: "Stabilna usługa standardowa",
-          body: "Przy znanym wymaganiu i powtarzalnym rynku najpierw należy uprościć przebieg i kontrolę, zamiast dodawać discovery bez wskazanego ryzyka.",
+          body: "Przy znanym wymaganiu i powtarzalnym rynku najpierw należy uprościć przebieg i kontrolę, zamiast dodawać etap rozpoznania bez wskazanego ryzyka.",
         },
         {
           scenarioId: "stable_capex_replacement",
@@ -2234,7 +2258,7 @@ const methodologyOverviewPl = {
         {
           scenarioId: "catalog_calloff_control / mrp_release_control",
           title: "Realizacja z katalogu albo MRP",
-          body: "Dostawca, cena i warunki są już zakontraktowane. Właściwym problemem jest sprawna realizacja transakcji i obsługa wyjątków, nie ponowne projektowanie sourcingu.",
+          body: "Dostawca, cena i warunki są już zakontraktowane. Właściwym problemem jest sprawna realizacja transakcji i obsługa wyjątków, nie ponowne projektowanie postępowania zakupowego.",
         },
       ],
     },
@@ -2255,7 +2279,7 @@ const methodologyOverviewPl = {
   actions: {
     model: "Model i założenia",
     calculator: "Kalkulator",
-    readiness: "Diagnostyka gotowości",
+    readiness: "Samoopis gotowości",
     practice: "Materiał praktyczny",
     research: "Artykuł badawczy i bibliografia",
   },
@@ -2361,7 +2385,7 @@ const methodologyOverviewEn = {
   actions: {
     model: "Model and assumptions",
     calculator: "Calculator",
-    readiness: "Readiness diagnostic",
+    readiness: "Readiness self-description",
     practice: "Practitioner material",
     research: "Working paper and references",
   },
@@ -2385,6 +2409,7 @@ const pdfExportV2Pl = {
     nonMonetized: "Wymiary niemonetyzowane",
     assumptions: "Założenia",
     calculationAnchors: "Kotwice obliczeniowe",
+    internalEvidence: "Wewnętrzne pochodzenie map przebiegu",
     evidence: "Dowody zewnętrzne",
     retainedAssumptions: "Przeniesione założenia",
     legalProvenance: "Pochodzenie reguł prawnych",
@@ -2529,6 +2554,7 @@ const pdfExportV2En = {
     nonMonetized: "Non-monetised dimensions",
     assumptions: "Assumptions",
     calculationAnchors: "Calculation anchors",
+    internalEvidence: "Internal workflow provenance",
     evidence: "External evidence",
     retainedAssumptions: "Retained assumptions",
     legalProvenance: "Legal provenance",
@@ -2668,7 +2694,9 @@ const decisionRecordPl = {
     drivers: "Analiza czynników kosztowych",
     coverage: "Zakres monetyzacji",
     assumptions: "Założenia rekordu",
-    evidence: "Dowody zewnętrzne",
+    evidence: "Pochodzenie i dowody",
+    internalEvidence: "Wewnętrzne pochodzenie map przebiegu",
+    externalEvidence: "Dowody zewnętrzne",
     reference: "Porównanie ze scenariuszem referencyjnym",
     actions: "Eksport i nota metodologiczna",
   },
@@ -2796,7 +2824,9 @@ const decisionRecordEn = {
     drivers: "Cost-driver analysis",
     coverage: "Monetisation coverage",
     assumptions: "Record assumptions",
-    evidence: "External evidence",
+    evidence: "Provenance and evidence",
+    internalEvidence: "Internal workflow provenance",
+    externalEvidence: "External evidence",
     reference: "Reference scenario comparison",
     actions: "Exports and methodology note",
   },
@@ -3645,7 +3675,7 @@ const processProfileEn = {
   },
   actions: {
     calculator: "Compare the cost of two workflow designs",
-    readiness: "Assess organisational implementation readiness",
+    readiness: "Open the implementation-readiness self-description",
     restart: "Clear the profile and start again",
   },
 } satisfies ProcessProfileCopyShape;
@@ -3831,7 +3861,7 @@ const teamPl = {
     title: "Odpowiedzialność za model i odpowiedzialność za wdrożenie",
     body:
       "Model wspiera uporządkowanie porównania. Właściciel procesu nadal odpowiada za cel, wymagania, dane, decyzje, adopcję i mierzenie wartości.",
-    readinessAction: "Diagnostyka gotowości",
+    readinessAction: "Samoopis gotowości",
     practiceAction: "Rozmowa Procurement&Beyond",
   },
   roles: {
@@ -3846,7 +3876,7 @@ const teamPl = {
   competencies: {
     procurement: {
       label: "Zakupy",
-      description: "Sourcing, kategorie zakupowe i negocjacje.",
+      description: "Strategie pozyskania dostawców, zarządzanie kategoriami i negocjacje.",
     },
     analytics: {
       label: "Analityka",
@@ -3890,7 +3920,7 @@ const teamEn = {
     title: "Accountability for the model and accountability for implementation",
     body:
       "The model structures a comparison. The process owner remains accountable for purpose, requirements, data, decisions, adoption and value measurement.",
-    readinessAction: "Readiness diagnostic",
+    readinessAction: "Readiness self-description",
     practiceAction: "Procurement&Beyond conversation",
   },
   roles: {
@@ -4016,11 +4046,11 @@ const modelV2Pl = {
     fleet_tco_reframing: {
       name: "Flota: przeformułowanie TCO",
       description:
-        "Zakup floty z jawnym kosztem zwłoki i oddzielonym założeniem wartości cyklu życia.",
+        "Zakup floty, w którym warsztat kosztu cyklu życia jest widoczny w mapie procesu, bez monetyzowanej różnicy TCO między wariantami.",
       sourceTitle: "Scenariusz 2.2.2: zakup floty pojazdów",
       assumptionLabel: "Przeniesione założenia scenariusza floty",
       assumptionDetail:
-        "Wartość kontraktu, koszt dnia, stawki ról i przebieg procesu są zakresami założeń przeniesionymi z modelu 2.2.2. Nie są obserwacją empiryczną.",
+        "Wartości ekonomiczne, surowe sumy 44/24 dni oraz profil wsparcia systemowego i kosztów koordynacji lub narzędzi zachowują centra modelu 2.2.2. Kolejność kroków, podział dni i alokacje godzin ról są ilustracyjnymi założeniami modelu 2.3. Zewnętrzne studia przypadków wspierają wyłącznie nazwane mechanizmy, nie czasy, nakład pracy ani koszty.",
     },
     erp_transformation_discovery: {
       name: "Transformacja ERP: etap odkrywania",
@@ -4029,7 +4059,7 @@ const modelV2Pl = {
       sourceTitle: "Scenariusz 2.2.2: kontrakt IT i ERP",
       assumptionLabel: "Przeniesione założenia scenariusza ERP",
       assumptionDetail:
-        "Wartość kontraktu, koszt dnia, stawki ról i czasy czynności zachowano jako jawne zakresy założeń modelu 2.2.2.",
+        "Wartości ekonomiczne, surowe sumy 44/24 dni oraz profil wsparcia systemowego i kosztów koordynacji lub narzędzi zachowują centra modelu 2.2.2. Kolejność kroków, podział dni i alokacje godzin ról są ilustracyjnymi założeniami modelu 2.3. Zewnętrzne studia przypadków wspierają wyłącznie nazwane mechanizmy, nie czasy, nakład pracy ani koszty.",
     },
     logistics_service_redesign: {
       name: "Przeprojektowanie usługi logistycznej",
@@ -4038,7 +4068,7 @@ const modelV2Pl = {
       sourceTitle: "Scenariusz 2.2.2: usługi logistyczne",
       assumptionLabel: "Przeniesione założenia scenariusza logistycznego",
       assumptionDetail:
-        "Wartości ekonomiczne i czasy procesu pochodzą z rejestru scenariuszy 2.2.2 i pozostają założeniami do potwierdzenia.",
+        "Wartości ekonomiczne, surowe sumy 44/24 dni oraz profil wsparcia systemowego i kosztów koordynacji lub narzędzi zachowują centra modelu 2.2.2. Kolejność kroków, podział dni i alokacje godzin ról są ilustracyjnymi założeniami modelu 2.3. Zewnętrzne studia przypadków wspierają wyłącznie nazwane mechanizmy, nie czasy, nakład pracy ani koszty.",
     },
     critical_material_continuity: {
       name: "Ciągłość dostaw materiału krytycznego",
@@ -4047,7 +4077,7 @@ const modelV2Pl = {
       sourceTitle: "Scenariusz 2.2.2: materiały produkcyjne",
       assumptionLabel: "Przeniesione założenia ciągłości dostaw",
       assumptionDetail:
-        "Koszt dnia i pozostałe wartości są założeniami ekonomiki zakładu przeniesionymi z modelu 2.2.2, nie pomiarem przestoju.",
+        "Wartości ekonomiczne, surowe sumy 44/24 dni oraz profil wsparcia systemowego i kosztów koordynacji lub narzędzi zachowują centra modelu 2.2.2. Kolejność kroków, podział dni i alokacje godzin ról są ilustracyjnymi założeniami modelu 2.3. Zewnętrzne studia przypadków wspierają wyłącznie nazwane mechanizmy, nie czasy, nakład pracy ani koszty.",
     },
     public_it_open_with_market_consultation: {
       name: "Publiczne IT: przetarg nieograniczony z konsultacjami",
@@ -4056,16 +4086,16 @@ const modelV2Pl = {
       sourceTitle: "Scenariusz 2.2.2: publiczny zakup IT",
       assumptionLabel: "Przeniesione założenia publicznego zakupu IT",
       assumptionDetail:
-        "Wartości ekonomiczne i czasy pracy są założeniami scenariusza. Terminy PZP pochodzą oddzielnie z wersjonowanego zbioru reguł prawnych.",
+        "Wartości ekonomiczne, surowe sumy 42/26 dni bez terminów prawnych oraz profil wsparcia systemowego i kosztów koordynacji lub narzędzi zachowują centra modelu 2.2.2. Kolejność kroków, podział dni i alokacje godzin ról są ilustracyjnymi założeniami modelu 2.3. Terminy PZP pochodzą z wersjonowanego zbioru reguł prawnych. Zewnętrzne studia przypadków wspierają wyłącznie nazwane mechanizmy, nie czasy, nakład pracy ani koszty.",
     },
     stable_private_standard_service: {
       name: "Stabilna standardowa usługa prywatna",
       description:
-        "Scenariusz kontrolny dla standaryzowanego zakupu przy zerowym centralnym koszcie zwłoki.",
-      sourceTitle: "Scenariusz 2.2.2: stabilny zakup kontrolny",
+        "Kontrola topologii pracy dla standaryzowanego zakupu: mapy są identyczne, lecz wynik nie jest neutralny, ponieważ scenariusz jawnie porównuje otwartą konkurencję z ograniczonym dostępem dostawców.",
+      sourceTitle: "Scenariusz 2.2.2: kontrola mapy stabilnego zakupu",
       assumptionLabel: "Przeniesione założenia stabilnego zakupu",
       assumptionDetail:
-        "Standaryzacja zakupu, mapy procesu i wartości ekonomiczne są deklarowanymi założeniami kontrolnymi, nie wynikami badania.",
+        "Jawny stres transferu cenowego oparty na badaniu Szucsa porównuje otwartą konkurencję według kryteriów polityki z ograniczoną listą dostawców lub pozostaniem przy dotychczasowym dostawcy po rozpoznaniu rynku. Nie jest właściwością adaptacyjnego projektu procesu ani oszacowanym efektem dla tego scenariusza.",
     },
     stable_capex_replacement: {
       name: "Stabilna inwestycja odtworzeniowa CAPEX",
@@ -4163,6 +4193,18 @@ const modelV2Pl = {
       assumption:
         "Zakres stresu 2, 6 i 9 procent jest jawnym transferem scenariuszowym, nie estymacją dla Polski.",
     },
+    mechanismWorkflow: {
+      sourceTitle: "Alokacje mechanizmowych map przebiegu w modelu 2.3",
+      publisher: "Rejestr modelu ProcuraCost",
+      supported:
+        "Zapis dokumentuje ilustracyjną kolejność kroków, podział dni i rozkład godzin ról w modelu 2.3. Surowe sumy pozostają na poziomie 44/24 dni, a dla publicznego IT 42/26 dni. Zachowane mnożniki wsparcia systemowego oraz profile kosztów koordynacji i narzędzi przenoszą centra modelu 2.2.2.",
+      unsupported:
+        "Nie jest dowodem empirycznym czasu, nakładu pracy, kosztu ani wpływu któregokolwiek projektu przebiegu. Zewnętrzne studia przypadków wspierają wyłącznie nazwane mechanizmy.",
+      population:
+        "Pięć ilustracyjnych scenariuszy map przebiegu modelu ProcuraCost 2.3",
+      assumption:
+        "Kolejność kroków, podział dni i rozkład godzin ról są ilustracyjnymi założeniami modelu 2.3. Oddzielny zapis przeniesiony ze scenariusza obejmuje wartości ekonomiczne, stawki godzinowe, mnożnik wsparcia oraz profil kosztów koordynacji i narzędzi.",
+    },
   },
   workflow: {
     defineNeed: "Zdefiniowanie potrzeby",
@@ -4202,6 +4244,45 @@ const modelV2Pl = {
       mrp_trigger: "Sygnał MRP",
       po_generation: "Generowanie i weryfikacja zamówienia",
       goods_receipt: "Potwierdzenie odbioru",
+      fleet_operating_baseline: "Stan bazowy wykorzystania floty",
+      fleet_lifecycle_cost_workshop:
+        "Warsztat kosztu cyklu życia floty",
+      fleet_use_case_requirements:
+        "Wymagania według przypadków użycia",
+      fleet_market_sounding: "Rozpoznanie rynku flotowego",
+      fleet_offer_evaluation: "Ocena ofert i wariantów floty",
+      fleet_contract_award: "Uzgodnienie i zawarcie umowy flotowej",
+      erp_current_state_baseline: "Stan obecny procesów i systemów",
+      erp_problem_framing: "Definicja problemu transformacji ERP",
+      erp_supplier_discovery: "Rozpoznanie dostawców i rozwiązań ERP",
+      erp_modular_scope: "Modułowy zakres wdrożenia",
+      erp_offer_evaluation: "Ocena ofert i negocjacje ERP",
+      erp_contract_award: "Uzgodnienie i zawarcie umowy ERP",
+      logistics_service_baseline: "Stan bazowy usługi logistycznej",
+      logistics_market_engagement: "Dialog z rynkiem usług logistycznych",
+      logistics_sla_interfaces: "Projekt SLA i interfejsów operacyjnych",
+      logistics_service_requirements: "Wymagania dla modelu usługi",
+      logistics_offer_evaluation: "Ocena ofert logistycznych",
+      logistics_contract_award:
+        "Uzgodnienie i zawarcie umowy logistycznej",
+      critical_continuity_risk: "Ocena ryzyka ciągłości",
+      critical_supply_mapping: "Mapa rynku i źródeł dostaw",
+      critical_contingency_design: "Plan zabezpieczenia ciągłości",
+      critical_sourcing_strategy:
+        "Strategia pozyskania materiału krytycznego",
+      critical_supplier_selection: "Ocena i wybór dostawców",
+      critical_contract_award: "Uzgodnienie i zawarcie umowy dostaw",
+      public_it_needs_definition: "Zdefiniowanie potrzeb dla zamówienia IT",
+      public_it_preliminary_market_consultation:
+        "Wstępne konsultacje rynkowe dla IT",
+      public_it_consultation_synthesis:
+        "Synteza ustaleń z konsultacji",
+      public_it_procurement_documents:
+        "Przygotowanie dokumentów zamówienia IT",
+      public_it_bid_evaluation: "Ocena ofert w zamówieniu IT",
+      public_it_clarifications: "Wyjaśnienia treści ofert IT",
+      public_it_award_committee: "Komisja przetargowa i wybór oferty",
+      public_it_contract_signing: "Zawarcie umowy publicznego IT",
       userDefined: "Krok użytkownika",
     },
     legal: {
@@ -4261,11 +4342,11 @@ const modelV2En: WidenModelV2Copy<typeof modelV2Pl> = {
     fleet_tco_reframing: {
       name: "Fleet TCO reframing",
       description:
-        "Fleet procurement with an explicit delay cost and a separate lifecycle-value assumption.",
+        "Fleet procurement with a lifecycle-cost workshop visible in the workflow, without a monetised TCO difference between alternatives.",
       sourceTitle: "Model 2.2.2 scenario: vehicle fleet procurement",
       assumptionLabel: "Retained fleet scenario assumptions",
       assumptionDetail:
-        "Contract value, daily cost, role rates and workflow are assumption ranges retained from model 2.2.2. They are not empirical observations.",
+        "Economic values, the raw 44/24-day totals, and the system-support and coordination or tool-cost profile preserve model 2.2.2 centres. Step order, day allocation and role-hour allocations are illustrative model 2.3 assumptions. External case studies support only the named mechanisms, not duration, effort or cost.",
     },
     erp_transformation_discovery: {
       name: "ERP transformation discovery",
@@ -4274,7 +4355,7 @@ const modelV2En: WidenModelV2Copy<typeof modelV2Pl> = {
       sourceTitle: "Model 2.2.2 scenario: IT and ERP contract",
       assumptionLabel: "Retained ERP scenario assumptions",
       assumptionDetail:
-        "Contract value, daily cost, role rates and activity times remain explicit assumption ranges retained from model 2.2.2.",
+        "Economic values, the raw 44/24-day totals, and the system-support and coordination or tool-cost profile preserve model 2.2.2 centres. Step order, day allocation and role-hour allocations are illustrative model 2.3 assumptions. External case studies support only the named mechanisms, not duration, effort or cost.",
     },
     logistics_service_redesign: {
       name: "Logistics service redesign",
@@ -4283,7 +4364,7 @@ const modelV2En: WidenModelV2Copy<typeof modelV2Pl> = {
       sourceTitle: "Model 2.2.2 scenario: logistics services",
       assumptionLabel: "Retained logistics scenario assumptions",
       assumptionDetail:
-        "Economic values and process times come from the 2.2.2 scenario registry and remain assumptions requiring confirmation.",
+        "Economic values, the raw 44/24-day totals, and the system-support and coordination or tool-cost profile preserve model 2.2.2 centres. Step order, day allocation and role-hour allocations are illustrative model 2.3 assumptions. External case studies support only the named mechanisms, not duration, effort or cost.",
     },
     critical_material_continuity: {
       name: "Critical material continuity",
@@ -4292,7 +4373,7 @@ const modelV2En: WidenModelV2Copy<typeof modelV2Pl> = {
       sourceTitle: "Model 2.2.2 scenario: production materials",
       assumptionLabel: "Retained supply-continuity assumptions",
       assumptionDetail:
-        "The daily cost and other values are plant-economics assumptions retained from model 2.2.2, not measured downtime.",
+        "Economic values, the raw 44/24-day totals, and the system-support and coordination or tool-cost profile preserve model 2.2.2 centres. Step order, day allocation and role-hour allocations are illustrative model 2.3 assumptions. External case studies support only the named mechanisms, not duration, effort or cost.",
     },
     public_it_open_with_market_consultation: {
       name: "Public IT: open procedure with market consultation",
@@ -4301,16 +4382,16 @@ const modelV2En: WidenModelV2Copy<typeof modelV2Pl> = {
       sourceTitle: "Model 2.2.2 scenario: public IT procurement",
       assumptionLabel: "Retained public IT procurement assumptions",
       assumptionDetail:
-        "Economic values and work times are scenario assumptions. PZP periods come separately from the versioned legal ruleset.",
+        "Economic values, the raw 42/26-day totals excluding legal periods, and the system-support and coordination or tool-cost profile preserve model 2.2.2 centres. Step order, day allocation and role-hour allocations are illustrative model 2.3 assumptions. PZP periods come from the versioned legal ruleset. External case studies support only the named mechanisms, not duration, effort or cost.",
     },
     stable_private_standard_service: {
       name: "Stable private standard service",
       description:
-        "A control scenario for a standardised purchase with a zero central delay cost.",
-      sourceTitle: "Model 2.2.2 scenario: stable purchase control",
+        "A workflow-topology control for a standardised purchase: the maps are identical, but the result is not neutral because the scenario explicitly compares open competition with restricted supplier access.",
+      sourceTitle: "Model 2.2.2 scenario: stable-purchase map control",
       assumptionLabel: "Retained stable-purchase assumptions",
       assumptionDetail:
-        "Purchase standardisation, workflow maps and economic values are declared control assumptions, not research findings.",
+        "The declared price-transfer stress based on Szucs compares open competition under the procurement policy criteria with a restricted supplier shortlist or incumbent continuation after market discovery. It is not a property of adaptive workflow design or an estimated effect for this scenario.",
     },
     stable_capex_replacement: {
       name: "Stable CAPEX replacement",
@@ -4409,6 +4490,18 @@ const modelV2En: WidenModelV2Copy<typeof modelV2Pl> = {
       assumption:
         "The 2, 6 and 9 per cent stress range is an explicit scenario transfer, not an estimate for Poland.",
     },
+    mechanismWorkflow: {
+      sourceTitle: "Model 2.3 mechanism-workflow allocations",
+      publisher: "ProcuraCost model registry",
+      supported:
+        "The record documents illustrative model 2.3 step ordering, day allocation and role-hour distribution. Raw totals remain 44/24 days, or 42/26 days for public IT. Retained system-support multipliers and coordination and tool-cost profiles carry forward model 2.2.2 centres.",
+      unsupported:
+        "It is not empirical evidence of duration, effort, cost or the effect of either workflow design. External case studies support only the named mechanisms.",
+      population:
+        "Five illustrative ProcuraCost model 2.3 workflow scenarios",
+      assumption:
+        "Step order, day allocation and role-hour distribution are illustrative model 2.3 assumptions. A separate retained scenario record covers economic values, hourly rates, the support multiplier, and coordination and tool-cost profiles.",
+    },
   },
   workflow: {
     defineNeed: "Define the need",
@@ -4448,6 +4541,39 @@ const modelV2En: WidenModelV2Copy<typeof modelV2Pl> = {
       mrp_trigger: "MRP trigger",
       po_generation: "Purchase-order generation and verification",
       goods_receipt: "Goods receipt confirmation",
+      fleet_operating_baseline: "Fleet operating baseline",
+      fleet_lifecycle_cost_workshop: "Fleet lifecycle-cost workshop",
+      fleet_use_case_requirements: "Use-case-based requirements",
+      fleet_market_sounding: "Fleet market sounding",
+      fleet_offer_evaluation: "Fleet options and tender evaluation",
+      fleet_contract_award: "Fleet contract alignment and award",
+      erp_current_state_baseline: "Current-state process and systems baseline",
+      erp_problem_framing: "ERP transformation problem framing",
+      erp_supplier_discovery: "ERP supplier and solution discovery",
+      erp_modular_scope: "Modular implementation scope",
+      erp_offer_evaluation: "ERP tender evaluation and negotiation",
+      erp_contract_award: "ERP contract alignment and award",
+      logistics_service_baseline: "Logistics service baseline",
+      logistics_market_engagement: "Logistics market engagement",
+      logistics_sla_interfaces: "SLA and operating-interface design",
+      logistics_service_requirements: "Service-model requirements",
+      logistics_offer_evaluation: "Logistics tender evaluation",
+      logistics_contract_award: "Logistics contract alignment and award",
+      critical_continuity_risk: "Continuity-risk assessment",
+      critical_supply_mapping: "Supply-market and source mapping",
+      critical_contingency_design: "Continuity contingency design",
+      critical_sourcing_strategy: "Critical-material sourcing strategy",
+      critical_supplier_selection: "Supplier assessment and selection",
+      critical_contract_award: "Supply contract alignment and award",
+      public_it_needs_definition: "Public IT needs definition",
+      public_it_preliminary_market_consultation:
+        "Preliminary market consultation for IT",
+      public_it_consultation_synthesis: "Market-consultation synthesis",
+      public_it_procurement_documents: "Public IT procurement documents",
+      public_it_bid_evaluation: "Public IT tender evaluation",
+      public_it_clarifications: "Public IT tender clarifications",
+      public_it_award_committee: "Award committee and tender selection",
+      public_it_contract_signing: "Public IT contract conclusion",
       userDefined: "User-defined step",
     },
     legal: {
@@ -4523,10 +4649,13 @@ const modelAssumptionsPl = {
       "Pozycje zachowują kolejność rejestru modelu. Każda ujawnia sześć osi kontekstu oraz pełne metadane zakresów ekonomicznych.",
     provenanceTitle: "Rejestr pochodzenia",
     provenanceIntro:
-      "Trzy zbiory pełnią odrębne funkcje: zachowują założenia wejściowe, opisują źródła zewnętrzne albo blokują terminy wynikające z reguł prawnych.",
+      "Cztery zbiory pełnią odrębne funkcje: zachowują założenia wejściowe, ujawniają ilustracyjne alokacje map 2.3, opisują źródła zewnętrzne albo blokują terminy wynikające z reguł prawnych.",
     retainedTitle: "Przeniesione założenia",
     retainedIntro:
-      "Wartości, stawki i przebiegi zachowane z modelu 2.2.2. Są założeniami scenariusza do weryfikacji w danej organizacji, nie obserwacjami empirycznymi.",
+      "Wartości ekonomiczne, stawki godzinowe, sumy dni, mnożniki wsparcia systemowego oraz profile kosztów koordynacji i narzędzi zachowano z modelu 2.2.2. Kolejność kroków, podział dni i alokacje godzin ról w pięciu mapach mechanizmowych należą do oddzielnego zapisu ilustracyjnego 2.3.",
+    internalTitle: "Wewnętrzne pochodzenie map przebiegu",
+    internalIntro:
+      "Zapis ujawnia ilustracyjną kolejność kroków, podział dni i alokacje godzin ról w pięciu mapach. Nie jest źródłem empirycznym; zewnętrzne studia przypadków wspierają tylko nazwane mechanizmy.",
     externalTitle: "Dowody zewnętrzne",
     externalIntro:
       "Źródła opisują mechanizmy, przypadki i granice transferu. Identyfikatory źródeł urzędowych nie służą do kalibracji wartości ekonomicznych.",
@@ -4547,6 +4676,8 @@ const modelAssumptionsPl = {
     context: "Kontekst zakupowy",
     economicAssumptions: "Założenia ekonomiczne",
     pathCompetitionDiffers: "Różnica ekspozycji konkurencyjnej",
+    competitionDisadvantagedAlternative:
+      "Wariant z ograniczonym dostępem dostawców",
     low: "Niski",
     central: "Centralny",
     high: "Wysoki",
@@ -4612,6 +4743,7 @@ const modelAssumptionsPl = {
     official_report: "raport instytucjonalny",
     peer_reviewed_article: "artykuł recenzowany naukowo",
     practitioner_report: "materiał praktyka",
+    internal_model_record: "wewnętrzny zapis modelu 2.3",
     legacy_model_registry: "rejestr poprzedniej wersji modelu",
   },
   constructs: {
@@ -4672,10 +4804,13 @@ const modelAssumptionsEn = {
       "Entries retain the model registry order. Each discloses six context axes and the complete metadata for its economic ranges.",
     provenanceTitle: "Provenance register",
     provenanceIntro:
-      "The three collections serve separate purposes: retaining input assumptions, documenting external sources, or locking periods derived from legal rules.",
+      "Four collections serve separate purposes: retaining input assumptions, disclosing illustrative model 2.3 workflow allocations, documenting external sources, or locking periods derived from legal rules.",
     retainedTitle: "Retained assumptions",
     retainedIntro:
-      "Values, rates, and workflows retained from model 2.2.2. They are scenario assumptions to be checked for the organisation concerned, not empirical observations.",
+      "Economic values, hourly rates, aggregate day totals, system-support multipliers, and coordination and tool-cost profiles are retained from model 2.2.2. Step order, day allocation and role-hour allocation in the five mechanism maps belong to a separate illustrative model 2.3 record.",
+    internalTitle: "Internal workflow provenance",
+    internalIntro:
+      "The record discloses illustrative step ordering, day allocation and role-hour allocation for five maps. It is not an empirical source; external case studies support only the named mechanisms.",
     externalTitle: "External evidence",
     externalIntro:
       "Sources describe mechanisms, cases, and transfer limits. Official source identifiers are not used to calibrate economic values.",
@@ -4696,6 +4831,8 @@ const modelAssumptionsEn = {
     context: "Procurement context",
     economicAssumptions: "Economic assumptions",
     pathCompetitionDiffers: "Difference in competition exposure",
+    competitionDisadvantagedAlternative:
+      "Alternative with restricted supplier access",
     low: "Low",
     central: "Central",
     high: "High",
@@ -4761,6 +4898,7 @@ const modelAssumptionsEn = {
     official_report: "institutional report",
     peer_reviewed_article: "peer-reviewed article",
     practitioner_report: "practitioner material",
+    internal_model_record: "internal model 2.3 record",
     legacy_model_registry: "previous model registry",
   },
   constructs: {
@@ -4804,9 +4942,9 @@ const readinessPl = {
   metadata: {
     title: "Gotowość organizacyjna do wdrożenia | ProcuraCost",
     description:
-      "Osiem jakościowych obszarów oceny gotowości organizacji przed wyborem i konfiguracją systemu zakupowego.",
+      "Osiem jakościowych obszarów samoopisu organizacji przed wyborem i konfiguracją systemu zakupowego, bez oceny zbiorczej.",
   },
-  eyebrow: "Diagnostyka wdrożeniowa",
+  eyebrow: "Samoopis warunków wdrożenia",
   title: "Gotowość organizacyjna do wdrożenia",
   subtitle:
     "Osiem obszarów do samoopisu przed wyborem systemu i rozpoczęciem konfiguracji. Zestawienie nie jest audytem dojrzałości i nie zmienia modelu kosztowego ProcuraCost.",
@@ -5031,9 +5169,9 @@ const readinessEn = {
   metadata: {
     title: "Organisational implementation readiness | ProcuraCost",
     description:
-      "Eight qualitative areas for assessing organisational readiness before selecting and configuring a procurement system.",
+      "Eight qualitative areas for organisational self-description before procurement-system selection and configuration, without an overall assessment.",
   },
-  eyebrow: "Implementation diagnostic",
+  eyebrow: "Implementation-conditions self-description",
   title: "Organisational implementation readiness",
   subtitle:
     "Eight areas for organisational self-description before system selection and configuration. The summary is not a maturity audit and does not change the ProcuraCost cost model.",
@@ -5321,7 +5459,7 @@ const practicePl = {
   eyebrow: "Materiał praktyczny",
   title: "Nawet najlepsze narzędzie nie uratuje złego wdrożenia",
   subtitle:
-    "Uporządkowany przegląd obserwacji z ósmego odcinka Procurement&Beyond oraz zasad ich wykorzystania w diagnostyce ProcuraCost.",
+    "Uporządkowany przegląd obserwacji z ósmego odcinka Procurement&Beyond oraz zasad ich wykorzystania w samoopisie warunków wdrożenia.",
   recordingLanguageNotice:
     "Nagranie jest w języku polskim. Odnośniki czasowe prowadzą do konkretnych fragmentów rozmowy.",
   embedTitle:
@@ -5424,7 +5562,7 @@ const practicePl = {
     "Bielik może wspierać strukturyzowanie danych rynkowych. Obliczenia TCO wykonuje przejrzysty, deterministyczny model. Model językowy nie oblicza wyniku.",
   sourceNote:
     "Lista kontrolna ProcuraCost została opracowana przez autora jako zbiór hipotez operacyjnych; rozmowa branżowa Procurement&Beyond #8 z Pawłem Mamcarzem stanowi wyłącznie kontekst tematyczny dla projektowania pytań. Jej fragmenty nie dowodzą spełnienia poszczególnych kryteriów. Automatyczny transkrypt YouTube nie został zweryfikowany przez człowieka. Materiał nie wyznacza progów, wag ani parametrów modelu ProcuraCost.",
-  readinessCta: "Przejdź do diagnostyki gotowości",
+  readinessCta: "Przejdź do samoopisu warunków wdrożenia",
   calculatorCta: "Otwórz kalkulator",
 } as const;
 
@@ -5439,7 +5577,7 @@ const practiceEn = {
   eyebrow: "Practitioner material",
   title: "Even the best tool cannot rescue a poor implementation",
   subtitle:
-    "A structured review of observations from Procurement&Beyond episode 8 and the conditions for using them in the ProcuraCost diagnostic.",
+    "A structured review of observations from Procurement&Beyond episode 8 and the conditions for using them in the implementation-conditions self-description.",
   recordingLanguageNotice:
     "The recording is in Polish. Timestamp links open the relevant parts of the conversation.",
   embedTitle:
@@ -5542,7 +5680,7 @@ const practiceEn = {
     "Bielik may support market-data structuring. The transparent deterministic model performs the TCO calculation. The language model does not calculate the result.",
   sourceNote:
     "The ProcuraCost checklist was authored as a set of operational hypotheses. The Procurement&Beyond episode 8 practitioner interview with Paweł Mamcarz provides thematic context only for question design; its segments do not evidence whether individual criteria are met. The automatic YouTube transcript has not been human verified. The material does not set thresholds, weights or ProcuraCost model parameters.",
-  readinessCta: "Open the readiness diagnostic",
+  readinessCta: "Open the readiness self-description",
   calculatorCta: "Open the calculator",
 } satisfies PracticeShape;
 

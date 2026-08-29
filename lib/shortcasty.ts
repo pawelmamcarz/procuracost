@@ -54,9 +54,9 @@ export const EPISODES: Episode[] = [
     focus: "Przegląd źródła",
     focusEn: "Source review",
     thesis:
-      "W badanym rynku węgierskim estymata strukturalna dla ceny wynosi około 6%, a dla mierzonej produktywności wybranego wykonawcy około -10%. Badanie dotyczy zamówień poniżej progu około 25 mln HUF. Model 2.3 wykorzystuje wyłącznie ograniczony transfer kanału cenowego jako jawny zakres stresowy.",
+      "W badanym rynku węgierskim model strukturalny wskazuje około 6% wyższą cenę i wybór wykonawców o 28% niższej produktywności mierzonej w badaniu. Badanie dotyczy zamówień poniżej progu około 25 mln HUF. Model 2.3 wykorzystuje wyłącznie ograniczony transfer kanału cenowego jako jawny zakres stresowy.",
     thesisEn:
-      "In the studied Hungarian market, the structural estimate is approximately 6 per cent for price and -10 per cent for the selected contractor's measured productivity. The study covers contracts below an approximately HUF 25 million threshold. Model 2.3 uses only a bounded transfer of the price channel as an explicit stress range.",
+      "In the studied Hungarian market, the structural model indicates approximately 6 per cent higher prices and selection of contractors with 28 per cent lower productivity as measured in the study. The study covers contracts below an approximately HUF 25 million threshold. Model 2.3 uses only a bounded transfer of the price channel as an explicit stress range.",
     practiceNote:
       "Ekspozycję konkurencyjną mierz niezależnie od projektu przebiegu procesu. Transfer wyniku poza badaną populację wymaga jawnego założenia.",
     practiceNoteEn:
@@ -77,17 +77,17 @@ export const EPISODES: Episode[] = [
     focus: "Przegląd źródła",
     focusEn: "Source review",
     thesis:
-      "Estymacja 0,077–0,105 dotyczy dodatkowych formalnych aneksów na rok kontraktu przy wzroście sztywności o jedno odchylenie standardowe w sektorze francuskich parkingów. To częstość, nie prawdopodobieństwo zdarzenia ani efekt projektu przebiegu procesu. W modelu 2.3 nie wyznacza różnicy kosztu aneksów.",
+      "Estymacja 0,077–0,105 dotyczy dodatkowych formalnych aneksów na rok kontraktu przy jednoczesnym wzroście o jedno odchylenie standardowe w każdej z siedmiu kategorii sztywności w sektorze francuskich parkingów. To częstość, nie prawdopodobieństwo zdarzenia ani efekt projektu przebiegu procesu. W modelu 2.3 nie wyznacza różnicy kosztu aneksów.",
     thesisEn:
-      "The 0.077-0.105 estimate concerns additional formal amendments per contract-year for a one-standard-deviation increase in rigidity in French car-park contracts. It is a frequency, not an event probability or an effect of workflow design. It does not set the amendment-cost differential in model 2.3.",
+      "The 0.077-0.105 estimate concerns additional formal amendments per contract-year for a simultaneous one-standard-deviation increase in each of seven rigidity categories in French car-park contracts. It is a frequency, not an event probability or an effect of workflow design. It does not set the amendment-cost differential in model 2.3.",
     practiceNote:
       "Rejestruj konstrukcję klauzul niezależnie od liczby czynności, nakładu pracy i czasu postępowania.",
     practiceNoteEn:
       "Record clause design independently of activity count, role effort and procurement duration.",
     source: {
       href: "https://doi.org/10.1093/jleo/ewab039",
-      label: "Beuve, Moszoro i Saussier (2023), publikacja źródłowa",
-      labelEn: "Beuve, Moszoro and Saussier (2023), primary publication",
+      label: "Beuve, Moszoro i Spiller (2023), publikacja źródłowa",
+      labelEn: "Beuve, Moszoro and Spiller (2023), primary publication",
     },
   },
   {

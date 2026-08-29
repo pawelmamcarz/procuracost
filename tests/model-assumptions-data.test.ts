@@ -101,6 +101,25 @@ describe("server-safe model assumptions data", () => {
     }
   });
 
+  it("projects the explicitly disadvantaged competition side only for its declared scenario", () => {
+    expect(
+      MODEL_ASSUMPTIONS_DATA.scenarios
+        .filter(
+          ({ competitionDisadvantagedAlternative }) =>
+            competitionDisadvantagedAlternative !== null
+        )
+        .map(({ id, competitionDisadvantagedAlternative }) => ({
+          id,
+          competitionDisadvantagedAlternative,
+        }))
+    ).toEqual([
+      {
+        id: "stable_private_standard_service",
+        competitionDisadvantagedAlternative: "adaptiveCompliant",
+      },
+    ]);
+  });
+
   it("keeps retained, external, and locked legal provenance separate", () => {
     const retainedIds = MODEL_ASSUMPTIONS_DATA.provenance.retainedAssumptions.map(
       ({ id }) => id

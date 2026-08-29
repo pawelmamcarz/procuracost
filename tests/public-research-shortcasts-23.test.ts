@@ -99,11 +99,17 @@ describe("model 2.3 research and editorial routes", () => {
       label: "Szucs (2024), publikacja źródłowa",
       labelEn: "Szucs (2024), primary publication",
     });
+    expect(szucs?.thesis).toContain("28% niższej produktywności");
+    expect(szucs?.thesisEn).toContain("28 per cent lower productivity");
+    expect(szucs?.thesis).not.toContain("-10%");
+    expect(szucs?.thesisEn).not.toContain("-10 per cent");
     expect(beuve?.source).toEqual({
       href: "https://doi.org/10.1093/jleo/ewab039",
-      label: "Beuve, Moszoro i Saussier (2023), publikacja źródłowa",
-      labelEn: "Beuve, Moszoro and Saussier (2023), primary publication",
+      label: "Beuve, Moszoro i Spiller (2023), publikacja źródłowa",
+      labelEn: "Beuve, Moszoro and Spiller (2023), primary publication",
     });
+    expect(beuve?.thesis).toContain("w każdej z siedmiu kategorii sztywności");
+    expect(beuve?.thesisEn).toContain("in each of seven rigidity categories");
 
     const researchMarkup = renderToStaticMarkup(createElement(ResearchPage));
     const polishMarkup = renderToStaticMarkup(createElement(ShortcastyPage));

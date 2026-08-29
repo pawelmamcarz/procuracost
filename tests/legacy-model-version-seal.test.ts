@@ -60,6 +60,16 @@ describe("legacy model version seal", () => {
     expect(source).toContain("`Model ${LEGACY_MODEL_VERSION} applies broad context multipliers");
   });
 
+  it("does not retain the superseded Szucs citation error in dormant source copy", () => {
+    const source = fs.readFileSync(
+      path.join(process.cwd(), "lib/calculations.ts"),
+      "utf8",
+    );
+
+    expect(source).toContain("selects contractors with about 28% lower productivity");
+    expect(source).not.toContain("lowers average contractor total factor productivity by about 10%");
+  });
+
   it("keeps model 2.2.2 traces independent from the native 2.3 model", () => {
     expect(LEGACY_MODEL_VERSION).toBe("2.2.2");
     expect(MODEL_VERSION).toBe("2.3.0");

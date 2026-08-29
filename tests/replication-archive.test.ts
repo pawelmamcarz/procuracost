@@ -116,7 +116,7 @@ describe("immutable model 2.2.2 replication archive", () => {
     expect(note).toContain("intentionally not corrected in place");
   });
 
-  it("keeps both active generator output roots outside the archive", () => {
+  it("keeps the native generator active and makes the legacy map stdout-only", () => {
     const replicationGenerator = readFileSync(
       join(ROOT, "scripts/generate-replication.ts"),
       "utf8"
@@ -129,11 +129,23 @@ describe("immutable model 2.2.2 replication archive", () => {
     expect(declaredOutputRoots(replicationGenerator)).toEqual([
       "replication/outputs",
     ]);
-    expect(declaredOutputRoots(mapGenerator)).toEqual([
-      "replication/outputs",
-    ]);
+    expect(declaredOutputRoots(mapGenerator)).toEqual([]);
+    expect(mapGenerator).toContain("process.stdout.write");
+    expect(mapGenerator).not.toContain("replication/outputs");
+    expect(mapGenerator).not.toContain("replication/archive");
     expect(`${replicationGenerator}\n${mapGenerator}`).not.toContain(
       "replication/archive"
     );
+  });
+
+  it("marks the tracked active-root exception as quarantined legacy material", () => {
+    const thresholdMap = readFileSync(
+      join(ROOT, "replication/outputs/decision-thresholds.md"),
+      "utf8",
+    );
+
+    expect(thresholdMap).toContain("KWARANTANNA HISTORYCZNA");
+    expect(thresholdMap).toContain("nie jest artefaktem modelu 2.3");
+    expect(thresholdMap).toContain("nie powstaje w `npm run replicate`");
   });
 });

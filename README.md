@@ -2,86 +2,114 @@
 
 > **A tunnel has walls. A field has a horizon.**
 
-ProcuraCost is an open-source decision model comparing formal/sequential and adaptive/compliant procurement designs under the same governance boundary. Version 2.2 reports ΔC decomposed into process, delay and lifecycle buckets, an unclamped break-even daily cost of inaction, and a scenario interval covering two axes — the evidence parameters and the two structural inputs that actually carry the result. Every calibration assumption is reconciled against an external benchmark in docs/research/CALIBRATION_BENCHMARKS.md. The delay bucket is an accounting identity between a template day count and a user-supplied price per day, and after the 2.2.2 calibration audit it carries 68.3–99.6% of |ΔC| where the paths differ in duration; excluding it, the formal path is cheaper on process cost in 7 of 10 built-in scenarios. Under the audited inputs all 10 built-in scenarios cross zero — the model does not identify a robust winner, may favor either path, and does not claim a universal causal advantage.
+ProcuraCost is an open-source, bilingual procurement decision model. Native model 2.3.0 compares a formal/sequential workflow with an adaptive/compliant workflow inside the same legal and governance boundary. It separates the boundary, purchase archetype, procurement workflow design, purchase execution channel, system support and contract design instead of treating them as one aggregate capability score.
 
-## The Model
+The calculation is deterministic. It works from declared process maps, role rates, non-labour costs, contract cost allocations and the daily cost of inaction. It reports both alternatives, the central difference `formalSequential - adaptiveCompliant`, an outer scenario envelope, the critical path, monetisation coverage, non-monetised dimensions, assumptions and evidence provenance.
 
-Procurement *policy* defines principles and boundaries. Procurement *procedure* is just one of many ways to implement them. Conflating the two—treating one rigid workflow as if it were the policy itself—carries costs the model captures through:
+ProcuraCost is not a trained estimator and does not establish that either workflow causes a lower cost. Its low, central and high values are declared scenario ranges, not confidence intervals. Mandatory legal waits are resolved from the dated ruleset, locked in both alternatives and excluded from system-support scaling.
 
-- Extended timelines and staff hours
-- A supplier-selection cost linked to discretion and competition effectiveness (Szucs, JEEA 2024)
-- An annual formal-amendment frequency linked specifically to **contractual** rigidity and contract duration (Beuve, Moszoro & Spiller, JLEO 2023; 2SLS/IV)
-- Broad, explicitly non-empirical TCO and bypass scenarios that no longer determine a precise headline result
+## Decision surfaces
 
-**The Tunnel vs. Field hypothesis:** prescribed workflow may act like a tunnel; adaptive workflow may offer a field of lawful paths. Either can be preferable depending on competition, delay, contract design, controls, and organizational capability.
+- **Procurement cost calculator:** edits two independent process maps and produces a neutral decision record.
+- **Suitability comparison:** presents lawful procedure families on equal terms, with conditions and limitations. It does not score or rank them. The existing `/optimizer` and `/en/optimizer` URLs are retained for compatibility.
+- **Procurement process design profile:** describes the current balance between sequential and adaptive process characteristics. It is not an organisational capability or readiness score.
+- **Mechanisms and evidence:** separates empirical anchors, official cases, practitioner observations, illustrative scenarios and research hypotheses.
+- **Organisational implementation readiness:** records a self-description across purpose, ownership, process, requirements, data and automation, governance, adoption, and value and rollout. It does not validate readiness or issue a go/no-go decision, and it remains independent of the cost calculation.
+- **Practitioner material:** [Procurement&Beyond, episode 8](https://www.youtube.com/watch?v=5KYUdTLlvvg) informs readiness questions and research hypotheses only. It does not calibrate the model.
+- **Replication and diagnostics:** generate three deterministic scenario artefacts and audit metadata, range ordering, delta identity, legal waits, neutral controls and swap symmetry.
 
-## Features
+## Reference scenarios
 
-- **Cost Calculator** — 7-dimension model comparing formal/sequential and adaptive/compliant paths under the same governance boundary across 7 process types
-- **Path Optimizer** — a common-criteria, rule-based scorer with a 30-run ±25% weight-sensitivity sweep, ranking-margin ablation, and a natural-language explanation. It is illustrative, not trained ML, and not validated on real procurement data; public recommendations are filtered to procedures available without separate statutory grounds, within zamówienia klasyczne only; withheld procedures are named in the UI
-- **Maturity Assessment** — 10-question free self-assessment placing your organization on the Tunnel→Field spectrum
-- **Illustrative cases** — practitioner and company examples used for mechanism illustration, not causal evidence
-- **Industry Benchmark** — See where your scenario sits relative to the 9 non-custom reference scenarios (7 of which carry an illustrative case study)
-- **Bilingual** — Full Polish and English interfaces
+Model 2.3.0 provides ten named starting points. Their economic values are declared assumptions, not measured outcomes from the named sectors or organisations. Applicable legal waits remain fixed by the ruleset.
+
+1. Fleet TCO reframing
+2. ERP transformation discovery
+3. Logistics service redesign
+4. Critical material continuity
+5. Public IT open procedure with preliminary market consultation
+6. Stable private standard service
+7. Stable CAPEX replacement
+8. Discovery and solution co-design
+9. Catalogue call-off control
+10. MRP release control
+
+The catalogue call-off and MRP release scenarios are neutral controls because both process maps are identical and no competition difference is declared. Their alternative ranges are equal, the central difference is zero and the outer difference envelope is symmetric. The discovery scenario deliberately permits the adaptive workflow to require more time and effort. No scenario is tuned to preserve a preferred result.
+
+The first five scenarios use mechanism-specific model 2.3 maps. Their aggregate
+base-day totals are retained from model 2.2.2 (`44/24` for the four private maps
+and `42/26` non-legal days for public IT), while step order, allocation of days
+and role-hour allocations are illustrative inputs. Retained support profiles are
+applied afterwards. The decision record exposes both provenance classes.
+
+## Evidence boundary
+
+Szucs (2024) provides the empirical anchor for the competition-transfer stress where the compared alternatives explicitly differ in supplier access. The 2%, 6% and 9% values are a declared transfer range from a specific Hungarian public-procurement population, not a Polish estimate. Only the stable standard-service sensitivity starts with this difference: open policy-qualified competition is compared with a restricted shortlist or incumbent continuation. The user can assign the restricted access to either alternative or remove the difference; it is not inferred from a workflow label.
+
+The active official cases cover modular technology procurement, problem
+definition, preliminary market consultation and innovation procurement. They
+support mechanism design, not step durations, role hours or monetary values.
+The internal record `model_2_3_mechanism_workflow_allocations` documents the
+illustrative map allocations. Contract-amendment and TCO differentials remain
+zero in the native calculation until a supported allocation convention is
+introduced. Informal bypass is disclosed but remains non-monetised in native
+model 2.3.0.
+
+Historical model 2.2.2 outputs remain in the immutable replication archive. Its calibration audit is explicitly historical in [`docs/research/CALIBRATION_BENCHMARKS.md`](./docs/research/CALIBRATION_BENCHMARKS.md). The active working paper is [`RESEARCH.md`](./RESEARCH.md), and the active parameter contract is [`docs/MODEL_PARAMETERS.md`](./docs/MODEL_PARAMETERS.md).
 
 ## Team
 
-| Name | Role |
-|------|------|
-| [Paweł Mamcarz](https://mamcarz.com) | Model architect / ProcureTech |
-| Tomasz Ślusarczyk | Procurement expert |
-| Rafał Madejewski | Analyst & researcher |
+- [Paweł Mamcarz](https://mamcarz.com)
+- Mariusz Kościółek
+- Marcin Bogucki
+- Tomasz Ślusarczyk
+- Rafał Madejewski
 
-## Tech Stack
+## Technology
 
-- **Next.js 16** (App Router, Server + Client Components)
-- **Tailwind CSS** — design system documented in `CLAUDE_DESIGN.md`
-- **Recharts** — cost breakdown charts and benchmark visualization
-- **TypeScript** — fully typed throughout
+- Next.js 16 with the App Router
+- React 19 and TypeScript
+- Tailwind CSS, following [`CLAUDE_DESIGN.md`](./CLAUDE_DESIGN.md)
+- Recharts for quantitative charts
+- Vitest for model and presentation contracts
 
-## Getting Started
+## Local development
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) for the Polish interface or [http://localhost:3000/en](http://localhost:3000/en) for English.
+Open [http://localhost:3000](http://localhost:3000) for Polish or [http://localhost:3000/en](http://localhost:3000/en) for English.
 
-## Academic Foundation
+Core verification commands:
 
-The cost model draws on peer-reviewed and practitioner sources (only a subset of the model's parameters are peer-reviewed):
-
-1. **Szucs (2024)** — structural estimates: about 6% higher price and about 10% lower average contractor total factor productivity under discretion. Identified on Hungarian public contracts below a ~25m HUF threshold, so the transfer caveat is substantial.
-2. **Beuve, Moszoro & Spiller (2023)** — 2SLS/IV estimate of 0.077–0.105 additional formal amendments per contract-year for a simultaneous one-SD increase in *each* of seven z-scored rigidity categories, in French car-park contracts; not an event probability, not a workflow estimate, and not the effect of a one-SD move on the summed index.
-3. **TCO and bypass** — scenario assumptions with broad bounds. The unsupported 30% TCO rule and the former bypass sigmoid are excluded from the baseline.
-
-Theoretical grounding: Lipsky (1980) Street-Level Bureaucracy · Vaughan (1996) Challenger · Holmström & Milgrom (1991) Multitask Principal-Agent
-
-Full working paper: [`RESEARCH.md`](./RESEARCH.md) | Methodology page: `/methodology`
-
-## Repository Structure
-
-```
-app/                    Next.js pages (PL + /en subtree)
-  calculator/           Cost calculator
-  optimizer/            rule-based path optimizer
-  assessment/           Maturity quiz
-  case-studies/         Case study browser
-  research/             Research paper viewer
-  methodology/          Academic methodology (EN)
-components/             React components
-  CostComparison.tsx    Results with benchmark chart
-  PathOptimizer.tsx     rule-based optimizer with explainability
-  AssessmentQuiz.tsx    10-question maturity assessment
-  PipeFieldDiagram.tsx  Tunnel vs. Field visual
-lib/
-  calculations.ts       7-dimension cost model
-  optimizer.ts          rule-based path scorer (30-run sensitivity sweep)
-  scenarios.ts          10 reference scenarios (9 exported; 7 with case studies)
-  i18n.ts               All user-facing strings (PL + EN)
+```bash
+npm run lint
+npm test
+npm run recompute
+npm run sweep
+npm run replicate
+npm run build
 ```
 
-## License
+`npm run recompute` prints the canonical diagnostics. `npm run sweep` audits alternative-swap symmetry. `npm run replicate` writes the JSON, CSV and Markdown artefacts described in [`replication/README.md`](./replication/README.md).
+
+## Repository structure
+
+```text
+app/                         Paired Polish and English route trees
+components/calculator-v2/    Process-map workspace and validation
+components/decision-record/  Neutral comparison result
+components/process-map/      Connected process rail
+lib/model-v2/                Native 2.3 domain, legal rules, engine and scenarios
+lib/readiness.ts             Independent implementation-readiness self-description
+lib/i18n.ts                  Paired Polish and English copy
+scripts/                     Diagnostics, symmetry and replication entry points
+replication/                 Native outputs and immutable historical archive
+```
+
+The working paper is [`RESEARCH.md`](./RESEARCH.md). The public methodology is available at `/methodology` and `/en/methodology`.
+
+## Licence
 
 MIT

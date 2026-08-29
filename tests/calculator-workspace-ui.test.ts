@@ -479,7 +479,7 @@ describe("calculator workspace UI", () => {
   });
 
   it("enforces the typed 0 to 1 competition-transfer range and links every field member to its error", () => {
-    const draft = createScenarioDraft("fleet_tco_reframing");
+    const draft = createScenarioDraft("stable_private_standard_service");
     if (!draft.economicAssumptions.competitionTransferRate) {
       throw new Error("Expected competition-transfer fixture");
     }
@@ -506,6 +506,74 @@ describe("calculator workspace UI", () => {
     ).toHaveLength(3);
     expect(html).toContain('id="calculator-submit-status"');
     expect(html).toContain('aria-describedby="calculator-submit-status"');
+  });
+
+  it.each([
+    [
+      "pl",
+      "Wariant z ograniczonym dostępem dostawców",
+      "To jawne założenie kontrfaktyczne, a nie cecha etykiety procesu.",
+    ],
+    [
+      "en",
+      "Alternative with restricted supplier access",
+      "This is an explicit counterfactual assumption, not a property of either workflow label.",
+    ],
+  ] as const)(
+    "renders an equal-status competition-side editor in %s",
+    (lang, label, disclosure) => {
+      const state = createCalculatorWorkspaceState(
+        createScenarioDraft("stable_private_standard_service")
+      );
+      const html = renderWorkspace(state, lang);
+
+      expect(html).toContain(label);
+      expect(html).toContain(disclosure);
+      expect(
+        html.match(/name="economic-competition-disadvantaged"/g)
+      ).toHaveLength(3);
+      expect(html).toMatch(
+        /<input(?=[^>]*name="economic-competition-disadvantaged")(?=[^>]*value="none")[^>]*>/
+      );
+      expect(html).toMatch(
+        /<input(?=[^>]*name="economic-competition-disadvantaged")(?=[^>]*value="formalSequential")[^>]*>/
+      );
+      expect(html).toMatch(
+        /<input(?=[^>]*checked="")(?=[^>]*name="economic-competition-disadvantaged")(?=[^>]*value="adaptiveCompliant")[^>]*>/
+      );
+    }
+  );
+
+  it("keeps no declared competition difference as an editable equal-status choice", () => {
+    const state = createCalculatorWorkspaceState(
+      createScenarioDraft("fleet_tco_reframing")
+    );
+    const html = renderWorkspace(state, "en");
+
+    expect(html).toContain("No declared difference");
+    expect(html).toMatch(
+      /<input(?=[^>]*checked="")(?=[^>]*name="economic-competition-disadvantaged")(?=[^>]*value="none")[^>]*>/
+    );
+    expect(html).not.toContain("Price-competition transfer range");
+  });
+
+  it("blocks calculation with a field-level message when a competition side is missing", () => {
+    const draft = createScenarioDraft("stable_private_standard_service");
+    draft.economicAssumptions.competitionDisadvantagedAlternative = null;
+    const state = createCalculatorWorkspaceState(draft);
+    const validation = deriveCalculatorWorkspaceValidation(state);
+
+    expect(validation.canSubmit).toBe(false);
+    expect(validation.issues).toContainEqual(
+      expect.objectContaining({
+        source: "economic-assumption",
+        code: "competition_disadvantaged_alternative_required",
+        field: "economicAssumptions.competitionDisadvantagedAlternative",
+      })
+    );
+    expect(renderWorkspace(state)).toContain(
+      "Select the alternative with restricted supplier access before calculation."
+    );
   });
 
   it("keeps the complete calculator-v2 dictionary in exact PL/EN leaf parity", () => {

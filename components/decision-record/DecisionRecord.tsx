@@ -119,11 +119,36 @@ export default function DecisionRecord({
         <AssumptionsRecord lang={lang} record={record} />
       </RecordSection>
       <RecordSection id="evidence" title={tx.sections.evidence}>
-        <EvidenceDocket
-          lang={lang}
-          records={record.externalEvidence}
-          variant="decision-record"
-        />
+        <div className="space-y-10">
+          {record.internalEvidence.length > 0 ? (
+            <div aria-labelledby="decision-record-internal-evidence">
+              <h4
+                className="mb-5 text-lg font-bold text-gray-900"
+                id="decision-record-internal-evidence"
+              >
+                {tx.sections.internalEvidence}
+              </h4>
+              <EvidenceDocket
+                lang={lang}
+                records={record.internalEvidence}
+                variant="decision-record"
+              />
+            </div>
+          ) : null}
+          <div aria-labelledby="decision-record-external-evidence">
+            <h4
+              className="mb-5 text-lg font-bold text-gray-900"
+              id="decision-record-external-evidence"
+            >
+              {tx.sections.externalEvidence}
+            </h4>
+            <EvidenceDocket
+              lang={lang}
+              records={record.externalEvidence}
+              variant="decision-record"
+            />
+          </div>
+        </div>
       </RecordSection>
       <RecordSection id="reference" title={tx.sections.reference}>
         <ReferenceScenarioComparison

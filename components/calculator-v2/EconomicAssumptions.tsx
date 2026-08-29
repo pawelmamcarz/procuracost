@@ -1,7 +1,11 @@
 import { Calculator, Equal, ShieldCheck } from "lucide-react";
 
 import { calculatorV2T, type Lang } from "@/lib/i18n";
-import type { CalibratedValue } from "@/lib/model-v2";
+import {
+  selectCompetitionDisadvantagedAlternative,
+  type AlternativeId,
+  type CalibratedValue,
+} from "@/lib/model-v2";
 
 import type {
   CalculatorWorkspaceAction,
@@ -14,6 +18,15 @@ import {
 } from "./workspace-validation";
 
 type RangeMember = "low" | "central" | "high";
+
+const ALTERNATIVE_IDS: AlternativeId[] = [
+  "formalSequential",
+  "adaptiveCompliant",
+];
+const COMPETITION_CHOICES: readonly (AlternativeId | null)[] = [
+  null,
+  ...ALTERNATIVE_IDS,
+];
 
 export interface EconomicAssumptionsProps {
   lang: Lang;
@@ -136,6 +149,10 @@ export function EconomicAssumptions({
   const tx = calculatorV2T[lang].economics;
   const assumptions = state.draft.economicAssumptions;
   const issues = deriveCalculatorWorkspaceValidation(state).issues;
+  const competitionSideIssue = economicIssue(
+    issues,
+    "economicAssumptions.competitionDisadvantagedAlternative"
+  );
   const replaceAssumption = (
     field:
       | "contractValue"
@@ -188,6 +205,77 @@ export function EconomicAssumptions({
           unit={tx.currencyUnit}
           value={assumptions.dailyCostOfInaction}
         />
+        <fieldset className="space-y-3 border-t border-gray-200 pt-4 lg:col-span-2">
+          <legend className="text-sm font-semibold text-gray-900">
+            {tx.competitionDisadvantagedAlternative}
+          </legend>
+          <p
+            className="max-w-3xl text-xs leading-relaxed text-gray-600"
+            id="economic-competition-disadvantaged-disclosure"
+          >
+            {tx.competitionDisadvantagedDisclosure}
+          </p>
+          <div className="grid gap-2 sm:grid-cols-3">
+            {COMPETITION_CHOICES.map((alternativeId) => {
+              const isNoDifference = alternativeId === null;
+              const selected = isNoDifference
+                ? !assumptions.pathCompetitionDiffers &&
+                  assumptions.competitionDisadvantagedAlternative === null
+                : assumptions.pathCompetitionDiffers &&
+                  assumptions.competitionDisadvantagedAlternative ===
+                    alternativeId;
+              const describedBy = [
+                "economic-competition-disadvantaged-disclosure",
+                competitionSideIssue
+                  ? "economic-competition-disadvantaged-error"
+                  : null,
+              ]
+                .filter(Boolean)
+                .join(" ");
+              return (
+                <label
+                  className={
+                    selected
+                      ? "flex min-h-11 items-center gap-3 rounded-lg border border-blue-500 bg-blue-50 px-3 text-sm font-medium text-blue-700"
+                      : "flex min-h-11 items-center gap-3 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 hover:border-gray-300"
+                  }
+                  key={alternativeId ?? "none"}
+                >
+                  <input
+                    aria-describedby={describedBy}
+                    checked={selected}
+                    name="economic-competition-disadvantaged"
+                    onChange={() =>
+                      onAction({
+                        type: "replace-economic-assumptions",
+                        economicAssumptions:
+                          selectCompetitionDisadvantagedAlternative(
+                            assumptions,
+                            alternativeId
+                          ),
+                      })
+                    }
+                    type="radio"
+                    value={alternativeId ?? "none"}
+                  />
+                  <span>
+                    {alternativeId === null
+                      ? tx.noDeclaredCompetitionDifference
+                      : calculatorV2T[lang].alternatives[alternativeId]}
+                  </span>
+                </label>
+              );
+            })}
+          </div>
+          {competitionSideIssue ? (
+            <p
+              className="text-xs text-amber-800"
+              id="economic-competition-disadvantaged-error"
+            >
+              {calculatorIssueCopy(competitionSideIssue, lang)}
+            </p>
+          ) : null}
+        </fieldset>
         {assumptions.competitionTransferRate ? (
           <EconomicRangeEditor
             idPrefix="economic-competition-transfer"

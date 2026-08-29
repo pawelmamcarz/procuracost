@@ -159,6 +159,7 @@ describe("model 2.3 pure research exports", () => {
     expect(payload.roleHourlyRates).toEqual(record.roleHourlyRates);
     expect(payload.evidence).toEqual({
       calculationAnchors: record.calculationAnchors,
+      internalEvidence: record.internalEvidence,
       externalEvidence: record.externalEvidence,
       retainedAssumptions: record.retainedAssumptions,
     });
@@ -545,6 +546,25 @@ describe("model 2.3 pure research exports", () => {
     expect(markdown).toContain("Catalogue call-off control");
     expect(markdown).toContain("Catalogue selection");
     expect(markdown).not.toMatch(/\bcatalog\b/i);
+  });
+
+  it("exports the explicitly disadvantaged competition side in every research format", () => {
+    const record = buildDecisionRecordV2(
+      createScenarioDraft("stable_private_standard_service")
+    );
+    const json = buildResearchJson(record, "en", EXPORTED_AT);
+    const csv = buildResearchCsv(record, "en");
+    const markdown = buildResearchMarkdown(record, "en");
+
+    expect(json.assumptions.competitionDisadvantagedAlternative).toBe(
+      "adaptiveCompliant"
+    );
+    expect(csv).toContain(
+      "assumption,competitionDisadvantagedAlternative,,competitionDisadvantagedAlternative,adaptiveCompliant"
+    );
+    expect(markdown).toContain(
+      "| Alternative with restricted supplier access | Adaptive compliant alternative |"
+    );
   });
 
   it("serialises predecessor IDs and case-specific critical paths in stable CSV rows", () => {

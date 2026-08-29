@@ -22,6 +22,7 @@ export * from "./domain";
 export * from "./engine";
 export * from "./evidence";
 export * from "./legal";
+export * from "./mechanism-workflow-seeds";
 export * from "./pdf-copy";
 export * from "./process-map";
 export * from "./retained-workflow-seeds";

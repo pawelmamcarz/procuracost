@@ -106,6 +106,12 @@ function materializeContractDesign(
 
   let competitionCost: CalibratedValue;
   if (assumptions.pathCompetitionDiffers) {
+    const disadvantaged = assumptions.competitionDisadvantagedAlternative;
+    if (!disadvantaged || !ALTERNATIVE_IDS.includes(disadvantaged)) {
+      throw new Error(
+        "competitionDisadvantagedAlternative is required when path competition differs"
+      );
+    }
     const rate = assumptions.competitionTransferRate;
     if (!rate) {
       throw new Error(
@@ -119,9 +125,14 @@ function materializeContractDesign(
     competitionCost = derivedCompetitionCost(
       assumptions.contractValue,
       rate,
-      alternative === "formalSequential"
+      alternative !== disadvantaged
     );
   } else {
+    if (assumptions.competitionDisadvantagedAlternative !== null) {
+      throw new Error(
+        "competitionDisadvantagedAlternative must be null when path competition does not differ"
+      );
+    }
     if (assumptions.competitionTransferRate !== null) {
       throw new Error(
         "competitionTransferRate must be null when path competition does not differ"

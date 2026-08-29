@@ -207,6 +207,7 @@ describe("decision-record download actions", () => {
       expect(output, label).toContain(label);
     }
     expect(output).toContain(copy.alternatives[0].workflowSteps[0].label);
+    expect(output).toContain(copy.internalEvidence[0].supportedClaim);
     expect(output).toContain(copy.externalEvidence[0].supportedClaim);
     expect(output).toContain(copy.roleHourlyRates[0].roleLabel);
     expect(doc.getNumberOfPages()).toBeGreaterThan(1);
@@ -313,7 +314,7 @@ describe("decision-record download actions", () => {
     );
     expect(step?.userLabel).toBeNull();
 
-    const fallback = "Market sounding";
+    const fallback = "Fleet operating baseline";
     const pdf = buildPdfCopy(record, "en", B1_EXPORTED_AT);
     expect(
       pdf.alternatives[0].workflowSteps.find(({ id }) => id === sourceStep.id)

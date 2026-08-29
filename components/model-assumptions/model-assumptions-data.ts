@@ -2,6 +2,7 @@ import {
   buildDecisionRecordV2,
   createScenarioDraft,
   EVIDENCE_REGISTRY,
+  INTERNAL_EVIDENCE_REGISTRY,
   MODEL_V2_METADATA,
   SCENARIOS_V2,
   type AlternativeId,
@@ -38,6 +39,7 @@ export interface ModelAssumptionsScenario {
   readonly descriptionKey: string;
   readonly axes: readonly DecisionAxisRecord[];
   readonly pathCompetitionDiffers: boolean;
+  readonly competitionDisadvantagedAlternative: AlternativeId | null;
   readonly calibratedValues: readonly ModelAssumptionCalibratedValue[];
   readonly bypass: NonMonetizedContractDimension;
   readonly retainedAssumptionIds: readonly string[];
@@ -60,6 +62,7 @@ export interface ModelAssumptionsData {
   readonly scenarios: readonly ModelAssumptionsScenario[];
   readonly provenance: {
     readonly retainedAssumptions: readonly ScenarioAssumptionRecord[];
+    readonly internalEvidence: readonly EvidenceRecord[];
     readonly externalEvidence: readonly EvidenceRecord[];
     readonly lockedLegalProvenance: readonly ModelAssumptionsLegalProvenance[];
   };
@@ -150,6 +153,8 @@ function scenarioProjection(
     axes: scenarioAxes(scenario),
     pathCompetitionDiffers:
       scenario.economicAssumptions.pathCompetitionDiffers,
+    competitionDisadvantagedAlternative:
+      scenario.economicAssumptions.competitionDisadvantagedAlternative,
     calibratedValues: scenarioCalibratedValues(scenario),
     bypass: {
       ...scenario.economicAssumptions.bypass,
@@ -212,6 +217,7 @@ export function buildModelAssumptionsData(): ModelAssumptionsData {
       retainedAssumptions: structuredClone(
         SCENARIOS_V2.flatMap(({ assumptions }) => assumptions)
       ),
+      internalEvidence: structuredClone(INTERNAL_EVIDENCE_REGISTRY),
       externalEvidence: structuredClone(EVIDENCE_REGISTRY),
       lockedLegalProvenance: collectLockedLegalProvenance(),
     },

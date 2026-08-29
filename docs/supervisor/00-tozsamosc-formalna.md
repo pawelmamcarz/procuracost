@@ -1,6 +1,12 @@
 # Tożsamość formalna przewodu
 
-**Stan na:** 26 lipca 2026 · model 2.2.1
+**Stan formalny na:** 26 lipca 2026 · historyczny punkt odniesienia modelu 2.2.1
+
+> **Aktualizacja techniczna, 29 sierpnia 2026:** aktywnym kontraktem jest
+> ProcuraCost 2.3.0. Dane o uczelni, trybie, potencjalnym promotorze i
+> wymaganiach instytucjonalnych poniżej pozostają zapisem stanu z 26 lipca i
+> wymagają potwierdzenia przed wysłaniem pakietu. Nie zostały ponownie
+> zweryfikowane w ramach aktualizacji modelu.
 
 Ten dokument istnieje, bo pakiet 2.1 nie podawał uczelni, dyscypliny ani formatu rozprawy.
 Promotor nie może ocenić, czy chce objąć opiekę, jeżeli nie wie, w jakim trybie i w jakiej
@@ -20,7 +26,7 @@ dyscyplinie miałby to robić.
 | | |
 |---|---|
 | Tryb | **eksternistyczny** (bez szkoły doktorskiej) |
-| Podstawa | art. 187 ust. 3 ustawy Prawo o szkolnictwie wyższym i nauce — rozprawa jako **cykl powiązanych tematycznie artykułów** |
+| Podstawa | art. 187 ust. 3 ustawy Prawo o szkolnictwie wyższym i nauce: rozprawa jako **cykl powiązanych tematycznie artykułów** |
 | Uczelnia | **Uczelnia Łazarskiego w Warszawie**, Wydział Ekonomii i Zarządzania |
 | Dyscyplina wiodąca | **ekonomia i finanse** |
 | Dyscyplina dodatkowa | nauki o polityce i administracji (artykuł 3) |
@@ -34,17 +40,17 @@ uzyskał doktorat (2002) i habilitację (2016).
 
 To ma znaczenie dla dopasowania tematu, nie tylko dla formalności:
 
-- Jego habilitacja — *Pomiary innowacyjności i gospodarki opartej na wiedzy* — dotyczy
+- Jego habilitacja, *Pomiary innowacyjności i gospodarki opartej na wiedzy*, dotyczy
   **problemu pomiaru**, a wkład tego cyklu jest właśnie pomiarowy: rozdzielenie konstruktów,
   które literatura zakupowa mierzy łącznie, i pokazanie, ile z popularnego argumentu
   o „koszcie procedury" po tym rozdzieleniu zostaje.
-- Jego obszary badawcze — konkurencyjność, innowacje, polityka gospodarcza — obejmują
+- Jego badania nad konkurencyjnością, innowacjami i polityką gospodarczą obejmują
   pytanie, czy projekt procedury administracyjnej ma mierzalny koszt ekonomiczny.
 - Afiliacja przy Wydziale Ekonomii i Zarządzania odpowiada deklarowanej dyscyplinie wiodącej.
 
 **Dyscyplina wiodąca: ekonomia i finanse.** Artykuły 1 i 2 należą do niej w całości.
 Artykuł 3 sięga do nauk o polityce i administracji, bo dotyczy reżimu PZP i pomiaru
-organizacyjnego — to świadomy wybór interdyscyplinarny, nie niezdecydowanie.
+organizacyjnego. To świadomy wybór interdyscyplinarny, nie niezdecydowanie.
 
 > **Co pozostaje do potwierdzenia z jednostką:** zgoda na przewód w trybie eksternistycznym,
 > forma rozprawy pod art. 187 ust. 3 oraz wymóg posiadania artykułu przyjętego do druku
@@ -55,7 +61,7 @@ organizacyjnego — to świadomy wybór interdyscyplinarny, nie niezdecydowanie.
 | # | Tytuł roboczy | Język | Charakter | Status |
 |---|---|---|---|---|
 | 1 | Tunnel or Field? Workflow topology under a shared governance boundary | EN | konceptualny | szkic |
-| 2 | Ile kosztuje projekt procesu? Siedmiowymiarowy model decyzyjny | PL | metodologiczny | szkic |
+| 2 | Ile kosztuje projekt przebiegu procesu zakupowego? Model porównawczy ProcuraCost 2.3 | PL | metodologiczny | szkic |
 | 3 | Jak sprawdzić koszt projektu procesu? Protokół empiryczny dla polskich zamówień publicznych | PL | protokół badawczy | szkic |
 
 Wiążącym kontraktem ilościowym dla wszystkich trzech jest
@@ -64,7 +70,7 @@ Wiążącym kontraktem ilościowym dla wszystkich trzech jest
 **Żaden z artykułów nie jest po recenzji zewnętrznej ani nie zawiera wyników empirycznych.**
 Nie należy ich oznaczać jako przyjętych, recenzowanych ani potwierdzonych.
 
-## Czasopisma docelowe — propozycja do weryfikacji
+## Czasopisma docelowe: propozycja do weryfikacji
 
 | Artykuł | Kierunek | Uwaga |
 |---|---|---|
@@ -84,4 +90,5 @@ są jedną z decyzji w `03-decisions-needed.md`.
 
 Materiały instytucjonalne z modelu 1.x (autoreferat, spinka rozprawy, nota zgodności)
 znajdują się w `docs/archive/model-1.x/` **wyłącznie jako pochodzenie zmian**. Zostały
-napisane pod poprzedni model i nie mogą być użyte bez przepisania na foundation 2.2.
+napisane pod poprzedni model i nie mogą być użyte bez uzgodnienia ze wspólnym
+kontraktem 2.3.

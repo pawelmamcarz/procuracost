@@ -32,6 +32,7 @@ import type {
   ContextUiIssue,
   CustomLabelUiIssue,
   DesignUiIssue,
+  EconomicAssumptionUiIssue,
   EditorUiIssue,
   MigrationUiIssue,
   ProcessMapUiIssue,
@@ -211,6 +212,39 @@ function collectRangeIssues(state: CalculatorWorkspaceState): RangeUiIssue[] {
     }
   }
   return issues;
+}
+
+function collectEconomicAssumptionIssues(
+  state: CalculatorWorkspaceState
+): EconomicAssumptionUiIssue[] {
+  const assumptions = state.draft.economicAssumptions;
+  const disadvantaged = assumptions.competitionDisadvantagedAlternative;
+  if (
+    assumptions.pathCompetitionDiffers &&
+    (!disadvantaged || !ALTERNATIVE_IDS.includes(disadvantaged))
+  ) {
+    return [
+      {
+        source: "economic-assumption",
+        code: "competition_disadvantaged_alternative_required",
+        messageKey:
+          "calculatorV2.validation.competitionDisadvantagedAlternativeRequired",
+        field: "economicAssumptions.competitionDisadvantagedAlternative",
+      },
+    ];
+  }
+  if (!assumptions.pathCompetitionDiffers && disadvantaged !== null) {
+    return [
+      {
+        source: "economic-assumption",
+        code: "competition_disadvantaged_alternative_not_applicable",
+        messageKey:
+          "calculatorV2.validation.competitionDisadvantagedAlternativeNotApplicable",
+        field: "economicAssumptions.competitionDisadvantagedAlternative",
+      },
+    ];
+  }
+  return [];
 }
 
 function collectUrlIssues(state: CalculatorWorkspaceState): UrlUiIssue[] {
@@ -538,6 +572,7 @@ export function deriveCalculatorWorkspaceValidation(
     ...collectWorkspaceSourceIssues(state),
     ...collectUrlIssues(state),
     ...collectMigrationIssues(state),
+    ...collectEconomicAssumptionIssues(state),
     ...collectRangeIssues(state),
     ...collectDesignIssues(state),
     ...collectCustomLabelIssues(state),
@@ -645,6 +680,10 @@ export function calculatorIssueCopy(
       return validation.invalidCalibratedRange;
     case "competition_transfer_out_of_bounds":
       return validation.competitionTransferOutOfBounds;
+    case "competition_disadvantaged_alternative_required":
+      return validation.competitionDisadvantagedAlternativeRequired;
+    case "competition_disadvantaged_alternative_not_applicable":
+      return validation.competitionDisadvantagedAlternativeNotApplicable;
     case "invalid_step_kind":
       return validation.invalidStepKind;
     case "illegal_context":

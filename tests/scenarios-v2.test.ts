@@ -4,6 +4,7 @@ import { modelV2T } from "@/lib/i18n";
 import { calculateComparison } from "@/lib/model-v2/engine";
 import {
   EVIDENCE_REGISTRY,
+  INTERNAL_EVIDENCE_REGISTRY,
   OFFICIAL_EVIDENCE_IDS,
 } from "@/lib/model-v2/evidence";
 import {
@@ -12,6 +13,7 @@ import {
   SCENARIOS_V2,
   createScenarioDraft,
 } from "@/lib/model-v2/scenarios";
+import * as scenarioModule from "@/lib/model-v2/scenarios";
 import {
   TECH_LEVELS,
   deriveStepTimings,
@@ -177,6 +179,81 @@ describe("model 2.3 canonical scenarios", () => {
     }
   });
 
+  it("limits the competition-transfer stress to one explicit counterfactual side", () => {
+    const stressed = SCENARIOS_V2.filter(
+      ({ economicAssumptions }) =>
+        economicAssumptions.pathCompetitionDiffers
+    );
+
+    expect(
+      stressed.map(({ id, economicAssumptions }) => ({
+        id,
+        disadvantaged:
+          economicAssumptions.competitionDisadvantagedAlternative,
+        evidenceIds:
+          economicAssumptions.competitionTransferRate?.evidenceIds,
+      }))
+    ).toEqual([
+      {
+        id: "stable_private_standard_service",
+        disadvantaged: "adaptiveCompliant",
+        evidenceIds: ["szucs_discretion_price_2024"],
+      },
+    ]);
+
+    for (const scenario of SCENARIOS_V2) {
+      if (scenario.id === "stable_private_standard_service") continue;
+      expect(
+        scenario.economicAssumptions.competitionDisadvantagedAlternative,
+        scenario.id
+      ).toBeNull();
+      expect(
+        scenario.economicAssumptions.competitionTransferRate,
+        scenario.id
+      ).toBeNull();
+    }
+  });
+
+  it("removes and restores the declared competition difference without retaining hidden stress", () => {
+    const transition = (
+      scenarioModule as {
+        selectCompetitionDisadvantagedAlternative?: (
+          assumptions: (typeof SCENARIOS_V2)[number]["economicAssumptions"],
+          alternative: "formalSequential" | "adaptiveCompliant" | null
+        ) => (typeof SCENARIOS_V2)[number]["economicAssumptions"];
+      }
+    ).selectCompetitionDisadvantagedAlternative;
+    expect(transition).toBeTypeOf("function");
+    if (!transition) return;
+
+    const initial = SCENARIOS_V2.find(
+      ({ id }) => id === "stable_private_standard_service"
+    )!.economicAssumptions;
+    const removed = transition(initial, null);
+    expect(removed).toMatchObject({
+      pathCompetitionDiffers: false,
+      competitionDisadvantagedAlternative: null,
+      competitionTransferRate: null,
+    });
+
+    const restored = transition(removed, "formalSequential");
+    expect(restored).toMatchObject({
+      pathCompetitionDiffers: true,
+      competitionDisadvantagedAlternative: "formalSequential",
+      competitionTransferRate: {
+        low: 0.02,
+        central: 0.06,
+        high: 0.09,
+        rangeKind: "stress",
+        evidenceClass: "empirical_anchor",
+        evidenceIds: ["szucs_discretion_price_2024"],
+      },
+    });
+    expect(initial.competitionDisadvantagedAlternative).toBe(
+      "adaptiveCompliant"
+    );
+  });
+
   it("retains the legacy scenario centres and workflow timings as labelled assumptions", () => {
     for (const scenario of SCENARIOS_V2) {
       const legacyScenario = SCENARIOS.find(
@@ -194,10 +271,10 @@ describe("model 2.3 canonical scenarios", () => {
       expect(scenario.economicAssumptions.dailyCostOfInaction.central).toBe(
         legacyScenario.inputs.dailyCostOfInaction
       );
-      expect(result.formalSequential.elapsedDays.central).toBe(
+      expect(result.formalSequential.elapsedDays.central).toBeCloseTo(
         legacyTiming.rigidDays
       );
-      expect(result.adaptiveCompliant.elapsedDays.central).toBe(
+      expect(result.adaptiveCompliant.elapsedDays.central).toBeCloseTo(
         legacyTiming.flexibleDays
       );
       for (const [roleId, rate] of Object.entries(
@@ -369,7 +446,9 @@ describe("model 2.3 evidence registry", () => {
   });
 
   it("resolves every scenario evidence reference to evidence or its own assumptions", () => {
-    const evidenceIds = new Set(EVIDENCE_REGISTRY.map(({ id }) => id));
+    const evidenceIds = new Set(
+      [...INTERNAL_EVIDENCE_REGISTRY, ...EVIDENCE_REGISTRY].map(({ id }) => id)
+    );
 
     for (const scenario of SCENARIOS_V2) {
       const assumptionIds = new Set(scenario.assumptions.map(({ id }) => id));

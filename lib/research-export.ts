@@ -36,6 +36,7 @@ export interface ResearchJsonV2 {
   roleHourlyRates: DecisionRecordV2["roleHourlyRates"];
   evidence: {
     calculationAnchors: DecisionRecordV2["calculationAnchors"];
+    internalEvidence: DecisionRecordV2["internalEvidence"];
     externalEvidence: DecisionRecordV2["externalEvidence"];
     retainedAssumptions: DecisionRecordV2["retainedAssumptions"];
   };
@@ -308,6 +309,7 @@ export function buildResearchJson(
     roleHourlyRates: record.roleHourlyRates,
     evidence: {
       calculationAnchors: record.calculationAnchors,
+      internalEvidence: record.internalEvidence,
       externalEvidence: record.externalEvidence,
       retainedAssumptions: record.retainedAssumptions,
     },
@@ -586,6 +588,17 @@ export function buildResearchCsv(
     }),
     csvRow(locale, {
       section: "assumption",
+      record_id: "competitionDisadvantagedAlternative",
+      field_id: "competitionDisadvantagedAlternative",
+      value: assumptions.competitionDisadvantagedAlternative,
+      status: assumptions.competitionDisadvantagedAlternative
+        ? undefined
+        : "notApplicable",
+      localized_label:
+        tx.assumptions.competitionDisadvantagedAlternative,
+    }),
+    csvRow(locale, {
+      section: "assumption",
       record_id: "informal_bypass",
       field_id: assumptions.bypass.id,
       status: assumptions.bypass.status,
@@ -622,10 +635,14 @@ export function buildResearchCsv(
       })
     );
   }
-  for (const evidence of record.externalEvidence) {
-    rows.push(
+  for (const [section, evidenceRecords] of [
+    ["internal_evidence", record.internalEvidence],
+    ["external_evidence", record.externalEvidence],
+  ] as const) {
+    for (const evidence of evidenceRecords) {
+      rows.push(
       csvRow(locale, {
-        section: "external_evidence",
+        section,
         record_id: evidence.id,
         field_id: "sourceTitle",
         value: lookupModelCopy(locale, evidence.source.titleKey),
@@ -636,7 +653,7 @@ export function buildResearchCsv(
         localized_label: lookupModelCopy(locale, evidence.source.titleKey),
       }),
       csvRow(locale, {
-        section: "external_evidence",
+        section,
         record_id: evidence.id,
         field_id: "supportedClaim",
         value: lookupModelCopy(locale, evidence.supportedClaimKey),
@@ -647,7 +664,7 @@ export function buildResearchCsv(
         localized_label: tx.fields.supportedClaim,
       }),
       csvRow(locale, {
-        section: "external_evidence",
+        section,
         record_id: evidence.id,
         field_id: "unsupportedClaim",
         value: lookupModelCopy(locale, evidence.unsupportedClaimKey),
@@ -658,7 +675,7 @@ export function buildResearchCsv(
         localized_label: tx.fields.unsupportedClaim,
       }),
       csvRow(locale, {
-        section: "external_evidence",
+        section,
         record_id: evidence.id,
         field_id: "jurisdictionOrPopulation",
         value: lookupModelCopy(locale, evidence.jurisdictionOrPopulationKey),
@@ -669,7 +686,7 @@ export function buildResearchCsv(
         localized_label: tx.fields.population,
       }),
       csvRow(locale, {
-        section: "external_evidence",
+        section,
         record_id: evidence.id,
         field_id: "constructs",
         value: evidence.constructs.join(";"),
@@ -679,7 +696,7 @@ export function buildResearchCsv(
         localized_label: tx.fields.constructs,
       }),
       csvRow(locale, {
-        section: "external_evidence",
+        section,
         record_id: evidence.id,
         field_id: "assumptionKeys",
         value: evidence.assumptionKeys.join(";"),
@@ -688,7 +705,8 @@ export function buildResearchCsv(
         source_url: evidence.sourceUrl,
         localized_label: tx.sections.assumptions,
       })
-    );
+      );
+    }
   }
   for (const assumption of record.retainedAssumptions) {
     rows.push(
@@ -1042,6 +1060,13 @@ export function buildResearchMarkdown(
     `| ${tx.assumptions.pathCompetitionDiffers} | ${
       record.assumptions.pathCompetitionDiffers ? tx.words.yes : tx.words.no
     } | ${tx.words.notApplicable} |`,
+    `| ${tx.assumptions.competitionDisadvantagedAlternative} | ${
+      record.assumptions.competitionDisadvantagedAlternative
+        ? tx.alternatives[
+            record.assumptions.competitionDisadvantagedAlternative
+          ]
+        : tx.words.notApplicable
+    } | ${tx.words.notApplicable} |`,
     ...(record.assumptions.competitionTransferRate
       ? [
           markdownRangeRow(
@@ -1111,6 +1136,30 @@ export function buildResearchMarkdown(
         } |`
     ),
     "",
+    `## ${tx.sections.internalEvidence}`,
+    "",
+    ...record.internalEvidence.flatMap((evidence) => [
+      `### ${lookupModelCopy(locale, evidence.source.titleKey)}`,
+      "",
+      `- **${tx.fields.evidenceStatus}:** ${
+        tx.evidenceClasses[evidence.type]
+      } (\`${evidence.id}\`)`,
+      `- **${tx.fields.supportedClaim}:** ${lookupModelCopy(
+        locale,
+        evidence.supportedClaimKey
+      )}`,
+      `- **${tx.fields.unsupportedClaim}:** ${lookupModelCopy(
+        locale,
+        evidence.unsupportedClaimKey
+      )}`,
+      `- **${tx.fields.population}:** ${lookupModelCopy(
+        locale,
+        evidence.jurisdictionOrPopulationKey
+      )}`,
+      `- **${tx.fields.constructs}:** ${evidence.constructs.join(", ")}`,
+      `- **${tx.fields.source}:** ${evidence.sourceUrl}`,
+      "",
+    ]),
     `## ${tx.sections.externalEvidence}`,
     "",
     ...record.externalEvidence.flatMap((evidence) => [
@@ -1233,7 +1282,7 @@ export function buildResearchMarkdown(
   return lines.join("\n");
 }
 
-// Browser-side transport helpers retained for the current 2.2.2 components.
+// Shared browser-side transport helpers for the current research exports.
 
 export function downloadTextFile(filename: string, content: string, mime: string): void {
   const blob = new Blob([content], { type: mime });

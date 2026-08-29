@@ -59,6 +59,7 @@ export interface ReplicationScenarioV2 {
   assumptions: DecisionRecordV2["assumptions"];
   roleHourlyRates: DecisionRecordV2["roleHourlyRates"];
   calculationAnchors: DecisionRecordV2["calculationAnchors"];
+  internalEvidence: DecisionRecordV2["internalEvidence"];
   externalEvidence: DecisionRecordV2["externalEvidence"];
   retainedAssumptions: DecisionRecordV2["retainedAssumptions"];
   legalProvenance: DecisionRecordV2["legalProvenance"];
@@ -135,6 +136,7 @@ export function buildReplicationBundle(
       assumptions: structuredClone(record.assumptions),
       roleHourlyRates: structuredClone(record.roleHourlyRates),
       calculationAnchors: structuredClone(record.calculationAnchors),
+      internalEvidence: structuredClone(record.internalEvidence),
       externalEvidence: structuredClone(record.externalEvidence),
       retainedAssumptions: structuredClone(record.retainedAssumptions),
       legalProvenance: structuredClone(record.legalProvenance),

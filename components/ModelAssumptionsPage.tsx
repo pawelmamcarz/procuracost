@@ -17,6 +17,7 @@ import type {
 } from "@/lib/model-v2";
 
 const EVIDENCE_COPY_KEYS = {
+  model_2_3_mechanism_workflow_allocations: "mechanismWorkflow",
   california_modular_it_procurement: "californiaModular",
   oecd_rvul_problem_definition: "oecdRvul",
   uzp_preliminary_market_consultation: "uzpConsultation",
@@ -239,6 +240,18 @@ function ScenarioLedger({
                     ? copy.values.applies
                     : copy.values.notApplicable}
                 </p>
+                {scenario.competitionDisadvantagedAlternative ? (
+                  <p className="mt-3 border-l-2 border-blue-700 pl-4 text-sm leading-6 text-gray-700">
+                    <span className="font-medium text-gray-950">
+                      {copy.fields.competitionDisadvantagedAlternative}:
+                    </span>{" "}
+                    {
+                      copy.alternatives[
+                        scenario.competitionDisadvantagedAlternative
+                      ]
+                    }
+                  </p>
+                ) : null}
                 <div className="mt-4">
                   {scenario.calibratedValues.map((assumption) => (
                     <CalibratedValueLedger
@@ -349,6 +362,103 @@ function evidenceTranslation(
   const key = EVIDENCE_COPY_KEYS[record.id as keyof typeof EVIDENCE_COPY_KEYS];
   if (!key) throw new Error(`Missing assumptions evidence copy for ${record.id}`);
   return copy.evidence[key];
+}
+
+function InternalProvenance({
+  copy,
+}: {
+  copy: ModelAssumptionsCopy;
+}) {
+  return (
+    <section
+      className="border-l-4 border-gray-950 bg-gray-50 px-6 py-8 md:px-8"
+      data-provenance-collection="internal"
+    >
+      <h3 className="text-2xl font-semibold tracking-tight text-gray-950">
+        {copy.sections.internalTitle}
+      </h3>
+      <p className="mt-3 max-w-3xl text-sm leading-6 text-gray-700">
+        {copy.sections.internalIntro}
+      </p>
+      <div className="mt-8 border-b border-gray-300">
+        {MODEL_ASSUMPTIONS_DATA.provenance.internalEvidence.map((record) => {
+          const translated = evidenceTranslation(record, copy);
+          return (
+            <article key={record.id} className="border-t border-gray-300 py-6">
+              <div className="grid gap-5 md:grid-cols-[minmax(0,1fr)_15rem]">
+                <div>
+                  <h4 className="font-semibold text-gray-950">
+                    {translated.sourceTitle}
+                  </h4>
+                  <p className="mt-1 text-sm text-gray-600">
+                    {translated.publisher}
+                  </p>
+                </div>
+                <dl className="space-y-3 text-sm">
+                  <div>
+                    <dt className="font-medium text-gray-600">
+                      {copy.fields.sourceClass}
+                    </dt>
+                    <dd className="mt-1 text-gray-950">
+                      {copy.evidenceTypes[record.type]}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="font-medium text-gray-600">
+                      {copy.fields.publicationKind}
+                    </dt>
+                    <dd className="mt-1 text-gray-950">
+                      {copy.publicationKinds[record.source.publicationKind]}
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+              <dl className="mt-5 grid gap-5 md:grid-cols-3">
+                <div className="border-t border-gray-300 pt-4">
+                  <dt className="text-sm font-medium text-gray-600">
+                    {copy.fields.supportedClaim}
+                  </dt>
+                  <dd className="mt-2 text-sm leading-6 text-gray-950">
+                    {translated.supported}
+                  </dd>
+                </div>
+                <div className="border-t border-gray-300 pt-4">
+                  <dt className="text-sm font-medium text-gray-600">
+                    {copy.fields.unsupportedClaim}
+                  </dt>
+                  <dd className="mt-2 text-sm leading-6 text-gray-950">
+                    {translated.unsupported}
+                  </dd>
+                </div>
+                <div className="border-t border-gray-300 pt-4">
+                  <dt className="text-sm font-medium text-gray-600">
+                    {copy.fields.population}
+                  </dt>
+                  <dd className="mt-2 text-sm leading-6 text-gray-950">
+                    {translated.population}
+                  </dd>
+                </div>
+              </dl>
+              <div className="mt-5 flex flex-col gap-3 border-t border-gray-300 pt-4 sm:flex-row sm:items-center sm:justify-between">
+                <code className="break-all font-mono text-sm text-gray-700">
+                  {record.id}
+                </code>
+                <a
+                  href={record.sourceUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={copy.sourceLinkLabel(translated.sourceTitle)}
+                  className="inline-flex min-h-11 items-center font-semibold text-blue-800 underline decoration-2 underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-700"
+                >
+                  {copy.sourceLink}
+                </a>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  );
 }
 
 function ExternalProvenance({
@@ -724,6 +834,7 @@ export default function ModelAssumptionsPage({ lang }: { lang: Lang }) {
         </div>
         <div className="mt-8 space-y-8">
           <RetainedProvenance copy={copy} />
+          <InternalProvenance copy={copy} />
           <ExternalProvenance lang={lang} copy={copy} />
           <LegalProvenance lang={lang} copy={copy} />
         </div>

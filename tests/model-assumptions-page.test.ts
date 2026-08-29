@@ -14,6 +14,7 @@ import PlLayout, {
 import PlPage from "@/app/(pl)/model/assumptions/page";
 import { modelAssumptionsT, modelV2T } from "@/lib/i18n";
 import { MODEL_V2_METADATA, SCENARIO_V2_IDS } from "@/lib/model-v2";
+import { localizedPageMetadata } from "@/lib/page-metadata";
 
 function occurrences(markup: string, fragment: string): number {
   return markup.split(fragment).length - 1;
@@ -118,9 +119,43 @@ describe("model assumptions routes", () => {
     expect(leafPaths(modelAssumptionsT.pl).sort()).toEqual(
       leafPaths(modelAssumptionsT.en).sort()
     );
-    expect(plMetadata).toEqual(modelAssumptionsT.pl.metadata);
-    expect(enMetadata).toEqual(modelAssumptionsT.en.metadata);
+    expect(plMetadata).toEqual(localizedPageMetadata({
+      lang: "pl",
+      routeKey: "modelAssumptions",
+      ...modelAssumptionsT.pl.metadata,
+    }));
+    expect(enMetadata).toEqual(localizedPageMetadata({
+      lang: "en",
+      routeKey: "modelAssumptions",
+      ...modelAssumptionsT.en.metadata,
+    }));
   });
+
+  it.each([
+    [
+      "pl",
+      PlPage,
+      "Wariant z ograniczonym dostępem dostawców",
+      "ograniczoną listą dostawców",
+      "Nie jest właściwością adaptacyjnego projektu procesu",
+    ],
+    [
+      "en",
+      EnPage,
+      "Alternative with restricted supplier access",
+      "a restricted supplier shortlist",
+      "not a property of adaptive workflow design",
+    ],
+  ] as const)(
+    "discloses the bounded Szucs counterfactual and its side in %s",
+    (_lang, Page, sideLabel, mechanism, boundary) => {
+      const markup = renderToStaticMarkup(createElement(Page));
+
+      expect(markup).toContain(sideLabel);
+      expect(markup).toContain(mechanism);
+      expect(markup).toContain(boundary);
+    }
+  );
 
   it("keeps the rendered ledger and TSX source free of decision claims and inline prose", () => {
     const polishMarkup = renderToStaticMarkup(createElement(PlPage));
@@ -139,13 +174,13 @@ describe("model assumptions routes", () => {
   it.each([
     ["pl", PlPage, "Otwórz źródło:"],
     ["en", EnPage, "Open source:"],
-  ] as const)("gives every external source link a unique name in %s", (_lang, Page, prefix) => {
+  ] as const)("gives every provenance source link a unique name in %s", (_lang, Page, prefix) => {
     const markup = renderToStaticMarkup(createElement(Page));
     const labels = [...markup.matchAll(/aria-label="([^"]+)"/g)]
       .map((match) => match[1])
       .filter((label) => label.startsWith(prefix));
 
-    expect(labels).toHaveLength(5);
-    expect(new Set(labels).size).toBe(5);
+    expect(labels).toHaveLength(6);
+    expect(new Set(labels).size).toBe(6);
   });
 });

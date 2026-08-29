@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 
 import { describe, expect, it } from "vitest";
 
@@ -43,5 +43,25 @@ describe("model 2.3 visual identity", () => {
     expect(icon).toContain('data-path="adaptive"');
     expect(icon).toContain('data-endpoint="decision-record"');
     expect(icon).not.toMatch(/Left: pipe|Right: field/);
+  });
+
+  it("gives the canonical English research segment its own Open Graph image convention", () => {
+    const path = "app/(en)/research/opengraph-image.tsx";
+
+    expect(existsSync(path)).toBe(true);
+    const source = readFileSync(path, "utf8");
+    expect(source).toContain('../en/opengraph-image');
+    expect(source).toContain("export { alt, contentType, size }");
+    expect(source).toContain("export { default }");
+  });
+
+  it("keeps internal provenance within the approved neutral palette", () => {
+    const source = readFileSync(
+      "components/ModelAssumptionsPage.tsx",
+      "utf8"
+    );
+
+    expect(source).not.toMatch(/(?:bg|border|text)-cyan-/);
+    expect(source).toContain("border-gray-950");
   });
 });

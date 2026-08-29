@@ -87,6 +87,7 @@ describe("native model 2.3 replication artifacts", () => {
       "assumptions",
       "roleHourlyRates",
       "calculationAnchors",
+      "internalEvidence",
       "externalEvidence",
       "retainedAssumptions",
       "legalProvenance",

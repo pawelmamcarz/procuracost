@@ -93,6 +93,19 @@ describe("public model 2.3 explanation", () => {
     }
   });
 
+  it("uses professional Polish procurement terminology without avoidable English jargon", () => {
+    const publicMethodology = JSON.stringify(methodologyOverviewT.pl);
+
+    expect(publicMethodology).toContain(
+      "obowiązkowe terminy przed zawarciem umowy"
+    );
+    expect(publicMethodology).toContain("etap rozpoznania");
+    expect(publicMethodology).toContain("postępowania zakupowego");
+    expect(publicMethodology).not.toMatch(
+      /standstill|dodawać discovery|projektowanie sourcingu/i
+    );
+  });
+
   it("keeps route files thin and all public copy in i18n", () => {
     const routeFiles = [
       "app/(pl)/model/page.tsx",
