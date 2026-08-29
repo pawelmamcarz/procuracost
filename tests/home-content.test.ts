@@ -6,10 +6,8 @@ import { describe, expect, it } from "vitest";
 import EvidenceFieldHome from "@/components/EvidenceFieldHome";
 import {
   HOME_EVIDENCE_IDS,
-  buildCompactHomeRail,
   homeEvidenceRecords,
 } from "@/components/home/home-surface-data";
-import { ProcessRail } from "@/components/process-map/ProcessRail";
 import { homeT } from "@/lib/i18n";
 import { EVIDENCE_REGISTRY } from "@/lib/model-v2";
 import { SITE_ROUTES } from "@/lib/site-routes";
@@ -60,50 +58,6 @@ describe("model 2.3 compact homepage data", () => {
     }
   });
 
-  it("keeps the illustrative legal control on the shared boundary without an asymmetric lane lock", () => {
-    const viewModel = buildCompactHomeRail("en");
-    const html = renderToStaticMarkup(
-      createElement(ProcessRail, {
-        viewModel,
-        mode: "read-only",
-        idPrefix: "home-illustration",
-      })
-    );
-
-    expect(viewModel.lanes.formalSequential.nodes).toHaveLength(4);
-    expect(viewModel.lanes.adaptiveCompliant.nodes).toHaveLength(4);
-    expect(
-      Object.fromEntries(
-        Object.entries(viewModel.lanes).map(([lane, { nodes }]) => [
-          lane,
-          nodes.filter(({ locked }) => locked).length,
-        ])
-      )
-    ).toEqual({ formalSequential: 0, adaptiveCompliant: 0 });
-    expect(
-      Object.values(viewModel.lanes).flatMap(({ nodes }) => nodes)
-    ).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ parallel: true, parallelText: "Parallel branch" }),
-        expect.objectContaining({ merge: true }),
-        expect.objectContaining({ critical: true, criticalText: "Critical path" }),
-      ])
-    );
-    expect(html.match(/Shared legal and governance boundary/g)).toHaveLength(1);
-    expect(html).toContain("Formal sequential alternative");
-    expect(html).toContain("Adaptive compliant alternative");
-    expect(html).toContain("Split");
-    expect(html).toContain("Merge");
-    expect(html).not.toContain("Locked legal wait");
-    expect(html).toContain("Critical path");
-    expect(html).not.toMatch(/active days|queue days|active \+|days,/i);
-    for (const node of Object.values(viewModel.lanes).flatMap(
-      ({ nodes }) => nodes
-    )) {
-      expect(node.timingSummary).toBe("");
-      expect(node.accessibleName).not.toMatch(/active days|queue days/i);
-    }
-  });
 });
 
 describe("compact homepage presentation", () => {
@@ -145,7 +99,7 @@ describe("compact homepage presentation", () => {
     ]);
   });
 
-  it("renders one read-only rail, three primary jobs and four official evidence rows in both languages", () => {
+  it("renders one topology figure, three primary jobs and four official evidence rows in both languages", () => {
     for (const lang of ["pl", "en"] as const) {
       const markup = renderToStaticMarkup(
         createElement(EvidenceFieldHome, { lang })
@@ -158,19 +112,22 @@ describe("compact homepage presentation", () => {
 
       expect(text).toContain(tx.hero.title);
       expect(text).toContain(tx.neutrality);
-      expect(text).toContain(tx.rail.note);
+      expect(text).toContain(tx.boundary.note);
       expect(text).toContain(
         lang === "pl"
           ? "Otwórz edytowalne porównanie procesów"
           : "Open the editable process comparison"
       );
       expect(markup.match(/data-home-job=/g)).toHaveLength(3);
-      expect(markup.match(/data-home-process-rail=/g)).toHaveLength(1);
-      expect(markup.match(/data-home-rail-action=/g)).toHaveLength(1);
+      expect(markup.match(/data-home-topology-section=/g)).toHaveLength(1);
+      expect(markup.match(/data-home-topology=/g)).toHaveLength(1);
+      expect(markup.match(/data-home-topology-action=/g)).toHaveLength(1);
       expect(evidenceIds).toEqual(HOME_EVIDENCE_IDS);
       expect(markup).not.toContain("szucs_discretion_price_2024");
       expect(markup).not.toContain("<table");
       expect(markup).not.toContain("min-w-[980px]");
+      expect(markup).not.toContain("data-home-process-rail");
+      expect(markup).not.toContain("data-mobile-sequence");
       expect(markup).not.toMatch(/bg-gradient|shadow-|transition-/);
       expect(markup).not.toContain("slate-");
     }
@@ -192,7 +149,7 @@ describe("compact homepage presentation", () => {
     }
   });
 
-  it("removes the legacy home calculation and visual dependency graph", () => {
+  it("isolates the homepage topology from the calculator rail and model calculations", () => {
     const source = readFileSync("components/EvidenceFieldHome.tsx", "utf8");
     const dataSource = readFileSync(
       "components/home/home-surface-data.ts",
@@ -200,13 +157,13 @@ describe("compact homepage presentation", () => {
     );
 
     expect(source).not.toMatch(
-      /BoundaryField|DecisionMap|calculateCosts|@\/lib\/scenarios|\bSCENARIOS\b/
+      /ProcessRail|DecisionMap|calculateCosts|@\/lib\/scenarios|\bSCENARIOS\b/
     );
-    expect(source).toContain("buildCompactHomeRail");
+    expect(source).toContain("BoundaryField");
+    expect(source).not.toContain("buildCompactHomeRail");
     expect(source).toContain("homeEvidenceRecords");
     expect(source).toContain("EvidenceDocket");
-    expect(source).toContain("ProcessRail");
-    expect(dataSource).toContain("buildIllustrativeProcessRailViewModel");
+    expect(dataSource).not.toContain("buildIllustrativeProcessRailViewModel");
     expect(dataSource).not.toMatch(
       /CalibratedValue|WorkflowDesign|ProcessMapStep|lockedLegalProvenance|activeDays|queueDays|criticalPathStepIds/
     );
