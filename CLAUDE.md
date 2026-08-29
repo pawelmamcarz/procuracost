@@ -22,7 +22,7 @@ single process type, technology level or aggregate capability score.
 
 ```bash
 npm run dev        # dev server at http://localhost:3000 (PL) and /en (EN)
-npm run build      # production build (also computes the version string; see below)
+npm run build      # production build
 npm run start      # serve the production build
 npm run lint       # eslint (next/core-web-vitals + next/typescript)
 npm test           # full Vitest suite
@@ -30,6 +30,11 @@ npm test           # full Vitest suite
 npm test -- tests/decision-record-v2.test.ts  # single file
 npm test -- -t "stays swap-neutral"           # single test by name
 ```
+
+Always start the dev server through `npm run dev`. Bare `next dev` drops the
+heap cap that the script sets and, combined with route preloading, turns
+dev-server restarts into a cascade of node processes. `next.config.ts` disables
+`experimental.preloadEntriesOnStart` for the same reason.
 
 Model verification scripts import the native implementation directly:
 
@@ -39,9 +44,23 @@ npm run sweep      # alternative-swap symmetry audit
 npm run replicate  # regenerate the three deterministic replication artefacts
 ```
 
+`npm run map:legacy` regenerates the quarantined model 2.2.2 decision-threshold
+map. It is not part of the model 2.3 output surface. Do not run it as a routine
+verification step.
+
 After a change under `lib/`, run the focused test first, then
 `npm test && npm run recompute && npm run sweep && npm run replicate && npm run build`.
 Run `npm run lint` before hand-off. The `@/*` path alias maps to the repository root.
+
+CI (`.github/workflows/ci.yml`) runs lint, test, build and recompute on every
+pull request and push to `main`. It does not run `sweep` or `replicate`, so
+symmetry regressions and stale replication artefacts are caught only by the
+local sequence above.
+
+Tests run in the default Vitest node environment. There is no jsdom and no
+Testing Library. Component tests use `renderToStaticMarkup` plus `readFileSync`
+source assertions, which is what makes the design, vocabulary and focus
+contracts testable. Follow that pattern instead of adding a DOM environment.
 
 Per `AGENTS.md`, this Next.js version may differ from training data. Read the
 relevant guide in `node_modules/next/dist/docs/` before changing App Router
@@ -88,9 +107,30 @@ templates, scenarios or suitability logic. Readiness responses and their summary
 release identifier. `lib/shortcasty.ts` is the separate Shortcasty catalogue;
 Procurement&Beyond episode 8 does not belong in that catalogue.
 
+Import public model code from the `@/lib/model-v2` barrel. `index.ts` is a
+curated surface: it deliberately omits `diagnostics.ts`, `replication.ts`,
+`deep-freeze.ts`, `legacy-adapter.ts` and both `legacy-migration` modules, and
+re-exports `decision-record.ts` through an explicit named list rather than
+`export *`. A new decision-record export must be added to that list. Reach for a
+deep path only from scripts, tests and the migration surface.
+
 The former 2.2.2 modules and outputs are provenance for explicit migration and
 historical reproduction only. Do not import them into a native 2.3 public
 runtime path. Never use `docs/archive/model-1.x/` as an active source.
+
+That boundary is enforced, not advisory. `tests/model-v2-runtime-reachability.test.ts`
+walks the App Router import graph, including dynamic edges, and fails if
+`lib/calculations.ts`, `lib/decision-map.ts`, `lib/optimizer.ts`,
+`lib/scenarios.ts`, `lib/process-templates.ts`, `lib/model-v2/legacy-adapter.ts`,
+`lib/model-v2/legacy-migration.ts` or `lib/model-v2/legacy-migration-draft.ts`
+becomes reachable. `components/CostCalculator.tsx`,
+`components/cost-comparison/`, `components/PathOptimizer.tsx` and
+`components/DecisionMap.tsx` still import those modules and are kept unreachable
+from every route. Legacy migration enters the runtime only through the deferred
+dynamic import in `lib/load-legacy-adapter.ts`; a static import of
+`legacy-adapter` breaks the contract. `tests/legacy-model-version-seal.test.ts`
+separately pins `lib/calculations.ts` and `lib/scenarios.ts` to
+`LEGACY_MODEL_VERSION` and forbids `MODEL_VERSION` in them.
 
 `scripts/` and `replication/` form the computational audit surface. Regenerate
 `replication/outputs/` whenever the scenarios, engine or decision-record schema
@@ -109,13 +149,14 @@ URLs. There is no locale middleware or dynamic `[lang]` segment, so paired page
 changes usually require both trees.
 
 - Paired routes include `assessment`, `calculator`, `case-studies`,
-  `methodology`, `model`, `optimizer`, `practice/procurement-beyond-8`,
-  `readiness`, `team` and the Shortcasty index.
+  `methodology`, `model`, `model/assumptions`, `optimizer`,
+  `practice/procurement-beyond-8`, `readiness`, `team` and the Shortcasty index.
 - The `/optimizer` URL now renders the suitability comparison. Do not restore
   scoring or prescriptive procedure selection under that URL.
 - `app/(en)/en/research/page.tsx` redirects to `/research`. The working paper is
   English and has one canonical page. Do not duplicate it.
-- `app/(pl)/research-agenda` is PL-only and has no EN counterpart.
+- `app/(pl)/research-agenda` and the `app/(pl)/shortcasty/[slug]` episode pages
+  are PL-only and have no EN counterpart.
 
 Confirm the counterpart in `lib/site-routes.ts` before editing. Language is
 passed through the `lang` or `Lang` prop and paired i18n dictionaries.
@@ -182,7 +223,10 @@ configuration.
   calibration ranges. Bielik may structure market data; the transparent model
   performs the calculation.
 - **Site versioning:** `lib/version-core.ts` generates the Tesla-style site
-  version. Quantitative model metadata is separate and lives in
+  version. `next.config.ts` resolves it at config load and injects
+  `NEXT_PUBLIC_VERSION`, so it applies to `dev` as well as `build`. An override
+  must match `year.ISO-week.release.patch` or the config throws before the
+  server starts. Quantitative model metadata is separate and lives in
   `lib/model-v2/domain.ts`.
 - **Design:** follow `CLAUDE_DESIGN.md`. Do not add prose em dashes, gradients,
   shadows, generic card grids, JSX comments or a new chart library.
