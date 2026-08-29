@@ -199,6 +199,31 @@ function forbiddenDynamicClosures(
 }
 
 describe("model 2.3 runtime dependency boundary", () => {
+  it("keeps both localized assumptions route closures statically native", () => {
+    const graph = traceRuntimeGraph([
+      "app/(pl)/layout.tsx",
+      "app/(pl)/model/assumptions/page.tsx",
+      "app/(pl)/model/assumptions/layout.tsx",
+      "app/(en)/layout.tsx",
+      "app/(en)/en/model/assumptions/page.tsx",
+      "app/(en)/en/model/assumptions/layout.tsx",
+    ]);
+    const reached = reachedRepoPaths(graph);
+
+    expect(
+      reached.filter((file) =>
+        LEGACY_RUNTIME_MODULES.includes(
+          file as (typeof LEGACY_RUNTIME_MODULES)[number]
+        )
+      )
+    ).toEqual([]);
+    expect(graph.dynamicEdges.filter(({ specifier }) => specifier === null)).toEqual(
+      []
+    );
+    expect(graph.computedRequires).toEqual([]);
+    expect(forbiddenDynamicClosures(graph, false)).toEqual([]);
+  });
+
   it("keeps both localized calculator route closures statically native", () => {
     const graph = traceRuntimeGraph([
       "app/(pl)/layout.tsx",

@@ -1,5 +1,6 @@
 import { MODEL_VERSION } from "./version";
 import type { DecisionMapRowId } from "./decision-map";
+import { MODEL_V2_METADATA } from "./model-v2/domain";
 
 export type Lang = "pl" | "en";
 
@@ -3077,11 +3078,11 @@ const modelV2Pl = {
     stable_private_standard_service: {
       name: "Stabilna standardowa usługa prywatna",
       description:
-        "Scenariusz kontrolny do sprawdzenia procesu na dojrzałym rynku przy zerowym centralnym koszcie zwłoki.",
+        "Scenariusz kontrolny dla standaryzowanego zakupu przy zerowym centralnym koszcie zwłoki.",
       sourceTitle: "Scenariusz 2.2.2: stabilny zakup kontrolny",
       assumptionLabel: "Przeniesione założenia stabilnego zakupu",
       assumptionDetail:
-        "Dojrzałość rynku, mapy procesu i wartości ekonomiczne są deklarowanymi założeniami kontrolnymi, nie wynikami badania.",
+        "Standaryzacja zakupu, mapy procesu i wartości ekonomiczne są deklarowanymi założeniami kontrolnymi, nie wynikami badania.",
     },
     stable_capex_replacement: {
       name: "Stabilna inwestycja odtworzeniowa CAPEX",
@@ -3322,11 +3323,11 @@ const modelV2En: WidenModelV2Copy<typeof modelV2Pl> = {
     stable_private_standard_service: {
       name: "Stable private standard service",
       description:
-        "A control scenario for a mature market with a zero central delay cost.",
+        "A control scenario for a standardised purchase with a zero central delay cost.",
       sourceTitle: "Model 2.2.2 scenario: stable purchase control",
       assumptionLabel: "Retained stable-purchase assumptions",
       assumptionDetail:
-        "Market maturity, workflow maps and economic values are declared control assumptions, not research findings.",
+        "Purchase standardisation, workflow maps and economic values are declared control assumptions, not research findings.",
     },
     stable_capex_replacement: {
       name: "Stable CAPEX replacement",
@@ -3514,6 +3515,307 @@ const modelV2En: WidenModelV2Copy<typeof modelV2Pl> = {
 };
 
 export const modelV2T = { pl: modelV2Pl, en: modelV2En } as const;
+
+const modelAssumptionsPl = {
+  metadata: {
+    title: `Rejestr założeń modelu ${MODEL_V2_METADATA.modelVersion} | ProcuraCost`,
+    description: `Kontekst, zakresy ekonomiczne i pochodzenie danych modelu ProcuraCost ${MODEL_V2_METADATA.modelVersion}; kalibracja ${MODEL_V2_METADATA.calibrationId}.`,
+  },
+  productName: "ProcuraCost",
+  eyebrow: `Dokumentacja modelu ${MODEL_V2_METADATA.modelVersion}`,
+  title: "Rejestr założeń modelu zakupowego",
+  lead:
+    "Rejestr pokazuje dane wejściowe dziesięciu scenariuszy, klasy ich źródeł oraz granice interpretacji. Obie ścieżki są liczone w tym samym kontekście prawnym i operacyjnym.",
+  scopeNote:
+    "Zakresy stresowe służą do sprawdzania skutków jawnych założeń skrajnych. Nie opisują prawdopodobieństwa ani błędu statystycznego.",
+  metadataLabels: {
+    schemaVersion: "Wersja schematu",
+    modelVersion: "Wersja modelu",
+    calibrationId: "Identyfikator kalibracji",
+    legalRulesetId: "Zbiór reguł prawnych",
+  },
+  sections: {
+    scenariosTitle: "Scenariusze i zakresy wejściowe",
+    scenariosIntro:
+      "Pozycje zachowują kolejność rejestru modelu. Każda ujawnia sześć osi kontekstu oraz pełne metadane zakresów ekonomicznych.",
+    provenanceTitle: "Rejestr pochodzenia",
+    provenanceIntro:
+      "Trzy zbiory pełnią odrębne funkcje: zachowują założenia wejściowe, opisują źródła zewnętrzne albo blokują terminy wynikające z reguł prawnych.",
+    retainedTitle: "Przeniesione założenia",
+    retainedIntro:
+      "Wartości, stawki i przebiegi zachowane z modelu 2.2.2. Są założeniami scenariusza do weryfikacji w danej organizacji, nie obserwacjami empirycznymi.",
+    externalTitle: "Dowody zewnętrzne",
+    externalIntro:
+      "Źródła opisują mechanizmy, przypadki i granice transferu. Identyfikatory źródeł urzędowych nie służą do kalibracji wartości ekonomicznych.",
+    legalTitle: "Zablokowane pochodzenie prawne",
+    legalIntro:
+      "Terminy w tej części pochodzą z wersjonowanego zbioru reguł. Są przypisane do daty wszczęcia i nie podlegają swobodnej zmianie w mapie procesu.",
+    neutralTitle: "Kontrola neutralna",
+    neutralIntro:
+      "Kontrola zamówienia katalogowego wykorzystuje identyczne mapy procesu dla obu alternatyw. Równe koszty centralne i różnica równa zero potwierdzają neutralne zachowanie rachunku.",
+    neutralStress:
+      "Zakres stresowy kontroli pokazuje zewnętrzną obwiednię przy jawnych wartościach niskich i wysokich.",
+    methodTitle: "Dalsza dokumentacja",
+    methodIntro:
+      "Równania, zasady monetyzacji i ograniczenia stosowania opisuje metodologia modelu.",
+  },
+  fields: {
+    scenarioId: "Identyfikator scenariusza",
+    context: "Kontekst zakupowy",
+    economicAssumptions: "Założenia ekonomiczne",
+    pathCompetitionDiffers: "Różnica ekspozycji konkurencyjnej",
+    low: "Niski",
+    central: "Centralny",
+    high: "Wysoki",
+    rangeKind: "Rodzaj zakresu",
+    evidenceClass: "Klasa źródła",
+    evidenceIds: "Identyfikatory źródeł",
+    bypass: "Zakup poza zatwierdzonym procesem nie jest monetyzowany",
+    reason: "Uzasadnienie",
+    source: "Źródło",
+    sourceModelVersion: "Wersja modelu źródłowego",
+    sourceClass: "Klasa źródła",
+    constructs: "Obszary opisywane przez źródło",
+    supportedClaim: "Zakres wspierany przez źródło",
+    unsupportedClaim: "Czego źródło nie wspiera",
+    population: "Jurysdykcja lub populacja",
+    publicationKind: "Rodzaj publikacji",
+    publishedOn: "Data publikacji",
+    provision: "Podstawa prawna",
+    ruleId: "Identyfikator reguły",
+    initiatedOn: "Data wszczęcia",
+    lockedActiveDays: "Zablokowane dni pracy aktywnej",
+    lockedQueueDays: "Zablokowane dni oczekiwania",
+    occurrences: "Wystąpienia w mapach procesu",
+    mapsIdentical: "Mapy procesu są identyczne",
+    formalCentralTotal: "Centralny koszt ścieżki formalnej",
+    adaptiveCentralTotal: "Centralny koszt ścieżki adaptacyjnej",
+    delta: "Centralna różnica kosztu",
+    outerStressRange: "Zakres stresowy",
+  },
+  values: {
+    yes: "tak",
+    no: "nie",
+    applies: "uwzględniona",
+    notApplicable: "niewystępująca",
+    none: "brak",
+  },
+  assumptions: {
+    contractValue: "Wartość kontraktu",
+    dailyCostOfInaction: "Dzienny koszt zwłoki",
+    competitionTransferRate: "Transfer konkurencji cenowej",
+    amendmentDifferential: "Różnica kosztu aneksów",
+    tcoDifferential: "Różnica kosztu TCO",
+  },
+  units: {
+    pln: "PLN",
+    plnPerDay: "PLN/dzień",
+    percentage: "%",
+  },
+  rangeKinds: {
+    fixed: "wartość stała",
+    calibrated: "zakres kalibracyjny",
+    stress: "zakres stresowy",
+  },
+  evidenceTypes: {
+    empirical_anchor: "kotwica empiryczna",
+    official_case: "materiał urzędowy",
+    practitioner_observation: "obserwacja praktyka",
+    illustrative_scenario: "scenariusz ilustracyjny",
+    research_hypothesis: "hipoteza badawcza",
+  },
+  publicationKinds: {
+    official_webpage: "strona urzędowa",
+    official_report: "raport instytucjonalny",
+    peer_reviewed_article: "artykuł recenzowany naukowo",
+    practitioner_report: "materiał praktyka",
+    legacy_model_registry: "rejestr poprzedniej wersji modelu",
+  },
+  constructs: {
+    workflow_duration: "czas przebiegu procesu",
+    role_effort: "nakład pracy ról",
+    problem_definition: "definicja problemu zakupowego",
+    market_consultation: "konsultacje rynkowe",
+    modular_contracting: "modułowa konstrukcja kontraktu",
+    supplier_access: "dostęp dostawców",
+    competition_transfer: "transfer konkurencji",
+    contract_adaptability: "adaptowalność kontraktu",
+    contract_amendment: "aneksy do umowy",
+    tco: "całkowity koszt posiadania",
+    informal_bypass: "zakup poza procesem",
+    innovation_procurement: "zamówienia innowacyjne",
+  },
+  scenarioPosition: (current: number, total: number) =>
+    `Pozycja ${String(current).padStart(2, "0")} z ${String(total).padStart(2, "0")}`,
+  occurrenceLabel: (scenario: string, alternative: string) =>
+    `${scenario}; ${alternative}`,
+  showScenarioDetails: "Pokaż zakresy",
+  hideScenarioDetails: "Ukryj zakresy",
+  sourceLink: "Otwórz źródło",
+  sourceLinkLabel: (title: string) => `Otwórz źródło: ${title}`,
+  methodologyLink: "Przejdź do metodologii",
+  scenarios: modelV2Pl.scenarios,
+  evidence: modelV2Pl.evidence,
+  axes: researchExportV2Pl.axes,
+  axisValues: researchExportV2Pl.axisValues,
+  alternatives: researchExportV2Pl.alternatives,
+  evidenceClasses: researchExportV2Pl.evidenceClasses,
+  bypassReason: modelV2Pl.reasons.bypassNotMonetized,
+} as const;
+
+export type ModelAssumptionsCopy = LangShape<typeof modelAssumptionsPl>;
+
+const modelAssumptionsEn = {
+  metadata: {
+    title: `Model ${MODEL_V2_METADATA.modelVersion} assumptions register | ProcuraCost`,
+    description: `ProcuraCost ${MODEL_V2_METADATA.modelVersion} context, economic ranges, and provenance; calibration ${MODEL_V2_METADATA.calibrationId}.`,
+  },
+  productName: "ProcuraCost",
+  eyebrow: `Model ${MODEL_V2_METADATA.modelVersion} documentation`,
+  title: "Procurement model assumptions register",
+  lead:
+    "The register discloses the inputs for ten scenarios, their source classes, and the limits of interpretation. Both paths are calculated within the same legal and operational context.",
+  scopeNote:
+    "Stress ranges test the consequences of explicit outer assumptions. They do not describe probability or statistical error.",
+  metadataLabels: {
+    schemaVersion: "Schema version",
+    modelVersion: "Model version",
+    calibrationId: "Calibration identifier",
+    legalRulesetId: "Legal ruleset",
+  },
+  sections: {
+    scenariosTitle: "Scenarios and input ranges",
+    scenariosIntro:
+      "Entries retain the model registry order. Each discloses six context axes and the complete metadata for its economic ranges.",
+    provenanceTitle: "Provenance register",
+    provenanceIntro:
+      "The three collections serve separate purposes: retaining input assumptions, documenting external sources, or locking periods derived from legal rules.",
+    retainedTitle: "Retained assumptions",
+    retainedIntro:
+      "Values, rates, and workflows retained from model 2.2.2. They are scenario assumptions to be checked for the organisation concerned, not empirical observations.",
+    externalTitle: "External evidence",
+    externalIntro:
+      "Sources describe mechanisms, cases, and transfer limits. Official source identifiers are not used to calibrate economic values.",
+    legalTitle: "Locked legal provenance",
+    legalIntro:
+      "Periods in this collection come from the versioned ruleset. They are tied to the initiation date and cannot be freely changed in the process map.",
+    neutralTitle: "Neutral control",
+    neutralIntro:
+      "The catalogue call-off control uses identical process maps for both alternatives. Equal central costs and a zero difference confirm neutral calculation behaviour.",
+    neutralStress:
+      "The control stress range reports the outer envelope under the explicit low and high values.",
+    methodTitle: "Further documentation",
+    methodIntro:
+      "The model methodology documents the equations, monetisation rules, and limits of use.",
+  },
+  fields: {
+    scenarioId: "Scenario identifier",
+    context: "Procurement context",
+    economicAssumptions: "Economic assumptions",
+    pathCompetitionDiffers: "Difference in competition exposure",
+    low: "Low",
+    central: "Central",
+    high: "High",
+    rangeKind: "Range type",
+    evidenceClass: "Source class",
+    evidenceIds: "Source identifiers",
+    bypass: "Off-process purchasing is not monetised",
+    reason: "Rationale",
+    source: "Source",
+    sourceModelVersion: "Source model version",
+    sourceClass: "Source class",
+    constructs: "Areas described by the source",
+    supportedClaim: "What the source supports",
+    unsupportedClaim: "What the source does not support",
+    population: "Jurisdiction or population",
+    publicationKind: "Publication type",
+    publishedOn: "Published on",
+    provision: "Legal provision",
+    ruleId: "Rule identifier",
+    initiatedOn: "Initiated on",
+    lockedActiveDays: "Locked active work days",
+    lockedQueueDays: "Locked waiting days",
+    occurrences: "Occurrences in process maps",
+    mapsIdentical: "Process maps are identical",
+    formalCentralTotal: "Formal path central cost",
+    adaptiveCentralTotal: "Adaptive path central cost",
+    delta: "Central cost difference",
+    outerStressRange: "Stress range",
+  },
+  values: {
+    yes: "yes",
+    no: "no",
+    applies: "included",
+    notApplicable: "not applicable",
+    none: "none",
+  },
+  assumptions: {
+    contractValue: "Contract value",
+    dailyCostOfInaction: "Daily cost of delay",
+    competitionTransferRate: "Competition price transfer",
+    amendmentDifferential: "Contract amendment cost difference",
+    tcoDifferential: "TCO cost difference",
+  },
+  units: {
+    pln: "PLN",
+    plnPerDay: "PLN/day",
+    percentage: "%",
+  },
+  rangeKinds: {
+    fixed: "fixed value",
+    calibrated: "calibration range",
+    stress: "stress range",
+  },
+  evidenceTypes: {
+    empirical_anchor: "empirical anchor",
+    official_case: "official material",
+    practitioner_observation: "practitioner observation",
+    illustrative_scenario: "illustrative scenario",
+    research_hypothesis: "research hypothesis",
+  },
+  publicationKinds: {
+    official_webpage: "official webpage",
+    official_report: "institutional report",
+    peer_reviewed_article: "peer-reviewed article",
+    practitioner_report: "practitioner material",
+    legacy_model_registry: "previous model registry",
+  },
+  constructs: {
+    workflow_duration: "process duration",
+    role_effort: "role effort",
+    problem_definition: "procurement problem definition",
+    market_consultation: "market consultation",
+    modular_contracting: "modular contracting",
+    supplier_access: "supplier access",
+    competition_transfer: "competition transfer",
+    contract_adaptability: "contract adaptability",
+    contract_amendment: "contract amendments",
+    tco: "total cost of ownership",
+    informal_bypass: "off-process purchasing",
+    innovation_procurement: "innovation procurement",
+  },
+  scenarioPosition: (current: number, total: number) =>
+    `Entry ${String(current).padStart(2, "0")} of ${String(total).padStart(2, "0")}`,
+  occurrenceLabel: (scenario: string, alternative: string) =>
+    `${scenario}; ${alternative}`,
+  showScenarioDetails: "Show ranges",
+  hideScenarioDetails: "Hide ranges",
+  sourceLink: "Open source",
+  sourceLinkLabel: (title: string) => `Open source: ${title}`,
+  methodologyLink: "Open the methodology",
+  scenarios: modelV2En.scenarios,
+  evidence: modelV2En.evidence,
+  axes: researchExportV2En.axes,
+  axisValues: researchExportV2En.axisValues,
+  alternatives: researchExportV2En.alternatives,
+  evidenceClasses: researchExportV2En.evidenceClasses,
+  bypassReason: modelV2En.reasons.bypassNotMonetized,
+} satisfies ModelAssumptionsCopy;
+
+export const modelAssumptionsT = {
+  pl: modelAssumptionsPl,
+  en: modelAssumptionsEn,
+} as const;
 
 const readinessPl = {
   metadata: {

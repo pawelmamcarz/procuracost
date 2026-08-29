@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
-import { MODEL_VERSION } from "@/lib/version";
+import type { ReactNode } from "react";
 
-export const metadata: Metadata = {
-  title: `Założenia modelu ${MODEL_VERSION}: ProcuraCost`,
-  description:
-    `Zakresy dowodowe, założenia kalibracyjne i niepewność w ProcuraCost ${MODEL_VERSION}.`,
-};
+import { modelAssumptionsT } from "@/lib/i18n";
 
-export default function ModelAssumptionsLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+export const metadata: Metadata = modelAssumptionsT.pl.metadata;
+
+export default function ModelAssumptionsLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  return children;
 }
