@@ -1,5 +1,11 @@
 # Mapa progów decyzyjnych (model 2.2.2)
 
+> **KWARANTANNA HISTORYCZNA.** Ten plik nie jest artefaktem modelu 2.3 i nie powstaje w `npm run replicate`.
+> Pozostaje śledzony wyłącznie do czasu osobno
+> zatwierdzonego usunięcia. Aktywne wyniki to `built-in-scenarios.json`,
+> `built-in-scenarios.csv` i `built-in-scenarios.md`. Nie używać tej mapy do
+> interpretacji modelu 2.3.
+
 > Wyniki deterministyczne przy ustandaryzowanych wejściach porównawczych (czas trwania 2 lata,
 > koszt aneksu 4% CV, ekspozycja 10% CV, stawki domyślne, dyskonto 4%). To NIE są scenariusze
 > wbudowane. Progi są dokładne (delta jest liniowa w koszcie dnia), nie próbkowane.

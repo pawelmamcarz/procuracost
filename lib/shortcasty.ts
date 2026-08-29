@@ -1,4 +1,4 @@
-import { MODEL_VERSION } from "./version";
+import { MODEL_V2_METADATA } from "./model-v2/domain";
 
 export type Episode = {
   number: number;
@@ -11,7 +11,13 @@ export type Episode = {
   focusEn: string;
   thesis: string;
   thesisEn: string;
-  recommendation: string;
+  practiceNote: string;
+  practiceNoteEn: string;
+  source?: {
+    href: string;
+    label: string;
+    labelEn: string;
+  };
   youtubeId?: string;
   spotifyUrl?: string;
   appleUrl?: string;
@@ -22,67 +28,85 @@ export type Episode = {
 export const EPISODES: Episode[] = [
   {
     number: 1,
-    slug: "model-2-2-2-co-porownujemy",
-    title: `ProcuraCost ${MODEL_VERSION}: co naprawdę porównujemy?`,
-    titleEn: `ProcuraCost ${MODEL_VERSION}: what do we actually compare?`,
+    slug: "co-porownuje-model-kosztowy",
+    title: `ProcuraCost ${MODEL_V2_METADATA.modelVersion}: co porównuje model kosztowy?`,
+    titleEn: `ProcuraCost ${MODEL_V2_METADATA.modelVersion}: what does the cost model compare?`,
     dimension: "Metodologia",
     dimensionEn: "Methodology",
-    focus: "Ustalenia metodologiczne",
-    focusEn: "Methodological clarification",
+    focus: "Kontrakt obliczeniowy",
+    focusEn: "Calculation contract",
     thesis:
-      "Formalny workflow, konkurencja i sztywność kontraktu są odrębnymi mechanizmami. Nie wolno zastępować ich jednym indeksem sztywności.",
+      "Projekt przebiegu procesu, konkurencja i konstrukcja umowy są odrębnymi wymiarami. Model nie zastępuje ich wspólnym wskaźnikiem ani etykietą technologii.",
     thesisEn:
-      "Formal workflow, competition, and contract rigidity are separate mechanisms. They must not be replaced with a single rigidity index.",
-    recommendation:
-      "Przed porównaniem ścieżek opisz osobno czas pracy, konkurencję i konstrukcję umowy.",
+      "Procurement workflow design, competition and contract design are separate dimensions. The model does not replace them with a composite index or technology label.",
+    practiceNote:
+      "Przed obliczeniem udokumentuj osobno mapy czynności, ekspozycję konkurencyjną i konstrukcję umowy.",
+    practiceNoteEn:
+      "Before calculation, document the activity maps, competition exposure and contract design separately.",
   },
   {
     number: 2,
     slug: "szucs-konkurencja-i-dyskrecja",
-    title: "Szucs: ile kosztuje dyskrecja w wyborze wykonawcy?",
-    titleEn: "Szucs: what does discretion cost in contractor selection?",
-    dimension: "Konkurencja · Selekcja",
-    dimensionEn: "Competition · Selection",
+    title: "Badanie Szucsa: dyskrecja, konkurencja i cena",
+    titleEn: "The Szucs study: discretion, competition and price",
+    dimension: "Konkurencja i wybór wykonawcy",
+    dimensionEn: "Competition and contractor selection",
     focus: "Przegląd źródła",
     focusEn: "Source review",
     thesis:
-      "W badanym rynku węgierskim dyskrecja zwiększała cenę o około 6% i prowadziła do wyboru wykonawców o około 10% niższej mierzonej produktywności (estymaty strukturalne). Efekt zidentyfikowano na zamówieniach poniżej progu ok. 25 mln HUF, więc transfer poza ten rynek wymaga ostrożności.",
+      "W badanym rynku węgierskim model strukturalny wskazuje około 6% wyższą cenę i wybór wykonawców o 28% niższej produktywności mierzonej w badaniu. Badanie dotyczy zamówień poniżej progu około 25 mln HUF. Model 2.3 wykorzystuje wyłącznie ograniczony transfer kanału cenowego jako jawny zakres stresowy.",
     thesisEn:
-      "In the studied Hungarian market, discretion raised price by about 6% and led to contractors with about 10% lower measured productivity (structural estimates). The effect was identified for contracts below approximately HUF 25 million, so transfer beyond that market requires caution.",
-    recommendation:
-      "Mierz efektywną konkurencję; nie utożsamiaj adaptacyjnej pracy z niekonkurencyjnym wyborem.",
+      "In the studied Hungarian market, the structural model indicates approximately 6 per cent higher prices and selection of contractors with 28 per cent lower productivity as measured in the study. The study covers contracts below an approximately HUF 25 million threshold. Model 2.3 uses only a bounded transfer of the price channel as an explicit stress range.",
+    practiceNote:
+      "Ekspozycję konkurencyjną mierz niezależnie od projektu przebiegu procesu. Transfer wyniku poza badaną populację wymaga jawnego założenia.",
+    practiceNoteEn:
+      "Measure competition exposure independently of workflow design. Transfer beyond the studied population requires an explicit assumption.",
+    source: {
+      href: "https://doi.org/10.1093/jeea/jvad017",
+      label: "Szucs (2024), publikacja źródłowa",
+      labelEn: "Szucs (2024), primary publication",
+    },
   },
   {
     number: 3,
     slug: "beuve-sztywnosc-kontraktu",
-    title: "Beuve: kontrakt to nie workflow",
-    titleEn: "Beuve: a contract is not workflow",
-    dimension: "Kontrakt · Formalne aneksy",
-    dimensionEn: "Contract · Formal amendments",
+    title: "Badanie Beuve i współautorów: konstrukcja umowy a aneksy",
+    titleEn: "The Beuve study: contract design and formal amendments",
+    dimension: "Konstrukcja umowy i aneksy",
+    dimensionEn: "Contract design and formal amendments",
     focus: "Przegląd źródła",
     focusEn: "Source review",
     thesis:
-      "Estymacja 0,077–0,105 dotyczy dodatkowych formalnych aneksów na rok kontraktu przy wzroście sztywności o jedno odchylenie standardowe w sektorze francuskich parkingów. To częstość, nie prawdopodobieństwo zdarzenia ani efekt formalności workflow.",
+      "Estymacja 0,077–0,105 dotyczy dodatkowych formalnych aneksów na rok kontraktu przy jednoczesnym wzroście o jedno odchylenie standardowe w każdej z siedmiu kategorii sztywności w sektorze francuskich parkingów. To częstość, nie prawdopodobieństwo zdarzenia ani efekt projektu przebiegu procesu. W modelu 2.3 nie wyznacza różnicy kosztu aneksów.",
     thesisEn:
-      "The 0.077–0.105 estimate concerns additional formal amendments per contract-year for a one-standard-deviation increase in rigidity in French car-park contracts. It is a frequency, not an event probability or an effect of workflow formality.",
-    recommendation:
-      "Koduj klauzule kontraktowe osobno od liczby kroków i czasu postępowania.",
+      "The 0.077-0.105 estimate concerns additional formal amendments per contract-year for a simultaneous one-standard-deviation increase in each of seven rigidity categories in French car-park contracts. It is a frequency, not an event probability or an effect of workflow design. It does not set the amendment-cost differential in model 2.3.",
+    practiceNote:
+      "Rejestruj konstrukcję klauzul niezależnie od liczby czynności, nakładu pracy i czasu postępowania.",
+    practiceNoteEn:
+      "Record clause design independently of activity count, role effort and procurement duration.",
+    source: {
+      href: "https://doi.org/10.1093/jleo/ewab039",
+      label: "Beuve, Moszoro i Spiller (2023), publikacja źródłowa",
+      labelEn: "Beuve, Moszoro and Spiller (2023), primary publication",
+    },
   },
   {
     number: 4,
     slug: "jak-czytac-przedzial-scenariuszowy",
-    title: "Kiedy model nie wskazuje zwycięzcy?",
-    titleEn: "When does the model not identify a winner?",
-    dimension: "Niepewność",
-    dimensionEn: "Uncertainty",
-    focus: "Ustalenia metodologiczne",
-    focusEn: "Methodological clarification",
+    title: "Jak interpretować zakres scenariuszowy?",
+    titleEn: "How should the scenario range be interpreted?",
+    dimension: "Zakres wyniku",
+    dimensionEn: "Result range",
+    focus: "Granica interpretacji",
+    focusEn: "Interpretation boundary",
     thesis:
-      "Zakres low/central/high jest testem założeń, nie przedziałem ufności. Gdy przecina zero, model nie daje odpornej rekomendacji kosztowej.",
+      "Zakres niski, centralny i wysoki jest testem deklarowanych założeń, a nie przedziałem ufności. Przecięcie zera oznacza zmianę kierunku różnicy w tym zakresie.",
     thesisEn:
-      "The low/central/high range tests assumptions, not confidence. When it crosses zero, the model does not provide a robust cost recommendation.",
-    recommendation:
-      "Decyzję opieraj na rozbiciu kosztów i danych lokalnych, a nie na samym wyniku centralnym.",
+      "The low, central and high range tests declared assumptions, not statistical confidence. Crossing zero means that the direction changes within that range.",
+    practiceNote:
+      "Interpretuj wynik centralny razem z czynnikami kosztowymi, zakresem zewnętrznym i lokalnym rejestrem założeń.",
+    practiceNoteEn:
+      "Interpret the central result together with cost drivers, the outer range and the local assumptions register.",
   },
 ];
 

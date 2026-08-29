@@ -6,6 +6,25 @@ describe("public route contract", () => {
   it("keeps language switches on the equivalent route", () => {
     expect(localizedCounterpart("/calculator", "en")).toBe("/en/calculator");
     expect(localizedCounterpart("/en/model/assumptions", "pl")).toBe("/model/assumptions");
+    expect(localizedCounterpart("/readiness", "en")).toBe("/en/readiness");
+    expect(localizedCounterpart("/en/practice/procurement-beyond-8", "pl")).toBe(
+      "/practice/procurement-beyond-8",
+    );
+  });
+
+  it("registers readiness and practitioner material outside primary navigation but in discovery", () => {
+    expect(SITE_ROUTES.find(({ key }) => key === "readiness")).toEqual({
+      key: "readiness",
+      pl: "/readiness",
+      en: "/en/readiness",
+      sitemap: true,
+    });
+    expect(SITE_ROUTES.find(({ key }) => key === "procurementBeyond8")).toEqual({
+      key: "procurementBeyond8",
+      pl: "/practice/procurement-beyond-8",
+      en: "/en/practice/procurement-beyond-8",
+      sitemap: true,
+    });
   });
 
   it("passes query strings and fragments through the chrome language switch", () => {
@@ -30,34 +49,35 @@ describe("public route contract", () => {
   it("exposes the exact manager-first primary navigation", () => {
     expect(navigationFor("pl")).toEqual([
       { href: "/calculator", label: "Kalkulator", highlight: true },
-      { href: "/optimizer", label: "Optymalizator", highlight: undefined },
-      { href: "/assessment", label: "Ocena dojrzałości", highlight: undefined },
+      { href: "/optimizer", label: "Warunki zastosowania", highlight: undefined },
+      { href: "/assessment", label: "Profil projektu procesu zakupowego", highlight: undefined },
       { href: "/model", label: "Model", highlight: undefined },
     ]);
     expect(navigationFor("en")).toEqual([
       { href: "/en/calculator", label: "Calculator", highlight: true },
-      { href: "/en/optimizer", label: "Optimizer", highlight: undefined },
-      { href: "/en/assessment", label: "Maturity Assessment", highlight: undefined },
+      { href: "/en/optimizer", label: "Suitability comparison", highlight: undefined },
+      { href: "/en/assessment", label: "Procurement process design profile", highlight: undefined },
       { href: "/en/model", label: "Model", highlight: undefined },
     ]);
   });
 
-  it("owns the exact indexable route set and excludes aliases and Shortcasts", () => {
+  it("owns the exact indexable route set and excludes aliases", () => {
     expect(sitemapPaths()).toEqual([
       "/", "/en",
       "/calculator", "/en/calculator",
       "/optimizer", "/en/optimizer",
       "/case-studies", "/en/case-studies",
       "/assessment", "/en/assessment",
+      "/readiness", "/en/readiness",
+      "/practice/procurement-beyond-8", "/en/practice/procurement-beyond-8",
       "/team", "/en/team",
       "/methodology", "/en/methodology",
       "/model", "/en/model",
       "/model/assumptions", "/en/model/assumptions",
       "/research",
       "/research-agenda",
+      "/shortcasty", "/en/shortcasty",
     ]);
     expect(sitemapPaths()).not.toContain("/en/research");
-    expect(sitemapPaths()).not.toContain("/shortcasty");
-    expect(sitemapPaths()).not.toContain("/en/shortcasty");
   });
 });

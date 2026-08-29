@@ -1,6 +1,11 @@
 # Syntetyczny zestaw testowy
 
-**Wersja:** 1.0 dla modelu 2.2.1 · 26 lipca 2026
+**Wersja:** 2.0 dla modelu 2.3.0 · 29 sierpnia 2026
+
+Schemat pięciu składowych indeksu pozostaje zgodny z aktualnym planem
+walidacji empirycznej 2.3. Wartości są niezmienionymi, ręcznie wersjonowanymi
+danymi syntetycznymi; aktualizacja wersji nie oznacza ponownej kalibracji ani
+pozyskania obserwacji.
 
 ## Czym to jest
 

@@ -1,5 +1,5 @@
 import { ProcurementInputs } from "./calculations";
-import { MODEL_VERSION } from "./version";
+import { LEGACY_MODEL_VERSION } from "./version";
 
 export interface Scenario {
   id: string;
@@ -224,9 +224,9 @@ export const SCENARIOS: Scenario[] = [
       title: "Tunel vs Pole: ten sam zakup, dwa światy",
       titleEn: "Tunnel vs Field: the same purchase, two designs",
       source:
-        `Konstrukcja modelu ${MODEL_VERSION}: scenariusz ilustracyjny bez źródła zewnętrznego. Wartości wejściowe są założeniami, a nie danymi z żadnego badania.`,
+        `Konstrukcja modelu ${LEGACY_MODEL_VERSION}: scenariusz ilustracyjny bez źródła zewnętrznego. Wartości wejściowe są założeniami, a nie danymi z żadnego badania.`,
       sourceEn:
-        `ProcuraCost ${MODEL_VERSION} model construction: an illustrative scenario without an external source. Input values are assumptions, not observations from a study.`,
+        `ProcuraCost ${LEGACY_MODEL_VERSION} model construction: an illustrative scenario without an external source. Input values are assumptions, not observations from a study.`,
       insight:
         "Porównanie dwóch legalnych projektów tego samego postępowania: bardziej sekwencyjnego i bardziej adaptacyjnego. Wynik zależy od kosztu zwłoki, konkurencji i konstrukcji kontraktu; nie zakłada obejścia PZP.",
       insightEn:
@@ -355,8 +355,8 @@ export const SCENARIOS: Scenario[] = [
     caseStudy: {
       title: "Scenariusz kontrolny: formalność może wygrać",
       titleEn: "Control scenario: formality can win",
-      source: `Założenia scenariuszowe ProcuraCost ${MODEL_VERSION}: nie obserwacja empiryczna`,
-      sourceEn: `ProcuraCost ${MODEL_VERSION} scenario assumptions: not an empirical observation`,
+      source: `Założenia scenariuszowe ProcuraCost ${LEGACY_MODEL_VERSION}: nie obserwacja empiryczna`,
+      sourceEn: `ProcuraCost ${LEGACY_MODEL_VERSION} scenario assumptions: not an empirical observation`,
       insight:
         "Gdy koszt zwłoki jest pomijalny, rynek stabilny, a bardziej formalna ścieżka zachowuje przewagę konkurencyjną, centralny wynik może sprzyjać formalności. Szeroki stres-test nadal może zmienić znak.",
       insightEn:
@@ -394,9 +394,9 @@ export const SCENARIOS: Scenario[] = [
       title: "Scenariusz kontrolny II: adaptacja bywa droższa",
       titleEn: "Control scenario II: adaptation can cost more",
       source:
-        `Konstrukcja modelu ${MODEL_VERSION}: scenariusz ilustracyjny bez źródła zewnętrznego. Wartości wejściowe są założeniami, a nie danymi z badania.`,
+        `Konstrukcja modelu ${LEGACY_MODEL_VERSION}: scenariusz ilustracyjny bez źródła zewnętrznego. Wartości wejściowe są założeniami, a nie danymi z badania.`,
       sourceEn:
-        `ProcuraCost ${MODEL_VERSION} model construction: an illustrative scenario without an external source. Input values are assumptions, not observations from a study.`,
+        `ProcuraCost ${LEGACY_MODEL_VERSION} model construction: an illustrative scenario without an external source. Input values are assumptions, not observations from a study.`,
       insight:
         "Kiedy wymaganie powstaje w trakcie, ścieżka adaptacyjna kupuje uczenie się czasem: współprojektowanie i runda przeprojektowania wydłużają kalendarz i zwiększają pracę. Formalna zamraża wymaganie wcześnie i wychodzi szybciej, płacąc gorszym dopasowaniem i słabszym wychwyceniem wartości cyklu życia. Ten scenariusz istnieje po to, żeby teza modelu dała się obalić, a nie tylko potwierdzić.",
       insightEn:

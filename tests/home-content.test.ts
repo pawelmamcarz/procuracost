@@ -1,26 +1,24 @@
+import { readFileSync } from "node:fs";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import BoundaryField from "@/components/BoundaryField";
+
 import EvidenceFieldHome from "@/components/EvidenceFieldHome";
-import { decisionMapT, homeT, PHI_SET } from "@/lib/i18n";
-import { SCENARIOS } from "@/lib/scenarios";
+import {
+  HOME_EVIDENCE_IDS,
+  buildCompactHomeRail,
+  homeEvidenceRecords,
+} from "@/components/home/home-surface-data";
+import { ProcessRail } from "@/components/process-map/ProcessRail";
+import { homeT } from "@/lib/i18n";
+import { EVIDENCE_REGISTRY } from "@/lib/model-v2";
 import { SITE_ROUTES } from "@/lib/site-routes";
-import { MODEL_VERSION } from "@/lib/version";
 
 function leafPaths(value: unknown, prefix = ""): string[] {
   if (typeof value !== "object" || value === null) return [prefix];
-
   return Object.entries(value).flatMap(([key, child]) =>
-    leafPaths(child, prefix ? `${prefix}.${key}` : key),
+    leafPaths(child, prefix ? `${prefix}.${key}` : key)
   );
-}
-
-function visibleStrings(value: unknown): string[] {
-  if (typeof value === "string") return [value];
-  if (typeof value !== "object" || value === null) return [];
-
-  return Object.values(value).flatMap(visibleStrings);
 }
 
 function renderedText(markup: string): string {
@@ -29,224 +27,188 @@ function renderedText(markup: string): string {
     .replaceAll("&amp;", "&")
     .replaceAll("&#x27;", "'")
     .replaceAll("&quot;", '"')
-    .replaceAll("&lt;", "<")
-    .replaceAll("&gt;", ">");
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
-describe("homepage content contract", () => {
-  it("keeps Polish and English homepage dictionaries structurally aligned", () => {
+function routeHref(key: string, lang: "pl" | "en") {
+  const route = SITE_ROUTES.find((candidate) => candidate.key === key)!;
+  return lang === "en" ? route.en ?? route.pl : route.pl ?? route.en;
+}
+
+describe("model 2.3 compact homepage data", () => {
+  it("selects exactly four official records in registry order and returns isolated values", () => {
+    expect(HOME_EVIDENCE_IDS).toEqual([
+      "california_modular_it_procurement",
+      "oecd_rvul_problem_definition",
+      "uzp_preliminary_market_consultation",
+      "ec_innovation_procurement_guidance",
+    ]);
+
+    const first = homeEvidenceRecords();
+    const second = homeEvidenceRecords();
+    expect(first.map(({ id }) => id)).toEqual(HOME_EVIDENCE_IDS);
+    expect(second).toEqual(first);
+    expect(first).toHaveLength(4);
+    for (const [index, record] of first.entries()) {
+      const registryRecord = EVIDENCE_REGISTRY.find(({ id }) => id === record.id)!;
+      expect(record).not.toBe(registryRecord);
+      expect(record).not.toBe(second[index]);
+      expect(record.source).not.toBe(registryRecord.source);
+      expect(record.constructs).not.toBe(registryRecord.constructs);
+      expect(record.assumptionKeys).not.toBe(registryRecord.assumptionKeys);
+    }
+  });
+
+  it("keeps the illustrative legal control on the shared boundary without an asymmetric lane lock", () => {
+    const viewModel = buildCompactHomeRail("en");
+    const html = renderToStaticMarkup(
+      createElement(ProcessRail, {
+        viewModel,
+        mode: "read-only",
+        idPrefix: "home-illustration",
+      })
+    );
+
+    expect(viewModel.lanes.formalSequential.nodes).toHaveLength(4);
+    expect(viewModel.lanes.adaptiveCompliant.nodes).toHaveLength(4);
+    expect(
+      Object.fromEntries(
+        Object.entries(viewModel.lanes).map(([lane, { nodes }]) => [
+          lane,
+          nodes.filter(({ locked }) => locked).length,
+        ])
+      )
+    ).toEqual({ formalSequential: 0, adaptiveCompliant: 0 });
+    expect(
+      Object.values(viewModel.lanes).flatMap(({ nodes }) => nodes)
+    ).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ parallel: true, parallelText: "Parallel branch" }),
+        expect.objectContaining({ merge: true }),
+        expect.objectContaining({ critical: true, criticalText: "Critical path" }),
+      ])
+    );
+    expect(html.match(/Shared legal and governance boundary/g)).toHaveLength(1);
+    expect(html).toContain("Formal sequential alternative");
+    expect(html).toContain("Adaptive compliant alternative");
+    expect(html).toContain("Split");
+    expect(html).toContain("Merge");
+    expect(html).not.toContain("Locked legal wait");
+    expect(html).toContain("Critical path");
+    expect(html).not.toMatch(/active days|queue days|active \+|days,/i);
+    for (const node of Object.values(viewModel.lanes).flatMap(
+      ({ nodes }) => nodes
+    )) {
+      expect(node.timingSummary).toBe("");
+      expect(node.accessibleName).not.toMatch(/active days|queue days/i);
+    }
+  });
+});
+
+describe("compact homepage presentation", () => {
+  it("keeps paired copy, decision-tool framing and an explicit scenario range", () => {
     expect(leafPaths(homeT.en).sort()).toEqual(leafPaths(homeT.pl).sort());
+    expect(homeT.pl.hero.title).toBe(
+      "Porównaj koszt dwóch dopuszczalnych projektów procesu zakupowego."
+    );
+    expect(homeT.en.hero.title).toBe(
+      "Compare the cost of two lawful procurement workflow designs."
+    );
+    expect(homeT.pl.neutrality).toBe(
+      "Model dopuszcza oba kierunki różnicy. Znak wyniku nie jest założony."
+    );
+    expect(homeT.en.neutrality).toBe(
+      "The model permits either direction of difference. The sign is not assumed."
+    );
+    expect(homeT.pl.jobs.eyebrow).toBe("Narzędzia do decyzji zakupowej");
+    expect(homeT.en.jobs.eyebrow).toBe("Procurement decision tools");
+    expect(homeT.pl.modelContract).toMatchObject({
+      uncertaintyLabel: "Deklarowany zakres scenariusza",
+      uncertaintyValue: "niski · centralny · wysoki",
+    });
+    expect(homeT.en.modelContract).toMatchObject({
+      uncertaintyLabel: "Declared scenario range",
+      uncertaintyValue: "low · central · high",
+    });
+    expect(JSON.stringify(homeT.pl.modelContract)).not.toContain("Dowody ×");
+    expect(JSON.stringify(homeT.en.modelContract)).not.toContain("Evidence ×");
+    expect(homeT.pl.jobs.items.map(({ label }) => label)).toEqual([
+      "Porównaj koszt",
+      "Porównaj dopasowanie",
+      "Opisz profil projektu procesu",
+    ]);
+    expect(homeT.en.jobs.items.map(({ label }) => label)).toEqual([
+      "Compare cost",
+      "Compare suitability",
+      "Describe the process design profile",
+    ]);
   });
 
-  it("uses the canonical tagline and bounded decision notation", () => {
-    expect(homeT.pl.hero.tagline).toBe("Tunel ma ściany. Pole ma horyzont.");
-    expect(homeT.en.hero.tagline).toBe("A tunnel has walls. A field has a horizon.");
-    expect(homeT.pl.boundary.notation).toBe(PHI_SET.pl);
-    expect(homeT.en.boundary.notation).toBe(PHI_SET.en);
-    expect(homeT.pl.boundary.notation).toBe(
-      "∂Φ = {uprawnienia, konkurencja, etyka, dokumentacja}",
-    );
-    expect(homeT.en.boundary.notation).toBe(
-      "∂Φ = {auth, competition, ethics, docs}",
-    );
-    expect(visibleStrings(homeT).join(" ")).not.toContain("∞");
-  });
-
-  it("renders both decision paths inside one accessible shared boundary", () => {
+  it("renders one read-only rail, three primary jobs and four official evidence rows in both languages", () => {
     for (const lang of ["pl", "en"] as const) {
-      const markup = renderToStaticMarkup(createElement(BoundaryField, { lang }));
-      const text = renderedText(markup);
-      const tx = homeT[lang].boundary;
-
-      expect(markup).toContain("<svg");
-      expect(markup).toContain('role="img"');
-      expect(markup).toContain(
-        `aria-labelledby="boundary-visual-title-${lang} boundary-visual-desc-${lang}"`,
+      const markup = renderToStaticMarkup(
+        createElement(EvidenceFieldHome, { lang })
       );
-      expect(markup).toContain(`id="boundary-visual-title-${lang}"`);
-      expect(markup).toContain(`id="boundary-visual-desc-${lang}"`);
-      expect(markup.match(/data-boundary="shared"/g)).toHaveLength(1);
-      expect(markup.match(/data-scope="shared"/g)).toHaveLength(1);
-      expect(markup).toMatch(/<path[^>]*data-boundary="shared"/);
-      expect(markup).toContain('data-path="formal"');
-      expect(markup).toContain('data-path="adaptive"');
-      expect(markup).toContain('data-geometry="sequential"');
-      expect(markup).toContain('data-geometry="branching"');
-      expect(markup.match(/data-converges-at="navigator"/g)).toHaveLength(2);
-      expect(markup.match(/data-endpoint="navigator"/g)).toHaveLength(1);
-      expect(markup).toContain('viewBox="0 0 760 360"');
-      const svgTag = markup.match(/<svg\b[^>]*>/)?.[0];
-      expect(svgTag).toContain("h-auto");
-      expect(svgTag).toContain("w-full");
-      expect(svgTag).toContain("max-w-full");
-      expect(svgTag).not.toContain("min-w-");
-      for (const semanticElement of ["section", "h2", "figure", "figcaption"]) {
-        expect(markup).toContain(`<${semanticElement}`);
-      }
-      expect(text).toContain(tx.tunnelLabel);
-      expect(text).toContain(tx.fieldLabel);
-      expect(text).toContain(tx.boundaryLabel);
-      expect(text).toContain(tx.notation);
-      expect(text).toContain(tx.caption);
-      expect(markup).not.toContain("<animate");
-      expect(markup).not.toMatch(/<(?:linear|radial)Gradient\b/);
-      expect(markup).not.toContain("<filter");
-      expect(markup).not.toMatch(/(?:drop-)?shadow-/);
-      expect(markup).not.toContain("→");
-      expect(text).not.toContain("∞");
-    }
-  });
-
-  it("keeps the primary action neutral and the model version current", () => {
-    expect(homeT.pl.hero.primaryAction).toBe("Policz własny scenariusz");
-    expect(homeT.en.hero.primaryAction).toBe("Calculate your scenario");
-    expect(homeT.pl.modelContract.modelVersion).toBe(MODEL_VERSION);
-    expect(homeT.en.modelContract.modelVersion).toBe(MODEL_VERSION);
-    expect(homeT.pl.hero.primaryAction).not.toMatch(/oszczęd|strat|wygr|przegr/i);
-    expect(homeT.en.hero.primaryAction).not.toMatch(/sav|los|win/i);
-  });
-
-  it("does not promise to reveal organizational losses", () => {
-    const copy = visibleStrings(homeT).join(" ");
-
-    expect(copy).not.toMatch(/zobacz,? ile (?:twoja )?organizacja traci/i);
-    expect(copy).not.toMatch(
-      /see how much (?:your )?organi[sz]ation (?:is )?los(?:ing|es)/i,
-    );
-  });
-
-  it("states the optimizer and delay-cost evidence limits", () => {
-    expect(homeT.pl.jobs.choose.body).toMatch(/regułow/i);
-    expect(homeT.pl.jobs.choose.body).toMatch(/nie był walidowany na danych wynikowych/i);
-    expect(homeT.en.jobs.choose.body).toMatch(/rule-based/i);
-    expect(homeT.en.jobs.choose.body).toMatch(/not been validated on outcome data/i);
-    expect(homeT.pl.modelContract.note).toMatch(/tożsamością rachunkową/i);
-    expect(homeT.pl.modelContract.note).toMatch(/nie efektem empirycznym/i);
-    expect(homeT.en.modelContract.note).toMatch(/accounting identity/i);
-    expect(homeT.en.modelContract.note).toMatch(/not an empirical effect/i);
-  });
-
-  it("provides English presentation fields for every case-study record", () => {
-    const caseStudies = SCENARIOS.flatMap((scenario) =>
-      scenario.caseStudy ? [scenario.caseStudy] : [],
-    );
-
-    expect(caseStudies.length).toBeGreaterThan(0);
-    for (const caseStudy of caseStudies) {
-      expect(caseStudy.titleEn).toEqual(expect.any(String));
-      expect(caseStudy.titleEn.length).toBeGreaterThan(0);
-      expect(caseStudy.sourceEn).toEqual(expect.any(String));
-      expect(caseStudy.sourceEn.length).toBeGreaterThan(0);
-    }
-  });
-
-  it("renders Polish scenario titles and English scenario titles and sources", () => {
-    const polishMarkup = renderToStaticMarkup(createElement(EvidenceFieldHome, { lang: "pl" }));
-    const englishMarkup = renderToStaticMarkup(createElement(EvidenceFieldHome, { lang: "en" }));
-    const polishText = renderedText(polishMarkup);
-    const englishText = renderedText(englishMarkup);
-    const caseStudies = SCENARIOS.flatMap((scenario) =>
-      scenario.caseStudy ? [scenario.caseStudy] : [],
-    );
-
-    for (const caseStudy of caseStudies) {
-      expect(caseStudy.title).not.toBe(caseStudy.titleEn);
-      expect(polishText).toContain(caseStudy.title);
-      expect(polishText).toContain(caseStudy.source);
-      expect(polishText).not.toContain(caseStudy.titleEn);
-      expect(englishText).toContain(caseStudy.titleEn);
-      expect(englishText).toContain(caseStudy.sourceEn);
-      expect(englishText).not.toContain(caseStudy.title);
-      if (caseStudy.source !== caseStudy.sourceEn) {
-        expect(englishText).not.toContain(caseStudy.source);
-      }
-    }
-  });
-
-  it("owns and localizes the compact PLN presentation through homeT", () => {
-    const polishMarkup = renderToStaticMarkup(createElement(EvidenceFieldHome, { lang: "pl" }));
-    const englishMarkup = renderToStaticMarkup(createElement(EvidenceFieldHome, { lang: "en" }));
-
-    expect(homeT.pl.scenarios.money).toEqual({
-      locale: "pl-PL",
-      currencyCode: "PLN",
-      thousandSuffix: " tys.",
-      millionSuffix: " mln",
-    });
-    expect(homeT.en.scenarios.money).toEqual({
-      locale: "en-GB",
-      currencyCode: "PLN",
-      thousandSuffix: "k",
-      millionSuffix: "M",
-    });
-    expect(polishMarkup).toContain("5,0 mln PLN");
-    expect(polishMarkup).toContain("-39 tys.–662 tys. PLN");
-    expect(polishMarkup).not.toContain("5.0M PLN");
-    expect(englishMarkup).toContain("5.0M PLN");
-    expect(englishMarkup).toContain("-39k–662k PLN");
-  });
-
-  it("renders the approved manager-first section order in both languages", () => {
-    for (const lang of ["pl", "en"] as const) {
-      const markup = renderToStaticMarkup(createElement(EvidenceFieldHome, { lang }));
+      const text = renderedText(markup);
       const tx = homeT[lang];
-      const orderedMarkers = [
-        tx.hero.title,
-        tx.boundary.title,
-        tx.modelContract.title,
-        tx.jobs.title,
-        decisionMapT[lang].eyebrow,
-        tx.scenarios.title,
-        tx.evidence.title,
-        tx.finalAction.title,
-      ];
+      const evidenceIds = [...markup.matchAll(/data-evidence-id="([^"]+)"/g)].map(
+        ([, id]) => id
+      );
 
-      let previousIndex = -1;
-      for (const marker of orderedMarkers) {
-        const currentIndex = markup.indexOf(marker);
-        expect(currentIndex, marker).toBeGreaterThan(previousIndex);
-        previousIndex = currentIndex;
+      expect(text).toContain(tx.hero.title);
+      expect(text).toContain(tx.neutrality);
+      expect(text).toContain(tx.rail.note);
+      expect(text).toContain(
+        lang === "pl"
+          ? "Otwórz edytowalne porównanie procesów"
+          : "Open the editable process comparison"
+      );
+      expect(markup.match(/data-home-job=/g)).toHaveLength(3);
+      expect(markup.match(/data-home-process-rail=/g)).toHaveLength(1);
+      expect(markup.match(/data-home-rail-action=/g)).toHaveLength(1);
+      expect(evidenceIds).toEqual(HOME_EVIDENCE_IDS);
+      expect(markup).not.toContain("szucs_discretion_price_2024");
+      expect(markup).not.toContain("<table");
+      expect(markup).not.toContain("min-w-[980px]");
+      expect(markup).not.toMatch(/bg-gradient|shadow-|transition-/);
+      expect(markup).not.toContain("slate-");
+    }
+  });
+
+  it("links the three jobs, calculator and mechanisms register through the route manifest", () => {
+    for (const lang of ["pl", "en"] as const) {
+      const markup = renderToStaticMarkup(
+        createElement(EvidenceFieldHome, { lang })
+      );
+      for (const key of [
+        "calculator",
+        "optimizer",
+        "assessment",
+        "caseStudies",
+      ]) {
+        expect(markup).toContain(`href="${routeHref(key, lang)}"`);
       }
-      expect(markup).toContain(tx.boundary.notation);
-      expect(markup).toContain(`Model ${MODEL_VERSION}`);
-      expect(markup).not.toContain("∞");
     }
   });
 
-  it("renders localized scenario presentation and route-manifest links", () => {
-    const markup = renderToStaticMarkup(createElement(EvidenceFieldHome, { lang: "en" }));
-    const localizedScenario = SCENARIOS.find(({ id }) => id === "pipe_vs_field")!;
-    const routeKeys = [
-      "calculator",
-      "optimizer",
-      "assessment",
-      "caseStudies",
-      "model",
-      "modelAssumptions",
-      "methodology",
-      "research",
-    ];
+  it("removes the legacy home calculation and visual dependency graph", () => {
+    const source = readFileSync("components/EvidenceFieldHome.tsx", "utf8");
+    const dataSource = readFileSync(
+      "components/home/home-surface-data.ts",
+      "utf8"
+    );
 
-    expect(markup).toContain(localizedScenario.caseStudy!.titleEn);
-    expect(markup).toContain(localizedScenario.caseStudy!.sourceEn);
-    expect(markup).not.toContain(localizedScenario.caseStudy!.title);
-    expect(markup).not.toContain(localizedScenario.caseStudy!.source);
-
-    for (const key of routeKeys) {
-      const route = SITE_ROUTES.find((candidate) => candidate.key === key)!;
-      const href = route.en ?? route.pl;
-      expect(href).toBeDefined();
-      expect(markup).toContain(`href="${href!}"`);
-    }
-  });
-
-  it("formats fractional scenario days without floating-point artifacts", () => {
-    const polishMarkup = renderToStaticMarkup(createElement(EvidenceFieldHome, { lang: "pl" }));
-    const englishMarkup = renderToStaticMarkup(createElement(EvidenceFieldHome, { lang: "en" }));
-
-    expect(polishMarkup).toContain(">61,6<");
-    expect(englishMarkup).toContain(">61.6<");
-    expect(polishMarkup).not.toContain("61.599999999999994");
-    expect(englishMarkup).not.toContain("61.599999999999994");
+    expect(source).not.toMatch(
+      /BoundaryField|DecisionMap|calculateCosts|@\/lib\/scenarios|\bSCENARIOS\b/
+    );
+    expect(source).toContain("buildCompactHomeRail");
+    expect(source).toContain("homeEvidenceRecords");
+    expect(source).toContain("EvidenceDocket");
+    expect(source).toContain("ProcessRail");
+    expect(dataSource).toContain("buildIllustrativeProcessRailViewModel");
+    expect(dataSource).not.toMatch(
+      /CalibratedValue|WorkflowDesign|ProcessMapStep|lockedLegalProvenance|activeDays|queueDays|criticalPathStepIds/
+    );
   });
 });

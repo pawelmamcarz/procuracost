@@ -1,11 +1,14 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { MODEL_VERSION } from "@/lib/version";
+import { researchPaperT } from "@/lib/i18n";
+import { localizedPageMetadata } from "@/lib/page-metadata";
 
-export const metadata = {
-  title: `Research Paper: ProcuraCost ${MODEL_VERSION}`,
-  description:
-    "Neutral decision model comparing formal/sequential and adaptive/compliant procurement paths with scenario uncertainty.",
-};
+export const metadata: Metadata = localizedPageMetadata({
+  lang: "en",
+  routeKey: "research",
+  ...researchPaperT.en.metadata,
+  robots: { index: false, follow: true },
+});
 
 // The research paper is written in English and lives at /research.
 // We redirect /en/research to the canonical English version for consistency.

@@ -1,170 +1,295 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import { assessmentT, Lang } from "@/lib/i18n";
+import { Check } from "lucide-react";
+import { useEffect, useState } from "react";
 
-interface Props {
+import {
+  buildProcessProfileResult,
+  createProcessProfileState,
+  processProfileReducer,
+  type ProcessOrientation,
+  type ProcessProfileState,
+} from "@/components/process-design-profile/profile-state";
+import { revealResult } from "@/components/result-reveal";
+import { assessmentT, type Lang } from "@/lib/i18n";
+
+export const PROCESS_PROFILE_RESULT_HEADING_ID =
+  "process-profile-result-heading";
+
+const ORIENTATIONS = ["sequential", "mixed", "adaptive"] as const;
+
+interface AssessmentQuizProps {
   lang?: Lang;
 }
 
-export default function AssessmentQuiz({ lang = "pl" }: Props) {
+interface AssessmentQuizViewProps {
+  lang: Lang;
+  state: ProcessProfileState;
+  onStateChange: (state: ProcessProfileState) => void;
+}
+
+function routeFor(lang: Lang, path: "calculator" | "readiness") {
+  const suffix = path === "calculator" ? "/calculator" : "/readiness";
+  return lang === "en" ? `/en${suffix}` : suffix;
+}
+
+function orientationLabel(
+  labels: Record<ProcessOrientation, string>,
+  orientation: ProcessOrientation
+) {
+  return labels[orientation];
+}
+
+export function AssessmentQuizView({
+  lang,
+  state,
+  onStateChange,
+}: AssessmentQuizViewProps) {
   const tx = assessmentT[lang];
   const questions = tx.questions as typeof assessmentT.pl.questions;
-  const [current, setCurrent] = useState(0);
-  const [answers, setAnswers] = useState<number[]>([]);
-  const [done, setDone] = useState(false);
+  const result = buildProcessProfileResult(state.answers, questions.length);
+  const answers = new Map(
+    state.answers.map((answer) => [answer.questionIndex, answer])
+  );
 
-  const totalScore = answers.reduce((s, a) => s + a, 0);
-
-  function handleAnswer(score: number) {
-    const next = [...answers, score];
-    setAnswers(next);
-    if (current + 1 < questions.length) {
-      setCurrent(current + 1);
-    } else {
-      setDone(true);
-    }
-  }
-
-  function restart() {
-    setCurrent(0);
-    setAnswers([]);
-    setDone(false);
-  }
-
-  const level =
-    totalScore <= 7
-      ? tx.levels.pipe
-      : totalScore <= 14
-      ? tx.levels.transition
-      : tx.levels.field;
-
-  const levelColor =
-    totalScore <= 7
-      ? { border: "border-red-200", bg: "bg-red-50", text: "text-red-700", bar: "bg-red-500" }
-      : totalScore <= 14
-      ? { border: "border-amber-200", bg: "bg-amber-50", text: "text-amber-700", bar: "bg-amber-400" }
-      : { border: "border-green-200", bg: "bg-green-50", text: "text-green-700", bar: "bg-green-500" };
-
-  if (done) {
-    const pct = Math.round((totalScore / 20) * 100);
-    return (
-      <div className="mx-auto max-w-2xl space-y-6 px-6 py-12">
-        <div className={`rounded-2xl border ${levelColor.border} ${levelColor.bg} p-6`}>
-          <p className={`text-xs font-bold uppercase tracking-wide ${levelColor.text}`}>
-            {level.label}
-          </p>
-          <p className="mt-2 text-xl font-bold text-gray-900">{level.headline}</p>
-          <p className="mt-2 text-sm text-gray-600">{level.desc}</p>
-
-          <div className="mt-4">
-            <div className="flex items-baseline justify-between text-sm">
-              <span className="font-semibold text-gray-700">{tx.yourScore}</span>
-              <span className="font-mono text-2xl font-bold text-gray-900">
-                {totalScore}
-                <span className="text-sm font-normal text-gray-400"> {tx.outOf}</span>
-              </span>
-            </div>
-            <div className="mt-2 h-3 w-full overflow-hidden rounded-full bg-gray-100">
-              <div
-                className={`h-3 rounded-full transition-all ${levelColor.bar}`}
-                style={{ width: `${pct}%` }}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="rounded-xl border border-gray-100 bg-gray-50 p-4">
-          <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-3">
-            {lang === "pl" ? "Twoje odpowiedzi" : "Your answers"}
-          </p>
-          <div className="space-y-1.5">
-            {questions.map((q, i) => (
-              <div key={i} className="flex items-start gap-3 text-xs">
-                <span
-                  className={`mt-0.5 shrink-0 rounded-full px-1.5 py-0.5 font-mono font-bold ${
-                    answers[i] === 0
-                      ? "bg-red-100 text-red-700"
-                      : answers[i] === 1
-                      ? "bg-amber-100 text-amber-700"
-                      : "bg-green-100 text-green-700"
-                  }`}
-                >
-                  {answers[i]}
-                </span>
-                <span className="text-gray-600">{q.dim}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <Link
-            href={lang === "en" ? "/en/calculator" : "/calculator"}
-            className="flex-1 rounded-xl bg-blue-600 px-6 py-3 text-center text-sm font-semibold text-white hover:bg-blue-700"
-          >
-            {tx.ctaCalculator}
-          </Link>
-          <Link
-            href="/research"
-            className="flex-1 rounded-xl border border-gray-200 bg-white px-6 py-3 text-center text-sm font-semibold text-gray-600 hover:border-gray-300"
-          >
-            {tx.ctaResearch}
-          </Link>
-        </div>
-
-        <button
-          onClick={restart}
-          className="w-full text-center text-xs text-gray-400 hover:text-gray-600"
-        >
-          {tx.restart}
-        </button>
-      </div>
+  function selectAnswer(
+    questionIndex: number,
+    orientation: ProcessOrientation,
+    answerIndex: 0 | 1 | 2
+  ) {
+    onStateChange(
+      processProfileReducer(state, {
+        type: "answer",
+        answer: { questionIndex, orientation, answerIndex },
+        questionCount: questions.length,
+      })
     );
   }
 
-  const q = questions[current];
+  return (
+    <div className="mx-auto max-w-2xl px-5 py-10 sm:px-6 sm:py-14">
+      <header className="max-w-3xl border-b border-gray-200 pb-8">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
+          {tx.badge}
+        </p>
+        <h1 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          {tx.title}
+        </h1>
+        <p className="mt-4 max-w-2xl text-base leading-7 text-gray-600">
+          {tx.subtitle}
+        </p>
+        <p className="mt-5 font-mono text-sm text-gray-600">
+          {tx.answeredCount(state.answers.length, questions.length)}
+        </p>
+      </header>
+
+      <form className="mt-4" onSubmit={(event) => event.preventDefault()}>
+        {questions.map((question, questionIndex) => {
+          const selected = answers.get(questionIndex);
+
+          return (
+            <fieldset
+              key={question.dimension}
+              className="grid gap-5 border-b border-gray-100 py-8 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.6fr)]"
+              data-profile-row={questionIndex}
+            >
+              <legend className="contents">
+                <span className="pr-5">
+                  <span className="block text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">
+                    {question.dimension}
+                  </span>
+                  <span className="mt-2 block text-base font-semibold leading-6 text-gray-900">
+                    {question.prompt}
+                  </span>
+                </span>
+              </legend>
+
+              <span className="grid gap-2">
+                {question.answers.map((answer, answerIndex) => {
+                  const orientation = ORIENTATIONS[answerIndex];
+                  const isSelected = selected?.orientation === orientation;
+
+                  return (
+                    <label
+                      key={orientation}
+                      className={`grid min-h-11 cursor-pointer grid-cols-[auto_1fr] gap-x-3 rounded-lg border px-4 py-3 ${
+                        isSelected
+                          ? "border-blue-600 bg-blue-50"
+                          : "border-gray-200 bg-white"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name={`profile-question-${questionIndex}`}
+                        value={orientation}
+                        checked={isSelected}
+                        onChange={() =>
+                          selectAnswer(
+                            questionIndex,
+                            orientation,
+                            answerIndex as 0 | 1 | 2
+                          )
+                        }
+                        className="mt-1 h-4 w-4 accent-blue-700"
+                      />
+                      <span>
+                        <span className="flex items-center justify-between gap-3">
+                          <span className="block text-xs font-semibold uppercase tracking-[0.12em] text-gray-600">
+                            {orientationLabel(tx.orientations, orientation)}
+                          </span>
+                          {isSelected ? (
+                            <span
+                              className="inline-flex items-center gap-1 text-xs font-semibold text-blue-800"
+                              data-selected-indicator
+                            >
+                              <Check aria-hidden="true" className="h-4 w-4" />
+                              {tx.selected}
+                            </span>
+                          ) : null}
+                        </span>
+                        <span className="mt-1 block text-sm leading-6 text-gray-700">
+                          {answer}
+                        </span>
+                      </span>
+                    </label>
+                  );
+                })}
+
+                <span
+                  className="mt-1 block text-sm font-medium text-gray-600"
+                  {...(selected
+                    ? { "data-selected-orientation": selected.orientation }
+                    : {})}
+                >
+                  {selected
+                    ? tx.selectedOrientation(
+                        orientationLabel(tx.orientations, selected.orientation)
+                      )
+                    : tx.unanswered}
+                </span>
+              </span>
+            </fieldset>
+          );
+        })}
+      </form>
+
+      {result ? (
+        <section
+          className="mt-10 border-t-2 border-blue-700 pt-8"
+          aria-labelledby={PROCESS_PROFILE_RESULT_HEADING_ID}
+          aria-live="polite"
+        >
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
+            {tx.result.eyebrow}
+          </p>
+          <h2
+            id={PROCESS_PROFILE_RESULT_HEADING_ID}
+            tabIndex={-1}
+            className="mt-2 text-2xl font-bold tracking-tight text-gray-900"
+          >
+            {tx.result.title}
+          </h2>
+          <p className="mt-3 max-w-3xl text-base leading-7 text-gray-600">
+            {tx.result.description}
+          </p>
+
+          <h3 className="mt-7 text-sm font-semibold text-gray-900">
+            {tx.result.countsTitle}
+          </h3>
+          <dl className="mt-3 grid border-y border-gray-200 sm:grid-cols-3">
+            {ORIENTATIONS.map((orientation) => (
+              <div
+                key={orientation}
+                className="flex items-baseline justify-between gap-4 border-b border-gray-100 px-1 py-4 last:border-b-0 sm:block sm:border-b-0 sm:border-r sm:px-4 sm:first:pl-1 sm:last:border-r-0"
+                data-orientation-count={orientation}
+              >
+                <dt className="text-sm text-gray-600">
+                  {orientationLabel(tx.orientations, orientation)}
+                </dt>
+                <dd className="font-mono text-2xl font-semibold text-gray-900 sm:mt-2">
+                  {result.counts[orientation]}
+                </dd>
+              </div>
+            ))}
+          </dl>
+
+          <h3 className="mt-8 text-sm font-semibold text-gray-900">
+            {tx.result.selectionsTitle}
+          </h3>
+          <ol className="mt-3 border-y border-gray-200">
+            {questions.map((question, questionIndex) => {
+              const selected = answers.get(questionIndex)!;
+              return (
+                <li
+                  key={question.dimension}
+                  className="grid gap-3 border-b border-gray-100 py-4 last:border-b-0 sm:grid-cols-[2rem_minmax(0,1fr)_9rem] sm:items-start"
+                  data-profile-result-row={questionIndex}
+                >
+                  <span
+                    aria-hidden="true"
+                    className="font-mono text-xs text-gray-500"
+                  >
+                    {String(questionIndex + 1).padStart(2, "0")}
+                  </span>
+                  <span>
+                    <span className="block text-xs font-semibold uppercase tracking-[0.12em] text-gray-500">
+                      {question.dimension}
+                    </span>
+                    <span className="mt-1 block text-sm leading-6 text-gray-700">
+                      {question.answers[selected.answerIndex]}
+                    </span>
+                  </span>
+                  <span className="text-sm font-semibold text-gray-700 sm:text-right">
+                    {orientationLabel(tx.orientations, selected.orientation)}
+                  </span>
+                </li>
+              );
+            })}
+          </ol>
+
+          <p className="mt-6 max-w-3xl border-l-2 border-gray-400 pl-4 text-sm leading-6 text-gray-700">
+            {tx.result.validationCaveat}
+          </p>
+
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+            <Link
+              href={routeFor(lang, "calculator")}
+              className="inline-flex min-h-11 items-center justify-center rounded-lg bg-blue-700 px-5 py-3 text-center text-sm font-semibold text-white hover:bg-blue-800"
+            >
+              {tx.actions.calculator}
+            </Link>
+            <Link
+              href={routeFor(lang, "readiness")}
+              className="inline-flex min-h-11 items-center justify-center rounded-lg border border-gray-400 px-5 py-3 text-center text-sm font-semibold text-gray-700 hover:border-gray-600"
+            >
+              {tx.actions.readiness}
+            </Link>
+          </div>
+          <button
+            type="button"
+            onClick={() =>
+              onStateChange(processProfileReducer(state, { type: "reset" }))
+            }
+            className="mt-5 min-h-11 text-sm font-semibold text-gray-600 underline decoration-gray-200 underline-offset-4 hover:text-gray-900"
+          >
+            {tx.actions.restart}
+          </button>
+        </section>
+      ) : null}
+    </div>
+  );
+}
+
+export default function AssessmentQuiz({ lang = "pl" }: AssessmentQuizProps) {
+  const [state, setState] = useState(createProcessProfileState);
+
+  useEffect(() => {
+    if (state.focusTarget !== "result-heading") return;
+    revealResult(document.getElementById(PROCESS_PROFILE_RESULT_HEADING_ID));
+  }, [state.focusTarget]);
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6 px-6 py-12">
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">
-          {tx.questionOf(current + 1, questions.length)}
-        </p>
-        <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-gray-100">
-          <div
-            className="h-1.5 rounded-full bg-blue-500 transition-all"
-            style={{ width: `${((current + 1) / questions.length) * 100}%` }}
-          />
-        </div>
-      </div>
-
-      <div className="rounded-xl border border-gray-100 bg-gray-50 p-5">
-        <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">{q.dim}</p>
-        <p className="text-base font-semibold text-gray-900">{q.q}</p>
-      </div>
-
-      <div className="space-y-2">
-        {(q.answers as readonly string[]).map((answer, i) => (
-          <button
-            key={i}
-            onClick={() => handleAnswer(i)}
-            className={`w-full rounded-xl border px-4 py-3 text-left text-sm transition-all hover:shadow-sm ${
-              i === 0
-                ? "border-red-200 bg-red-50 text-red-800 hover:border-red-300"
-                : i === 1
-                ? "border-amber-200 bg-amber-50 text-amber-800 hover:border-amber-300"
-                : "border-green-200 bg-green-50 text-green-800 hover:border-green-300"
-            }`}
-          >
-            <span className="font-mono mr-2 text-xs opacity-60">
-              {i === 0 ? "0 pkt" : i === 1 ? "1 pkt" : "2 pkt"}
-            </span>
-            {answer}
-          </button>
-        ))}
-      </div>
-    </div>
+    <AssessmentQuizView lang={lang} state={state} onStateChange={setState} />
   );
 }

@@ -1,5 +1,90 @@
 # Changelog
 
+## 2026-08-29: model 2.3.0
+
+Model 2.3 replaces the active 2.2.2 optimiser and aggregate path profiles with
+a native, evidence-aware comparison of two independently declared procurement
+workflow designs. Historical 2.2.2 entries below remain as release history;
+current errata are labelled explicitly.
+
+### Native domain and legal boundary
+
+- Added the fixed metadata tuple: schema 2, model 2.3.0, calibration
+  `source-scenario-2026-08-28` and legal ruleset `pl-pzp-2026-2027`.
+- Separated legal and governance boundary, procedure family, purchase
+  archetype, execution channel, system support, workflow design and contract
+  design.
+- Replaced path templates as the public comparison object with independent
+  `formalSequential` and `adaptiveCompliant` directed acyclic process maps.
+- Added cycle, predecessor and legal-lock validation plus critical-path elapsed
+  time.
+- Made supported PZP waits dated, sourced, non-editable and identical in both
+  alternatives. Sectoral and defence/security contexts fail closed.
+
+### Cost and evidence contract
+
+- Defined the signed identity as
+  `deltaCost = formalSequential.total - adaptiveCompliant.total` and added an
+  alternative-swap symmetry audit. No sign is preferred or required.
+- Added low, central and high values with explicit range kind, evidence class
+  and evidence identifiers. Declared ranges are not statistical confidence
+  intervals.
+- Limited the Szucs transfer to the 2, 6 and 9 per cent competition stress where
+  the declared alternatives differ in market access.
+- Restored the Szucs source interpretation after a model 2.2 documentation
+  error: selected contractors were 28 per cent less productive and the
+  probability that a right-connected firm won rose by approximately 11
+  percentage points. This correction does not alter model 2.3 calculations,
+  which monetise only the declared price-channel transfer stress.
+- Set native starting differentials for contract amendments and TCO to zero.
+  Informal bypass is disclosed but not monetised.
+- Labelled retained aggregate base-day totals, remaining migrated workflow
+  maps, role rates, support costs and scenario values as
+  `retained_legacy_assumption` rather than empirical estimates.
+
+### Scenarios, records and replication
+
+- Added ten canonical scenarios covering fleet TCO reframing, ERP discovery,
+  logistics redesign, critical-material continuity, public IT with preliminary
+  market consultation, stable service, CAPEX replacement, discovery and
+  co-design, catalogue call-off and MRP release.
+- Replaced the generic workflow used by the first five scenarios with
+  mechanism-specific maps. Aggregate base-day totals remain retained from
+  model 2.2.2; step order, day allocation and role-hour allocation are
+  illustrative model 2.3 inputs with separate internal provenance.
+- Added catalogue and MRP neutral controls with identical maps. Discovery and
+  co-design explicitly permits the adaptive alternative to require more time
+  and role effort.
+- Added an auditable decision record with drivers, monetisation coverage,
+  non-monetised dimensions, evidence, legal provenance and migration status.
+- Added deterministic JSON, CSV and Markdown replication output plus canonical
+  diagnostics for metadata, ordered ranges, delta identity, legal locks,
+  neutral controls and swap symmetry.
+- Preserved the immutable 2.2.2 package as historical provenance. Its decision
+  thresholds are not native 2.3 outputs.
+
+### Public method and implementation context
+
+- Replaced the public optimiser result with a non-scored suitability comparison
+  that gives lawful candidate families equal status and withholds unsupported
+  procedures.
+- Reframed the former maturity assessment as a descriptive procurement process
+  design profile.
+- Added an independent implementation-readiness self-description with eight domains,
+  sixteen questions and no points, percentages, weights or import into the cost
+  model.
+- Added bilingual practice material for
+  [Procurement&Beyond episode 8](https://www.youtube.com/watch?v=5KYUdTLlvvg).
+  The practitioner interview may inform question design and hypothesis
+  generation only. It is not calibration evidence.
+- Stated the data and calculation boundary for Bielik: a language model may
+  structure market data for review; the transparent deterministic model
+  performs the calculation.
+- Updated active PL/EN copy, research documentation and article drafts to use
+  professional procurement terminology and to distinguish cases where adaptive
+  work has a mechanism from stable service, catalogue and MRP cases where it
+  adds no separate modelled value.
+
 ## 2026-07-26 — model 2.2.2
 
 Calibration audit: every assumption in the model checked against an external benchmark,
@@ -98,6 +183,13 @@ Model 2.2 is a correction release following an adversarial audit of the model
 mathematics, the citation base and the legal layer. Headline numbers change.
 
 ### Corrections to errors introduced or missed in 2.1
+
+> **Model 2.3 erratum, 29 August 2026:** the first historical bullet below is
+> itself incorrect. Szucs reports selected contractors as 28 per cent less
+> productive and an approximately 11-percentage-point increase in the
+> probability that a right-connected firm wins. The original 2.2 wording is
+> retained here as release history and must not be used as the current source
+> interpretation.
 
 - **Szucs (2024) productivity effect restated as ~10%, not 28%.** The structural
   estimates report about a 6% price effect and about a 10% reduction in average

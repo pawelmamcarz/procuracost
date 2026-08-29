@@ -1,28 +1,14 @@
 import type { Metadata } from "next";
-import { assessmentT } from "@/lib/i18n";
 import AssessmentQuiz from "@/components/AssessmentQuiz";
-import { MODEL_VERSION } from "@/lib/version";
+import { siteMetadataT } from "@/lib/i18n";
+import { localizedPageMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = {
-  title: `Procurement Design Profile: ProcuraCost ${MODEL_VERSION}`,
-  description:
-    "A descriptive profile of process sequencing and adaptability; not a validated maturity test.",
-};
+export const metadata: Metadata = localizedPageMetadata({
+  lang: "en",
+  routeKey: "assessment",
+  ...siteMetadataT.en.processDesignProfile,
+});
 
 export default function AssessmentPageEn() {
-  const tx = assessmentT.en;
-  return (
-    <div className="mx-auto max-w-2xl px-6 py-12">
-      <div className="text-center">
-        <span className="inline-block rounded-full bg-blue-50 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-blue-600">
-          {tx.badge}
-        </span>
-        <h1 className="mt-4 text-3xl font-bold text-gray-900">{tx.title}</h1>
-        <p className="mx-auto mt-3 max-w-xl text-sm text-gray-500">{tx.subtitle}</p>
-      </div>
-      <div className="mt-8">
-        <AssessmentQuiz lang="en" />
-      </div>
-    </div>
-  );
+  return <AssessmentQuiz lang="en" />;
 }

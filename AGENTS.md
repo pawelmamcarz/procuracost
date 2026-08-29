@@ -9,16 +9,22 @@ This version has breaking changes — APIs, conventions, and file structure may 
 ## Project rules live in CLAUDE.md
 
 This file only carries the Next.js warning. The working instructions for this
-repo — commands, model architecture, the PL/EN routing rules, and the
-load-bearing neutrality invariant — are in **`CLAUDE.md`**, with the design
-system in **`CLAUDE_DESIGN.md`**. Read both before making changes.
+repository, including commands, model architecture, PL/EN routing and the
+neutrality invariant, are in **`CLAUDE.md`**. The design system is in
+**`CLAUDE_DESIGN.md`**. Read both before making changes.
 
 Non-negotiables, in short:
 
-- The cost model lives in `lib/`, not in components. After touching it run
-  `npm test && npm run recompute && npm run sweep && npm run build`.
-- Never tune parameters to preserve the Tunnel–Field result. `docs/MODEL_PARAMETERS.md`
-  is the model-2.1 source of truth; `docs/archive/model-1.x/` is history, never a source.
+- The native model 2.3 implementation lives in `lib/model-v2/`, not in
+  components. After changing the model run the focused test, then
+  `npm test && npm run recompute && npm run sweep && npm run replicate && npm run build`.
+- Never tune parameters to preserve a preferred Tunnel and Field result.
+  `docs/MODEL_PARAMETERS.md` is the active model 2.3 parameter and evidence
+  contract. Older modules and `docs/archive/model-1.x/` are historical
+  provenance, never active sources.
+- Keep mandatory legal waits locked and identical in both alternatives. Keep
+  implementation readiness independent of `deltaCost`. Practitioner material
+  may inform questions and hypotheses only, never weights or calibration.
 - All user-facing strings go through `lib/i18n.ts`. PL and EN are separate route
   trees under `app/(pl)/` and `app/(en)/en/`; route groups do not change their
   public URLs. Check whether both need the edit.

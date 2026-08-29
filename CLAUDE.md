@@ -8,94 +8,177 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## What this is
 
 ProcuraCost is a bilingual (PL/EN) Next.js 16 site for a procurement-economics
-research project. Model 2.1 compares formal/sequential and adaptive/compliant paths
-under the same governance boundary. The interactive tools are driven by a
-self-contained model layer in `lib/`; there is no backend, database or API.
+research project. Native model 2.3.0 compares `formalSequential` and
+`adaptiveCompliant` procurement workflow designs under the same legal and
+governance boundary. The interactive tools use a self-contained model layer in
+`lib/model-v2/`. There is no backend, database or API.
+
+The public contract separates the legal and governance boundary, procedure
+family, purchase archetype, procurement workflow design, purchase execution
+channel, system support and contract design. Do not collapse these axes into a
+single process type, technology level or aggregate capability score.
 
 ## Commands
 
 ```bash
 npm run dev        # dev server at http://localhost:3000 (PL) and /en (EN)
-npm run build      # production build (also computes the version string — see below)
+npm run build      # production build (also computes the version string; see below)
 npm run start      # serve the production build
 npm run lint       # eslint (next/core-web-vitals + next/typescript)
-npm test           # vitest run — tests/ covers calculations, optimizer legality, formatting, versioning
+npm test           # full Vitest suite
 
-npm test -- tests/optimizer.test.ts        # single file
-npm test -- -t "is deterministic"          # single test by name
-
-# Test suites are prefixed with the audit letter they cover, e.g. "(e) optimize()
-# never recommends a legally filtered-out path", "(f) getISOWeek at year boundaries".
+npm test -- tests/decision-record-v2.test.ts  # single file
+npm test -- -t "stays swap-neutral"           # single test by name
 ```
 
-Model-verification scripts (all `tsx`, run against the real `lib/` code — never a re-implementation):
+Model verification scripts import the native implementation directly:
 
 ```bash
-npm run recompute  # per-dimension Δ table for every reference scenario + context-uplift
-                   # invariant audit (no dimension's total uplift may exceed ~×1.5)
-npm run sweep      # sign-robustness sweep over every process × tech × spend × phase combo
-npm run replicate  # regenerate replication/outputs/ from SCENARIOS
-npm run map        # decision-threshold map per category × tech × CV → replication/outputs/decision-thresholds.md
-                   # (also rendered visually on the homepage by components/DecisionMap.tsx)
+npm run recompute  # canonical diagnostics for all 10 scenarios
+npm run sweep      # alternative-swap symmetry audit
+npm run replicate  # regenerate the three deterministic replication artefacts
 ```
 
-After any change under `lib/`, run `npm test && npm run recompute && npm run sweep && npm run build`. CI (`.github/workflows/ci.yml`, Node 22) runs lint → test → build → recompute on every PR and push to `main`; `sweep` and `replicate` are manual. Path alias `@/*` maps to the repo root.
+After a change under `lib/`, run the focused test first, then
+`npm test && npm run recompute && npm run sweep && npm run replicate && npm run build`.
+Run `npm run lint` before hand-off. The `@/*` path alias maps to the repository root.
 
-> Per `AGENTS.md`: this is a non-standard Next.js build with breaking changes from training data. When touching App Router internals, routing, or framework APIs, consult `node_modules/next/dist/docs/` rather than assuming conventions.
+Per `AGENTS.md`, this Next.js version may differ from training data. Read the
+relevant guide in `node_modules/next/dist/docs/` before changing App Router
+internals, routing or framework APIs.
 
 ## Architecture
 
-### The model lives in `lib/` (this is the heart of the project)
+### The native model lives in `lib/model-v2/`
 
-The cost model is a layered pipeline of pure functions and constants. Changes to procurement economics happen here, not in components:
+Changes to procurement economics belong in pure model modules, not components.
 
-- **`lib/process-templates.ts`** — the foundational data layer. Defines 8 `ProcessType`s (including `custom`), 4 `TechLevelId`s, 6 `StakeholderRole`s, and the canonical per-step timing/staff derivation. Mandatory legal waits must remain invariant between paths and technologies. **All business-logic constants belong here — never inline magic numbers in components.**
-- **`lib/calculations.ts`** — neutral 7-dimension model 2.1. Competition, contract rigidity, TCO capture, workflow, and bypass are separate. `calculateCosts` returns a central point, low/high scenario interval, and daily-cost-of-inaction break-even threshold. Beuve is an annual formal-amendment frequency; TCO is zero centrally.
-- **`lib/optimizer.ts`** — common-criteria rule-based path optimizer (`optimize`) with 7 `PathId`s and 30 ±25% weight-sensitivity runs. Every path uses the same criteria and denominator; public candidates are hard-filtered by PZP. Deterministic by design.
-- **`lib/scenarios.ts`** — reference scenarios, each a pre-filled `ProcurementInputs` + citation. Used for calculator presets and benchmark charts.
-- **`lib/i18n.ts`** — every user-facing string, keyed by `pl` / `en` (`calculatorT`, `comparisonT`, etc.). See i18n rule below.
-- **`lib/shortcasty.ts`** — podcast episode metadata. **`lib/version.ts`** — model semantic version. **`lib/version-core.ts`** — site version generator.
+- **`domain.ts`** defines model metadata and the public axes. Fixed metadata is
+  `schemaVersion: 2`, `modelVersion: "2.3.0"`,
+  `calibrationId: "source-scenario-2026-08-28"` and
+  `legalRulesetId: "pl-pzp-2026-2027"`.
+- **`calibrated-value.ts`** validates ordered low, central and high values plus
+  range kind, evidence class and evidence identifiers.
+- **`legal.ts`** resolves dated legal waits. Unsupported sectoral and
+  defence/security contexts fail closed. Legal waits are locked and identical
+  in both alternatives.
+- **`process-map.ts`** validates directed acyclic workflow maps, predecessor
+  references and legal-step integrity.
+- **`engine.ts`** calculates critical-path duration, role cost, non-labour cost,
+  delay cost, monetised contract cost and the outer difference envelope.
+- **`scenarios.ts`** contains ten canonical starting points and their retained
+  assumption provenance. Scenario economic values are declared starting
+  assumptions, not observed organisational outcomes.
+- **`evidence.ts`** distinguishes empirical anchors, official cases,
+  practitioner observations, illustrative scenarios and research hypotheses.
+- **`decision-record.ts`** creates the auditable output contract with drivers,
+  coverage, non-monetised dimensions, evidence and legal provenance.
+- **`suitability.ts`** compares lawful procedure families without scoring,
+  ranking or inferring organisational readiness.
+- **`diagnostics.ts`** audits canonical metadata, ordered ranges, delta identity,
+  legal waits, neutral controls and alternative-swap symmetry.
+- **`replication.ts`** renders deterministic JSON, CSV and Markdown artefacts.
 
-`scripts/` and `replication/` are the audit surface around this layer: the scripts import `lib/` directly (never a copy of the formulas), and `replication/outputs/` is generated output committed for reproducibility. Regenerate it with `npm run replicate` whenever `SCENARIOS` or `calculateCosts` changes, and commit the diff — a stale replication package silently contradicts the published paper.
+`lib/readiness.ts` is intentionally independent of the cost model. It may import
+practitioner source identifiers, but it must not import calculations, process
+templates, scenarios or suitability logic. Readiness responses and their summary must never affect
+`deltaCost`.
+
+`lib/i18n.ts` contains all public copy. `lib/version-core.ts` generates the site
+release identifier. `lib/shortcasty.ts` is the separate Shortcasty catalogue;
+Procurement&Beyond episode 8 does not belong in that catalogue.
+
+The former 2.2.2 modules and outputs are provenance for explicit migration and
+historical reproduction only. Do not import them into a native 2.3 public
+runtime path. Never use `docs/archive/model-1.x/` as an active source.
+
+`scripts/` and `replication/` form the computational audit surface. Regenerate
+`replication/outputs/` whenever the scenarios, engine or decision-record schema
+changes. The native output directory contains the generated JSON, CSV and
+Markdown scenario artefacts. The tracked `decision-thresholds.md` file is a
+quarantined model 2.2.2 exception pending separately approved removal; it is not
+generated or interpreted as a model 2.3 output. Decision-threshold maps
+otherwise belong to the historical archive. A stale package contradicts the
+active model documentation.
 
 ### Routing: duplicated PL/EN route trees
 
-Polish is the default at the root (`app/(pl)/calculator`, `app/(pl)/optimizer`, …). English lives under `app/(en)/en/` as a **parallel, manually-duplicated subtree** (`app/(en)/en/calculator`, …). The `(pl)` and `(en)` route groups do not appear in public URLs. They provide separate static root layouts with genuine server-rendered `lang="pl"` and `lang="en"`. There is no locale middleware or dynamic `[lang]` segment — changing a page that exists in both trees means editing both. The trees are **not** at full parity, and the exceptions each have a reason:
+Polish is the default at the root. English lives under `app/(en)/en/` as a
+parallel, manually duplicated subtree. Route groups do not appear in public
+URLs. There is no locale middleware or dynamic `[lang]` segment, so paired page
+changes usually require both trees.
 
-- Mirrored normally: `assessment`, `calculator`, `case-studies`, `methodology`, `model`, `optimizer`, `team`, `shortcasty`.
-- `app/(en)/en/research/page.tsx` is a **redirect to `/research`**, not a translation. The working paper is written in English and `app/(en)/research/page.tsx` places its canonical URL under the English root. Don't "fix" it by duplicating the paper.
+- Paired routes include `assessment`, `calculator`, `case-studies`,
+  `methodology`, `model`, `optimizer`, `practice/procurement-beyond-8`,
+  `readiness`, `team` and the Shortcasty index.
+- The `/optimizer` URL now renders the suitability comparison. Do not restore
+  scoring or prescriptive procedure selection under that URL.
+- `app/(en)/en/research/page.tsx` redirects to `/research`. The working paper is
+  English and has one canonical page. Do not duplicate it.
 - `app/(pl)/research-agenda` is PL-only and has no EN counterpart.
 
-Confirm a route exists under `app/(en)/en/` before assuming you must edit it. Language is selected via the NavBar lang switch and the `lang`/`Lang` param threaded into components and i18n lookups.
+Confirm the counterpart in `lib/site-routes.ts` before editing. Language is
+passed through the `lang` or `Lang` prop and paired i18n dictionaries.
 
-The interactive pages follow one pattern: the route file is a thin **async server component** that `await connection()` (from `next/server`, opting out of prerender because the tool reads `useSearchParams`) and renders a client wrapper — `CalculatorClient` (PL) / `EnCalculatorClient` (EN). The wrapper owns result state, `dynamic(..., { ssr: false })` imports of `CostComparison` and `PDFExport`, and URL round-tripping of calculator inputs via `encodeInputsToParams` / `inputsFromSearchParams` in `components/calculator-url.ts`. Adding an input to `ProcurementInputs` means updating that codec too, or shared links silently drop the field.
+The calculator route is a thin async server component. It calls `connection()`
+because the client workspace reads URL state. V2 sharing uses
+`lib/model-v2/calculator-url.ts`. Any new public axis requires a codec update and
+a round-trip test. Legacy links pass through the explicit migration adapter;
+ambiguous migrations block calculation until the user confirms them.
 
-Chrome (NavBar + footer + projects bar) is rendered **once** by `components/AppShell.tsx`, a `"use client"` shell mounted by each static route-group root layout. `app/(pl)/layout.tsx` passes `lang="pl"`; `app/(en)/layout.tsx` passes `lang="en"`. AppShell uses the pathname only for active-route state and context-preserving links; it never patches the document language after hydration. The footer/projects bar markup lives in `components/SiteFooter.tsx` (language-aware via a `lang` prop). To change primary navigation, edit the typed manifest in `lib/site-routes.ts`; to change the footer, edit `SiteFooter` and its typed copy in `lib/i18n.ts`.
+`components/AppShell.tsx` renders the navigation and footer once per route-group
+layout. Change routes in `lib/site-routes.ts`, navigation labels in `lib/i18n.ts`
+and footer markup in `components/SiteFooter.tsx`.
 
 ### Components
 
-`components/` holds the interactive client components (`CostCalculator`, `PathOptimizer`, `AssessmentQuiz`, `PipeFieldDiagram`, `PDFExport`, `NavBar`).
+`components/calculator-v2/` owns the editable workspace, validation and legacy
+migration confirmation. `components/process-map/` owns the connected process
+rail. `components/decision-record/` owns the neutral result, coverage and
+reference-scenario comparison. Keep formulas and legal constants out of all
+three directories.
 
-`CostComparison.tsx` is a ~40-line composition shell only — the results UI lives in `components/cost-comparison/` (`HeroSummary`, `CostMatrix`, `DimensionCharts`, `SensitivityChart`, `BenchmarkChart`, `StepsTable`, `DetailTable`, `SourcesList`, `PipeFieldExplainer`, `ResearchExportBar`). Edit the leaf, not the shell.
+`SuitabilityComparison.tsx`, `ReadinessDiagnostic.tsx` and
+`ProcurementBeyond8.tsx` are separate public surfaces with separate contracts.
+Do not couple readiness or practitioner material to calculation inputs.
 
-Charts use **Recharts only** (already a dependency). PDF export draws directly with `jspdf` — there is no `html2canvas` and no DOM screenshotting, so a new result field appears in the PDF only if you add it to `PDFExport.tsx` by hand. Researcher JSON/CSV/Markdown downloads go through `lib/research-export.ts` (browser-only Blob helpers) driven by `ResearchExportBar`.
-
-Radix primitives (`@radix-ui/react-select|slider|tabs`), `lucide-react` icons, `class-variance-authority` and the `cn()` helper in `lib/utils.ts` are available dependencies. Follow `CLAUDE_DESIGN.md` for all styling — colors map to semantic roles (rigid=red, flexible=green, primary=blue) and must not introduce new palette entries.
+Charts use Recharts only. PDF output uses `jspdf`; each new field requires an
+explicit renderer and paired copy in `lib/i18n.ts`. Browser JSON, CSV and
+Markdown downloads use pure functions in `lib/research-export.ts`. Replication
+artefacts use the separate pure functions in `lib/model-v2/replication.ts`.
 
 ### SEO and metadata
 
-`app/seo-config.ts` centralises `SITE_URL` and the canonical taglines. The canonical production host is `https://www.procuracost.com` — the apex has no DNS record, and `VERCEL_URL` must only win on previews or `*.vercel.app` leaks into `og:url`. `app/sitemap.ts`, `app/robots.ts` and the two `opengraph-image.tsx` files read from it.
+`app/seo-config.ts` centralises `SITE_URL` and the canonical taglines. The
+canonical production host is `https://www.procuracost.com`. `VERCEL_URL` may win
+only for previews. The sitemap, robots file and Open Graph images read from this
+configuration.
 
 ## Conventions that bite if ignored
 
-- **i18n**: never hardcode Polish/English strings in components — route them through `lib/i18n.ts` (`tx = calculatorT[lang]`). Short label ternaries (`lang === "en" ? "days" : "dni"`) are the only allowed exception. See `CLAUDE_DESIGN.md`.
-- **Design system**: `CLAUDE_DESIGN.md` is authoritative for color semantics, typography, card/button patterns, and the Tunnel-vs-Field metaphor vocabulary. The canonical tagline and the `∂Φ` notation must be used verbatim where referenced.
-- **Site versioning**: the version is Tesla-style `ISO-week-year.ISO-week.release.patch`, computed at build time with `release.patch` defaulting to `1.2` (for example `2026.29.1.2` on 14 July 2026). `lib/version-core.ts` is the single generator; `next.config.ts` injects its result as `NEXT_PUBLIC_VERSION`. To pin a later release in the same week, run `NEXT_PUBLIC_VERSION=2026.29.2.1 npm run build`. The quantitative model has a separate semantic version in `lib/version.ts`.
-- **No JSX comments** (`{/* */}`) in returned markup, no `useEffect` for derived values, no new chart libraries — see the Anti-patterns section of `CLAUDE_DESIGN.md`.
+- **i18n:** all public strings, export labels and PDF copy go through
+  `lib/i18n.ts`. English uses British spelling.
+- **Public vocabulary:** use `formalSequential` and `adaptiveCompliant` in the
+  v2 data contract. Do not expose `rigid`, `flexible`, `processType`,
+  `techLevel`, `spendType` or `processPhase` outside marked legacy metadata.
+- **Neutrality:** `deltaCost` always equals formal/sequential total minus
+  adaptive/compliant total. Do not tune assumptions or tests to preserve a sign.
+- **Practitioner boundary:** Procurement&Beyond episode 8 may inform question
+  design and hypothesis generation only. It cannot set thresholds, weights or
+  calibration ranges. Bielik may structure market data; the transparent model
+  performs the calculation.
+- **Site versioning:** `lib/version-core.ts` generates the Tesla-style site
+  version. Quantitative model metadata is separate and lives in
+  `lib/model-v2/domain.ts`.
+- **Design:** follow `CLAUDE_DESIGN.md`. Do not add prose em dashes, gradients,
+  shadows, generic card grids, JSX comments or a new chart library.
 
 ## Repo sync (machine-specific)
 
-This working copy lives in an iCloud-synced folder shared with another machine ("Rokale"); GitHub `main` is the source of truth. `bin/claude-pull.sh` / `bin/claude-push.sh` and `SYNC.md` document the pull-before / push-after workflow. Never let `node_modules`, `.next`, `.turbo`, or `build` enter iCloud (`.gitignore` handles this).
+This working copy lives in an iCloud-synced folder shared with another machine
+("Rokale"). GitHub `main` is the source of truth. `bin/claude-pull.sh`,
+`bin/claude-push.sh` and `SYNC.md` document the workflow. Never put
+`node_modules`, `.next`, `.turbo` or `build` into iCloud.
 
 ## Research docs (not code)
 
@@ -106,5 +189,15 @@ practitioner articles), `docs/supervisor/` (supervisor-outreach pack) and
 `docs/archive/model-1.x/` is historical provenance and must never be used as a
 current parameter, citation or instruction source.
 
-- **`docs/MODEL_PARAMETERS.md`** is the model-2.1 source of truth. Reconcile every formula or scenario-bound change there.
-- **Neutrality invariant (load-bearing).** Never tune parameters to preserve Tunnel–Field. Public comparisons must remain lawful under PZP and mandatory waits must not be compressed. Always display scenario uncertainty, allow sign reversal, and distinguish empirical anchors from Grade-C path profiles. Szucs monetizes price only; Beuve is an annual contractual-rigidity frequency; theory does not provide bypass probabilities.
+- **`docs/MODEL_PARAMETERS.md`** is the model 2.3 parameter and evidence-boundary
+  source of truth. Reconcile every formula, legal rule or scenario-bound change
+  there.
+- **Neutrality invariant:** never tune parameters to preserve the Tunnel and
+  Field hypothesis. Public comparisons must remain lawful under PZP. Mandatory
+  waits cannot be compressed. Always show scenario ranges, permit sign reversal
+  and distinguish empirical anchors from retained assumptions and user inputs.
+- **Evidence limit:** Szucs supports only the bounded competition-transfer
+  stress. Contract-amendment and TCO differentials are zero in the native
+  calculation. Informal bypass remains non-monetised in native model 2.3.0.
+- **Historical scope:** references to model 2.1 or 2.2.2 are valid only when a
+  document explicitly describes a past defect, audit or immutable archive.

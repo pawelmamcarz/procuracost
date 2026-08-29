@@ -24,13 +24,15 @@ export const SITE_ROUTES: readonly SiteRoute[] = [
   { key: "optimizer", pl: "/optimizer", en: "/en/optimizer", nav: { pl: "optimizer", en: "optimizer" }, sitemap: true },
   { key: "caseStudies", pl: "/case-studies", en: "/en/case-studies", sitemap: true },
   { key: "assessment", pl: "/assessment", en: "/en/assessment", nav: { pl: "assessment", en: "assessment" }, sitemap: true },
+  { key: "readiness", pl: "/readiness", en: "/en/readiness", sitemap: true },
+  { key: "procurementBeyond8", pl: "/practice/procurement-beyond-8", en: "/en/practice/procurement-beyond-8", sitemap: true },
   { key: "team", pl: "/team", en: "/en/team", sitemap: true },
   { key: "methodology", pl: "/methodology", en: "/en/methodology", sitemap: true },
   { key: "model", pl: "/model", en: "/en/model", nav: { pl: "model", en: "model" }, sitemap: true },
   { key: "modelAssumptions", pl: "/model/assumptions", en: "/en/model/assumptions", sitemap: true },
   { key: "research", en: "/research", aliases: ["/en/research"], canonical: true, sitemap: true },
   { key: "researchAgenda", pl: "/research-agenda", sitemap: true },
-  { key: "shortcasts", pl: "/shortcasty", en: "/en/shortcasty", sitemap: false },
+  { key: "shortcasts", pl: "/shortcasty", en: "/en/shortcasty", sitemap: true },
 ] as const;
 
 export type NavigationItem = { href: RoutePath; label: string; highlight?: boolean };

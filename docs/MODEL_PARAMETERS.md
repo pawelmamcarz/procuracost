@@ -1,307 +1,461 @@
-# ProcuraCost Model Parameters
+# ProcuraCost model 2.3 parameter and evidence contract
 
-**Model version:** 2.2.2
-**Status:** transparent decision model; not an empirical estimator
+**Model version:** 2.3.0
 
-## Comparison object
+**Schema version:** 2
 
-The model compares two lawful designs for the same purchase:
+**Calibration identifier:** `source-scenario-2026-08-28`
 
-- **Formal/sequential path:** more prescribed gates and less ability to parallelize work.
-- **Adaptive/compliant path:** the same authorization, ethics, documentation, and competition obligations, with more freedom to sequence work and adapt the contract.
+**Legal ruleset:** `pl-pzp-2026-2027`
+**Status:** transparent deterministic comparison model, not an empirical
+estimator or legal opinion
 
-For public procurement, the adaptive path is never an exemption from PZP. It means flexibility available inside the applicable lawful procedure. The former label `policy-only` is retained only in internal compatibility identifiers.
+This document is the active explanation of the parameters and evidence
+boundary. The executable definitions are in `lib/model-v2/`. A release is not
+internally consistent unless this document, the implementation, diagnostics and
+replication artefacts agree.
 
-## Constructs kept separate
+## 1. Comparison object
 
-Version 2.1 removed the single latent rigidity index out of economic formulas. `PROCESS_RIGIDITY` remains only as legacy descriptive metadata. The calculation distinguishes:
+The model compares two procurement workflow designs for the same purchase:
 
-1. workflow duration and labor effort;
-2. competition effectiveness;
-3. contractual rigidity;
-4. ability to capture lifecycle/TCO value;
-5. observed bypass rate and system controls.
+- `formalSequential`: a prescribed sequential design;
+- `adaptiveCompliant`: a policy-bounded adaptive design.
 
-This prevents evidence about one construct from being silently reused for another.
+Both alternatives use the same declared legal and governance boundary. An
+adaptive/compliant design is not an exemption from applicable procurement law,
+authorisation, competition, ethics or documentation requirements.
 
-## Evidence ranges
+The comparison does not rank organisational maturity and does not recommend a
+procedure. The Tunnel and Field metaphor is an explanatory device, not a model
+input.
 
-The calculator reports a central estimate and a wide scenario interval. These are **not confidence intervals**.
+## 2. Decision context and alternatives
+
+### 2.1 Recorded context axes
 
-| Parameter | Low-delta case | Central | High-delta case | Status |
-|---|---:|---:|---:|---|
-| Discretion price premium | 9% | 6% | 2% | Empirical anchor with substantial transfer uncertainty (Hungarian, sub-25m HUF band) |
-| Rigidity-slope anchor | 0 | 0.077 | 0.105 | **Calibration assumption with an external order-of-magnitude anchor** — see the unit warning below. Not a transferred estimate |
-| Cumulative TCO savings pool | 0% | 0% | 15% | Scenario assumption; no transferable central estimate |
-| Formal-path base bypass rate | 2% | 5% | 30% | Scenario assumption before technology-control scaling |
-| Adaptive-path base bypass rate | 15% | 5% | 1% | Scenario assumption before technology-control scaling |
+| Axis | Supported values |
+|---|---|
+| Legal and governance boundary | `private_policy`, `public_internal_rules`, `pzp_classic_national`, `pzp_classic_eu` |
+| Procedure family | `private_competitive`, `private_negotiated`, `public_internal_competitive`, `pzp_basic`, `pzp_open`, `pzp_restricted`, `framework_calloff`, `custom_lawful` |
+| Purchase archetype | `standardized_recurring`, `incomplete_requirement`, `complex_service`, `continuity_critical`, `capital_investment` |
+| Purchase execution channel | `sourcing_event`, `catalog_calloff`, `mrp_release`, `custom` |
+| System support | `manual`, `sourcing_platform`, `transactional_erp`, `integrated_source_to_pay` |
+| Initiation date | ISO date within the active legal-ruleset coverage |
 
-The low-delta case deliberately maximizes the governance value of formality; the high-delta case maximizes the value of adaptability. A range crossing zero means that the preferred path depends on assumptions.
+Each alternative then has an independent procurement workflow design and
+contract design. System support describes the selected operating environment.
+It is not evidence of organisational implementation readiness.
 
-### The second axis: structural uncertainty (new in 2.2.1)
+### 2.2 Procedure families admitted by each boundary
 
-The table above is the **evidence axis**. On its own it brackets the five literature-facing
-scalars and holds fixed the two inputs behind a delay bucket that carries 68.3–99.6% of
-|ΔC| in the fixed reference scenarios where path durations differ — so the model reported its
-narrowest uncertainty precisely where it is least defensible.
+| Boundary | Procedure families admitted by the current comparison |
+|---|---|
+| Private policy | private competitive, private negotiated, framework call-off, custom lawful |
+| Public internal rules | public internal competitive, framework call-off, custom lawful |
+| PZP classic national | basic procedure, framework call-off |
+| PZP classic EU | open procedure, restricted procedure, framework call-off |
 
-The **structural axis** perturbs those two:
+The suitability surface shows these candidates with equal visual status. It
+does not score, rank or recommend them. Procedures outside this deliberately
+limited registry are withheld rather than approximated.
 
-| Input | Range | Why |
-|---|---|---|
-| Daily cost of inaction | ×0.25 … ×4 | The least reliable number a user supplies; the model cannot check it. A factor of four either way is the honest spread of an unmeasured quantity. |
-| Non-mandatory step durations | ×0.7 … ×1.3 | The model's own step templates are untested assumptions. Applied exactly like the technology multiplier. |
+## 3. Legal ruleset and fail-closed boundary
 
-**Statutory PZP waits are invariant under both axes**, as everywhere else in the model.
+The legal resolver accepts initiation dates from 1 January 2026 through
+31 December 2027. Outside that coverage it blocks calculation. Sectoral and
+defence/security procurement are outside the current scope and also fail
+closed.
 
-The reported `lowDelta` / `highDelta` is the envelope over the full cross product, and both
-single-axis envelopes are reported alongside it so a reader can see which one the width
-comes from (`widthDrivenBy`). Widening it changes the headline conclusion:
+The following waits are fixed model inputs for the supported classic PZP
+contexts:
 
-| | evidence axis only | both axes (2.2.2 calibration) |
-|---|---:|---:|
-| fixed reference scenarios crossing zero | 5 of 10 | **10 of 10** |
-| sweep: robustly favours formal | — | 1,042 / 12,960 |
-| sweep: robustly favours adaptive | — | 5,374 / 12,960 |
-
-Under the audited calibration no fixed reference scenario identifies a robust winner. That is
-the correct result, not a regression: the earlier narrow envelope was an artefact of the
-choice of what to vary. The multipliers themselves are declared judgements about how wrong
-an unmeasured input can be, not estimated intervals.
-
-### Unit warning on the rigidity slope (corrected in 2.2)
-
-Beuve, Moszoro and Spiller report 0.077–0.105 additional formal amendments per contract-year
-for a simultaneous one-standard-deviation increase in **each** of seven z-scored rigidity
-categories — a move of about +7 units on a summed index that itself ranges well beyond that.
-It is not the effect of a one-SD move on the index, and several 2.1 documents dropped the word
-"each".
-
-ProcuraCost multiplies that slope by `contractRigidity`, a hand-authored **0–1 calibration
-score** from the path profiles below. That score is not a z-score, and no conversion between
-the two scales is available. The product therefore implicitly declares "profile = 1.0" to mean
-"+1 SD in each of seven clause categories", which the source does not support.
-
-Consequences, stated rather than buried:
-
-- The slope is reclassified from **class 2 (external anchor)** to **class 3 (calibration
-  assumption with an external order-of-magnitude anchor)** in the taxonomy of article 2.
-- Only the **difference** between the two paths' renegotiation cost is interpretable. The
-  reported level for either path is not, because the estimate is incremental and the model
-  supplies no baseline.
-- Model 2.1 also displayed the range as "0–0.105/year" sourced to Beuve. The 0 is the model's
-  own low-delta floor, not part of the published estimate; the homepage tiles now say
-  0.077–0.105 and attribute the floor to the model.
-
-## Path-profile defaults
-
-These values are transparent calibration assumptions, not estimates. Columns show
-formal/adaptive values for competition effectiveness, contract rigidity and TCO
-capture respectively.
-
-| Process type | Competition F/A | Contract rigidity F/A | TCO capture F/A |
-|---|---:|---:|---:|
-| PZP EU | .95 / .90 | .75 / .45 | .65 / .70 |
-| PZP national | .90 / .85 | .65 / .40 | .67 / .72 |
-| Private formal | .85 / .75 | .60 / .30 | .70 / .75 |
-| Policy-compatible private | .75 / .70 | .35 / .25 | .73 / .78 |
-| **Discovery (new in 2.2)** | **.82 / .62** | .55 / .30 | **.60 / .78** |
-| Catalog | .90 / .90 | .25 / .20 | .80 / .82 |
-| MRP | .90 / .90 | .20 / .18 | .85 / .86 |
-| CAPEX | .88 / .80 | .70 / .40 | .70 / .75 |
-
-They should be replaced by observed bidder, clause and lifecycle data during
-calibration. They must not be interpreted as scores measured for an organization.
-
-### The `discovery` process type (new in 2.2)
-
-Through model 2.1, **every step of every template had `flexibleDays ≤ rigidDays`**. That
-made "the adaptive path is faster" an identity rather than a finding, and it meant the
-sensitivity sweep could not fail in the pro-formal direction: 0 robustly-formal results out
-of 11,340 configurations, a number that reflected the templates and not procurement.
-
-`discovery` models a purchase whose requirement emerges in flight. The adaptive path buys
-learning with time — co-design with suppliers, a re-scoping round, sometimes an abandoned
-negotiation — so it is **slower and more effortful** than the formal path, which freezes
-the requirement early and lives with a worse specification. Its profile row is the one place
-where the competition gap is wide (.82 / .62): co-designing with a small supplier set
-genuinely weakens competition, and that is the trade the type exists to represent.
-
-With it in the grid the sweep can fail in both directions for the first time: on the
-evidence axis alone it returns 1,221 robustly formal results out of 12,960 where 2.1
-returned none. The first 2.2.1 two-axis calibration returned 1,045; the audited 2.2.2
-calibration returns 1,042. The two-sidedness the model claims is demonstrated rather
-than asserted.
-
-`discovery` is nonetheless a modelling assumption like every other template, not an
-observation, and calibration should treat the day tables as a primary object of measurement.
-
-Related fix: the adaptive effort ratio is no longer capped at 1. Model 2.1 capped it, so a
-step where adaptive execution takes longer could cost more calendar days but never more
-staff hours.
-
-## Workflow, technology, and context assumptions
-
-The formal/adaptive day counts are the sums of the step-template durations. The
-selected technology multiplier applies to non-mandatory steps in both paths;
-mandatory PZP waits are unchanged. No additional hidden context compression is
-applied.
-
-| Technology | Time multiplier | Non-labor overhead/day | Tool cost/strategic process | Tool cost/operational order | Bypass-rate multiplier |
-|---|---:|---:|---:|---:|---:|
-| Manual | 1.40 | 500 PLN | 0 PLN | 0 PLN | 1.50 |
-| Sourcing tool | 1.15 | 200 PLN | 800 PLN | 30 PLN | 0.90 |
-| Partial ERP | 1.00 | 100 PLN | 1,200 PLN | 50 PLN | 0.70 |
-| End-to-end | 0.70 | 20 PLN | 2,000 PLN | 60 PLN | 0.50 |
-
-These are calibration assumptions. Both compared paths use the same selected
-technology and therefore the same applicable tool cost. Model 2.2.2 separates
-strategic processes from catalog/MRP orders; charging a strategic-event license
-allocation to every operational order overstated the absolute cost by roughly
-30–100×. The bypass ladder was narrowed from an unsupported 15× spread to 3×.
-
-The broad context factors are deliberately simple: upstream multiplies role
-hours and non-labor coordination by 1.15; downstream multiplies them by 0.90
-and 0.85 respectively; direct spend multiplies role hours by 1.10. Indirect
-spend adds no further factor. At most two factors combine, and none changes a
-statutory wait or the user-supplied daily inaction cost.
-
-**Context reaches exactly two channels: role hours and non-labour coordination.** It does
-*not* touch delay, selection, amendments, TCO or bypass. Model 2.1 declared multipliers for
-those five as well, but every one of them was hardcoded to 1, so four of the seven dimensions
-had no context sensitivity while the API and this table implied otherwise. They are removed in
-2.2 rather than left inert. Reviving any of them requires an argument for the specific
-mechanism, not a constant. The maximum combined uplift is ×1.265 (direct × upstream) against an
-audited invariant of ×1.5; `direct + downstream` nets to ×0.99, i.e. no effect.
-
-## Time base and discounting (new in 2.2)
-
-**Every figure the model reports is a present value at award.** That is the single time
-base, and model 2.1 did not have one: it multiplied the annual amendment frequency by
-contract duration with no discounting, while capping the TCO pool at three years. A ten-year
-CAPEX therefore contributed ten full-value amendment years against a three-year lifecycle
-pool — two horizons pulling the same purchase in opposite directions — and `total` summed a
-per-event cost with an undiscounted multi-year stream.
-
-Both lifecycle channels now use the same annuity machinery:
-
-- amendments: `λ_j × cost_per_amendment × af(r, contract duration)`
-- TCO: `(pool / 3) × af(r, min(horizon, 3)) × (1 − capture_j)`
-
-where `af(r, n) = n` at `r = 0` and `(1 − (1+r)^−n) / r` otherwise. **A zero rate reproduces
-the 2.1 arithmetic exactly**, which is how the change is verified in `tests/`.
-
-The default rate is **4% real** — the real *financial* discount rate prescribed by the
-Polish MFiPR appraisal guidelines for 2021–2027 (MFiPR/2021-2027/15(1), 2023); the *social*
-rate in the same guidelines and the EC Vademecum is 3%, appropriate when appraising a
-public project. Model 2.2.1 mislabelled 4% as the social rate. It is a declared assumption, exposed as a calculator input and
-carried in shared links and the replication trace. At 4% over ten years the CAPEX amendment
-stream falls by about 19%.
-
-## ΔC decomposition (new in 2.2)
-
-ΔC is reported in three buckets rather than one number, because they have different time bases
-and very different evidential standing:
-
-| Bucket | Contents | Time base | Standing |
-|---|---|---|---|
-| **Process** | staff, administration, selection, bypass | per procurement event | modeled |
-| **Delay** | (formal days − adaptive days) × daily cost of inaction | per procurement event | **accounting identity** between a template and a user input |
-| **Lifecycle** | expected formal amendments, foregone lifecycle value | over the contract life | modeled, weakly anchored |
-
-This matters because in the ten fixed reference scenarios (excluding the editable `custom`
-seed) the delay bucket carries **68.3–99.6%** of |ΔC| wherever the two paths differ in
-duration (2.2.2 audited calibration; under the pre-audit
-inputs it was 80.5–99.6%). Reporting only the sum let an identity between the
-model's own step templates and a number the user supplies read as a modeled finding.
-
-Excluding that identity, the formal path is **cheaper on process cost in 7 of 10** fixed reference
-scenarios. The Tunnel–Field advantage in this parameterisation is a delay story, not a
-process-cost story — and saying so is a stronger and more checkable claim than the headline
-percentages model 2.1 reported.
-
-## Break-even daily cost of inaction (corrected in 2.2)
-
-Solves ΔC(c_d) = 0 for the daily cost of inaction. Model 2.1 clamped the result at zero, so it
-returned 0 in seven built-in scenarios and `null` in three and never once produced an
-informative positive number — while the supervisor pack and article 2 described it as a live
-feature. The clamp is removed; the raw solution is reported with a status that says how to read
-it:
-
-- `threshold_above_zero` — the delay bucket decides. If the adaptive path is
-  faster, it wins above the threshold; if the formal path is faster, the
-  direction is reversed.
-- `formal_costlier_at_zero_delay` — the formal path already costs more with the delay bucket
-  removed entirely. The threshold is negative and not actionable.
-- `adaptive_costlier_at_zero_delay` — mirror case.
-- `no_day_difference` — both paths take the same time, so no threshold exists.
-
-## Dimension formulas
-
-- **Staff time:** step participation hours × broad context factors × technology multiplier × daily rate / 8. Participation hours are a **whole-role total, not per person**: model 2.1 multiplied them by role headcount, so declaring three buyers made the identical workflow cost three times as much in buyer time. Headcount is now descriptive input only. Adaptive effort for a retained non-mandatory step is scaled by its adaptive/formal template-duration ratio, and the technology multiplier scales non-mandatory effort the same way it scales non-mandatory duration — 2.1 applied it to elapsed days only, which was inconsistent with both the adaptive-duration scaling and H5. Statutory waits are exempt from both.
-- **Administrative overhead:** illustrative non-labor overhead per **active** day plus the same applicable tool cost for both paths (strategic process or operational order). It excludes stakeholder hours already counted above. Model 2.1 charged it over every elapsed day, so a `pzp_eu` process accrued per-day "meeting and alignment effort" across all 45 days of statutory publication and standstill — periods in which no role has any participation hours by construction.
-- **Delay:** path days × user-supplied daily cost of inaction.
-- **Selection/favoritism:** contract value × price-premium scenario × (1 − competition effectiveness) × process-type corruption-risk assumption. This is distinct from the spend/phase context factors, which reach only staff and coordination. Contractor productivity is not separately monetized.
-- **Formal amendments:** user-supplied cost per amendment × incremental annual frequency from the path's **contract-rigidity** profile × `AF(discount rate, contract duration)`. The French sample mean is not treated as a universal baseline.
-- **TCO:** `(contract value × cumulative savings-pool scenario / 3)` × `AF(discount rate, min(horizon years, 3))` × `(1 − capture rate)`. The pool is a declared three-year cumulative stress test, not an annual law; it is zero centrally and capped at 15% in the high scenario.
-- **Bypass:** user-supplied audit exposure × bypass-rate scenario × technology-control multiplier. The former invented sigmoid and 86% prediction are removed.
-
-The shared baseline purchase price is excluded from both totals. The reported break-even daily inaction cost solves the central equation after separating the delay and non-delay deltas.
-
-## Empirical anchors and limits
-
-- **Szucs (2024):** Hungarian public procurement, structural estimates: discretion increases prices by about 6% and lowers average contractor total factor productivity by about 10%. (The invalid raw discontinuity reports roughly 32%. Model 2.1 stated 28% — that is a different quantity in the same paper, the increase in a politically connected firm's win probability — and it was corrected in 2.2.) The price effect is monetized; productivity is disclosed, not added again. Identified on contracts below the ~25m HUF invitational threshold, i.e. at the small end of the value distribution.
-- **Beuve, Moszoro, and Spiller (2023):** French car-park contracts; contractual rigidity is instrumented with political contestability in a 2SLS design. The 0.077–0.105 result is an annual formal-amendment frequency, not an event probability. Transfer to general procurement is a scenario, not a measurement.
-- **European Commission (2011):** the sanity-check model 2.1 claimed was performed in the 2.2.2 audit and the model passes it (23.8 person-days per EU procedure vs the study's median 22 / mean 36; process cost 0.3–2.2% of CV vs ~0.3% authority-side). See `docs/research/CALIBRATION_BENCHMARKS.md`. The per-day administrative overheads remain calibration assumptions with no direct benchmark.
-- **Lipsky, Vaughan, and Holmström–Milgrom:** mechanism-level theory only. None supplies a bypass probability.
-
-## Legal thresholds used by the optimizer
-
-**Scope: zamówienia klasyczne only.** Sectoral (art. 2 ust. 1 pkt 2) and defence/security
-(pkt 3) procurement applies from far higher thresholds and draws on a different procedure
-catalogue (art. 376). Model 2.1 ran those buyers through the classic ladder and returned a
-confidently wrong band — a sectoral utility buying supplies for 500,000 PLN was told art. 275
-applied when PZP did not apply at all. Model 2.2 declines to advise them instead.
-
-For proceedings **initiated on or after 1 January 2026** (Dz.U. 2025 poz. 1173; a proceeding
-opened earlier stays under the previous 130,000 PLN threshold). EU thresholds per Obwieszczenie
-Prezesa UZP z 8.12.2025, M.P. 2025 poz. 1247, at 1 EUR = 4.31 PLN:
-
-- PZP application threshold: **170,000 PLN net**;
-- central supplies/services EU threshold: **603,400 PLN** (140,000 EUR);
-- sub-central supplies/services EU threshold: **930,960 PLN** (216,000 EUR);
-- works EU threshold: **23,291,240 PLN** (5,404,000 EUR), independent of authority level;
-- social and other special services EU threshold (art. 359 / Annex XIV): **3,232,500 PLN**
-  (750,000 EUR), independent of authority level.
-
-The social-services threshold was **missing in model 2.1**, so a 1.5M PLN social-services
-contract was classified above the EU threshold and `tryb podstawowy` — the correct, cheaper
-and faster national procedure — was foreclosed. That affects a large share of local-government
-spend and was over-restrictive advice stated with legal authority.
-
-The optimizer asks for procurement object and authority level before selecting the applicable
-threshold. Under Arts. 266 and 275, the 170,000 PLN–EU-threshold band is restricted to the
-national basic mode. At or above the EU threshold, the default filter offers only open and
-restricted tender, which Art. 129(2) permits without additional grounds.
-
-**The filter is sound within its scope but deliberately incomplete.** Partnerstwo innowacyjne
-(art. 297), negocjacje bez ogłoszenia (art. 300) and zamówienie z wolnej ręki (art. 304–306,
-art. 214 ust. 1) are lawful on their own statutory grounds and are withheld because the input
-form does not collect or verify those grounds. Model 2.2 names the withheld procedures in the
-UI rather than dropping them silently: a user who accepts a truncated option set without being
-told it was truncated can forgo a procedure the law allows.
-
-Statutory duration floors, under one consistent assumption set (standard periods, electronic
-communication, no urgency derogation): open tender 45 days (35 + 10 standstill), restricted
-tender 70 days (30 + 30 + 10). The restricted procedure is therefore structurally **slower**;
-model 2.1 displayed it as faster, inverting the ordering on the only genuine choice the tool
-makes above the EU threshold.
-
-The scorer evaluates every feasible path on the same criteria and denominator. Its 30 runs vary
-all criterion weights by ±25%; agreement is **weight stability, not statistical confidence** —
-renamed in 2.2 for that reason. Where the legal filter leaves one candidate, the stability
-figure is 1.0 by construction and the UI suppresses it rather than displaying 100%.
-
-## Validation requirements
-
-Calibration must use event-level data: timestamps, effort hours, competition indicators, contract clauses, amendments, bypass evidence, audit outcomes, and lifecycle performance. Report component outcomes before monetizing them. Do not fit parameters to reproduce the Tunnel–Field thesis; retain sign reversals where the data support them.
+| Procedure | Locked wait | Modelled days | Provision recorded in the decision record |
+|---|---|---:|---|
+| Basic procedure | tender submission, supplies/services | 7 | PZP art. 283 |
+| Basic procedure | tender submission, works | 14 | PZP art. 283 |
+| Basic procedure | standstill, electronic communication | 5 | PZP art. 308(2) |
+| Basic procedure | standstill, other communication | 10 | PZP art. 308(2) |
+| Open procedure | tender submission | 35 | PZP art. 138(1) |
+| Open procedure | standstill, electronic communication | 10 | PZP art. 264(1) |
+| Open procedure | standstill, other communication | 15 | PZP art. 264(1) |
+| Restricted procedure | request to participate | 30 | PZP art. 144(1) |
+| Restricted procedure | tender submission | 30 | PZP art. 151(1) |
+| Restricted procedure | standstill, electronic communication | 10 | PZP art. 264(1) |
+| Restricted procedure | standstill, other communication | 15 | PZP art. 264(1) |
+
+The resolver models the stated baseline rules only. It does not decide whether
+a reduction, exception or different regime applies to a real procurement.
+That determination remains with the contracting authority and its advisers.
+
+A legal-wait step has fixed low, central and high values, zero active days and
+the same queue days in both alternatives. It cannot be edited, removed or
+scaled by system support.
+
+## 4. Range and evidence semantics
+
+Every numerical input has:
+
+- `low`, `central` and `high`;
+- `rangeKind`: `fixed`, `calibrated` or `stress`;
+- an evidence class;
+- zero or more evidence identifiers.
+
+The ordering invariant is `low <= central <= high`. A fixed range uses one
+identical value in all three cases.
+
+Evidence classes are:
+
+1. `empirical_anchor`;
+2. `official_case`;
+3. `practitioner_observation`;
+4. `illustrative_scenario`;
+5. `research_hypothesis`;
+6. `retained_legacy_assumption`;
+7. `user_input`;
+8. `legal_rule`.
+
+The three cases are declared scenario values. They are not confidence
+intervals, posterior intervals or estimates of sampling uncertainty. The engine
+combines aligned low, central and high cases and then constructs an outer
+difference envelope.
+
+## 5. Procurement process maps
+
+A workflow is a directed acyclic graph. Every step records:
+
+- a stable identifier and label;
+- predecessor identifiers;
+- active days and queue days;
+- role hours;
+- non-labour process cost;
+- step kind;
+- locked legal provenance where applicable.
+
+The engine rejects cycles, unknown predecessors, duplicate step identifiers and
+changes to a legal lock.
+
+For range case `r`, the finish time of step `s` is:
+
+`finish_r(s) = max(finish_r(p) for p in predecessors(s)) + activeDays_r(s) + queueDays_r(s)`
+
+A step without a predecessor starts at zero. The alternative's elapsed duration
+is the maximum finish time across its steps. Staff effort and non-labour cost
+are summed over all steps, not only the critical path.
+
+The native graph supports sequential, parallel and converging work. Reference
+templates, whether retained or illustrative, are declared starting maps rather
+than observations of how organisations execute procurement.
+
+## 6. Cost calculation
+
+For alternative `j` and range case `r`:
+
+`roleCost_j,r = sum(stepRoleHours_j,r x roleHourlyRate_r)`
+
+`nonLabourCost_j,r = sum(stepNonLabourCost_j,r)`
+
+`delayCost_j,r = elapsedDays_j,r x dailyCostOfInaction_r`
+
+`contractCost_j,r = sum(monetisedContractDimension_j,r)`
+
+`total_j,r = roleCost_j,r + nonLabourCost_j,r + delayCost_j,r + contractCost_j,r`
+
+The central signed difference is:
+
+`deltaCost = total_formalSequential,central - total_adaptiveCompliant,central`
+
+The outer envelope is:
+
+`low = total_formalSequential,low - total_adaptiveCompliant,high`
+
+`high = total_formalSequential,high - total_adaptiveCompliant,low`
+
+A positive difference means that the formal/sequential total is higher under
+the declared inputs. A negative difference means that the
+adaptive/compliant total is higher. Zero and sign reversal are valid outcomes.
+Swapping the alternatives must exchange their totals, negate the central
+difference and reverse the outer envelope.
+
+All monetary values are in PLN. The engine does not apply an implicit discount
+rate or hidden context multiplier.
+
+## 7. Contract-cost dimensions
+
+### 7.1 Competition transfer
+
+The 2, 6 and 9 per cent stress is applied only where the comparison explicitly
+declares different supplier access and identifies the alternative with the
+restricted access. In the canonical registry this occurs only in the stable
+standard-service sensitivity scenario:
+
+`competitionTransfer_restricted = contractValue x {0.02, 0.06, 0.09}`
+
+The other alternative receives zero. Where the comparison does not explicitly
+declare a supplier-access difference, both alternatives receive zero. The user
+may select either alternative as restricted or remove the difference entirely;
+the workflow label never determines the allocation.
+
+The stress is a declared transfer from the price channel examined by Szucs
+(2024), which concerns Hungarian contracts below an invitational-procedure
+threshold. It is not an estimate for Poland and does not identify the effect of
+procurement workflow design. A real use therefore requires the user to verify
+the market-access mechanism rather than infer it from the word adaptive.
+
+### 7.2 Contract amendment and TCO
+
+Contract-amendment and TCO differentials are zero in every native 2.3 starting
+scenario. No coefficient from an amendment study and no general TCO percentage
+is monetised without a signed allocation convention and evidence for the
+specific comparison.
+
+A TCO analysis may still be prepared outside this delta. A language model such
+as Bielik may structure market data for review, while the transparent
+deterministic calculation must remain separate and auditable.
+
+### 7.3 Informal process bypass
+
+Informal bypass is present in the decision record as `notMonetized`. The model
+does not infer a bypass probability from workflow design, system ownership or
+readiness. Monetisation requires observed or user-supplied rates and an explicit
+method that is not part of native model 2.3.0.
+
+## 8. Retained starting assumptions
+
+Values migrated from model 2.2.2 remain labelled
+`retained_legacy_assumption`. Their retention preserves a reproducible starting
+point; it does not convert them into empirical estimates.
+
+### 8.1 Support profiles
+
+The profile multiplies active days and role hours for non-legal reference-map
+steps. It adds coordination cost to active steps that consume role effort and
+one tool-cost allocation per event or operational order.
+
+| System support | Time and role-hour multiplier | Coordination cost per active day | Tool cost per sourcing event | Tool cost per operational order |
+|---|---:|---:|---:|---:|
+| Manual | 1.40 | 500 | 0 | 0 |
+| Sourcing platform | 1.15 | 200 | 800 | 30 |
+| Transactional ERP | 1.00 | 100 | 1,200 | 50 |
+| Integrated source-to-pay | 0.70 | 20 | 2,000 | 60 |
+
+These are retained calibration assumptions. They do not measure the effect of a
+technology implementation and do not imply that the organisation is ready to
+use the system.
+
+### 8.2 Workflow-map provenance and active days before support scaling
+
+For the fleet, ERP, logistics and critical-material scenarios, model 2.3 retains
+the `44/24` aggregate base-day totals from the strategic-private template. The
+public-IT scenario retains the `42/26` non-legal totals from the PZP-open
+template. It does not retain the old step topology for these five scenarios.
+Step order, allocation of aggregate days across steps and role-hour allocations
+are new illustrative model 2.3 inputs. They expose the named mechanism and a
+visible trade-off; they are not observations or effects inferred from the
+official cases.
+
+The retained support profile is then applied to those illustrative allocations.
+Materialised active days and role hours therefore combine an illustrative 2.3
+allocation with a retained support multiplier. Materialised non-labour costs
+also use the retained coordination and tool-cost profile. The decision record
+identifies both provenance classes.
+
+| Template or scenario group | Formal/sequential | Adaptive/compliant | Interpretation |
+|---|---:|---:|---|
+| Fleet, ERP, logistics and critical-material mechanism maps | 44 | 24 | retained aggregate; illustrative step and role-hour allocation |
+| Public-IT mechanism map, excluding locked legal waits | 42 | 26 | retained aggregate; illustrative step and role-hour allocation |
+| Stable policy control | 20 | 20 | identical control work |
+| CAPEX replacement | 120 | 84 | retained investment gates |
+| Discovery and co-design | 34 | 47 | adaptive learning adds declared work |
+| Catalogue call-off | 3 | 3 | identical control map |
+| MRP release | 2 | 2 | identical control map |
+
+Reference-map non-legal queue days are zero. User-edited maps may introduce
+queues or parallel dependencies. The discovery difference is a falsifiable
+scenario assumption, not an observed effect.
+
+### 8.3 Default role-rate assumptions
+
+The default daily rates are divided by eight to obtain hourly rates:
+
+| Role | PLN per day |
+|---|---:|
+| Business requestor | 900 |
+| Buyer | 800 |
+| Lawyer | 1,200 |
+| Finance | 900 |
+| Manager | 1,500 |
+| Executive | 2,500 |
+
+Scenario-specific overrides are recorded in the decision record and replication
+bundle. The rates remain retained assumptions and must be replaced with
+organisation-specific fully loaded rates for an applied comparison.
+
+Central daily rates in the canonical scenarios are:
+
+| Scenario group | Requestor | Buyer | Lawyer | Finance | Manager | Executive |
+|---|---:|---:|---:|---:|---:|---:|
+| Fleet; stable standard service | 900 | 800 | 1,200 | 900 | 1,500 | 2,500 |
+| ERP transformation | 1,200 | 1,200 | 1,500 | 1,000 | 1,800 | 3,000 |
+| Logistics redesign | 900 | 900 | 1,300 | 1,000 | 1,600 | 2,800 |
+| Critical-material continuity | 800 | 700 | 1,200 | 800 | 1,400 | 2,500 |
+| Public IT open procedure | 900 | 900 | 1,300 | 900 | 1,500 | 2,500 |
+| CAPEX replacement | 1,000 | 900 | 1,500 | 1,000 | 1,600 | 3,000 |
+| Discovery and co-design | 900 | 900 | 1,300 | 1,000 | 1,600 | 2,800 |
+| Catalogue call-off; MRP release | 800 | 800 | 1,200 | 900 | 1,500 | 2,500 |
+
+The engine divides these retained daily rates by eight. Per-step role hours are
+part of the scenario map and are reproduced in the decision record. Their
+allocations in the five mechanism maps are illustrative model 2.3 inputs; the
+remaining reference maps retain the earlier allocations. The table does not
+imply a standard market rate for any role.
+
+### 8.4 Daily cost of inaction
+
+For a central daily input `d`, the retained stress range is:
+
+`{0.25d, d, 4d}`
+
+The value is supplied by the scenario or user. ProcuraCost cannot verify it.
+A zero central value remains zero in all three cases. In Polish public copy the
+preferred term is `dzienny koszt zwłoki`; the intended economic mechanism must
+be stated clearly and must not be confused with a statutory penalty.
+
+## 9. Ten canonical scenarios
+
+| ID | Legacy alias | Boundary and procedure | Archetype and channel | System support | Contract value | Central daily cost | Restricted supplier access |
+|---|---|---|---|---|---:|---:|---|
+| `fleet_tco_reframing` | `fleet` | private policy, competitive | capital investment, sourcing event | transactional ERP | 5,000,000 | 5,000 | none declared |
+| `erp_transformation_discovery` | `erp` | private policy, negotiated | incomplete requirement, sourcing event | sourcing platform | 3,000,000 | 8,200 | none declared |
+| `logistics_service_redesign` | `logistics` | private policy, competitive | complex service, sourcing event | transactional ERP | 8,000,000 | 1,800 | none declared |
+| `critical_material_continuity` | `production` | private policy, negotiated | continuity-critical, sourcing event | manual | 12,000,000 | 50,000 | none declared |
+| `public_it_open_with_market_consultation` | `pipe_vs_field` | PZP classic EU, open | incomplete requirement, sourcing event | transactional ERP | 5,000,000 | 10,000 | none declared |
+| `stable_private_standard_service` | `governance_control` | private policy, competitive | standard recurring, sourcing event | integrated source-to-pay | 5,000,000 | 0 | adaptive/compliant: restricted shortlist or incumbent continuation |
+| `stable_capex_replacement` | `capex_investment` | private policy, competitive | capital investment, sourcing event | transactional ERP | 15,000,000 | 13,700 | none declared |
+| `discovery_solution_codesign` | `discovery_rd` | private policy, negotiated | incomplete requirement, sourcing event | transactional ERP | 3,000,000 | 5,500 | none declared |
+| `catalog_calloff_control` | `catalog` | private policy, framework call-off | standard recurring, catalogue call-off | integrated source-to-pay | 50,000 | 500 | none declared |
+| `mrp_release_control` | `mrp` | private policy, framework call-off | continuity-critical, MRP release | integrated source-to-pay | 500,000 | 8,000 | none declared |
+
+Contract value affects the canonical starting calculation only in the stable
+standard-service sensitivity scenario, through its declared competition-transfer
+cost. Contract values, daily costs and role rates are retained starting
+assumptions. Workflow-map provenance follows section 8.2. The catalogue and MRP controls use identical
+maps and no supplier-access difference, so the central comparison is zero. The
+outer envelope is symmetric because the aligned path ranges are identical.
+All canonical scenarios use the initiation date 28 August 2026.
+
+## 10. When adaptive work has or lacks a mechanism
+
+Official cases are attached only to constructs they can support.
+
+- ERP discovery may use problem definition and modular contracting when the
+  requirement is incomplete.
+- Logistics service redesign may use market engagement to test service levels,
+  operational interfaces and risk allocation.
+- Public IT may use preliminary market consultation before the open procedure.
+  The statutory tender and standstill waits remain identical in both
+  alternatives.
+- Discovery and co-design may add time and staff effort because learning and
+  re-scoping are work, not automatic savings.
+
+By contrast, a stable service may require the same relevant work in both
+designs. Catalogue call-off and MRP release controls have identical maps, so
+the model adds no value to either alternative merely because one is called
+adaptive. The stable-service scenario is a topology control, not a total-cost
+control. It separately compares open competition under the policy criteria with
+a restricted shortlist or incumbent continuation after market discovery. The
+adaptive/compliant alternative is explicitly selected as restricted in the
+starting point, and the user may reverse or remove that allocation. This is a
+declared transfer sensitivity, not a property of adaptive work.
+
+These statements identify conditions and hypotheses. They are not procurement
+recommendations and do not establish causal effects.
+
+## 11. Evidence registry and source limits
+
+Active external records include:
+
+- [California Department of Technology, modular IT
+  procurement](https://www.cdt.ca.gov/newsroom/2022/08/california-redefines-state-technology-procurement/);
+- [OECD, RVUL problem-definition
+  example](https://www.oecd.org/en/publications/public-procurement-in-lithuania_aa1b196c-en/full-report/component-8.html);
+- [Urząd Zamówień Publicznych, wstępne konsultacje
+  rynkowe](https://www.gov.pl/web/uzp/wstepne-konsultacje-rynkowe);
+- [European Commission, Guidance on Innovation
+  Procurement](https://public-buyers-community.ec.europa.eu/resources/guidance-innovation-procurement);
+- [Szucs (2024), Discretion and favoritism in public
+  procurement](https://doi.org/10.1093/jeea/jvad017).
+
+The four official cases support qualitative mechanisms only. The internal record
+`model_2_3_mechanism_workflow_allocations` documents the five illustrative step
+maps and their mixed provenance with the retained support profiles. Szucs supports
+the bounded competition-transfer stress under a stated transfer assumption.
+None supplies aggregate workflow days, step allocations, role hours, role rates,
+support costs or daily costs.
+
+[Procurement&Beyond episode
+8](https://www.youtube.com/watch?v=5KYUdTLlvvg) is a practitioner observation
+based on automatically generated Polish captions. It may inform question design
+and hypothesis generation about internal ownership, process friction,
+requirements, operational purchasing, policy simplification, TCO and bounded AI
+use. It cannot set model values, readiness states, weights, ranges or
+thresholds.
+
+## 12. Decision record, suitability and readiness
+
+A model 2.3 decision record exposes:
+
+1. the metadata tuple and migration status;
+2. all six recorded context axes;
+3. both independent workflow maps and contract designs;
+4. totals, signed difference and outer envelope;
+5. driver contributions;
+6. monetisation coverage and exact calculation anchors;
+7. non-monetised dimensions;
+8. internal workflow provenance, retained assumptions, external evidence and
+   legal provenance.
+
+The suitability comparison is a separate non-scored comparison of procedure
+families admitted by the declared boundary. Organisational implementation
+readiness is self-described in another module using eight domains and sixteen
+questions. It reports response counts and domain groupings only; it does not
+validate readiness or issue a go/no-go decision. It has no points, percentage,
+weight or import path into the cost engine.
+
+## 13. Migration and historical material
+
+Legacy links are decoded as `exact`, `partial` or `ambiguous`. Ambiguous
+migrations block calculation until the user confirms the unresolved fields.
+The decision record preserves the migration audit and subsequent edits.
+
+Model 2.2.2 formulas, optimiser thresholds, aggregate path profiles, maturity
+language and decision-threshold maps remain historical. The immutable
+replication package is under `replication/archive/model-2.2.2/` and the
+calibration audit is in
+`docs/research/CALIBRATION_BENCHMARKS.md`. They must not be imported into a
+native 2.3 result.
+
+## 14. Change-control invariants
+
+A proposed parameter or formula change is admissible only if it:
+
+1. records evidence class and identifiers;
+2. preserves ordered ranges;
+3. leaves legal waits locked and shared;
+4. preserves the signed-difference and swap-symmetry identities;
+5. does not infer readiness from workflow or system support;
+6. updates diagnostics, replication and this document together;
+7. is justified before inspecting whether it helps either alternative.
+
+The verification commands are:
+
+```bash
+npm test
+npm run recompute
+npm run sweep
+npm run replicate
+```
+
+Reproduction verifies deterministic consistency. It does not validate the
+assumptions, prove causality, select a lawful procedure for a real case or
+replace procurement, legal or financial judgement.

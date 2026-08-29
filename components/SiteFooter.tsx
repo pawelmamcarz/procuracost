@@ -70,7 +70,7 @@ export default function SiteFooter({ lang }: { lang: Lang }) {
 
           <div className="flex max-w-full flex-wrap items-center justify-center gap-1.5 text-xs text-gray-400 lg:justify-end">
             <span className="mr-1 hidden lg:inline">
-              {isEnglish ? "Other projects:" : "Inne projekty:"}
+              {footerCopy.otherProjects}
             </span>
             {projects.map((p) => (
               <a
@@ -88,17 +88,42 @@ export default function SiteFooter({ lang }: { lang: Lang }) {
         </div>
       </div>
 
-      <footer className="border-t border-gray-100 bg-white px-6 py-3 text-center text-xs text-gray-400">
-        ProcuraCost{" "}
-        <span className="font-mono text-gray-300">{VERSION}</span>
-        {" · "}
-        {isEnglish
-          ? "Model informed by academic research; most parameters are declared assumptions"
-          : "Model oparty na badaniach akademickich; większość parametrów to jawne założenia"}{" "}
-        ·{" "}
-        <Link href={isEnglish ? "/en/methodology" : "/methodology"} className="underline hover:text-blue-500">
-          {isEnglish ? "Sources & methodology" : "Źródła i metodologia"}
-        </Link>
+      <footer className="border-t border-gray-100 bg-white px-6 py-5 text-xs text-gray-500">
+        <div className="mx-auto flex max-w-7xl flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <p className="leading-5">
+            <span className="font-semibold text-gray-700">ProcuraCost</span>{" "}
+            <span className="font-mono text-gray-400">{VERSION}</span>
+            <span aria-hidden="true"> · </span>
+            {footerCopy.modelNote}
+          </p>
+          <nav
+            aria-label={footerCopy.resourceNavigation}
+            className="flex flex-wrap gap-x-5 gap-y-2"
+          >
+            <Link
+              href={isEnglish ? "/en/methodology" : "/methodology"}
+              className="underline decoration-gray-300 underline-offset-4 hover:text-blue-700"
+            >
+              {footerCopy.methodology}
+            </Link>
+            <Link
+              href={isEnglish ? "/en/readiness" : "/readiness"}
+              className="underline decoration-gray-300 underline-offset-4 hover:text-blue-700"
+            >
+              {footerCopy.readiness}
+            </Link>
+            <Link
+              href={
+                isEnglish
+                  ? "/en/practice/procurement-beyond-8"
+                  : "/practice/procurement-beyond-8"
+              }
+              className="underline decoration-gray-300 underline-offset-4 hover:text-blue-700"
+            >
+              {footerCopy.practice}
+            </Link>
+          </nav>
+        </div>
       </footer>
     </>
   );

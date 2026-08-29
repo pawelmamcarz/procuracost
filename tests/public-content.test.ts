@@ -13,9 +13,9 @@ import ResearchAgendaPage from "@/app/(pl)/research-agenda/page";
 import SiteFooter from "@/components/SiteFooter";
 import TeamPage from "@/components/TeamPage";
 import { PATHS } from "@/lib/optimizer";
+import { MODEL_V2_METADATA } from "@/lib/model-v2/domain";
 import { EPISODES } from "@/lib/shortcasty";
 import { navigationFor } from "@/lib/site-routes";
-import { MODEL_VERSION } from "@/lib/version";
 import { APPROVED_PUBLIC_EM_DASH_LINES } from "./fixtures/approved-public-em-dashes";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
@@ -43,12 +43,9 @@ const currentPublicFiles = [
   "lib/scenarios.ts",
 ] as const;
 
-const historicalI18nAllowList = [
-  "Wpisanie 0 odtwarza niedyskontowany model 2.1.",
-  "Entering 0 reproduces the undiscounted 2.1 model.",
-] as const;
-
 const staleCurrentVersion = /\b(?:model 2\.1|modelu 2\.1|ProcuraCost 2\.1)\b/i;
+const historicalModel22Context =
+  /(?:przeniesion|historycz|scenariusz|założe|źródł|zachowan|retained|historical|scenario|assumption|source|previous)/i;
 const forbiddenTeamPhrases = [
   "pełne e2e kompletnego",
   "procurement ecosystem",
@@ -190,12 +187,25 @@ describe("public editorial integrity", () => {
     );
 
     for (const source of currentFacingSources) {
-      let content = source.content;
-      for (const historicalSentence of historicalI18nAllowList) {
-        content = content.replaceAll(historicalSentence, "");
-      }
+      expect(source.content, source.path).not.toMatch(staleCurrentVersion);
+    }
+  });
 
-      expect(content, source.path).not.toMatch(staleCurrentVersion);
+  it("permits model 2.2.2 on public surfaces only as explicit provenance", async () => {
+    const currentFacingSources = (await readCurrentPublicSources()).filter((source) =>
+      source.path.startsWith("app/")
+      || source.path.startsWith("components/")
+      || ["lib/i18n.ts", "lib/scenarios.ts", "lib/shortcasty.ts"].includes(source.path),
+    );
+
+    for (const source of currentFacingSources) {
+      withoutCodeComments(source).split(/\r?\n/).forEach((line, index) => {
+        if (!line.includes("2.2.2")) return;
+        expect(
+          line,
+          `${source.path}:${index + 1} must identify model 2.2.2 as historical provenance`,
+        ).toMatch(historicalModel22Context);
+      });
     }
   });
 
@@ -212,10 +222,89 @@ describe("public editorial integrity", () => {
     expect(i18n.calculatorT.en.calculate).toBe("Compare costs");
   });
 
+  it("keeps the public decision-record dictionary paired, neutral and British-English", () => {
+    function leafPaths(value: unknown, path = ""): string[] {
+      if (typeof value === "string" || typeof value === "function") {
+        return [path];
+      }
+      if (!value || typeof value !== "object") return [];
+      return Object.entries(value).flatMap(([key, child]) =>
+        leafPaths(child, path ? `${path}.${key}` : key)
+      );
+    }
+
+    expect(leafPaths(i18n.decisionRecordT.pl).sort()).toEqual(
+      leafPaths(i18n.decisionRecordT.en).sort()
+    );
+    const neutralEnglish = Object.values(i18n.decisionRecordT.en.delta).join(
+      " "
+    );
+    expect(neutralEnglish).not.toMatch(
+      /\b(?:winner|optimal|recommended|saving|savings|loss|confidence)\b/i
+    );
+    expect(i18n.decisionRecordT.en.sections.coverage).toBe(
+      "Monetisation coverage"
+    );
+    expect(i18n.decisionRecordT.en.coverage.nonMonetized).toContain(
+      "not monetised"
+    );
+    expect(JSON.stringify(i18n.decisionRecordT.en)).not.toMatch(
+      /\b(?:monetized|materialized|labor)\b/i
+    );
+  });
+
+  it("keeps the B2 profile and mechanisms terminology exact and paired", () => {
+    function leafPaths(value: unknown, path = ""): string[] {
+      if (typeof value === "string" || typeof value === "function") {
+        return [path];
+      }
+      if (!value || typeof value !== "object") return [];
+      return Object.entries(value).flatMap(([key, child]) =>
+        leafPaths(child, path ? `${path}.${key}` : key)
+      );
+    }
+
+    expect(i18n.assessmentT.pl.title).toBe(
+      "Profil projektu procesu zakupowego"
+    );
+    expect(i18n.assessmentT.en.title).toBe(
+      "Procurement process design profile"
+    );
+    expect(i18n.mechanismsEvidenceT.pl.title).toBe("Mechanizmy i źródła");
+    expect(i18n.mechanismsEvidenceT.en.title).toBe(
+      "Mechanisms and evidence"
+    );
+    expect(leafPaths(i18n.assessmentT.pl).sort()).toEqual(
+      leafPaths(i18n.assessmentT.en).sort()
+    );
+    expect(leafPaths(i18n.mechanismsEvidenceT.pl).sort()).toEqual(
+      leafPaths(i18n.mechanismsEvidenceT.en).sort()
+    );
+  });
+
+  it("keeps legacy calculations and scoring imports out of the B2 public surfaces", async () => {
+    const b2Files = [
+      "components/EvidenceFieldHome.tsx",
+      "components/AssessmentQuiz.tsx",
+      "components/MechanismsEvidencePage.tsx",
+      "app/(pl)/assessment/page.tsx",
+      "app/(en)/en/assessment/page.tsx",
+      "app/(pl)/case-studies/page.tsx",
+      "app/(en)/en/case-studies/page.tsx",
+    ] as const;
+
+    for (const path of b2Files) {
+      const source = await readPublicFile(path);
+      expect(source, path).not.toMatch(
+        /@\/lib\/(?:calculations|scenarios|process-templates)|BoundaryField|DecisionMap|PROCESS_TYPE_META|TECH_LEVELS|\btotalScore\b|\bpct\b/
+      );
+    }
+  });
+
   it("keeps Polish navigation labels in Polish", () => {
     const labels = navigationFor("pl").map((item) => item.label);
 
-    expect(labels).toEqual(["Kalkulator", "Optymalizator", "Ocena dojrzałości", "Model"]);
+    expect(labels).toEqual(["Kalkulator", "Warunki zastosowania", "Profil projektu procesu zakupowego", "Model"]);
     expect(labels).not.toEqual(expect.arrayContaining(["Research paper", "Methodology"]));
   });
 
@@ -275,13 +364,13 @@ describe("public editorial integrity", () => {
     ).researchAgendaT;
     expect(researchAgendaT).toBeDefined();
     expect(researchAgendaT?.pl.identificationRule)
-      .toContain("kontroluj wyniki ze względu na złożoność zakupu");
+      .toContain("we wspólnych ramach prawnych i ładu zakupowego");
 
     const markup = renderToStaticMarkup(createElement(ResearchAgendaPage));
     const copy = researchAgendaT!.pl;
 
     for (const value of [
-      copy.eyebrow(MODEL_VERSION),
+      copy.eyebrow(MODEL_V2_METADATA.modelVersion),
       copy.title,
       copy.intro,
       copy.prioritiesTitle,
@@ -289,7 +378,7 @@ describe("public editorial integrity", () => {
       copy.identificationTitle,
       copy.identificationRule,
       copy.statusTitle,
-      copy.status(MODEL_VERSION),
+      copy.status(MODEL_V2_METADATA.modelVersion),
       ...Object.values(copy.actions),
     ]) {
       expect(markup).toContain(value);
@@ -325,13 +414,13 @@ describe("public editorial integrity", () => {
   it("provides English content for every planned Shortcast", () => {
     expect(EPISODES).toEqual(expect.arrayContaining([
       expect.objectContaining({
-        titleEn: `ProcuraCost ${MODEL_VERSION}: what do we actually compare?`,
+        titleEn: `ProcuraCost ${MODEL_V2_METADATA.modelVersion}: what does the cost model compare?`,
         dimensionEn: "Methodology",
-        focusEn: "Methodological clarification",
+        focusEn: "Calculation contract",
       }),
       expect.objectContaining({
-        titleEn: "Szucs: what does discretion cost in contractor selection?",
-        dimensionEn: "Competition · Selection",
+        titleEn: "The Szucs study: discretion, competition and price",
+        dimensionEn: "Competition and contractor selection",
         focusEn: "Source review",
       }),
     ]));
@@ -340,6 +429,7 @@ describe("public editorial integrity", () => {
       expect(episode.titleEn).toEqual(expect.any(String));
       expect(episode.thesisEn).toEqual(expect.any(String));
       expect(episode.focusEn).toEqual(expect.any(String));
+      expect(episode.practiceNoteEn).toEqual(expect.any(String));
       expect(episode.titleEn).not.toBe(episode.title);
       expect(episode.thesisEn).not.toBe(episode.thesis);
     }
@@ -362,13 +452,15 @@ describe("public editorial integrity", () => {
     expect(markup).not.toContain(firstEpisode.thesis);
   });
 
-  it("uses solid analytical Shortcast heroes", () => {
+  it("uses linear analytical Shortcast indexes", () => {
     const polishMarkup = renderToStaticMarkup(createElement(ShortcastyPage));
     const englishMarkup = renderToStaticMarkup(createElement(ShortcastyEnPage));
 
     for (const markup of [polishMarkup, englishMarkup]) {
-      expect(markup).toContain("bg-blue-600");
+      expect(markup).toContain('data-editorial-index="shortcasts"');
+      expect(markup).toContain("border-y");
       expect(markup).not.toContain("bg-gradient");
+      expect(markup).not.toContain("shadow");
     }
   });
 
@@ -390,7 +482,7 @@ describe("public editorial integrity", () => {
     }
   });
 
-  it("uses a solid analytical hero on a published Polish Shortcast detail", async () => {
+  it("uses an editorial record on a published Polish Shortcast detail", async () => {
     const episode = EPISODES[0];
     const previousPublishedAt = episode.publishedAt;
     episode.publishedAt = "2026-08-25";
@@ -401,7 +493,10 @@ describe("public editorial integrity", () => {
       });
       const markup = renderToStaticMarkup(page);
 
-      expect(markup).toContain("bg-blue-600");
+      expect(markup).toContain('data-editorial-detail="shortcast"');
+      expect(markup).toContain("border-y");
+      expect(markup).not.toContain("rounded-2xl bg-blue-600");
+      expect(markup).not.toMatch(/rounded-xl border border-(?:gray|green|blue)/);
       expect(markup).not.toContain("bg-gradient");
       expect(markup).toContain(episode.title);
     } finally {

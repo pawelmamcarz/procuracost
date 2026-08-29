@@ -1,31 +1,138 @@
-# Model Specification 2.1
+# ProcuraCost model 2.3 specification draft
 
-The canonical specification is [`docs/MODEL_PARAMETERS.md`](../MODEL_PARAMETERS.md),
-and the research argument is in [`RESEARCH.md`](../../RESEARCH.md). This file no
-longer duplicates equations.
+**Version:** 2.3.0
+**Schema:** 2
+**Calibration:** `source-scenario-2026-08-28`
+**Legal ruleset:** `pl-pzp-2026-2027`
+**Status:** deterministic comparison specification, not an empirical estimator
 
-The model compares two lawful designs for the same purchase:
+## 1. Estimand
 
-- **F — formal/sequential:** stronger ex-ante standardisation and competition;
-- **A — adaptive/compliant:** iterative execution within the same policy boundary.
+For one purchase, one legal and governance boundary and two declared
+procurement workflow designs:
 
-For each path `p`:
+`deltaCost = total(formalSequential) - total(adaptiveCompliant)`
 
-`C_p = C_staff + C_admin + days × daily_inaction_cost + selection_loss + duration × annual_amendment_frequency × amendment_cost + TCO_loss + bypass_exposure`.
+The sign is not constrained. Swapping the alternatives must exchange their
+totals, negate the central difference and reverse the outer envelope.
 
-The reported difference is `ΔC = C_F − C_A`. Positive favours the adaptive path;
-negative favours the formal path. No sign is imposed. Selection competition,
-contract rigidity, workflow timing, technology and TCO capture are separate
-inputs. The legacy `PROCESS_RIGIDITY` scalar remains only for compatibility and
-is not a causal coefficient.
+## 2. Context
 
-Every result includes a broad low/central/high scenario range. It is a
-deterministic sensitivity envelope, not a confidence interval. TCO (0% centrally,
-stress-tested to 15%) and
-bypass (1–30%) are assumptions. Szucs and Beuve estimates are transferred only
-to their matching mechanisms with their original population and identification
-caveats.
+The record keeps separate:
 
-Mandatory PZP waiting periods are identical in both paths. The result also reports
-the central daily-cost-of-inaction threshold at which the time advantage changes
-the preferred path.
+- legal and governance boundary;
+- procedure family;
+- purchase archetype;
+- purchase execution channel;
+- system support;
+- initiation date;
+- workflow design for each alternative;
+- contract design for each alternative.
+
+System support is not a proxy for organisational implementation readiness.
+Procedure suitability is a separate non-scored comparison.
+
+## 3. Workflow representation
+
+Each alternative is a directed acyclic graph of steps. A step contains
+predecessors, active days, queue days, role hours, non-labour cost, kind and
+optional locked legal provenance.
+
+For range case `r`:
+
+`finish_r(s) = max(finish_r(p)) + activeDays_r(s) + queueDays_r(s)`
+
+`elapsedDays_r = max(finish_r(s))`
+
+The engine rejects cycles, missing predecessors and changes to legal locks.
+Mandatory PZP waits are resolved from the dated legal context and remain fixed
+and identical in both alternatives.
+
+## 4. Cost functions
+
+For alternative `j` and range case `r`:
+
+`roleCost_j,r = sum(roleHours_j,r x hourlyRate_r)`
+
+`nonLabourCost_j,r = sum(stepNonLabourCost_j,r)`
+
+`delayCost_j,r = elapsedDays_j,r x dailyCostOfInaction_r`
+
+`contractCost_j,r = sum(monetised contract dimensions_j,r)`
+
+`total_j,r = roleCost_j,r + nonLabourCost_j,r + delayCost_j,r + contractCost_j,r`
+
+The central difference uses the two central totals. The reported outer
+envelope is:
+
+`[formal.low - adaptive.high, formal.high - adaptive.low]`
+
+Low, central and high values are declared scenario cases, not confidence
+intervals.
+
+## 5. Contract dimensions in native 2.3
+
+- Competition transfer uses a 2, 6 and 9 per cent stress only when the declared
+  comparison states that competitive access differs.
+- Contract-amendment and TCO differentials start at zero.
+- Informal process bypass is disclosed as non-monetised.
+
+The Szucs study anchors only the bounded competition-transfer stress and does
+not estimate the effect of workflow design in Poland. The other dimensions
+require observed or user-supplied evidence before monetisation.
+
+## 6. Reference scenarios
+
+The registry contains ten scenarios:
+
+1. `fleet_tco_reframing`;
+2. `erp_transformation_discovery`;
+3. `logistics_service_redesign`;
+4. `critical_material_continuity`;
+5. `public_it_open_with_market_consultation`;
+6. `stable_private_standard_service`;
+7. `stable_capex_replacement`;
+8. `discovery_solution_codesign`;
+9. `catalog_calloff_control`;
+10. `mrp_release_control`.
+
+ERP discovery, logistics redesign and public IT with preliminary market
+consultation provide conditions in which iterative problem definition or
+market engagement can have a mechanism. Discovery and co-design can add time
+and role effort because learning is modelled as work. Stable standard service
+provides a condition with no distinct workflow mechanism. Its starting
+scenario separately declares a competition difference. Catalogue call-off and
+MRP release use identical maps and no competition difference as neutral
+controls.
+
+These are illustrative starting points. Economic values, aggregate base-day
+totals and support profiles retained from 2.2.2 are labelled
+`retained_legacy_assumption`. The first five scenarios use new illustrative 2.3
+step order, day allocation and role-hour allocation. Neither class represents
+observed organisational effects.
+
+## 7. Evidence and practitioner boundary
+
+Provenance records distinguish internal illustrative allocations, empirical
+anchors, official cases, practitioner observations and research hypotheses. An official case
+can support the existence of a mechanism without setting its cost or duration.
+
+[Procurement&Beyond episode
+8](https://www.youtube.com/watch?v=5KYUdTLlvvg) may inform interview questions
+and research hypotheses only. It cannot calibrate model values or readiness.
+Bielik may structure market data for review; the deterministic model performs
+the calculation.
+
+## 8. Outputs and diagnostics
+
+The decision record includes metadata, axes, both maps, totals, drivers,
+monetisation coverage, non-monetised dimensions, assumptions, evidence, legal
+provenance and migration status.
+
+Canonical verification covers all ten scenarios, ordered ranges, the delta
+identity, neutral controls, shared legal waits and alternative-swap symmetry.
+The replication package renders deterministic JSON, CSV and Markdown from the
+same registry and engine.
+
+The complete parameter register and legal boundary are in
+[`docs/MODEL_PARAMETERS.md`](../MODEL_PARAMETERS.md).

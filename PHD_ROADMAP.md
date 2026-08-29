@@ -1,138 +1,238 @@
-# ProcuraCost – Ambitious 4–5 Month Research Roadmap (Version A)
+# ProcuraCost: four to five month research and service roadmap
 
-**Goal**: Secure academic supervision (promotor for an external-mode doctorate, *tryb eksternistyczny*) or formal collaboration on a major research project, by approaching a parallel shortlist of 3–5 academics whose work touches procurement economics, TCE, or public administration.
+**Current research baseline:** native model 2.3.0
 
-**Re-baseline (14 July 2026)**: model 1.x materials are archived. Supervisor outreach, the article cycle and any pilot fieldwork must use the model 2.1 foundation; historical v1.x pitches and protocols are not reusable without redesign.
+**Planning horizon:** September 2026 to January 2027
+**Purpose:** prepare a defensible doctoral research package, an auditable
+procurement comparison instrument and a focused approach to potential
+supervisors and research partners.
 
-This roadmap treats ProcuraCost as a potential **hybrid academic-consulting project** with clear scientific contribution.
+## Historical re-baselines
 
----
+- On 14 July 2026, model 1.x materials were moved to the archive and ceased to
+  be active research inputs.
+- On 29 August 2026, model 2.3.0 replaced the 2.2.2 optimiser and maturity
+  framing with two independent procurement workflow maps, a neutral decision
+  record and a separate organisational implementation-readiness self-description.
+- Model 2.2.2 remains reproducible historical provenance. Its scores, path
+  profiles and threshold maps are not model 2.3 parameters.
 
-## Core Thesis (to be refined)
+## Research proposition
 
-**"The relative cost of formal/sequential and adaptive/compliant procurement paths is conditional on competition, contract design, delay, coordination and governance risk; separating policy boundaries from path design makes those trade-offs measurable and testable."**
+ProcuraCost asks how two lawful procurement workflow designs differ in elapsed
+time, internal effort, non-labour process cost, delay exposure and the
+monetised part of contract economics when the legal and governance boundary is
+held constant.
 
-Key extensions:
-- Explicit incorporation of **Direct vs Indirect** spend
-- Explicit incorporation of **Upstream vs Downstream** process phases
-- Behavioral and organizational mechanisms (bypass, compliance theater)
+The model does not assume that an adaptive/compliant workflow is cheaper or
+faster. It tests a signed difference:
 
----
+`deltaCost = formalSequential.total - adaptiveCompliant.total`
 
-## 4–5 Month Phased Plan
+Swapping the alternatives reverses the sign. Mandatory legal waits remain
+locked and identical in both alternatives. Declared low, central and high
+values are scenario ranges, not confidence intervals.
 
-### Phase 1: Foundations (Weeks 1–4) – "Make the model defensible"
+## Where adaptive work has a mechanism
 
-**Objective**: Every parameter in the model has a clear, documented source or explicit assumption.
+The research should distinguish a plausible mechanism from a preferred label.
 
-**Key Deliverables**:
-- [ ] Complete **Parameter Documentation Table** (Excel + Markdown)
-  - For each parameter: Name, Value, Source (paper + page), Type (Empirical / Calibrated / Assumption), Sensitivity, Justification
-- [ ] Full technical appendix describing the seven cost dimensions and their functional forms
-- [ ] Clear separation of:
-  - Parameters taken directly from literature (with citations)
-  - Parameters calibrated from multiple studies
-  - Pure modeling assumptions
-- [ ] Public GitHub repository with clean code + documentation (at minimum the core calculation logic)
+- ERP transformation discovery can use early problem framing and modular
+  contracting when the requirement is incomplete.
+- Logistics service redesign can use market interaction to test service levels,
+  data interfaces and allocation of operational risk.
+- Public IT procurement can use preliminary market consultation before an open
+  procedure while preserving the same statutory submission and standstill
+  periods in both compared designs.
+- Discovery and solution co-design can add calendar time and staff effort when
+  learning, re-scoping and supplier dialogue are themselves necessary work.
 
-**App Changes**:
-- Create new page/section: `/model` or `/assumptions` with interactive parameter explorer (user can see and modify key assumptions)
-- Add "Source" tooltips throughout the calculator
+These are conditions to test. Official cases support the existence of the
+mechanisms, not ProcuraCost effect sizes or a general recommendation.
 
----
+## Where adaptive work adds no distinct workflow mechanism
 
-### Phase 2: Conceptual Strengthening (Weeks 3–6)
+- A stable standard service can have the same relevant work in both
+  alternatives.
+- A catalogue call-off can use identical maps once the framework and catalogue
+  are already established.
+- An MRP release can use identical maps when the release follows an existing
+  agreement and approved material master data.
 
-**Objective**: Stronger theoretical grounding and clearer contribution.
+The catalogue and MRP scenarios are neutral controls. Equal maps produce no
+added modelled value for either alternative. The stable-service starting
+scenario separately declares a competition difference, so it is not a neutral
+cost control even though its workflow maps are identical.
 
-**Key Deliverables**:
-- [ ] Expanded literature review section (add more on TCE, behavioral procurement, information systems in governance)
-- [ ] Formal propositions / hypotheses (3–5)
-- [ ] Clear positioning: "This paper contributes to X, Y, Z literatures by..."
-- [ ] Refined "Tunnel vs Field" model with the new Direct/Indirect + Upstream/Downstream dimensions
+## Workstreams
 
-**App Changes**:
-- Update the research paper viewer and methodology page to reflect the new framing
-- Add a short "Theoretical Framework" interactive diagram
+### 1. Quantitative contract and replication
 
----
+**Objective:** maintain one traceable contract between source assumptions,
+calculation, diagnostics and publication.
 
-### Phase 3: Empirical Validation Strategy (Weeks 5–10) – **Most Critical**
+Deliverables:
 
-This is the part the professor cares about most.
+- [x] native schema metadata and ten canonical scenarios;
+- [x] directed acyclic process maps with locked legal waits;
+- [x] neutral decision records and alternative-swap diagnostics;
+- [x] deterministic JSON, CSV and Markdown replication artefacts;
+- [ ] independent review of retained aggregate-day, role-rate, support-cost and
+  daily-cost assumptions, and of illustrative step and role-hour allocations;
+- [ ] a versioned procedure for replacing retained assumptions with observed
+  organisational data without fitting the sign of the result.
 
-**Key Deliverables**:
-- [ ] Detailed **Empirical Validation Plan** (10–15 pages)
-  - Research design options (multiple possible paths):
-    - Option A: Multi-case study (4–6 organizations, mixed methods)
-    - Option B: Survey + archival data (target n=150–300 procurement professionals + matched financial data)
-    - Option C: Difference-in-differences or synthetic control using regulatory changes
-  - Specific hypotheses linked to the model
-  - Data collection instruments (draft survey + interview protocol)
-  - Identification strategy and limitations
-  - Power calculations / minimum detectable effects (where relevant)
-- [ ] Short "Pilot Validation Proposal" (3–4 pages) that could be sent to potential partner companies or used for small grant application
+Acceptance evidence:
 
-**App Changes** (very high signal):
-- Add a new section: **"Validation & Next Steps"**
-  - Publicly show the validation plan
-  - Allow interested organizations to express interest (simple form)
-  - Possibly a "Contribute Data" section (anonymized)
+- all metadata agree across calculation and exports;
+- the delta identity and swap symmetry pass for all ten scenarios;
+- catalogue and MRP controls remain neutral when their maps are identical;
+- unsupported legal contexts fail closed.
 
----
+### 2. Empirical design
 
-### Phase 4: Tool as Research Infrastructure (Weeks 8–14)
+**Objective:** estimate component mechanisms before attempting any net-cost
+claim.
 
-**Objective**: Turn the calculator from a demonstration tool into a proper research instrument.
+Deliverables:
 
-**Key Deliverables**:
-- [x] Versioned model 2.1 with frozen, generated replication outputs
-- [ ] Export functionality for researchers (full parameter set + results in structured format)
-- [ ] Optional: Simple "Research Mode" that logs (anonymized) inputs for future validation studies (with clear consent)
-- [ ] Public technical documentation (how the model works, all formulas)
+- [ ] freeze the ex ante coding protocol for workflow design;
+- [ ] finalise outcome definitions for cycle time, role effort, valid bids,
+  amendment incidence and observed process bypass;
+- [ ] preregister the primary estimand, exclusion rules, missing-data treatment
+  and minimum substantively important effect;
+- [ ] complete a feasibility pilot before fixing any main-study sample target;
+- [ ] obtain an ethics and data-governance review appropriate to organisational
+  procurement records;
+- [ ] specify a held-out validation design for any later comparison of predicted
+  and observed component costs.
 
-**App Changes**:
-- Add "Researcher Tools" section
-- Improve PDF export to include full parameter traceability
-- Add data export (JSON/CSV) of current scenario with all parameters
+The empirical protocol may study an ex ante prescriptiveness index as a
+research exposure. That index is not a model 2.3 input and must not be presented
+as a score generated by the service.
 
----
+### 3. Publication cycle
 
-### Phase 5: Positioning & Outreach (Months 4–5)
+**Objective:** keep the conceptual, quantitative and empirical papers aligned
+without overstating a shared result.
 
-**Objective**: Have a coherent story for academics and potential supervisors.
+Deliverables:
 
-**Key Deliverables**:
-- [ ] Updated full working paper (target 12–18 pages + appendices)
-- [ ] 3–4 page "Research Agenda" document specifically for potential supervisors
-- [ ] Short pitch deck (8–10 slides) for academic audiences
-- [ ] List of 8–12 potential supervisors / co-authors / partner institutions (with rationale)
+- [ ] Article 1: conditional theory of lawful workflow design;
+- [ ] Article 2: technical specification, evidence boundaries and diagnostics
+  for model 2.3;
+- [ ] Article 3: empirical identification plan for component mechanisms;
+- [ ] one practitioner article translating the distinction into procurement
+  decisions without turning it into sales guidance;
+- [ ] one common reference and terminology audit before circulation.
 
----
+Every draft must separate empirical anchors, official cases, practitioner
+observations, illustrative scenarios, research hypotheses and retained
+assumptions.
 
-## Success Criteria for Version A (End of Month 5)
+### 4. Service development as research infrastructure
 
-By the end of this period you should be able to credibly say:
+**Objective:** make the public service useful for structured comparison while
+protecting the research boundary.
 
-1. "Here is a complete, documented model with transparent assumptions."
-2. "Here is a rigorous plan for empirical validation (with multiple feasible paths)."
-3. "Here is working, versioned, open-source software that implements the model."
-4. "Here is a working paper that positions the contribution clearly."
+Deliverables:
 
-This package is what most serious academics are asking for.
+- [x] editable two-lane procurement process rail;
+- [x] visible legal locks, range provenance and non-monetised dimensions;
+- [x] suitability comparison without winner, score or recommendation;
+- [x] independent implementation-readiness self-description without points or
+  thresholds;
+- [x] bilingual practitioner page for Procurement&Beyond episode 8;
+- [ ] moderated usability sessions with procurement practitioners and business
+  requestors;
+- [ ] documented accessibility review at mobile and desktop widths;
+- [ ] a research-data option only after purpose, consent, minimisation,
+  retention and access controls are approved.
 
----
+Bielik or another language model may structure market data for review. The
+transparent deterministic model performs the calculation. No language-model
+output should enter a result without human confirmation and recorded
+provenance.
 
-## Immediate Next Actions (Model 2.1)
+### 5. Supervision and research partnerships
 
-1. Review the three-article cycle against the binding 2.1 foundation; do not restore
-   or rename archived 1.x drafts.
-2. Design a new empirical protocol that separately measures workflow,
-   competition and contractual rigidity before collecting data.
-3. Review the central calibration profiles with domain experts without fitting
-   them to a preferred sign.
-4. Freeze a publication snapshot only after the article text, generated
-   replication outputs and public calculator agree.
+**Objective:** seek methodological supervision and feasible access to data, not
+endorsement of a finished result.
 
-Historical action plans, surveys and pitch templates are available under
+Deliverables:
+
+- [ ] identify a short list of academics covering procurement economics,
+  public administration, transaction-cost economics or information systems;
+- [ ] send a concise one-page research proposition and evidence-integrity note;
+- [ ] use the first meetings to decide the primary empirical contribution and
+  feasible identification strategy;
+- [ ] approach organisations only with a bounded data request and no promise of
+  a favourable comparison;
+- [ ] record decisions, objections and revisions in the supervisor pack.
+
+## Sequence and review gates
+
+### Weeks 1 to 4: specification and measurement
+
+1. Freeze the model 2.3 documentation set.
+2. Complete the parameter-to-source register.
+3. Review the empirical codebook against actual procurement records available
+   to prospective partners.
+4. Prepare the supervisor one-pager and decisions list.
+
+**Gate:** no pilot recruitment until the exposure, outcomes and data boundary
+can be explained without reference to a preferred sign.
+
+### Weeks 5 to 8: feasibility pilot
+
+1. Test whether process maps can be reconstructed consistently from records.
+2. Assess inter-rater agreement for the ex ante coding protocol.
+3. Check availability and quality of dates, role effort, competition and
+   amendment data.
+4. Revise the study design from observed feasibility, not from scenario
+   results.
+
+**Gate:** a written feasibility decision identifies which estimand and design
+remain supportable.
+
+### Weeks 9 to 12: preregistration and working papers
+
+1. Freeze the primary specification and falsification tests.
+2. Reconcile all three articles with the empirical plan.
+3. Generate a clean replication snapshot.
+4. Circulate the technical paper and evidence note for review.
+
+**Gate:** source code, replication artefacts and published formulas agree.
+
+### Weeks 13 to 18: partnership and study launch decision
+
+1. Finalise data-sharing, ethics and governance arrangements.
+2. Confirm the study population and analysis route.
+3. Prepare the research-partner briefing and fieldwork materials.
+4. Make a documented launch, revise or stop decision.
+
+## Use of practitioner material
+
+[Procurement&Beyond episode 8](https://www.youtube.com/watch?v=5KYUdTLlvvg)
+raises questions about internal ownership, process friction, requirements
+discipline, operational purchasing, policy simplification, TCO and bounded use
+of AI. It is a practitioner interview based on automatically generated Polish
+captions. It may inform interview prompts and research hypotheses only. It does
+not calibrate workflow duration, cost, competition effects, readiness responses or
+any decision threshold.
+
+## End-of-horizon decision standard
+
+At the end of the planning horizon the project should be assessed on evidence,
+not output volume:
+
+1. Is the quantitative contract internally consistent and reproducible?
+2. Can the primary empirical exposure and outcome be observed without
+   post-treatment leakage?
+3. Is there a feasible and ethically governed route to data?
+4. Do the papers state what the current instrument can and cannot establish?
+5. Has a potential supervisor or partner identified a credible next research
+   decision?
+
+Historical plans and model 1.x instruments remain under
 `docs/archive/model-1.x/` for provenance only.

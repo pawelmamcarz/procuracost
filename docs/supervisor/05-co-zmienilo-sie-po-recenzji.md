@@ -4,36 +4,52 @@
 **Stan na:** 26 lipca 2026 · model 2.2.2
 **Poprzednia recenzja dotyczyła:** modelu 1.x (czerwiec 2026)
 
+> **Addendum, 29 sierpnia 2026:** dalsza część tej noty jest chronologicznym
+> zapisem audytu modelu 2.2.2 i nie została mechanicznie przepisana na 2.3.
+> Aktywny model 2.3.0 zastępuje optymalizator dwiema niezależnymi mapami
+> przebiegu, neutralnym rekordem decyzji i osobnym samoopisem warunków
+> wdrożenia. Aneksy i TCO mają zerowe różnice startowe, nieformalne
+> obejście procesu nie jest monetyzowane, a przeniesione wartości pozostają
+> jawnie oznaczonymi założeniami historycznymi. Dziesięć scenariuszy obejmuje
+> także neutralne
+> kontrole katalogu i MRP oraz odkrywanie, które może zwiększać czas i nakład.
+> Bieżący opis znajduje się w `docs/MODEL_PARAMETERS.md` oraz
+> `docs/articles/doktorat/00-shared-foundation.md`. Procurement&Beyond odcinek
+> 8 jest źródłem pytań i hipotez, nie kalibracji. Audyt 2.3 wykazał również, że
+> opisana niżej korekta wyniku Szucsa z 28% na 10% była błędna; aktualne
+> sprostowanie znajduje się w punkcie 2.1.
+
 Ta nota istnieje po to, żeby nie musiał Pan rekonstruować historii zmian z repozytorium.
 Opisuje trzy rzeczy: co wynikło z Pana uwag, co się z tym stało, i co zostało znalezione
-później — w tym błędy, które sam projekt wprowadził, korygując poprzednie.
+później, w tym błędy wprowadzone podczas korygowania poprzednich wersji.
 
 ---
 
-## 1. Pana uwaga i jej los
+## 1. Uwagi z poprzedniej recenzji i ich obsługa
 
 Z Pana recenzji modelu 1.x wynikło rozróżnienie **Direct/Indirect × Upstream/Downstream** —
 uznanie, że model nie może traktować wszystkich zakupów jednakowo. Wprowadzono je w wydaniu
 2026.19.3.0 z jawną atrybucją w changelogu.
 
-**Co się z tym stało — bez upiększeń:**
+**Stan po zmianach:**
 
 1. **Model 2.0/2.1 uprościł ten wymiar do trzech mnożników pracy i dwóch mnożników
    koordynacji.** Powód był merytoryczny: pierwotna implementacja miała szczegółowe profile
    ról i nakładające się kompresje czasu, które sugerowały precyzję niemającą pokrycia
    w żadnych danych. Uproszczenie było moim zdaniem słuszne.
-2. **Atrybucja została przy tym skasowana.** Wpis changeloga wskazujący Pana recenzję jako
+2. **Atrybucja została przy tym usunięta.** Wpis changeloga wskazujący Pana recenzję jako
    źródło zniknął wraz ze skróceniem pliku w commicie `78d98c1`. To nie było celowe, ale
    efekt jest taki, że w korpusie 2.1 Pana wkład nie występuje. Przywracam to tutaj.
-3. **Co gorsza — wymiar był w 2.1 w dużej mierze martwy.** Z siedmiu mnożników kontekstowych
+3. **Dodatkowo wymiar był w 2.1 w dużej mierze nieaktywny.** Z siedmiu mnożników kontekstowych
    **pięć było zaszytych na wartość 1**. Kontekst realnie dotykał tylko godzin pracy
    i kosztu koordynacji. Cztery z siedmiu wymiarów modelu nie miały żadnej wrażliwości
    kontekstowej, a API i tabela parametrów sugerowały, że mają. Kombinacja
    `direct + downstream` dawała na czasie ×0,99, czyli efekt zerowy.
 
-**Co zrobiłem w 2.2:** usunąłem pięć martwych mnożników zamiast zostawiać je jako fasadę,
-i zapisałem wprost w `docs/MODEL_PARAMETERS.md`, których wymiarów kontekst **nie** dotyczy.
-Ożywienie któregokolwiek z nich wymaga argumentu o konkretnym mechanizmie, a nie stałej.
+**Zmiana w 2.2:** usunąłem pięć nieaktywnych mnożników zamiast pozostawiać
+pozornie aktywne parametry i zapisałem wprost w `docs/MODEL_PARAMETERS.md`,
+których wymiarów kontekst **nie** dotyczy.
+Ponowne wprowadzenie któregokolwiek z nich wymaga argumentu o konkretnym mechanizmie, a nie stałej.
 
 Jeżeli uzna Pan, że kontekst powinien sięgać dalej — w szczególności do częstości aneksów
 i do ekspozycji na obejścia, gdzie istnieje argument merytoryczny — to jest to decyzja
@@ -43,23 +59,23 @@ do podjęcia z Panem, a nie do zaszycia w kodzie.
 
 ## 2. Błędy, które projekt sam wprowadził
 
-Model 2.1 był deklarowany jako korekta konfabulacji z 1.x. Audyt przeprowadzony przed tą
-recenzją pokazał, że **przy okazji wprowadził nowe**. Podaję je, bo uznaję, że recenzent
+Model 2.1 był deklarowany jako korekta nieudokumentowanych twierdzeń z 1.x. Audyt
+przeprowadzony przed tą recenzją pokazał, że **wprowadził również nowe błędy**. Podaję je, bo uznaję, że recenzent
 powinien je dostać od autora, a nie znaleźć sam.
 
-### 2.1. Efekt produktywności u Szucsa: 28% zamiast 10%
+### 2.1. Błędna korekta wyniku Szucsa z 28% na 10%
 
 Model 2.1 podawał, że dyskrecja prowadzi do wyboru wykonawców o **28% niższej
-produktywności**, i dodatkowo twierdził, że wcześniejsza wartość „około 10%" była błędem.
+produktywności**. To odczytanie było prawidłowe. W modelu 2.2 zmieniono je na
+10% i błędnie przypisano 28 punktów procentowych prawdopodobieństwu wygranej
+firmy powiązanej politycznie.
 
-Było odwrotnie. Estymaty strukturalne Szucsa to **6% ceny i 10% produktywności**. Liczba 28
-występuje w tej pracy, ale dotyczy zupełnie czego innego — wzrostu o 28 punktów procentowych
-szansy wygranej firm powiązanych politycznie. Nieprawidłowa liczba trafiła do dokumentu
-wiążącego cykl doktorski, do tabeli parametrów, do working papera, do README, na trzy strony
-publiczne i do żywych ciągów eksportu.
-
-Poprawione we wszystkich lokalizacjach; `CHANGELOG.md` odnotowuje, że źródłem błędu było
-wydanie 2.1.
+Wyniki strukturalne Szucsa wskazują około **6% wyższą cenę**, wybór wykonawców
+o **28% niższej produktywności** oraz wzrost prawdopodobieństwa wygranej firmy
+powiązanej z prawicą o około **11 punktów procentowych**. Model 2.3 przywraca tę
+interpretację we wszystkich aktywnych materiałach. Rachunek modelu 2.3 się nie
+zmienia, ponieważ monetyzuje wyłącznie jawny zakres stresowy 2%, 6% i 9% dla
+kanału cenowego.
 
 ### 2.2. Kotwica „OECD", której nie ma
 
@@ -84,14 +100,14 @@ Atrybucja usunięta.
 Estymata 0,077–0,105 dotyczy jednoczesnego wzrostu o jedno odchylenie standardowe
 **w każdej** z siedmiu kategorii sztywności. Kilka dokumentów 2.1 gubiło słowo „każdej",
 zamieniając siedmiokategoryjne przesunięcie na jedno. Dodatkowo model mnoży ten współczynnik
-przez profil 0–1, który nie jest z-score — czyli po cichu utożsamia „profil = 1,0"
+przez profil 0–1, który nie jest z-score, czyli niejawnie utożsamia „profil = 1,0"
 z przesunięciem, którego autorzy nie mierzyli.
 
 Współczynnik przeklasyfikowany z kotwicy empirycznej na **założenie kalibracyjne z zewnętrzną
 kotwicą rzędu wielkości**. Zapisane też, że interpretowalna jest wyłącznie różnica między
 ścieżkami, nie poziom.
 
-### 2.5. „Sanity-check", którego nie było
+### 2.5. Deklarowane porównanie kontrolne, którego nie wykonano
 
 Badanie EC (2011) było opisywane jako zewnętrzna kontrola zdroworozsądkowa kosztów
 administracyjnych. Żadnego porównania nigdy nie wykonano, żadna liczba z tego badania nie
@@ -114,17 +130,17 @@ W scenariuszu `production` to 1 400 000 z 1 406 145 zł, czyli 99,6%. Nagłówek
 kosztu ścieżki adaptacyjnej" był więc komunikatem o wielkości założenia użytkownika, a nie
 o kosztowności procedury.
 
-**Model 2.2 raportuje ΔC rozbite na trzy kubełki** o różnej bazie czasowej i różnym statusie
+**Model 2.2 raportuje ΔC rozbite na trzy składniki** o różnej bazie czasowej i różnym statusie
 dowodowym: proces, opóźnienie, cykl życia. Kanał opóźnienia jest jawnie oznaczony jako
 tożsamość rachunkowa.
 
-Skutek jest ciekawszy, niż się spodziewałem: **po odjęciu tożsamości opóźnienia ścieżka
+Po rozłożeniu wyniku okazało się, że **po odjęciu tożsamości opóźnienia ścieżka
 formalna jest tańsza na koszcie procesu w 7 z 10 scenariuszy wbudowanych.** Teza Tunnel–Field
 w tej parametryzacji jest opowieścią o zwłoce, nie o koszcie procesu. To twierdzenie węższe,
 ale sprawdzalne — i odwrotne do tego, co sugerował nagłówek 2.1.
 
 Powiązany defekt: **próg kosztu dnia bezczynności**, który był w pakiecie 2.1 przedstawiany
-Panu jako funkcja modelu, zwracał 0 w siedmiu scenariuszach i `null` w trzech. Nigdy nie
+w materiałach jako funkcja modelu, zwracał 0 w siedmiu scenariuszach i `null` w trzech. Nigdy nie
 zwrócił informatywnej wartości dodatniej, bo był ucinany przez `Math.max(0, …)`. Ucięcie
 usunięte; próg raportuje teraz wartość surową wraz ze statusem.
 
@@ -159,7 +175,7 @@ osłabia. Test może teraz zawieść w obie strony.
 
 Drugi, poważniejszy problem: przedział zmieniał **pięć skalarów z literatury**, a trzymał
 nieruchomo **koszt dnia bezczynności i czasy etapów** — czyli dokładnie te dwa wejścia, które
-niosą 80–99% wyniku. Model raportował najwęższą niepewność tam, gdzie jest najsłabszy.
+niosą 80–99% wyniku. Model raportował najwęższy zakres tam, gdzie podstawa wartości była najmniej pewna.
 
 Model 2.2.1 dokłada **oś strukturalną**: koszt dnia ×0,25 … ×4, czasy etapów nieobowiązkowych
 ×0,7 … ×1,3. Ustawowe terminy PZP pozostają nienaruszone w obu osiach. Obie osie są
@@ -178,14 +194,14 @@ z różnicą dni niesie ją strukturalna.
 ścieżki.** Obie liczby odporności spadły, nie tylko jedna — przedział jest szerszy uczciwie,
 a nie przechylony.
 
-Zdaję sobie sprawę, że to najsłabsze twierdzenie, jakie ten projekt kiedykolwiek postawił.
-Uważam je za mocniejsze pozycyjnie niż poprzednie: pytanie przestaje brzmieć „czy Pan
-przesadził", a zaczyna „co trzeba zmierzyć, żeby model rozstrzygał" — i na to odpowiada
+Jest to twierdzenie węższe niż w poprzednich wersjach, ale lepiej odpowiada granicom
+dostępnych danych. Pytanie badawcze dotyczy teraz wielkości, które trzeba zmierzyć,
+aby model mógł rozstrzygać; odpowiada na nie
 `EMPIRICAL_VALIDATION_PLAN.md`.
 
 Mnożniki ×0,25–×4 i ×0,7–×1,3 są jawnymi sądami o tym, jak bardzo można się mylić co do
-niezmierzonego wejścia, a nie przedziałami estymowanymi. To jedyne miejsce, w którym ta
-konstrukcja jest podatna na zarzut, i wolę je wskazać sam.
+niezmierzonego wejścia, a nie przedziałami estymowanymi. To główne miejsce, w którym
+konstrukcja wymaga uzasadnienia eksperckiego zamiast oszacowania.
 
 ---
 
@@ -216,7 +232,7 @@ poważniejsze niż nieścisłość akademicka:
    klasycznych. Sektorowa spółka wodociągowa kupująca dostawy za 500 tys. zł dostawała
    informację, że stosuje art. 275, podczas gdy PZP w ogóle jej nie dotyczyło.
 
-Pierwszy błąd poprawiony, drugi rozwiązany przez **odmowę doradzenia** zamiast zgadywania.
+Pierwszy błąd poprawiono, a drugi rozwiązano przez **odmowę doradzenia** zamiast nieudokumentowanego wnioskowania.
 Oba mają testy regresyjne. Dodatkowo narzędzie ujawnia teraz, które legalne tryby jego filtr
 pomija i dlaczego — bo użytkownik, który dostaje obcięty zbiór wyboru bez informacji o tym,
 może zrezygnować z trybu dopuszczalnego przez prawo.
@@ -226,19 +242,20 @@ może zrezygnować z trybu dopuszczalnego przez prawo.
 ## 5a. Audyt kalibracji (2.2.2)
 
 Po rozstrzygnięciu kwestii konstrukcyjnych każde założenie liczbowe modelu zostało
-sprawdzone wobec zewnętrznego benchmarku, z przeciwstawną weryfikacją każdego zarzutu
+sprawdzone wobec zewnętrznego punktu odniesienia, z przeciwstawną weryfikacją każdego zarzutu
 (`docs/research/CALIBRATION_BENCHMARKS.md`). Najważniejsze:
 
-- **Check EC 2011, którego poprzednie wersje tylko obiecywały, został wykonany — i model
-  go przechodzi** (23,8 osobodnia na postępowanie UE vs mediana 22 / średnia 36).
-- Szablony dni są o 25–50% SZYBSZE niż średnie UZP — konserwatywne odchylenie przeciwko
+- **Wykonano porównanie z EC 2011, którego poprzednie wersje nie dokumentowały;
+  model mieści się w zakresie odniesienia** (23,8 osobodnia na postępowanie UE
+  wobec mediany 22 i średniej 36).
+- Szablony dni są o 25–50% szybsze niż średnie UZP. Jest to konserwatywne odchylenie przeciwko
   własnej tezie modelu, teraz jawnie opisane.
 - **Pięć wartości kosztu dnia bezczynności nie miało obronialnego wyprowadzenia**
-  i zostało przeliczonych z jawnych formuł (m.in. logistics 20 000 → 1 800; domyślny
-  seed kalkulatora 10 000 → 500). Po rekalibracji delta logistics spadła z 417k do 53k.
+  i zostało przeliczonych z jawnych formuł (m.in. logistics 20 000 → 1 800; domyślne
+  wejście kalkulatora 10 000 → 500). Po rekalibracji delta logistics spadła z 417k do 53k.
 - Drabina kontroli obejść zawężona z 15× do 3× (kotwica Hackett), koszt narzędzia
   rozdzielony na strategiczny i operacyjny (2 000 zł za pojedyncze PO było 30–100×
-  ponad benchmark APQC), etykieta stopy dyskontowej poprawiona (4% = stopa finansowa
+  ponad punkt odniesienia APQC), etykieta stopy dyskontowej poprawiona (4% = stopa finansowa
   MFiPR, nie społeczna).
 
 Skutek zbiorczy: przy uczciwych wejściach **wszystkie 10 scenariuszy wbudowanych

@@ -1,157 +1,57 @@
 "use client";
 
-import {
-  ComparisonResult,
-  ProcurementInputs,
-  COST_DIMENSION_KEYS,
-} from "@/lib/calculations";
-import { Scenario } from "@/lib/scenarios";
-import { researchExportT, dimensionMultiplierLabelsT, Lang } from "@/lib/i18n";
-import { downloadTextFile, isoDateStamp } from "@/lib/research-export";
-import { MODEL_VERSION, VERSION } from "@/lib/version";
+import { Download } from "lucide-react";
 
-interface Props {
-  result: ComparisonResult;
-  scenario: Scenario;
-  inputs: ProcurementInputs;
+import {
+  buildResearchDownloadArtifacts,
+  type ResearchDownloadFormat,
+} from "@/components/decision-record/export-actions";
+import { decisionRecordT, type Lang } from "@/lib/i18n";
+import type { DecisionRecordV2 } from "@/lib/model-v2";
+import { downloadTextFile } from "@/lib/research-export";
+
+export interface ResearchExportBarProps {
   lang: Lang;
+  record: DecisionRecordV2;
 }
 
-export default function ResearchExportBar({ result, scenario, inputs, lang }: Props) {
-  const tx = researchExportT[lang];
-  const {
-    rigid,
-    flexible,
-    delta,
-    deltaPercent,
-    bypassProbability,
-    flexibleBypassProbability,
-    rigidDays,
-    flexibleDays,
-    trace,
-    sources,
-    uncertainty,
-    decisionThreshold,
-  } = result;
-
-  const baseName = `procura-cost-research-${scenario.id || "scenario"}-${isoDateStamp()}`;
-
-  const handleJsonExport = () => {
-    const payload = {
-      meta: {
-        model: "ProcuraCost",
-        modelVersion: MODEL_VERSION,
-        appVersion: VERSION,
-        exportedAt: new Date().toISOString(),
-        note: tx.jsonNote,
-      },
-      inputs,
-      context: { spendType: inputs.spendType, processPhase: inputs.processPhase },
-      multipliers: trace.multiplierDetails,
-      results: {
-        rigidDays,
-        flexibleDays,
-        bypassProbability,
-        flexibleBypassProbability,
-        delta,
-        deltaPercent,
-        deltaPercentBasis: "adaptive_modeled_total",
-        uncertainty,
-        decisionThreshold,
-        rigid,
-        flexible,
-        trace,
-      },
-      sources,
-    };
-    downloadTextFile(`${baseName}.json`, JSON.stringify(payload, null, 2), "application/json");
+export default function ResearchExportBar({
+  lang,
+  record,
+}: ResearchExportBarProps) {
+  const tx = decisionRecordT[lang].actions;
+  const labels: Record<ResearchDownloadFormat, string> = {
+    json: tx.downloadJson,
+    csv: tx.downloadCsv,
+    markdown: tx.downloadMarkdown,
   };
 
-  const handleCsvExport = () => {
-    const lines = [
-      "Metric,Rigid,Flexible",
-      `Days,${rigidDays},${flexibleDays}`,
-      `BypassProbability,${bypassProbability.toFixed(4)},${flexibleBypassProbability.toFixed(4)}`,
-      `RenegotiationAnnualFrequency,${trace.renegotiation.annualFrequencyRigid.toFixed(4)},${trace.renegotiation.annualFrequencyFlexible.toFixed(4)}`,
-      `ExpectedFormalAmendments,${trace.renegotiation.expectedCountRigid.toFixed(4)},${trace.renegotiation.expectedCountFlexible.toFixed(4)}`,
-      ...COST_DIMENSION_KEYS.map(
-        (k) => `${k},${trace.dimensions[k].rigid.toFixed(2)},${trace.dimensions[k].flexible.toFixed(2)}`,
-      ),
-      `TotalPLN,${rigid.total.toFixed(2)},${flexible.total.toFixed(2)}`,
-      `DeltaPLN,${delta.toFixed(2)},`,
-      `DeltaPercentOfAdaptiveModeledTotal,${deltaPercent.toFixed(2)},`,
-      `ScenarioLowDeltaPLN,${uncertainty.lowDelta.toFixed(2)},`,
-      `ScenarioHighDeltaPLN,${uncertainty.highDelta.toFixed(2)},`,
-      `ScenarioRangeCrossesZero,${uncertainty.crossesZero},`,
-      `BreakEvenDailyCostOfInactionPLN,${decisionThreshold.breakEvenDailyCostOfInaction ?? "not-applicable"},`,
-      "",
-      "Multiplier,Value",
-      ...Object.entries(trace.multipliers).map(([k, v]) => `${k},${v.toFixed(4)}`),
-      `modelVersion,${MODEL_VERSION}`,
-    ];
-    downloadTextFile(`${baseName}.csv`, lines.join("\n"), "text/csv");
-  };
-
-  const handleMarkdownExport = () => {
-    const md = [
-      `### ${scenario.name} (${inputs.spendType || "—"} / ${inputs.processPhase || "—"})`,
-      ``,
-      `**Model**: ${MODEL_VERSION} | App build: ${VERSION} | Exported: ${new Date().toISOString()}`,
-      ``,
-      `| Metric | Rigid | Flexible |`,
-      `|--------|-------|----------|`,
-      `| Days | ${rigidDays} | ${flexibleDays} |`,
-      `| Bypass prob. | ${(bypassProbability * 100).toFixed(1)}% | ${(flexibleBypassProbability * 100).toFixed(1)}% |`,
-      `| Formal amendments / contract-year | ${trace.renegotiation.annualFrequencyRigid.toFixed(3)} | ${trace.renegotiation.annualFrequencyFlexible.toFixed(3)} |`,
-      `| Expected formal amendments | ${trace.renegotiation.expectedCountRigid.toFixed(2)} | ${trace.renegotiation.expectedCountFlexible.toFixed(2)} |`,
-      `| Total (PLN) | ${Math.round(rigid.total).toLocaleString("pl-PL")} | ${Math.round(flexible.total).toLocaleString("pl-PL")} |`,
-      `| Δ | ${Math.round(delta).toLocaleString("pl-PL")} (${deltaPercent.toFixed(1)}% of adaptive modeled total) | — |`,
-      `| Scenario range Δ | ${Math.round(uncertainty.lowDelta).toLocaleString("pl-PL")} to ${Math.round(uncertainty.highDelta).toLocaleString("pl-PL")} | crosses zero: ${uncertainty.crossesZero} |`,
-      `| Break-even daily inaction cost | ${decisionThreshold.breakEvenDailyCostOfInaction === null ? "not applicable" : Math.round(decisionThreshold.breakEvenDailyCostOfInaction).toLocaleString("pl-PL") + " PLN/day"} | central scenario |`,
-      ``,
-      `| Dimension | Rigid (PLN) | Flexible (PLN) |`,
-      `|-----------|-------------|----------------|`,
-      ...COST_DIMENSION_KEYS.map(
-        (k) =>
-          `| ${k} | ${Math.round(trace.dimensions[k].rigid).toLocaleString("pl-PL")} | ${Math.round(trace.dimensions[k].flexible).toLocaleString("pl-PL")} |`,
-      ),
-      ``,
-      `**Multipliers**: ${
-        trace.multiplierDetails.length > 0
-          ? trace.multiplierDetails.map((d) => `${dimensionMultiplierLabelsT.en[d.key]} ${d.value.toFixed(2)}x`).join(" • ")
-          : "neutral context (all 1.00x)"
-      }`,
-      ``,
-      `_${tx.jsonNote}_`,
-    ].join("\n");
-    downloadTextFile(`${baseName}.md`, md, "text/markdown");
-  };
+  function download(format: ResearchDownloadFormat) {
+    const exportedAt = new Date().toISOString();
+    const artifact = buildResearchDownloadArtifacts(record, lang, exportedAt).find(
+      (candidate) => candidate.format === format
+    );
+    if (!artifact) return;
+    downloadTextFile(artifact.filename, artifact.content, artifact.mime);
+  }
 
   return (
-    <div className="flex flex-wrap items-center gap-2 print:hidden">
-      <span className="mr-1 text-xs text-gray-500">{tx.forPaper}</span>
-      <button
-        onClick={handleJsonExport}
-        title={tx.jsonTitle}
-        className="rounded-lg border border-blue-500 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100"
-      >
-        {tx.exportJson}
-      </button>
-      <button
-        onClick={handleCsvExport}
-        title={tx.csvTitle}
-        className="rounded-lg border border-gray-200 bg-white px-3 py-1 text-xs font-medium text-gray-600 hover:border-gray-300"
-      >
-        {tx.exportCsv}
-      </button>
-      <button
-        onClick={handleMarkdownExport}
-        title={tx.markdownTitle}
-        className="rounded-lg border border-gray-200 bg-white px-3 py-1 text-xs font-medium text-gray-600 hover:border-gray-300"
-      >
-        {tx.exportMarkdown}
-      </button>
-      <span className="text-xs text-gray-400">{tx.liveTraceNote}</span>
+    <div
+      aria-label={tx.researchLabel}
+      className="grid gap-2 sm:grid-cols-3"
+      role="group"
+    >
+      {(["json", "csv", "markdown"] as const).map((format) => (
+        <button
+          key={format}
+          type="button"
+          onClick={() => download(format)}
+          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-800 hover:border-gray-500 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2"
+        >
+          <Download aria-hidden="true" className="h-4 w-4" />
+          {labels[format]}
+        </button>
+      ))}
     </div>
   );
 }

@@ -18,13 +18,11 @@
 // stakeholder rates, 4% discount. The map is legality-aware: pzp_krajowy appears only
 // in its statutory 170k–EU band, pzp_eu only at/above the EU threshold.
 //
-// Run: npm run map. Writes replication/outputs/decision-thresholds.md.
+// Run: npm run map:legacy. Writes the legacy map to standard output only.
 
-import { mkdirSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
 import { calculateCosts, type ProcurementInputs } from "../lib/calculations";
 import type { ProcessType, TechLevelId } from "../lib/process-templates";
-import { MODEL_VERSION } from "../lib/version";
+import { LEGACY_MODEL_VERSION } from "../lib/version";
 
 const STAKE: ProcurementInputs["stakeholders"] = {
   requestor: { count: 1, dailyRate: 900 },
@@ -126,7 +124,7 @@ for (const type of Object.keys(CV_GRID) as Array<Exclude<ProcessType, "custom">>
 const lines: string[] = [];
 const P = (s: string) => { console.log(s); lines.push(s); };
 
-P(`# Mapa progów decyzyjnych (model ${MODEL_VERSION})`);
+P(`# Mapa progów decyzyjnych (archiwalny model ${LEGACY_MODEL_VERSION})`);
 P("");
 P("> Wyniki deterministyczne przy ustandaryzowanych wejściach porównawczych (czas trwania 2 lata,");
 P("> koszt aneksu 4% CV, ekspozycja 10% CV, stawki domyślne, dyskonto 4%). To NIE są scenariusze");
@@ -153,7 +151,4 @@ P("Kategoria odwrócona (discovery, Δdni < 0): ścieżka FORMALNA jest szybsza,
 P("koszt dnia, tym mocniej wygrywa formalna; adaptacja broni się tylko przy taniej zwłoce");
 P("i wysokiej wartości dopasowania (kanał TCO/cyklu życia w wysokim scenariuszu).");
 
-const outDir = resolve(process.cwd(), "replication/outputs");
-mkdirSync(outDir, { recursive: true });
-writeFileSync(resolve(outDir, "decision-thresholds.md"), lines.join("\n") + "\n");
-console.log("\nwritten: replication/outputs/decision-thresholds.md");
+process.stdout.write(`${lines.join("\n")}\n`);

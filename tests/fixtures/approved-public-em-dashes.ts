@@ -61,10 +61,6 @@ export const APPROVED_PUBLIC_EM_DASH_LINES = {
     '{features.spendType === "direct" ? "Direct" : features.spendType === "indirect" ? "Indirect" : "—"} ×{" "}',
     '{features.processPhase === "upstream" ? tx.contextUpstreamLabel : features.processPhase === "downstream" ? tx.contextDownstreamLabel : "—"}',
   ],
-  "components/cost-comparison/ResearchExportBar.tsx": [
-    '`### ${scenario.name} (${inputs.spendType || "—"} / ${inputs.processPhase || "—"})`,',
-    '`| Δ | ${Math.round(delta).toLocaleString("pl-PL")} (${deltaPercent.toFixed(1)}% of adaptive modeled total) | — |`,',
-  ],
   "components/cost-comparison/DetailTable.tsx": [
     '"—"',
   ],

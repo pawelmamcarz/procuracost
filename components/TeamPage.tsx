@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { teamT, type Lang, type TeamCompetency, type TeamRole } from "@/lib/i18n";
 
 type TeamMember = {
@@ -54,63 +56,131 @@ export default function TeamPage({ lang }: { lang: Lang }) {
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-12">
-      <header className="mb-10 rounded-xl border border-gray-100 bg-gray-50 p-6">
-        <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">
-          {t.eyebrow}
+      <header className="mb-12 grid gap-5 border-y border-gray-300 py-8 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] md:gap-10">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-700">
+            {t.eyebrow}
+          </p>
+          <h1 className="mt-3 text-3xl font-bold leading-tight tracking-tight text-gray-900">
+            {t.title}
+          </h1>
+        </div>
+        <p className="max-w-2xl self-end text-sm leading-6 text-gray-700">
+          {t.description}
         </p>
-        <h1 className="text-2xl font-bold leading-tight text-gray-900">{t.title}</h1>
-        <p className="mt-3 max-w-2xl text-sm text-gray-700">{t.description}</p>
       </header>
 
-      <section aria-labelledby="team-people" className="mb-10">
+      <section
+        aria-labelledby="team-people"
+        className="mb-12"
+        data-team-surface="directory"
+      >
         <h2 id="team-people" className="mb-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
           {t.peopleTitle}
         </h2>
-        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="divide-y divide-gray-200 border-y border-gray-300">
           {team.map((member) => (
             <li key={member.name}>
               <a
                 href={member.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block rounded-xl border border-gray-100 bg-gray-50 p-5 transition-colors hover:border-gray-300"
+                className="group grid min-h-24 items-center gap-4 py-5 sm:grid-cols-[3.5rem_minmax(0,1fr)_auto]"
               >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-100 text-sm font-bold text-gray-700">
+                <div
+                  aria-hidden="true"
+                  className="flex h-10 w-10 rotate-45 items-center justify-center border border-blue-500 bg-blue-50"
+                >
+                  <span className="-rotate-45 font-mono text-xs font-bold text-blue-800">
                     {member.initials}
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-gray-900">{member.name}</p>
-                    <p className="text-xs text-gray-500">{t.linkedinLabel}</p>
-                  </div>
+                  </span>
                 </div>
-                <ul className="mt-4 space-y-1 text-xs text-gray-600">
+                <div>
+                  <p className="text-base font-semibold text-gray-900 group-hover:text-blue-700">
+                    {member.name}
+                  </p>
+                  <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-600">
                   {member.roles.map((role) => (
-                    <li key={role}>{t.roles[role]}</li>
+                    <li key={role} className="border-l border-gray-300 pl-2 first:border-l-0 first:pl-0">
+                      {t.roles[role]}
+                    </li>
                   ))}
-                </ul>
+                  </ul>
+                </div>
+                <span className="text-xs font-semibold text-blue-700 underline decoration-blue-200 underline-offset-4 group-hover:decoration-blue-700">
+                  {t.linkedinLabel}
+                </span>
               </a>
             </li>
           ))}
         </ul>
       </section>
 
-      <section aria-labelledby="team-competencies">
+      <section
+        aria-labelledby="team-competencies"
+        data-team-surface="capability-register"
+      >
         <h2 id="team-competencies" className="mb-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
           {t.competenciesTitle}
         </h2>
-        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {competencies.map((competency) => (
-            <li key={competency} className="rounded-xl border border-gray-100 bg-gray-50 p-5">
-              <p className="text-sm font-semibold text-gray-900">
-                {t.competencies[competency].label}
-              </p>
-              <p className="mt-1 text-xs leading-relaxed text-gray-600">
+        <dl className="divide-y divide-gray-200 border-y border-gray-300">
+          {competencies.map((competency, index) => (
+            <div
+              key={competency}
+              className="grid gap-2 py-4 sm:grid-cols-[minmax(13rem,0.8fr)_minmax(0,1.2fr)] sm:items-baseline"
+            >
+              <dt className="grid grid-cols-[3rem_1fr] text-sm font-semibold text-gray-900">
+                <span className="font-mono text-xs font-normal text-gray-400" aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span>{t.competencies[competency].label}</span>
+              </dt>
+              <dd className="text-sm leading-6 text-gray-600">
                 {t.competencies[competency].description}
-              </p>
-            </li>
+              </dd>
+            </div>
           ))}
-        </ul>
+        </dl>
+      </section>
+
+      <section
+        aria-labelledby="team-implementation"
+        className="mt-12 grid gap-5 border-y border-gray-200 py-8 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] md:gap-10"
+      >
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-700">
+            {t.implementation.eyebrow}
+          </p>
+          <h2
+            id="team-implementation"
+            className="mt-2 text-xl font-semibold text-gray-900"
+          >
+            {t.implementation.title}
+          </h2>
+        </div>
+        <div>
+          <p className="text-sm leading-6 text-gray-600">
+            {t.implementation.body}
+          </p>
+          <div className="mt-4 flex flex-wrap gap-x-7 gap-y-2">
+            <Link
+              href={lang === "en" ? "/en/readiness" : "/readiness"}
+              className="min-h-11 border-b border-blue-300 py-3 text-sm font-semibold text-blue-700 hover:border-blue-700"
+            >
+              {t.implementation.readinessAction}
+            </Link>
+            <Link
+              href={
+                lang === "en"
+                  ? "/en/practice/procurement-beyond-8"
+                  : "/practice/procurement-beyond-8"
+              }
+              className="min-h-11 border-b border-blue-300 py-3 text-sm font-semibold text-blue-700 hover:border-blue-700"
+            >
+              {t.implementation.practiceAction}
+            </Link>
+          </div>
+        </div>
       </section>
     </div>
   );
