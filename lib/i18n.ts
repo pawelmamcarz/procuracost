@@ -1817,6 +1817,51 @@ export const researchExportV2T = {
   en: researchExportV2En,
 } as const;
 
+const replicationPackageV2Pl = {
+  title: "Pakiet replikacyjny ProcuraCost 2.3",
+  rangeNote: "Deklarowane zakresy nie są przedziałami ufności.",
+  evidenceNote: "Wyniki deterministyczne nie są estymatami empirycznymi.",
+  sections: {
+    comparison: "Porównanie kosztów",
+    coverageAnchors: "Kotwice zakresu monetyzacji",
+    nonMonetizedDimensions: "Wymiary niemonetyzowane",
+    migrationStatus: "Status migracji",
+    legalProvenance: "Pochodzenie reguł prawnych",
+  },
+  fields: {
+    deltaOperation: "Operacja różnicy",
+    centralDifference: "Centralna różnica kosztu",
+    outerEnvelope: "Zewnętrzny zakres różnicy",
+  },
+  none: "Brak",
+} as const;
+
+type ReplicationPackageV2Shape = LangShape<typeof replicationPackageV2Pl>;
+
+const replicationPackageV2En = {
+  title: "ProcuraCost 2.3 replication package",
+  rangeNote: "Declared ranges are not confidence intervals.",
+  evidenceNote: "Deterministic outputs are not empirical estimates.",
+  sections: {
+    comparison: "Cost comparison",
+    coverageAnchors: "Coverage anchors",
+    nonMonetizedDimensions: "Non-monetised dimensions",
+    migrationStatus: "Migration status",
+    legalProvenance: "Legal provenance",
+  },
+  fields: {
+    deltaOperation: "Difference operation",
+    centralDifference: "Central cost difference",
+    outerEnvelope: "Outer difference range",
+  },
+  none: "None",
+} satisfies ReplicationPackageV2Shape;
+
+export const replicationPackageV2T = {
+  pl: replicationPackageV2Pl,
+  en: replicationPackageV2En,
+} as const;
+
 const pdfExportV2Pl = {
   title: "Rekord decyzji modelu ProcuraCost 2.3",
   pageLabel: (page: number, total: number) => `Strona ${page} z ${total}`,
