@@ -50,6 +50,7 @@ describe("homepage topology graphic", () => {
       expect(svg).toContain('role="img"');
       expect(svg).toContain('viewBox="0 0 760 360"');
       expect(svg).toContain("h-auto w-full max-w-full");
+      expect(svg).toContain("pointer-events-none");
       expect(svg).toContain(`aria-labelledby="${titleId} ${descriptionId}"`);
       expect(svg?.match(new RegExp(`id="${titleId}"`, "g"))).toHaveLength(1);
       expect(svg?.match(new RegExp(`id="${descriptionId}"`, "g"))).toHaveLength(1);

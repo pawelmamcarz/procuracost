@@ -23,7 +23,7 @@ export default function BoundaryField({ lang }: BoundaryFieldProps) {
 
       <svg
         aria-labelledby={`${titleId} ${descriptionId}`}
-        className="mt-5 h-auto w-full max-w-full"
+        className="pointer-events-none mt-5 h-auto w-full max-w-full"
         focusable="false"
         role="img"
         viewBox="0 0 760 360"
