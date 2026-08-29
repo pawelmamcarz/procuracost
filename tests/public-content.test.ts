@@ -304,7 +304,7 @@ describe("public editorial integrity", () => {
   it("keeps Polish navigation labels in Polish", () => {
     const labels = navigationFor("pl").map((item) => item.label);
 
-    expect(labels).toEqual(["Kalkulator", "Warunki zastosowania", "Profil projektu procesu zakupowego", "Model"]);
+    expect(labels).toEqual(["Kalkulator", "Warunki zastosowania", "Profil procesu", "Model"]);
     expect(labels).not.toEqual(expect.arrayContaining(["Research paper", "Methodology"]));
   });
 
