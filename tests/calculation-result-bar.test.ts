@@ -10,7 +10,7 @@ import {
 } from "@/components/calculator-v2/editor-state";
 import { submitCalculatorWorkspace } from "@/components/calculator-v2/workspace-validation";
 import { calculatorV2T, decisionRecordT } from "@/lib/i18n";
-import { createScenarioDraft } from "@/lib/model-v2";
+import { createScenarioDraft, type DecisionRecordV2 } from "@/lib/model-v2";
 
 function calculatedState(): CalculatorWorkspaceState {
   const result = submitCalculatorWorkspace(
@@ -20,6 +20,12 @@ function calculatedState(): CalculatorWorkspaceState {
     throw new Error("The fleet scenario must calculate from its base draft.");
   }
   return result.state;
+}
+
+function calculatedRecord(): DecisionRecordV2 {
+  const record = calculatedState().record;
+  if (!record) throw new Error("Expected a calculated record fixture.");
+  return record;
 }
 
 function editedState(state: CalculatorWorkspaceState) {
@@ -77,9 +83,7 @@ describe("last calculation retained beside the decision record", () => {
 });
 
 describe("calculation result bar", () => {
-  const state = calculatedState();
-  const record = state.record;
-  if (!record) throw new Error("Expected a calculated record fixture.");
+  const record = calculatedRecord();
 
   function markup(lang: "pl" | "en", stale: boolean) {
     return renderToStaticMarkup(
