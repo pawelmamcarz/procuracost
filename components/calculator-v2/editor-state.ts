@@ -68,6 +68,7 @@ export interface CalculatorWorkspaceState {
   locallyEdited: Record<AlternativeId, boolean>;
   issues: CalculatorUiIssue[];
   record: DecisionRecordV2 | null;
+  lastRecord: DecisionRecordV2 | null;
 }
 
 export interface CreateCalculatorWorkspaceOptions {
@@ -191,6 +192,7 @@ export function createCalculatorWorkspaceState(
     },
     issues: [],
     record: null,
+    lastRecord: null,
   };
 }
 
@@ -659,6 +661,7 @@ export function calculatorWorkspaceReducer(
         },
         issues: [],
         record: null,
+        lastRecord: null,
       };
     case "set-url-source":
       return {
@@ -670,6 +673,7 @@ export function calculatorWorkspaceReducer(
           state.focusTarget?.kind === "decision-record" ? null : state.focusTarget,
         issues: [],
         record: null,
+        lastRecord: null,
       };
   }
 }

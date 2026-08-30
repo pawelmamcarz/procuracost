@@ -677,6 +677,7 @@ export function submitCalculatorWorkspace(
       state: {
         ...state,
         record,
+        lastRecord: record,
         focusTarget: { kind: "decision-record" },
         issues: [],
       },
