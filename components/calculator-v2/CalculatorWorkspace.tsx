@@ -8,6 +8,7 @@ import {
 } from "react";
 import { ArrowRight, Clipboard, FileCheck2 } from "lucide-react";
 
+import CalculationResultBar from "@/components/decision-record/CalculationResultBar";
 import DecisionRecord from "@/components/decision-record/DecisionRecord";
 import DecisionRecordActions from "@/components/decision-record/DecisionRecordActions";
 import { calculatorV2T, type Lang } from "@/lib/i18n";
@@ -182,14 +183,18 @@ export function CalculatorWorkspaceView({
     );
   };
 
-  const submit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const runCalculation = () => {
     const result = submitCalculatorWorkspace(state);
     onStateChange(
       result.status === "submitted"
         ? result.state
         : { ...result.state, issues: result.issues }
     );
+  };
+
+  const submit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    runCalculation();
   };
 
   const copyBaseScenario = async () => {
@@ -336,6 +341,16 @@ export function CalculatorWorkspaceView({
           {tx.workspace.preCalculation}
         </p>
       )}
+
+      {state.lastRecord ? (
+        <CalculationResultBar
+          lang={lang}
+          onRecalculate={runCalculation}
+          record={state.lastRecord}
+          recordHref={`#${CALCULATOR_RESULT_REGION_ID}`}
+          stale={state.record === null}
+        />
+      ) : null}
     </div>
   );
 }

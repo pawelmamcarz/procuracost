@@ -2803,6 +2803,19 @@ const decisionRecordPl = {
     methodology:
       "Rekord przedstawia deterministyczne wyniki i zadeklarowane zakresy modelu 2.3. Nie stanowi rekomendacji ani dowodu statystycznego.",
   },
+  resultBar: {
+    regionLabel: "Ostatnie obliczenie",
+    currentLabel: "Wynik bieżących założeń",
+    staleLabel: "Wynik poprzednich założeń",
+    deltaLabel: "Różnica centralna",
+    rangeLabel: "Zewnętrzny zakres różnicy",
+    elapsedLabel: "Czas trwania",
+    daysUnit: "dni",
+    staleNote:
+      "Założenia zmieniły się od tego obliczenia. Przelicz, aby zaktualizować zapis porównania.",
+    recalculate: "Przelicz",
+    openRecord: "Otwórz pełny zapis porównania",
+  },
 } as const;
 
 type DecisionRecordShape = LangShape<typeof decisionRecordPl>;
@@ -2932,6 +2945,19 @@ const decisionRecordEn = {
       "The PDF could not be created. Check the connection and try again.",
     methodology:
       "The record reports deterministic results and declared model 2.3 ranges. It is neither a recommendation nor statistical evidence.",
+  },
+  resultBar: {
+    regionLabel: "Last calculation",
+    currentLabel: "Result for the current assumptions",
+    staleLabel: "Result for the previous assumptions",
+    deltaLabel: "Central difference",
+    rangeLabel: "Outer difference range",
+    elapsedLabel: "Elapsed time",
+    daysUnit: "days",
+    staleNote:
+      "The assumptions have changed since this calculation. Recalculate to update the decision record.",
+    recalculate: "Recalculate",
+    openRecord: "Open the full decision record",
   },
 } satisfies DecisionRecordShape;
 
