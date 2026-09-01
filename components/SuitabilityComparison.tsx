@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useRef, useState } from "react";
 
+import ContextualToolNotice from "@/components/ContextualToolNotice";
 import { suitabilityT, type Lang } from "@/lib/i18n";
 import { resolveSuitabilityCopyKey } from "@/lib/suitability-copy";
 import {
@@ -224,6 +225,7 @@ export default function SuitabilityComparison({
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
+      <ContextualToolNotice lang={lang} stage="case" />
       <header className="max-w-3xl">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
           {copy.badge}

@@ -259,7 +259,7 @@ describe("procurement process design profile presentation", () => {
       expect(markup).toContain(
         `href="${lang === "en" ? "/en/calculator" : "/calculator"}"`
       );
-      expect(markup).toContain(
+      expect(markup).not.toContain(
         `href="${lang === "en" ? "/en/readiness" : "/readiness"}"`
       );
       expect(text).toContain(tx.actions.restart);

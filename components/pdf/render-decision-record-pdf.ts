@@ -5,6 +5,7 @@ import type {
   PdfEvidenceCopy,
   PdfRangeCopy,
 } from "@/lib/model-v2";
+import type { ComparisonDisplayNames } from "@/components/calculator-v2/local-draft";
 
 function isRange(value: string | PdfRangeCopy): value is PdfRangeCopy {
   return typeof value !== "string";
@@ -21,7 +22,8 @@ function printable(value: unknown): string {
 
 export function renderDecisionRecordPdf(
   doc: jsPDF,
-  copy: PdfCopyV2
+  copy: PdfCopyV2,
+  displayNames?: ComparisonDisplayNames
 ): void {
   const margin = 16;
   const footerHeight = 12;
@@ -140,7 +142,14 @@ export function renderDecisionRecordPdf(
 
   heading(copy.sectionLabels.alternatives);
   for (const alternative of copy.alternatives) {
-    subheading(alternative.label);
+    const displayName =
+      alternative.id === "formalSequential" ||
+      alternative.id === "adaptiveCompliant"
+        ? displayNames?.[alternative.id]
+        : undefined;
+    subheading(
+      displayName ? `${displayName} · ${alternative.label}` : alternative.label
+    );
     labelValue(labels.fields.id, alternative.id, 4);
     labelValue(alternative.workflowDesign.label, alternative.workflowDesign.value, 4);
     labelValue(alternative.contractDesign.label, alternative.contractDesign.value, 4);

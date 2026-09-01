@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ContextualToolNotice from "@/components/ContextualToolNotice";
 import ReadinessDiagnostic from "@/components/ReadinessDiagnostic";
 import { readinessT } from "@/lib/i18n";
 import { localizedPageMetadata } from "@/lib/page-metadata";
@@ -13,6 +14,7 @@ export default function EnReadinessPage() {
   const tx = readinessT.en;
   return (
     <div className="mx-auto max-w-5xl px-6 py-12">
+      <ContextualToolNotice lang="en" returnMode="previous-tab" stage="record" />
       <header className="max-w-3xl">
         <p className="text-xs font-semibold uppercase tracking-wide text-blue-600">
           {tx.eyebrow}

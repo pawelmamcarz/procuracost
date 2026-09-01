@@ -9,7 +9,6 @@ function routesFor(lang: Lang) {
   return [
     { href: `${prefix}/model`, key: "model" },
     { href: `${prefix}/calculator`, key: "calculator" },
-    { href: `${prefix}/readiness`, key: "readiness" },
     {
       href: `${prefix}/practice/procurement-beyond-8`,
       key: "practice",

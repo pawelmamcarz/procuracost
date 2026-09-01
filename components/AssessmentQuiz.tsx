@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Check } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import ContextualToolNotice from "@/components/ContextualToolNotice";
 import {
   buildProcessProfileResult,
   createProcessProfileState,
@@ -29,9 +30,8 @@ interface AssessmentQuizViewProps {
   onStateChange: (state: ProcessProfileState) => void;
 }
 
-function routeFor(lang: Lang, path: "calculator" | "readiness") {
-  const suffix = path === "calculator" ? "/calculator" : "/readiness";
-  return lang === "en" ? `/en${suffix}` : suffix;
+function calculatorRoute(lang: Lang) {
+  return lang === "en" ? "/en/calculator" : "/calculator";
 }
 
 function orientationLabel(
@@ -69,6 +69,7 @@ export function AssessmentQuizView({
 
   return (
     <div className="mx-auto max-w-2xl px-5 py-10 sm:px-6 sm:py-14">
+      <ContextualToolNotice lang={lang} stage="workflows" />
       <header className="max-w-3xl border-b border-gray-200 pb-8">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
           {tx.badge}
@@ -254,16 +255,10 @@ export function AssessmentQuizView({
 
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
             <Link
-              href={routeFor(lang, "calculator")}
+              href={calculatorRoute(lang)}
               className="inline-flex min-h-11 items-center justify-center rounded-lg bg-blue-700 px-5 py-3 text-center text-sm font-semibold text-white hover:bg-blue-800"
             >
               {tx.actions.calculator}
-            </Link>
-            <Link
-              href={routeFor(lang, "readiness")}
-              className="inline-flex min-h-11 items-center justify-center rounded-lg border border-gray-400 px-5 py-3 text-center text-sm font-semibold text-gray-700 hover:border-gray-600"
-            >
-              {tx.actions.readiness}
             </Link>
           </div>
           <button

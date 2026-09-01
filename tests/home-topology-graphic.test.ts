@@ -6,36 +6,20 @@ import BoundaryField from "@/components/BoundaryField";
 import EvidenceFieldHome from "@/components/EvidenceFieldHome";
 import { homeT } from "@/lib/i18n";
 
-function renderedText(markup: string): string {
-  return markup
-    .replace(/<[^>]+>/g, " ")
-    .replaceAll("&amp;", "&")
-    .replaceAll("&#x27;", "'")
-    .replaceAll("&quot;", '"')
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-describe("homepage topology graphic", () => {
-  it("renders one dedicated shared-boundary figure instead of the editor rail", () => {
+describe("shared-boundary topology graphic", () => {
+  it("keeps the detailed topology off the decision-led entry page", () => {
     for (const lang of ["pl", "en"] as const) {
       const html = renderToStaticMarkup(
         createElement(EvidenceFieldHome, { lang })
       );
-      const text = renderedText(html);
 
-      expect(html).toContain(`data-home-topology="${lang}"`);
-      expect(html.match(/data-boundary="shared"/g)).toHaveLength(1);
-      expect(html.match(/data-converges-at="navigator"/g)).toHaveLength(2);
-      expect(html.match(/data-endpoint="navigator"/g)).toHaveLength(1);
-      expect(html).toContain('data-path="formal"');
-      expect(html).toContain('data-path="adaptive"');
+      expect(html).not.toContain(`data-home-topology="${lang}"`);
+      expect(html).not.toContain('data-boundary="shared"');
+      expect(html).toContain('data-record-preview="structure"');
       expect(html).not.toContain("data-home-process-rail");
       expect(html).not.toContain("data-mobile-sequence");
       expect(html).not.toContain("data-node-geometry");
       expect(html).not.toContain('role="region"');
-      expect(text).toContain(homeT[lang].boundary.title);
-      expect(text).toContain(homeT[lang].boundary.caption);
     }
   });
 

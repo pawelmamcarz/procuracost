@@ -146,14 +146,8 @@ export default function ProcurementBeyond8({ lang }: { lang: Lang }) {
 
       <nav className="flex flex-col gap-3 border-t border-gray-200 pt-8 sm:flex-row" aria-label={tx.eyebrow}>
         <Link
-          href={lang === "en" ? "/en/readiness" : "/readiness"}
-          className="rounded-xl bg-blue-600 px-6 py-3 text-center text-sm font-semibold text-white hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-        >
-          {tx.readinessCta}
-        </Link>
-        <Link
           href={lang === "en" ? "/en/calculator" : "/calculator"}
-          className="rounded-xl border border-gray-200 bg-white px-6 py-3 text-center text-sm font-semibold text-gray-700 hover:border-blue-300 hover:text-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+          className="rounded-xl bg-blue-600 px-6 py-3 text-center text-sm font-semibold text-white hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
         >
           {tx.calculatorCta}
         </Link>

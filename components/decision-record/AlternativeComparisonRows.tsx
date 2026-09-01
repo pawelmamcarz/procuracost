@@ -9,11 +9,13 @@ import type {
   WorkflowDesign,
 } from "@/lib/model-v2";
 import { cn } from "@/lib/utils";
+import type { ComparisonDisplayNames } from "@/components/calculator-v2/local-draft";
 
 import { ProcessRail } from "@/components/process-map/ProcessRail";
 import { buildProcessRailViewModel } from "@/components/process-map/rail-view-model";
 
 export interface AlternativeComparisonRowsProps {
+  displayNames?: ComparisonDisplayNames;
   lang: Lang;
   record: DecisionRecordV2;
 }
@@ -65,6 +67,7 @@ function workflowForRail(
 }
 
 export default function AlternativeComparisonRows({
+  displayNames,
   lang,
   record,
 }: AlternativeComparisonRowsProps) {
@@ -118,7 +121,18 @@ export default function AlternativeComparisonRows({
             >
               <div>
                 <h4 className="text-sm font-semibold text-gray-900">
-                  {exportTx.alternatives[alternativeId]}
+                  {displayNames?.[alternativeId] ? (
+                    <>
+                      <span className="block text-base">
+                        {displayNames[alternativeId]}
+                      </span>
+                      <span className="mt-1 block text-xs font-medium text-gray-500">
+                        {exportTx.alternatives[alternativeId]}
+                      </span>
+                    </>
+                  ) : (
+                    exportTx.alternatives[alternativeId]
+                  )}
                 </h4>
                 <dl className="mt-3 grid gap-3 sm:grid-cols-2">
                   <div>
