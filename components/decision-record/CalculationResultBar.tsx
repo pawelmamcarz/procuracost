@@ -11,8 +11,8 @@ export interface CalculationResultBarProps {
   lang: Lang;
   record: DecisionRecordV2;
   stale: boolean;
+  onOpenRecord: () => void;
   onRecalculate: () => void;
-  recordHref: string;
 }
 
 const LANE_ORDER: AlternativeId[] = ["formalSequential", "adaptiveCompliant"];
@@ -37,8 +37,8 @@ export default function CalculationResultBar({
   lang,
   record,
   stale,
+  onOpenRecord,
   onRecalculate,
-  recordHref,
 }: CalculationResultBarProps) {
   const tx = decisionRecordT[lang].resultBar;
   const alternativeLabels = calculatorV2T[lang].alternatives;
@@ -123,12 +123,13 @@ export default function CalculationResultBar({
               </button>
             </>
           ) : (
-            <a
+            <button
               className="inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 underline decoration-blue-300 underline-offset-4 hover:decoration-blue-700 focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
-              href={recordHref}
+              onClick={onOpenRecord}
+              type="button"
             >
               {tx.openRecord}
-            </a>
+            </button>
           )}
         </div>
       </div>

@@ -51,7 +51,7 @@ describe("public model 2.3 explanation", () => {
       expect(markup, lang).toContain(tx.sections.costRecord.title);
       expect(markup, lang).toContain(tx.sections.evidenceBoundary.title);
       expect(markup, lang).toContain(tx.rangeDisclosure);
-      expect(markup, lang).toContain(
+      expect(markup, lang).not.toContain(
         `href="${lang === "en" ? "/en/readiness" : "/readiness"}"`
       );
       expect(markup, lang).toContain(

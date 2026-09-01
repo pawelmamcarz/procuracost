@@ -333,8 +333,8 @@ const calculatorV2Pl = {
       "Wartość kontraktu, koszt zwłoki, transfer konkurencji, stawki ról i stałe granice neutralności.",
     readinessTitle: "Sprawdź warunki wdrożenia osobno",
     readinessBody:
-      "Samoopis gotowości nie zmienia kosztu ani zapisu modelu.",
-    readinessAction: "Otwórz gotowość organizacyjną",
+      "Samoopis gotowości otworzy się osobno i nie zmieni kosztu ani zapisu modelu.",
+    readinessAction: "Otwórz gotowość w nowej karcie",
   },
   localDraft: {
     title: "Szkic na tym urządzeniu",
@@ -650,8 +650,8 @@ const calculatorV2En = {
       "Contract value, delay cost, competition transfer, role rates and fixed neutrality boundaries.",
     readinessTitle: "Check implementation conditions separately",
     readinessBody:
-      "The readiness self-description does not change cost or the model record.",
-    readinessAction: "Open organisational readiness",
+      "The readiness self-description opens separately and does not change cost or the model record.",
+    readinessAction: "Open readiness in a new tab",
   },
   localDraft: {
     title: "Draft on this device",
@@ -2419,10 +2419,6 @@ const modelOverviewPl = {
       eyebrow: "Kontekst zastosowania",
       title: "Materiały poza rachunkiem kosztu",
       items: {
-        readiness: {
-          title: "Gotowość organizacyjna",
-          body: "Oddzielny samoopis warunków wdrożenia, bez wpływu na wynik modelu.",
-        },
         practice: {
           title: "Materiał praktyczny",
           body: "Pytania o tarcie procesu, wymagania, odpowiedzialność i adopcję.",
@@ -2468,7 +2464,6 @@ const modelOverviewPl = {
     assumptions: "Rejestr założeń",
     methodology: "Metoda obliczeń",
     evidence: "Mechanizmy i źródła",
-    readiness: "Gotowość organizacyjna do wdrożenia",
     practice: "Procurement&Beyond, odcinek 8",
   },
 } as const;
@@ -2522,10 +2517,6 @@ const modelOverviewEn = {
       eyebrow: "Application context",
       title: "Materials outside the cost calculation",
       items: {
-        readiness: {
-          title: "Organisational readiness",
-          body: "A separate self-description of implementation conditions with no effect on model output.",
-        },
         practice: {
           title: "Practitioner material",
           body: "Questions about process friction, requirements, accountability and adoption.",
@@ -2571,7 +2562,6 @@ const modelOverviewEn = {
     assumptions: "Assumptions register",
     methodology: "Calculation method",
     evidence: "Mechanisms and evidence",
-    readiness: "Organisational implementation readiness",
     practice: "Procurement&Beyond episode 8",
   },
 } satisfies ModelOverviewShape;
@@ -2679,7 +2669,6 @@ const methodologyOverviewPl = {
   actions: {
     model: "Model i założenia",
     calculator: "Kalkulator",
-    readiness: "Samoopis gotowości",
     practice: "Materiał praktyczny",
     research: "Artykuł badawczy i bibliografia",
   },
@@ -2785,7 +2774,6 @@ const methodologyOverviewEn = {
   actions: {
     model: "Model and assumptions",
     calculator: "Calculator",
-    readiness: "Readiness self-description",
     practice: "Practitioner material",
     research: "Working paper and references",
   },
@@ -3974,7 +3962,6 @@ const processProfilePl = {
   },
   actions: {
     calculator: "Porównaj koszt dwóch projektów procesu",
-    readiness: "Sprawdź gotowość organizacyjną do wdrożenia",
     restart: "Wyczyść profil i zacznij od nowa",
   },
 } as const;
@@ -4101,7 +4088,6 @@ const processProfileEn = {
   },
   actions: {
     calculator: "Compare the cost of two workflow designs",
-    readiness: "Open the implementation-readiness self-description",
     restart: "Clear the profile and start again",
   },
 } satisfies ProcessProfileCopyShape;
@@ -4287,7 +4273,6 @@ const teamPl = {
     title: "Odpowiedzialność za model i odpowiedzialność za wdrożenie",
     body:
       "Model wspiera uporządkowanie porównania. Właściciel procesu nadal odpowiada za cel, wymagania, dane, decyzje, adopcję i mierzenie wartości.",
-    readinessAction: "Samoopis gotowości",
     practiceAction: "Rozmowa Procurement&Beyond",
   },
   roles: {
@@ -4346,7 +4331,6 @@ const teamEn = {
     title: "Accountability for the model and accountability for implementation",
     body:
       "The model structures a comparison. The process owner remains accountable for purpose, requirements, data, decisions, adoption and value measurement.",
-    readinessAction: "Readiness self-description",
     practiceAction: "Procurement&Beyond conversation",
   },
   roles: {
@@ -4429,10 +4413,10 @@ const contextualToolPl = {
     action: "Wróć do przebiegów",
   },
   record: {
-    label: "Po zapisie porównania",
+    label: "Oddzielny samoopis wdrożenia",
     body:
-      "Samoopis wdrożenia pozostaje odrębny od wyniku kosztowego. Nie zmienia różnicy kosztów ani zapisu modelu.",
-    action: "Wróć do zapisu porównania",
+      "To narzędzie nie zapisuje ani nie odtwarza wyniku porównania. Jeśli otworzyłeś je z zapisu, zapis pozostaje w poprzedniej karcie.",
+    action: "Wróć do poprzedniej karty z zapisem",
   },
 } as const;
 
@@ -4452,10 +4436,10 @@ const contextualToolEn = {
     action: "Return to workflows",
   },
   record: {
-    label: "After recording the comparison",
+    label: "Separate implementation self-description",
     body:
-      "Implementation self-description remains separate from the cost result. It does not change the cost difference or model record.",
-    action: "Return to the comparison record",
+      "This tool neither saves nor restores a comparison result. If you opened it from a record, that record remains in the previous tab.",
+    action: "Return to the previous tab with the record",
   },
 } satisfies ContextualToolShape;
 
@@ -6024,7 +6008,6 @@ const practicePl = {
     "Bielik może wspierać strukturyzowanie danych rynkowych. Obliczenia TCO wykonuje przejrzysty, deterministyczny model. Model językowy nie oblicza wyniku.",
   sourceNote:
     "Lista kontrolna ProcuraCost została opracowana przez autora jako zbiór hipotez operacyjnych; rozmowa branżowa Procurement&Beyond #8 z Pawłem Mamcarzem stanowi wyłącznie kontekst tematyczny dla projektowania pytań. Jej fragmenty nie dowodzą spełnienia poszczególnych kryteriów. Automatyczny transkrypt YouTube nie został zweryfikowany przez człowieka. Materiał nie wyznacza progów, wag ani parametrów modelu ProcuraCost.",
-  readinessCta: "Przejdź do samoopisu warunków wdrożenia",
   calculatorCta: "Otwórz kalkulator",
 } as const;
 
@@ -6142,7 +6125,6 @@ const practiceEn = {
     "Bielik may support market-data structuring. The transparent deterministic model performs the TCO calculation. The language model does not calculate the result.",
   sourceNote:
     "The ProcuraCost checklist was authored as a set of operational hypotheses. The Procurement&Beyond episode 8 practitioner interview with Paweł Mamcarz provides thematic context only for question design; its segments do not evidence whether individual criteria are met. The automatic YouTube transcript has not been human verified. The material does not set thresholds, weights or ProcuraCost model parameters.",
-  readinessCta: "Open the readiness self-description",
   calculatorCta: "Open the calculator",
 } satisfies PracticeShape;
 

@@ -156,7 +156,7 @@ describe("bilingual practitioner material", () => {
       expect(markup).toContain(tx.boundary.doesNotSupportTitle);
       expect(markup).toContain(tx.bielikTcoBoundary);
       expect(markup).toContain(html(tx.sourceNote));
-      expect(markup).toContain(`href="${lang === "en" ? "/en/readiness" : "/readiness"}"`);
+      expect(markup).not.toContain(`href="${lang === "en" ? "/en/readiness" : "/readiness"}"`);
       expect(markup).toContain(`href="${lang === "en" ? "/en/calculator" : "/calculator"}"`);
 
       for (const ref of PROCUREMENT_BEYOND_8.refs) {

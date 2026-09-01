@@ -9,6 +9,14 @@ const journey = journeyModule as unknown as {
   calculatorStageHash: (stage: Stage) => string;
   nextCalculatorStage: (stage: Stage, hasRecord: boolean) => Stage;
   previousCalculatorStage: (stage: Stage) => Stage;
+  resolveCalculatorStageLocation: (
+    hash: string,
+    hasRecord: boolean,
+  ) => {
+    stage: Stage;
+    normalizedHash: string;
+    shouldReplace: boolean;
+  };
   resolveCalculatorStageRequest: (stage: Stage, hasRecord: boolean) => Stage;
 };
 
@@ -50,5 +58,28 @@ describe("guided calculator journey", () => {
     expect(journey.resolveCalculatorStageRequest("record", false)).toBe(
       "costs",
     );
+  });
+
+  it("normalises unsafe browser fragments without adding a hash to a clean URL", () => {
+    expect(journey.resolveCalculatorStageLocation("", false)).toEqual({
+      stage: "case",
+      normalizedHash: "",
+      shouldReplace: false,
+    });
+    expect(journey.resolveCalculatorStageLocation("#unknown", false)).toEqual({
+      stage: "case",
+      normalizedHash: "#case",
+      shouldReplace: true,
+    });
+    expect(journey.resolveCalculatorStageLocation("#record", false)).toEqual({
+      stage: "costs",
+      normalizedHash: "#costs",
+      shouldReplace: true,
+    });
+    expect(journey.resolveCalculatorStageLocation("#record", true)).toEqual({
+      stage: "record",
+      normalizedHash: "#record",
+      shouldReplace: false,
+    });
   });
 });

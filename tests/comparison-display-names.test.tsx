@@ -5,7 +5,11 @@ import { describe, expect, it } from "vitest";
 import DecisionRecord from "@/components/decision-record/DecisionRecord";
 import { renderDecisionRecordPdf } from "@/components/pdf/render-decision-record-pdf";
 import { buildPdfCopy, buildDecisionRecordV2, createScenarioDraft } from "@/lib/model-v2";
-import { buildResearchJson } from "@/lib/research-export";
+import {
+  buildResearchCsv,
+  buildResearchJson,
+  buildResearchMarkdown,
+} from "@/lib/research-export";
 
 const displayNames = {
   formalSequential: "Current workflow",
@@ -55,7 +59,7 @@ describe("comparison display names", () => {
     expect(html).toContain("Adaptive compliant alternative");
   });
 
-  it("decorates the PDF without changing the canonical research payload", () => {
+  it("decorates the PDF without changing canonical JSON, CSV or Markdown", () => {
     const record = buildDecisionRecordV2(
       createScenarioDraft("fleet_tco_reframing")
     );
@@ -71,6 +75,8 @@ describe("comparison display names", () => {
     const research = JSON.stringify(
       buildResearchJson(record, "en", "2026-09-01T15:30:00.000Z")
     );
+    const csv = buildResearchCsv(record, "en");
+    const markdown = buildResearchMarkdown(record, "en");
 
     expect(pdfText).toContain("Current workflow");
     expect(pdfText).toContain("Pilot workflow");
@@ -78,5 +84,13 @@ describe("comparison display names", () => {
     expect(pdfText).toContain("Adaptive compliant alternative");
     expect(research).not.toContain("Current workflow");
     expect(research).not.toContain("Pilot workflow");
+    expect(csv).not.toContain("Current workflow");
+    expect(csv).not.toContain("Pilot workflow");
+    expect(markdown).not.toContain("Current workflow");
+    expect(markdown).not.toContain("Pilot workflow");
+    expect(csv).toContain("formalSequential");
+    expect(csv).toContain("adaptiveCompliant");
+    expect(markdown).toContain("formalSequential");
+    expect(markdown).toContain("adaptiveCompliant");
   });
 });

@@ -87,6 +87,10 @@ describe("guided calculator UI", () => {
     expect(after).toContain('data-stage-panel="record"');
     expect(after).toContain('data-post-result-readiness="true"');
     expect(after).toContain('href="/en/readiness"');
+    const readinessAnchor = after.match(
+      /<a[^>]*href="\/en\/readiness"[^>]*>/,
+    )?.[0];
+    expect(readinessAnchor).toContain('target="_blank"');
   });
 
   it("passes the newly created record availability into the stage transition", () => {
@@ -113,5 +117,16 @@ describe("guided calculator UI", () => {
     expect(source).not.toContain(
       'window.dispatchEvent(new HashChangeEvent("hashchange"))',
     );
+    expect(source).toContain("syncCalculatorStageFromLocation");
+  });
+
+  it("opens the retained record through the stage controller instead of a colliding anchor", () => {
+    const source = readFileSync(
+      "components/calculator-v2/CalculatorWorkspace.tsx",
+      "utf8",
+    );
+
+    expect(source).toContain("onOpenRecord={openRecord}");
+    expect(source).not.toContain("recordHref={`#${CALCULATOR_RESULT_REGION_ID}`}");
   });
 });

@@ -60,6 +60,7 @@ import {
   calculatorStageHash,
   nextCalculatorStage,
   previousCalculatorStage,
+  resolveCalculatorStageLocation,
   resolveCalculatorStageRequest,
 } from "./calculator-journey";
 import {
@@ -74,6 +75,20 @@ import {
 
 export const CALCULATOR_RESULT_HEADING_ID = "decision-record-heading";
 export const CALCULATOR_RESULT_REGION_ID = "decision-record";
+
+function syncCalculatorStageFromLocation(
+  hasRecord: boolean,
+  setStage: (stage: CalculatorStage) => void,
+) {
+  const resolution = resolveCalculatorStageLocation(
+    window.location.hash,
+    hasRecord,
+  );
+  setStage(resolution.stage);
+  if (!resolution.shouldReplace) return;
+  const nextUrl = `${window.location.pathname}${window.location.search}${resolution.normalizedHash}`;
+  window.history.replaceState(window.history.state, "", nextUrl);
+}
 
 export interface CalculatorResultBoundaryProps {
   children: ReactNode;
@@ -248,6 +263,15 @@ export function CalculatorWorkspaceView({
   };
 
   const setStage = (stage: CalculatorStage) => onStageChange?.(stage);
+  const openRecord = () => {
+    onStageChange?.("record", true);
+    onStateChange(
+      calculatorWorkspaceReducer(state, {
+        type: "set-focus-target",
+        target: { kind: "decision-record" },
+      })
+    );
+  };
   const numberFormat = new Intl.NumberFormat(
     lang === "pl" ? "pl-PL" : "en-GB",
     { maximumFractionDigits: 2 }
@@ -509,7 +533,7 @@ export function CalculatorWorkspaceView({
                 <h3 className="font-bold text-gray-900">{tx.journey.readinessTitle}</h3>
                 <p className="mt-1 text-sm leading-6 text-gray-600">{tx.journey.readinessBody}</p>
               </div>
-              <Link className="inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 underline decoration-blue-300 underline-offset-4" href={lang === "en" ? "/en/readiness" : "/readiness"}>
+              <Link className="inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 underline decoration-blue-300 underline-offset-4" href={lang === "en" ? "/en/readiness" : "/readiness"} rel="noreferrer" target="_blank">
                 {tx.journey.readinessAction}
               </Link>
             </aside>
@@ -524,9 +548,9 @@ export function CalculatorWorkspaceView({
       {state.lastRecord ? (
         <CalculationResultBar
           lang={lang}
+          onOpenRecord={openRecord}
           onRecalculate={runCalculation}
           record={state.lastRecord}
-          recordHref={`#${CALCULATOR_RESULT_REGION_ID}`}
           stale={state.record === null}
         />
       ) : null}
@@ -625,11 +649,9 @@ export default function CalculatorWorkspace({ lang }: CalculatorWorkspaceProps) 
         }
         const { bootstrap } = resolution;
         setState(resolution.state);
-        setActiveStage(
-          calculatorStageFromHash(
-            window.location.hash,
-            resolution.state.record !== null
-          )
+        syncCalculatorStageFromLocation(
+          resolution.state.record !== null,
+          setActiveStage,
         );
         setMigrationResult(
           bootstrap.origin === "legacy" &&
@@ -693,16 +715,7 @@ export default function CalculatorWorkspace({ lang }: CalculatorWorkspaceProps) 
   useEffect(() => {
     if (bootstrapStatus !== "ready") return;
     const syncStageFromHash = () => {
-      const safeStage = calculatorStageFromHash(
-        window.location.hash,
-        state.record !== null
-      );
-      setActiveStage(safeStage);
-      const safeHash = calculatorStageHash(safeStage);
-      if (window.location.hash !== safeHash) {
-        const nextUrl = `${window.location.pathname}${window.location.search}${safeHash}`;
-        window.history.replaceState(window.history.state, "", nextUrl);
-      }
+      syncCalculatorStageFromLocation(state.record !== null, setActiveStage);
     };
     window.addEventListener("hashchange", syncStageFromHash);
     return () => {

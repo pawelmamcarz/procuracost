@@ -30,9 +30,8 @@ interface AssessmentQuizViewProps {
   onStateChange: (state: ProcessProfileState) => void;
 }
 
-function routeFor(lang: Lang, path: "calculator" | "readiness") {
-  const suffix = path === "calculator" ? "/calculator" : "/readiness";
-  return lang === "en" ? `/en${suffix}` : suffix;
+function calculatorRoute(lang: Lang) {
+  return lang === "en" ? "/en/calculator" : "/calculator";
 }
 
 function orientationLabel(
@@ -256,16 +255,10 @@ export function AssessmentQuizView({
 
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
             <Link
-              href={routeFor(lang, "calculator")}
+              href={calculatorRoute(lang)}
               className="inline-flex min-h-11 items-center justify-center rounded-lg bg-blue-700 px-5 py-3 text-center text-sm font-semibold text-white hover:bg-blue-800"
             >
               {tx.actions.calculator}
-            </Link>
-            <Link
-              href={routeFor(lang, "readiness")}
-              className="inline-flex min-h-11 items-center justify-center rounded-lg border border-gray-400 px-5 py-3 text-center text-sm font-semibold text-gray-700 hover:border-gray-600"
-            >
-              {tx.actions.readiness}
             </Link>
           </div>
           <button

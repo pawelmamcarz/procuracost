@@ -14,7 +14,7 @@ export default function EnReadinessPage() {
   const tx = readinessT.en;
   return (
     <div className="mx-auto max-w-5xl px-6 py-12">
-      <ContextualToolNotice lang="en" stage="record" />
+      <ContextualToolNotice lang="en" returnMode="previous-tab" stage="record" />
       <header className="max-w-3xl">
         <p className="text-xs font-semibold uppercase tracking-wide text-blue-600">
           {tx.eyebrow}

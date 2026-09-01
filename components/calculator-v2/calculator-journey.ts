@@ -24,6 +24,28 @@ export function resolveCalculatorStageRequest(
   return stage === "record" && !hasRecord ? "costs" : stage;
 }
 
+export interface CalculatorStageLocation {
+  stage: CalculatorStage;
+  normalizedHash: string;
+  shouldReplace: boolean;
+}
+
+export function resolveCalculatorStageLocation(
+  hash: string,
+  hasRecord: boolean,
+): CalculatorStageLocation {
+  const stage = calculatorStageFromHash(hash, hasRecord);
+  if (hash === "") {
+    return { stage, normalizedHash: "", shouldReplace: false };
+  }
+  const normalizedHash = calculatorStageHash(stage);
+  return {
+    stage,
+    normalizedHash,
+    shouldReplace: hash !== normalizedHash,
+  };
+}
+
 export function calculatorStageHash(stage: CalculatorStage): string {
   return `#${stage}`;
 }

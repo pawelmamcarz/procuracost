@@ -91,8 +91,8 @@ describe("calculation result bar", () => {
         lang,
         record,
         stale,
+        onOpenRecord: () => {},
         onRecalculate: () => {},
-        recordHref: "#decision-record",
       })
     );
   }
@@ -126,6 +126,8 @@ describe("calculation result bar", () => {
     expect(markup("pl", false)).toContain(
       decisionRecordT.pl.resultBar.openRecord
     );
+    expect(markup("pl", false)).toContain("<button");
+    expect(markup("pl", false)).not.toContain('href="#decision-record"');
   });
 
   it("pairs both alternatives with equal visual status", () => {

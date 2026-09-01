@@ -10,11 +10,10 @@ import { contextualToolT, footerT } from "@/lib/i18n";
 import { navigationFor } from "@/lib/site-routes";
 
 describe("contextual supporting tools", () => {
-  it("returns each supporting tool to its exact comparison stage in both languages", () => {
+  it("returns case and workflow tools to their exact comparison stage", () => {
     const cases = [
       { stage: "case", hash: "case" },
       { stage: "workflows", hash: "workflows" },
-      { stage: "record", hash: "record" },
     ] as const;
 
     for (const lang of ["pl", "en"] as const) {
@@ -32,6 +31,22 @@ describe("contextual supporting tools", () => {
     }
   });
 
+  it("keeps a calculator record in the previous tab while readiness stays standalone", () => {
+    for (const lang of ["pl", "en"] as const) {
+      const markup = renderToStaticMarkup(
+        createElement(ContextualToolNotice, {
+          lang,
+          returnMode: "previous-tab",
+          stage: "record",
+        }),
+      );
+
+      expect(markup).toContain('data-contextual-tool-stage="record"');
+      expect(markup).toContain('data-contextual-tool-return="previous-tab"');
+      expect(markup).not.toContain('/calculator#record');
+    }
+  });
+
   it("integrates the case, workflow and record notices with the relevant surfaces", () => {
     const suitability = readFileSync("components/SuitabilityComparison.tsx", "utf8");
     const assessment = readFileSync("components/AssessmentQuiz.tsx", "utf8");
@@ -42,6 +57,25 @@ describe("contextual supporting tools", () => {
     expect(assessment).toContain('stage="workflows"');
     expect(readinessPl).toContain('stage="record"');
     expect(readinessEn).toContain('stage="record"');
+    expect(readinessPl).toContain('returnMode="previous-tab"');
+    expect(readinessEn).toContain('returnMode="previous-tab"');
+  });
+
+  it("offers readiness only from a completed comparison record", () => {
+    const unconditionalSources = [
+      "components/AssessmentQuiz.tsx",
+      "components/MethodologyOverview.tsx",
+      "components/ModelOverview.tsx",
+      "components/ProcurementBeyond8.tsx",
+      "components/TeamPage.tsx",
+    ];
+
+    for (const sourcePath of unconditionalSources) {
+      const source = readFileSync(sourcePath, "utf8");
+      expect(source, sourcePath).not.toMatch(
+        /href=\{(?:lang === "en" \? )?"?\/en\/readiness|\/readiness`|path: "readiness"|key: "readiness"/,
+      );
+    }
   });
 
   it("keeps supporting tools outside primary navigation and the quiet footer", () => {

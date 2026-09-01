@@ -8,9 +8,11 @@ import {
 
 export default function ContextualToolNotice({
   lang,
+  returnMode = "link",
   stage,
 }: {
   lang: Lang;
+  returnMode?: "link" | "previous-tab";
   stage: ContextualToolStage;
 }) {
   const tx = contextualToolT[lang][stage];
@@ -29,12 +31,21 @@ export default function ContextualToolNotice({
           {tx.body}
         </p>
       </div>
-      <Link
-        className="inline-flex min-h-11 items-center text-sm font-semibold text-blue-800 underline decoration-blue-300 underline-offset-4"
-        href={`${prefix}/calculator#${stage}`}
-      >
-        {tx.action}
-      </Link>
+      {returnMode === "previous-tab" ? (
+        <p
+          className="text-sm font-semibold text-blue-900"
+          data-contextual-tool-return="previous-tab"
+        >
+          {tx.action}
+        </p>
+      ) : (
+        <Link
+          className="inline-flex min-h-11 items-center text-sm font-semibold text-blue-800 underline decoration-blue-300 underline-offset-4"
+          href={`${prefix}/calculator#${stage}`}
+        >
+          {tx.action}
+        </Link>
+      )}
     </aside>
   );
 }

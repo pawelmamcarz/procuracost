@@ -51,10 +51,6 @@ export default function ModelOverview({ lang }: { lang: Lang }) {
       copy: tx.groups.context,
       links: [
         {
-          href: `${prefix}/readiness`,
-          copy: tx.groups.context.items.readiness,
-        },
-        {
           href: `${prefix}/practice/procurement-beyond-8`,
           copy: tx.groups.context.items.practice,
         },

@@ -164,12 +164,6 @@ export default function TeamPage({ lang }: { lang: Lang }) {
           </p>
           <div className="mt-4 flex flex-wrap gap-x-7 gap-y-2">
             <Link
-              href={lang === "en" ? "/en/readiness" : "/readiness"}
-              className="min-h-11 border-b border-blue-300 py-3 text-sm font-semibold text-blue-700 hover:border-blue-700"
-            >
-              {t.implementation.readinessAction}
-            </Link>
-            <Link
               href={
                 lang === "en"
                   ? "/en/practice/procurement-beyond-8"
