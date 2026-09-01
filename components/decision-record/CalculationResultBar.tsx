@@ -47,7 +47,7 @@ export default function CalculationResultBar({
   return (
     <aside
       aria-label={tx.regionLabel}
-      className="sticky bottom-0 z-10 -mx-5 border-t border-gray-200 bg-white px-5 py-3 sm:-mx-6 sm:px-6"
+      className="z-10 -mx-5 border-t border-gray-200 bg-white px-5 py-3 sm:-mx-6 sm:px-6 lg:sticky lg:bottom-0"
       data-calculation-result-bar={stale ? "stale" : "current"}
     >
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between lg:gap-8">

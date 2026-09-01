@@ -16,6 +16,7 @@ import {
   calculatorWorkspaceReducer,
   createCalculatorWorkspaceState,
 } from "@/components/calculator-v2/editor-state";
+import type { CalculatorStage } from "@/components/calculator-v2/local-draft";
 import { LegacyMigrationConfirmation } from "@/components/calculator-v2/LegacyMigrationConfirmation";
 import { bootstrapCalculatorUrl } from "@/components/calculator-v2/url-bootstrap";
 import {
@@ -44,7 +45,8 @@ function renderWorkspace(
     createScenarioDraft("fleet_tco_reframing")
   ),
   lang: "pl" | "en" = "en",
-  resultSlot?: ReturnType<typeof createElement>
+  resultSlot?: ReturnType<typeof createElement>,
+  activeStage: CalculatorStage = "case",
 ) {
   return renderToStaticMarkup(
     createElement(CalculatorWorkspaceView, {
@@ -52,6 +54,7 @@ function renderWorkspace(
       state,
       onStateChange: () => {},
       onCopyBaseScenario: () => {},
+      activeStage,
       resultSlot,
     })
   );
@@ -80,7 +83,7 @@ function exactFleetLegacyParams(): URLSearchParams {
 }
 
 describe("calculator workspace UI", () => {
-  it("renders the professional three-stage workspace and exact context-axis order", () => {
+  it("renders the guided four-stage workspace and exact case-axis order", () => {
     const html = renderWorkspace();
     const labels = [
       "Legal and governance boundary",
@@ -91,11 +94,13 @@ describe("calculator workspace UI", () => {
       "Initiated on",
     ];
 
-    expect(html).toContain("Procurement process cost comparison");
+    expect(html).toContain("Compare two ways to run a procurement");
     expect(html).toContain("Model 2.3.0");
-    expect(html).toContain("1. Define the purchasing context");
-    expect(html).toContain("2. Compare the alternative workflows");
-    expect(html).toContain("3. Set the economic assumptions");
+    expect(html).toContain("Case");
+    expect(html).toContain("Workflows");
+    expect(html).toContain("Costs");
+    expect(html).toContain("Record");
+    expect(html).toContain('data-stage-panel="case"');
     expect(html).toContain("Fleet TCO reframing");
     labels.reduce((previousIndex, label) => {
       const index = html.indexOf(label);
@@ -104,11 +109,8 @@ describe("calculator workspace UI", () => {
     }, -1);
     expect(html).toContain("Resolved mandatory legal constraints");
     expect(html).toContain("Base-design provenance");
-    expect(html).toContain("Role hourly rates");
-    expect(html).toContain("2 valid maps · mandatory waits locked");
-    expect(html).not.toContain(
-      "2 valid maps. Mandatory waits are locked."
-    );
+    expect(html).not.toContain("Role hourly rates");
+    expect(html).not.toContain("2 valid maps · mandatory waits locked");
   });
 
   it("loads design-shaping context atomically from registered base scenarios", () => {
@@ -166,7 +168,8 @@ describe("calculator workspace UI", () => {
       type: "add-step",
       alternativeId: "formalSequential",
     });
-    const html = renderWorkspace(invalid);
+    const html = renderWorkspace(invalid, "en", undefined, "workflows");
+    const costsHtml = renderWorkspace(invalid, "en", undefined, "costs");
 
     expect(html).toContain('id="process-map-status"');
     expect(html).toContain('role="alert"');
@@ -174,21 +177,23 @@ describe("calculator workspace UI", () => {
     expect(html).toContain("Formal sequential alternative");
     expect(html).toContain("User-defined step");
     expect(html).toContain("Enter a name for the added step before calculation.");
-    expect(html).toContain('aria-describedby="process-map-status"');
-    expect(html).toContain("disabled");
-    expect(html).toContain("Calculation is blocked until the listed issues are corrected.");
     expect(html).not.toContain('id="calculator-submit-status"');
     expect(html).not.toContain("RAW ENGINE MESSAGE");
+    expect(costsHtml).toContain('id="calculator-submit-status"');
+    expect(costsHtml).toContain("Enter a name for the added step before calculation.");
+    expect(costsHtml).toContain('aria-describedby="calculator-submit-status"');
+    expect(costsHtml).toContain("disabled");
+    expect(costsHtml).toContain("Calculation is blocked until the listed issues are corrected.");
   });
 
   it("permits calculation for a valid default draft and keeps the exact local-only sharing disclosure", () => {
-    const html = renderWorkspace();
+    const html = renderWorkspace(undefined, "en", undefined, "costs");
 
     expect(html).toContain("Calculate and create decision record");
     expect(html).not.toMatch(/Calculate and create decision record<\/button>[^]*disabled/);
     expect(html).toContain("Copy base-scenario link");
     expect(html).toContain(
-      "Process-map edits, custom step labels, the initiated-on date and economic assumptions remain only in this browser tab."
+      "The link restores only the selected base scenario. Process-map edits, custom step labels, the initiated-on date and economic assumptions are not included in the link. They remain in the current session unless you enable local draft saving."
     );
     expect(html).not.toContain("Share comparison");
   });
@@ -210,7 +215,7 @@ describe("calculator workspace UI", () => {
         "Decision record fixture"
       )
     );
-    const html = renderWorkspace(submitted.state, "en", slot);
+    const html = renderWorkspace(submitted.state, "en", slot, "record");
 
     expect(html).toMatch(
       /<article(?=[^>]*aria-labelledby="decision-record-heading")(?=[^>]*id="decision-record")(?=[^>]*role="region")(?=[^>]*tabindex="-1")[^>]*>/
@@ -240,7 +245,8 @@ describe("calculator workspace UI", () => {
       createElement(DecisionRecord, {
         lang: "en",
         record: submitted.state.record,
-      })
+      }),
+      "record",
     );
     const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]);
     const duplicates = ids.filter((id, index) => ids.indexOf(id) !== index);
@@ -272,10 +278,20 @@ describe("calculator workspace UI", () => {
     expect(deriveCalculatorWorkspaceValidation(blockedLegacy).canSubmit).toBe(
       false
     );
-    const invalidV2Html = renderWorkspace(invalidV2);
-    const blockedLegacyHtml = renderWorkspace(blockedLegacy);
+    const invalidV2Html = renderWorkspace(
+      invalidV2,
+      "en",
+      undefined,
+      "workflows",
+    );
+    const blockedLegacyHtml = renderWorkspace(
+      blockedLegacy,
+      "en",
+      undefined,
+      "costs",
+    );
+    const blockedLegacyCaseHtml = renderWorkspace(blockedLegacy);
     expect(invalidV2Html).toContain("2 valid maps · mandatory waits locked");
-    expect(blockedLegacyHtml).toContain("2 valid maps · mandatory waits locked");
     expect(invalidV2Html).not.toContain("The map needs correction");
     expect(blockedLegacyHtml).not.toContain("The map needs correction");
     expect(blockedLegacyHtml).toContain('id="calculator-submit-status"');
@@ -283,7 +299,7 @@ describe("calculator workspace UI", () => {
     expect(blockedLegacyHtml).toContain(
       'aria-describedby="calculator-submit-status"'
     );
-    expect(blockedLegacyHtml).toContain(
+    expect(blockedLegacyCaseHtml).toContain(
       "Discard imported link state and use this base scenario"
     );
   });
@@ -293,7 +309,9 @@ describe("calculator workspace UI", () => {
       createCalculatorWorkspaceState(
         createScenarioDraft("fleet_tco_reframing")
       ),
-      "pl"
+      "pl",
+      undefined,
+      "workflows",
     );
 
     expect(html).toContain(
@@ -521,7 +539,7 @@ describe("calculator workspace UI", () => {
         field: "economicAssumptions.competitionTransferRate",
       })
     );
-    const html = renderWorkspace(state);
+    const html = renderWorkspace(state, "en", undefined, "costs");
     expect(html).toContain(
       "The price-competition transfer range must stay between 0 and 1."
     );
@@ -552,7 +570,7 @@ describe("calculator workspace UI", () => {
       const state = createCalculatorWorkspaceState(
         createScenarioDraft("stable_private_standard_service")
       );
-      const html = renderWorkspace(state, lang);
+      const html = renderWorkspace(state, lang, undefined, "costs");
 
       expect(html).toContain(label);
       expect(html).toContain(disclosure);
@@ -575,7 +593,7 @@ describe("calculator workspace UI", () => {
     const state = createCalculatorWorkspaceState(
       createScenarioDraft("fleet_tco_reframing")
     );
-    const html = renderWorkspace(state, "en");
+    const html = renderWorkspace(state, "en", undefined, "costs");
 
     expect(html).toContain("No declared difference");
     expect(html).toMatch(
@@ -598,7 +616,7 @@ describe("calculator workspace UI", () => {
         field: "economicAssumptions.competitionDisadvantagedAlternative",
       })
     );
-    expect(renderWorkspace(state)).toContain(
+    expect(renderWorkspace(state, "en", undefined, "costs")).toContain(
       "Select the alternative with restricted supplier access before calculation."
     );
   });

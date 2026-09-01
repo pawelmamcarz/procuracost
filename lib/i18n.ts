@@ -288,6 +288,69 @@ const calculatorV2Pl = {
     formalSequential: "Formalna ścieżka sekwencyjna",
     adaptiveCompliant: "Adaptacyjna ścieżka zgodna z ramami",
   },
+  journey: {
+    eyebrow: "Zapis porównania / ścieżka praktyczna",
+    title: "Porównaj dwa sposoby przeprowadzenia zakupu",
+    introduction:
+      "Przejdź przez cztery etapy. Szczegóły modelu pozostają dostępne, ale nie zasłaniają decyzji.",
+    navigation: "Etapy porównania",
+    stages: {
+      case: {
+        label: "Przypadek",
+        description: "Wybierz punkt wyjścia i sprawdź wspólne ramy.",
+      },
+      workflows: {
+        label: "Przebiegi",
+        description: "Nazwij warianty i przejrzyj mapy pracy.",
+      },
+      costs: {
+        label: "Koszty",
+        description: "Uzupełnij kluczowe wartości i założenia.",
+      },
+      record: {
+        label: "Zapis",
+        description: "Odczytaj wynik, zakres i ograniczenia.",
+      },
+    },
+    next: "Dalej",
+    back: "Wstecz",
+    stepOf: (current: number, total: number) => `Etap ${current} z ${total}`,
+    namesTitle: "Nazwij porównywane przebiegi",
+    namesDescription:
+      "Krótka nazwa pomaga rozpoznać wariant. Typ kanoniczny pozostaje zawsze widoczny.",
+    nameLabel: "Nazwa wariantu",
+    defaultNames: {
+      formalSequential: "Obecny przebieg",
+      adaptiveCompliant: "Wariant alternatywny",
+    },
+    canonicalType: "Typ kanoniczny",
+    caseSupport: "Nie wiesz, który przypadek wybrać?",
+    suitabilityAction: "Sprawdź warunki zastosowania",
+    workflowSupport: "Potrzebujesz opisać sposób pracy przed edycją map?",
+    assessmentAction: "Otwórz profil procesu",
+    advancedEconomics: "Edytuj wartości i szczegółowe założenia",
+    advancedEconomicsDescription:
+      "Wartość kontraktu, koszt zwłoki, transfer konkurencji, stawki ról i stałe granice neutralności.",
+    readinessTitle: "Sprawdź warunki wdrożenia osobno",
+    readinessBody:
+      "Samoopis gotowości nie zmienia kosztu ani zapisu modelu.",
+    readinessAction: "Otwórz gotowość organizacyjną",
+  },
+  localDraft: {
+    title: "Szkic na tym urządzeniu",
+    disclosure:
+      "Po włączeniu pełny szkic formularza będzie zapisywany tylko w tej przeglądarce. Nie trafia na serwer.",
+    enable: "Zapisuj szkic na tym urządzeniu",
+    resumeTitle: "Znaleziono lokalny szkic",
+    resumeBody: "Możesz wznowić zapisany szkic albo zacząć od nowa.",
+    resume: "Wznów szkic",
+    startFresh: "Zacznij od nowa",
+    incompatible:
+      "Lokalny szkic pochodzi z innej wersji modelu i nie może zostać wczytany.",
+    invalid: "Lokalny szkic jest uszkodzony i nie może zostać wczytany.",
+    remove: "Usuń lokalny szkic",
+    saveFailed: "Nie udało się zapisać szkicu w tej przeglądarce.",
+  },
   rail: {
     boundary: "Wspólna granica prawna i ładu",
     addStep: "Dodaj krok",
@@ -476,7 +539,7 @@ const calculatorV2Pl = {
   share: {
     action: "Kopiuj link do scenariusza bazowego",
     disclosure:
-      "Link odtwarza wyłącznie wybrany scenariusz bazowy. Zmiany map procesu, własne nazwy kroków, data wszczęcia i założenia ekonomiczne pozostają tylko w tej karcie przeglądarki.",
+      "Link odtwarza wyłącznie wybrany scenariusz bazowy. Zmiany map procesu, własne nazwy kroków, data wszczęcia i założenia ekonomiczne nie trafiają do linku. Pozostają w bieżącej sesji, chyba że włączysz lokalny zapis szkicu.",
   },
   validation: {
     lockedStep:
@@ -541,6 +604,69 @@ const calculatorV2En = {
   alternatives: {
     formalSequential: "Formal sequential alternative",
     adaptiveCompliant: "Adaptive compliant alternative",
+  },
+  journey: {
+    eyebrow: "Comparison record / practitioner path",
+    title: "Compare two ways to run a procurement",
+    introduction:
+      "Move through four stages. Model detail remains available without obscuring the decision.",
+    navigation: "Comparison stages",
+    stages: {
+      case: {
+        label: "Case",
+        description: "Choose a starting point and check the shared boundary.",
+      },
+      workflows: {
+        label: "Workflows",
+        description: "Name the alternatives and review the maps of work.",
+      },
+      costs: {
+        label: "Costs",
+        description: "Enter the essential values and assumptions.",
+      },
+      record: {
+        label: "Record",
+        description: "Read the result, range and limitations.",
+      },
+    },
+    next: "Continue",
+    back: "Back",
+    stepOf: (current: number, total: number) => `Stage ${current} of ${total}`,
+    namesTitle: "Name the compared workflows",
+    namesDescription:
+      "A short name helps identify an alternative. Its canonical type remains visible.",
+    nameLabel: "Alternative name",
+    defaultNames: {
+      formalSequential: "Current workflow",
+      adaptiveCompliant: "Alternative workflow",
+    },
+    canonicalType: "Canonical type",
+    caseSupport: "Not sure which case to choose?",
+    suitabilityAction: "Check the conditions for use",
+    workflowSupport: "Need to describe the way of working before editing the maps?",
+    assessmentAction: "Open the process profile",
+    advancedEconomics: "Edit values and detailed assumptions",
+    advancedEconomicsDescription:
+      "Contract value, delay cost, competition transfer, role rates and fixed neutrality boundaries.",
+    readinessTitle: "Check implementation conditions separately",
+    readinessBody:
+      "The readiness self-description does not change cost or the model record.",
+    readinessAction: "Open organisational readiness",
+  },
+  localDraft: {
+    title: "Draft on this device",
+    disclosure:
+      "When enabled, the full form draft is saved only in this browser. It is not sent to a server.",
+    enable: "Save the draft on this device",
+    resumeTitle: "A local draft was found",
+    resumeBody: "You can resume the saved draft or start again.",
+    resume: "Resume draft",
+    startFresh: "Start again",
+    incompatible:
+      "The local draft belongs to another model version and cannot be loaded.",
+    invalid: "The local draft is damaged and cannot be loaded.",
+    remove: "Remove local draft",
+    saveFailed: "The draft could not be saved in this browser.",
   },
   rail: {
     boundary: "Shared legal and governance boundary",
@@ -727,7 +853,7 @@ const calculatorV2En = {
   share: {
     action: "Copy base-scenario link",
     disclosure:
-      "The link restores only the selected base scenario. Process-map edits, custom step labels, the initiated-on date and economic assumptions remain only in this browser tab.",
+      "The link restores only the selected base scenario. Process-map edits, custom step labels, the initiated-on date and economic assumptions are not included in the link. They remain in the current session unless you enable local draft saving.",
   },
   validation: {
     lockedStep:
@@ -1092,6 +1218,185 @@ const homeEn = {
 } satisfies HomeShape;
 
 export const homeT = { pl: homePl, en: homeEn } as const;
+
+const homeExperiencePl = {
+  hero: {
+    eyebrow: "Decyzja zakupowa / model 2.3",
+    title: "Porównaj dwa zgodne z prawem sposoby przeprowadzenia zakupu.",
+    description:
+      "Zobacz, skąd bierze się różnica czasu i kosztu. Zachowaj jawny zapis założeń, wyniku i ograniczeń.",
+    primaryAction: "Zacznij porównanie",
+    secondaryAction: "Sprawdź model i źródła",
+  },
+  paths: {
+    eyebrow: "Wybierz cel",
+    title: "Dwie ścieżki. Jeden wspólny kontrakt modelu.",
+    practical: {
+      eyebrow: "Mam konkretny zakup",
+      title: "Utwórz porównanie",
+      body: "Przejdź przez przypadek, dwa przebiegi, koszty i zapis wyniku.",
+      action: "Rozpocznij porównanie",
+    },
+    research: {
+      eyebrow: "Weryfikuję model",
+      title: "Otwórz centrum badawcze",
+      body: "Sprawdź kontrakt modelu, metodę, założenia, źródła i replikację.",
+      action: "Przejdź do badań",
+    },
+  },
+  record: {
+    eyebrow: "Struktura rekordu",
+    title: "Wynik, który można sprawdzić i odtworzyć",
+    description:
+      "Rekord nie wskazuje zwycięzcy. Pokazuje obie alternatywy w tych samych ramach i zachowuje granice interpretacji.",
+    fields: [
+      "Nazwa wariantu i typ kanoniczny",
+      "Wynik centralny",
+      "Deklarowany zakres scenariusza",
+      "Główne czynniki kosztu",
+      "Założenia i ograniczenia",
+    ],
+  },
+  journey: {
+    eyebrow: "Ścieżka praktyczna",
+    title: "Od przypadku do zapisu w czterech krokach",
+    intro:
+      "Najpierw wybierasz najbliższy przypadek. Szczegóły metodologiczne pozostają dostępne, ale nie zasłaniają decyzji.",
+    steps: [
+      {
+        title: "Przypadek",
+        body: "Wybierz punkt wyjścia i sprawdź wspólne ramy prawne.",
+      },
+      {
+        title: "Przebiegi",
+        body: "Nazwij warianty i przejrzyj dwie połączone mapy pracy.",
+      },
+      {
+        title: "Koszty",
+        body: "Podaj kluczowe wartości, a szczegóły rozwiń tylko wtedy, gdy są potrzebne.",
+      },
+      {
+        title: "Zapis",
+        body: "Odczytaj różnicę, zakres, czynniki i granice wyniku.",
+      },
+    ],
+  },
+  trust: {
+    eyebrow: "Zasady instrumentu",
+    items: [
+      {
+        title: "Neutralny wynik",
+        body: "Model dopuszcza oba kierunki różnicy i nie zakłada tańszego wariantu.",
+      },
+      {
+        title: "Dane pod kontrolą użytkownika",
+        body: "Szkic lokalny działa wyłącznie po zgodzie i nie trafia na serwer.",
+      },
+      {
+        title: "Wspólna granica prawna",
+        body: "Obowiązkowe terminy i reguły pozostają zablokowane po obu stronach.",
+      },
+    ],
+  },
+  finalAction: {
+    title: "Masz zakup do porównania?",
+    body: "Zacznij od najbliższego scenariusza. W każdej chwili możesz wrócić i poprawić założenia.",
+    action: "Utwórz zapis porównania",
+  },
+} as const;
+
+type HomeExperienceShape = LangShape<typeof homeExperiencePl>;
+
+const homeExperienceEn = {
+  hero: {
+    eyebrow: "Procurement decision / model 2.3",
+    title: "Compare two lawful ways to run a procurement.",
+    description:
+      "See what drives the difference in time and cost. Keep an explicit record of assumptions, results and limitations.",
+    primaryAction: "Start a comparison",
+    secondaryAction: "Check the model and evidence",
+  },
+  paths: {
+    eyebrow: "Choose your goal",
+    title: "Two paths. One shared model contract.",
+    practical: {
+      eyebrow: "I have a procurement case",
+      title: "Create a comparison",
+      body: "Move through the case, two workflows, costs and the result record.",
+      action: "Start the comparison",
+    },
+    research: {
+      eyebrow: "I am reviewing the model",
+      title: "Open the research centre",
+      body: "Inspect the model contract, method, assumptions, evidence and replication package.",
+      action: "Go to research",
+    },
+  },
+  record: {
+    eyebrow: "Record structure",
+    title: "A result that can be checked and reproduced",
+    description:
+      "The record does not declare a winner. It shows both alternatives under the same boundary and preserves the limits of interpretation.",
+    fields: [
+      "Alternative name and canonical type",
+      "Central result",
+      "Declared scenario range",
+      "Main cost drivers",
+      "Assumptions and limitations",
+    ],
+  },
+  journey: {
+    eyebrow: "Practitioner path",
+    title: "From case to record in four steps",
+    intro:
+      "Start with the closest case. Methodological detail remains available without obscuring the decision.",
+    steps: [
+      {
+        title: "Case",
+        body: "Choose a starting point and check the shared legal boundary.",
+      },
+      {
+        title: "Workflows",
+        body: "Name the alternatives and review two connected maps of work.",
+      },
+      {
+        title: "Costs",
+        body: "Enter the essential values and open detail only when it is needed.",
+      },
+      {
+        title: "Record",
+        body: "Read the difference, range, drivers and result boundary.",
+      },
+    ],
+  },
+  trust: {
+    eyebrow: "Instrument rules",
+    items: [
+      {
+        title: "Neutral result",
+        body: "The model permits either direction of difference and assumes no cheaper alternative.",
+      },
+      {
+        title: "User-controlled data",
+        body: "A local draft works only with consent and is never sent to a server.",
+      },
+      {
+        title: "Shared legal boundary",
+        body: "Mandatory periods and rules remain locked on both sides.",
+      },
+    ],
+  },
+  finalAction: {
+    title: "Do you have a procurement to compare?",
+    body: "Start from the closest scenario. You can return and revise the assumptions at any point.",
+    action: "Create a comparison record",
+  },
+} satisfies HomeExperienceShape;
+
+export const homeExperienceT = {
+  pl: homeExperiencePl,
+  en: homeExperienceEn,
+} as const;
 
 const mechanismsEvidencePl = {
   eyebrow: "Rejestr dowodowy",
@@ -2069,14 +2374,66 @@ export const siteMetadataT = {
 
 const modelOverviewPl = {
   metadata: {
-    title: "Model i założenia | ProcuraCost",
+    title: "Centrum badawcze | ProcuraCost",
     description:
       "Kontrakt obliczeniowy, zakres dowodowy i ograniczenia modelu ProcuraCost 2.3.",
   },
   eyebrow: `Model ${MODEL_V2_METADATA.modelVersion}`,
-  title: "Model i założenia",
+  title: "Centrum badawcze",
   intro:
-    "ProcuraCost porównuje dwa dopuszczalne projekty przebiegu procesu zakupowego. Nie wybiera procedury za użytkownika i nie zakłada kierunku różnicy kosztu.",
+    "Tu można prześledzić kontrakt obliczeniowy, źródła, ograniczenia i materiały potrzebne do odtworzenia modelu 2.3. ProcuraCost nie wybiera procedury za użytkownika i nie zakłada kierunku różnicy kosztu.",
+  groups: {
+    contract: {
+      eyebrow: "Kontrakt modelu",
+      title: "Co model liczy i na jakich warunkach",
+      items: {
+        assumptions: {
+          title: "Założenia",
+          body: "Wersjonowane parametry, zakresy i status dowodowy każdej wartości.",
+        },
+        methodology: {
+          title: "Metoda obliczeń",
+          body: "Kolejność materializacji, walidacji, obliczenia i zapisu wyniku.",
+        },
+        evidence: {
+          title: "Mechanizmy i źródła",
+          body: "Jawne rozdzielenie twierdzeń źródłowych, założeń i wyników modelu.",
+        },
+      },
+    },
+    reproducibility: {
+      eyebrow: "Badanie i replikacja",
+      title: "Od hipotezy do odtworzonego wyniku",
+      items: {
+        paper: {
+          title: "Agenda i artykuł badawczy",
+          body: "Pytania, hipotezy i granice wnioskowania empirycznego.",
+        },
+        repository: {
+          title: "Kod i pakiet replikacyjny",
+          body: "Publiczna implementacja, testy oraz deterministyczne artefakty modelu 2.3.",
+        },
+      },
+    },
+    context: {
+      eyebrow: "Kontekst zastosowania",
+      title: "Materiały poza rachunkiem kosztu",
+      items: {
+        readiness: {
+          title: "Gotowość organizacyjna",
+          body: "Oddzielny samoopis warunków wdrożenia, bez wpływu na wynik modelu.",
+        },
+        practice: {
+          title: "Materiał praktyczny",
+          body: "Pytania o tarcie procesu, wymagania, odpowiedzialność i adopcję.",
+        },
+        team: {
+          title: "Zespół",
+          body: "Role i kompetencje osób rozwijających projekt.",
+        },
+      },
+    },
+  },
   sections: {
     legalBoundary: {
       label: "01 / wspólna granica",
@@ -2120,14 +2477,66 @@ type ModelOverviewShape = LangShape<typeof modelOverviewPl>;
 
 const modelOverviewEn = {
   metadata: {
-    title: "Model and assumptions | ProcuraCost",
+    title: "Research centre | ProcuraCost",
     description:
       "Calculation contract, evidence boundary and limitations of ProcuraCost model 2.3.",
   },
   eyebrow: `Model ${MODEL_V2_METADATA.modelVersion}`,
-  title: "Model and assumptions",
+  title: "Research centre",
   intro:
-    "ProcuraCost compares two lawful procurement workflow designs. It does not select a procedure for the user or assume the direction of the cost difference.",
+    "Trace the calculation contract, evidence, limitations and materials needed to reproduce model 2.3. ProcuraCost does not select a procedure for the user or assume the direction of the cost difference.",
+  groups: {
+    contract: {
+      eyebrow: "Model contract",
+      title: "What the model calculates and under which conditions",
+      items: {
+        assumptions: {
+          title: "Assumptions",
+          body: "Versioned parameters, ranges and the evidence status of each value.",
+        },
+        methodology: {
+          title: "Calculation method",
+          body: "The sequence of materialisation, validation, calculation and result recording.",
+        },
+        evidence: {
+          title: "Mechanisms and evidence",
+          body: "An explicit separation of source claims, assumptions and model outputs.",
+        },
+      },
+    },
+    reproducibility: {
+      eyebrow: "Research and replication",
+      title: "From hypothesis to reproduced result",
+      items: {
+        paper: {
+          title: "Research agenda and paper",
+          body: "Questions, hypotheses and the limits of empirical inference.",
+        },
+        repository: {
+          title: "Code and replication package",
+          body: "The public implementation, tests and deterministic model 2.3 artefacts.",
+        },
+      },
+    },
+    context: {
+      eyebrow: "Application context",
+      title: "Materials outside the cost calculation",
+      items: {
+        readiness: {
+          title: "Organisational readiness",
+          body: "A separate self-description of implementation conditions with no effect on model output.",
+        },
+        practice: {
+          title: "Practitioner material",
+          body: "Questions about process friction, requirements, accountability and adoption.",
+        },
+        team: {
+          title: "Team",
+          body: "The roles and competencies of the people developing the project.",
+        },
+      },
+    },
+  },
   sections: {
     legalBoundary: {
       label: "01 / shared boundary",
@@ -3982,46 +4391,82 @@ export type TeamRole = keyof typeof teamPl.roles;
 export type TeamCompetency = keyof typeof teamPl.competencies;
 
 const footerPl = {
-  otherProjects: "Inne projekty:",
   modelNote:
     "Deterministyczny model na jawnych założeniach; wyniki nie są estymatami empirycznymi",
   resourceNavigation: "Materiały ProcuraCost",
   methodology: "Źródła i metodologia",
-  readiness: "Gotowość do wdrożenia",
-  practice: "Procurement&Beyond #8",
-  projectTitles: {
-    silenceTax: "Kalkulator podatku od milczenia",
-    carTco: "Kalkulator TCO samochodu",
-    reminders: "Platforma przypomnień",
-    aerobatics: "akrobacja.com",
-    linkedin: "Profil zawodowy",
-  },
+  localDraftNote:
+    "Szkic może zostać zapisany wyłącznie w tej przeglądarce.",
+  team: "Zespół",
+  evidence: "Mechanizmy i źródła",
 } as const;
 
 type FooterShape = LangShape<typeof footerPl>;
 
 const footerEn = {
-  otherProjects: "Other projects:",
   modelNote:
     "Deterministic model under declared assumptions; outputs are not empirical estimates",
   resourceNavigation: "ProcuraCost resources",
   methodology: "Sources and methodology",
-  readiness: "Implementation readiness",
-  practice: "Procurement&Beyond episode 8",
-  projectTitles: {
-    silenceTax: "Silence tax calculator",
-    carTco: "Car TCO calculator",
-    reminders: "Reminder platform",
-    aerobatics: "akrobacja.com",
-    linkedin: "Professional profile",
-  },
+  localDraftNote: "A draft can be saved only in this browser.",
+  team: "Team",
+  evidence: "Mechanisms and evidence",
 } satisfies FooterShape;
 
 export const footerT = { pl: footerPl, en: footerEn } as const;
-export type FooterProjectKey = keyof typeof footerPl.projectTitles;
+
+const contextualToolPl = {
+  case: {
+    label: "Narzędzie pomocnicze · etap 1",
+    body:
+      "Warunki zastosowania pomagają opisać przypadek. Nie wybierają procedury i nie zmieniają rachunku kosztu.",
+    action: "Wróć do przypadku",
+  },
+  workflows: {
+    label: "Narzędzie pomocnicze · etap 2",
+    body:
+      "Profil pomaga nazwać projekt przebiegu. Nie jest oceną dojrzałości ani rekomendacją procedury.",
+    action: "Wróć do przebiegów",
+  },
+  record: {
+    label: "Po zapisie porównania",
+    body:
+      "Samoopis wdrożenia pozostaje odrębny od wyniku kosztowego. Nie zmienia różnicy kosztów ani zapisu modelu.",
+    action: "Wróć do zapisu porównania",
+  },
+} as const;
+
+type ContextualToolShape = LangShape<typeof contextualToolPl>;
+
+const contextualToolEn = {
+  case: {
+    label: "Supporting tool · stage 1",
+    body:
+      "Suitability conditions help describe the case. They do not select a procedure or change the cost calculation.",
+    action: "Return to the case",
+  },
+  workflows: {
+    label: "Supporting tool · stage 2",
+    body:
+      "The profile helps name a workflow design. It is not a maturity assessment or procedure recommendation.",
+    action: "Return to workflows",
+  },
+  record: {
+    label: "After recording the comparison",
+    body:
+      "Implementation self-description remains separate from the cost result. It does not change the cost difference or model record.",
+    action: "Return to the comparison record",
+  },
+} satisfies ContextualToolShape;
+
+export const contextualToolT = {
+  pl: contextualToolPl,
+  en: contextualToolEn,
+} as const;
+export type ContextualToolStage = keyof typeof contextualToolPl;
 
 const navigationPl = {
-  calculator: "Kalkulator",
+  calculator: "Porównanie",
   optimizer: "Warunki zastosowania",
   caseStudies: "Scenariusze",
   assessment: "Profil procesu",
@@ -4029,7 +4474,7 @@ const navigationPl = {
   research: "Artykuł naukowy",
   researchAgenda: "Agenda badawcza",
   methodology: "Metodologia",
-  model: "Model",
+  model: "Badania",
   languageSwitch: "EN",
   primaryNavigation: "Nawigacja główna",
   openMenu: "Otwórz menu",
@@ -4039,7 +4484,7 @@ const navigationPl = {
 type NavigationShape = LangShape<typeof navigationPl>;
 
 const navigationEn = {
-  calculator: "Calculator",
+  calculator: "Comparison",
   optimizer: "Suitability comparison",
   caseStudies: "Scenarios",
   assessment: "Process profile",
@@ -4047,7 +4492,7 @@ const navigationEn = {
   research: "Research paper",
   researchAgenda: "Agenda",
   methodology: "Methodology",
-  model: "Model",
+  model: "Research",
   languageSwitch: "PL",
   primaryNavigation: "Primary navigation",
   openMenu: "Open menu",

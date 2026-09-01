@@ -108,6 +108,14 @@ describe("calculation result bar", () => {
     expect(stale).toContain(decisionRecordT.pl.resultBar.staleNote);
   });
 
+  it("stays in document flow on narrow screens and becomes sticky only on desktop", () => {
+    const html = markup("pl", false);
+
+    expect(html).toContain("lg:sticky");
+    expect(html).toContain("lg:bottom-0");
+    expect(html).not.toContain('class="sticky bottom-0');
+  });
+
   it("offers recalculation only while the result is stale", () => {
     expect(markup("pl", true)).toContain(
       decisionRecordT.pl.resultBar.recalculate

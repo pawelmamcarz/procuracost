@@ -10,7 +10,12 @@ import ModelAssumptionsPage from "@/components/ModelAssumptionsPage";
 import ModelOverview from "@/components/ModelOverview";
 import SuitabilityComparison from "@/components/SuitabilityComparison";
 import TeamPage from "@/components/TeamPage";
-import { assessmentT, homeT, mechanismsEvidenceT } from "@/lib/i18n";
+import {
+  assessmentT,
+  homeExperienceT,
+  mechanismsEvidenceT,
+  teamT,
+} from "@/lib/i18n";
 
 let pathname = "/";
 
@@ -36,7 +41,7 @@ describe("AppShell landmark contract", () => {
   it("owns the only main landmark around the shared homepage", () => {
     const markup = renderPageInShell(createElement(EvidenceFieldHome, { lang: "pl" }), "pl");
 
-    expect(markup).toContain(homeT.pl.hero.title);
+    expect(markup).toContain(homeExperienceT.pl.hero.title);
     expect(markup.match(/<main\b/g)).toHaveLength(1);
   });
 
@@ -87,7 +92,7 @@ describe("AppShell landmark contract", () => {
     pathname = "/en/team";
     const markup = renderPageInShell(createElement(TeamPage, { lang: "en" }), "en");
 
-    expect(markup).toContain("ProcuraCost team");
+    expect(markup).toContain(teamT.en.title);
     expect(markup.match(/<main\b/g)).toHaveLength(1);
   });
 });

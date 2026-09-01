@@ -8,6 +8,7 @@ import {
   type Lang,
 } from "@/lib/i18n";
 import type { DecisionRecordV2 } from "@/lib/model-v2";
+import type { ComparisonDisplayNames } from "@/components/calculator-v2/local-draft";
 
 import AlternativeComparisonRows from "./AlternativeComparisonRows";
 import AssumptionsRecord from "./AssumptionsRecord";
@@ -21,6 +22,7 @@ export interface DecisionRecordProps {
   lang: Lang;
   record: DecisionRecordV2;
   actions?: ReactNode;
+  displayNames?: ComparisonDisplayNames;
 }
 
 const REFERENCE_SCENARIOS = buildReferenceScenarioComparisonData();
@@ -63,6 +65,7 @@ export default function DecisionRecord({
   lang,
   record,
   actions,
+  displayNames,
 }: DecisionRecordProps) {
   const tx = decisionRecordT[lang];
   const exportTx = researchExportV2T[lang];
@@ -107,7 +110,11 @@ export default function DecisionRecord({
         <DecisionRecordSummary lang={lang} record={record} />
       </RecordSection>
       <RecordSection id="alternatives" title={tx.sections.alternatives}>
-        <AlternativeComparisonRows lang={lang} record={record} />
+        <AlternativeComparisonRows
+          displayNames={displayNames}
+          lang={lang}
+          record={record}
+        />
       </RecordSection>
       <RecordSection id="drivers" title={tx.sections.drivers}>
         <DriverAnalysis lang={lang} record={record} />

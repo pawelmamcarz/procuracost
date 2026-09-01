@@ -21,13 +21,16 @@ interface NavBarProps {
 }
 
 function desktopLinkClass(item: NavItem) {
-  if (item.active) return "font-semibold text-blue-700";
-  return item.highlight ? "font-medium text-blue-600 hover:text-blue-700" : "hover:text-blue-600";
+  if (item.active) return "border-b-2 border-blue-700 pb-1 font-semibold text-gray-950";
+  return item.highlight
+    ? "border-b-2 border-transparent pb-1 font-semibold text-blue-700 hover:border-blue-300"
+    : "border-b-2 border-transparent pb-1 font-medium hover:border-gray-300 hover:text-gray-950";
 }
 
 function mobileLinkClass(item: NavItem) {
-  if (item.active || item.highlight) return "rounded-lg bg-blue-50 px-3 py-2 font-medium text-blue-700";
-  return "rounded-lg px-3 py-2 hover:bg-gray-50 hover:text-blue-700";
+  if (item.active) return "border-l-4 border-blue-700 bg-blue-50 px-3 py-3 font-semibold text-blue-900";
+  if (item.highlight) return "border-l-4 border-blue-300 px-3 py-3 font-semibold text-blue-700";
+  return "border-l-4 border-transparent px-3 py-3 font-medium hover:border-gray-300 hover:bg-gray-50 hover:text-gray-950";
 }
 
 export default function NavBar({ brand, items, lang, langSwitch, labels, pathname }: NavBarProps) {
@@ -46,8 +49,8 @@ export default function NavBar({ brand, items, lang, langSwitch, labels, pathnam
   }, [open]);
 
   return (
-    <nav aria-label={labels.primaryNavigation} className="border-b border-gray-200 bg-white px-4 py-3 sm:px-6">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-6">
+    <nav aria-label={labels.primaryNavigation} className="border-b border-t-4 border-gray-200 border-t-blue-700 bg-white px-5 py-3 sm:px-8">
+      <div className="mx-auto flex max-w-5xl items-center justify-between gap-6">
         <Link href={brand.href} className="shrink-0 text-xl font-bold tracking-tight text-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
           {brand.label}
         </Link>
@@ -63,7 +66,7 @@ export default function NavBar({ brand, items, lang, langSwitch, labels, pathnam
               {item.label}
             </Link>
           ))}
-          <Link href={langSwitch.href} className="rounded-full border border-gray-200 px-2.5 py-0.5 text-xs font-semibold text-gray-500 hover:border-blue-300 hover:text-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+          <Link href={langSwitch.href} className="border-l border-gray-300 pl-4 font-mono text-xs font-semibold text-gray-500 hover:text-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
             {langSwitch.label}
           </Link>
         </div>
@@ -89,7 +92,7 @@ export default function NavBar({ brand, items, lang, langSwitch, labels, pathnam
       </div>
 
       {open && (
-        <div id={mobileMenuId} className="mx-auto mt-3 grid max-w-7xl grid-cols-1 gap-1 border-t border-gray-100 pt-3 pb-2 text-sm text-gray-700 sm:grid-cols-2 lg:hidden">
+        <div id={mobileMenuId} className="mx-auto mt-3 grid max-w-5xl grid-cols-1 gap-1 border-t border-gray-200 pb-2 pt-3 text-sm text-gray-700 sm:grid-cols-2 lg:hidden">
           {items.map((item) => (
             <Link
               key={item.href}
@@ -103,7 +106,7 @@ export default function NavBar({ brand, items, lang, langSwitch, labels, pathnam
           ))}
           <Link
             href={langSwitch.href}
-            className="mx-3 mt-1 inline-block w-fit rounded-full border border-gray-200 px-2.5 py-1 text-xs font-semibold text-gray-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+            className="ml-3 mt-2 inline-block w-fit border-l border-gray-300 py-2 pl-3 font-mono text-xs font-semibold text-gray-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
             onClick={() => setOpen(false)}
           >
             {langSwitch.label}

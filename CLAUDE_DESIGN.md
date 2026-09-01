@@ -61,6 +61,28 @@ Do not default to a dashboard grid of rounded text boxes.
   typography.
 - Do not render an important diagram as a table with text inside framed cells.
 
+## Decision-register architecture
+
+The primary product metaphor is a decision register. It should explain the
+service before exposing model detail.
+
+- The global navigation has two destinations: comparison and research.
+  Suitability, workflow profile and implementation readiness remain contextual
+  supporting tools.
+- The homepage leads with one promise, two explicit entry paths, the structure
+  of the resulting record and the four-stage practical journey.
+- The practical journey uses four stages in this order: case, workflows, costs,
+  record. Render one active stage at a time.
+- Use a cobalt vertical rule with numbered points as the signature motif for a
+  record, sequence or provenance chain. The line represents traceability, not
+  progress scoring.
+- User-defined alternative names may aid recognition, but the canonical formal
+  sequential and adaptive compliant types must remain visible beside them.
+- Implementation readiness may be offered only after a cost record exists and
+  must remain independent of the cost difference.
+- Browser draft persistence is opt-in. A shared URL never contains process-map
+  edits, custom labels or economic inputs beyond the registered base scenario.
+
 ## Signature process rail
 
 The calculator's primary visual is a connected procurement process rail, not a

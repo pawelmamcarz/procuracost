@@ -21,9 +21,9 @@ type SiteRoute = {
 export const SITE_ROUTES: readonly SiteRoute[] = [
   { key: "home", pl: "/", en: "/en", sitemap: true },
   { key: "calculator", pl: "/calculator", en: "/en/calculator", nav: { pl: "calculator", en: "calculator", highlight: true }, sitemap: true },
-  { key: "optimizer", pl: "/optimizer", en: "/en/optimizer", nav: { pl: "optimizer", en: "optimizer" }, sitemap: true },
+  { key: "optimizer", pl: "/optimizer", en: "/en/optimizer", sitemap: true },
   { key: "caseStudies", pl: "/case-studies", en: "/en/case-studies", sitemap: true },
-  { key: "assessment", pl: "/assessment", en: "/en/assessment", nav: { pl: "assessment", en: "assessment" }, sitemap: true },
+  { key: "assessment", pl: "/assessment", en: "/en/assessment", sitemap: true },
   { key: "readiness", pl: "/readiness", en: "/en/readiness", sitemap: true },
   { key: "procurementBeyond8", pl: "/practice/procurement-beyond-8", en: "/en/practice/procurement-beyond-8", sitemap: true },
   { key: "team", pl: "/team", en: "/en/team", sitemap: true },

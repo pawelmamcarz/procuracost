@@ -4,59 +4,65 @@ import { renderToStaticMarkup } from "react-dom/server";
 
 import { describe, expect, it } from "vitest";
 
-import EvidenceFieldHome from "@/components/EvidenceFieldHome";
+import ContextualToolNotice from "@/components/ContextualToolNotice";
 import SiteFooter from "@/components/SiteFooter";
-import TeamPage from "@/components/TeamPage";
-import { footerT, homeT, teamT } from "@/lib/i18n";
+import { contextualToolT, footerT } from "@/lib/i18n";
 import { navigationFor } from "@/lib/site-routes";
 
-describe("implementation guidance discovery", () => {
-  it("links readiness and practitioner material contextually from home and team", () => {
-    for (const lang of ["pl", "en"] as const) {
-      const readinessHref = lang === "en" ? "/en/readiness" : "/readiness";
-      const practiceHref =
-        lang === "en"
-          ? "/en/practice/procurement-beyond-8"
-          : "/practice/procurement-beyond-8";
-      const home = renderToStaticMarkup(
-        createElement(EvidenceFieldHome, { lang })
-      );
-      const team = renderToStaticMarkup(createElement(TeamPage, { lang }));
+describe("contextual supporting tools", () => {
+  it("returns each supporting tool to its exact comparison stage in both languages", () => {
+    const cases = [
+      { stage: "case", hash: "case" },
+      { stage: "workflows", hash: "workflows" },
+      { stage: "record", hash: "record" },
+    ] as const;
 
-      for (const [markup, copy] of [
-        [home, homeT[lang].implementation],
-        [team, teamT[lang].implementation],
-      ] as const) {
-        expect(markup).toContain(copy.title);
-        expect(markup).toContain(`href="${readinessHref}"`);
-        expect(markup).toContain(`href="${practiceHref}"`);
-        expect(markup).not.toMatch(/<table|bg-gradient|shadow-/);
+    for (const lang of ["pl", "en"] as const) {
+      for (const { stage, hash } of cases) {
+        const markup = renderToStaticMarkup(
+          createElement(ContextualToolNotice, { lang, stage }),
+        );
+        const href = `${lang === "en" ? "/en" : ""}/calculator#${hash}`;
+
+        expect(markup).toContain(`data-contextual-tool-stage="${stage}"`);
+        expect(markup).toContain(contextualToolT[lang][stage].label);
+        expect(markup).toContain(contextualToolT[lang][stage].body);
+        expect(markup).toContain(`href="${href}"`);
       }
     }
   });
 
-  it("keeps both resources outside primary navigation but visible in the footer", () => {
+  it("integrates the case, workflow and record notices with the relevant surfaces", () => {
+    const suitability = readFileSync("components/SuitabilityComparison.tsx", "utf8");
+    const assessment = readFileSync("components/AssessmentQuiz.tsx", "utf8");
+    const readinessPl = readFileSync("app/(pl)/readiness/page.tsx", "utf8");
+    const readinessEn = readFileSync("app/(en)/en/readiness/page.tsx", "utf8");
+
+    expect(suitability).toContain('stage="case"');
+    expect(assessment).toContain('stage="workflows"');
+    expect(readinessPl).toContain('stage="record"');
+    expect(readinessEn).toContain('stage="record"');
+  });
+
+  it("keeps supporting tools outside primary navigation and the quiet footer", () => {
     for (const lang of ["pl", "en"] as const) {
       const navigationHrefs = navigationFor(lang).map(({ href }) => href);
-      const readinessHref = lang === "en" ? "/en/readiness" : "/readiness";
-      const practiceHref =
-        lang === "en"
-          ? "/en/practice/procurement-beyond-8"
-          : "/practice/procurement-beyond-8";
       const footer = renderToStaticMarkup(createElement(SiteFooter, { lang }));
 
-      expect(navigationHrefs).not.toContain(readinessHref);
-      expect(navigationHrefs).not.toContain(practiceHref);
-      expect(footer).toContain(`href="${readinessHref}"`);
-      expect(footer).toContain(`href="${practiceHref}"`);
+      expect(navigationHrefs).toEqual([
+        lang === "en" ? "/en/calculator" : "/calculator",
+        lang === "en" ? "/en/model" : "/model",
+      ]);
+      expect(footer).not.toMatch(/href="(?:\/en)?\/(?:optimizer|assessment|readiness|practice)/);
       expect(footer).toContain(footerT[lang].modelNote);
+      expect(footer).toContain(footerT[lang].localDraftNote);
     }
   });
 
   it("keeps all footer copy in i18n", () => {
     const source = readFileSync("components/SiteFooter.tsx", "utf8");
     expect(source).not.toMatch(
-      /Other projects:|Inne projekty:|Model informed by|Model oparty na|Sources & methodology|Źródła i metodologia/
+      /Other projects:|Inne projekty:|Model informed by|Model oparty na|Sources & methodology|Źródła i metodologia/,
     );
   });
 });

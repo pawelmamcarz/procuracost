@@ -11,8 +11,10 @@ import {
   type DecisionRecordV2,
   type PdfCopyV2,
 } from "@/lib/model-v2";
+import type { ComparisonDisplayNames } from "@/components/calculator-v2/local-draft";
 
 export interface PDFExportProps {
+  displayNames?: ComparisonDisplayNames;
   lang: Lang;
   record: DecisionRecordV2;
 }
@@ -65,13 +67,14 @@ async function loadPdfFonts(): Promise<readonly EmbeddedPdfFont[]> {
 
 export function renderAndSaveDecisionRecordPdf(
   doc: jsPDF,
-  copy: PdfCopyV2
+  copy: PdfCopyV2,
+  displayNames?: ComparisonDisplayNames
 ): void {
-  renderDecisionRecordPdf(doc, copy);
+  renderDecisionRecordPdf(doc, copy, displayNames);
   doc.save(copy.filename);
 }
 
-export default function PDFExport({ lang, record }: PDFExportProps) {
+export default function PDFExport({ displayNames, lang, record }: PDFExportProps) {
   const [generating, setGenerating] = useState(false);
   const [failed, setFailed] = useState(false);
   const tx = decisionRecordT[lang].actions;
@@ -91,7 +94,7 @@ export default function PDFExport({ lang, record }: PDFExportProps) {
         doc.addFont(font.vfs, "NotoSans", font.style);
       }
       doc.setFont("NotoSans", "normal");
-      renderAndSaveDecisionRecordPdf(doc, copy);
+      renderAndSaveDecisionRecordPdf(doc, copy, displayNames);
     } catch {
       setFailed(true);
     } finally {

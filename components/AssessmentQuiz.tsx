@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Check } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import ContextualToolNotice from "@/components/ContextualToolNotice";
 import {
   buildProcessProfileResult,
   createProcessProfileState,
@@ -69,6 +70,7 @@ export function AssessmentQuizView({
 
   return (
     <div className="mx-auto max-w-2xl px-5 py-10 sm:px-6 sm:py-14">
+      <ContextualToolNotice lang={lang} stage="workflows" />
       <header className="max-w-3xl border-b border-gray-200 pb-8">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
           {tx.badge}

@@ -6,7 +6,8 @@ import {
   useEffect,
   useState,
 } from "react";
-import { ArrowRight, Clipboard, FileCheck2 } from "lucide-react";
+import Link from "next/link";
+import { ArrowLeft, ArrowRight, Clipboard, FileCheck2 } from "lucide-react";
 
 import CalculationResultBar from "@/components/decision-record/CalculationResultBar";
 import DecisionRecord from "@/components/decision-record/DecisionRecord";
@@ -20,7 +21,9 @@ import {
 import type { LegacyMigrationResult } from "@/lib/model-v2/legacy-adapter";
 
 import { AlternativeDesignControls } from "./AlternativeDesignControls";
+import { CalculatorJourneyNav } from "./CalculatorJourneyNav";
 import { CalculatorValidationSummary } from "./CalculatorValidationSummary";
+import { ComparisonNameFields } from "./ComparisonNameFields";
 import { ContextAxes, type EditableContextAxis } from "./ContextAxes";
 import { EconomicAssumptions } from "./EconomicAssumptions";
 import {
@@ -32,9 +35,12 @@ import {
 } from "./editor-state";
 import { applyLegalContextTransition } from "./legal-transition";
 import { LegacyMigrationConfirmation } from "./LegacyMigrationConfirmation";
+import {
+  LocalDraftControls,
+  type LocalDraftCandidateStatus,
+} from "./LocalDraftControls";
 import { ProcessMapEditor } from "./ProcessMapEditor";
 import { buildBaseScenarioShareParams } from "./share";
-import { partitionCalculatorIssues } from "./validation-presentation";
 import {
   DEFAULT_SCENARIO_V2_ID,
   bootstrapCalculatorUrl,
@@ -49,6 +55,22 @@ import {
   createRenderableCalculatorWorkspaceState,
 } from "./workspace-bootstrap";
 import { revealResult } from "../result-reveal";
+import {
+  calculatorStageFromHash,
+  calculatorStageHash,
+  nextCalculatorStage,
+  previousCalculatorStage,
+  resolveCalculatorStageRequest,
+} from "./calculator-journey";
+import {
+  LOCAL_CALCULATOR_DRAFT_KEY,
+  createLocalCalculatorDraft,
+  parseLocalCalculatorDraft,
+  shouldOfferLocalDraft,
+  type CalculatorStage,
+  type ComparisonDisplayNames,
+  type LocalCalculatorDraftV1,
+} from "./local-draft";
 
 export const CALCULATOR_RESULT_HEADING_ID = "decision-record-heading";
 export const CALCULATOR_RESULT_REGION_ID = "decision-record";
@@ -105,30 +127,48 @@ export interface CalculatorWorkspaceViewProps {
   state: CalculatorWorkspaceState;
   onStateChange: (state: CalculatorWorkspaceState) => void;
   onCopyBaseScenario: () => void | Promise<void>;
+  activeStage?: CalculatorStage;
+  displayNames?: ComparisonDisplayNames;
+  draftControls?: ReactNode;
   migrationControl?: CalculatorMigrationControl;
+  onDisplayNamesChange?: (displayNames: ComparisonDisplayNames) => void;
+  onStageChange?: (stage: CalculatorStage, hasRecord?: boolean) => void;
   resultSlot?: ReactNode;
 }
 
 export function CalculatorWorkspaceView({
+  activeStage = "case",
+  displayNames,
+  draftControls,
   lang,
-  state,
-  onStateChange,
-  onCopyBaseScenario,
   migrationControl,
+  onCopyBaseScenario,
+  onDisplayNamesChange,
+  onStageChange,
+  onStateChange,
   resultSlot,
+  state,
 }: CalculatorWorkspaceViewProps) {
   const tx = calculatorV2T[lang];
+  const names = displayNames ?? tx.journey.defaultNames;
   const [shareStatus, setShareStatus] = useState("");
   const validation = deriveCalculatorWorkspaceValidation(state);
-  const { processMapIssues, generalIssues } = partitionCalculatorIssues(
-    validation.issues
-  );
-  const submitDescriptionIds = [
-    processMapIssues.length > 0 ? "process-map-status" : null,
-    generalIssues.length > 0 ? "calculator-submit-status" : null,
-  ]
-    .filter((id): id is string => id !== null)
-    .join(" ");
+  const submitDescriptionIds =
+    validation.issues.length > 0 ? "calculator-submit-status" : "";
+  const stageOrder: CalculatorStage[] = [
+    "case",
+    "workflows",
+    "costs",
+    "record",
+  ];
+  const stageIndex = stageOrder.indexOf(activeStage);
+  const stageCopy = tx.journey.stages[activeStage];
+
+  useEffect(() => {
+    document.getElementById(`calculator-stage-heading-${activeStage}`)?.focus({
+      preventScroll: true,
+    });
+  }, [activeStage]);
 
   useEffect(() => {
     if (!state.focusTarget) return;
@@ -190,6 +230,7 @@ export function CalculatorWorkspaceView({
         ? result.state
         : { ...result.state, issues: result.issues }
     );
+    if (result.status === "submitted") onStageChange?.("record", true);
   };
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
@@ -206,140 +247,278 @@ export function CalculatorWorkspaceView({
     }
   };
 
+  const setStage = (stage: CalculatorStage) => onStageChange?.(stage);
+  const numberFormat = new Intl.NumberFormat(
+    lang === "pl" ? "pl-PL" : "en-GB",
+    { maximumFractionDigits: 2 }
+  );
+  const assumptions = state.draft.economicAssumptions;
+
   return (
-    <div className="space-y-10">
-      <header className="max-w-4xl">
-        <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-          {tx.workspace.title}
-        </h1>
-        <p className="mt-3 max-w-3xl text-base leading-relaxed text-gray-600">
-          {tx.workspace.introduction}
+    <div className="space-y-8">
+      <header className="border-b border-gray-200 pb-8">
+        <p className="font-mono text-xs font-semibold uppercase tracking-[0.16em] text-blue-700">
+          {tx.journey.eyebrow}
         </p>
-        <p className="mt-4 flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs text-gray-500">
-          <span>
+        <div className="mt-4 border-l-4 border-blue-700 pl-5 sm:pl-7">
+          <h1 className="max-w-4xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            {tx.journey.title}
+          </h1>
+          <p className="mt-3 max-w-3xl text-base leading-7 text-gray-600">
+            {tx.journey.introduction}
+          </p>
+        </div>
+        <details className="mt-6 max-w-3xl border-y border-gray-200 py-3">
+          <summary className="cursor-pointer text-xs font-semibold text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
             {tx.workspace.modelLabel} {MODEL_V2_METADATA.modelVersion}
-          </span>
-          <span aria-hidden="true">·</span>
-          <span>
-            {tx.workspace.calibrationLabel}: {MODEL_V2_METADATA.calibrationId}
-          </span>
-          <span aria-hidden="true">·</span>
-          <span>
-            {tx.workspace.rulesetLabel}: {MODEL_V2_METADATA.legalRulesetId}
-          </span>
-        </p>
+          </summary>
+          <p className="mt-3 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] text-gray-500">
+            <span>
+              {tx.workspace.calibrationLabel}: {MODEL_V2_METADATA.calibrationId}
+            </span>
+            <span>
+              {tx.workspace.rulesetLabel}: {MODEL_V2_METADATA.legalRulesetId}
+            </span>
+          </p>
+        </details>
       </header>
 
-      <form className="space-y-10" noValidate onSubmit={submit}>
-        <section aria-labelledby="calculator-stage-context" className="space-y-6">
-          <h2
-            className="border-b border-gray-200 pb-3 text-xl font-bold text-gray-900"
-            id="calculator-stage-context"
+      <CalculatorJourneyNav
+        activeStage={activeStage}
+        hasRecord={state.record !== null}
+        lang={lang}
+        onStageChange={setStage}
+      />
+
+      {draftControls}
+
+      {activeStage !== "record" ? (
+        <form noValidate onSubmit={submit}>
+          <section
+            aria-labelledby={`calculator-stage-heading-${activeStage}`}
+            className="space-y-7"
+            data-stage-panel={activeStage}
           >
-            {tx.workspace.stageContext}
-          </h2>
-          {migrationControl ? (
-            <LegacyMigrationConfirmation
-              confirmed={migrationControl.confirmed}
-              lang={lang}
-              onConfirm={migrationControl.onConfirm}
-              result={migrationControl.result}
-            />
-          ) : null}
-          {state.urlOrigin !== "empty" && !validation.canSubmit ? (
-            <button
-              className="inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 underline decoration-blue-300 underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-              onClick={() => replaceScenario(state.scenarioId)}
-              type="button"
-            >
-              {tx.workspace.discardUrlState}
-            </button>
-          ) : null}
-          <ContextAxes
-            lang={lang}
-            onContextChange={replaceContextAxis}
-            onScenarioChange={replaceScenario}
-            state={state}
-          />
-          <AlternativeDesignControls lang={lang} state={state} />
-        </section>
+            <div className="border-b border-gray-200 pb-4">
+              <p className="font-mono text-xs text-blue-700">
+                {tx.journey.stepOf(stageIndex + 1, stageOrder.length)}
+              </p>
+              <h2
+                className="mt-2 text-2xl font-bold text-gray-900"
+                id={`calculator-stage-heading-${activeStage}`}
+                tabIndex={-1}
+              >
+                {stageCopy.label}
+              </h2>
+              <p className="mt-2 text-sm leading-6 text-gray-600">
+                {stageCopy.description}
+              </p>
+            </div>
 
-        <section aria-labelledby="calculator-stage-workflows" className="space-y-6">
-          <h2
-            className="border-b border-gray-200 pb-3 text-xl font-bold text-gray-900"
-            id="calculator-stage-workflows"
-          >
-            {tx.workspace.stageWorkflows}
-          </h2>
-          <ProcessMapEditor
-            lang={lang}
-            onStateChange={onStateChange}
-            state={state}
-          />
-        </section>
+            {activeStage === "case" ? (
+              <>
+                {migrationControl ? (
+                  <LegacyMigrationConfirmation
+                    confirmed={migrationControl.confirmed}
+                    lang={lang}
+                    onConfirm={migrationControl.onConfirm}
+                    result={migrationControl.result}
+                  />
+                ) : null}
+                {state.urlOrigin !== "empty" && !validation.canSubmit ? (
+                  <button
+                    className="inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 underline decoration-blue-300 underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                    onClick={() => replaceScenario(state.scenarioId)}
+                    type="button"
+                  >
+                    {tx.workspace.discardUrlState}
+                  </button>
+                ) : null}
+                <ContextAxes
+                  lang={lang}
+                  onContextChange={replaceContextAxis}
+                  onScenarioChange={replaceScenario}
+                  state={state}
+                />
+                <details className="border-y border-gray-200 py-4">
+                  <summary className="cursor-pointer text-sm font-semibold text-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
+                    {tx.workspace.baseDesignProvenance}
+                  </summary>
+                  <div className="mt-5">
+                    <AlternativeDesignControls lang={lang} state={state} />
+                  </div>
+                </details>
+                <div className="border-l-2 border-blue-500 pl-4 text-sm text-gray-600">
+                  <p>{tx.journey.caseSupport}</p>
+                  <Link className="mt-2 inline-flex min-h-11 items-center font-semibold text-blue-700 underline decoration-blue-300 underline-offset-4" href={lang === "en" ? "/en/optimizer" : "/optimizer"}>
+                    {tx.journey.suitabilityAction}
+                  </Link>
+                </div>
+              </>
+            ) : null}
 
-        <section aria-labelledby="calculator-stage-economics" className="space-y-6">
-          <h2
-            className="border-b border-gray-200 pb-3 text-xl font-bold text-gray-900"
-            id="calculator-stage-economics"
-          >
-            {tx.workspace.stageEconomics}
-          </h2>
-          <EconomicAssumptions lang={lang} onAction={dispatch} state={state} />
+            {activeStage === "workflows" ? (
+              <>
+                <ComparisonNameFields
+                  displayNames={names}
+                  lang={lang}
+                  onChange={(nextNames) => onDisplayNamesChange?.(nextNames)}
+                />
+                <ProcessMapEditor
+                  lang={lang}
+                  onStateChange={onStateChange}
+                  state={state}
+                />
+                <div className="border-l-2 border-blue-500 pl-4 text-sm text-gray-600">
+                  <p>{tx.journey.workflowSupport}</p>
+                  <Link className="mt-2 inline-flex min-h-11 items-center font-semibold text-blue-700 underline decoration-blue-300 underline-offset-4" href={lang === "en" ? "/en/assessment" : "/assessment"}>
+                    {tx.journey.assessmentAction}
+                  </Link>
+                </div>
+              </>
+            ) : null}
 
-          <CalculatorValidationSummary issues={generalIssues} lang={lang} />
+            {activeStage === "costs" ? (
+              <>
+                <dl className="grid gap-5 border-y border-gray-200 py-5 sm:grid-cols-2">
+                  <div>
+                    <dt className="text-xs font-medium text-gray-600">
+                      {tx.economics.contractValue}
+                    </dt>
+                    <dd className="mt-2 font-mono text-2xl font-bold tabular-nums text-blue-700">
+                      {numberFormat.format(assumptions.contractValue.central)} {tx.economics.currencyUnit}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-xs font-medium text-gray-600">
+                      {tx.economics.dailyCostOfDelay}
+                    </dt>
+                    <dd className="mt-2 font-mono text-2xl font-bold tabular-nums text-blue-700">
+                      {numberFormat.format(assumptions.dailyCostOfInaction.central)} {tx.economics.currencyUnit}
+                    </dd>
+                  </div>
+                </dl>
+                <details className="border-y border-gray-200 py-4" data-advanced-economics>
+                  <summary className="cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
+                    <span className="block text-sm font-semibold text-gray-900">
+                      {tx.journey.advancedEconomics}
+                    </span>
+                    <span className="mt-1 block text-xs leading-5 text-gray-600">
+                      {tx.journey.advancedEconomicsDescription}
+                    </span>
+                  </summary>
+                  <div className="mt-6">
+                    <EconomicAssumptions lang={lang} onAction={dispatch} state={state} />
+                  </div>
+                </details>
 
-          <div className="border-t border-gray-200 pt-6">
-            <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
-              <div className="max-w-2xl space-y-2">
-                <button
-                  className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-blue-700 underline decoration-blue-300 underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                  onClick={copyBaseScenario}
-                  type="button"
-                >
-                  <Clipboard aria-hidden="true" className="h-4 w-4" />
-                  {tx.share.action}
-                </button>
-                <p className="text-xs leading-relaxed text-gray-600">
-                  {tx.share.disclosure}
-                </p>
-                <p aria-live="polite" className="text-xs text-gray-600">
-                  {shareStatus}
-                </p>
-              </div>
+                <CalculatorValidationSummary issues={validation.issues} lang={lang} />
 
-              <div className="sm:text-right">
-                <button
-                  aria-describedby={
-                    validation.canSubmit || !submitDescriptionIds
-                      ? undefined
-                      : submitDescriptionIds
-                  }
-                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-gray-900 px-5 text-sm font-semibold text-white hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-600"
-                  disabled={!validation.canSubmit}
-                  type="submit"
-                >
-                  <FileCheck2 aria-hidden="true" className="h-4 w-4" />
-                  {tx.workspace.calculate}
+                <div className="grid gap-6 border-t border-gray-200 pt-6 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
+                  <div className="max-w-2xl space-y-2">
+                    <button
+                      className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-blue-700 underline decoration-blue-300 underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      onClick={copyBaseScenario}
+                      type="button"
+                    >
+                      <Clipboard aria-hidden="true" className="h-4 w-4" />
+                      {tx.share.action}
+                    </button>
+                    <p className="text-xs leading-relaxed text-gray-600">
+                      {tx.share.disclosure}
+                    </p>
+                    <p aria-live="polite" className="text-xs text-gray-600">
+                      {shareStatus}
+                    </p>
+                  </div>
+                  <div className="sm:text-right">
+                    <button
+                      aria-describedby={
+                        validation.canSubmit || !submitDescriptionIds
+                          ? undefined
+                          : submitDescriptionIds
+                      }
+                      className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-blue-700 px-5 text-sm font-semibold text-white hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-600"
+                      disabled={!validation.canSubmit}
+                      type="submit"
+                    >
+                      <FileCheck2 aria-hidden="true" className="h-4 w-4" />
+                      {tx.workspace.calculate}
+                      <ArrowRight aria-hidden="true" className="h-4 w-4" />
+                    </button>
+                    {!validation.canSubmit ? (
+                      <p className="mt-2 max-w-sm text-xs leading-relaxed text-gray-600">
+                        {tx.workspace.calculationBlocked}
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
+              </>
+            ) : null}
+
+            {activeStage !== "costs" ? (
+              <div className="flex items-center justify-between gap-4 border-t border-gray-200 pt-6">
+                {activeStage !== "case" ? (
+                  <button className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-gray-700" onClick={() => setStage(previousCalculatorStage(activeStage))} type="button">
+                    <ArrowLeft aria-hidden="true" className="h-4 w-4" />
+                    {tx.journey.back}
+                  </button>
+                ) : (
+                  <span />
+                )}
+                <button className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-blue-700 px-5 text-sm font-semibold text-white hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2" onClick={() => setStage(nextCalculatorStage(activeStage, state.record !== null))} type="button">
+                  {tx.journey.next}
                   <ArrowRight aria-hidden="true" className="h-4 w-4" />
                 </button>
-                {!validation.canSubmit ? (
-                  <p className="mt-2 max-w-sm text-xs leading-relaxed text-gray-600">
-                    {tx.workspace.calculationBlocked}
-                  </p>
-                ) : null}
               </div>
-            </div>
-          </div>
-        </section>
-      </form>
-
-      {state.record && resultSlot ? (
-        <CalculatorResultBoundary>{resultSlot}</CalculatorResultBoundary>
+            ) : (
+              <button className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-gray-700" onClick={() => setStage("workflows")} type="button">
+                <ArrowLeft aria-hidden="true" className="h-4 w-4" />
+                {tx.journey.back}
+              </button>
+            )}
+          </section>
+        </form>
       ) : (
-        <p className="border-t border-gray-200 pt-6 text-sm leading-relaxed text-gray-600">
-          {tx.workspace.preCalculation}
-        </p>
+        <section
+          aria-labelledby="calculator-stage-heading-record"
+          className="space-y-7"
+          data-stage-panel="record"
+        >
+          <div className="border-b border-gray-200 pb-4">
+            <p className="font-mono text-xs text-blue-700">
+              {tx.journey.stepOf(4, 4)}
+            </p>
+            <h2 className="mt-2 text-2xl font-bold text-gray-900" id="calculator-stage-heading-record" tabIndex={-1}>
+              {tx.journey.stages.record.label}
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-gray-600">
+              {tx.journey.stages.record.description}
+            </p>
+          </div>
+          {state.record && resultSlot ? (
+            <CalculatorResultBoundary>{resultSlot}</CalculatorResultBoundary>
+          ) : (
+            <p className="text-sm leading-6 text-gray-600">
+              {tx.workspace.preCalculation}
+            </p>
+          )}
+          {state.record ? (
+            <aside className="grid gap-5 border-l-4 border-blue-700 bg-blue-50 px-5 py-5 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center" data-post-result-readiness>
+              <div>
+                <h3 className="font-bold text-gray-900">{tx.journey.readinessTitle}</h3>
+                <p className="mt-1 text-sm leading-6 text-gray-600">{tx.journey.readinessBody}</p>
+              </div>
+              <Link className="inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 underline decoration-blue-300 underline-offset-4" href={lang === "en" ? "/en/readiness" : "/readiness"}>
+                {tx.journey.readinessAction}
+              </Link>
+            </aside>
+          ) : null}
+          <button className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-gray-700" onClick={() => setStage("costs")} type="button">
+            <ArrowLeft aria-hidden="true" className="h-4 w-4" />
+            {tx.journey.back}
+          </button>
+        </section>
       )}
 
       {state.lastRecord ? (
@@ -416,6 +595,16 @@ export default function CalculatorWorkspace({ lang }: CalculatorWorkspaceProps) 
   const [state, setState] = useState(() =>
     createCalculatorWorkspaceState(createScenarioDraft(DEFAULT_SCENARIO_V2_ID))
   );
+  const [activeStage, setActiveStage] = useState<CalculatorStage>("case");
+  const [displayNames, setDisplayNames] = useState<ComparisonDisplayNames>(
+    () => ({ ...calculatorV2T[lang].journey.defaultNames })
+  );
+  const [persistenceEnabled, setPersistenceEnabled] = useState(false);
+  const [draftCandidate, setDraftCandidate] =
+    useState<LocalCalculatorDraftV1 | null>(null);
+  const [draftCandidateStatus, setDraftCandidateStatus] =
+    useState<LocalDraftCandidateStatus>("none");
+  const [draftSaveFailed, setDraftSaveFailed] = useState(false);
   const [bootstrapStatus, setBootstrapStatus] = useState<
     "pending" | "ready" | "failed"
   >("pending");
@@ -436,6 +625,12 @@ export default function CalculatorWorkspace({ lang }: CalculatorWorkspaceProps) 
         }
         const { bootstrap } = resolution;
         setState(resolution.state);
+        setActiveStage(
+          calculatorStageFromHash(
+            window.location.hash,
+            resolution.state.record !== null
+          )
+        );
         setMigrationResult(
           bootstrap.origin === "legacy" &&
             bootstrap.result.status === "partial"
@@ -443,6 +638,22 @@ export default function CalculatorWorkspace({ lang }: CalculatorWorkspaceProps) 
             : null
         );
         setMigrationConfirmed(false);
+        if (shouldOfferLocalDraft(resolution.state.urlOrigin)) {
+          try {
+            const raw = window.localStorage.getItem(
+              LOCAL_CALCULATOR_DRAFT_KEY
+            );
+            if (raw) {
+              const parsed = parseLocalCalculatorDraft(raw);
+              setDraftCandidateStatus(parsed.status);
+              setDraftCandidate(
+                parsed.status === "ready" ? parsed.draft : null
+              );
+            }
+          } catch {
+            setDraftCandidateStatus("none");
+          }
+        }
         setBootstrapStatus("ready");
       })
       .catch(() => {
@@ -452,6 +663,52 @@ export default function CalculatorWorkspace({ lang }: CalculatorWorkspaceProps) 
       cancelled = true;
     };
   }, []);
+
+  useEffect(() => {
+    if (bootstrapStatus !== "ready" || !persistenceEnabled) return;
+    let cancelled = false;
+    let saveFailed = false;
+    try {
+      const draft = createLocalCalculatorDraft(
+        state,
+        displayNames,
+        activeStage,
+        new Date().toISOString()
+      );
+      window.localStorage.setItem(
+        LOCAL_CALCULATOR_DRAFT_KEY,
+        JSON.stringify(draft)
+      );
+    } catch {
+      saveFailed = true;
+    }
+    queueMicrotask(() => {
+      if (!cancelled) setDraftSaveFailed(saveFailed);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [activeStage, bootstrapStatus, displayNames, persistenceEnabled, state]);
+
+  useEffect(() => {
+    if (bootstrapStatus !== "ready") return;
+    const syncStageFromHash = () => {
+      const safeStage = calculatorStageFromHash(
+        window.location.hash,
+        state.record !== null
+      );
+      setActiveStage(safeStage);
+      const safeHash = calculatorStageHash(safeStage);
+      if (window.location.hash !== safeHash) {
+        const nextUrl = `${window.location.pathname}${window.location.search}${safeHash}`;
+        window.history.replaceState(window.history.state, "", nextUrl);
+      }
+    };
+    window.addEventListener("hashchange", syncStageFromHash);
+    return () => {
+      window.removeEventListener("hashchange", syncStageFromHash);
+    };
+  }, [bootstrapStatus, state.record]);
 
   if (bootstrapStatus !== "ready") {
     return (
@@ -470,16 +727,76 @@ export default function CalculatorWorkspace({ lang }: CalculatorWorkspaceProps) 
     await navigator.clipboard.writeText(url.toString());
   };
 
+  const changeStage = (
+    stage: CalculatorStage,
+    hasRecord = state.record !== null,
+  ) => {
+    const safeStage = resolveCalculatorStageRequest(stage, hasRecord);
+    setActiveStage(safeStage);
+    const nextHash = calculatorStageHash(safeStage);
+    const nextUrl = `${window.location.pathname}${window.location.search}${nextHash}`;
+    window.history.replaceState(window.history.state, "", nextUrl);
+  };
+
+  const discardLocalDraft = () => {
+    try {
+      window.localStorage.removeItem(LOCAL_CALCULATOR_DRAFT_KEY);
+    } catch {
+      setDraftSaveFailed(true);
+    }
+    setDraftCandidate(null);
+    setDraftCandidateStatus("none");
+    setPersistenceEnabled(false);
+  };
+
+  const resumeLocalDraft = () => {
+    if (!draftCandidate) return;
+    const resumedState = createCalculatorWorkspaceState(draftCandidate.draft);
+    setState(resumedState);
+    setDisplayNames({ ...draftCandidate.displayNames });
+    setDraftCandidate(null);
+    setDraftCandidateStatus("none");
+    setPersistenceEnabled(true);
+    changeStage(
+      calculatorStageFromHash(
+        calculatorStageHash(draftCandidate.activeStage),
+        false
+      )
+    );
+  };
+
+  const setLocalPersistence = (enabled: boolean) => {
+    setPersistenceEnabled(enabled);
+    setDraftSaveFailed(false);
+    if (!enabled) discardLocalDraft();
+  };
+
   const updateState = (nextState: CalculatorWorkspaceState) => {
     if (nextState.urlOrigin !== "legacy") {
       setMigrationResult(null);
       setMigrationConfirmed(false);
+    }
+    if (activeStage === "record" && nextState.record === null) {
+      changeStage("costs");
     }
     setState(nextState);
   };
 
   return (
     <CalculatorWorkspaceView
+      activeStage={activeStage}
+      displayNames={displayNames}
+      draftControls={
+        <LocalDraftControls
+          candidateStatus={draftCandidateStatus}
+          enabled={persistenceEnabled}
+          lang={lang}
+          onDiscard={discardLocalDraft}
+          onEnabledChange={setLocalPersistence}
+          onResume={resumeLocalDraft}
+          saveFailed={draftSaveFailed}
+        />
+      }
       lang={lang}
       migrationControl={
         migrationResult
@@ -502,11 +819,20 @@ export default function CalculatorWorkspace({ lang }: CalculatorWorkspaceProps) 
           : undefined
       }
       onCopyBaseScenario={copyBaseScenario}
+      onDisplayNamesChange={setDisplayNames}
+      onStageChange={changeStage}
       onStateChange={updateState}
       resultSlot={
         state.record ? (
           <DecisionRecord
-            actions={<DecisionRecordActions lang={lang} record={state.record} />}
+            actions={
+              <DecisionRecordActions
+                displayNames={displayNames}
+                lang={lang}
+                record={state.record}
+              />
+            }
+            displayNames={displayNames}
             lang={lang}
             record={state.record}
           />

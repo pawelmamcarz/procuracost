@@ -304,7 +304,7 @@ describe("public editorial integrity", () => {
   it("keeps Polish navigation labels in Polish", () => {
     const labels = navigationFor("pl").map((item) => item.label);
 
-    expect(labels).toEqual(["Kalkulator", "Warunki zastosowania", "Profil procesu", "Model"]);
+    expect(labels).toEqual(["Porównanie", "Badania"]);
     expect(labels).not.toEqual(expect.arrayContaining(["Research paper", "Methodology"]));
   });
 
@@ -505,16 +505,15 @@ describe("public editorial integrity", () => {
     }
   });
 
-  it("localizes project title attributes in the English footer", () => {
+  it("keeps unrelated projects out of the product footer", () => {
     const polishMarkup = renderToStaticMarkup(createElement(SiteFooter, { lang: "pl" }));
     const englishMarkup = renderToStaticMarkup(createElement(SiteFooter, { lang: "en" }));
 
-    expect(polishMarkup).toContain('title="Kalkulator podatku od milczenia"');
-    expect(englishMarkup).toContain('title="Silence tax calculator"');
-    expect(englishMarkup).toContain('title="Car TCO calculator"');
-    expect(englishMarkup).toContain('title="Reminder platform"');
-    expect(englishMarkup).toContain('title="Professional profile"');
-    expect(englishMarkup).not.toContain('title="Kalkulator podatku od milczenia"');
-    expect(englishMarkup).not.toContain('title="Profil zawodowy"');
+    expect(polishMarkup).not.toContain("silence-tax.com");
+    expect(polishMarkup).not.toContain("czympojade.pl");
+    expect(englishMarkup).not.toContain("Silence tax calculator");
+    expect(englishMarkup).not.toContain("Car TCO calculator");
+    expect(englishMarkup).not.toContain("Reminder platform");
+    expect(englishMarkup).not.toContain("Professional profile");
   });
 });
