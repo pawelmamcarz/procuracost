@@ -175,7 +175,7 @@ describe("neutral decision record UI", () => {
       record: decisionRecordWithSign(1_250, -500, 2_000),
       central: "The formal sequential total is higher at the central assumptions.",
       range:
-        "The sign changes within the declared ranges. The model does not identify a stable cost ordering.",
+        "The outer range crosses zero. This conservative bound does not prove that the sign reverses when both alternatives use the same shared assumptions.",
     },
   ])("states every central and range sign neutrally", ({ record, central, range }) => {
     const markup = renderRecord(record);

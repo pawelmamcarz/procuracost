@@ -610,23 +610,25 @@ function buildDecisionRecordWithMetadata(
   migration: DecisionRecordMigrationMetadata,
   gate?: NativeCalculationInputGateV2
 ): DecisionRecordV2 {
-  if (!draft || draft.kind !== "user_draft") {
+  const snapshot = structuredClone({ draft, migration, gate });
+  const source = snapshot.draft;
+  if (!source || source.kind !== "user_draft") {
     throw new Error("Decision record requires one ScenarioDraft source");
   }
-  const scenario = scenarioV2ById(draft.derivedFromScenarioId);
+  const scenario = scenarioV2ById(source.derivedFromScenarioId);
   if (!scenario) {
     throw new Error(
-      `Unknown model 2.3 scenario: ${draft.derivedFromScenarioId}`
+      `Unknown model 2.3 scenario: ${source.derivedFromScenarioId}`
     );
   }
-  const calculationInput = buildCalculationInputFromDraft(draft, gate);
+  const calculationInput = buildCalculationInputFromDraft(source, snapshot.gate);
   const calculationResult = calculateComparison(calculationInput);
   return assembleDecisionRecordV2(
     scenario,
-    draft,
+    source,
     calculationInput,
     calculationResult,
-    migration
+    snapshot.migration
   );
 }
 

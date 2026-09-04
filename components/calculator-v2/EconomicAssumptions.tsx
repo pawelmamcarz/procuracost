@@ -29,6 +29,7 @@ const COMPETITION_CHOICES: readonly (AlternativeId | null)[] = [
 ];
 
 export interface EconomicAssumptionsProps {
+  section?: "all" | "primary" | "advanced";
   lang: Lang;
   state: CalculatorWorkspaceState;
   onAction: (action: CalculatorWorkspaceAction) => void;
@@ -142,6 +143,7 @@ function roleLabel(roleId: string, lang: Lang): string {
 }
 
 export function EconomicAssumptions({
+  section = "all",
   lang,
   state,
   onAction,
@@ -169,6 +171,45 @@ export function EconomicAssumptions({
     });
   };
 
+  const primaryFields = (
+    <div className="grid gap-x-6 gap-y-5 lg:grid-cols-2">
+      <EconomicRangeEditor
+        idPrefix="economic-contract-value"
+        issue={economicIssue(
+          issues,
+          "economicAssumptions.contractValue"
+        )}
+        label={tx.contractValue}
+        lang={lang}
+        onChange={(value) => replaceAssumption("contractValue", value)}
+        unit={tx.currencyUnit}
+        value={assumptions.contractValue}
+      />
+      <EconomicRangeEditor
+        idPrefix="economic-daily-cost"
+        issue={economicIssue(
+          issues,
+          "economicAssumptions.dailyCostOfInaction"
+        )}
+        label={tx.dailyCostOfDelay}
+        lang={lang}
+        onChange={(value) =>
+          replaceAssumption("dailyCostOfInaction", value)
+        }
+        unit={tx.currencyUnit}
+        value={assumptions.dailyCostOfInaction}
+      />
+    </div>
+  );
+  if (section === "primary") {
+    return (
+      <div className="space-y-5">
+        <p className="max-w-3xl text-sm leading-relaxed text-gray-600">{tx.introduction}</p>
+        {primaryFields}
+      </div>
+    );
+  }
+
   return (
     <div aria-describedby="economic-assumptions-introduction" className="space-y-6">
       <p
@@ -178,33 +219,8 @@ export function EconomicAssumptions({
         {tx.introduction}
       </p>
 
+      {section === "all" ? primaryFields : null}
       <div className="grid gap-x-6 gap-y-5 lg:grid-cols-2">
-        <EconomicRangeEditor
-          idPrefix="economic-contract-value"
-          issue={economicIssue(
-            issues,
-            "economicAssumptions.contractValue"
-          )}
-          label={tx.contractValue}
-          lang={lang}
-          onChange={(value) => replaceAssumption("contractValue", value)}
-          unit={tx.currencyUnit}
-          value={assumptions.contractValue}
-        />
-        <EconomicRangeEditor
-          idPrefix="economic-daily-cost"
-          issue={economicIssue(
-            issues,
-            "economicAssumptions.dailyCostOfInaction"
-          )}
-          label={tx.dailyCostOfDelay}
-          lang={lang}
-          onChange={(value) =>
-            replaceAssumption("dailyCostOfInaction", value)
-          }
-          unit={tx.currencyUnit}
-          value={assumptions.dailyCostOfInaction}
-        />
         <fieldset className="space-y-3 border-t border-gray-200 pt-4 lg:col-span-2">
           <legend className="text-sm font-semibold text-gray-900">
             {tx.competitionDisadvantagedAlternative}

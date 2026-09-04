@@ -24268,7 +24268,11 @@
                 },
                 "kind": "activity",
                 "lockedLegalProvenance": null,
-                "criticalPathCases": []
+                "criticalPathCases": [
+                  "low",
+                  "central",
+                  "high"
+                ]
               },
               {
                 "id": "mrp_release_control.shared.po_generation",
@@ -24394,14 +24398,17 @@
             },
             "criticalPathStepIds": {
               "low": [
+                "mrp_release_control.shared.mrp_trigger",
                 "mrp_release_control.shared.po_generation",
                 "mrp_release_control.shared.goods_receipt"
               ],
               "central": [
+                "mrp_release_control.shared.mrp_trigger",
                 "mrp_release_control.shared.po_generation",
                 "mrp_release_control.shared.goods_receipt"
               ],
               "high": [
+                "mrp_release_control.shared.mrp_trigger",
                 "mrp_release_control.shared.po_generation",
                 "mrp_release_control.shared.goods_receipt"
               ]
@@ -24486,7 +24493,11 @@
                 },
                 "kind": "activity",
                 "lockedLegalProvenance": null,
-                "criticalPathCases": []
+                "criticalPathCases": [
+                  "low",
+                  "central",
+                  "high"
+                ]
               },
               {
                 "id": "mrp_release_control.shared.po_generation",
@@ -24612,14 +24623,17 @@
             },
             "criticalPathStepIds": {
               "low": [
+                "mrp_release_control.shared.mrp_trigger",
                 "mrp_release_control.shared.po_generation",
                 "mrp_release_control.shared.goods_receipt"
               ],
               "central": [
+                "mrp_release_control.shared.mrp_trigger",
                 "mrp_release_control.shared.po_generation",
                 "mrp_release_control.shared.goods_receipt"
               ],
               "high": [
+                "mrp_release_control.shared.mrp_trigger",
                 "mrp_release_control.shared.po_generation",
                 "mrp_release_control.shared.goods_receipt"
               ]

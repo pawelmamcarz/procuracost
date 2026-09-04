@@ -100,9 +100,9 @@ export const EPISODES: Episode[] = [
     focus: "Granica interpretacji",
     focusEn: "Interpretation boundary",
     thesis:
-      "Zakres niski, centralny i wysoki jest testem deklarowanych założeń, a nie przedziałem ufności. Przecięcie zera oznacza zmianę kierunku różnicy w tym zakresie.",
+      "Zakres niski, centralny i wysoki jest testem deklarowanych założeń, a nie przedziałem ufności. Przecięcie zera przez zakres zewnętrzny nie dowodzi zmiany znaku przy wspólnych założeniach.",
     thesisEn:
-      "The low, central and high range tests declared assumptions, not statistical confidence. Crossing zero means that the direction changes within that range.",
+      "The low, central and high range tests declared assumptions, not statistical confidence. The outer range crossing zero does not prove a sign reversal under shared assumptions.",
     practiceNote:
       "Interpretuj wynik centralny razem z czynnikami kosztowymi, zakresem zewnętrznym i lokalnym rejestrem założeń.",
     practiceNoteEn:

@@ -148,6 +148,13 @@ intervals, posterior intervals or estimates of sampling uncertainty. The engine
 combines aligned low, central and high cases and then constructs an outer
 difference envelope.
 
+The outer envelope combines opposite endpoints of the two alternatives. It is
+a conservative enclosure, not the range of paired differences under a shared
+rate or daily delay cost. Crossing zero therefore does not prove a feasible
+sign reversal. For example, identical control maps have zero paired differences
+in all three cases while their outer envelope may extend below and above zero.
+An envelope touching zero admits equality; it does not contain both signs.
+
 ## 5. Procurement process maps
 
 A workflow is a directed acyclic graph. Every step records:
@@ -171,6 +178,11 @@ For range case `r`, the finish time of step `s` is:
 A step without a predecessor starts at zero. The alternative's elapsed duration
 is the maximum finish time across its steps. Staff effort and non-labour cost
 are summed over all steps, not only the critical path.
+
+The reported critical path includes zero-duration prerequisites and terminal
+milestones. When completion times tie, the longer connected chain is selected,
+with input order breaking any remaining tie. This selects one representative
+critical path; it does not claim to enumerate all critical paths.
 
 The native graph supports sequential, parallel and converging work. Reference
 templates, whether retained or illustrative, are declared starting maps rather
@@ -208,6 +220,11 @@ difference and reverse the outer envelope.
 
 All monetary values are in PLN. The engine does not apply an implicit discount
 rate or hidden context multiplier.
+
+Every computed duration and cost must be finite, including intermediate cost
+components. Finite inputs that overflow during multiplication or summation are
+rejected before a decision record or export is created. Infinity and NaN are
+never valid outputs and must not silently become JSON null values.
 
 ## 7. Contract-cost dimensions
 
@@ -443,6 +460,11 @@ A model 2.3 decision record exposes:
 7. non-monetised dimensions;
 8. internal workflow provenance, retained assumptions, external evidence and
    legal provenance.
+
+The decision-record builder snapshots the complete draft, gate and migration
+metadata before reading the source. Calculations, recorded context and economic
+assumptions use that same snapshot so the exported assumptions reproduce the
+reported result, including when a caller supplies accessor-backed objects.
 
 The suitability comparison is a separate non-scored comparison of procedure
 families admitted by the declared boundary. Organisational implementation
