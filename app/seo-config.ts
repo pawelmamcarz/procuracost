@@ -3,8 +3,9 @@
 // so it must only win on previews — on production it would leak *.vercel.app into og:url.
 const PRODUCTION_URL = "https://www.procuracost.com";
 export const IS_PREVIEW = process.env.VERCEL_ENV === "preview";
+const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim().replace(/\/+$/, "");
 export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ??
+  configuredSiteUrl ||
   (process.env.VERCEL_ENV === "production"
     ? PRODUCTION_URL
     : process.env.VERCEL_URL
