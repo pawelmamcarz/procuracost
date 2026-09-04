@@ -58,8 +58,8 @@ describe("professional model 2.3 metadata", () => {
     expect(siteMetadataT.en.processDesignProfile.title).toContain(
       "Procurement process design profile"
     );
-    expect(siteMetadataT.pl.home.description).toContain("wymiary niemonetyzowane");
-    expect(siteMetadataT.en.home.description).toContain("non-monetised dimensions");
+    expect(siteMetadataT.pl.home.description).toContain("wynik z założeniami");
+    expect(siteMetadataT.en.home.description).toContain("result with its assumptions");
     expect(JSON.stringify(siteMetadataT)).not.toMatch(
       /wymiary niewycenione|unpriced dimensions/i,
     );
@@ -87,7 +87,7 @@ describe("professional model 2.3 metadata", () => {
       });
     }
 
-    const rootLayouts = new Set(["app/(pl)/layout.tsx", "app/(en)/layout.tsx"]);
+    const rootLayouts = new Set(["app/(pl)/layout.tsx", "app/(en)/layout.tsx", "app/global-not-found.tsx"]);
     const metadataOwners = sourceFiles("app").filter((path) => {
       const source = readFileSync(path, "utf8");
       return source.includes("export const metadata") && !rootLayouts.has(path);

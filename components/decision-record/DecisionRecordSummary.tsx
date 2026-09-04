@@ -32,6 +32,8 @@ export default function DecisionRecordSummary({
     deltaCost > 0 ? tx.positive : deltaCost < 0 ? tx.negative : tx.zero;
   const crossesZero =
     deltaCostOuterEnvelope.low < 0 && deltaCostOuterEnvelope.high > 0;
+  const touchesZero =
+    (deltaCostOuterEnvelope.low === 0) !== (deltaCostOuterEnvelope.high === 0);
 
   return (
     <div className="space-y-6">
@@ -43,18 +45,18 @@ export default function DecisionRecordSummary({
         <p className="mt-1 text-xs text-gray-500">{tx.centralLabel}</p>
       </div>
 
-      <dl className="grid grid-cols-3 gap-3 border-y border-gray-200 py-4 font-mono text-xs tabular-nums text-gray-700">
+      <dl className="grid gap-3 border-y border-gray-200 py-4 font-mono text-xs tabular-nums text-gray-700 sm:grid-cols-3">
         <div>
           <dt className="font-sans text-[11px] text-gray-500">{rangeTx.low}</dt>
           <dd>{formatCurrency(deltaCostOuterEnvelope.low, lang)}</dd>
         </div>
-        <div className="text-center">
+        <div className="sm:text-center">
           <dt className="font-sans text-[11px] text-gray-500">
             {rangeTx.central}
           </dt>
           <dd>{formatCurrency(deltaCost, lang)}</dd>
         </div>
-        <div className="text-right">
+        <div className="sm:text-right">
           <dt className="font-sans text-[11px] text-gray-500">{rangeTx.high}</dt>
           <dd>{formatCurrency(deltaCostOuterEnvelope.high, lang)}</dd>
         </div>
@@ -65,7 +67,7 @@ export default function DecisionRecordSummary({
 
       <div className="space-y-2 text-sm leading-relaxed text-gray-700">
         <p>{centralInterpretation}</p>
-        <p>{crossesZero ? tx.crossing : tx.stable}</p>
+        <p>{crossesZero ? tx.crossing : touchesZero ? tx.touching : tx.stable}</p>
       </div>
     </div>
   );

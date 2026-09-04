@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
-import { SITE_URL } from "./seo-config";
+import { IS_PREVIEW, SITE_URL } from "./seo-config";
 
 export default function robots(): MetadataRoute.Robots {
+  if (IS_PREVIEW) return { rules: { userAgent: "*", disallow: "/" } };
   return {
     rules: {
       userAgent: "*",

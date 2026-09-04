@@ -85,7 +85,11 @@ function criticalPathForCase(
       const predecessor = stepsById.get(predecessorId);
       if (!predecessor) continue;
       const candidate = finishAt(predecessor);
-      if (candidate.elapsedDays > predecessorResult.elapsedDays) {
+      if (
+        candidate.elapsedDays > predecessorResult.elapsedDays ||
+        (candidate.elapsedDays === predecessorResult.elapsedDays &&
+          candidate.stepIds.length > predecessorResult.stepIds.length)
+      ) {
         predecessorResult = candidate;
       }
     }
@@ -104,7 +108,11 @@ function criticalPathForCase(
   let critical: CriticalPathCaseResult = { elapsedDays: 0, stepIds: [] };
   for (const step of workflowDesign.steps) {
     const candidate = finishAt(step);
-    if (candidate.elapsedDays > critical.elapsedDays) {
+    if (
+      candidate.elapsedDays > critical.elapsedDays ||
+      (candidate.elapsedDays === critical.elapsedDays &&
+        candidate.stepIds.length > critical.stepIds.length)
+    ) {
       critical = candidate;
     }
   }
@@ -208,6 +216,14 @@ function calculateAlternative(
       nonLabourCost[rangeCase] +
       delayCost[rangeCase] +
       contractCost[rangeCase];
+
+    for (const [field, values] of Object.entries({
+      elapsedDays, roleCost, nonLabourCost, delayCost, contractCost, totalCost,
+    })) {
+      if (!Number.isFinite(values[rangeCase])) {
+        throw new RangeError(`Non-finite calculation result: ${field}.${rangeCase}`);
+      }
+    }
   }
 
   return {

@@ -14,12 +14,12 @@ import DecisionRecord from "@/components/decision-record/DecisionRecord";
 import DecisionRecordActions from "@/components/decision-record/DecisionRecordActions";
 import { calculatorV2T, type Lang } from "@/lib/i18n";
 import {
-  MODEL_V2_METADATA,
   createScenarioDraft,
   type ScenarioV2Id,
 } from "@/lib/model-v2";
 import type { LegacyMigrationResult } from "@/lib/model-v2/legacy-adapter";
 
+import CalculatorHeader from "./CalculatorHeader";
 import { AlternativeDesignControls } from "./AlternativeDesignControls";
 import { CalculatorJourneyNav } from "./CalculatorJourneyNav";
 import { CalculatorValidationSummary } from "./CalculatorValidationSummary";
@@ -250,7 +250,8 @@ export function CalculatorWorkspaceView({
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    runCalculation();
+    if (activeStage === "costs") runCalculation();
+    else setStage(nextCalculatorStage(activeStage, state.record !== null));
   };
 
   const copyBaseScenario = async () => {
@@ -272,40 +273,10 @@ export function CalculatorWorkspaceView({
       })
     );
   };
-  const numberFormat = new Intl.NumberFormat(
-    lang === "pl" ? "pl-PL" : "en-GB",
-    { maximumFractionDigits: 2 }
-  );
-  const assumptions = state.draft.economicAssumptions;
 
   return (
     <div className="space-y-8">
-      <header className="border-b border-gray-200 pb-8">
-        <p className="font-mono text-xs font-semibold uppercase tracking-[0.16em] text-blue-700">
-          {tx.journey.eyebrow}
-        </p>
-        <div className="mt-4 border-l-4 border-blue-700 pl-5 sm:pl-7">
-          <h1 className="max-w-4xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            {tx.journey.title}
-          </h1>
-          <p className="mt-3 max-w-3xl text-base leading-7 text-gray-600">
-            {tx.journey.introduction}
-          </p>
-        </div>
-        <details className="mt-6 max-w-3xl border-y border-gray-200 py-3">
-          <summary className="cursor-pointer text-xs font-semibold text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
-            {tx.workspace.modelLabel} {MODEL_V2_METADATA.modelVersion}
-          </summary>
-          <p className="mt-3 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] text-gray-500">
-            <span>
-              {tx.workspace.calibrationLabel}: {MODEL_V2_METADATA.calibrationId}
-            </span>
-            <span>
-              {tx.workspace.rulesetLabel}: {MODEL_V2_METADATA.legalRulesetId}
-            </span>
-          </p>
-        </details>
-      </header>
+      <CalculatorHeader lang={lang} />
 
       <CalculatorJourneyNav
         activeStage={activeStage}
@@ -374,9 +345,10 @@ export function CalculatorWorkspaceView({
                 </details>
                 <div className="border-l-2 border-blue-500 pl-4 text-sm text-gray-600">
                   <p>{tx.journey.caseSupport}</p>
-                  <Link className="mt-2 inline-flex min-h-11 items-center font-semibold text-blue-700 underline decoration-blue-300 underline-offset-4" href={lang === "en" ? "/en/optimizer" : "/optimizer"}>
+                  <Link aria-describedby="case-support-new-tab" className="mt-2 inline-flex min-h-11 items-center font-semibold text-blue-700 underline decoration-blue-300 underline-offset-4" href={lang === "en" ? "/en/optimizer" : "/optimizer"} rel="noopener noreferrer" target="_blank">
                     {tx.journey.suitabilityAction}
                   </Link>
+                  <p className="mt-1 text-xs" id="case-support-new-tab">{tx.journey.opensInNewTab}</p>
                 </div>
               </>
             ) : null}
@@ -395,33 +367,17 @@ export function CalculatorWorkspaceView({
                 />
                 <div className="border-l-2 border-blue-500 pl-4 text-sm text-gray-600">
                   <p>{tx.journey.workflowSupport}</p>
-                  <Link className="mt-2 inline-flex min-h-11 items-center font-semibold text-blue-700 underline decoration-blue-300 underline-offset-4" href={lang === "en" ? "/en/assessment" : "/assessment"}>
+                  <Link aria-describedby="workflow-support-new-tab" className="mt-2 inline-flex min-h-11 items-center font-semibold text-blue-700 underline decoration-blue-300 underline-offset-4" href={lang === "en" ? "/en/assessment" : "/assessment"} rel="noopener noreferrer" target="_blank">
                     {tx.journey.assessmentAction}
                   </Link>
+                  <p className="mt-1 text-xs" id="workflow-support-new-tab">{tx.journey.opensInNewTab}</p>
                 </div>
               </>
             ) : null}
 
             {activeStage === "costs" ? (
               <>
-                <dl className="grid gap-5 border-y border-gray-200 py-5 sm:grid-cols-2">
-                  <div>
-                    <dt className="text-xs font-medium text-gray-600">
-                      {tx.economics.contractValue}
-                    </dt>
-                    <dd className="mt-2 font-mono text-2xl font-bold tabular-nums text-blue-700">
-                      {numberFormat.format(assumptions.contractValue.central)} {tx.economics.currencyUnit}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className="text-xs font-medium text-gray-600">
-                      {tx.economics.dailyCostOfDelay}
-                    </dt>
-                    <dd className="mt-2 font-mono text-2xl font-bold tabular-nums text-blue-700">
-                      {numberFormat.format(assumptions.dailyCostOfInaction.central)} {tx.economics.currencyUnit}
-                    </dd>
-                  </div>
-                </dl>
+                <EconomicAssumptions lang={lang} onAction={dispatch} section="primary" state={state} />
                 <details className="border-y border-gray-200 py-4" data-advanced-economics>
                   <summary className="cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
                     <span className="block text-sm font-semibold text-gray-900">
@@ -432,7 +388,7 @@ export function CalculatorWorkspaceView({
                     </span>
                   </summary>
                   <div className="mt-6">
-                    <EconomicAssumptions lang={lang} onAction={dispatch} state={state} />
+                    <EconomicAssumptions lang={lang} onAction={dispatch} section="advanced" state={state} />
                   </div>
                 </details>
 
@@ -599,19 +555,22 @@ export function CalculatorWorkspaceBootstrapStatus({
 }: CalculatorWorkspaceBootstrapStatusProps) {
   const failed = status === "failed";
   return (
-    <section
-      aria-busy={failed ? undefined : true}
-      aria-live="polite"
-      className="border-y border-gray-200 py-10"
-      data-calculator-bootstrap={status}
-      role={failed ? "alert" : "status"}
-    >
-      <p className="max-w-3xl text-sm leading-relaxed text-gray-600">
-        {failed
-          ? calculatorV2T[lang].workspace.urlBootstrapFailed
-          : calculatorV2T[lang].workspace.loadingUrl}
-      </p>
-    </section>
+    <div className="space-y-8">
+      <CalculatorHeader lang={lang} />
+      <section
+        aria-busy={failed ? undefined : true}
+        aria-live="polite"
+        className="border-y border-gray-200 py-10"
+        data-calculator-bootstrap={status}
+        role={failed ? "alert" : "status"}
+      >
+        <p className="max-w-3xl text-sm leading-relaxed text-gray-600">
+          {failed
+            ? calculatorV2T[lang].workspace.urlBootstrapFailed
+            : calculatorV2T[lang].workspace.loadingUrl}
+        </p>
+      </section>
+    </div>
   );
 }
 

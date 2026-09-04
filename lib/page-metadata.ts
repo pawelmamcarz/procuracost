@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { IS_PREVIEW } from "@/app/seo-config";
 
 import type { Lang } from "@/lib/i18n";
 import { SITE_ROUTES } from "@/lib/site-routes";
@@ -70,7 +71,7 @@ export function localizedPathMetadata({
       title,
       description,
     },
-    robots,
+    robots: IS_PREVIEW ? { index: false, follow: false } : robots,
   };
 }
 

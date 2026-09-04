@@ -289,10 +289,10 @@ const calculatorV2Pl = {
     adaptiveCompliant: "Adaptacyjna ścieżka zgodna z ramami",
   },
   journey: {
-    eyebrow: "Zapis porównania / ścieżka praktyczna",
+    eyebrow: "Porównanie kosztów zakupu",
     title: "Porównaj dwa sposoby przeprowadzenia zakupu",
     introduction:
-      "Przejdź przez cztery etapy. Szczegóły modelu pozostają dostępne, ale nie zasłaniają decyzji.",
+      "Wybierz podobny zakup, dostosuj dwa przebiegi i podaj koszty. Otrzymasz porównanie z zapisanymi założeniami.",
     navigation: "Etapy porównania",
     stages: {
       case: {
@@ -317,20 +317,21 @@ const calculatorV2Pl = {
     stepOf: (current: number, total: number) => `Etap ${current} z ${total}`,
     namesTitle: "Nazwij porównywane przebiegi",
     namesDescription:
-      "Krótka nazwa pomaga rozpoznać wariant. Typ kanoniczny pozostaje zawsze widoczny.",
+      "Nadaj wariantom krótkie nazwy. Obok każdej pozostanie widoczny typ przebiegu.",
     nameLabel: "Nazwa wariantu",
     defaultNames: {
       formalSequential: "Obecny przebieg",
       adaptiveCompliant: "Wariant alternatywny",
     },
-    canonicalType: "Typ kanoniczny",
+    canonicalType: "Typ przebiegu",
     caseSupport: "Nie wiesz, który przypadek wybrać?",
     suitabilityAction: "Sprawdź warunki zastosowania",
     workflowSupport: "Potrzebujesz opisać sposób pracy przed edycją map?",
     assessmentAction: "Otwórz profil procesu",
-    advancedEconomics: "Edytuj wartości i szczegółowe założenia",
+    opensInNewTab: "Otwiera nową kartę. Porównanie pozostaje w tej karcie.",
+    advancedEconomics: "Stawki pracy i pozostałe założenia",
     advancedEconomicsDescription:
-      "Wartość kontraktu, koszt zwłoki, transfer konkurencji, stawki ról i stałe granice neutralności.",
+      "Sprawdź stawki godzinowe, różnice w dostępie dostawców i czynniki nieobjęte wyceną.",
     readinessTitle: "Sprawdź warunki wdrożenia osobno",
     readinessBody:
       "Samoopis gotowości otworzy się osobno i nie zmieni kosztu ani zapisu modelu.",
@@ -512,7 +513,7 @@ const calculatorV2Pl = {
       "Zakres transferu jest doliczany wyłącznie do wskazanego wariantu. To jawne założenie kontrfaktyczne, a nie cecha etykiety procesu.",
     roleRates: "Stawki godzinowe ról",
     fixedDimensions: "Stała granica neutralności modelu",
-    fixedNeutral: "Utrzymane centralnie na poziomie zero do czasu wskazania danych lub reguły alokacji.",
+    fixedNeutral: "W modelu 2.3 te składniki pozostają zerowe. Ich wycena wymaga odrębnej metody.",
     amendmentDifferential: "Różnica kosztu aneksów",
     tcoDifferential: "Różnica alokacji TCO",
     bypass: "Zakup poza zatwierdzonym procesem",
@@ -606,10 +607,10 @@ const calculatorV2En = {
     adaptiveCompliant: "Adaptive compliant alternative",
   },
   journey: {
-    eyebrow: "Comparison record / practitioner path",
+    eyebrow: "Procurement cost comparison",
     title: "Compare two ways to run a procurement",
     introduction:
-      "Move through four stages. Model detail remains available without obscuring the decision.",
+      "Choose a similar purchase, adjust two workflows and enter your costs. Get a comparison with the assumptions recorded.",
     navigation: "Comparison stages",
     stages: {
       case: {
@@ -634,20 +635,21 @@ const calculatorV2En = {
     stepOf: (current: number, total: number) => `Stage ${current} of ${total}`,
     namesTitle: "Name the compared workflows",
     namesDescription:
-      "A short name helps identify an alternative. Its canonical type remains visible.",
+      "Give each alternative a short name. Its workflow type remains visible alongside it.",
     nameLabel: "Alternative name",
     defaultNames: {
       formalSequential: "Current workflow",
       adaptiveCompliant: "Alternative workflow",
     },
-    canonicalType: "Canonical type",
+    canonicalType: "Workflow type",
     caseSupport: "Not sure which case to choose?",
     suitabilityAction: "Check the conditions for use",
     workflowSupport: "Need to describe the way of working before editing the maps?",
     assessmentAction: "Open the process profile",
-    advancedEconomics: "Edit values and detailed assumptions",
+    opensInNewTab: "Opens a new tab. Your comparison stays in this tab.",
+    advancedEconomics: "Staff rates and other assumptions",
     advancedEconomicsDescription:
-      "Contract value, delay cost, competition transfer, role rates and fixed neutrality boundaries.",
+      "Review hourly rates, differences in supplier access and factors outside the cost calculation.",
     readinessTitle: "Check implementation conditions separately",
     readinessBody:
       "The readiness self-description opens separately and does not change cost or the model record.",
@@ -826,7 +828,7 @@ const calculatorV2En = {
       "The declared transfer range is applied only to the selected alternative. This is an explicit counterfactual assumption, not a property of either workflow label.",
     roleRates: "Role hourly rates",
     fixedDimensions: "Fixed model-neutrality boundary",
-    fixedNeutral: "Held centrally at zero until data or an allocation rule is supplied.",
+    fixedNeutral: "These dimensions remain zero in model 2.3. They require a separate method before they can be priced.",
     amendmentDifferential: "Contract-amendment differential",
     tcoDifferential: "TCO allocation differential",
     bypass: "Off-process purchasing",
@@ -985,7 +987,7 @@ const homePl = {
     ],
     compare: {
       label: "Porównaj koszty",
-      body: "Policz ten sam zakup dla ścieżki formalnej i adaptacyjnej. Zobacz składniki, zakres oraz próg zmiany wyniku.",
+      body: "Policz ten sam zakup dla ścieżki formalnej i adaptacyjnej. Sprawdź koszty pracy, oczekiwania i organizacji procesu.",
       action: "Otwórz kalkulator",
     },
     choose: {
@@ -1133,7 +1135,7 @@ const homeEn = {
     ],
     compare: {
       label: "Compare costs",
-      body: "Calculate the same purchase for formal and adaptive paths. Inspect the components, range, and result-switching threshold.",
+      body: "Calculate the same purchase for formal and adaptive paths. Inspect staff, waiting and process costs.",
       action: "Open calculator",
     },
     choose: {
@@ -1230,7 +1232,7 @@ const homeExperiencePl = {
   },
   paths: {
     eyebrow: "Wybierz cel",
-    title: "Dwie ścieżki. Jeden wspólny kontrakt modelu.",
+    title: "Porównaj zakup albo sprawdź metodę obliczeń",
     practical: {
       eyebrow: "Mam konkretny zakup",
       title: "Utwórz porównanie",
@@ -1240,17 +1242,17 @@ const homeExperiencePl = {
     research: {
       eyebrow: "Weryfikuję model",
       title: "Otwórz centrum badawcze",
-      body: "Sprawdź kontrakt modelu, metodę, założenia, źródła i replikację.",
+      body: "Sprawdź wzory, założenia, źródła danych i sposób odtworzenia wyników.",
       action: "Przejdź do badań",
     },
   },
   record: {
-    eyebrow: "Struktura rekordu",
+    eyebrow: "Co zawiera wynik",
     title: "Wynik, który można sprawdzić i odtworzyć",
     description:
-      "Rekord nie wskazuje zwycięzcy. Pokazuje obie alternatywy w tych samych ramach i zachowuje granice interpretacji.",
+      "Otrzymasz zestawienie kosztów obu wariantów, przyjęte założenia i listę czynników, których model nie wycenia.",
     fields: [
-      "Nazwa wariantu i typ kanoniczny",
+      "Nazwy wariantów i rodzaj przebiegu",
       "Wynik centralny",
       "Deklarowany zakres scenariusza",
       "Główne czynniki kosztu",
@@ -1261,7 +1263,7 @@ const homeExperiencePl = {
     eyebrow: "Ścieżka praktyczna",
     title: "Od przypadku do zapisu w czterech krokach",
     intro:
-      "Najpierw wybierasz najbliższy przypadek. Szczegóły metodologiczne pozostają dostępne, ale nie zasłaniają decyzji.",
+      "Wybierz podobny zakup, dostosuj czynności i wpisz własne koszty. Na końcu pobierz wynik wraz z założeniami.",
     steps: [
       {
         title: "Przypadek",
@@ -1282,7 +1284,7 @@ const homeExperiencePl = {
     ],
   },
   trust: {
-    eyebrow: "Zasady instrumentu",
+    eyebrow: "Jak działa porównanie",
     items: [
       {
         title: "Neutralny wynik",
@@ -1318,7 +1320,7 @@ const homeExperienceEn = {
   },
   paths: {
     eyebrow: "Choose your goal",
-    title: "Two paths. One shared model contract.",
+    title: "Compare a purchase or review the calculation method",
     practical: {
       eyebrow: "I have a procurement case",
       title: "Create a comparison",
@@ -1328,17 +1330,17 @@ const homeExperienceEn = {
     research: {
       eyebrow: "I am reviewing the model",
       title: "Open the research centre",
-      body: "Inspect the model contract, method, assumptions, evidence and replication package.",
+      body: "Review the formulas, assumptions, data sources and steps to reproduce the results.",
       action: "Go to research",
     },
   },
   record: {
-    eyebrow: "Record structure",
+    eyebrow: "What the result contains",
     title: "A result that can be checked and reproduced",
     description:
-      "The record does not declare a winner. It shows both alternatives under the same boundary and preserves the limits of interpretation.",
+      "The record contains the costs of both alternatives, the assumptions used and the factors the model leaves unpriced.",
     fields: [
-      "Alternative name and canonical type",
+      "Alternative names and workflow types",
       "Central result",
       "Declared scenario range",
       "Main cost drivers",
@@ -1349,7 +1351,7 @@ const homeExperienceEn = {
     eyebrow: "Practitioner path",
     title: "From case to record in four steps",
     intro:
-      "Start with the closest case. Methodological detail remains available without obscuring the decision.",
+      "Choose a similar purchase, adjust the activities and enter your costs. Then download the result with its assumptions.",
     steps: [
       {
         title: "Case",
@@ -1370,7 +1372,7 @@ const homeExperienceEn = {
     ],
   },
   trust: {
-    eyebrow: "Instrument rules",
+    eyebrow: "How the comparison works",
     items: [
       {
         title: "Neutral result",
@@ -1451,7 +1453,7 @@ const researchPaperEn = {
       "Each alternative has its own directed process map with activities, dependencies, role effort, waiting time and non-labour cost.",
       "Mandatory PZP periods come from the versioned legal ruleset. They remain locked and identical in both alternatives.",
       "Total cost comprises role effort, non-labour cost, delay cost and explicitly monetised contract-design dimensions.",
-      "Informal process bypass remains non-monetised unless an observed or user-supplied basis is available.",
+      "Informal process bypass is not monetised in model 2.3.",
       "Every decision record exposes the assumptions, calculation anchors, evidence class, legal provenance and dimensions outside monetisation.",
     ],
   },
@@ -1460,12 +1462,12 @@ const researchPaperEn = {
     formula:
       "Delta C = total cost of the formal sequential alternative - total cost of the adaptive compliant alternative",
     body:
-      "A positive value means that the formal sequential alternative has the higher declared cost. A negative value means that the adaptive compliant alternative has the higher declared cost. Low, central and high values form a scenario stress range, not a confidence interval. A range crossing zero shows that the direction changes within the declared assumptions.",
+      "A positive value means that the formal sequential alternative has the higher declared cost. A negative value means that the adaptive compliant alternative has the higher declared cost. Low, central and high values form a scenario stress range, not a confidence interval. The outer range combines opposite endpoints of the two alternatives. Crossing zero does not by itself prove a sign reversal under shared assumptions.",
   },
   coverage: {
     title: "Monetisation coverage",
     body:
-      "The native record separates role cost, non-labour cost, delay cost, competition transfer, contract amendments and TCO. Contract-amendment and TCO differentials are zero in the canonical scenarios until a defensible basis is supplied. Informal bypass is reported as a non-monetised dimension.",
+      "The native record separates role cost, non-labour cost, delay cost, competition transfer, contract amendments and TCO. Contract-amendment and TCO differentials remain zero in model 2.3, including edited scenarios. Informal bypass is reported as a non-monetised dimension.",
   },
   evidenceBoundary: {
     title: "Evidence and transfer limits",
@@ -2022,7 +2024,7 @@ const researchExportV2Pl = {
     zero:
       "Obie alternatywy mają taki sam centralny koszt całkowity.",
     crossingZero:
-      "Zewnętrzny zakres obejmuje zero, więc znak różnicy zmienia się w granicach podanych założeń.",
+      "Zewnętrzny zakres obejmuje zero i oba znaki. Samo to nie dowodzi zmiany znaku przy wspólnych założeniach dla obu wariantów.",
   },
   date: (day: number, month: string, year: number) =>
     `${day} ${month} ${year}`,
@@ -2241,7 +2243,7 @@ const researchExportV2En = {
       `The formal sequential alternative costs ${amount} less.`,
     zero: "Both alternatives have the same central total cost.",
     crossingZero:
-      "The outer range crosses zero, so the sign changes within the stated assumptions.",
+      "The outer range crosses zero. This alone does not prove a sign reversal under shared assumptions.",
   },
   date: (day: number, month: string, year: number) =>
     `${day} ${month} ${year}`,
@@ -2319,12 +2321,12 @@ const siteMetadataPl = {
   home: {
     title: "ProcuraCost | Porównanie kosztów procesu zakupowego",
     description:
-      "Porównaj sumy, deklarowany zakres scenariusza, czynniki kosztowe, pokrycie monetyzacji i wymiary niemonetyzowane.",
+      "Porównaj czas i koszt dwóch sposobów przeprowadzenia zakupu. Dostosuj czynności, stawki pracy i koszt zwłoki. Pobierz wynik z założeniami.",
   },
   calculator: {
     title: "Kalkulator procesu zakupowego | ProcuraCost",
     description:
-      "Zaprojektuj dwie dopuszczalne mapy procesu i porównaj ich koszt w neutralnym rekordzie decyzji.",
+      "Oblicz koszty pracy, oczekiwania i organizacji zakupu dla dwóch przebiegów. Edytuj założenia i pobierz porównanie w PDF, CSV lub JSON.",
   },
   mechanismsEvidence: {
     title: "Mechanizmy i źródła | ProcuraCost",
@@ -2348,12 +2350,12 @@ const siteMetadataEn = {
   home: {
     title: "ProcuraCost | Procurement workflow cost comparison",
     description:
-      "Compare totals, the declared scenario range, cost drivers, monetisation coverage and non-monetised dimensions.",
+      "Compare the time and cost of two procurement workflows. Adjust activities, staff rates and delay costs. Download the result with its assumptions.",
   },
   calculator: {
     title: "Procurement workflow calculator | ProcuraCost",
     description:
-      "Design two lawful process maps and compare their cost in a neutral decision record.",
+      "Calculate staff, waiting and process costs for two procurement workflows. Edit the assumptions and download a PDF, CSV or JSON comparison.",
   },
   mechanismsEvidence: {
     title: "Mechanisms and evidence | ProcuraCost",
@@ -2393,7 +2395,7 @@ const modelOverviewPl = {
         },
         methodology: {
           title: "Metoda obliczeń",
-          body: "Kolejność materializacji, walidacji, obliczenia i zapisu wyniku.",
+          body: "Jak dane wejściowe są sprawdzane, przeliczane i zapisywane w wyniku.",
         },
         evidence: {
           title: "Mechanizmy i źródła",
@@ -2458,7 +2460,7 @@ const modelOverviewPl = {
   },
   rangeTitle: "Jak czytać wynik",
   rangeDisclosure:
-    "Delta oznacza koszt alternatywy formalnej i sekwencyjnej pomniejszony o koszt alternatywy adaptacyjnej i zgodnej. Zakres niski, centralny i wysoki jest deklarowanym stresem scenariuszowym, a nie oszacowaniem prawdopodobieństwa. Przecięcie zera oznacza, że kierunek różnicy zależy od przyjętych wartości.",
+    "Delta oznacza koszt alternatywy formalnej i sekwencyjnej pomniejszony o koszt alternatywy adaptacyjnej i zgodnej. Zakres niski, centralny i wysoki jest deklarowanym stresem scenariuszowym, a nie oszacowaniem prawdopodobieństwa. Zewnętrzny zakres łączy przeciwne krańce kosztów obu wariantów. Przecięcie zera nie dowodzi zmiany znaku przy wspólnych założeniach.",
   actionsTitle: "Materiały do decyzji",
   actions: {
     assumptions: "Rejestr założeń",
@@ -2491,7 +2493,7 @@ const modelOverviewEn = {
         },
         methodology: {
           title: "Calculation method",
-          body: "The sequence of materialisation, validation, calculation and result recording.",
+          body: "How the inputs are checked, calculated and recorded with the result.",
         },
         evidence: {
           title: "Mechanisms and evidence",
@@ -2556,7 +2558,7 @@ const modelOverviewEn = {
   },
   rangeTitle: "How to read the result",
   rangeDisclosure:
-    "Delta is the cost of the formal sequential alternative minus the cost of the adaptive compliant alternative. Low, central and high values form a declared scenario stress range, not a probability estimate. A range crossing zero means that the direction of difference depends on the declared values.",
+    "Delta is the cost of the formal sequential alternative minus the cost of the adaptive compliant alternative. Low, central and high values form a declared scenario stress range, not a probability estimate. The outer range combines opposite endpoints of the two alternatives. Crossing zero alone does not establish a sign reversal under shared assumptions.",
   actionsTitle: "Decision materials",
   actions: {
     assumptions: "Assumptions register",
@@ -3099,7 +3101,8 @@ const decisionRecordPl = {
       "Adaptacyjna ścieżka zgodna z ramami ma wyższy centralny koszt całkowity.",
     zero: "Centralne koszty całkowite są równe.",
     crossing:
-      "Znak zmienia się w podanych zakresach. Model nie wskazuje stabilnej kolejności kosztów.",
+      "Zewnętrzny zakres obejmuje wartości ujemne i dodatnie. To konserwatywna granica różnicy, a nie dowód zmiany znaku przy wspólnych założeniach dla obu wariantów.",
+    touching: "Zewnętrzny zakres dochodzi do zera. Dopuszcza równość kosztów, ale nie obejmuje obu znaków.",
     stable:
       "Znak jest stabilny w podanych zakresach. Nie jest to dowód statystyczny.",
   },
@@ -3242,7 +3245,8 @@ const decisionRecordEn = {
       "The adaptive compliant total is higher at the central assumptions.",
     zero: "The central totals are equal.",
     crossing:
-      "The sign changes within the declared ranges. The model does not identify a stable cost ordering.",
+      "The outer range crosses zero. This conservative bound does not prove that the sign reverses when both alternatives use the same shared assumptions.",
+    touching: "The outer range reaches zero. It permits equal costs but does not contain both signs.",
     stable:
       "The sign is stable within the declared ranges; this is not statistical evidence.",
   },
@@ -4403,14 +4407,14 @@ const contextualToolPl = {
   case: {
     label: "Narzędzie pomocnicze · etap 1",
     body:
-      "Warunki zastosowania pomagają opisać przypadek. Nie wybierają procedury i nie zmieniają rachunku kosztu.",
-    action: "Wróć do przypadku",
+      "Sprawdź warunki zastosowania procedur. Jeśli przyszedłeś z porównania, wróć do jego karty, aby zachować wprowadzone dane.",
+    action: "Otwórz nowe porównanie",
   },
   workflows: {
     label: "Narzędzie pomocnicze · etap 2",
     body:
-      "Profil pomaga nazwać projekt przebiegu. Nie jest oceną dojrzałości ani rekomendacją procedury.",
-    action: "Wróć do przebiegów",
+      "Opisz sposób pracy nad zakupem. Jeśli przyszedłeś z porównania, wróć do jego karty, aby zachować wprowadzone dane.",
+    action: "Otwórz nowe porównanie przebiegów",
   },
   record: {
     label: "Oddzielny samoopis wdrożenia",
@@ -4426,14 +4430,14 @@ const contextualToolEn = {
   case: {
     label: "Supporting tool · stage 1",
     body:
-      "Suitability conditions help describe the case. They do not select a procedure or change the cost calculation.",
-    action: "Return to the case",
+      "Review the conditions for using each procedure. If you came from a comparison, return to its tab to keep your entered data.",
+    action: "Open a new comparison",
   },
   workflows: {
     label: "Supporting tool · stage 2",
     body:
-      "The profile helps name a workflow design. It is not a maturity assessment or procedure recommendation.",
-    action: "Return to workflows",
+      "Describe how the procurement work is organised. If you came from a comparison, return to its tab to keep your entered data.",
+    action: "Open a new workflow comparison",
   },
   record: {
     label: "Separate implementation self-description",
@@ -4463,6 +4467,7 @@ const navigationPl = {
   primaryNavigation: "Nawigacja główna",
   openMenu: "Otwórz menu",
   closeMenu: "Zamknij menu",
+  skipToContent: "Przejdź do treści",
 } as const;
 
 type NavigationShape = LangShape<typeof navigationPl>;
@@ -4481,6 +4486,7 @@ const navigationEn = {
   primaryNavigation: "Primary navigation",
   openMenu: "Open menu",
   closeMenu: "Close menu",
+  skipToContent: "Skip to content",
 } satisfies NavigationShape;
 
 export const navigationT = { pl: navigationPl, en: navigationEn } as const;
@@ -6129,3 +6135,26 @@ const practiceEn = {
 } satisfies PracticeShape;
 
 export const practiceT = { pl: practicePl, en: practiceEn } as const;
+
+
+const systemPagePl = {
+  notFoundTitle: "Nie znaleziono strony",
+  notFoundBody: "Ten adres nie prowadzi do dostępnej strony. Wróć na stronę główną lub rozpocznij porównanie.",
+  home: "Strona główna",
+  calculator: "Otwórz porównanie",
+  errorTitle: "Nie udało się wyświetlić strony",
+  errorBody: "Spróbuj ponownie. Jeśli błąd się powtarza, wróć na stronę główną. Szkic zapisany w przeglądarce można przywrócić w kalkulatorze.",
+  retry: "Spróbuj ponownie",
+} as const;
+
+const systemPageEn = {
+  notFoundTitle: "Page not found",
+  notFoundBody: "This address does not lead to an available page. Return to the homepage or start a comparison.",
+  home: "Homepage",
+  calculator: "Open comparison",
+  errorTitle: "The page could not be displayed",
+  errorBody: "Try again. If the error persists, return to the homepage. You can restore a draft saved in this browser from the calculator.",
+  retry: "Try again",
+} satisfies LangShape<typeof systemPagePl>;
+
+export const systemPageT = { pl: systemPagePl, en: systemPageEn } as const;

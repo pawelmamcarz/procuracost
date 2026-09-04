@@ -55,10 +55,20 @@ export default function AppShell({ children, lang }: { children: React.ReactNode
 
   return (
     <>
+      <a
+        className="sr-only z-50 bg-white px-5 py-3 font-semibold text-blue-700 focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:outline-2 focus:outline-blue-600"
+        href="#main-content"
+        onClick={(event) => {
+          event.preventDefault();
+          document.getElementById("main-content")?.focus();
+        }}
+      >
+        {labels.skipToContent}
+      </a>
       <Suspense fallback={<NavBar key={pathname} brand={brand} items={items} lang={lang} langSwitch={fallbackLangSwitch} labels={labels} pathname={pathname} />}>
         <ContextualNavBar brand={brand} items={items} lang={lang} targetLang={targetLang} labels={labels} pathname={pathname} />
       </Suspense>
-      <main className="flex-1">{children}</main>
+      <main className="min-w-0 flex-1" id="main-content" tabIndex={-1}>{children}</main>
       <SiteFooter lang={lang} />
     </>
   );
