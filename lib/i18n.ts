@@ -1224,9 +1224,9 @@ export const homeT = { pl: homePl, en: homeEn } as const;
 const homeExperiencePl = {
   hero: {
     eyebrow: "Decyzja zakupowa / model 2.3",
-    title: "Porównaj dwa zgodne z prawem sposoby przeprowadzenia zakupu.",
+    title: "Porównaj dwa sposoby zakupu zgodne z obowiązującymi regulacjami.",
     description:
-      "Zobacz, skąd bierze się różnica czasu i kosztu. Zachowaj jawny zapis założeń, wyniku i ograniczeń.",
+      "Regulacje firmy oraz PZP, gdy ma zastosowanie, wyznaczają wspólne ramy obu wariantów. Porównaj czas i koszt, zachowując zapis założeń, wyniku i ograniczeń.",
     primaryAction: "Zacznij porównanie",
     secondaryAction: "Sprawdź model i źródła",
   },
@@ -1312,9 +1312,9 @@ type HomeExperienceShape = LangShape<typeof homeExperiencePl>;
 const homeExperienceEn = {
   hero: {
     eyebrow: "Procurement decision / model 2.3",
-    title: "Compare two lawful ways to run a procurement.",
+    title: "Compare two procurement approaches that comply with the applicable rules.",
     description:
-      "See what drives the difference in time and cost. Keep an explicit record of assumptions, results and limitations.",
+      "Company policies and the Polish Public Procurement Law (PZP), where applicable, set the same boundaries for both alternatives. Compare time and cost, keeping a record of assumptions, results and limitations.",
     primaryAction: "Start a comparison",
     secondaryAction: "Check the model and evidence",
   },
