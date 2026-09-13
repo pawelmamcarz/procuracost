@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { IBM_Plex_Mono, Public_Sans } from "next/font/google";
 import "../globals.css";
 import AppShell from "@/components/AppShell";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 import { siteMetadataT } from "@/lib/i18n";
 import { SITE_URL } from "../seo-config";
 
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <body className="flex min-h-full flex-col font-sans">
         <AppShell lang="pl">{children}</AppShell>
+        <GoogleAnalytics lang="pl" />
       </body>
     </html>
   );

@@ -4,6 +4,24 @@ import { MODEL_V2_METADATA } from "./model-v2/domain";
 
 export type Lang = "pl" | "en";
 
+const analyticsPl = {
+  title: "Pomiar odwiedzin",
+  description: "Za Twoją zgodą Google Analytics zapisuje cookies i mierzy odwiedzane strony. Nie przesyłamy wartości kalkulatora ani własnych nazw porównań. Odmowa nie ogranicza działania serwisu. Zgodę możesz wycofać w ustawieniach analityki na dole strony.",
+  settings: "Ustawienia analityki",
+  reject: "Bez analityki",
+  accept: "Zgadzam się na analitykę",
+  privacy: "Polityka prywatności Google",
+};
+const analyticsEn: LangShape<typeof analyticsPl> = {
+  title: "Visitor measurement",
+  description: "With your consent, Google Analytics stores cookies and measures page visits. We do not send calculator values or custom comparison names. Declining does not limit the service. You can withdraw consent in the analytics settings at the bottom of the page.",
+  settings: "Analytics settings",
+  reject: "Without analytics",
+  accept: "Allow analytics",
+  privacy: "Google privacy policy",
+};
+export const analyticsT = { pl: analyticsPl, en: analyticsEn };
+
 const ogPl = {
   supportLine:
     "Dwa zgodne projekty przebiegu procesu. Jeden jawny rachunek kosztu.",
