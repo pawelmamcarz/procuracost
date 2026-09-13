@@ -75,9 +75,13 @@ Historical model 2.2.2 outputs remain in the immutable replication archive. Its 
 ## Local development
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
+
+Use `npm ci` after pulling dependency changes so local packages match
+`package-lock.json` and CI. Use `npm install` only when intentionally changing
+dependencies, and commit both `package.json` and `package-lock.json`.
 
 Open [http://localhost:3000](http://localhost:3000) for Polish or [http://localhost:3000/en](http://localhost:3000/en) for English.
 
