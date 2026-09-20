@@ -74,15 +74,15 @@ contexts:
 |---|---|---:|---|
 | Basic procedure | tender submission, supplies/services | 7 | PZP art. 283 |
 | Basic procedure | tender submission, works | 14 | PZP art. 283 |
-| Basic procedure | standstill, electronic communication | 5 | PZP art. 308(2) |
-| Basic procedure | standstill, other communication | 10 | PZP art. 308(2) |
-| Open procedure | tender submission | 35 | PZP art. 138(1) |
-| Open procedure | standstill, electronic communication | 10 | PZP art. 264(1) |
-| Open procedure | standstill, other communication | 15 | PZP art. 264(1) |
-| Restricted procedure | request to participate | 30 | PZP art. 144(1) |
-| Restricted procedure | tender submission | 30 | PZP art. 151(1) |
-| Restricted procedure | standstill, electronic communication | 10 | PZP art. 264(1) |
-| Restricted procedure | standstill, other communication | 15 | PZP art. 264(1) |
+| Basic procedure | standstill, electronic communication | 5 | PZP art. 308 ust. 2 |
+| Basic procedure | standstill, other communication | 10 | PZP art. 308 ust. 2 |
+| Open procedure | tender submission | 35 | PZP art. 138 ust. 1 |
+| Open procedure | standstill, electronic communication | 10 | PZP art. 264 ust. 1 |
+| Open procedure | standstill, other communication | 15 | PZP art. 264 ust. 1 |
+| Restricted procedure | request to participate | 30 | PZP art. 144 ust. 1 |
+| Restricted procedure | tender submission | 30 | PZP art. 151 ust. 1 |
+| Restricted procedure | standstill, electronic communication | 10 | PZP art. 264 ust. 1 |
+| Restricted procedure | standstill, other communication | 15 | PZP art. 264 ust. 1 |
 
 The resolver models the stated baseline rules only. It does not decide whether
 a reduction, exception or different regime applies to a real procurement.
@@ -238,7 +238,9 @@ standard-service sensitivity scenario:
 `competitionTransfer_restricted = contractValue x {0.02, 0.06, 0.09}`
 
 The other alternative receives zero. Where the comparison does not explicitly
-declare a supplier-access difference, both alternatives receive zero. The user
+declare a supplier-access difference, both alternatives receive zero. That zero
+is an allocation convention: the decision record carries it with the Szucs
+evidence class, but only the 2, 6 and 9 per cent rate is the empirical anchor. The user
 may select either alternative as restricted or remove the difference entirely;
 the workflow label never determines the allocation.
 

@@ -441,15 +441,22 @@ describe("public editorial integrity", () => {
   });
 
   it("renders planned Shortcasts in English", () => {
-    const markup = renderToStaticMarkup(createElement(ShortcastyEnPage));
-    const firstEpisode = EPISODES[0];
+    const episode = EPISODES[0];
+    const previousPublishedAt = episode.publishedAt;
+    delete episode.publishedAt;
 
-    expect(markup).toContain(firstEpisode.titleEn);
-    expect(markup).toContain(firstEpisode.dimensionEn);
-    expect(markup).toContain(firstEpisode.focusEn);
-    expect(markup).toContain(firstEpisode.thesisEn);
-    expect(markup).not.toContain(firstEpisode.title);
-    expect(markup).not.toContain(firstEpisode.thesis);
+    try {
+      const markup = renderToStaticMarkup(createElement(ShortcastyEnPage));
+
+      expect(markup).toContain(episode.titleEn);
+      expect(markup).toContain(episode.dimensionEn);
+      expect(markup).toContain(episode.focusEn);
+      expect(markup).toContain(episode.thesisEn);
+      expect(markup).not.toContain(episode.title);
+      expect(markup).not.toContain(episode.thesis);
+    } finally {
+      if (previousPublishedAt) episode.publishedAt = previousPublishedAt;
+    }
   });
 
   it("uses linear analytical Shortcast indexes", () => {

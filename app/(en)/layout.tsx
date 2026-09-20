@@ -4,6 +4,7 @@ import "../globals.css";
 import AppShell from "@/components/AppShell";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import { siteMetadataT } from "@/lib/i18n";
+import { jsonLdScriptContent, siteJsonLd } from "@/lib/structured-data";
 import { SITE_URL } from "../seo-config";
 
 const publicSans = Public_Sans({
@@ -31,6 +32,10 @@ export default function EnRootLayout({ children }: { children: React.ReactNode }
       className={`${publicSans.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col font-sans">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLdScriptContent(siteJsonLd("en")) }}
+        />
         <AppShell lang="en">{children}</AppShell>
         <GoogleAnalytics lang="en" />
       </body>

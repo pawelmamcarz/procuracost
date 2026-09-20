@@ -1570,7 +1570,7 @@ type ResearchAgendaCopy = {
 const researchAgendaPl = {
   metadataTitle: (version: string) => `Agenda badawcza ${version}: ProcuraCost`,
   metadataDescription: (version: string) =>
-    `Agenda empirycznej walidacji neutralnego modelu ProcuraCost ${version}.`,
+    `Plan badań nad neutralnym modelem kosztów przetargu ProcuraCost ${version}: walidacja mechanizmów przed wyceną, priorytety pomiaru i granice wnioskowania.`,
   eyebrow: (version: string) => `Agenda badawcza · Model ${version}`,
   title: "Waliduj mechanizmy przed ich wyceną",
   intro:
@@ -2333,28 +2333,29 @@ export const replicationPackageV2T = {
 
 const siteMetadataPl = {
   root: {
-    title: "ProcuraCost: porównanie projektów procesu zakupowego",
-    description: `Porównaj dwa dopuszczalne projekty przebiegu procesu na deklarowanych założeniach modelu ${MODEL_V2_METADATA.modelVersion}.`,
+    title: "ProcuraCost: kalkulator kosztów przetargu PZP",
+    description:
+      "Porównaj czas i koszt przetargu dla dwóch dopuszczalnych przebiegów procedury. Terminy PZP, jawne założenia i wynik z rekordem decyzji.",
   },
   home: {
-    title: "ProcuraCost | Porównanie kosztów procesu zakupowego",
+    title: "Ile kosztuje przetarg? Porównanie kosztów | ProcuraCost",
     description:
-      "Porównaj czas i koszt dwóch sposobów przeprowadzenia zakupu. Dostosuj czynności, stawki pracy i koszt zwłoki. Pobierz wynik z założeniami.",
+      "Sprawdź, ile kosztuje przetarg: porównaj czas i koszt formalnej procedury sekwencyjnej i adaptacyjnego przebiegu zgodnego z PZP. Wynik z założeniami.",
   },
   calculator: {
-    title: "Kalkulator procesu zakupowego | ProcuraCost",
+    title: "Kalkulator kosztów przetargu | ProcuraCost",
     description:
-      "Oblicz koszty pracy, oczekiwania i organizacji zakupu dla dwóch przebiegów. Edytuj założenia i pobierz porównanie w PDF, CSV lub JSON.",
+      "Kalkulator kosztów procedury przetargowej: policz pracę ról, oczekiwanie i koszt zwłoki dla dwóch przebiegów. Eksport do PDF, CSV i JSON.",
   },
   mechanismsEvidence: {
-    title: "Mechanizmy i źródła | ProcuraCost",
+    title: "Mechanizmy i źródła kosztów zakupów | ProcuraCost",
     description:
-      "Rejestr mechanizmów zakupowych z jawnym rozdzieleniem materiału źródłowego, założeń i wyników modelu.",
+      "Rejestr mechanizmów kosztów przetargu z jawnym rozdzieleniem materiału źródłowego, założeń scenariuszy i wyników modelu.",
   },
   processDesignProfile: {
-    title: `Profil projektu procesu zakupowego | ProcuraCost ${MODEL_V2_METADATA.modelVersion}`,
+    title: "Profil projektu procesu zakupowego | ProcuraCost",
     description:
-      "Opisowy profil sekwencyjności i adaptacyjności projektu procesu; nie jest audytem ani walidowanym testem.",
+      "Opisowy profil sekwencyjności i adaptacyjności projektu procesu zakupowego. Uporządkuj opis przebiegu przed porównaniem kosztów; to nie audyt.",
   },
 } as const;
 
@@ -2362,28 +2363,29 @@ type SiteMetadataShape = LangShape<typeof siteMetadataPl>;
 
 const siteMetadataEn = {
   root: {
-    title: "ProcuraCost: procurement workflow design comparison",
-    description: `Compare two lawful workflow designs under the declared assumptions of model ${MODEL_V2_METADATA.modelVersion}.`,
+    title: "ProcuraCost: public procurement procedure cost calculator",
+    description:
+      "Compare the duration and cost of two lawful procurement workflow designs. Locked PZP periods, explicit assumptions and a decision record with every result.",
   },
   home: {
-    title: "ProcuraCost | Procurement workflow cost comparison",
+    title: "Procurement process cost comparison | ProcuraCost",
     description:
-      "Compare the time and cost of two procurement workflows. Adjust activities, staff rates and delay costs. Download the result with its assumptions.",
+      "Compare the time and cost of a formal sequential and an adaptive compliant procurement workflow under PZP. Result with its assumptions.",
   },
   calculator: {
-    title: "Procurement workflow calculator | ProcuraCost",
+    title: "Public procurement procedure cost calculator | ProcuraCost",
     description:
-      "Calculate staff, waiting and process costs for two procurement workflows. Edit the assumptions and download a PDF, CSV or JSON comparison.",
+      "Public procurement procedure cost calculator: compute role effort, waiting and delay cost for two workflow designs. Export to PDF, CSV or JSON.",
   },
   mechanismsEvidence: {
-    title: "Mechanisms and evidence | ProcuraCost",
+    title: "Mechanisms and evidence of procurement cost | ProcuraCost",
     description:
-      "A procurement-mechanism register that separates source material, assumptions and model outputs.",
+      "A register of public procurement cost mechanisms with an explicit separation of source material, scenario assumptions and model outputs.",
   },
   processDesignProfile: {
-    title: `Procurement process design profile | ProcuraCost ${MODEL_V2_METADATA.modelVersion}`,
+    title: "Procurement process design profile | ProcuraCost",
     description:
-      "A descriptive profile of sequencing and adaptability in workflow design; not an audit or validated test.",
+      "A descriptive profile of sequencing and adaptability in a procurement workflow design. Structure the process description before cost comparison; not an audit.",
   },
 } satisfies SiteMetadataShape;
 
@@ -2394,9 +2396,9 @@ export const siteMetadataT = {
 
 const modelOverviewPl = {
   metadata: {
-    title: "Centrum badawcze | ProcuraCost",
+    title: "Dokumentacja modelu kosztów przetargu | ProcuraCost",
     description:
-      "Kontrakt obliczeniowy, zakres dowodowy i ograniczenia modelu ProcuraCost 2.3.",
+      "Kontrakt obliczeniowy, zakres dowodowy i ograniczenia modelu kosztów przetargu ProcuraCost: co jest liczone i skąd pochodzą dane.",
   },
   eyebrow: `Model ${MODEL_V2_METADATA.modelVersion}`,
   title: "Centrum badawcze",
@@ -2492,9 +2494,9 @@ type ModelOverviewShape = LangShape<typeof modelOverviewPl>;
 
 const modelOverviewEn = {
   metadata: {
-    title: "Research centre | ProcuraCost",
+    title: "Procurement cost model documentation | ProcuraCost",
     description:
-      "Calculation contract, evidence boundary and limitations of ProcuraCost model 2.3.",
+      "Calculation contract, evidence boundary and limitations of the ProcuraCost procurement cost model: what is calculated and where each value comes from.",
   },
   eyebrow: `Model ${MODEL_V2_METADATA.modelVersion}`,
   title: "Research centre",
@@ -2593,9 +2595,9 @@ export const modelOverviewT = {
 
 const methodologyOverviewPl = {
   metadata: {
-    title: "Metodologia modelu 2.3 | ProcuraCost",
+    title: "Metodologia porównania kosztów przetargu | ProcuraCost",
     description:
-      "Deterministyczne porównanie dwóch dopuszczalnych projektów procesu zakupowego.",
+      "Deterministyczna metoda porównania formalnej procedury sekwencyjnej i adaptacyjnego przebiegu zgodnego z PZP. Jawne założenia i zablokowane terminy prawne.",
   },
   eyebrow: `Metodologia / model ${MODEL_V2_METADATA.modelVersion}`,
   title: "Metoda porównania bez zaszytego kierunku wyniku",
@@ -2698,9 +2700,9 @@ type MethodologyOverviewShape = LangShape<typeof methodologyOverviewPl>;
 
 const methodologyOverviewEn = {
   metadata: {
-    title: "Model 2.3 methodology | ProcuraCost",
+    title: "Procurement cost comparison methodology | ProcuraCost",
     description:
-      "Deterministic comparison of two lawful procurement workflow designs.",
+      "A deterministic method for comparing a formal sequential procurement procedure with an adaptive compliant workflow. Explicit assumptions, locked legal periods.",
   },
   eyebrow: `Methodology / model ${MODEL_V2_METADATA.modelVersion}`,
   title: "A comparison method without a built-in result direction",
@@ -3506,9 +3508,9 @@ export const optimizerT = { pl: optimizerPl, en: optimizerEn } as const;
 const suitabilityPl = {
   badge: "Porównanie warunków",
   title: "Warunki zastosowania procedur zakupowych",
-  metadataTitle: "Warunki zastosowania procedur zakupowych: ProcuraCost",
+  metadataTitle: "Warunki zastosowania procedur PZP: ProcuraCost",
   metadataDescription:
-    "Równorzędne rodziny procedur, obowiązkowe terminy prawne i warunki do potwierdzenia dla zadeklarowanego kontekstu zakupu.",
+    "Równorzędne rodziny procedur przetargowych, obowiązkowe terminy PZP i warunki do potwierdzenia dla zadeklarowanego kontekstu zakupu.",
   intro:
     "Wskaż granicę prawną i kontekst procesu. Narzędzie pokaże równorzędny zbiór rodzin procedur objętych modelem oraz warunki, które trzeba potwierdzić przed wyborem.",
   neutralityNote:
@@ -3691,7 +3693,7 @@ const suitabilityEn = {
   badge: "Condition-based comparison",
   title: "Procurement procedure suitability conditions",
   metadataTitle: "Procurement procedure suitability conditions: ProcuraCost",
-  metadataDescription: "Equal-status procedure families, mandatory legal periods and conditions to confirm for the declared procurement context.",
+  metadataDescription: "Equal-status procurement procedure families, mandatory PZP legal periods and conditions to confirm for the declared procurement context.",
   intro: "Declare the legal boundary and process context. The tool will show an equal-status set of procedure families covered by the model and the conditions that need confirmation before selection.",
   neutralityNote: "List order is technical only. Every family has the same status, and the result does not replace legal analysis.",
   visualSteps: ["Declaration", "Legal boundary", "Equal status"],
@@ -4120,13 +4122,13 @@ export const assessmentT = {
 } as const;
 
 const shortcastsPl = {
-  metadataTitle: (version: string) => `Noty metodologiczne modelu ${version} | ProcuraCost`,
-  metadataDescription: (version: string) =>
-    `Planowana seria źródłowa o założeniach, granicach wnioskowania i interpretacji wyników modelu ProcuraCost ${version}.`,
-  badge: (version: string) => `Model ${version} / plan redakcyjny`,
+  metadataTitle: () => "Noty metodologiczne | ProcuraCost",
+  metadataDescription: () =>
+    "Seria źródłowa o założeniach, granicach wnioskowania i interpretacji wyników modelu ProcuraCost. Oddziela źródła od założeń scenariuszowych.",
+  badge: (version: string) => `Model ${version} / noty metodologiczne`,
   title: "Noty metodologiczne ProcuraCost",
   intro:
-    "Planowana seria oddziela ustalenia wynikające ze źródeł od założeń scenariuszowych. Wyniki ProcuraCost nie są przedstawiane jako zmierzone efekty organizacyjne ani rekomendacje proceduralne.",
+    "Seria oddziela ustalenia wynikające ze źródeł od założeń scenariuszowych. Wyniki ProcuraCost nie są przedstawiane jako zmierzone efekty organizacyjne ani rekomendacje proceduralne.",
   publishedMaterials: "Opublikowane materiały",
   plannedTopics: "Planowane tematy",
   focusLabel: "Temat",
@@ -4154,13 +4156,13 @@ const shortcastsPl = {
 type ShortcastsShape = LangShape<typeof shortcastsPl>;
 
 const shortcastsEn = {
-  metadataTitle: (version: string) => `Model ${version} methodology notes | ProcuraCost`,
-  metadataDescription: (version: string) =>
-    `A planned source-bounded series on assumptions, inference limits and interpretation of ProcuraCost model ${version}.`,
-  badge: (version: string) => `Model ${version} / editorial plan`,
+  metadataTitle: () => "Methodology notes | ProcuraCost",
+  metadataDescription: () =>
+    "A source-bounded series on assumptions, inference limits and interpretation of ProcuraCost model results. Separates sources from scenario assumptions.",
+  badge: (version: string) => `Model ${version} / methodology notes`,
   title: "ProcuraCost methodology notes",
   intro:
-    "The planned series separates source findings from scenario assumptions. ProcuraCost outputs are not presented as measured organisational effects or procedure recommendations.",
+    "The series separates source findings from scenario assumptions. ProcuraCost outputs are not presented as measured organisational effects or procedure recommendations.",
   publishedMaterials: "Published materials",
   plannedTopics: "Planned topics",
   focusLabel: "Focus",
@@ -4281,7 +4283,7 @@ export const dimensionMultiplierLabelsT = {
 const teamPl = {
   metadataTitle: "Zespół | ProcuraCost",
   metadataDescription:
-    "Zespół pracujący na styku zakupów, analityki, systemów, wdrożeń, negocjacji i badań.",
+    "Zespół ProcuraCost na styku zakupów, analityki, systemów, wdrożeń, negocjacji i badań. Odpowiedzialność za model i odpowiedzialność za wdrożenie.",
   eyebrow: "Zespół",
   title: "Kompetencje wokół zakupów i wdrożeń",
   description:
@@ -4339,7 +4341,7 @@ type TeamShape = LangShape<typeof teamPl>;
 const teamEn = {
   metadataTitle: "Team | ProcuraCost",
   metadataDescription:
-    "A team working across procurement, analytics, systems, implementation, negotiation, and research.",
+    "The ProcuraCost team across procurement, analytics, systems, implementation, negotiation and research. Responsibility for the model and for implementation.",
   eyebrow: "Team",
   title: "Capabilities across procurement and implementation",
   description:
@@ -5097,8 +5099,9 @@ export const modelV2T = { pl: modelV2Pl, en: modelV2En } as const;
 
 const modelAssumptionsPl = {
   metadata: {
-    title: `Rejestr założeń modelu ${MODEL_V2_METADATA.modelVersion} | ProcuraCost`,
-    description: `Kontekst, zakresy ekonomiczne i pochodzenie danych modelu ProcuraCost ${MODEL_V2_METADATA.modelVersion}; kalibracja ${MODEL_V2_METADATA.calibrationId}.`,
+    title: "Rejestr założeń modelu kosztów przetargu | ProcuraCost",
+    description:
+      "Zakresy ekonomiczne, klasy źródeł i pochodzenie danych dziesięciu scenariuszy modelu kosztów przetargu. Jawna kalibracja i granice interpretacji.",
   },
   productName: "ProcuraCost",
   eyebrow: `Dokumentacja modelu ${MODEL_V2_METADATA.modelVersion}`,
@@ -5252,8 +5255,9 @@ export type ModelAssumptionsCopy = LangShape<typeof modelAssumptionsPl>;
 
 const modelAssumptionsEn = {
   metadata: {
-    title: `Model ${MODEL_V2_METADATA.modelVersion} assumptions register | ProcuraCost`,
-    description: `ProcuraCost ${MODEL_V2_METADATA.modelVersion} context, economic ranges, and provenance; calibration ${MODEL_V2_METADATA.calibrationId}.`,
+    title: "Procurement cost model assumptions register | ProcuraCost",
+    description:
+      "Economic ranges, source classes and provenance for ten procurement cost model scenarios. Explicit calibration and interpretation limits.",
   },
   productName: "ProcuraCost",
   eyebrow: `Model ${MODEL_V2_METADATA.modelVersion} documentation`,
@@ -5412,7 +5416,7 @@ const readinessPl = {
   metadata: {
     title: "Gotowość organizacyjna do wdrożenia | ProcuraCost",
     description:
-      "Osiem jakościowych obszarów samoopisu organizacji przed wyborem i konfiguracją systemu zakupowego, bez oceny zbiorczej.",
+      "Osiem obszarów samoopisu organizacji przed wyborem i konfiguracją systemu zakupowego. Bez oceny zbiorczej i bez rankingu dojrzałości.",
   },
   eyebrow: "Samoopis warunków wdrożenia",
   title: "Gotowość organizacyjna do wdrożenia",
@@ -5639,7 +5643,7 @@ const readinessEn = {
   metadata: {
     title: "Organisational implementation readiness | ProcuraCost",
     description:
-      "Eight qualitative areas for organisational self-description before procurement-system selection and configuration, without an overall assessment.",
+      "Eight areas of organisational self-description before selecting and configuring a procurement system. No overall score, no maturity ranking.",
   },
   eyebrow: "Implementation-conditions self-description",
   title: "Organisational implementation readiness",
@@ -5922,7 +5926,7 @@ export const readinessT = { pl: readinessPl, en: readinessEn } as const;
 
 const practicePl = {
   metadata: {
-    title: "Procurement&Beyond #8: wdrożenie systemu zakupowego | ProcuraCost",
+    title: "Procurement&Beyond #8: wdrożenie systemu | ProcuraCost",
     description:
       "Materiał praktyczny o nieefektywności procesu, odpowiedzialności biznesowej, wymaganiach, TCO i odpowiedzialnej automatyzacji.",
   },
@@ -6039,9 +6043,9 @@ type PracticeShape = LangShape<typeof practicePl>;
 
 const practiceEn = {
   metadata: {
-    title: "Procurement&Beyond episode 8: procurement system implementation | ProcuraCost",
+    title: "Procurement&Beyond #8: implementation | ProcuraCost",
     description:
-      "Practitioner material on process inefficiency, business ownership, requirements, TCO and responsible automation.",
+      "Practitioner material from Procurement&Beyond episode 8: process inefficiency, business ownership, requirements, TCO and responsible automation.",
   },
   eyebrow: "Practitioner material",
   title: "Even the best tool cannot rescue a poor implementation",

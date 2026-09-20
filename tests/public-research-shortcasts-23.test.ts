@@ -125,10 +125,14 @@ describe("model 2.3 research and editorial routes", () => {
   });
 
   it("renders paired planned-topic copy without exposing unpublished detail links", () => {
-    const polishMarkup = renderToStaticMarkup(createElement(ShortcastyPage));
-    const englishMarkup = renderToStaticMarkup(createElement(ShortcastyEnPage));
+    const episode = EPISODES[0];
+    const previousPublishedAt = episode.publishedAt;
+    delete episode.publishedAt;
 
-    for (const episode of EPISODES.filter(({ publishedAt }) => !publishedAt)) {
+    try {
+      const polishMarkup = renderToStaticMarkup(createElement(ShortcastyPage));
+      const englishMarkup = renderToStaticMarkup(createElement(ShortcastyEnPage));
+
       expect(polishMarkup).toContain(episode.practiceNote);
       expect(englishMarkup).toContain(episode.practiceNoteEn);
       expect(polishMarkup).not.toContain(
@@ -137,6 +141,8 @@ describe("model 2.3 research and editorial routes", () => {
       expect(englishMarkup).not.toContain(
         `href="/shortcasty/${episode.slug}"`,
       );
+    } finally {
+      if (previousPublishedAt) episode.publishedAt = previousPublishedAt;
     }
   });
 

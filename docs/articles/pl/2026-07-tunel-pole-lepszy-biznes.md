@@ -1,5 +1,5 @@
 ---
-tytuł: "Tunel czy pole? Jak skrócić zakupy bez osłabiania kontroli"
+title: "Tunel czy pole? Jak skrócić zakupy bez osłabiania kontroli"
 magazyn: "Lepszy Biznes (All for One)"
 data: 2026-07
 model: "ProcuraCost 2.3.0"

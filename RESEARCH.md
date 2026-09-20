@@ -87,7 +87,7 @@ Lipsky (1980), Vaughan (1996), and Holmström and Milgrom (1991) can motivate hy
 The active evidence registry includes four official sources:
 
 - California's account of modular technology procurement, used to frame modular contracting, supplier access and contract adaptability;
-- the OECD account of problem definition in Lithuania's Road Vehicle Register, used to frame problem definition, market consultation and role effort;
+- the OECD account of problem definition in Lithuania's Republican Vilnius University Hospital pilot, used to frame problem definition, market consultation and role effort;
 - the Polish Public Procurement Office material on preliminary market consultation, used to frame lawful market learning;
 - European Commission guidance on innovation procurement, used to frame innovation procurement, market consultation and contract adaptability.
 
@@ -141,6 +141,10 @@ C_j^k=C_{role,j}^{k}+C_{nonlab,j}^{k}+C_{delay,j}^{k}+C_{contract,j}^{k}.
 \]
 
 In the native starting points, competition transfer is the only non-zero contract allocation. It appears only in the stable standard-service sensitivity, which explicitly compares open policy-qualified competition with a restricted shortlist or incumbent continuation and identifies the restricted alternative. The allocation can be reversed or removed; it is never inferred from a workflow label. Contract amendment and TCO are fixed at zero. Informal bypass is not monetised.
+Bajari, Houghton and Tadelis (2014) estimate adaptation costs in incomplete
+contracts; that evidence motivates the contract-design dimension, but the
+native model monetises no amendment differential without a signed allocation
+convention.
 
 The decision record lists a calculation anchor for every included monetary
 input. It separately lists internal workflow provenance, external evidence,
@@ -228,6 +232,8 @@ Testable hypotheses arising from this material include whether sustained interna
 Validation requires event-level observations within organisations. The primary outcome should be procurement-cycle duration from auditable timestamps. Secondary outcomes should include active effort hours by role, queue time, bidder participation, price benchmarks, contract amendments, renegotiation cost, lifecycle performance, process bypass evidence, audit findings and supplier performance.
 
 The empirical design should estimate components before monetisation. It should preserve the distinction between active work and waiting, record system support without treating it as readiness, and compare lawful alternatives within the same governance boundary. Within-organisation and category controls are preferable where available. ProcuraCost outputs must not be used as calibration targets for the same model.
+The evidence-base review of Fazekas and Blum (2021) motivates this
+component-first, event-level design over cross-sectional benchmarking.
 
 ## 9. Reproducibility
 
@@ -255,7 +261,7 @@ Holmström, B., & Milgrom, P. (1991). Multitask principal-agent analyses: Incent
 
 Lipsky, M. (1980). *Street-level bureaucracy*. Russell Sage Foundation.
 
-OECD. (n.d.). *Public procurement in Lithuania: Improving procurement approaches for the Road Vehicle Register*. https://www.oecd.org/en/publications/public-procurement-in-lithuania_aa1b196c-en/full-report/component-8.html
+OECD. (2024). *Public procurement in Lithuania: Increasing efficiency through centralisation and professionalisation* (OECD Public Governance Reviews). https://www.oecd.org/en/publications/public-procurement-in-lithuania_aa1b196c-en/full-report/component-8.html
 
 Procurement&Beyond. (2026, August 26). *Odcinek 8. Nawet najlepsze narzędzie nie uratuje złego wdrożenia* [Practitioner interview]. https://www.youtube.com/watch?v=5KYUdTLlvvg
 

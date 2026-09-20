@@ -262,7 +262,7 @@ Coviello, D., and Mariniello, M. (2014). Publicity Requirements in Public
 Procurement: Evidence from a Regression Discontinuity Design. *Journal of Public
 Economics, 109*, 76-100. https://doi.org/10.1016/j.jpubeco.2013.10.008
 
-Holmstrom, B., and Milgrom, P. (1991). Multitask Principal-Agent Analyses.
+Holmström, B., and Milgrom, P. (1991). Multitask Principal-Agent Analyses.
 *Journal of Law, Economics, & Organization, 7*(Special Issue), 24-52.
 https://doi.org/10.1093/jleo/7.special_issue.24
 

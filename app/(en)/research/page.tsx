@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import PrintButton from "./PrintButton";
 import { researchPaperT } from "@/lib/i18n";
 import { localizedPageMetadata } from "@/lib/page-metadata";
+import { jsonLdScriptContent, scholarlyArticleJsonLd } from "@/lib/structured-data";
 
 const tx = researchPaperT.en;
 
@@ -10,11 +11,16 @@ export const metadata: Metadata = localizedPageMetadata({
   lang: "en",
   routeKey: "research",
   ...tx.metadata,
+  ogType: "article",
 });
 
 export default function ResearchPage() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-10 print:max-w-none print:px-0">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLdScriptContent(scholarlyArticleJsonLd()) }}
+      />
       <div className="mb-8 flex items-center justify-between print:hidden">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">

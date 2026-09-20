@@ -8,14 +8,14 @@ function localizedAlternates(path: string) {
     (candidate) => candidate.sitemap && !candidate.canonical && (candidate.pl === path || candidate.en === path),
   );
 
-  if (!route?.pl || !route.en) return undefined;
+  if (!route) return undefined;
 
-  return {
-    languages: {
-      "pl-PL": `${SITE_URL}${route.pl}`,
-      "en-GB": `${SITE_URL}${route.en}`,
-    },
-  };
+  const languages: Record<string, string> = {};
+  if (route.pl) languages["pl-PL"] = `${SITE_URL}${route.pl}`;
+  if (route.en) languages["en-GB"] = `${SITE_URL}${route.en}`;
+  if (route.pl) languages["x-default"] = `${SITE_URL}${route.pl}`;
+  else if (route.en) languages["x-default"] = `${SITE_URL}${route.en}`;
+  return { languages };
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {

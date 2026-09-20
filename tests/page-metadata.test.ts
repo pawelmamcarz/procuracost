@@ -22,6 +22,7 @@ describe("localized public-page metadata", () => {
         languages: {
           "pl-PL": "/model",
           "en-GB": "/en/model",
+          "x-default": "/model",
         },
       },
       openGraph: {
@@ -51,12 +52,24 @@ describe("localized public-page metadata", () => {
 
     expect(metadata.alternates).toEqual({
       canonical: "/research",
-      languages: { "en-GB": "/research" },
+      languages: { "en-GB": "/research", "x-default": "/research" },
     });
     expect(metadata.openGraph).toMatchObject({
       url: "/research",
       locale: "en_GB",
     });
+  });
+
+  it("lets a page opt into the article Open Graph type", () => {
+    const metadata = localizedPageMetadata({
+      lang: "en",
+      routeKey: "research",
+      title: "Research paper | ProcuraCost",
+      description: "Research paper.",
+      ogType: "article",
+    });
+
+    expect(metadata.openGraph).toMatchObject({ type: "article" });
   });
 
   it("fails closed when a page is assigned to a missing locale", () => {
@@ -80,7 +93,10 @@ describe("localized public-page metadata", () => {
 
     expect(metadata.alternates).toEqual({
       canonical: "/shortcasty/koszt-zlego-opisu",
-      languages: { "pl-PL": "/shortcasty/koszt-zlego-opisu" },
+      languages: {
+        "pl-PL": "/shortcasty/koszt-zlego-opisu",
+        "x-default": "/shortcasty/koszt-zlego-opisu",
+      },
     });
     expect(metadata.openGraph).toMatchObject({
       url: "/shortcasty/koszt-zlego-opisu",

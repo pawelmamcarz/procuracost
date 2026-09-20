@@ -58,8 +58,8 @@ describe("professional model 2.3 metadata", () => {
     expect(siteMetadataT.en.processDesignProfile.title).toContain(
       "Procurement process design profile"
     );
-    expect(siteMetadataT.pl.home.description).toContain("wynik z założeniami");
-    expect(siteMetadataT.en.home.description).toContain("result with its assumptions");
+    expect(siteMetadataT.pl.home.description).toContain("Wynik z założeniami");
+    expect(siteMetadataT.en.home.description).toContain("Result with its assumptions");
     expect(JSON.stringify(siteMetadataT)).not.toMatch(
       /wymiary niewycenione|unpriced dimensions/i,
     );

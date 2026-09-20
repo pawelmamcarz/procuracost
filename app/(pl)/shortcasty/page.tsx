@@ -10,8 +10,8 @@ const modelVersion = MODEL_V2_METADATA.modelVersion;
 export const metadata: Metadata = localizedPageMetadata({
   lang: "pl",
   routeKey: "shortcasts",
-  title: shortcastsT.pl.metadataTitle(modelVersion),
-  description: shortcastsT.pl.metadataDescription(modelVersion),
+  title: shortcastsT.pl.metadataTitle(),
+  description: shortcastsT.pl.metadataDescription(),
 });
 
 export default function ShortcastyPage() {
@@ -82,43 +82,45 @@ export default function ShortcastyPage() {
         </section>
       )}
 
-      <section className="mt-10">
-        <p className="mb-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-          {tx.plannedTopics}
-        </p>
-        <ol className="divide-y divide-gray-200 border-y border-gray-300">
-          {planned.map((episode) => (
-            <li
-              key={episode.slug}
-              className="grid gap-4 py-5 sm:grid-cols-[3rem_minmax(0,1fr)]"
-            >
-              <span className="font-mono text-sm text-gray-400">
-                {String(episode.number).padStart(2, "0")}
-              </span>
-              <div className="min-w-0 flex-1">
-                <h2 className="text-base font-semibold leading-snug text-gray-800">
-                  {episode.title}
-                </h2>
-                <p className="mt-1 text-xs text-gray-500">
-                  {episode.dimension} · {episode.focus}
-                </p>
-                <p className="mt-3 text-sm leading-6 text-gray-600">{episode.thesis}</p>
-                <p className="mt-2 text-sm leading-6 text-gray-600">
-                  {tx.practiceNoteLabel}: {episode.practiceNote}
-                </p>
-                {episode.source ? (
-                  <a
-                    href={episode.source.href}
-                    className="mt-3 inline-flex text-xs font-semibold text-blue-700 underline decoration-blue-300 underline-offset-4"
-                  >
-                    {episode.source.label} ↗
-                  </a>
-                ) : null}
-              </div>
-            </li>
-          ))}
-        </ol>
-      </section>
+      {planned.length > 0 && (
+        <section className="mt-10">
+          <p className="mb-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
+            {tx.plannedTopics}
+          </p>
+          <ol className="divide-y divide-gray-200 border-y border-gray-300">
+            {planned.map((episode) => (
+              <li
+                key={episode.slug}
+                className="grid gap-4 py-5 sm:grid-cols-[3rem_minmax(0,1fr)]"
+              >
+                <span className="font-mono text-sm text-gray-400">
+                  {String(episode.number).padStart(2, "0")}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <h2 className="text-base font-semibold leading-snug text-gray-800">
+                    {episode.title}
+                  </h2>
+                  <p className="mt-1 text-xs text-gray-500">
+                    {episode.dimension} · {episode.focus}
+                  </p>
+                  <p className="mt-3 text-sm leading-6 text-gray-600">{episode.thesis}</p>
+                  <p className="mt-2 text-sm leading-6 text-gray-600">
+                    {tx.practiceNoteLabel}: {episode.practiceNote}
+                  </p>
+                  {episode.source ? (
+                    <a
+                      href={episode.source.href}
+                      className="mt-3 inline-flex text-xs font-semibold text-blue-700 underline decoration-blue-300 underline-offset-4"
+                    >
+                      {episode.source.label} ↗
+                    </a>
+                  ) : null}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
     </div>
   );
 }

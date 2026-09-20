@@ -13,7 +13,7 @@ import PlLayout, {
 } from "@/app/(pl)/model/assumptions/layout";
 import PlPage from "@/app/(pl)/model/assumptions/page";
 import { modelAssumptionsT, modelV2T } from "@/lib/i18n";
-import { MODEL_V2_METADATA, SCENARIO_V2_IDS } from "@/lib/model-v2";
+import { SCENARIO_V2_IDS } from "@/lib/model-v2";
 import { localizedPageMetadata } from "@/lib/page-metadata";
 
 function occurrences(markup: string, fragment: string): number {
@@ -87,8 +87,8 @@ describe("model assumptions routes", () => {
       );
       expect(markup).not.toMatch(/rounded-|shadow-|bg-gradient|<table/i);
       expect(markup).not.toContain("—");
-      expect(metadata.title).toContain(MODEL_V2_METADATA.modelVersion);
-      expect(metadata.description).toContain(MODEL_V2_METADATA.calibrationId);
+      expect(metadata.title).toContain("ProcuraCost");
+      expect(metadata.description?.length).toBeGreaterThanOrEqual(120);
     }
   );
 

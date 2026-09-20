@@ -24,7 +24,7 @@ export type Episode = {
   publishedAt?: string;
 };
 
-// Planned source-bounded editorial set.
+// Source-bounded editorial set.
 export const EPISODES: Episode[] = [
   {
     number: 1,
@@ -43,6 +43,7 @@ export const EPISODES: Episode[] = [
       "Przed obliczeniem udokumentuj osobno mapy czynności, ekspozycję konkurencyjną i konstrukcję umowy.",
     practiceNoteEn:
       "Before calculation, document the activity maps, competition exposure and contract design separately.",
+    publishedAt: "2026-09-19",
   },
   {
     number: 2,
@@ -61,6 +62,7 @@ export const EPISODES: Episode[] = [
       "Ekspozycję konkurencyjną mierz niezależnie od projektu przebiegu procesu. Transfer wyniku poza badaną populację wymaga jawnego założenia.",
     practiceNoteEn:
       "Measure competition exposure independently of workflow design. Transfer beyond the studied population requires an explicit assumption.",
+    publishedAt: "2026-09-19",
     source: {
       href: "https://doi.org/10.1093/jeea/jvad017",
       label: "Szucs (2024), publikacja źródłowa",
@@ -84,6 +86,7 @@ export const EPISODES: Episode[] = [
       "Rejestruj konstrukcję klauzul niezależnie od liczby czynności, nakładu pracy i czasu postępowania.",
     practiceNoteEn:
       "Record clause design independently of activity count, role effort and procurement duration.",
+    publishedAt: "2026-09-19",
     source: {
       href: "https://doi.org/10.1093/jleo/ewab039",
       label: "Beuve, Moszoro i Spiller (2023), publikacja źródłowa",
@@ -107,6 +110,7 @@ export const EPISODES: Episode[] = [
       "Interpretuj wynik centralny razem z czynnikami kosztowymi, zakresem zewnętrznym i lokalnym rejestrem założeń.",
     practiceNoteEn:
       "Interpret the central result together with cost drivers, the outer range and the local assumptions register.",
+    publishedAt: "2026-09-19",
   },
 ];
 

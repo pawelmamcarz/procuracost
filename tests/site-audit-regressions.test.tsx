@@ -68,12 +68,13 @@ describe("site audit regressions", () => {
     expect(localizedPageMetadata({ lang: "en", routeKey: "home", title: "Preview", description: "Preview", robots: { index: true } }).robots).toEqual({ index: false, follow: false });
   });
 
-  it("keeps the production sitemap canonical, reciprocal and free of unpublished episodes", async () => {
+  it("keeps the production sitemap canonical, reciprocal and listing exactly the published episodes", async () => {
     vi.stubEnv("VERCEL_ENV", "production");
     vi.stubEnv("VERCEL_URL", "deployment.vercel.app");
     vi.resetModules();
     const { default: sitemap } = await import("@/app/sitemap");
     const { default: robots } = await import("@/app/robots");
+    const { EPISODES } = await import("@/lib/shortcasty");
     const entries = sitemap();
     const pl = entries.find(({ url }) => url.endsWith("/calculator"));
     const en = entries.find(({ url }) => url.endsWith("/en/calculator"));
@@ -81,9 +82,23 @@ describe("site audit regressions", () => {
     expect(pl?.alternates?.languages).toEqual({
       "pl-PL": "https://www.procuracost.com/calculator",
       "en-GB": "https://www.procuracost.com/en/calculator",
+      "x-default": "https://www.procuracost.com/calculator",
     });
     expect(entries.every(({ url }) => url.startsWith("https://www.procuracost.com"))).toBe(true);
-    expect(entries.some(({ url }) => url.endsWith("/en/research") || url.includes("/shortcasty/"))).toBe(false);
+    const publishedPaths = EPISODES.filter((episode) => episode.publishedAt)
+      .map((episode) => `/shortcasty/${episode.slug}`)
+      .sort();
+    const episodePaths = entries
+      .map(({ url }) => new URL(url).pathname)
+      .filter((path) => path.startsWith("/shortcasty/"))
+      .sort();
+    expect(episodePaths).toEqual(publishedPaths);
+    expect(
+      entries
+        .filter(({ url }) => url.includes("/shortcasty/"))
+        .every((entry) => entry.lastModified != null)
+    ).toBe(true);
+    expect(entries.some(({ url }) => url.endsWith("/en/research"))).toBe(false);
     expect(robots().rules).toEqual({ userAgent: "*", allow: "/" });
   });
 });

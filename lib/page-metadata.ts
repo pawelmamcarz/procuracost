@@ -6,12 +6,15 @@ import { SITE_ROUTES } from "@/lib/site-routes";
 
 export type SiteRouteKey = (typeof SITE_ROUTES)[number]["key"];
 
+type OpenGraphType = "website" | "article";
+
 type LocalizedPageMetadataInput = {
   lang: Lang;
   routeKey: SiteRouteKey;
   title: string;
   description: string;
   robots?: Metadata["robots"];
+  ogType?: OpenGraphType;
 };
 
 type RoutePath = `/${string}`;
@@ -36,16 +39,19 @@ export function localizedPathMetadata({
   title,
   description,
   robots,
+  ogType = "website",
 }: LocalizedPathMetadataInput): Metadata {
   const path = paths[lang];
   if (!path) throw new Error(`Localized metadata does not define a ${lang} path.`);
 
-  const languages = Object.fromEntries(
+  const languages: Record<string, RoutePath> = Object.fromEntries(
     (["pl", "en"] as const).flatMap((candidateLang) => {
       const candidatePath = paths[candidateLang];
       return candidatePath ? [[LANGUAGE_TAG[candidateLang], candidatePath]] : [];
     }),
   );
+  const defaultPath = paths.pl ?? paths.en;
+  if (defaultPath) languages["x-default"] = defaultPath;
   const alternateLocale = (["pl", "en"] as const)
     .filter((candidateLang) => candidateLang !== lang && Boolean(paths[candidateLang]))
     .map((candidateLang) => OPEN_GRAPH_LOCALE[candidateLang]);
@@ -64,7 +70,7 @@ export function localizedPathMetadata({
       siteName: "ProcuraCost",
       locale: OPEN_GRAPH_LOCALE[lang],
       alternateLocale,
-      type: "website",
+      type: ogType,
     },
     twitter: {
       card: "summary_large_image",
@@ -81,6 +87,7 @@ export function localizedPageMetadata({
   title,
   description,
   robots,
+  ogType,
 }: LocalizedPageMetadataInput): Metadata {
   const route = SITE_ROUTES.find((candidate) => candidate.key === routeKey);
   if (!route) throw new Error(`Unknown public route: ${routeKey}`);
@@ -94,5 +101,6 @@ export function localizedPageMetadata({
     title,
     description,
     robots,
+    ogType,
   });
 }
