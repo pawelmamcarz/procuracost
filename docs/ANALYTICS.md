@@ -6,6 +6,11 @@ Configured on 13 September 2026:
 - GA4 property: **ProcuraCost**, ID `553943657`.
 - Web stream: **ProcuraCost WWW**, ID `15768889044`.
 - Measurement ID: `G-TXEHBTT8E7` (public identifier, not a secret).
+- Google tag ID: `GT-K8H9JJL9`, the unified tag container that routes to
+  the `G-TXEHBTT8E7` destination. The site calls `config` with the `G-`
+  destination directly, so the integration is unchanged; the `GT-` ID
+  matters only if further destinations (for example Google Ads) are later
+  attached to the same tag.
 - Website: `https://www.procuracost.com`.
 - Reporting timezone: Poland; currency: PLN.
 - Enhanced measurement: disabled in the web stream.
@@ -55,7 +60,9 @@ checks, not outcomes established by these local tests.
 The verified domain property is `sc-domain:procuracost.com`. See
 `gsc-2026-09-13.md` for the initial authenticated read. GSC is currently accessed
 through its signed-in panel; no scheduled import, API credentials or public
-reporting endpoint has been added. Its property is not yet linked to GA4.
+reporting endpoint has been added. Its property is not yet linked to GA4;
+linking is done on the GA4 side (property `553943657`, Admin → Product
+links → Search Console links) against the verified domain property.
 
 Google references:
 - https://developers.google.com/tag-platform/security/guides/consent
