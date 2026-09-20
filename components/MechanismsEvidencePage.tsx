@@ -1,5 +1,6 @@
+import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 import EvidenceDocket from "@/components/evidence/EvidenceDocket";
-import { mechanismsEvidenceT, type Lang } from "@/lib/i18n";
+import { mechanismsEvidenceT, navigationT, type Lang } from "@/lib/i18n";
 import { EVIDENCE_REGISTRY } from "@/lib/model-v2";
 
 export interface MechanismsEvidencePageProps {
@@ -12,7 +13,17 @@ export default function MechanismsEvidencePage({
   const tx = mechanismsEvidenceT[lang];
 
   return (
-    <div className="mx-auto max-w-5xl px-5 py-10 sm:px-8 sm:py-14">
+    <>
+      <BreadcrumbJsonLd
+        lang={lang}
+        crumbs={[
+          {
+            name: navigationT[lang].caseStudies,
+            path: lang === "en" ? "/en/case-studies" : "/case-studies",
+          },
+        ]}
+      />
+      <div className="mx-auto max-w-5xl px-5 py-10 sm:px-8 sm:py-14">
       <header className="max-w-3xl border-b border-gray-200 pb-8">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
           {tx.eyebrow}
@@ -46,6 +57,7 @@ export default function MechanismsEvidencePage({
           {tx.scopeNote}
         </p>
       </section>
-    </div>
+      </div>
+    </>
   );
 }

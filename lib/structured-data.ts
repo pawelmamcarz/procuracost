@@ -82,6 +82,21 @@ export function softwareApplicationJsonLd(lang: Lang) {
   };
 }
 
+export type BreadcrumbCrumb = { name: string; path: string };
+
+export function breadcrumbJsonLd(crumbs: BreadcrumbCrumb[]) {
+  return {
+    "@context": SCHEMA_CONTEXT,
+    "@type": "BreadcrumbList",
+    itemListElement: crumbs.map((crumb, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: crumb.name,
+      item: `${SITE_URL}${crumb.path}`,
+    })),
+  };
+}
+
 export function jsonLdScriptContent(value: unknown): string {
   return JSON.stringify(value).replace(/</g, "\\u003c");
 }

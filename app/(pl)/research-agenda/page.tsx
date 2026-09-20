@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { researchAgendaT } from "@/lib/i18n";
+import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
+import { navigationT, researchAgendaT } from "@/lib/i18n";
 import { MODEL_V2_METADATA } from "@/lib/model-v2/domain";
 import { localizedPageMetadata } from "@/lib/page-metadata";
 
@@ -17,6 +18,10 @@ export const metadata: Metadata = localizedPageMetadata({
 export default function ResearchAgendaPage() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-12">
+      <BreadcrumbJsonLd
+        lang="pl"
+        crumbs={[{ name: navigationT.pl.researchAgenda, path: "/research-agenda" }]}
+      />
       <p className="text-sm font-semibold text-blue-700">{tx.eyebrow(modelVersion)}</p>
       <h1 className="mt-2 text-3xl font-bold">{tx.title}</h1>
       <p className="mt-4 text-gray-700">{tx.intro}</p>

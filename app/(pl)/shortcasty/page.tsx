@@ -1,18 +1,27 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { shortcastsT } from "@/lib/i18n";
+import { shortcastsT, systemPageT } from "@/lib/i18n";
 import { MODEL_V2_METADATA } from "@/lib/model-v2/domain";
 import { localizedPageMetadata } from "@/lib/page-metadata";
 import { EPISODES } from "@/lib/shortcasty";
+import { breadcrumbJsonLd, jsonLdScriptContent } from "@/lib/structured-data";
 
 const modelVersion = MODEL_V2_METADATA.modelVersion;
 
-export const metadata: Metadata = localizedPageMetadata({
+const baseMetadata = localizedPageMetadata({
   lang: "pl",
   routeKey: "shortcasts",
   title: shortcastsT.pl.metadataTitle(),
   description: shortcastsT.pl.metadataDescription(),
 });
+
+export const metadata: Metadata = {
+  ...baseMetadata,
+  alternates: {
+    ...baseMetadata.alternates,
+    types: { "application/rss+xml": "/shortcasty/feed" },
+  },
+};
 
 export default function ShortcastyPage() {
   const tx = shortcastsT.pl;
@@ -20,10 +29,22 @@ export default function ShortcastyPage() {
   const planned = EPISODES.filter((episode) => !episode.publishedAt);
 
   return (
-    <div
-      className="mx-auto max-w-5xl px-6 py-12"
-      data-editorial-index="shortcasts"
-    >
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLdScriptContent(
+            breadcrumbJsonLd([
+              { name: systemPageT.pl.home, path: "/" },
+              { name: tx.title, path: "/shortcasty" },
+            ]),
+          ),
+        }}
+      />
+      <div
+        className="mx-auto max-w-5xl px-6 py-12"
+        data-editorial-index="shortcasts"
+      >
       <header className="grid gap-5 border-y border-gray-300 py-8 md:grid-cols-[minmax(0,0.75fr)_minmax(0,1.25fr)] md:gap-10">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
@@ -122,5 +143,6 @@ export default function ShortcastyPage() {
         </section>
       )}
     </div>
+    </>
   );
 }

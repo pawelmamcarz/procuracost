@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 
+import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 import TeamPage from "@/components/TeamPage";
-import { teamT } from "@/lib/i18n";
+import { navigationT, teamT } from "@/lib/i18n";
 import { localizedPageMetadata } from "@/lib/page-metadata";
 
 export const metadata: Metadata = localizedPageMetadata({
@@ -12,5 +13,13 @@ export const metadata: Metadata = localizedPageMetadata({
 });
 
 export default function TeamEnPageRoute() {
-  return <TeamPage lang="en" />;
+  return (
+    <>
+      <BreadcrumbJsonLd
+        lang="en"
+        crumbs={[{ name: navigationT.en.team, path: "/en/team" }]}
+      />
+      <TeamPage lang="en" />
+    </>
+  );
 }

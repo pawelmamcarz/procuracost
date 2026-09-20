@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { shortcastsT } from "@/lib/i18n";
+import { shortcastsT, systemPageT } from "@/lib/i18n";
 import { MODEL_V2_METADATA } from "@/lib/model-v2/domain";
 import { localizedPathMetadata } from "@/lib/page-metadata";
 import { EPISODES, getEpisode } from "@/lib/shortcasty";
+import { breadcrumbJsonLd, jsonLdScriptContent } from "@/lib/structured-data";
 
 const tx = shortcastsT.pl.detail;
 const modelVersion = MODEL_V2_METADATA.modelVersion;
@@ -22,6 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     paths: { pl: `/shortcasty/${slug}` },
     title: tx.metadataTitle(ep.number, ep.title, modelVersion),
     description: ep.thesis,
+    ogType: "article",
   });
 }
 
@@ -36,10 +38,23 @@ export default async function EpisodePage({ params }: { params: Promise<{ slug: 
   const next = published[currentIndex + 1];
 
   return (
-    <div
-      className="mx-auto max-w-4xl px-6 py-12"
-      data-editorial-detail="shortcast"
-    >
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLdScriptContent(
+            breadcrumbJsonLd([
+              { name: systemPageT.pl.home, path: "/" },
+              { name: shortcastsT.pl.title, path: "/shortcasty" },
+              { name: ep.title, path: `/shortcasty/${ep.slug}` },
+            ]),
+          ),
+        }}
+      />
+      <div
+        className="mx-auto max-w-4xl px-6 py-12"
+        data-editorial-detail="shortcast"
+      >
       <Link
         href="/shortcasty"
         className="mb-7 inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 underline decoration-gray-300 underline-offset-4 hover:text-blue-700"
@@ -169,5 +184,6 @@ export default async function EpisodePage({ params }: { params: Promise<{ slug: 
         )}
       </nav>
     </div>
+    </>
   );
 }

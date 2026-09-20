@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 
+import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 import MethodologyOverview from "@/components/MethodologyOverview";
-import { methodologyOverviewT } from "@/lib/i18n";
+import { methodologyOverviewT, navigationT } from "@/lib/i18n";
 import { localizedPageMetadata } from "@/lib/page-metadata";
 
 export const metadata: Metadata = localizedPageMetadata({
@@ -11,5 +12,13 @@ export const metadata: Metadata = localizedPageMetadata({
 });
 
 export default function MethodologyPage() {
-  return <MethodologyOverview lang="pl" />;
+  return (
+    <>
+      <BreadcrumbJsonLd
+        lang="pl"
+        crumbs={[{ name: navigationT.pl.methodology, path: "/methodology" }]}
+      />
+      <MethodologyOverview lang="pl" />
+    </>
+  );
 }

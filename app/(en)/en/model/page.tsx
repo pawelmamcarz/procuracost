@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 
+import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 import ModelOverview from "@/components/ModelOverview";
-import { modelOverviewT } from "@/lib/i18n";
+import { modelOverviewT, navigationT } from "@/lib/i18n";
 import { localizedPageMetadata } from "@/lib/page-metadata";
 
 export const metadata: Metadata = localizedPageMetadata({
@@ -11,5 +12,13 @@ export const metadata: Metadata = localizedPageMetadata({
 });
 
 export default function EnModelPage() {
-  return <ModelOverview lang="en" />;
+  return (
+    <>
+      <BreadcrumbJsonLd
+        lang="en"
+        crumbs={[{ name: navigationT.en.model, path: "/en/model" }]}
+      />
+      <ModelOverview lang="en" />
+    </>
+  );
 }

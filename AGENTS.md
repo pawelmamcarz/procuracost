@@ -208,7 +208,7 @@ match that format or the config throws before the server starts.
   artefacts are caught only by the local sequence above — run it before
   hand-off.
 
-Verified state at the time of writing: `npm test` passes (78 files, 820 tests).
+Verified state at the time of writing: `npm test` passes (79 files, 858 tests).
 
 ## Conventions and invariants that bite if ignored
 

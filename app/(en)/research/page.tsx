@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 
+import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 import PrintButton from "./PrintButton";
-import { researchPaperT } from "@/lib/i18n";
+import { navigationT, researchPaperT } from "@/lib/i18n";
 import { localizedPageMetadata } from "@/lib/page-metadata";
 import { jsonLdScriptContent, scholarlyArticleJsonLd } from "@/lib/structured-data";
 
@@ -20,6 +21,10 @@ export default function ResearchPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLdScriptContent(scholarlyArticleJsonLd()) }}
+      />
+      <BreadcrumbJsonLd
+        lang="en"
+        crumbs={[{ name: navigationT.en.research, path: "/research" }]}
       />
       <div className="mb-8 flex items-center justify-between print:hidden">
         <div>

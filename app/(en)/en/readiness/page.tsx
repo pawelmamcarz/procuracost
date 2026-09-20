@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 import ContextualToolNotice from "@/components/ContextualToolNotice";
 import ReadinessDiagnostic from "@/components/ReadinessDiagnostic";
 import { readinessT } from "@/lib/i18n";
@@ -14,6 +15,15 @@ export default function EnReadinessPage() {
   const tx = readinessT.en;
   return (
     <div className="mx-auto max-w-5xl px-6 py-12">
+      <BreadcrumbJsonLd
+        lang="en"
+        crumbs={[
+          {
+            name: tx.metadata.title.replace(" | ProcuraCost", ""),
+            path: "/en/readiness",
+          },
+        ]}
+      />
       <ContextualToolNotice lang="en" returnMode="previous-tab" stage="record" />
       <header className="max-w-3xl">
         <p className="text-xs font-semibold uppercase tracking-wide text-blue-600">
