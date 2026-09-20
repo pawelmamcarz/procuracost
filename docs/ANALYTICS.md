@@ -55,6 +55,11 @@ localhost even after acceptance; the browser console reported no errors.
 Production collection and withdrawal with a live Google tag remain deployment
 checks, not outcomes established by these local tests.
 
+Deployment check on 20 September: the owner reported the GA4 property showing
+the web tag as installed on `https://www.procuracost.com`. Still to verify in
+Realtime: a consented production visit registering one manual page view, and
+cookie withdrawal unloading the tag.
+
 ## Search Console
 
 The verified domain property is `sc-domain:procuracost.com`. See
