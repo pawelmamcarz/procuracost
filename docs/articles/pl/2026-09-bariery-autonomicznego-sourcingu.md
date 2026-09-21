@@ -43,14 +43,25 @@ powierza systemowi i kto odpowiada za nadzór.
 Według publicznej zapowiedzi raportu Zero100 z 30 stycznia 2026 r.
 85% badanych CPO i przedstawicieli kadry kierowniczej sourcingu spodziewa się zasadniczej zmiany
 pracy sourcingowej pod wpływem agentowej AI, a 78% chce zachowania ludzkiej
-kontroli nad całą pracą strategiczną. Oczekiwanie zmian może więc współistnieć
+kontroli nad całą pracą strategiczną. Są to deklaracje respondentów,
+nie zweryfikowane fakty rynkowe. Zapowiedź nie podaje liczebności próby
+ani terminu badania; powiązany artykuł Zero100 z 4 lutego 2026 r. wspomina
+o 100 ankietowanych CPO i dyrektorach sourcingu tuż przed końcem 2025 r.,
+co jest poszlaką co do próby i terminu, nie oficjalnym potwierdzeniem
+metodologii tego raportu. Oczekiwanie zmian może więc współistnieć
 z zamiarem utrzymania nadzoru nad decyzjami.
 
-Komunikat ProcureAbility przypisuje obawę przed zastąpieniem ludzkiego osądu
-51 procentom respondentów w opisie barier grupy, która nie deklarowała pełnej
-gotowości do AI. Nie należy przedstawiać tego jako odsetka wszystkich firm
-na rynku ani wyłącznie użytkowników agentów negocjacyjnych. W kontekście
-negocjacji warto sprawdzić, czy agent ma informacje, którymi dysponuje kupiec:
+Komunikaty o raporcie ProcureCon CPO 2026 przypisują obawę przed zastąpieniem
+ludzkiego osądu 51 procentom respondentów, a bariery w postaci ochrony danych,
+bezpieczeństwa i zgodności 67 procentom oraz niedostatecznej jakości
+i integracji danych 54 procentom. Mianownikiem tych odsetków nie jest cała
+próba, lecz podgrupa respondentów niedeklarująca pełnej gotowości do AI,
+stanowiąca 89 procent próby (65 procent w pilotażach i 24 procent w fazie
+ewaluacji; 11 procent deklaruje pełną gotowość). Liczebność próby edycji
+2026 nie jest publicznie ujawniona. Nie należy przedstawiać tych liczb jako
+odsetków wszystkich firm na rynku ani wyłącznie użytkowników agentów
+negocjacyjnych. W kontekście negocjacji warto sprawdzić, czy agent ma
+informacje, którymi dysponuje kupiec:
 historię relacji, planowany przetarg w sąsiedniej kategorii i zależności
 techniczne. Ich brak może prowadzić do ustępstw, których kupiec nie
 zaakceptowałby przy tym samym wolumenie.
@@ -345,15 +356,22 @@ warunki cenowe, pozostałe uprawnienia agenta i zasady przekazywania spraw kupco
 jest niezależnym potwierdzeniem wyniku organizacji:
 
 - Zero100. (2026, 30 stycznia). *Rise of the AI-Enabled CPO* [publiczna
-  zapowiedź raportu]. Podaje 85% i 78% dla badanych CPO i kadry kierowniczej
-  sourcingu. Pełny raport wymaga dostępu członkowskiego; zapowiedź nie podaje
-  liczebności próby ani terminu badania.
+  zapowiedź raportu]. Podaje 85% i 78% jako deklaracje badanych CPO i kadry
+  kierowniczej sourcingu. Pełny raport wymaga dostępu członkowskiego;
+  zapowiedź nie podaje liczebności próby ani terminu badania. Liczebność
+  100 respondentów i termin ok. grudnia 2025 r. wynikają z powiązanego
+  artykułu Zero100 (G. John, 4 lutego 2026) i traktujemy je jako poszlakę,
+  nie jako potwierdzoną metodologię raportu.
   https://zero100.com/insights/rise-of-the-ai-enabled-cpo/
 - ProcureAbility. (2026, 21 stycznia). *ProcureAbility's 2026 CPO Report
   Reveals the Top Barriers to AI Adoption Among Procurement Organizations*
-  [komunikat prasowy]. Podaje 51% w opisie barier grupy bez pełnej gotowości
-  do AI, stanowiącej 89% respondentów. Pełnego raportu i dokładnej podstawy
-  procentowania pytania nie zweryfikowano.
+  [komunikat prasowy]. Odsetki 67%, 54% i 51% w opisie barier dotyczą
+  podgrupy respondentów bez pełnej gotowości do AI, stanowiącej 89% próby
+  (65% w pilotażach, 24% w ewaluacji; 11% w pełni gotowych); potwierdza to
+  komunikat ProcureCon Insights z 3-4 marca 2026 r. Liczebność próby edycji
+  2026 nie jest publicznie ujawniona (wcześniejsze edycje serii miały
+  N = 100, co nie jest dowodem dla edycji 2026). Pełnego raportu nie
+  zweryfikowano.
   https://www.prnewswire.com/news-releases/procureabilitys-2026-cpo-report-reveals-the-top-barriers-to-ai-adoption-among-procurement-organizations-302666226.html
   Strona opisu *The 2026 Annual ProcureCon CPO Report*:
   https://procureability.com/2026-annual-procurecon-cpo-report/
