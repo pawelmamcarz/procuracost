@@ -2,10 +2,10 @@
 
 ## Problem
 
-Debata o „sztywnych zakupach” często łączy przebieg pracy, dostęp do
+Debata o „sztywnych zakupach” często miesza przebieg pracy, dostęp do
 konkurencji, dyskrecję, konstrukcję umowy, kanał realizacji, wsparcie systemowe
-i gotowość organizacyjną. Wtedy ustalenie dotyczące jednego mechanizmu jest
-przenoszone na inne bez podstawy.
+i gotowość organizacyjną. Ustalenie o jednym mechanizmie jest wtedy przenoszone
+na pozostałe bez podstawy.
 
 ## Pytanie
 

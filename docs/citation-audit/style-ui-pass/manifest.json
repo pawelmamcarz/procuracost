@@ -1,0 +1,47 @@
+{
+  "files": [
+    "docs/citation-audit/style-ui-pass/sections.json"
+  ],
+  "excluded": [],
+  "sections": 34,
+  "live": "skipped",
+  "reason": "TYPESAFE_API_KEY was not available in this environment. Local schema validation only. No model scores were invented.",
+  "mode": "local-only",
+  "requestedModel": "jev-latest",
+  "questionHash": "e6d6f35f138909caea84def7810f98b09bf9c0005ab865c06224f335477ec6ab",
+  "questions": {
+    "stockRhetoric": {
+      "type": "noul",
+      "instructions": "Does this section contain generic promotional filler, a stock motivational punchline, or a rhetorical not-X-but-Y contrast that should be replaced with concrete prose? Do not flag necessary scientific distinctions, explicit evidence limits, equations, source titles, or labelled hypotheses.",
+      "criteria": {
+        "true": "The section uses promotional slogans, stock contrasts or motivational filler that should be replaced with concrete prose.",
+        "false": "The section is concrete, or any contrast is a necessary distinction, evidence limit, equation, source title or labelled hypothesis."
+      }
+    },
+    "redundancy": {
+      "type": "noul",
+      "instructions": "Does this section unnecessarily restate the same substantive point or use several sentences only to announce a point without adding information? Do not flag a concise abstract, necessary definition, formula explanation, evidence limitation, or reference list merely because it is formal.",
+      "criteria": {
+        "true": "The section repeats a point already made, or uses several sentences only to announce a point.",
+        "false": "Each sentence adds information, or the formality is a necessary abstract, definition, formula, limit or reference list."
+      }
+    },
+    "overclaim": {
+      "type": "noul",
+      "instructions": "Does section present an unqualified universal, causal certainty, frequency ranking or numerical empirical claim beyond its stated evidence? Do not flag explicitly labelled hypotheses, assumptions, examples, proposals, or normative advice solely because they are unproven.",
+      "criteria": {
+        "true": "The section states an unqualified universal, causal certainty, frequency ranking or numerical empirical claim beyond the evidence it cites.",
+        "false": "Claims stay within stated evidence, or they are labelled hypotheses, assumptions, examples, proposals or advice."
+      }
+    },
+    "aiStockVoice": {
+      "type": "noul",
+      "instructions": "Does this section read like generic large-language-model prose: balanced parallel slogans, empty fluency, interchangeable corporate voice, or a tidy three-part cadence with little specific content? This is an editorial signal for revision, not an authorship detector. Do not flag necessary legal or model vocabulary, labelled hypotheses, equations, or a deliberately plain technical register.",
+      "criteria": {
+        "true": "The section has generic LLM cadence, interchangeable corporate voice or empty parallel slogans.",
+        "false": "The section has a specific voice, necessary technical vocabulary, or plain practitioner prose."
+      }
+    }
+  },
+  "createdAt": "2026-09-21T21:48:07.357Z"
+}

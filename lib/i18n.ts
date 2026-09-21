@@ -24,14 +24,14 @@ export const analyticsT = { pl: analyticsPl, en: analyticsEn };
 
 const ogPl = {
   supportLine:
-    "Dwa zgodne projekty przebiegu procesu. Jeden jawny rachunek kosztu.",
+    "Dwa zgodne projekty przebiegu. Jeden jawny rachunek kosztu.",
 } as const;
 
 type OgShape = LangShape<typeof ogPl>;
 
 const ogEn = {
   supportLine:
-    "Two compliant workflow designs. One transparent cost record.",
+    "Two lawful workflow designs and one explicit cost record.",
 } satisfies OgShape;
 
 export const ogT = { pl: ogPl, en: ogEn } as const;
@@ -949,7 +949,7 @@ const homePl = {
     title: "Porównaj koszt dwóch dopuszczalnych projektów procesu zakupowego.",
     tagline: "Tunel ma ściany. Pole ma horyzont.",
     description:
-      "Ustaw wspólne ramy, osobno zaprojektuj przebieg procesu i umowę dla obu alternatyw, a następnie odczytaj wynik w zakresie niskim, centralnym i wysokim.",
+      "Ustaw wspólne ramy. Osobno zaprojektuj przebieg i umowę dla obu wariantów. Potem odczytaj wynik w zakresie niskim, centralnym i wysokim.",
     primaryAction: "Porównaj koszty",
     secondaryAction: "Zobacz mechanizmy i źródła",
   },
@@ -985,7 +985,7 @@ const homePl = {
   },
   jobs: {
     eyebrow: "Narzędzia do decyzji zakupowej",
-    title: "Zacznij od decyzji, którą masz podjąć",
+    title: "Wybierz porównanie, którego potrzebujesz",
     items: [
       {
         label: "Porównaj koszt",
@@ -1021,7 +1021,7 @@ const homePl = {
   },
   evidenceRegister: {
     eyebrow: "Mechanizmy i źródła",
-    title: "Cztery oficjalne rekordy do interpretacji mechanizmów",
+    title: "Cztery oficjalne rekordy: co źródło wspiera, a czego nie",
     description:
       "Każdy rekord oddziela to, co źródło wspiera, od tego, czego nie rozstrzyga. Rejestr nie przypisuje organizacji wyniku modelu.",
     allAction: "Otwórz pełny rejestr mechanizmów i źródeł",
@@ -1049,9 +1049,9 @@ const homePl = {
   },
   evidence: {
     eyebrow: "Łańcuch dowodowy",
-    title: "Od założenia do odtworzenia wyniku",
+    title: "Założenia, metoda, artykuł i pliki replikacyjne",
     description:
-      "Każdy poziom odsłania kolejną warstwę: parametry, metodę, argument naukowy i materiały do reprodukcji.",
+      "Kolejne strony pokazują parametry, metodę, argument badawczy i pliki potrzebne do odtworzenia obliczeń.",
     assumptions: {
       title: "Założenia",
       body: "Parametry, profile i status każdej wartości użytej w rachunku.",
@@ -1074,7 +1074,7 @@ const homePl = {
     },
   },
   implementation: {
-    eyebrow: "Od modelu do wdrożenia",
+    eyebrow: "Model i wdrożenie",
     title: "Rachunek kosztu i samoopis gotowości to odrębne analizy",
     body:
       "Porównanie kosztów nie potwierdza właścicielstwa, jakości wymagań, danych ani adopcji. Samoopis porządkuje deklarowane warunki, a materiał Procurement&Beyond pokazuje ich praktyczny kontekst.",
@@ -1097,7 +1097,7 @@ const homeEn = {
     title: "Compare the cost of two lawful procurement workflow designs.",
     tagline: "A tunnel has walls. A field has a horizon.",
     description:
-      "Set the shared boundary, design the workflow and contract for each alternative separately, then read the result under low, central, and high assumptions.",
+      "Set the shared boundary. Design the workflow and contract for each alternative separately. Then read the result under low, central and high assumptions.",
     primaryAction: "Compare costs",
     secondaryAction: "View mechanisms and evidence",
   },
@@ -1133,7 +1133,7 @@ const homeEn = {
   },
   jobs: {
     eyebrow: "Procurement decision tools",
-    title: "Start with the decision you need to make",
+    title: "Choose the comparison you need",
     items: [
       {
         label: "Compare cost",
@@ -1169,7 +1169,7 @@ const homeEn = {
   },
   evidenceRegister: {
     eyebrow: "Mechanisms and evidence",
-    title: "Four official records for interpreting mechanisms",
+    title: "Four official records: what the source supports, and what it does not",
     description:
       "Each record separates what the source supports from what it does not establish. The register assigns no model outcome to an organisation.",
     allAction: "Open the full mechanisms and evidence register",
@@ -1197,9 +1197,9 @@ const homeEn = {
   },
   evidence: {
     eyebrow: "Evidence chain",
-    title: "From assumption to reproducible result",
+    title: "Assumptions, method, paper and replication files",
     description:
-      "Each level opens another layer: parameters, method, research argument, and reproduction materials.",
+      "The next pages show the parameters, the method, the research argument and the files needed to reproduce the calculation.",
     assumptions: {
       title: "Assumptions",
       body: "Parameters, profiles, and the status of every value used in the calculation.",
@@ -1222,7 +1222,7 @@ const homeEn = {
     },
   },
   implementation: {
-    eyebrow: "From model to implementation",
+    eyebrow: "Model and implementation",
     title: "Cost analysis and readiness self-description are separate exercises",
     body:
       "A cost comparison does not establish ownership, requirement quality, data readiness or adoption. The self-description structures declared conditions, while Procurement&Beyond material provides practitioner context.",
@@ -1242,7 +1242,7 @@ export const homeT = { pl: homePl, en: homeEn } as const;
 const homeExperiencePl = {
   hero: {
     eyebrow: "Decyzja zakupowa / model 2.3",
-    title: "Porównaj dwa sposoby zakupu zgodne z obowiązującymi regulacjami.",
+    title: "Porównaj dwa dopuszczalne sposoby przeprowadzenia tego samego zakupu.",
     description:
       "Regulacje firmy oraz PZP, gdy ma zastosowanie, wyznaczają wspólne ramy obu wariantów. Porównaj czas i koszt, zachowując zapis założeń, wyniku i ograniczeń.",
     primaryAction: "Zacznij porównanie",
@@ -1266,7 +1266,7 @@ const homeExperiencePl = {
   },
   record: {
     eyebrow: "Co zawiera wynik",
-    title: "Wynik, który można sprawdzić i odtworzyć",
+    title: "Wynik z założeniami, który da się sprawdzić",
     description:
       "Otrzymasz zestawienie kosztów obu wariantów, przyjęte założenia i listę czynników, których model nie wycenia.",
     fields: [
@@ -1330,9 +1330,9 @@ type HomeExperienceShape = LangShape<typeof homeExperiencePl>;
 const homeExperienceEn = {
   hero: {
     eyebrow: "Procurement decision / model 2.3",
-    title: "Compare two procurement approaches that comply with the applicable rules.",
+    title: "Compare two lawful ways of running the same purchase.",
     description:
-      "Company policies and the Polish Public Procurement Law (PZP), where applicable, set the same boundaries for both alternatives. Compare time and cost, keeping a record of assumptions, results and limitations.",
+      "Company policies and the Polish Public Procurement Law (PZP), where applicable, set the same boundaries for both alternatives. Compare time and cost, and keep a record of the assumptions, the result and the limits.",
     primaryAction: "Start a comparison",
     secondaryAction: "Check the model and evidence",
   },
@@ -1354,9 +1354,9 @@ const homeExperienceEn = {
   },
   record: {
     eyebrow: "What the result contains",
-    title: "A result that can be checked and reproduced",
+    title: "A result with its assumptions, ready to check",
     description:
-      "The record contains the costs of both alternatives, the assumptions used and the factors the model leaves unpriced.",
+      "The record lists the costs of both alternatives, the assumptions used and the factors the model leaves unpriced.",
     fields: [
       "Alternative names and workflow types",
       "Central result",
@@ -1572,9 +1572,9 @@ const researchAgendaPl = {
   metadataDescription: (version: string) =>
     `Plan badań nad neutralnym modelem kosztów przetargu ProcuraCost ${version}: walidacja mechanizmów przed wyceną, priorytety pomiaru i granice wnioskowania.`,
   eyebrow: (version: string) => `Agenda badawcza · Model ${version}`,
-  title: "Waliduj mechanizmy przed ich wyceną",
+  title: "Najpierw zmierz mechanizmy, potem je wyceniaj",
   intro:
-    "ProcuraCost jest przejrzystym modelem porównania kosztów, a nie oszacowanym efektem organizacyjnym. Program empiryczny zaczyna się od oddzielnego pomiaru przebiegu pracy, konkurencji i konstrukcji kontraktu. Narzędzia badawcze wymagają przeglądu przed rozpoczęciem zbierania danych.",
+    "ProcuraCost porównuje koszty na jawnych założeniach. Nie jest oszacowanym efektem organizacyjnym. Program empiryczny zaczyna się od osobnego pomiaru przebiegu pracy, konkurencji i konstrukcji umowy. Narzędzia badawcze trzeba przejrzeć, zanim zacznie się zbieranie danych.",
   prioritiesTitle: "Priorytety pomiaru",
   priorities: [
     "Przebieg pracy: znaczniki czasu, praca równoległa i godziny pracy według ról.",
@@ -2340,7 +2340,7 @@ const siteMetadataPl = {
   home: {
     title: "Ile kosztuje przetarg? Porównanie kosztów | ProcuraCost",
     description:
-      "Sprawdź, ile kosztuje przetarg: porównaj czas i koszt formalnej procedury sekwencyjnej i adaptacyjnego przebiegu zgodnego z PZP. Wynik z założeniami.",
+      "Porównaj czas i koszt formalnej procedury sekwencyjnej i adaptacyjnego przebiegu zgodnego z PZP. Wynik z założeniami.",
   },
   calculator: {
     title: "Kalkulator kosztów przetargu | ProcuraCost",
@@ -2370,7 +2370,7 @@ const siteMetadataEn = {
   home: {
     title: "Procurement process cost comparison | ProcuraCost",
     description:
-      "Compare the time and cost of a formal sequential and an adaptive compliant procurement workflow under PZP. Result with its assumptions.",
+      "Compare the time and cost of a formal sequential workflow and an adaptive compliant workflow under PZP. Result with its assumptions.",
   },
   calculator: {
     title: "Public procurement procedure cost calculator | ProcuraCost",
@@ -2401,9 +2401,9 @@ const modelOverviewPl = {
       "Kontrakt obliczeniowy, zakres dowodowy i ograniczenia modelu kosztów przetargu ProcuraCost: co jest liczone i skąd pochodzą dane.",
   },
   eyebrow: `Model ${MODEL_V2_METADATA.modelVersion}`,
-  title: "Centrum badawcze",
+  title: "Model, źródła i replikacja",
   intro:
-    "Tu można prześledzić kontrakt obliczeniowy, źródła, ograniczenia i materiały potrzebne do odtworzenia modelu 2.3. ProcuraCost nie wybiera procedury za użytkownika i nie zakłada kierunku różnicy kosztu.",
+    "Ta strona zbiera kontrakt obliczeniowy, źródła, ograniczenia i pliki potrzebne do odtworzenia modelu 2.3. ProcuraCost nie wybiera procedury za użytkownika i nie zakłada, który wariant jest tańszy.",
   groups: {
     contract: {
       eyebrow: "Kontrakt modelu",
@@ -2425,7 +2425,7 @@ const modelOverviewPl = {
     },
     reproducibility: {
       eyebrow: "Badanie i replikacja",
-      title: "Od hipotezy do odtworzonego wyniku",
+      title: "Hipotezy, kod i odtworzenie wyniku",
       items: {
         paper: {
           title: "Agenda i artykuł badawczy",
@@ -2499,9 +2499,9 @@ const modelOverviewEn = {
       "Calculation contract, evidence boundary and limitations of the ProcuraCost procurement cost model: what is calculated and where each value comes from.",
   },
   eyebrow: `Model ${MODEL_V2_METADATA.modelVersion}`,
-  title: "Research centre",
+  title: "Model, sources and replication",
   intro:
-    "Trace the calculation contract, evidence, limitations and materials needed to reproduce model 2.3. ProcuraCost does not select a procedure for the user or assume the direction of the cost difference.",
+    "This page collects the calculation contract, sources, limits and the files needed to reproduce model 2.3. ProcuraCost does not choose a procedure or assume which alternative costs less.",
   groups: {
     contract: {
       eyebrow: "Model contract",
@@ -2523,7 +2523,7 @@ const modelOverviewEn = {
     },
     reproducibility: {
       eyebrow: "Research and replication",
-      title: "From hypothesis to reproduced result",
+      title: "Hypotheses, code and how to reproduce a result",
       items: {
         paper: {
           title: "Research agenda and paper",
@@ -2600,9 +2600,9 @@ const methodologyOverviewPl = {
       "Deterministyczna metoda porównania formalnej procedury sekwencyjnej i adaptacyjnego przebiegu zgodnego z PZP. Jawne założenia i zablokowane terminy prawne.",
   },
   eyebrow: `Metodologia / model ${MODEL_V2_METADATA.modelVersion}`,
-  title: "Metoda porównania bez zaszytego kierunku wyniku",
+  title: "Jak liczymy różnicę, bez założonego znaku",
   intro:
-    "Model rozdziela zgodność prawną, projekt przebiegu procesu, konstrukcję umowy, kanał realizacji i wsparcie systemowe. Każda z tych decyzji pozostaje widoczna w rekordzie.",
+    "Model rozdziela zgodność prawną, projekt przebiegu, konstrukcję umowy, kanał realizacji i wsparcie systemowe. Każda z tych decyzji zostaje zapisana w rekordzie.",
   steps: [
     {
       title: "Ustal wspólną granicę",
@@ -2705,9 +2705,9 @@ const methodologyOverviewEn = {
       "A deterministic method for comparing a formal sequential procurement procedure with an adaptive compliant workflow. Explicit assumptions, locked legal periods.",
   },
   eyebrow: `Methodology / model ${MODEL_V2_METADATA.modelVersion}`,
-  title: "A comparison method without a built-in result direction",
+  title: "How the difference is calculated, without a built-in sign",
   intro:
-    "The model separates legal compliance, procurement workflow design, contract design, execution channel and system support. Each decision remains visible in the record.",
+    "The model keeps legal compliance, workflow design, contract design, execution channel and system support as separate decisions. Each one stays visible in the record.",
   steps: [
     {
       title: "Set the shared boundary",
@@ -4128,7 +4128,7 @@ const shortcastsPl = {
   badge: (version: string) => `Model ${version} / noty metodologiczne`,
   title: "Noty metodologiczne ProcuraCost",
   intro:
-    "Seria oddziela ustalenia wynikające ze źródeł od założeń scenariuszowych. Wyniki ProcuraCost nie są przedstawiane jako zmierzone efekty organizacyjne ani rekomendacje proceduralne.",
+    "Seria oddziela ustalenia ze źródeł od założeń scenariusza. Wyniki ProcuraCost nie są zmierzonymi efektami organizacyjnymi ani rekomendacją procedury.",
   publishedMaterials: "Opublikowane materiały",
   plannedTopics: "Planowane tematy",
   focusLabel: "Temat",
@@ -4162,7 +4162,7 @@ const shortcastsEn = {
   badge: (version: string) => `Model ${version} / methodology notes`,
   title: "ProcuraCost methodology notes",
   intro:
-    "The series separates source findings from scenario assumptions. ProcuraCost outputs are not presented as measured organisational effects or procedure recommendations.",
+    "The series separates source findings from scenario assumptions. ProcuraCost outputs are not measured organisational effects or procedure recommendations.",
   publishedMaterials: "Published materials",
   plannedTopics: "Planned topics",
   focusLabel: "Focus",
@@ -4283,20 +4283,20 @@ export const dimensionMultiplierLabelsT = {
 const teamPl = {
   metadataTitle: "Zespół | ProcuraCost",
   metadataDescription:
-    "Zespół ProcuraCost na styku zakupów, analityki, systemów, wdrożeń, negocjacji i badań. Odpowiedzialność za model i odpowiedzialność za wdrożenie.",
+    "Osoby odpowiedzialne za model ProcuraCost i za praktykę wdrożeń: zakupy, analityka, systemy, negocjacje i badania.",
   eyebrow: "Zespół",
-  title: "Kompetencje wokół zakupów i wdrożeń",
+  title: "Kto odpowiada za model, a kto za wdrożenie",
   description:
-    "Łączymy perspektywy zakupów, analityki, systemów, wdrożeń, negocjacji i badań.",
+    "W zespole są osoby od zakupów, analityki, systemów, wdrożeń, negocjacji i badań.",
   peopleTitle: "Osoby",
   competenciesTitle: "Obszary pracy",
   linkedinLabel: "Profil LinkedIn",
   collectiveLabel: "Zespół ProcuraCost",
   implementation: {
     eyebrow: "Praktyka wdrożeniowa",
-    title: "Odpowiedzialność za model i odpowiedzialność za wdrożenie",
+    title: "Osobna odpowiedzialność za model i za wdrożenie",
     body:
-      "Model wspiera uporządkowanie porównania. Właściciel procesu nadal odpowiada za cel, wymagania, dane, decyzje, adopcję i mierzenie wartości.",
+      "Model porządkuje porównanie. Właściciel procesu nadal odpowiada za cel, wymagania, dane, decyzje, adopcję i pomiar wartości.",
     practiceAction: "Rozmowa Procurement&Beyond",
   },
   roles: {
@@ -4341,20 +4341,20 @@ type TeamShape = LangShape<typeof teamPl>;
 const teamEn = {
   metadataTitle: "Team | ProcuraCost",
   metadataDescription:
-    "The ProcuraCost team across procurement, analytics, systems, implementation, negotiation and research. Responsibility for the model and for implementation.",
+    "The people accountable for the ProcuraCost model and for implementation practice: procurement, analytics, systems, negotiation and research.",
   eyebrow: "Team",
-  title: "Capabilities across procurement and implementation",
+  title: "Who owns the model, and who owns implementation",
   description:
-    "We bring together perspectives from procurement, analytics, systems, implementation, negotiation, and research.",
+    "The team covers procurement, analytics, systems, implementation, negotiation and research.",
   peopleTitle: "People",
   competenciesTitle: "Areas of work",
   linkedinLabel: "LinkedIn profile",
   collectiveLabel: "ProcuraCost team",
   implementation: {
     eyebrow: "Implementation practice",
-    title: "Accountability for the model and accountability for implementation",
+    title: "Separate accountability for the model and for implementation",
     body:
-      "The model structures a comparison. The process owner remains accountable for purpose, requirements, data, decisions, adoption and value measurement.",
+      "The model organises a comparison. The process owner remains accountable for purpose, requirements, data, decisions, adoption and value measurement.",
     practiceAction: "Procurement&Beyond conversation",
   },
   roles: {
@@ -5421,7 +5421,7 @@ const readinessPl = {
   eyebrow: "Samoopis warunków wdrożenia",
   title: "Gotowość organizacyjna do wdrożenia",
   subtitle:
-    "Osiem obszarów do samoopisu przed wyborem systemu i rozpoczęciem konfiguracji. Zestawienie nie jest audytem dojrzałości i nie zmienia modelu kosztowego ProcuraCost.",
+    "Osiem obszarów do samoopisu przed wyborem systemu i przed konfiguracją. Zestawienie nie jest audytem dojrzałości i nie zmienia modelu kosztowego ProcuraCost.",
   duration: "Odpowiedzi pozostają wyłącznie w tej karcie przeglądarki.",
   progress: (current: number, total: number) => `Domena ${current} z ${total}`,
   previous: "Wstecz",
@@ -5648,7 +5648,7 @@ const readinessEn = {
   eyebrow: "Implementation-conditions self-description",
   title: "Organisational implementation readiness",
   subtitle:
-    "Eight areas for organisational self-description before system selection and configuration. The summary is not a maturity audit and does not change the ProcuraCost cost model.",
+    "Eight areas for self-description before system selection and before configuration. The summary is not a maturity audit and does not change the ProcuraCost cost model.",
   duration: "Answers remain only in this browser tab.",
   progress: (current: number, total: number) => `Domain ${current} of ${total}`,
   previous: "Back",
@@ -5933,7 +5933,7 @@ const practicePl = {
   eyebrow: "Materiał praktyczny",
   title: "Nawet najlepsze narzędzie nie uratuje złego wdrożenia",
   subtitle:
-    "Uporządkowany przegląd obserwacji z ósmego odcinka Procurement&Beyond oraz zasad ich wykorzystania w samoopisie warunków wdrożenia.",
+    "Obserwacje z ósmego odcinka Procurement&Beyond i zasady ich użycia w samoopisie warunków wdrożenia.",
   recordingLanguageNotice:
     "Nagranie jest w języku polskim. Odnośniki czasowe prowadzą do konkretnych fragmentów rozmowy.",
   embedTitle:
@@ -6050,7 +6050,7 @@ const practiceEn = {
   eyebrow: "Practitioner material",
   title: "Even the best tool cannot rescue a poor implementation",
   subtitle:
-    "A structured review of observations from Procurement&Beyond episode 8 and the conditions for using them in the implementation-conditions self-description.",
+    "Observations from Procurement&Beyond episode 8, and how they may be used in the implementation self-description.",
   recordingLanguageNotice:
     "The recording is in Polish. Timestamp links open the relevant parts of the conversation.",
   embedTitle:

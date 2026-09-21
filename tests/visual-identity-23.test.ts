@@ -23,10 +23,10 @@ describe("model 2.3 visual identity", () => {
     }
 
     expect(ogT.pl.supportLine).toBe(
-      "Dwa zgodne projekty przebiegu procesu. Jeden jawny rachunek kosztu.",
+      "Dwa zgodne projekty przebiegu. Jeden jawny rachunek kosztu.",
     );
     expect(ogT.en.supportLine).toBe(
-      "Two compliant workflow designs. One transparent cost record.",
+      "Two lawful workflow designs and one explicit cost record.",
     );
 
     const mark = readFileSync("components/OpenGraphBoundaryMark.tsx", "utf8");
