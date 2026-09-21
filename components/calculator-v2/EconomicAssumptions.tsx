@@ -365,23 +365,26 @@ export function EconomicAssumptions({
           {tx.fixedNeutral}
         </p>
         <dl className="mt-3 divide-y divide-gray-100 border-y border-gray-200">
-          {[
-            [tx.amendmentDifferential, assumptions.amendmentDifferential],
-            [tx.tcoDifferential, assumptions.tcoDifferential],
-          ].map(([label, value]) => {
-            const calibrated = value as CalibratedValue;
-            return (
-              <div className="flex items-center justify-between gap-4 py-3" key={label as string}>
-                <dt className="text-xs font-medium text-gray-700">
-                  {label as string}
-                </dt>
-                <dd className="flex items-center gap-2 font-mono text-xs text-gray-900">
-                  <Equal aria-hidden="true" className="h-3.5 w-3.5" />
-                  {calibrated.central} {tx.currencyUnit}
-                </dd>
-              </div>
-            );
-          })}
+          <div className="flex items-center justify-between gap-4 py-3">
+            <dt className="text-xs font-medium text-gray-700">
+              {tx.amendmentDifferential}
+            </dt>
+            <dd className="flex items-center gap-2 font-mono text-xs text-gray-900">
+              <Equal aria-hidden="true" className="h-3.5 w-3.5" />
+              {assumptions.amendmentDifferential.low} /{" "}
+              {assumptions.amendmentDifferential.central} /{" "}
+              {assumptions.amendmentDifferential.high} {tx.rateUnit}
+            </dd>
+          </div>
+          <div className="flex items-center justify-between gap-4 py-3">
+            <dt className="text-xs font-medium text-gray-700">
+              {tx.tcoDifferential}
+            </dt>
+            <dd className="flex items-center gap-2 font-mono text-xs text-gray-900">
+              <Equal aria-hidden="true" className="h-3.5 w-3.5" />
+              {assumptions.tcoDifferential.central} {tx.currencyUnit}
+            </dd>
+          </div>
           <div className="flex items-center justify-between gap-4 py-3">
             <dt className="text-xs font-medium text-gray-700">{tx.bypass}</dt>
             <dd className="text-right text-xs font-semibold text-gray-700">

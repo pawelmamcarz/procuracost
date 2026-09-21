@@ -130,7 +130,7 @@ export default function AssumptionsRecord({
     {
       id: "amendmentDifferential",
       label: exportTx.assumptions.amendmentDifferential,
-      value: rangeText(assumptions.amendmentDifferential, lang),
+      value: rangeText(assumptions.amendmentDifferential, lang, false),
       evidence: evidenceClass(assumptions.amendmentDifferential, lang),
     },
     {
