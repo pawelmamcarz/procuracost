@@ -19,6 +19,12 @@ Active texts:
 - [`doktorat/article-2-model-kosztu-PL.md`](doktorat/article-2-model-kosztu-PL.md);
 - [`doktorat/article-3-empiria-PZP-PL.md`](doktorat/article-3-empiria-PZP-PL.md).
 
+Working material, not for publication:
+
+- [`procurement-beyond-8-brief.md`](procurement-beyond-8-brief.md): episode map,
+  shareable fragments and every entry path into the recording across the site
+  and the articles.
+
 Model 1.x drafts remain under
 [`docs/archive/model-1.x/articles/`](../archive/model-1.x/articles/) and must not
 be submitted or republished as current material. Statements explicitly

@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-2-model-kosztu-PL.md",
+  "line": 256,
+  "section": "## 10. Rekord decyzji i zakres rachunku\n\nRekord decyzji ujawnia:\n\n1. pełny zestaw metadanych i status migracji;\n2. osie kontekstu;\n3. obie mapy przebiegu i konstrukcje umowy;\n4. wynik każdego wariantu i deltę;\n5. udział poszczególnych kanałów w różnicy;\n6. zakres monetyzacji i dokładne ścieżki założeń;\n7. wymiary nieobjęte monetyzacją;\n8. pochodzenie wartości przypisanych krokom, założenia przeniesione,\n   dowody zewnętrzne i pochodzenie prawne.\n\nInterpretacja sumy wymaga sprawdzenia jej składników oraz listy skutków\npozostawionych poza rachunkiem.\n",
+  "fileHash": "cc3d6c7f3d6b630d0dc1f5d79231f7b4224822c8dfedc45227d64343f3a11017",
+  "requestHash": "0cdd95160f03d5c3e4d84a1275c3acfbbd7d90a77fe7f3cdaa5be0c4c732f0a9",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.06
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.19
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.11
+    }
+  },
+  "usage": {
+    "input_tokens": 640,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

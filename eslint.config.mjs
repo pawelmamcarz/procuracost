@@ -13,6 +13,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // A git worktree under .worktrees/ is a second checkout with its own suite;
+    // linting it doubles every finding and fails on its stale copy.
+    ".worktrees/**",
   ]),
 ]);
 

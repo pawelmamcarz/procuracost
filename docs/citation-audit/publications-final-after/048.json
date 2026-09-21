@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 200,
+  "section": "## Pytanie do zadania przed podpisem\n\nPrzed podpisaniem umowy sponsor powinien uzgodnić odpowiedź na pytanie:\n\n> Kto po naszej stronie rozumie ten zakup, ma mandat, żeby powiedzieć\n> dostawcy „nie”, będzie rozmawiał z użytkownikami po odbiorze i ma następcę,\n> który o tym wie?\n\nJedno nazwisko nie wystarcza do potwierdzenia mandatu, a podział zadań między\nkilka osób nie oznacza braku właścicielstwa. Istotne jest, czy odpowiedzialność,\nuprawnienia i zastępstwo są uzgodnione oraz możliwe do wykonania.\n",
+  "fileHash": "fea2846dca7b70d88f7eba866df5442b362e85ddef186ba54b44fa8c37f18b2c",
+  "requestHash": "b0f47ce20c524b418a4689b881af8d55ee27fb9b9c5c19b3a6be001fc076410d",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.4
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.23
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.1
+    }
+  },
+  "usage": {
+    "input_tokens": 603,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

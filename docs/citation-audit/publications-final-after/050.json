@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 232,
+  "section": "## O autorze\n\nPaweł Mamcarz zajmuje się zakupami, analityką i negocjacjami. Jest autorem\nmodelu ProcuraCost i rozmówcą w ósmym odcinku Procurement&Beyond, z którego\npochodzą obserwacje omawiane w tym tekście. Więcej na\n[mamcarz.com](https://mamcarz.com). Pełne nagranie odcinka:\n[youtube.com/watch?v=5KYUdTLlvvg](https://www.youtube.com/watch?v=5KYUdTLlvvg).\n",
+  "fileHash": "fea2846dca7b70d88f7eba866df5442b362e85ddef186ba54b44fa8c37f18b2c",
+  "requestHash": "cc4bbc2e709df5e6b8430b3f6bee44b1a684821baac70ca845abf6d47dd9cfc8",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.14
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.15
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.05
+    }
+  },
+  "usage": {
+    "input_tokens": 567,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

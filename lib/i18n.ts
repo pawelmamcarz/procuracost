@@ -5999,7 +5999,7 @@ const practicePl = {
     tco: {
       title: "Pełny koszt zamiast ceny zakupu",
       body:
-        "Uzasadnienie biznesowe powinno odróżniać cenę zakupu od kosztów wdrożenia, integracji, utrzymania i zmiany organizacyjnej.",
+        "Rozmowa wprowadza kalkulator kosztów posiadania samochodu Czym pojadę i odróżnia cenę zakupu od pełnego kosztu posiadania. Zastosowanie tej zasady do kosztów wdrożenia systemu jest interpretacją autora listy kontrolnej.",
     },
     bielik: {
       title: "Bielik i strukturyzowanie danych rynkowych",
@@ -6116,7 +6116,7 @@ const practiceEn = {
     tco: {
       title: "Full cost rather than purchase price",
       body:
-        "A business justification should distinguish purchase price from implementation, integration, operating and organisational-change costs.",
+        "The conversation introduces the Czym pojadę vehicle ownership cost calculator and distinguishes purchase price from total cost of ownership. Applying this principle to system implementation costs is the checklist author's interpretation.",
     },
     bielik: {
       title: "Bielik and market-data structuring",

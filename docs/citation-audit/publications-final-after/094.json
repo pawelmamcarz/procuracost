@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-3-empiria-PZP-PL.md",
+  "line": 348,
+  "section": "## 12. Etyka i pakiet replikacyjny\n\nDane organizacyjne mogą zawierać dane osobowe, informacje handlowe i sygnały\nnieprawidłowości. Przed pozyskaniem wymagane są podstawa prawna, minimalizacja,\nkontrola dostępu, plan retencji i ocena etyczna. Publikacja powinna używać\nagregatów oraz ograniczać ryzyko identyfikacji Zamawiającego, wnioskodawcy\nbiznesowego i wykonawcy.\n\nPakiet badawczy powinien zawierać słownik danych, kod pobrania i czyszczenia,\nmanifest wersji źródeł, prerejestrację, skrypty tabel oraz dziennik odstępstw.\nChronione dane surowe nie muszą być publiczne. Syntetyczny zestaw powinien\numożliwiać audyt kodu bez ujawniania informacji organizacyjnych.\n\nTabele wynikowe generuje kod z zamrożonego zbioru analitycznego. Jeżeli\nkluczowej zmiennej nie można odtworzyć, artykuł raportuje brak zamiast\nzastępować ją niezweryfikowaną wartością.\n",
+  "fileHash": "41bf544921996fc7d7ce6767dacb40a4bd8b28b778378d0f818f84100fc7ec22",
+  "requestHash": "b3844d5f408a69220d271a48242b16a5bbf92c04037fa68f29a85bbbf8ab3f25",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.08
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.17
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.07
+    }
+  },
+  "usage": {
+    "input_tokens": 745,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-07-tunel-pole-lepszy-biznes.md",
+  "line": 256,
+  "section": "## Źródła i granice twierdzeń\n\n- California Department of Technology. (2022, 3 sierpnia). *California Redefines State\n  Technology Procurement*.\n  https://www.cdt.ca.gov/newsroom/2022/08/california-redefines-state-technology-procurement/\n- OECD. (2024). *Public Procurement in Lithuania: Increasing Efficiency through\n  Centralisation and Professionalisation*. OECD Public Governance Reviews,\n  OECD Publishing. Aneks B, przykład pilotażu RVUL.\n  https://doi.org/10.1787/aa1b196c-en\n  https://www.oecd.org/en/publications/public-procurement-in-lithuania_aa1b196c-en/full-report/component-8.html\n- Szucs, F. (2024). *Discretion and Favoritism in Public Procurement*. Journal\n  of the European Economic Association, 22(1), 117-160.\n  https://doi.org/10.1093/jeea/jvad017\n- Urząd Zamówień Publicznych. (b.d.). *Wstępne konsultacje rynkowe*.\n  https://www.gov.pl/web/uzp/wstepne-konsultacje-rynkowe\n- Ustawa z dnia 11 września 2019 r. Prawo zamówień publicznych,\n  Dz.U. 2019 poz. 2019, z późn. zm., art. 84–85.\n  https://eli.gov.pl/eli/DU/2019/2019/ogl\n- Komisja Europejska. (2021). *Guidance on Innovation Procurement*\n  [niewiążące wytyczne; strona katalogowa z 21 czerwca 2021 r.].\n  https://public-buyers-community.ec.europa.eu/resources/guidance-innovation-procurement\n- Procurement&Beyond, odcinek 8.\n  https://www.youtube.com/watch?v=5KYUdTLlvvg\n\nPrzypadki oficjalne wspierają opis mechanizmu, nie wartości liczbowe\nProcuraCost. Materiał praktyczny służy do projektowania pytań i hipotez, nie\nkalibracji. Model 2.3 jest narzędziem porównawczym, nie estymatorem przyczynowym\nani poradą prawną.\n",
+  "fileHash": "92e5eb73ec514723db4d46895f045a238fd081a101fb5173f504a7f77e8e259c",
+  "requestHash": "654c793df6de026a193cd78fabb3d09cc93c3a974694bd4cc6d7268193aa90e7",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.12
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.21
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.11
+    }
+  },
+  "usage": {
+    "input_tokens": 1052,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

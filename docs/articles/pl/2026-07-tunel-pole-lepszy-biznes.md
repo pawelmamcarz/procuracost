@@ -67,7 +67,8 @@ jak te ustalenia zmieniają pracę zespołu lub projekt umowy.
 
 Wstępne konsultacje rynkowe mogą pomóc Zamawiającemu poznać dostępne
 rozwiązania techniczne, ekonomiczne i organizacyjne przed postępowaniem.
-Konsultacja nie skraca ustawowego terminu składania ofert ani obowiązkowego
+Podstawę konsultacji i ochrony konkurencji określają art. 84–85 PZP.
+Konsultacja sama w sobie nie skraca ustawowego terminu składania ofert ani obowiązkowego
 terminu oczekiwania przed zawarciem umowy.
 
 ### Odkrywanie i współprojektowanie
@@ -254,17 +255,24 @@ oceny prawnej i danych z pilotażu.
 
 ## Źródła i granice twierdzeń
 
-- California Department of Technology. (2022). *California Redefines State
+- California Department of Technology. (2022, 3 sierpnia). *California Redefines State
   Technology Procurement*.
   https://www.cdt.ca.gov/newsroom/2022/08/california-redefines-state-technology-procurement/
-- OECD. *Public Procurement in Lithuania*, przykład pilotażu RVUL.
+- OECD. (2024). *Public Procurement in Lithuania: Increasing Efficiency through
+  Centralisation and Professionalisation*. OECD Public Governance Reviews,
+  OECD Publishing. Aneks B, przykład pilotażu RVUL.
+  https://doi.org/10.1787/aa1b196c-en
   https://www.oecd.org/en/publications/public-procurement-in-lithuania_aa1b196c-en/full-report/component-8.html
 - Szucs, F. (2024). *Discretion and Favoritism in Public Procurement*. Journal
   of the European Economic Association, 22(1), 117-160.
   https://doi.org/10.1093/jeea/jvad017
-- Urząd Zamówień Publicznych. *Wstępne konsultacje rynkowe*.
+- Urząd Zamówień Publicznych. (b.d.). *Wstępne konsultacje rynkowe*.
   https://www.gov.pl/web/uzp/wstepne-konsultacje-rynkowe
-- Komisja Europejska. *Guidance on Innovation Procurement*.
+- Ustawa z dnia 11 września 2019 r. Prawo zamówień publicznych,
+  Dz.U. 2019 poz. 2019, z późn. zm., art. 84–85.
+  https://eli.gov.pl/eli/DU/2019/2019/ogl
+- Komisja Europejska. (2021). *Guidance on Innovation Procurement*
+  [niewiążące wytyczne; strona katalogowa z 21 czerwca 2021 r.].
   https://public-buyers-community.ec.europa.eu/resources/guidance-innovation-procurement
 - Procurement&Beyond, odcinek 8.
   https://www.youtube.com/watch?v=5KYUdTLlvvg

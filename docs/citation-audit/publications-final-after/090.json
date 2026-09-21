@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-3-empiria-PZP-PL.md",
+  "line": 261,
+  "section": "## 8. Wielkość próby i moc\n\nDla czasu proponowana minimalna różnica istotna praktycznie (MSI) wynosi\n10 procent na jedno odchylenie standardowe indeksu:\n\n`beta_MSI = ln(1,10) ~= 0,095`\n\nJest to kryterium istotności praktycznej do zatwierdzenia przed zebraniem\ndanych, nie benchmark zewnętrzny. Nakład pracy i inne wyniki wymagają odrębnych\nMSI.\n\nPilotaż planistyczny obejmuje 2 organizacje po 25 zdarzeń. Jego celem jest ocena\nwykonalności kodowania, wariancji, ICC, kompletności i struktury klastrów. Nie\nsłuży testowaniu hipotez.\n\nOstateczną liczebność i minimalny wykrywalny efekt określi prerejestrowana\nsymulacja Monte Carlo odtwarzająca estymator, klastry, terminy interwencji i\nbraki danych. Liczba niezależnych organizacji jest ważniejsza dla inferencji niż\nsama liczba zdarzeń.\n",
+  "fileHash": "41bf544921996fc7d7ce6767dacb40a4bd8b28b778378d0f818f84100fc7ec22",
+  "requestHash": "5f60a7ab35075efca29fb070545579dcf7d9686d8eb22d9a5e0cb3dc7969354a",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.1
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.18
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.12
+    }
+  },
+  "usage": {
+    "input_tokens": 739,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

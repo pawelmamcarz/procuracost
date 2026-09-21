@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-bariery-autonomicznego-sourcingu.md",
+  "line": 340,
+  "section": "## Źródła i granice twierdzeń\n\nŹródła sprawdzone 21 września 2026 r. Potwierdzenie publikacji liczby nie\njest niezależnym potwierdzeniem wyniku organizacji:\n\n- Zero100. (2026, 30 stycznia). *Rise of the AI-Enabled CPO* [publiczna\n  zapowiedź raportu]. Podaje 85% i 78% dla badanych CPO i kadry kierowniczej\n  sourcingu. Pełny raport wymaga dostępu członkowskiego; zapowiedź nie podaje\n  liczebności próby ani terminu badania.\n  https://zero100.com/insights/rise-of-the-ai-enabled-cpo/\n- ProcureAbility. (2026, 21 stycznia). *ProcureAbility's 2026 CPO Report\n  Reveals the Top Barriers to AI Adoption Among Procurement Organizations*\n  [komunikat prasowy]. Podaje 51% w opisie barier grupy bez pełnej gotowości\n  do AI, stanowiącej 89% respondentów. Pełnego raportu i dokładnej podstawy\n  procentowania pytania nie zweryfikowano.\n  https://www.prnewswire.com/news-releases/procureabilitys-2026-cpo-report-reveals-the-top-barriers-to-ai-adoption-among-procurement-organizations-302666226.html\n  Strona opisu *The 2026 Annual ProcureCon CPO Report*:\n  https://procureability.com/2026-annual-procurecon-cpo-report/\n- EFESO Management Consultants. (2026). *2026 CPO Annual Pulse Report*, s. 4.\n  Wywiady z 50 europejskimi CPO przeprowadzono w grudniu 2025 r.\n  Raport podaje 5% szerokich wdrożeń i 75% eksperymentowania (40% wczesnej\n  eksploracji i 35% pilotaży). Nie wyjaśnia dostatecznie podstaw procentowania\n  i zaokrągleń; tych odsetków nie przeliczamy na liczby organizacji.\n  https://www.efeso.com/wp-content/uploads/2026/01/2026-CPO-Annual-Pulse-Report-EFESO.pdf\n- Procure Ai. (b.d.). *Automated procurement: Kärcher's path to negotiation\n  efficiency and quality through AI-driven solutions* [studium przypadku\n  dostawcy]. Podaje 90% zaangażowania w rozpoczętych negocjacjach, 50%\n  skuteczności i 6% średniego rabatu. Brak liczebności, okresu pomiaru,\n  jednoznacznego mianownika skuteczności i podstawy średniego rabatu.\n  https://www.procure.ai/case-studies/kaercher\n- Pactum. (b.d.). *Enterprise Client Success with Agentic AI in Procurement*,\n  sekcja Walmart [strona dostawcy]. Podaje 68% porozumień wśród dostawców\n  zaangażowanych przez platformę. Nie podaje liczebności ani okresu pomiaru.\n  https://pactum.com/clients\n- Parlament Europejski i Rada Unii Europejskiej. (2024). Rozporządzenie\n  (UE) 2024/1689 z 13 czerwca 2024 r., art. 6 ust. 2, art. 50 ust. 1\n  i załącznik III. Odwołanie dotyczy pierwotnego brzmienia; urzędowa strona\n  art. 50 ostrzega o nieuwzględnionych zmianach Digital Omnibus.\n  https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng\n  https://ai-act-service-desk.ec.europa.eu/en/ai-act/article-50\n  https://ai-act-service-desk.ec.europa.eu/en/ai-act/annex-3\n- Komisja Europejska. (b.d.). *Transparency obligations under Article 50 of\n  the AI Act* [FAQ, materiał objaśniający]. Nie zastępuje tekstu aktu prawnego.\n  https://digital-strategy.ec.europa.eu/en/faqs/transparency-obligations-under-article-50-ai-act\n- Procurement&Beyond. (2026, 26 sierpnia). *Odcinek 8. Nawet najlepsze\n  narzędzie nie uratuje złego wdrożenia*. Rozmowa praktyczna z Pawłem\n  Mamcarzem, 67 minut. Odnośniki czasowe w tekście prowadzą do czternastu\n  zarejestrowanych fragmentów.\n  https://www.youtube.com/watch?v=5KYUdTLlvvg\n\nLiczby rynkowe pochodzą z badań deklaratywnych i materiałów dostawców.\nOpisują badaną grupę i deklarowane obawy, nie stanowią estymat efektu dla\nkonkretnej organizacji. Przypadki wdrożeniowe publikowane przez dostawców\nnarzędzi wspierają opis mechanizmu, nie wielkości efektu.\n\nŻadna z powyższych wartości nie kalibruje modelu ProcuraCost 2.3, nie ustawia\nprogów ani wag i nie wpływa na różnicę kosztu. Materiał praktyczny służy do\nprojektowania pytań i hipotez. Bariery wdrożeniowe należą do warstwy gotowości\norganizacyjnej, opisywanej bez punktacji i bez wpływu na rachunek.\n\nTekst nie stanowi porady prawnej. Ocena umocowania, dopuszczalności w\nzamówieniach publicznych oraz zgodności z prawem konkurencji wymaga analizy dla\nkonkretnego stanu faktycznego.\n",
+  "fileHash": "e5c74d058c301bc2181fac7676aaf89a06bd1fccc62e480234ddf1f8d430f78b",
+  "requestHash": "2ad19260b8ba4cd9282fa103784aa3ab3c99b02fa74922cb0ee8362531d4f7bc",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.17
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.32
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.13
+    }
+  },
+  "usage": {
+    "input_tokens": 1965,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

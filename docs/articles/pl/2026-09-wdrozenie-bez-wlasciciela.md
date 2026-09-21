@@ -127,8 +127,12 @@ wymagających decyzji człowieka.
 ## Nakład pracy po stronie organizacji
 
 Fragment [Pełny koszt zamiast ceny zakupu (47:43 do 49:14)](https://youtu.be/5KYUdTLlvvg?t=2863)
-dotyczy uzasadnienia biznesowego. Oprócz ceny licencji i usług dostawcy trzeba
-oszacować własną pracę przy integracji, utrzymaniu i zmianie organizacyjnej.
+wprowadza projekt „Czym pojadę” i przykład TCO pojazdu, odróżniający cenę
+zakupu od kosztu posiadania. Zastosowanie tego przykładu do kosztów wdrożenia
+systemu zakupowego jest rozwinięciem redakcyjnym autora. Proponuję tu, aby
+oprócz ceny licencji i usług dostawcy oszacować własną pracę przy integracji,
+utrzymaniu i zmianie organizacyjnej. Te pozycje nie są listą kosztów
+oprogramowania wymienioną w przywołanym fragmencie rozmowy.
 
 Ocena wymagań, rozmowy z użytkownikami i przygotowanie zastępstwa zajmują czas
 pracowników. W planie projektu należy przypisać im nakład i odpowiedzialność,

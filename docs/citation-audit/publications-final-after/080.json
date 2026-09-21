@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-2-model-kosztu-PL.md",
+  "line": 361,
+  "section": "## Źródła prawne\n\nUstawa z dnia 11 września 2019 r. Prawo zamówień publicznych,\nDz.U. 2019 poz. 2019, z późn. zm. Lokalizatory terminów omawianych w sekcji 4:\nart. 283, art. 308 ust. 2, art. 138 ust. 1, art. 144 ust. 1, art. 151 ust. 1\ni art. 264 ust. 1; konsultacje rynkowe: art. 84–85.\nhttps://eli.gov.pl/eli/DU/2019/2019/ogl\n\nUstawa z dnia 25 lipca 2025 r. o zmianie ustawy Prawo zamówień publicznych\noraz niektórych innych ustaw, Dz.U. 2025 poz. 1173, art. 1 pkt 1,\nart. 7–8 i art. 11. Zmiana progu na 170 000 zł obowiązuje od 1 stycznia\n2026 r. w określonym ustawą zakresie, z zachowaniem przepisów przejściowych.\nhttps://eli.gov.pl/eli/DU/2025/1173/ogl\n\nObwieszczenie Prezesa Urzędu Zamówień Publicznych z dnia 8 grudnia 2025 r.\nw sprawie aktualnych progów unijnych określonych w dyrektywach Parlamentu\nEuropejskiego i Rady 2014/24/UE, 2014/25/UE i 2009/81/WE na lata 2026–2027,\nich równowartości w złotych, równowartości w złotych kwot wyrażonych w euro\noraz średniego kursu złotego w stosunku do euro stanowiącego podstawę\nprzeliczania wartości zamówień publicznych lub konkursów, M.P. 2025 poz. 1247,\npkt 1–2 i załącznik.\nhttps://eli.gov.pl/eli/MP/2025/1247/ogl\n\nMetryki i przepisy o zmianie progów sprawdzono 21 września 2026 r.\nUzupełnienie bibliografii nie stanowi ponownego audytu wszystkich terminów\nustawowych ani ich implementacji. W zastosowaniu należy ustalić brzmienie\nprzepisów właściwe dla daty wszczęcia postępowania.\n",
+  "fileHash": "cc3d6c7f3d6b630d0dc1f5d79231f7b4224822c8dfedc45227d64343f3a11017",
+  "requestHash": "f5980e109b19699ec62236ada2dbd2d15e92a5255a69a99a7af9e791011fae6e",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.04
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.21
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.11
+    }
+  },
+  "usage": {
+    "input_tokens": 1111,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

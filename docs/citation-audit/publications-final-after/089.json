@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-3-empiria-PZP-PL.md",
+  "line": 215,
+  "section": "## 7. Strategia analityczna\n\n### 7.1 Wariant A: związek w obrębie organizacji\n\nSpecyfikacja bazowa:\n\n`log(dni) = beta x prescriptiveness + gamma'X + alpha_organizacja + delta_CPV + theta_rok + epsilon`\n\nPorównywane są zdarzenia w tej samej organizacji i kategorii. Błędy standardowe\nsą klastrowane na poziomie organizacji. Przy mniej niż 30 klastrach planowany\njest wild cluster bootstrap. Przy 4 do 6 organizacjach wyniki pozostają\neksploracyjne i wymagają analizy leave-one-organisation-out.\n\nWariant szacuje związek po uwzględnieniu wskazanych zmiennych kontrolnych.\nTrudniejsze lub pilniejsze zakupy mogą być kierowane do bardziej\npreskryptywnego przebiegu, co ogranicza interpretację przyczynową.\n\n### 7.2 Wariant B: jednorazowa zmiana procesu\n\nRozszerzenie przyczynowe wymaga porównywalnej, jasno datowanej zmiany oraz grup\nnieobjętych interwencją w porównywanym okresie. Przy zróżnicowanych terminach\nmożna rozważyć staggered DiD, ale wybór estymatora wymaga określenia estymandu\ni grupy porównawczej. [Callaway i Sant'Anna (2021)](https://psantanna.com/files/Callaway_SantAnna_2020.pdf)\nestymują efekty dla grupy i okresu (ATT(g,t)), korzystając z grup nigdy\nnieobjętych albo jeszcze nieobjętych interwencją, przy odpowiednich założeniach.\n[Sun i Abraham (2021)](https://arxiv.org/pdf/1804.05785) wykorzystują grupę\nnigdy nieobjętą lub objętą jako ostatnia. W drugim przypadku wyłącza się\nokresy od objęcia ostatniej grupy interwencją; nie jest to dowolna pula\nwszystkich grup jeszcze nieobjętych zmianą. Estymatory nie są zatem zamienne\nbez doprecyzowania projektu.\n\nWymagane są ocena trendów przed zmianą, brak antycypacji w prerejestrowanym\noknie, brak równoległej transformacji, wiarygodne grupy porównawcze i\nudokumentowanie wpływu interwencji na ekspozycję. Brak widocznych różnic przed\nzmianą nie dowodzi trendów równoległych.\n\n### 7.3 Wariant C: próg prawny\n\nProjekt progowy wymaga potwierdzenia aktualnego stanu prawnego, testu gęstości\n([Cattaneo, Jansson i Ma 2020](https://doi.org/10.1080/01621459.2019.1635480)),\nciągłości kowariat i oceny sortowania wartości. Brak odrzucenia w teście\ngęstości nie dowodzi braku sortowania ani poprawności identyfikacji RDD. Szucs (2024) pokazuje, dlaczego\nmanipulacja przy progu może unieważnić prosty RDD w podobnej klasie danych.\nUsunięcie obserwacji najbliżej progu nie naprawia automatycznie identyfikacji.\nWariant C nie jest podstawą planu głównego.\n",
+  "fileHash": "41bf544921996fc7d7ce6767dacb40a4bd8b28b778378d0f818f84100fc7ec22",
+  "requestHash": "5adc90e6bfdd05b4daec913a51c92720af157cf822022dbd8c8d8ec748f930db",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.05
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.26
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.11
+    }
+  },
+  "usage": {
+    "input_tokens": 1342,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

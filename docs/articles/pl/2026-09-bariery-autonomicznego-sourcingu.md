@@ -22,9 +22,10 @@ Kontrola jest potrzebna także przy zadaniach pomocniczych: błędna interpretac
 wniosku może przejść niezauważona do dalszych decyzji. Zakres nadzoru należy
 dobrać do skutków działania systemu i możliwości ich cofnięcia.
 
-Raport EFESO z 2026 r., oparty na rozmowach z 50 europejskimi dyrektorami
-zakupów, podaje 5% szerokich wdrożeń GenAI i 75%
-organizacji w fazie eksperymentowania. To opis badanej grupy oraz
+Raport EFESO opublikowany w styczniu 2026 r., oparty na wywiadach
+przeprowadzonych w grudniu 2025 r. z 50 dyrektorami zakupów średnich i dużych
+organizacji europejskich, podaje 5% szerokich wdrożeń GenAI i 75% organizacji
+w fazie eksperymentowania. To opis badanej grupy oraz
 generatywnej AI ogółem, nie pomiar odsetka firm, które oddały agentowi mandat
 negocjacyjny. Pozwala postawić pytanie o skalowanie, ale nie wyjaśnia sam
 przyczyn różnicy między pilotażem a wdrożeniem.
@@ -39,7 +40,8 @@ barier zależą od kategorii, organizacji oraz zakresu uprawnień agenta.
 Przed uruchomieniem negocjacji organizacja musi ustalić, które decyzje handlowe
 powierza systemowi i kto odpowiada za nadzór.
 
-W badaniu Zero100 85% dyrektorów zakupów spodziewa się zasadniczej zmiany
+Według publicznej zapowiedzi raportu Zero100 z 30 stycznia 2026 r.
+85% badanych CPO i przedstawicieli kadry kierowniczej sourcingu spodziewa się zasadniczej zmiany
 pracy sourcingowej pod wpływem agentowej AI, a 78% chce zachowania ludzkiej
 kontroli nad całą pracą strategiczną. Oczekiwanie zmian może więc współistnieć
 z zamiarem utrzymania nadzoru nad decyzjami.
@@ -58,7 +60,8 @@ zaakceptowałby przy tym samym wolumenie.
 Udział dostawców trzeba sprawdzić odrębnie od gotowości kupującego do wdrożenia.
 
 W opisie wdrożenia Kärchera dostawca Procure Ai podaje 90 procent zaangażowania
-dostawców, 50 procent skuteczności negocjacji i sześć procent średniego rabatu.
+dostawców w rozpoczętych negocjacjach, 50 procent skuteczności negocjacji
+i sześć procent średniego rabatu.
 Zaangażowanie nie jest zatem tożsame z zawarciem porozumienia. Pactum podaje
 dla Walmart 68 procent porozumień wśród dostawców zaangażowanych przez
 platformę oraz wydłużenie terminów płatności. Są to wyniki raportowane przez
@@ -109,15 +112,20 @@ Trzeba także ocenić skutki zachowania systemu. Konsekwentne
 zachowanie agenta, na przykład przyjmowanie ofert w powtarzalnym schemacie, może
 w niektórych porządkach prawnych rodzić skutki nawet bez formalnego podpisu.
 
-Osobnej oceny wymaga zakres regulacji AI. Akt o sztucznej
-inteligencji nie klasyfikuje automatycznie każdego systemu wpływającego na
-decyzje gospodarcze jako wysokiego ryzyka. Załącznik trzeci wymienia konkretne
+Osobnej oceny wymaga zakres regulacji AI. W pierwotnym brzmieniu
+rozporządzenia (UE) 2024/1689 z 13 czerwca 2024 r. art. 6 ust. 2
+w powiązaniu z załącznikiem III nie klasyfikuje automatycznie każdego systemu
+wpływającego na decyzje gospodarcze jako wysokiego ryzyka. Załącznik III wymienia konkretne
 zastosowania, a typowa negocjacja handlowa między przedsiębiorcami do nich nie
-należy wyłącznie z racji prowadzenia negocjacji. Art. 50 ust. 1 AI Act dotyczy
+należy wyłącznie z racji prowadzenia negocjacji. W tej wersji art. 50 ust. 1 dotyczy
 dostawców systemów przeznaczonych do bezpośredniej interakcji z osobami
 fizycznymi: mają zapewnić informację o interakcji z AI, chyba że jest to
 oczywiste w okolicznościach wskazanych w przepisie. Nie jest to identyczny
-obowiązek dla każdej wymiany między systemami. Zastosowanie w sektorze publicznym oraz
+obowiązek dla każdej wymiany między systemami. Portal urzędowy ostrzega,
+że wyświetlany tekst art. 50 nie uwzględnia jeszcze zmian Digital Omnibus.
+Nie potwierdzono tu aktualnego brzmienia całego przepisu po tych zmianach;
+przed zastosowaniem należy sprawdzić właściwą wersję prawa.
+Zastosowanie w sektorze publicznym oraz
 przetwarzanie danych osób kontaktowych po stronie dostawcy wymagają odrębnej
 analizy.
 
@@ -256,12 +264,13 @@ samo rozróżnienie pomaga ustalić zakres pracy agenta i nadzoru człowieka. Fr
 [Standaryzacja pracy i osąd ekspercki](https://youtu.be/5KYUdTLlvvg?t=271)
 (04:31 do 06:48).
 
-Bariera ósma, zwrot poza pilotażem, ma w rozmowie odpowiednik w pytaniu o
-pełny koszt zamiast ceny zakupu: wdrożenie, integrację, utrzymanie i zmianę
-organizacyjną. Udział licencji agenta w tym rachunku wymaga osobnego oszacowania.
-Fragment:
-[Pełny koszt zamiast ceny zakupu](https://youtu.be/5KYUdTLlvvg?t=2863)
-(47:43 do 49:14).
+Fragment [Pełny koszt zamiast ceny zakupu](https://youtu.be/5KYUdTLlvvg?t=2863)
+(47:43 do 49:14) wprowadza projekt „Czym pojadę” i przykład TCO pojazdu:
+cena zakupu nie wyczerpuje kosztu posiadania. Przeniesienie tego rozróżnienia
+na barierę ósmą, zwrot poza pilotażem, jest zastosowaniem redakcyjnym autora.
+W rachunku wdrożenia agenta proponuję uwzględnić licencję, integrację,
+utrzymanie i zmianę organizacyjną. To propozycja dla tego artykułu, a nie lista
+kosztów oprogramowania wymieniona w przywołanym fragmencie rozmowy.
 
 Granica wykorzystania sztucznej inteligencji, opisana w sekcji o osiach
 modelu, ma w rozmowie dwa fragmenty. Pierwszy pokazuje użycie modelu
@@ -333,26 +342,44 @@ warunki cenowe, pozostałe uprawnienia agenta i zasady przekazywania spraw kupco
 Źródła sprawdzone 21 września 2026 r. Potwierdzenie publikacji liczby nie
 jest niezależnym potwierdzeniem wyniku organizacji:
 
-- Zero100. *Rise of the AI-Enabled CPO*. Osiemdziesiąt pięć procent zgadza się
-  co do zmiany w sourcingu, siedemdziesiąt osiem procent chce zachowania
-  kontroli nad pracą strategiczną.
+- Zero100. (2026, 30 stycznia). *Rise of the AI-Enabled CPO* [publiczna
+  zapowiedź raportu]. Podaje 85% i 78% dla badanych CPO i kadry kierowniczej
+  sourcingu. Pełny raport wymaga dostępu członkowskiego; zapowiedź nie podaje
+  liczebności próby ani terminu badania.
   https://zero100.com/insights/rise-of-the-ai-enabled-cpo/
-- ProcureAbility. *2026 Annual ProcureCon CPO Report*. Pięćdziesiąt jeden
-  procent respondentów w opisie barier grupy bez pełnej gotowości do AI
-  wskazuje obawę przed zastąpieniem ludzkiego osądu.
+- ProcureAbility. (2026, 21 stycznia). *ProcureAbility's 2026 CPO Report
+  Reveals the Top Barriers to AI Adoption Among Procurement Organizations*
+  [komunikat prasowy]. Podaje 51% w opisie barier grupy bez pełnej gotowości
+  do AI, stanowiącej 89% respondentów. Pełnego raportu i dokładnej podstawy
+  procentowania pytania nie zweryfikowano.
   https://www.prnewswire.com/news-releases/procureabilitys-2026-cpo-report-reveals-the-top-barriers-to-ai-adoption-among-procurement-organizations-302666226.html
-- EFESO Management Consultants. *2026 CPO Annual Pulse Report*. Pięć procent
-  szerokich wdrożeń GenAI i siedemdziesiąt pięć procent eksperymentowania;
-  raport opiera się na rozmowach z 50 europejskimi CPO.
-  https://www.efeso.com/en-americas/insights-events/bring-genai-to-procurement-organizations/
-- Procure Ai. *Kärcher case study*. Dziewięćdziesiąt procent zaangażowania
-  dostawców, pięćdziesiąt procent skuteczności negocjacji i sześć procent
-  średniego rabatu według dostawcy narzędzia.
+  Strona opisu *The 2026 Annual ProcureCon CPO Report*:
+  https://procureability.com/2026-annual-procurecon-cpo-report/
+- EFESO Management Consultants. (2026). *2026 CPO Annual Pulse Report*, s. 4.
+  Wywiady z 50 europejskimi CPO przeprowadzono w grudniu 2025 r.
+  Raport podaje 5% szerokich wdrożeń i 75% eksperymentowania (40% wczesnej
+  eksploracji i 35% pilotaży). Nie wyjaśnia dostatecznie podstaw procentowania
+  i zaokrągleń; tych odsetków nie przeliczamy na liczby organizacji.
+  https://www.efeso.com/wp-content/uploads/2026/01/2026-CPO-Annual-Pulse-Report-EFESO.pdf
+- Procure Ai. (b.d.). *Automated procurement: Kärcher's path to negotiation
+  efficiency and quality through AI-driven solutions* [studium przypadku
+  dostawcy]. Podaje 90% zaangażowania w rozpoczętych negocjacjach, 50%
+  skuteczności i 6% średniego rabatu. Brak liczebności, okresu pomiaru,
+  jednoznacznego mianownika skuteczności i podstawy średniego rabatu.
   https://www.procure.ai/case-studies/kaercher
-- Pactum. *Client success*, w tym kampanie Walmart na ogonie wydatków.
+- Pactum. (b.d.). *Enterprise Client Success with Agentic AI in Procurement*,
+  sekcja Walmart [strona dostawcy]. Podaje 68% porozumień wśród dostawców
+  zaangażowanych przez platformę. Nie podaje liczebności ani okresu pomiaru.
   https://pactum.com/clients
-- Komisja Europejska. *Transparency obligations under Article 50 of the AI Act*.
-  Zakres bezpośredniej interakcji z osobami fizycznymi oraz wyjątek oczywistości.
+- Parlament Europejski i Rada Unii Europejskiej. (2024). Rozporządzenie
+  (UE) 2024/1689 z 13 czerwca 2024 r., art. 6 ust. 2, art. 50 ust. 1
+  i załącznik III. Odwołanie dotyczy pierwotnego brzmienia; urzędowa strona
+  art. 50 ostrzega o nieuwzględnionych zmianach Digital Omnibus.
+  https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng
+  https://ai-act-service-desk.ec.europa.eu/en/ai-act/article-50
+  https://ai-act-service-desk.ec.europa.eu/en/ai-act/annex-3
+- Komisja Europejska. (b.d.). *Transparency obligations under Article 50 of
+  the AI Act* [FAQ, materiał objaśniający]. Nie zastępuje tekstu aktu prawnego.
   https://digital-strategy.ec.europa.eu/en/faqs/transparency-obligations-under-article-50-ai-act
 - Procurement&Beyond. (2026, 26 sierpnia). *Odcinek 8. Nawet najlepsze
   narzędzie nie uratuje złego wdrożenia*. Rozmowa praktyczna z Pawłem

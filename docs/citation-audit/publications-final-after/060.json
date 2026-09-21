@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-1-tunnel-or-field-EN.md",
+  "line": 211,
+  "section": "## 8. Contribution and interpretation boundary\n\nThe proposed framework separates measures of workflow, supplier-selection\ndiscretion and contract clauses. This allows researchers to specify which\ndecision a study measures before using its results in a workflow comparison.\n\nThis is a conceptual contribution. Establishing whether the wider procurement\nliterature commonly makes the same conflation would require a systematic\nreview. The present paper does not estimate a causal effect.\n\nIn an organisational study, each approval should be linked to the risk it\ncontrols. Changes in sequencing should preserve the stated competition rules,\nand additional learning work should have a recorded purpose. Timestamps, staff\neffort, bids, amendments and execution outcomes should be measured before\nassigning monetary values.\n\nThe framework has not been causally validated as an integrated model. Reference\nmaps, role rates, support costs and daily costs are declared assumptions.\nContract-amendment and TCO differentials are zero. Bypass is non-monetised.\nOfficial cases support mechanisms rather than effect sizes. Estimates from\nHungary, France and Italy do not automatically transfer to Poland or private\nprocurement.\n",
+  "fileHash": "2a3c4428e7d87a6388b33eab5305861fd026b0bee359e7822cb5a72d29c09b27",
+  "requestHash": "4dee4d65b3a9c5e2269475cc52e22c3300725cf4397e43e3eef573bff6249b38",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.09
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.31
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.08
+    }
+  },
+  "usage": {
+    "input_tokens": 674,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

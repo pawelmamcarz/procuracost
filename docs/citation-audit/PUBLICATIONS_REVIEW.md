@@ -2,8 +2,9 @@
 
 Ten raport i katalogi `publications-before/` oraz `publications-after/` opisują
 przegląd merytoryczny wydany w commicie `b2b9dd3`. Zachowują ówczesne brzmienie
-tekstów. Późniejszą korektę językową i aktualne hashe opisuje
-[`STYLE_REVIEW.md`](STYLE_REVIEW.md); starszych wyników nie należy traktować
+tekstów. Późniejszą korektę językową opisuje
+[`STYLE_REVIEW.md`](STYLE_REVIEW.md), a końcowy przegląd źródeł
+[`FINAL_REVIEW.md`](FINAL_REVIEW.md); starszych wyników nie należy traktować
 jako oceny obecnego brzmienia sekcji.
 
 Status: korekty zaakceptowane przez autora do wydania w repozytorium

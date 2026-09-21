@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 180,
+  "section": "## Co jest obserwacją, a co hipotezą\n\nPunktem wyjścia są obserwacje praktyczne z rozmowy. Podział na dwie role,\nwarunek ciągłości i opisane scenariusze niepowodzenia są ich redakcyjnym\nrozwinięciem. Nie są wynikiem badania ani dosłownym odtworzeniem nagrania.\n\nOpisany wcześniej samoopis gotowości jest autorską listą kontrolną, której\npytań dostarczyły także tematy rozmowy. Odpowiedzi wymagają potwierdzenia\nw danej organizacji.\n\nHipotezy wymagające niezależnych danych są trzy:\n\n1. Trwałe wewnętrzne właścicielstwo przewiduje adopcję systemu lepiej niż\n   jakość narzędzia.\n2. Zmapowanie tarcia w procesie przed wdrożeniem ogranicza zbędną konfigurację.\n3. Uproszczenie polityki zmniejsza obciążenie zatwierdzeniami bez osłabienia\n   kontroli na granicy.\n\nHipotezy te nie zostały sprawdzone na danych.\n",
+  "fileHash": "fea2846dca7b70d88f7eba866df5442b362e85ddef186ba54b44fa8c37f18b2c",
+  "requestHash": "74e37af7afa39bc11cca32b8c51a2919f02ec31923ea4d32a664a4ee7ac92c98",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.11
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.26
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.11
+    }
+  },
+  "usage": {
+    "input_tokens": 731,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

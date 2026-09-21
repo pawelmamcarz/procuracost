@@ -60,6 +60,7 @@ export interface PractitionerSource {
   author: "Procurement&Beyond";
   url: "https://www.youtube.com/watch?v=5KYUdTLlvvg";
   publishedAt: "2026-08-26";
+  publishedAtDateTime: "2026-08-26T08:00:26-07:00";
   durationSeconds: 4026;
   transcriptKind: "youtube_auto_captions_pl";
   transcriptHumanVerified: false;
@@ -244,6 +245,7 @@ export const PROCUREMENT_BEYOND_8: PractitionerSource = {
   author: "Procurement&Beyond",
   url: "https://www.youtube.com/watch?v=5KYUdTLlvvg",
   publishedAt: "2026-08-26",
+  publishedAtDateTime: "2026-08-26T08:00:26-07:00",
   durationSeconds: 4026,
   transcriptKind: "youtube_auto_captions_pl",
   transcriptHumanVerified: false,

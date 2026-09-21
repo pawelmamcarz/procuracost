@@ -1,0 +1,27 @@
+{
+  "file": "RESEARCH.md",
+  "line": 235,
+  "section": "## 8. Empirical agenda\n\nValidation requires event-level observations within organisations. The primary outcome should be procurement-cycle duration from auditable timestamps. Secondary outcomes should include active effort hours by role, queue time, bidder participation, price benchmarks, contract amendments, renegotiation cost, lifecycle performance, process bypass evidence, audit findings and supplier performance.\n\nThe empirical design should estimate components before monetisation. It should preserve the distinction between active work and waiting, record system support without treating it as readiness, and compare lawful alternatives within the same governance boundary. Within-organisation and category controls are preferable where available. ProcuraCost outputs must not be used as calibration targets for the same model.\nThe [evidence review by Fazekas and Blum (2021)](https://documents1.worldbank.org/curated/en/656521623167062285/pdf/Improving-Public-Procurement-Outcomes-Review-of-Tools-and-the-State-of-the-Evidence-Base.pdf) identifies uneven evidence, limited comparability of outcomes and a need to study management practices. ProcuraCost draws a methodological inference from those limitations: study individual components using event-level data rather than rely on aggregate organisational comparisons. The review does not establish the superiority of that particular research design.\n",
+  "fileHash": "930e993f5e1c37d61b574a1441f08ceb0aa630521455ebc77ecc4eed3bb9460a",
+  "requestHash": "e2f65f5c9df428f1ff0a0ec010582906d5563de14b35d10c5ded72778a59df14",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.1
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.25
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.15
+    }
+  },
+  "usage": {
+    "input_tokens": 721,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

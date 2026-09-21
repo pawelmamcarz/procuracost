@@ -1,5 +1,9 @@
 # Korekta językowa publikacji, 21 września 2026
 
+Ten raport i `publications-style-after/` zachowują stan wydany w commicie
+`b44a606`. Późniejsze doprecyzowania bibliografii i atrybucji opisuje
+[`FINAL_REVIEW.md`](FINAL_REVIEW.md). Hashe poniżej dotyczą tamtego wydania.
+
 Korekta uzupełnia przegląd merytoryczny z commitu `b2b9dd3`. Obejmuje lekturę
 całych siedmiu tekstów, redakcję akapitów i ponowny przegląd po zmianach.
 Sprawdzono także wspólną podstawę cyklu doktorskiego i publiczny skrót `/research`.

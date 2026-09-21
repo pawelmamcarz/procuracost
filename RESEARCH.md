@@ -55,9 +55,11 @@ The analysis distinguishes five constructs:
 
 ## 3. Evidence audit
 
+The [scholarly citation review](docs/citation-audit/SCHOLARLY_REVIEW.md) records primary sources, access limits and unresolved issues as of 21 September 2026.
+
 ### 3.1 Competition transfer
 
-Szucs (2024) studies a Hungarian reform that made a high-discretion invitational procedure available below a value threshold of 25 million HUF. The paper uses policy timing and a structural selection correction because contract values were manipulated around the threshold. Its structural estimates indicate approximately 6% higher prices and selection of contractors with 28% lower productivity under discretion. The probability that a right-connected firm wins rises by approximately 11 percentage points. The raw discontinuity is not a valid causal regression discontinuity design and reports different magnitudes.
+Szucs (2024) studies a Hungarian reform that made a high-discretion invitational procedure available below a value threshold of 25 million HUF. The paper uses policy timing and a structural selection correction because contract values were manipulated around the threshold. Table 3, panel B of the [published article](https://academic.oup.com/jeea/article/22/1/117/7071896) reports selection-corrected coefficients of 0.064 for log(normalised price), -0.282 for log(TFP), and 0.108 for the right-connected-winner indicator. The author summarises the first two as approximately 6% higher prices and 28% lower productivity. These are log-point approximations: exponentiating the coefficients gives approximately +6.6% and -24.6%, respectively, rather than an estimate of unconditional mean changes. The connected-winner effect is 10.8 percentage points. The raw discontinuity is not a valid causal regression discontinuity design and reports different magnitudes.
 
 ProcuraCost monetises the price channel only. Productivity remains a separate outcome because converting it into contract-value loss would require another unsupported mapping and could double count the price effect. The active 2%, 6% and 9% range is a declared transfer stress. It applies only where the compared alternatives genuinely differ in competitive access. It is not a Polish estimate and is not a general coefficient for adaptive procurement.
 
@@ -65,15 +67,15 @@ ProcuraCost monetises the price channel only. Productivity remains a separate ou
 
 ### 3.2 Contract amendments
 
-Beuve, Moszoro and Spiller (2023) examine French car-park contracts. Their 2SLS/IV analysis relates contractual rigidity to the annual frequency of formal amendments. The outcome is amendments per contract-year, not the probability of an amendment; the rigidity index sums seven category z-scores. It does not measure procurement workflow formality and cannot be applied directly to a hand-authored zero-to-one profile. No numerical effect is transferred here: the precise magnitude requires reconciliation between the prose and the printed coefficients in the accessible author version (section 6.2 and Table 4).
+Beuve, Moszoro and Spiller (2023) examine French car-park contracts. Their 2SLS/IV analysis relates contractual rigidity to the annual frequency of formal amendments. The outcome is amendments per contract-year, not the probability of an amendment; the rigidity index sums seven category z-scores. It does not measure procurement workflow formality and cannot be applied directly to a hand-authored zero-to-one profile. No numerical effect is transferred here: the precise magnitude remains unresolved in the [accessible author manuscript](https://mpra.ub.uni-muenchen.de/117230/1/Renegotiations_v5c.pdf). Section 6.2 reports 7.7–10.5%, while Table 4 prints coefficients of 0.014, 0.011 and 0.012. A one-standard-deviation increase in each of seven categories raises the summed index by seven; multiplying the printed coefficients gives 0.098, 0.077 and 0.084 additional amendments per contract-year. This arithmetic explains the lower numerical endpoint but neither the upper endpoint nor a relative-percentage interpretation. The final published full text and a correction resolving the discrepancy were not obtained.
 
 Earlier ProcuraCost versions used the study as an order-of-magnitude anchor. Native model 2.3.0 does not allocate a contract-amendment differential. The central, low and high values remain zero until a supported signed allocation convention is introduced. The study remains relevant to research design, not to the active scenario calculation.
 
 ### 3.3 Administrative effort and delay
 
-The European Commission's 2011 study estimates authority and supplier effort for EU procurement procedures. The model 2.2.2 calibration audit compared the former `pzp_eu` template with the full report and found its authority-side person-days within the report's published distribution. That audit supports order of magnitude only. It does not validate the active 2.3 process maps, non-labour overheads or role rates.
+The European Commission's 2011 study concerns authority and supplier effort for EU procurement procedures. A historical model 2.2.2 audit asserted that the former `pzp_eu` template's authority-side person-days fell within the report's published distribution. This conformity assertion was not freshly verified in the 21 September 2026 scholarly review; the exact supporting report table and page locator remain unresolved. It is retained as historical provenance, not confirmed calibration evidence for the active 2.3 process maps, non-labour overheads or role rates.
 
-Delay remains an accounting identity between critical-path elapsed days and a declared cost per day of inaction. It is not a measured effect of procedure type. Coviello and Mariniello (2014) found that publicity increased participation and detected no adverse effect on the probability of late delivery of the contracted works in their setting. That outcome is distinct from the duration of the procurement procedure; it does not establish whether publicity lengthens or shortens the procurement cycle.
+Delay remains an accounting identity between critical-path elapsed days and a declared cost per day of inaction. It is not a measured effect of procedure type. [Coviello and Mariniello (2014)](https://tintin.hec.ca/pages/decio.coviello/research_files/publicity.pdf) found that publicity increased participation and detected no adverse effect on the probability of late delivery of the contracted works in their setting. That outcome is distinct from the duration of the procurement procedure; it does not establish whether publicity lengthens or shortens the procurement cycle.
 
 **Historical calibration result:** under the model 2.2.2 combined stress envelope, all ten then-active scenarios crossed zero. Where workflow duration differed, the delay bucket carried most of the absolute central difference, while the process bucket alone favoured the formal path in seven scenarios. These figures describe the archived 2.2.2 templates and must not be presented as results of the native 2.3 scenario registry.
 
@@ -235,9 +237,7 @@ Testable hypotheses arising from this material include whether sustained interna
 Validation requires event-level observations within organisations. The primary outcome should be procurement-cycle duration from auditable timestamps. Secondary outcomes should include active effort hours by role, queue time, bidder participation, price benchmarks, contract amendments, renegotiation cost, lifecycle performance, process bypass evidence, audit findings and supplier performance.
 
 The empirical design should estimate components before monetisation. It should preserve the distinction between active work and waiting, record system support without treating it as readiness, and compare lawful alternatives within the same governance boundary. Within-organisation and category controls are preferable where available. ProcuraCost outputs must not be used as calibration targets for the same model.
-The evidence review by Fazekas and Blum (2021) informs the choice to study
-individual components using event-level data rather than rely on comparisons
-of aggregate organisational results.
+The [evidence review by Fazekas and Blum (2021)](https://documents1.worldbank.org/curated/en/656521623167062285/pdf/Improving-Public-Procurement-Outcomes-Review-of-Tools-and-the-State-of-the-Evidence-Base.pdf) identifies uneven evidence, limited comparability of outcomes and a need to study management practices. ProcuraCost draws a methodological inference from those limitations: study individual components using event-level data rather than rely on aggregate organisational comparisons. The review does not establish the superiority of that particular research design.
 
 ## 9. Reproducibility
 
@@ -257,15 +257,15 @@ Coviello, D., & Mariniello, M. (2014). Publicity requirements in public procurem
 
 European Commission. (2011). *Public procurement in Europe: Cost and effectiveness* (PwC, London Economics, & Ecorys).
 
-European Commission. (2021). *Guidance on innovation procurement*. https://public-buyers-community.ec.europa.eu/resources/guidance-innovation-procurement
+European Commission. (2021). *Guidance on innovation procurement*. Commission Notice 2021/C 267/01. https://public-buyers-community.ec.europa.eu/resources/guidance-innovation-procurement
 
 Fazekas, M., & Blum, J. R. (2021). *Improving public procurement outcomes: Review of tools and the state of the evidence base* (Policy Research Working Paper No. 9690). World Bank.
 
 Holmström, B., & Milgrom, P. (1991). Multitask principal-agent analyses: Incentive contracts, asset ownership, and job design. *Journal of Law, Economics, & Organization, 7*(Special Issue), 24–52. https://doi.org/10.1093/jleo/7.special_issue.24
 
-Lipsky, M. (1980). *Street-level bureaucracy*. Russell Sage Foundation.
+Lipsky, M. (1980). *Street-level bureaucracy: Dilemmas of the individual in public services*. Russell Sage Foundation. [Publisher description](https://www.russellsage.org/publications/book/street-level-bureaucracy) (2010 expanded edition; confirms first publication in 1980).
 
-OECD. (2024). *Public procurement in Lithuania: Increasing efficiency through centralisation and professionalisation* (OECD Public Governance Reviews). https://www.oecd.org/en/publications/public-procurement-in-lithuania_aa1b196c-en/full-report/component-8.html
+OECD. (2024). *Public procurement in Lithuania: Increasing efficiency through centralisation and professionalisation* (OECD Public Governance Reviews), Annex B (RVUL pilot example). https://www.oecd.org/en/publications/public-procurement-in-lithuania_aa1b196c-en/full-report/component-8.html
 
 Procurement&Beyond. (2026, August 26). *Odcinek 8. Nawet najlepsze narzędzie nie uratuje złego wdrożenia* [Practitioner interview]. https://www.youtube.com/watch?v=5KYUdTLlvvg
 
@@ -273,10 +273,10 @@ Szucs, F. (2024). Discretion and favoritism in public procurement. *Journal of t
 
 Urząd Zamówień Publicznych. (n.d.). *Wstępne konsultacje rynkowe*. https://www.gov.pl/web/uzp/wstepne-konsultacje-rynkowe
 
-Vaughan, D. (1996). *The Challenger launch decision*. University of Chicago Press.
+Vaughan, D. (1996). *The Challenger launch decision: Risky technology, culture, and deviance at NASA*. University of Chicago Press. [Publisher description](https://press.uchicago.edu/ucp/books/book/chicago/C/bo22781921) (enlarged edition; not the original 1996 text).
 
 ### Legal sources
 
-Ustawa z dnia 11 września 2019 r. Prawo zamówień publicznych. The application threshold for classic contracts awarded by public contracting authorities is 170,000 PLN net from 1 January 2026 under [Dz.U. 2025 poz. 1173](https://eli.gov.pl/eli/DU/2025/1173/ogl). This is not a universal threshold for every procurement regime.
+Ustawa z dnia 11 września 2019 r. Prawo zamówień publicznych, as amended. Original publication: [Dz.U. 2019 poz. 2019](https://eli.gov.pl/eli/DU/2019/2019/ogl). The application threshold for classic contracts awarded by public contracting authorities is 170,000 PLN net from 1 January 2026 under [Dz.U. 2025 poz. 1173](https://eli.gov.pl/eli/DU/2025/1173/ogl). This is not a universal threshold for every procurement regime. Amendment locators: art. 1 pkt 1 (threshold amendment), arts. 7–8 (transitional provisions), and art. 11 (entry into force).
 
-Obwieszczenie Prezesa Urzędu Zamówień Publicznych z dnia 8 grudnia 2025 r., M.P. 2025 poz. 1247 (EU thresholds for 2026–2027).
+Obwieszczenie Prezesa Urzędu Zamówień Publicznych z dnia 8 grudnia 2025 r., [M.P. 2025 poz. 1247](https://eli.gov.pl/eli/MP/2025/1247/ogl). Abbreviated description: EU thresholds for 2026–2027; the linked official publication supplies the full title.

@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-2-model-kosztu-PL.md",
+  "line": 226,
+  "section": "## 9. Scenariusze i warunki zastosowania\n\nRejestr zawiera dziesięć scenariuszy. Służą do demonstracji mechanizmów,\ntestowania neutralności oraz zapisu pochodzenia założeń.\n\n### 9.1 Zmiany czynności i zależności\n\n- Transformacja ERP przy niepełnym wymaganiu może wykorzystywać definiowanie\n  problemu i modularne podejście.\n- Przeprojektowanie usługi logistycznej może wykorzystywać kontakt z rynkiem do\n  sprawdzenia poziomów usług, interfejsów i podziału ryzyka.\n- Publiczny zakup IT może korzystać ze wstępnych konsultacji rynkowych przed\n  postępowaniem otwartym, bez zmiany obowiązkowych terminów.\n- Odkrywanie i współprojektowanie może zwiększać czas i nakład pracy, jeżeli\n  uczenie się oraz ponowne określenie zakresu są rzeczywistymi czynnościami.\n\n### 9.2 Porównania o identycznym przebiegu\n\nStabilna standardowa usługa może wymagać tej samej pracy w obu wariantach.\nJej scenariusz startowy osobno deklaruje jednak różnicę konkurencji, więc nie\njest neutralną kontrolą kosztu całkowitego. Zamówienie katalogowe i zwolnienie\nzlecenia MRP mają identyczne mapy i brak różnicy konkurencji. Są neutralnymi\nkontrolami. Ich centralna delta wynosi zero.\n\nPrzykłady opisują warunki, nie zalecenia. Oficjalne przypadki z Kalifornii,\nOECD, UZP i Komisji Europejskiej wspierają mechanizmy jakościowe, lecz nie\nwyznaczają czasów ani kosztów scenariuszy. Aneks B raportu OECD (2024)\nopisuje niemal rok definiowania problemu RVUL i uruchomienie konsultacji\n20 września 2023 r.; nie dokumentuje zakończonego wdrożenia ani oszczędności.\n",
+  "fileHash": "cc3d6c7f3d6b630d0dc1f5d79231f7b4224822c8dfedc45227d64343f3a11017",
+  "requestHash": "fdd7be87fcb5ad351cce06f3752e08b3dad7c23e1ffbc784937bac07969fa5e8",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.11
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.33
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.16
+    }
+  },
+  "usage": {
+    "input_tokens": 998,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}
