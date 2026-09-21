@@ -1,5 +1,33 @@
 # Changelog
 
+## 2026-09-22: contract-amendment differential anchored to the published Beuve version
+
+Source audit closure for the contract-amendment dimension of native model
+2.3.0.
+
+- Replaced the hard-zero guard on the amendment differential with an anchored
+  range. The verified author post-print of the published version (Beuve,
+  Moszoro and Spiller, JLEO 39(1): 281-308; MPRA paper 117230) reports Table 4
+  coefficients of 0.014, 0.011 and 0.012; multiplied by the seven summed
+  rigidity z-score categories they imply 0.098, 0.077 and 0.084 additional
+  amendments per contract-year. The scenario assumption is now
+  `{0.077, 0.084, 0.098}` with the new `verified_postprint` evidence class and
+  the `beuve_amendment_frequency_2023` evidence record.
+- Documented the signed allocation convention: the seven-category z-score
+  index maps onto the model profile so that a declared full-profile rigidity
+  difference carries the entire published range, and the differential is
+  monetised as contract value times the differential only on the alternative
+  explicitly declared more rigid (`contractRigidityDiffers` plus
+  `amendmentDisadvantagedAlternative`), never inferred from a workflow label.
+  No canonical scenario declares a rigidity difference, so monetised amendment
+  costs, scenario results and the difference envelopes are unchanged.
+- Recorded the residual uncertainty: the NBER working paper (w28491) prints
+  0.015 and a consistent 7.7-10.5 per cent prose range; the published version
+  prints 0.014 with internally inconsistent prose; no erratum was found and
+  the OUP version of record could not be read directly.
+- The TCO differential and the informal-bypass boundary are unchanged. Legacy
+  model 2.2.2 modules and archives remain sealed.
+
 ## 2026-08-29: model 2.3.0
 
 Model 2.3 replaces the active 2.2.2 optimiser and aggregate path profiles with
