@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-3-empiria-PZP-PL.md",
+  "line": 5,
+  "section": "## Streszczenie\n\nArtykuł przedstawia plan badania związku między organizacją pracy a czasem\ni kosztami polskich zamówień publicznych, oparty na hipotezach ProcuraCost 2.3.\nDane nie zostały jeszcze zebrane. Rejestry BZP, TED i e-Zamówień mogą opisywać daty,\nuczestnictwo, wynik i część zmian umowy. Nie mierzą pełnego projektu procesu\nwewnętrznego, pracy według roli, dziennego kosztu zwłoki, TCO ani nieformalnych\nobejść. Protokół łączy zatem warstwę rejestrową z wersjonowanymi dokumentami i\nlogami organizacyjnymi. Główną zmienną wynikową jest czas cyklu. Nakład pracy,\nkonkurencja i wykonanie umowy są oceniane oddzielnie.\n",
+  "fileHash": "41bf544921996fc7d7ce6767dacb40a4bd8b28b778378d0f818f84100fc7ec22",
+  "requestHash": "8172703cbdef940a5977f98896c053474f29b4959c48b24c81a9629560bdb8cb",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.07
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.17
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.08
+    }
+  },
+  "usage": {
+    "input_tokens": 668,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

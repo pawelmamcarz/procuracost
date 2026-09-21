@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-2-model-kosztu-PL.md",
+  "line": 60,
+  "section": "## 3. Reprezentacja przebiegu procesu\n\nKażdy wariant jest skierowanym grafem acyklicznym. Krok zawiera:\n\n- identyfikator i etykietę;\n- listę poprzedników;\n- aktywny czas pracy;\n- czas oczekiwania;\n- nakład godzin według roli;\n- koszt niepracowniczy;\n- rodzaj kroku;\n- pochodzenie blokady prawnej, jeżeli krok wynika z reguły prawnej.\n\nDla wariantu wartości `r` (niskiego, centralnego lub wysokiego) czas zakończenia kroku `s` wynosi:\n\n`finish_r(s) = max(finish_r(p)) + activeDays_r(s) + queueDays_r(s)`\n\nDla kroku bez poprzednika część `max` wynosi zero. Czas całego wariantu jest\nnajpóźniejszym czasem zakończenia, czyli długością ścieżki krytycznej.\n\nRozdzielenie czasu aktywnego, kolejki i zależności pozwala opisać sekwencje,\npracę równoległą oraz ponowne połączenie gałęzi. Koszt ról i koszt\nniepracowniczy obejmują wszystkie kroki, nie tylko ścieżkę krytyczną.\n\nZaplanowane powtórzenie pracy wymaga osobnego kroku z własnym czasem i nakładem.\nGraf acykliczny nie symuluje nieograniczonej pętli poprawek ani nie przewiduje\nliczby iteracji potrzebnych w rzeczywistym projekcie.\n\nSilnik odrzuca cykle, nieznanych poprzedników, zduplikowane identyfikatory i\nzmiany w obowiązkowych terminach prawnych.\n",
+  "fileHash": "cc3d6c7f3d6b630d0dc1f5d79231f7b4224822c8dfedc45227d64343f3a11017",
+  "requestHash": "d9ce61551c1da768930709b92af0e44ef7f67435b428bd4a6b8c7222bbd12e5a",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.05
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.2
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.17
+    }
+  },
+  "usage": {
+    "input_tokens": 873,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

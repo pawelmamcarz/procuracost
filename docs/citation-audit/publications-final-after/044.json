@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 127,
+  "section": "## Nakład pracy po stronie organizacji\n\nFragment [Pełny koszt zamiast ceny zakupu (47:43 do 49:14)](https://youtu.be/5KYUdTLlvvg?t=2863)\nwprowadza projekt „Czym pojadę” i przykład TCO pojazdu, odróżniający cenę\nzakupu od kosztu posiadania. Zastosowanie tego przykładu do kosztów wdrożenia\nsystemu zakupowego jest rozwinięciem redakcyjnym autora. Proponuję tu, aby\noprócz ceny licencji i usług dostawcy oszacować własną pracę przy integracji,\nutrzymaniu i zmianie organizacyjnej. Te pozycje nie są listą kosztów\noprogramowania wymienioną w przywołanym fragmencie rozmowy.\n\nOcena wymagań, rozmowy z użytkownikami i przygotowanie zastępstwa zajmują czas\npracowników. W planie projektu należy przypisać im nakład i odpowiedzialność,\na potem porównać te założenia z rzeczywistą pracą.\n",
+  "fileHash": "fea2846dca7b70d88f7eba866df5442b362e85ddef186ba54b44fa8c37f18b2c",
+  "requestHash": "512959ad06b791b61a742020c35c19664a60a2429080a452acfb5c3c1cbf0b0d",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.3
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.22
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.08
+    }
+  },
+  "usage": {
+    "input_tokens": 728,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

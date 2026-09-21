@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-07-tunel-pole-lepszy-biznes.md",
+  "line": 121,
+  "section": "## Obsługa zakupów operacyjnych\n\nZamówienie katalogowe, zwolnienie MRP i strategiczne postępowanie nie powinny\nkorzystać z jednej rozbudowanej ścieżki. Kanał realizacji zakupu jest odrębną\ndecyzją od rodziny procedury i projektu pracy.\n\nDla transakcji operacyjnej system może automatycznie:\n\n- sprawdzić budżet, uprawnienia i zgodność z umową;\n- pobrać zatwierdzone dane dostawcy, materiału i centrum kosztów;\n- porównać zapotrzebowanie, zamówienie, odbiór i fakturę;\n- skierować odchylenie do wskazanego właściciela;\n- zachować ślad zwolnienia i wyjątku.\n\nCzłowiek pozostaje tam, gdzie potrzebna jest ocena: przy niestandardowej\npotrzebie, analizie rynku, negocjowaniu podziału ryzyka i rozstrzyganiu wyjątku.\nOdpowiedzialność za te decyzje musi być przypisana także w procesie automatycznym.\n",
+  "fileHash": "92e5eb73ec514723db4d46895f045a238fd081a101fb5173f504a7f77e8e259c",
+  "requestHash": "73570f71275f5814c516b40323cfef8551e64b106bb3fef5e7d920065900c25c",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.43
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.17
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.14
+    }
+  },
+  "usage": {
+    "input_tokens": 721,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

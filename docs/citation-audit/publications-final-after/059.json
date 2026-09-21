@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-1-tunnel-or-field-EN.md",
+  "line": 183,
+  "section": "## 7. Propositions\n\n- **P1a:** Greater ex ante workflow prescriptiveness is associated with more\n  elapsed days from approved need to contract signature, conditional on\n  purchase complexity, legal boundary, procedure family and applicable\n  mandatory-wait days. **P1b:** under the same controls it is associated with\n  more buyer, legal and manager coordination hours per procedure.\n- **P2:** Broader ex ante market access is associated with more valid bids and\n  a lower award price relative to a preregistered independent benchmark,\n  independently of workflow topology.\n- **P3:** Greater ex ante rigidity of contract-change clauses is associated\n  with more formal amendments per contract-year. Conditional on clause design,\n  the association with workflow gate count should remain within a\n  preregistered equivalence bound.\n- **P4:** For requirements classified as incomplete before process design,\n  adaptive discovery is associated with more pre-solicitation role effort but\n  fewer post-solicitation clarification and rework days than a sequential\n  design. Both interactions should be absent or remain within preregistered\n  equivalence bounds for requirements classified as stable.\n- **P5:** A higher logged completion rate for required system controls is\n  associated with fewer off-system approvals or orders and fewer missing audit\n  events. System ownership and readiness responses are not operational\n  exposure measures.\n\nThe propositions permit either alternative to have the lower cost and permit a\nnull result. P1a, P1b and P2 to P5 operationalise the canonical H1a, H1b and H2\nto H5 in `00-shared-foundation.md`.\n",
+  "fileHash": "2a3c4428e7d87a6388b33eab5305861fd026b0bee359e7822cb5a72d29c09b27",
+  "requestHash": "fc83a87a8874740c610f4c289af86e47c3acad7f904beb031a6627cc3bc09a7c",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.03
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.23
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.14
+    }
+  },
+  "usage": {
+    "input_tokens": 794,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

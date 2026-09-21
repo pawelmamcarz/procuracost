@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 30,
+  "section": "## Kto ocenia wymagania i pilnuje zakresu\n\nOrganizacja potrzebuje osoby lub zespołu, który zna jej zakupy i potrafi\nocenić założenia dostawcy, integratora oraz użytkowników. Do tego zadania\nodnosi się fragment\n[Wewnętrzny właściciel decyzji (27:19 do 28:09)](https://youtu.be/5KYUdTLlvvg?t=1639)\nrozmowy o kompetencjach po stronie klienta.\n\nRozważmy sytuację, w której dostawca proponuje konfigurację sprawdzoną\nw innej organizacji. Integrator dopytuje o\nwymagania i dostaje listę funkcji przepisaną z prezentacji. Nikt nie zadaje\npytania, czy dana funkcja rozwiązuje problem, który uzasadnił zakup. Można w ten\nsposób rozbudować zakres bez poprawy procesu. To przykład ryzyka, które osoba\noceniająca wymagania powinna wychwycić przed zatwierdzeniem konfiguracji.\n\nSponsor powinien zapytać przed podpisem: kto w organizacji potrafi wskazać\nkonkretną nieefektywność, którą ten system ma usunąć, i kto powie dostawcy\n„nie” w granicach uzgodnionego mandatu. Samo przypisanie zadania do IT albo\nkomitetu nie rozstrzyga sprawy. Trzeba wskazać kompetencje zakupowe, osobę\nodpowiedzialną i sposób podejmowania decyzji; rolę można też pełnić zespołowo.\n\nFragment [Nieefektywność procesu przed wyborem systemu (09:52 do 10:56)](https://youtu.be/5KYUdTLlvvg?t=592)\ndotyczy rozpoznania problemu przed zakupem. Mapa oczekiwania, powtórnej pracy\ni przekazań między rolami daje podstawę do oceny, które funkcje są potrzebne.\n",
+  "fileHash": "fea2846dca7b70d88f7eba866df5442b362e85ddef186ba54b44fa8c37f18b2c",
+  "requestHash": "7514a295e4cfb04fdbf92064dba31f03ebd0bb039e679249498165c935b3b09c",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.23
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.25
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.1
+    }
+  },
+  "usage": {
+    "input_tokens": 960,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

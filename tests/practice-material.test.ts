@@ -19,6 +19,11 @@ import {
   READINESS_DOMAINS,
 } from "@/lib/readiness";
 import { EPISODES } from "@/lib/shortcasty";
+import {
+  isoDuration,
+  structuredDataScript,
+  youTubeVideoId,
+} from "@/lib/practice-structured-data";
 
 const EXPECTED_REFS = [
   ["professionalisation", 271, 408],
@@ -202,5 +207,82 @@ describe("readiness and practice routes", () => {
     expect(enReadiness).not.toContain(readinessT.pl.title);
     expect(plPractice).toContain(practiceT.pl.title);
     expect(enPractice).toContain(practiceT.en.title);
+  });
+});
+
+describe("Procurement&Beyond episode 8 structured data", () => {
+  const jsonLdFrom = (markup: string) => {
+    const match = markup.match(
+      /<script type="application\/ld\+json">(.*?)<\/script>/s,
+    );
+    if (!match) throw new Error("The practice page must emit a JSON-LD script.");
+    return JSON.parse(match[1]) as Record<string, unknown>;
+  };
+
+  it("renders a whole-hour duration and rejects malformed input", () => {
+    expect(isoDuration(PROCUREMENT_BEYOND_8.durationSeconds)).toBe("PT1H7M6S");
+    expect(isoDuration(0)).toBe("PT0H0M0S");
+    expect(() => isoDuration(-1)).toThrow();
+    expect(() => isoDuration(1.5)).toThrow();
+  });
+
+  it("reads the video id from the registered watch URL", () => {
+    expect(youTubeVideoId(PROCUREMENT_BEYOND_8.url)).toBe("5KYUdTLlvvg");
+    expect(() => youTubeVideoId("https://example.com/no-video")).toThrow();
+  });
+
+  it("escapes angle brackets so an injected tag cannot break out of the script", () => {
+    const serialised = structuredDataScript({ name: "</script><img onerror=x>" });
+    expect(serialised).not.toContain("<");
+    expect(serialised).toContain("\\u003c");
+    expect(JSON.parse(serialised)).toEqual({ name: "</script><img onerror=x>" });
+  });
+
+  it.each([
+    ["pl", PlPracticePage, "https://www.procuracost.com/practice/procurement-beyond-8"],
+    ["en", EnPracticePage, "https://www.procuracost.com/en/practice/procurement-beyond-8"],
+  ] as const)(
+    "describes the %s page as a VideoObject with every timestamped clip",
+    (lang, Page, canonical) => {
+      const payload = jsonLdFrom(renderToStaticMarkup(createElement(Page)));
+
+      expect(payload["@type"]).toBe("VideoObject");
+      expect(payload.name).toBe(practiceT[lang].embedTitle);
+      expect(payload.description).toBe(practiceT[lang].metadata.description);
+      expect(payload.uploadDate).toBe("2026-08-26T08:00:26-07:00");
+      expect(payload.duration).toBe("PT1H7M6S");
+      expect(payload.inLanguage).toBe("pl");
+      expect(payload.url).toBe(canonical);
+      expect(payload).not.toHaveProperty("contentUrl");
+      expect(payload.sameAs).toBe(PROCUREMENT_BEYOND_8.url);
+      expect(payload.embedUrl).toBe(
+        "https://www.youtube-nocookie.com/embed/5KYUdTLlvvg",
+      );
+      expect(payload.publisher).toMatchObject({ name: "Procurement&Beyond" });
+      expect(payload.contributor).toEqual({
+        "@type": "Person",
+        name: "Paweł Mamcarz",
+        url: "https://mamcarz.com",
+        sameAs: ["https://mamcarz.com", "https://www.linkedin.com/in/pawelmamcarz/"],
+      });
+
+      const clips = payload.hasPart as ReadonlyArray<Record<string, unknown>>;
+      expect(clips).toHaveLength(EXPECTED_REFS.length);
+      for (const [index, [id, startSeconds, endSeconds]] of EXPECTED_REFS.entries()) {
+        expect(clips[index]).toEqual({
+          "@type": "Clip",
+          name: practiceT[lang].sections[id].title,
+          startOffset: startSeconds,
+          endOffset: endSeconds,
+          url: `https://youtu.be/5KYUdTLlvvg?t=${startSeconds}`,
+        });
+      }
+    },
+  );
+
+  it("keeps the embed and the boundary note on the page beside the structured data", () => {
+    const markup = renderToStaticMarkup(createElement(PlPracticePage));
+    expect(markup).toContain('src="https://www.youtube-nocookie.com/embed/5KYUdTLlvvg"');
+    expect(markup).toContain(html(practiceT.pl.sourceNote));
   });
 });

@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-2-model-kosztu-PL.md",
+  "line": 311,
+  "section": "## 13. Wkład i ograniczenia\n\nArtykuł opisuje sposób obliczania i zapisu porównania dwóch map procesu.\nPrzy każdym wyniku można odtworzyć użyte założenia, zakres monetyzacji i test\nsymetrii. Model rozdziela składniki policzonej różnicy oraz skutki, których\nwartości nie wyznacza.\n\nModel nie szacuje pełnego dobrobytu społecznego, jakości trudnej do\nmonetyzacji, wszystkich sankcji ani ryzyka prawnego. Nie obejmuje procedur\nsektorowych oraz obronności i bezpieczeństwa. Nie jest opinią prawną,\nbenchmarkiem organizacji ani rekomendacją procedury.\n",
+  "fileHash": "cc3d6c7f3d6b630d0dc1f5d79231f7b4224822c8dfedc45227d64343f3a11017",
+  "requestHash": "171e1872ce9de5c4725d5715f358fdf089cd8b8a787db99d897d298f659367a3",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.08
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.2
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.09
+    }
+  },
+  "usage": {
+    "input_tokens": 622,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

@@ -1,0 +1,27 @@
+{
+  "file": "RESEARCH.md",
+  "line": 242,
+  "section": "## 9. Reproducibility\n\nThe model 2.3 replication generator produces three deterministic files: JSON, CSV and Markdown. JSON contains the full decision records, including assumptions, evidence, role rates, calculation anchors and legal provenance. CSV provides a stable row structure for analysis, including context, both alternatives, costs, coverage and migration status. Markdown presents those results for review. Generation timestamps are omitted so that repeated runs can be compared directly.\n\n`npm run recompute` audits canonical metadata, ordered ranges, the delta identity, neutral controls and locked legal waits. `npm run sweep` performs an alternative-swap symmetry audit. `npm run replicate` regenerates the three active artefacts from the native scenario registry and engine. These checks establish code-path consistency, not empirical validity.\n",
+  "fileHash": "930e993f5e1c37d61b574a1441f08ceb0aa630521455ebc77ecc4eed3bb9460a",
+  "requestHash": "8e89a8559df20a86b2fa46192c21475e45b38ad5e641d3e7c7f734640389aa82",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.06
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.2
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.14
+    }
+  },
+  "usage": {
+    "input_tokens": 596,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

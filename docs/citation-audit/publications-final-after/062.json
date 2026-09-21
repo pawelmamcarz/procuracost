@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-1-tunnel-or-field-EN.md",
+  "line": 247,
+  "section": "## References\n\nBajari, P., Houghton, S., and Tadelis, S. (2014). Bidding for Incomplete\nContracts: An Empirical Analysis of Adaptation Costs. *American Economic Review,\n104*(4), 1288-1319. https://doi.org/10.1257/aer.104.4.1288\n\nBeuve, J., Moszoro, M. W., and Spiller, P. T. (2023). Doing It by the Book:\nPolitical Contestability and Public Contract Renegotiations. *Journal of Law,\nEconomics, and Organization, 39*(1), 281-308.\nhttps://doi.org/10.1093/jleo/ewab039\n\nCalifornia Department of Technology. (2022). California Redefines State\nTechnology Procurement.\nhttps://www.cdt.ca.gov/newsroom/2022/08/california-redefines-state-technology-procurement/\n\nCoviello, D., and Mariniello, M. (2014). Publicity Requirements in Public\nProcurement: Evidence from a Regression Discontinuity Design. *Journal of Public\nEconomics, 109*, 76-100. https://doi.org/10.1016/j.jpubeco.2013.10.008\n\nHolmström, B., and Milgrom, P. (1991). Multitask Principal-Agent Analyses: Incentive Contracts, Asset Ownership, and Job Design.\n*Journal of Law, Economics, & Organization, 7*(Special Issue), 24-52.\nhttps://doi.org/10.1093/jleo/7.special_issue.24\n\nLipsky, M. (1980). *Street-Level Bureaucracy: Dilemmas of the Individual in Public Services*. Russell Sage Foundation.\nhttps://www.russellsage.org/publications/book/street-level-bureaucracy\n(Publisher description of the 2010 expanded edition; first published in 1980.)\n\nOECD. (2024). *Public Procurement in Lithuania: Increasing Efficiency through\nCentralisation and Professionalisation* (OECD Public Governance Reviews).\nAnnex B, RVUL pilot example.\nhttps://www.oecd.org/en/publications/public-procurement-in-lithuania_aa1b196c-en/full-report/component-8.html\n\nSzucs, F. (2024). Discretion and Favoritism in Public Procurement. *Journal of\nthe European Economic Association, 22*(1), 117-160.\nhttps://doi.org/10.1093/jeea/jvad017\n\nUrząd Zamówień Publicznych. Wstępne konsultacje rynkowe.\nhttps://www.gov.pl/web/uzp/wstepne-konsultacje-rynkowe\n\nVaughan, D. (1996). *The Challenger Launch Decision: Risky Technology, Culture, and Deviance at NASA*. University of Chicago\nPress. https://press.uchicago.edu/ucp/books/book/chicago/C/bo22781921\n(Publisher description of the enlarged edition, not the original 1996 text.)\n",
+  "fileHash": "2a3c4428e7d87a6388b33eab5305861fd026b0bee359e7822cb5a72d29c09b27",
+  "requestHash": "7378191e26dd8142f6c65d40d76d1d573836875b028e1c3d065eb25e2dfd4466",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.03
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.04
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.07
+    }
+  },
+  "usage": {
+    "input_tokens": 1226,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

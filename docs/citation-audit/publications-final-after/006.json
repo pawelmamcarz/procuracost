@@ -1,0 +1,27 @@
+{
+  "file": "RESEARCH.md",
+  "line": 183,
+  "section": "## 5. Reference scenarios and interpretation\n\nThe ten canonical scenarios are structured starting points:\n\n1. `fleet_tco_reframing`\n2. `erp_transformation_discovery`\n3. `logistics_service_redesign`\n4. `critical_material_continuity`\n5. `public_it_open_with_market_consultation`\n6. `stable_private_standard_service`\n7. `stable_capex_replacement`\n8. `discovery_solution_codesign`\n9. `catalog_calloff_control`\n10. `mrp_release_control`\n\nTheir economic values are labelled retained model 2.2.2 assumptions after\nmigration into the native schema. For the first five scenarios, aggregate\nbase-day totals are also retained, while step order, allocation of days and\nrole-hour allocations are illustrative model 2.3 inputs. Official evidence\nattached to a scenario supports a mechanism, not the retained values or the new\nnumerical allocations. Users must assess whether each assumption is defensible\nfor the intended decision.\n\nThe ERP discovery, logistics redesign, public IT market-consultation and solution co-design scenarios examine work under incomplete requirements. Supplier input or consultation may help define the problem or change the proposed contract. The co-design scenario includes additional time and staff effort for that learning.\n\nAn adaptive workflow may add no distinct workflow value when the requirement is stable, the call-off is already governed by a framework or catalogue, or an MRP release simply executes an established commercial arrangement. The catalogue call-off and MRP release controls use identical maps and no supplier-access difference. They return equal alternative ranges, a zero central difference and a symmetric outer envelope. The stable standard-service starting scenario is a topology control only: its maps are identical, but it separately declares a restricted-access sensitivity and is therefore not a neutral total-cost control. The stable capital-replacement scenario also asks whether an adaptation mechanism is present rather than presuming one.\n\nLegal availability must be assessed independently of cost. Organisational readiness is recorded separately through self-description.\n",
+  "fileHash": "930e993f5e1c37d61b574a1441f08ceb0aa630521455ebc77ecc4eed3bb9460a",
+  "requestHash": "494e9faa112d136743c9590c4fcdcf9c8448bf4827d3d796e6e72fac0559b46a",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.09
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.32
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.15
+    }
+  },
+  "usage": {
+    "input_tokens": 857,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

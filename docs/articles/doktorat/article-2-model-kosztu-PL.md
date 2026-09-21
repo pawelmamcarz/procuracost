@@ -249,7 +249,9 @@ kontrolami. Ich centralna delta wynosi zero.
 
 Przykłady opisują warunki, nie zalecenia. Oficjalne przypadki z Kalifornii,
 OECD, UZP i Komisji Europejskiej wspierają mechanizmy jakościowe, lecz nie
-wyznaczają czasów ani kosztów scenariuszy.
+wyznaczają czasów ani kosztów scenariuszy. Aneks B raportu OECD (2024)
+opisuje niemal rok definiowania problemu RVUL i uruchomienie konsultacji
+20 września 2023 r.; nie dokumentuje zakończonego wdrożenia ani oszczędności.
 
 ## 10. Rekord decyzji i zakres rachunku
 
@@ -335,19 +337,51 @@ Bajari, P., Houghton, S., i Tadelis, S. (2014). Bidding for Incomplete
 Contracts: An Empirical Analysis of Adaptation Costs. *American Economic Review,
 104*(4), 1288-1319. https://doi.org/10.1257/aer.104.4.1288
 
-California Department of Technology. (2022). California Redefines State
+California Department of Technology. (2022, 3 sierpnia). California Redefines State
 Technology Procurement.
 https://www.cdt.ca.gov/newsroom/2022/08/california-redefines-state-technology-procurement/
 
-European Commission. Guidance on Innovation Procurement.
+European Commission. (2021). *Guidance on Innovation Procurement*.
+Niewiążące wytyczne; strona katalogowa z 21 czerwca 2021 r.
 https://public-buyers-community.ec.europa.eu/resources/guidance-innovation-procurement
 
-OECD. Public Procurement in Lithuania, przykład pilotażu RVUL.
+OECD. (2024). *Public Procurement in Lithuania: Increasing Efficiency through
+Centralisation and Professionalisation*. OECD Public Governance Reviews,
+OECD Publishing. Aneks B, przykład pilotażu RVUL.
+https://doi.org/10.1787/aa1b196c-en
 https://www.oecd.org/en/publications/public-procurement-in-lithuania_aa1b196c-en/full-report/component-8.html
 
 Szucs, F. (2024). Discretion and Favoritism in Public Procurement. *Journal of
 the European Economic Association, 22*(1), 117-160.
 https://doi.org/10.1093/jeea/jvad017
 
-Urząd Zamówień Publicznych. Wstępne konsultacje rynkowe.
+Urząd Zamówień Publicznych. (b.d.). *Wstępne konsultacje rynkowe*.
 https://www.gov.pl/web/uzp/wstepne-konsultacje-rynkowe
+
+## Źródła prawne
+
+Ustawa z dnia 11 września 2019 r. Prawo zamówień publicznych,
+Dz.U. 2019 poz. 2019, z późn. zm. Lokalizatory terminów omawianych w sekcji 4:
+art. 283, art. 308 ust. 2, art. 138 ust. 1, art. 144 ust. 1, art. 151 ust. 1
+i art. 264 ust. 1; konsultacje rynkowe: art. 84–85.
+https://eli.gov.pl/eli/DU/2019/2019/ogl
+
+Ustawa z dnia 25 lipca 2025 r. o zmianie ustawy Prawo zamówień publicznych
+oraz niektórych innych ustaw, Dz.U. 2025 poz. 1173, art. 1 pkt 1,
+art. 7–8 i art. 11. Zmiana progu na 170 000 zł obowiązuje od 1 stycznia
+2026 r. w określonym ustawą zakresie, z zachowaniem przepisów przejściowych.
+https://eli.gov.pl/eli/DU/2025/1173/ogl
+
+Obwieszczenie Prezesa Urzędu Zamówień Publicznych z dnia 8 grudnia 2025 r.
+w sprawie aktualnych progów unijnych określonych w dyrektywach Parlamentu
+Europejskiego i Rady 2014/24/UE, 2014/25/UE i 2009/81/WE na lata 2026–2027,
+ich równowartości w złotych, równowartości w złotych kwot wyrażonych w euro
+oraz średniego kursu złotego w stosunku do euro stanowiącego podstawę
+przeliczania wartości zamówień publicznych lub konkursów, M.P. 2025 poz. 1247,
+pkt 1–2 i załącznik.
+https://eli.gov.pl/eli/MP/2025/1247/ogl
+
+Metryki i przepisy o zmianie progów sprawdzono 21 września 2026 r.
+Uzupełnienie bibliografii nie stanowi ponownego audytu wszystkich terminów
+ustawowych ani ich implementacji. W zastosowaniu należy ustalić brzmienie
+przepisów właściwe dla daty wszczęcia postępowania.

@@ -164,9 +164,15 @@ acyclic model, a planned repeat is a separate step with its own duration and
 effort. The model does not simulate an indefinite feedback loop or infer how
 many rounds a real project will require.
 
-Street-level discretion, normalisation of deviance and multitask incentives
-provide plausible explanations for informal workarounds. They do not estimate
-a procurement bypass probability. Model 2.3 discloses bypass as non-monetised.
+Street-level discretion ([Lipsky 1980](https://www.russellsage.org/publications/book/street-level-bureaucracy)),
+normalisation of deviance ([Vaughan 1996](https://press.uchicago.edu/ucp/books/book/chicago/C/bo22781921))
+and multitask incentives ([Holmström and Milgrom 1991](https://doi.org/10.1093/jleo/7.special_issue.24))
+motivate hypotheses about informal workarounds. This is a conceptual application,
+not an estimated procurement bypass probability. Vaughan's account concerns
+organisationally produced error and must not be equated with deliberate rule
+evasion. The linked book descriptions concern later editions; the original
+books were not read in full for this review. Model 2.3 discloses bypass as
+non-monetised.
 
 System support also needs a separate measure. Software can enforce approval
 limits, retain evidence and prevent unauthorised commitments. Merely owning
@@ -257,13 +263,17 @@ Coviello, D., and Mariniello, M. (2014). Publicity Requirements in Public
 Procurement: Evidence from a Regression Discontinuity Design. *Journal of Public
 Economics, 109*, 76-100. https://doi.org/10.1016/j.jpubeco.2013.10.008
 
-Holmström, B., and Milgrom, P. (1991). Multitask Principal-Agent Analyses.
+Holmström, B., and Milgrom, P. (1991). Multitask Principal-Agent Analyses: Incentive Contracts, Asset Ownership, and Job Design.
 *Journal of Law, Economics, & Organization, 7*(Special Issue), 24-52.
 https://doi.org/10.1093/jleo/7.special_issue.24
 
-Lipsky, M. (1980). *Street-Level Bureaucracy*. Russell Sage Foundation.
+Lipsky, M. (1980). *Street-Level Bureaucracy: Dilemmas of the Individual in Public Services*. Russell Sage Foundation.
+https://www.russellsage.org/publications/book/street-level-bureaucracy
+(Publisher description of the 2010 expanded edition; first published in 1980.)
 
-OECD. Public Procurement in Lithuania, RVUL pilot example.
+OECD. (2024). *Public Procurement in Lithuania: Increasing Efficiency through
+Centralisation and Professionalisation* (OECD Public Governance Reviews).
+Annex B, RVUL pilot example.
 https://www.oecd.org/en/publications/public-procurement-in-lithuania_aa1b196c-en/full-report/component-8.html
 
 Szucs, F. (2024). Discretion and Favoritism in Public Procurement. *Journal of
@@ -273,5 +283,6 @@ https://doi.org/10.1093/jeea/jvad017
 Urząd Zamówień Publicznych. Wstępne konsultacje rynkowe.
 https://www.gov.pl/web/uzp/wstepne-konsultacje-rynkowe
 
-Vaughan, D. (1996). *The Challenger Launch Decision*. University of Chicago
-Press.
+Vaughan, D. (1996). *The Challenger Launch Decision: Risky Technology, Culture, and Deviance at NASA*. University of Chicago
+Press. https://press.uchicago.edu/ucp/books/book/chicago/C/bo22781921
+(Publisher description of the enlarged edition, not the original 1996 text.)

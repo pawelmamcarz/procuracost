@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-1-tunnel-or-field-EN.md",
+  "line": 234,
+  "section": "## 9. Practitioner observations as research prompts\n\n[Procurement&Beyond episode\n8](https://www.youtube.com/watch?v=5KYUdTLlvvg) raises practical questions about\ninternal ownership, process friction, requirement discipline, operational\npurchasing, policy simplification, TCO and bounded use of AI. The recording is\nin Polish and its transcript provenance is automatic YouTube captions.\n\nThe material informs interview prompts and hypotheses only. It cannot set a\nworkflow duration, cost, competition stress, readiness responses or threshold.\nBielik may structure market data for human review. The deterministic model\nperforms the calculation.\n",
+  "fileHash": "2a3c4428e7d87a6388b33eab5305861fd026b0bee359e7822cb5a72d29c09b27",
+  "requestHash": "d75c0a8b816a6823d6ae5a2cfc7f09e88d3e1672c67878fe7e108d18980cf1f6",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.12
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.27
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.08
+    }
+  },
+  "usage": {
+    "input_tokens": 571,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

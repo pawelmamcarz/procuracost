@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-2-model-kosztu-PL.md",
+  "line": 18,
+  "section": "## 1. Obiekt porównania\n\nPorównywane są:\n\n- `formalSequential`, czyli formalny i sekwencyjny projekt przebiegu;\n- `adaptiveCompliant`, czyli adaptacyjny i zgodny projekt przebiegu.\n\nOba warianty dotyczą tego samego zakupu oraz zadeklarowanych ram prawnych i ładu\nzakupowego. W postępowaniu objętym PZP adaptacja oznacza wybór i sekwencjonowanie\ndopuszczalnej pracy wewnątrz właściwej procedury. Nie oznacza odstępstwa od\nustawy.\n\nOpis zakupu rozdziela następujące obszary:\n\n1. ramy prawne i ład zakupowy;\n2. rodzina procedury;\n3. archetyp zakupu;\n4. kanał realizacji zakupu;\n5. wsparcie systemowe;\n6. projekt przebiegu procesu zakupowego dla każdego wariantu;\n7. konstrukcja umowy dla każdego wariantu;\n8. data wszczęcia, według której moduł prawny ustala obowiązkowe terminy.\n\nGotowość organizacyjna do wdrożenia jest badana osobno. Nie jest ani wejściem,\nani wynikiem modelu kosztowego.\n",
+  "fileHash": "cc3d6c7f3d6b630d0dc1f5d79231f7b4224822c8dfedc45227d64343f3a11017",
+  "requestHash": "7b9e933595eeb3317c59e606ad429bf69e62fb67b926076b82e5bea9c7f00c6a",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.22
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.37
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.08
+    }
+  },
+  "usage": {
+    "input_tokens": 753,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

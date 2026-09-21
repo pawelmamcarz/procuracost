@@ -232,8 +232,16 @@ preskryptywnego przebiegu, co ogranicza interpretację przyczynową.
 ### 7.2 Wariant B: jednorazowa zmiana procesu
 
 Rozszerzenie przyczynowe wymaga porównywalnej, jasno datowanej zmiany oraz grup
-jeszcze nieobjętych interwencją. Przy zróżnicowanych terminach można rozważyć
-staggered DiD z estymatorem Callaway-Sant'Anna albo Sun-Abraham.
+nieobjętych interwencją w porównywanym okresie. Przy zróżnicowanych terminach
+można rozważyć staggered DiD, ale wybór estymatora wymaga określenia estymandu
+i grupy porównawczej. [Callaway i Sant'Anna (2021)](https://psantanna.com/files/Callaway_SantAnna_2020.pdf)
+estymują efekty dla grupy i okresu (ATT(g,t)), korzystając z grup nigdy
+nieobjętych albo jeszcze nieobjętych interwencją, przy odpowiednich założeniach.
+[Sun i Abraham (2021)](https://arxiv.org/pdf/1804.05785) wykorzystują grupę
+nigdy nieobjętą lub objętą jako ostatnia. W drugim przypadku wyłącza się
+okresy od objęcia ostatniej grupy interwencją; nie jest to dowolna pula
+wszystkich grup jeszcze nieobjętych zmianą. Estymatory nie są zatem zamienne
+bez doprecyzowania projektu.
 
 Wymagane są ocena trendów przed zmianą, brak antycypacji w prerejestrowanym
 oknie, brak równoległej transformacji, wiarygodne grupy porównawcze i
@@ -242,8 +250,10 @@ zmianą nie dowodzi trendów równoległych.
 
 ### 7.3 Wariant C: próg prawny
 
-Projekt progowy wymaga potwierdzenia aktualnego stanu prawnego, testu gęstości,
-ciągłości kowariat i oceny sortowania wartości. Szucs (2024) pokazuje, dlaczego
+Projekt progowy wymaga potwierdzenia aktualnego stanu prawnego, testu gęstości
+([Cattaneo, Jansson i Ma 2020](https://doi.org/10.1080/01621459.2019.1635480)),
+ciągłości kowariat i oceny sortowania wartości. Brak odrzucenia w teście
+gęstości nie dowodzi braku sortowania ani poprawności identyfikacji RDD. Szucs (2024) pokazuje, dlaczego
 manipulacja przy progu może unieważnić prosty RDD w podobnej klasie danych.
 Usunięcie obserwacji najbliżej progu nie naprawia automatycznie identyfikacji.
 Wariant C nie jest podstawą planu głównego.
@@ -368,7 +378,7 @@ Estimators. *Journal of the American Statistical Association, 115*(531),
 1449-1455. https://doi.org/10.1080/01621459.2019.1635480
 
 Coviello, D., i Mariniello, M. (2014). Publicity Requirements in Public
-Procurement. *Journal of Public Economics, 109*, 76-100.
+Procurement: Evidence from a Regression Discontinuity Design. *Journal of Public Economics, 109*, 76-100.
 https://doi.org/10.1016/j.jpubeco.2013.10.008
 
 Szucs, F. (2024). Discretion and Favoritism in Public Procurement. *Journal of
@@ -380,10 +390,13 @@ Studies with Heterogeneous Treatment Effects. *Journal of Econometrics, 225*(2),
 175-199. https://doi.org/10.1016/j.jeconom.2020.09.006
 
 Ustawa z dnia 11 września 2019 r. Prawo zamówień publicznych, z późniejszymi
-zmianami.
+zmianami. Publikacja pierwotna: [Dz.U. 2019 poz. 2019](https://eli.gov.pl/eli/DU/2019/2019/ogl).
 
 Ustawa z dnia 25 lipca 2025 r. o zmianie ustawy Prawo zamówień publicznych oraz
-niektórych innych ustaw, Dz.U. 2025 poz. 1173.
+niektórych innych ustaw, [Dz.U. 2025 poz. 1173](https://eli.gov.pl/eli/DU/2025/1173/ogl).
+Lokalizatory: art. 1 pkt 1 (zmiana progu), art. 7–8 (przepisy przejściowe),
+art. 11 (wejście w życie).
 
-Obwieszczenie Prezesa Urzędu Zamówień Publicznych z dnia 8 grudnia 2025 r. w
-sprawie progów unijnych na lata 2026-2027, M.P. 2025 poz. 1247.
+Obwieszczenie Prezesa Urzędu Zamówień Publicznych z dnia 8 grudnia 2025 r.,
+[M.P. 2025 poz. 1247](https://eli.gov.pl/eli/MP/2025/1247/ogl). Opis skrócony:
+progi unijne na lata 2026–2027; pełny tytuł zawiera podlinkowana publikacja urzędowa.

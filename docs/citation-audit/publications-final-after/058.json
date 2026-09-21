@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-1-tunnel-or-field-EN.md",
+  "line": 149,
+  "section": "## 6. Contract adaptation, bypass and system support\n\nIncomplete contracts create adaptation costs when relevant contingencies cannot\nbe fully specified ex ante (Bajari, Houghton and Tadelis 2014). Beuve, Moszoro\nand Spiller (2023) study contractual rigidity and formal-amendment frequency in\nFrench car-park contracts. Their empirical object is not the number of sourcing\napprovals or the topology of a procurement workflow.\n\nNative model 2.3 therefore starts contract-amendment and TCO differentials at\nzero. The cited literature motivates questions about contract design but does\nnot set a numerical ProcuraCost parameter without a valid allocation convention\nand evidence for the specific comparison.\n\nThe field metaphor can include revisiting a requirement. In the executable\nacyclic model, a planned repeat is a separate step with its own duration and\neffort. The model does not simulate an indefinite feedback loop or infer how\nmany rounds a real project will require.\n\nStreet-level discretion ([Lipsky 1980](https://www.russellsage.org/publications/book/street-level-bureaucracy)),\nnormalisation of deviance ([Vaughan 1996](https://press.uchicago.edu/ucp/books/book/chicago/C/bo22781921))\nand multitask incentives ([Holmström and Milgrom 1991](https://doi.org/10.1093/jleo/7.special_issue.24))\nmotivate hypotheses about informal workarounds. This is a conceptual application,\nnot an estimated procurement bypass probability. Vaughan's account concerns\norganisationally produced error and must not be equated with deliberate rule\nevasion. The linked book descriptions concern later editions; the original\nbooks were not read in full for this review. Model 2.3 discloses bypass as\nnon-monetised.\n\nSystem support also needs a separate measure. Software can enforce approval\nlimits, retain evidence and prevent unauthorised commitments. Merely owning\nit does not show that these controls are configured or used.\nOrganisational implementation readiness is a separate self-description and cannot\nchange the cost comparison.\n",
+  "fileHash": "2a3c4428e7d87a6388b33eab5305861fd026b0bee359e7822cb5a72d29c09b27",
+  "requestHash": "7142a8322f1d6b74bd13f7c1e00b9b96f9be1b3273b43f16c72d186e53f0aa15",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.18
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.3
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.15
+    }
+  },
+  "usage": {
+    "input_tokens": 917,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}
