@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 137,
+  "section": "## Pierwsze trzydzieści dni właściciela\n\nPoniższa kolejność jest propozycją autora inspirowaną rozmową. Pierwszy miesiąc\ni trzy sprawy są roboczą skalą warsztatu, nie zwalidowanymi progami. Pytania\nwarto rozważyć przed konfiguracją i dostosować do zakresu projektu.\n\n1. Wskazać jedną nieefektywność, która uzasadnia zakup, i zapisać ją w jednym\n   zdaniu, opisując problem użytkownika lub koszt obecnego procesu.\n2. Przejść trzy zakończone sprawy zakupowe od wniosku do faktury i zaznaczyć,\n   czas pracy, oczekiwania i powtórzenia czynności.\n3. Dla każdego kroku obecnego obiegu zatwierdzeń odpowiedzieć, czy wynika z\n   polityki, z przepisu, czy z przyzwyczajenia. Wymogi prawne wymagają poprawnego\n   odwzorowania. Wymogi polityki również warto ocenić; ich zmiana wymaga\n   decyzji uprawnionego właściciela, a nie samodzielnego pominięcia w konfiguracji.\n4. Ustalić z zarządem zakres własnego mandatu na piśmie: jakie decyzje\n   konfiguracyjne podejmuje właściciel sam, a jakie wymagają sponsora.\n5. Wyznaczyć zastępcę i uzgodnić z nim sposób przejęcia odpowiedzialności.\n\nLista służy organizacji rozmowy i ujawnieniu brakujących ustaleń.\n",
+  "fileHash": "c44a04aaf4a00a6ed0cb74ace569789da6b7d3a0faa766b3c31333167a46feab",
+  "requestHash": "c09e37bc3e2889f9b79ea6cf5364f0abcc6f539cb95ee83ef8a247069598ffd5",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.09
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.27
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.07
+    }
+  },
+  "usage": {
+    "input_tokens": 850,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

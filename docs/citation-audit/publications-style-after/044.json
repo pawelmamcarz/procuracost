@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 127,
+  "section": "## Nakład pracy po stronie organizacji\n\nFragment [Pełny koszt zamiast ceny zakupu (47:43 do 49:14)](https://youtu.be/5KYUdTLlvvg?t=2863)\ndotyczy uzasadnienia biznesowego. Oprócz ceny licencji i usług dostawcy trzeba\noszacować własną pracę przy integracji, utrzymaniu i zmianie organizacyjnej.\n\nOcena wymagań, rozmowy z użytkownikami i przygotowanie zastępstwa zajmują czas\npracowników. W planie projektu należy przypisać im nakład i odpowiedzialność,\na potem porównać te założenia z rzeczywistą pracą.\n",
+  "fileHash": "c44a04aaf4a00a6ed0cb74ace569789da6b7d3a0faa766b3c31333167a46feab",
+  "requestHash": "928e9b171e26c0a7d8c827d08b820dc034f0291098673eb58910e59acde22b38",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.13
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.21
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.09
+    }
+  },
+  "usage": {
+    "input_tokens": 624,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

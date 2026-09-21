@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-bariery-autonomicznego-sourcingu.md",
+  "line": 300,
+  "section": "## Co mierzyć na pilotażu\n\nOprócz oszczędności względem z góry ustalonej podstawy porównania trzeba\nzmierzyć udział dostawców, pracę nad wyjątkami i zapis wyników. W małej próbie\nnależy też sprawdzić, jak dobór kategorii wpłynął na wynik. Proponuję cztery\nuzupełniające mierniki:\n\n1. Wskaźnik udziału dostawców w zainicjowanych rozmowach. Odpowiada na barierę\n   drugą. Trzeba osobno podać liczbę zaproszonych, uczestniczących i tych,\n   którzy zawarli porozumienie, aby ujawnić selekcję do wyniku.\n2. Wskaźnik eskalacji do człowieka wraz z przyczyną. Odróżnia wyjątek\n   projektowy od luki w opisie potrzeby.\n3. Odsetek rozstrzygnięć odwróconych albo skorygowanych przez kupca. Mierzy\n   wykorzystanie nadzoru; sama korekta nie rozstrzyga, czy zawiodły dane,\n   reguły mandatu czy osąd agenta.\n4. Czas od rozstrzygnięcia do zapisu w systemie transakcyjnym. Odpowiada na\n   barierę czwartą i ujawnia ukrytą pracę administracyjną.\n\nDo tego warto prowadzić rejestr decyzji w kształcie, jaki stosuje model: obie\nmapy przebiegu przed zmianą i po zmianie, wartość centralną i zakres, składniki\nróżnicy, wymiary pozostawione poza rachunkiem oraz pochodzenie obowiązkowych\nterminów. Krótszy cykl nie wystarcza, jeżeli pogarsza się dostęp do konkurencji\nalbo kompletność dokumentacji.\n",
+  "fileHash": "f9d178a7c12477cf2bb8d556beefba14541656a1a86d561c43e414b9380c1ddd",
+  "requestHash": "1507a336cdcd6c68889f30e6ddca7f25430ef5963804dec392eb9239610259ea",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.17
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.15
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.11
+    }
+  },
+  "usage": {
+    "input_tokens": 921,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

@@ -12,22 +12,19 @@ status: "szkic po przeglądzie źródeł, do akceptacji redakcyjnej"
 
 ## Kiedy zacząć od ogona wydatków, a kiedy zachować decyzję po stronie kupca
 
-Dyskusja o sztucznej inteligencji w zakupach zwykle miesza dwie różne sprawy.
-Pierwsza to asystent, który streszcza umowę, porządkuje wniosek zakupowy albo
-podpowiada kategorię. Druga to agent, który samodzielnie uruchamia zapytanie
-ofertowe, prowadzi negocjację i doprowadza sprawę do rozstrzygnięcia. Bariery
-dla obu są zupełnie inne, dlatego wnioski z jednej dyskusji nie przenoszą się na
-drugą.
+Agent prowadzący negocjacje potrzebuje określonego zakresu uprawnień: trzeba
+ustalić, jakie warunki może uzgodnić i kiedy ma przekazać sprawę kupcowi.
+To szersza odpowiedzialność niż streszczanie umowy, porządkowanie wniosku czy
+podpowiadanie kategorii. Przy ocenie wdrożenia należy ustalić, które z tych
+zadań rzeczywiście powierzamy systemowi.
 
-Znaczenie ma zakres uprawnień i konsekwencje błędu. Błędna interpretacja
-wniosku może wymagać korekty, ale może też przejść niezauważona do dalszych
-decyzji. Agent negocjujący w imieniu organizacji dodatkowo wpływa na warunki
-handlowe i relację z dostawcą. Dlatego oba zastosowania wymagają kontroli,
-dobranej do skutków działania i możliwości jego cofnięcia.
+Kontrola jest potrzebna także przy zadaniach pomocniczych: błędna interpretacja
+wniosku może przejść niezauważona do dalszych decyzji. Zakres nadzoru należy
+dobrać do skutków działania systemu i możliwości ich cofnięcia.
 
 Raport EFESO z 2026 r., oparty na rozmowach z 50 europejskimi dyrektorami
-zakupów, podaje pięć procent szerokich wdrożeń GenAI i siedemdziesiąt pięć
-procent organizacji w fazie eksperymentowania. To opis badanej grupy oraz
+zakupów, podaje 5% szerokich wdrożeń GenAI i 75%
+organizacji w fazie eksperymentowania. To opis badanej grupy oraz
 generatywnej AI ogółem, nie pomiar odsetka firm, które oddały agentowi mandat
 negocjacyjny. Pozwala postawić pytanie o skalowanie, ale nie wyjaśnia sam
 przyczyn różnicy między pilotażem a wdrożeniem.
@@ -37,35 +34,28 @@ barier zależą od kategorii, organizacji oraz zakresu uprawnień agenta.
 
 ## Osiem barier do sprawdzenia przed uruchomieniem
 
-### 1. Zaufanie do autonomicznej decyzji, nie do chatbota
+### 1. Zakres uprawnień agenta
 
-Pierwsza bariera jest organizacyjna, nie techniczna. Nie chodzi o to, czy model
-językowy potrafi napisać zapytanie ofertowe. Chodzi o to, czy zarząd odda
-mandat handlowy systemowi.
+Przed uruchomieniem negocjacji organizacja musi ustalić, które decyzje handlowe
+powierza systemowi i kto odpowiada za nadzór.
 
-Badanie Zero100 pokazuje napięcie w czystej postaci: osiemdziesiąt pięć procent
-dyrektorów zakupów zgadza się, że agentowa sztuczna inteligencja fundamentalnie
-zmieni sposób pracy organizacji sourcingowych, a siedemdziesiąt osiem procent
-chce, żeby ludzie zachowali kontrolę nad całą pracą strategiczną. Te dwie
-odpowiedzi nie są sprzeczne. Opisują gotowość na zmianę narzędzi przy
-jednoczesnej niechęci do oddania decyzji.
+W badaniu Zero100 85% dyrektorów zakupów spodziewa się zasadniczej zmiany
+pracy sourcingowej pod wpływem agentowej AI, a 78% chce zachowania ludzkiej
+kontroli nad całą pracą strategiczną. Oczekiwanie zmian może więc współistnieć
+z zamiarem utrzymania nadzoru nad decyzjami.
 
 Komunikat ProcureAbility przypisuje obawę przed zastąpieniem ludzkiego osądu
 51 procentom respondentów w opisie barier grupy, która nie deklarowała pełnej
 gotowości do AI. Nie należy przedstawiać tego jako odsetka wszystkich firm
 na rynku ani wyłącznie użytkowników agentów negocjacyjnych. W kontekście
-negocjacji ta obawa jest racjonalna, nie irracjonalna. Agent może oddać rabat,
-którego doświadczony kupiec kategorii nie oddałby przy tym samym wolumenie,
-ponieważ zna historię relacji, planowany przetarg w sąsiedniej kategorii albo
-zależność techniczną, której nie ma w danych.
-
-Warto nazywać tę barierę precyzyjnie. To nie jest lęk przed technologią. To
-pytanie o pełnomocnictwo.
+negocjacji warto sprawdzić, czy agent ma informacje, którymi dysponuje kupiec:
+historię relacji, planowany przetarg w sąsiedniej kategorii i zależności
+techniczne. Ich brak może prowadzić do ustępstw, których kupiec nie
+zaakceptowałby przy tym samym wolumenie.
 
 ### 2. Akceptacja po stronie dostawcy
 
-Druga bariera dotyczy udziału dostawców. Kupujący może wdrożyć agenta jednostronną
-decyzją. Nie może jednostronnie zmusić dostawcy do rozmowy z maszyną.
+Udział dostawców trzeba sprawdzić odrębnie od gotowości kupującego do wdrożenia.
 
 W opisie wdrożenia Kärchera dostawca Procure Ai podaje 90 procent zaangażowania
 dostawców, 50 procent skuteczności negocjacji i sześć procent średniego rabatu.
@@ -76,34 +66,25 @@ dostawców narzędzi, bez niezależnego odtworzenia w tym artykule.
 
 Tych wyników nie można przyjąć za normę rynkową. W pilotażu należy sprawdzić
 udział, odmowy i porozumienia osobno dla kategorii oraz grup dostawców.
-Przywołane opisy nie uzasadniają wniosków o kulturowych różnicach między regionami.
-
-Obawy dostawców dają się wyliczyć i warto je adresować wprost w projekcie
-procesu:
+W rozmowach z dostawcami warto zapytać o następujące obawy:
 
 - powtórzenie mechaniki aukcji elektronicznej i zejścia cenowego bez granicy;
-- ujawnienie własnej struktury kosztu w rozmowie z systemem, który zapamiętuje;
+- ujawnienie własnej struktury kosztu i zasady przechowywania tych informacji;
 - brak zrozumienia dla wielkości opakowania, minimalnej wielkości zamówienia
   albo kosztu oprzyrządowania;
 - brak osoby, do której można eskalować wyjątek.
 
-Ostatni punkt jest projektowy, nie technologiczny. Ścieżka eskalacji do
-człowieka powinna być widoczna dla dostawcy od pierwszej wiadomości.
+Sposób przekazania wyjątku człowiekowi powinien być widoczny dla dostawcy
+od pierwszej wiadomości.
 
-### 3. Dane i specyfikacja, nie model
+### 3. Jakość danych i specyfikacji
 
-Trzecia bariera pojawia się na wejściu, zanim jakakolwiek negocjacja się
-zacznie. Autonomiczne zapytanie ofertowe wymaga kompletnego opisu potrzeby,
-spójnej klasyfikacji, historii cen i aktualnej dokumentacji technicznej.
-
-W praktyce brief bywa niekompletny, klasyfikacja rozjechana między systemami,
-rysunek nieaktualny, a dostawca dotychczasowy wymieszany w danych z ogonem
-wydatków. Agent negocjuje wyłącznie to, co dostał na wejściu. Wadliwy opis
-potrzeby daje wadliwe rozstrzygnięcie, tyle że szybciej i w większej skali.
-
-To bariera, którą łatwo pomylić z barierą modelu. Organizacja mówi, że agent
-sobie nie poradził, podczas gdy nie poradziłby sobie również kupiec, gdyby
-dostał ten sam materiał wejściowy.
+Przed uruchomieniem zapytania należy sprawdzić kompletność opisu potrzeby,
+spójność klasyfikacji, historię cen i aktualność dokumentacji technicznej.
+Nieaktualny rysunek lub różne klasyfikacje w dwóch systemach mogą zmienić treść
+zapytania. W pilotażu trzeba sprawdzić, czy agent wykrywa takie sprzeczności
+i zatrzymuje sprawę do wyjaśnienia. Przy ocenie błędnego wyniku należy
+oddzielić błędy danych od sposobu ich przetworzenia przez model.
 
 ### 4. Integracja z systemem zapisu
 
@@ -112,29 +93,23 @@ Zależnie od procesu może to wymagać także aktualizacji rekordu informacyjneg
 lub listy źródeł. Ręczne przepisanie wyniku może być rozwiązaniem pilotażowym,
 ale jego czas i ryzyko błędów należy uwzględnić w rachunku korzyści.
 
-Pytanie, które trzeba rozstrzygnąć przed pilotażem, brzmi: co jest źródłem
-prawdy po rozstrzygnięciu. Jeżeli odpowiedź brzmi „agent, a potem ktoś to
-wprowadzi", organizacja właśnie stworzyła drugi rejestr. W środowiskach z
-działającym stosem ERP jest to bariera pierwszorzędna, ponieważ narzędzie bez
-natywnego zapisu konkuruje z systemem transakcyjnym zamiast go zasilać.
+Przed pilotażem należy wskazać rejestr obowiązujących warunków oraz osobę
+odpowiedzialną za zgodność zapisu. Jeżeli dane są przenoszone ręcznie do ERP,
+trzeba ustalić, jak wykrywać rozbieżności i która wersja jest wiążąca.
 
 ### 5. Umocowanie, odpowiedzialność i prawo
 
-Piąta bariera wymaga analizy prawnej konkretnego procesu i zakresu uprawnień.
-
-Podstawowe pytanie dotyczy reprezentacji. Kto wiąże spółkę, kiedy agent wyraża
-zgodę. Regulamin podpisywania, zasady reprezentacji łącznej i kontrola dwóch par
-oczu powstawały przy założeniu, że oświadczenie woli składa człowiek. Uzgodnienie
+Analiza prawna powinna ustalić, kto wiąże spółkę, gdy agent akceptuje warunki,
+i jak jego działanie odpowiada zasadom reprezentacji oraz zatwierdzania umów. Uzgodnienie
 warunków przez system, który działa w imieniu organizacji, wymaga wcześniejszego
 ustalenia zakresu umocowania, progu wartości i katalogu warunków, których agent
 nie może zmienić.
 
-Kwestia druga dotyczy zachowania jako źródła zobowiązania. Konsekwentne
+Trzeba także ocenić skutki zachowania systemu. Konsekwentne
 zachowanie agenta, na przykład przyjmowanie ofert w powtarzalnym schemacie, może
 w niektórych porządkach prawnych rodzić skutki nawet bez formalnego podpisu.
 
-Kwestia trzecia dotyczy regulacji sektorowej. Warto tu zachować precyzję,
-ponieważ w dyskusji rynkowej pojawia się skrót myślowy. Akt o sztucznej
+Osobnej oceny wymaga zakres regulacji AI. Akt o sztucznej
 inteligencji nie klasyfikuje automatycznie każdego systemu wpływającego na
 decyzje gospodarcze jako wysokiego ryzyka. Załącznik trzeci wymienia konkretne
 zastosowania, a typowa negocjacja handlowa między przedsiębiorcami do nich nie
@@ -146,21 +121,21 @@ obowiązek dla każdej wymiany między systemami. Zastosowanie w sektorze public
 przetwarzanie danych osób kontaktowych po stronie dostawcy wymagają odrębnej
 analizy.
 
-Kwestia czwarta dotyczy prawa konkurencji. Projekt wymaga sprawdzenia, czy
+W zakresie prawa konkurencji trzeba sprawdzić, czy
 system nie ujawnia informacji handlowych konkurentom ani nie realizuje
 niedozwolonych uzgodnień. Sam fakt użycia agentów po dwóch stronach negocjacji
 nie dowodzi zmowy. Ocenę przepływów informacji i odpowiedzialności trzeba
 odnieść do konkretnego zastosowania, a nie do etykiety „autonomiczny”.
 
-W zamówieniach publicznych i sektorach regulowanych dochodzi jeszcze zarzut
+W zamówieniach publicznych i sektorach regulowanych należy też zbadać ryzyko
 stronniczości opisu potrzeby. Opis wygenerowany przez system, który w danych
 treningowych albo kontekstowych ma dokumentację jednego dostawcy, może
 faworyzować to rozwiązanie bez świadomej decyzji kogokolwiek.
 
-### 6. Dopasowanie kategorialne
+### 6. Dobór kategorii zakupowej
 
-Szósta bariera dotyczy dopasowania kategorii. Kandydatami do ograniczonego
-pilotażu są zakupy, gdzie przedmiot jest powtarzalny, a zmienne dają się zamknąć
+Kandydatami do ograniczonego pilotażu są zakupy, gdzie przedmiot jest
+powtarzalny, a zmienne dają się zamknąć
 w kilku parametrach: materiały pośrednie, zakupy jednorazowe, ogon wydatków,
 renegocjacja terminów płatności albo formuły indeksacji, kampanie obejmujące
 setki indeksów.
@@ -175,37 +150,29 @@ Wynik osiągnięty na ogonie wydatków nie wystarcza do uzasadnienia użycia age
 w strategicznym zestawieniu materiałowym. Nie oznacza też, że korzyść na
 ogonie wydatków jest z definicji za mała.
 
-### 7. Rola kupca i opór centrum usług wspólnych
+### 7. Zadania kupca i centrum usług wspólnych
 
-Siódma bariera jest polityczna. Autonomiczny sourcing zabiera pracę, która
-uzasadnia etaty operacyjne i wartość kontraktu z dostawcą usług outsourcingu.
-Bez przebudowy modelu operacyjnego uwolniony czas nie ma dokąd pójść, a
-zespół obawia się, że będzie oceniany za liczbę postępowań, których już nie
-prowadzi.
-
-Zmiana miar oceny zespołu może pomóc, ale nie zastępuje uzgodnienia nowych
-zadań, kompetencji i odpowiedzialności.
+Automatyzacja może ograniczyć zadania zespołu operacyjnego lub zakres usług
+outsourcingowych. Trzeba uzgodnić, czym pracownicy zajmą się w uwolnionym
+czasie i jak będzie oceniana ich praca. Miara oparta na liczbie ręcznie
+prowadzonych postępowań może utrudniać przyjęcie takiej zmiany.
 
 ### 8. Niejasny zwrot poza pilotażem
 
-Ósma bariera dotyczy zwrotu przy większym zakresie. Pilotaż może wykazać rabat,
-brak poprawy albo pogorszenie warunków. Skala wymaga obsługi większej liczby
-dostawców, ustawienia granic
-dla każdej kategorii i zamknięcia drogi od rozstrzygnięcia do zamówienia.
-Dyrektor finansowy widzi licencję, koszt zmiany organizacyjnej i ryzyko relacji
-po jednej stronie, a niepewny kilkuprocentowy efekt na części wydatków po
-drugiej.
+Pilotaż może wykazać rabat, brak poprawy albo pogorszenie warunków. Rozszerzenie
+wdrożenia wymaga obsługi większej liczby dostawców, określenia uprawnień dla
+kolejnych kategorii i przenoszenia wyników do zamówień. Rachunek powinien
+uwzględnić licencję, integrację, pracę zespołu i skutki dla relacji z dostawcami.
 
 Dane EFESO opisują poziom wdrożenia GenAI w badanej grupie. Nie identyfikują
 przyczyn zatrzymania pilotażu ani zwrotu z autonomicznych negocjacji.
 
-## Gdzie te bariery leżą na osiach ProcuraCost
+## Jak ująć zmianę w ProcuraCost
 
 Model 2.3 rozdziela ramy prawne i ład zakupowy, rodzinę procedury, archetyp
 zakupu, projekt przebiegu procesu zakupowego, kanał realizacji, wsparcie
-systemowe i konstrukcję umowy. To rozdzielenie jest tu użyteczne, ponieważ
-większość nieporozumień wokół agentów bierze się ze sklejenia tych osi w jedną
-etykietę technologiczną.
+systemowe i konstrukcję umowy. Pozwala to wskazać, które elementy zakupu
+zmienia wdrożenie agenta.
 
 Agent negocjacyjny jest zmianą na osi wsparcia systemowego. Sam z siebie nie
 zmienia ram prawnych, rodziny procedury ani obowiązkowych terminów oczekiwania.
@@ -214,41 +181,37 @@ uruchamia pracę równolegle albo skraca oczekiwanie na odpowiedź dostawcy. Mo�
 też zmienić konstrukcję umowy, jeżeli negocjuje warunki płatności lub formułę
 indeksacji.
 
-Z tego wynika reguła porządkująca dyskusję o uzasadnieniu biznesowym.
-Wprowadzenie agenta nie jest samo w sobie mechanizmem oszczędności. Mechanizmem
-jest konkretna zmiana w mapie przebiegu albo w projekcie umowy, którą agent
-umożliwia. Jeżeli zmienia się wyłącznie nazwa narzędzia, nie ma podstawy do
-przypisania mu korzyści. Przy tej samej topologii mogą jednak zmienić się czasy
-kroków, nakład ról i koszty wsparcia. Model może porównać takie zadeklarowane wejścia.
+Uzasadnienie biznesowe musi wskazać konkretną zmianę: w zależnościach między
+krokami, ich czasie, nakładzie ról, koszcie wsparcia lub konstrukcji umowy.
+Zmiana samej nazwy narzędzia nie daje podstawy do przypisania korzyści.
+Model porównuje zadeklarowane wejścia, także przy niezmienionej kolejności pracy.
 
 Trzy granice modelu mają tu bezpośrednie zastosowanie:
 
 1. Znak różnicy kosztu nie jest z góry ustalony. Agent może wydłużyć przebieg,
    na przykład przez rundę wyjaśnień z dostawcą, który nie zrozumiał zapytania.
-   Wynik ujemny jest pełnoprawnym wynikiem.
+   Przy przyjętej definicji delty wyższy koszt wariantu adaptacyjnego daje wynik ujemny.
 2. Obowiązkowe terminy prawne pozostają zablokowane i identyczne po obu
    stronach porównania. Automatyzacja przygotowania nie skraca ustawowego
    terminu składania ofert ani terminu oczekiwania przed zawarciem umowy.
 3. Gotowość organizacyjna do wdrożenia jest opisywana osobno i nie wpływa na
-   różnicę kosztu. Bariery od pierwszej do ósmej opisanej wyżej należą właśnie
-   do tej warstwy. Są warunkami uruchomienia, nie składnikami rachunku.
+   różnicę kosztu. Odpowiedzi o opisanych barierach nie są przeliczane na koszt.
+   Koszty integracji lub pracy można ująć tylko jako odrębnie uzasadnione wejścia.
 
-Nieformalne obejście procesu pozostaje poza monetyzacją. Jest to istotne przy
-ocenie agentów, ponieważ obejście nieprzejrzystego procesu jest jednym z ryzyk
-do zbadania. Przywołane źródła nie ustalają jego częstości względem eskalacji.
+Nieformalne obejście procesu pozostaje poza monetyzacją. Jego występowanie
+wymaga odrębnego badania; przywołane źródła nie ustalają częstości tego zjawiska.
 
 ## Co o tych barierach mówi praktyka wdrożeń
 
-Ósmy odcinek Procurement&Beyond dotyczy wdrożeń systemów zakupowych, nie
-agentów negocjacyjnych. Mimo to większość barier opisanych wyżej pojawia się w
-rozmowie w innym przebraniu. Poniżej zestawiam je z konkretnymi fragmentami
-nagrania. Każdy fragment stawia pytanie, którego warto użyć w warsztacie przed
-pilotażem. Żaden nie dowodzi tezy ani nie ustala parametru.
+Z rozmowy w ósmym odcinku Procurement&Beyond o wdrażaniu systemów zakupowych
+wybieram pytania przydatne także przy planowaniu pilotażu agenta. Poniższe
+odniesienia są propozycją autora; nagranie nie bada agentów negocjacyjnych
+i nie dostarcza parametrów do ich oceny.
 
-Bariera pierwsza, mandat, sprowadza się w rozmowie do pytania, czy po stronie
-organizacji jest osoba, która rozumie zakup i potrafi zakwestionować założenia
-dostawcy narzędzia. Bez takiej osoby agent dostaje mandat, którego nikt
-świadomie nie nadał. Fragmenty:
+Przy ustalaniu mandatu agenta można wykorzystać pytania z rozmowy o osobie,
+która po stronie organizacji rozumie zakup i potrafi zakwestionować założenia
+dostawcy narzędzia. W pilotażu agenta należy dodatkowo wskazać, kto zatwierdza
+jego uprawnienia. Fragmenty:
 [Wewnętrzny właściciel decyzji](https://youtu.be/5KYUdTLlvvg?t=1639)
 (27:19 do 28:09),
 [Mandat i komunikacja](https://youtu.be/5KYUdTLlvvg?t=1707)
@@ -272,8 +235,8 @@ opisu potrzeby na wejściu. Fragmenty:
 
 Bariera czwarta, zapis do systemu, odpowiada w rozmowie obserwacji, że wybór
 dostawcy nie wyczerpuje procesu zakupowego. Zamówienie, odbiór, faktura i
-wyjątek muszą być ujęte w zakresie. Agent, który kończy pracę na
-rozstrzygnięciu, zostawia resztę przebiegu bez właściciela. Fragment:
+wyjątek muszą być ujęte w zakresie. Jeżeli agent kończy pracę na
+rozstrzygnięciu, trzeba wskazać odpowiedzialność za dalsze czynności. Fragment:
 [Zakupy operacyjne w pełnym przebiegu procesu](https://youtu.be/5KYUdTLlvvg?t=1023)
 (17:03 do 17:48).
 
@@ -289,8 +252,7 @@ zgodności niż jedna stała kolejność kroków. Fragmenty:
 
 Bariera siódma, rola kupca, pojawia się w rozmowie jako rozróżnienie pracy
 nadającej się do standaryzacji od sytuacji wymagających osądu eksperta. To
-samo rozróżnienie decyduje, które kategorie mogą trafić do agenta, a które
-zostają przy człowieku. Fragment:
+samo rozróżnienie pomaga ustalić zakres pracy agenta i nadzoru człowieka. Fragment:
 [Standaryzacja pracy i osąd ekspercki](https://youtu.be/5KYUdTLlvvg?t=271)
 (04:31 do 06:48).
 
@@ -337,11 +299,10 @@ niezależnego testu porównawczego platform.
 
 ## Co mierzyć na pilotażu
 
-Jednym z błędów pilotażu jest sprowadzenie oceny do procentu oszczędności.
-Ta liczba nie odpowiada na pytanie, czy bariery faktycznie opadły, a przy małej
-próbie bywa artefaktem doboru kategorii.
-
-Cztery mierniki mówią więcej:
+Oprócz oszczędności względem z góry ustalonej podstawy porównania trzeba
+zmierzyć udział dostawców, pracę nad wyjątkami i zapis wyników. W małej próbie
+należy też sprawdzić, jak dobór kategorii wpłynął na wynik. Proponuję cztery
+uzupełniające mierniki:
 
 1. Wskaźnik udziału dostawców w zainicjowanych rozmowach. Odpowiada na barierę
    drugą. Trzeba osobno podać liczbę zaproszonych, uczestniczących i tych,
@@ -360,17 +321,12 @@ różnicy, wymiary pozostawione poza rachunkiem oraz pochodzenie obowiązkowych
 terminów. Krótszy cykl nie wystarcza, jeżeli pogarsza się dostęp do konkurencji
 albo kompletność dokumentacji.
 
-## Teza
+## Wybór zakresu pilotażu
 
-Bariery autonomicznego sourcingu i negocjacji nie sprowadzają się do pytania,
-czy model językowy potrafi napisać zapytanie ofertowe. Sprowadzają się do
-mandatu handlowego, gotowości dostawcy, jakości opisu potrzeby, zapisu do
-systemu transakcyjnego i prawa konkurencji.
-
-Ograniczony pilotaż na ogonie wydatków jest jedną z dróg opisanych w
-przywołanych przypadkach. Nie jest uniwersalną kolejnością wdrożenia.
-Wybór zakresu powinien wynikać z jakości danych, skutków błędu i możliwości
-kontroli. Granice ceny, warunków i eskalacji należy określić przed startem.
+Przywołane przypadki opisują między innymi pilotaże obejmujące ogon wydatków.
+W innej organizacji dobór kategorii wymaga osobnej oceny jakości danych,
+skutków błędu i możliwości nadzoru. Przed startem trzeba zapisać dopuszczalne
+warunki cenowe, pozostałe uprawnienia agenta i zasady przekazywania spraw kupcowi.
 
 ## Źródła i granice twierdzeń
 
@@ -404,12 +360,6 @@ jest niezależnym potwierdzeniem wyniku organizacji:
   zarejestrowanych fragmentów.
   https://www.youtube.com/watch?v=5KYUdTLlvvg
 
-Niepotwierdzone zestawy procentów przypisywane BCG i Ardent Partners,
-nieudokumentowane oceny platform oraz wskaźnik łatwości obsługi Walmart
-zostały wyłączone z argumentacji. Nie służą jako dowody pośrednie.
-
-Granice interpretacyjne:
-
 Liczby rynkowe pochodzą z badań deklaratywnych i materiałów dostawców.
 Opisują badaną grupę i deklarowane obawy, nie stanowią estymat efektu dla
 konkretnej organizacji. Przypadki wdrożeniowe publikowane przez dostawców
@@ -426,9 +376,7 @@ konkretnego stanu faktycznego.
 
 ## O autorze
 
-Paweł Mamcarz jest autorem modelu ProcuraCost i gościem ósmego odcinka
-Procurement&Beyond, z którego pochodzą fragmenty przywołane w tym tekście.
-Zajmuje się zakupami, negocjacjami i wdrożeniami systemów zakupowych od strony
-organizacji, nie dostawcy narzędzia. Więcej materiałów, w tym kalkulator
-porównania dwóch przebiegów procesu, znajduje się na https://mamcarz.com oraz
-w nagraniu rozmowy: https://www.youtube.com/watch?v=5KYUdTLlvvg.
+Paweł Mamcarz zajmuje się zakupami, negocjacjami i wdrożeniami systemów
+zakupowych po stronie organizacji. Jest autorem modelu ProcuraCost i rozmówcą
+w przywołanym ósmym odcinku Procurement&Beyond. Strona autora:
+https://mamcarz.com. Nagranie: https://www.youtube.com/watch?v=5KYUdTLlvvg.

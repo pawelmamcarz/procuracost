@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-07-tunel-pole-lepszy-biznes.md",
+  "line": 1,
+  "section": "---\ntitle: \"Tunel czy pole? Jak projektować przebieg zakupów bez osłabiania kontroli\"\nmagazyn: \"Lepszy Biznes (All for One)\"\ndata: 2026-07\nautor: \"Paweł Mamcarz\"\nautor_www: \"https://mamcarz.com\"\nmodel: \"ProcuraCost 2.3.0\"\nstatus: \"wersja do redakcji\"\n---\n\n# Tunel czy pole?\n",
+  "fileHash": "0b0c177b46173b28e47e98398ed8714545f6abc3c86e6ddb4cbddcd7c95a3a32",
+  "requestHash": "5c30285a49ef6359c94daa8deeab9469d09a39732c91bf132ab4d9241854a1ef",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.68
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.15
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.06
+    }
+  },
+  "usage": {
+    "input_tokens": 541,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

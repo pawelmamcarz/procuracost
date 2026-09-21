@@ -12,22 +12,18 @@ status: "wersja do redakcji"
 
 ## Jak projektować przebieg zakupów bez osłabiania kontroli
 
-Sama cyfryzacja nie gwarantuje poprawy procesu, którego logiki nikt nie potrafi wyjaśnić.
-Przeniesienie do systemu pięciu formularzy, trzech ręcznych zatwierdzeń i
-dwukrotnego przepisywania danych utrwala ten sam problem w nowym interfejsie.
-Dlatego przed konfiguracją warto oddzielić potrzebne
-zabezpieczenia od odziedziczonej kolejności pracy.
+Jeżeli zakup wymaga pięciu formularzy, trzech ręcznych zatwierdzeń i
+dwukrotnego przepisania danych, przed konfiguracją systemu warto sprawdzić,
+czemu służy każda z tych czynności. Część może wynikać z potrzebnej kontroli,
+część z ograniczeń starego obiegu dokumentów. Przeniesienie całej sekwencji
+do nowego systemu może zachować również zbędną pracę.
 
 Proces zakupowy ma chronić budżet, zapewniać właściwy dostęp do konkurencji,
 wspierać jakość decyzji i pozostawiać ślad audytowy. Jednocześnie ma dostarczyć
 wnioskodawcy biznesowemu potrzebne rozwiązanie w czasie, który pozwala
-wykorzystać szansę albo uniknąć przestoju. Szybkość bez kontroli bywa kosztowna.
-Kontrola zbudowana głównie z kolejek może być równie kosztowna.
-
-Właściwe pytanie nie brzmi zatem: formalnie czy elastycznie. Brzmi:
-
-> Które granice muszą pozostać niezmienne, a którą pracę można uprościć,
-> prowadzić równolegle albo wykonywać iteracyjnie?
+wykorzystać szansę albo uniknąć przestoju. Projektując obieg, trzeba zatem
+ustalić, które wymagania są obowiązkowe, a które czynności można uprościć,
+prowadzić równolegle lub powtarzać po uzyskaniu nowych informacji.
 
 ## Jedna granica, dwa projekty przebiegu
 
@@ -35,10 +31,10 @@ Polityka zakupowa określa między innymi uprawnienia, zasady konkurencji,
 wymagany ślad decyzji, rozdział ról i tryb obsługi wyjątków. Projekt przebiegu
 procesu zakupowego organizuje czynności wewnątrz tych ram.
 
-Metafora tunelu i pola opisuje dwie geometrie pracy. Tunel prowadzi sprawę przez
+Metafora tunelu i pola opisuje dwa sposoby organizacji pracy. Tunel prowadzi sprawę przez
 ustaloną sekwencję. Pole dopuszcza kilka kontrolowanych tras, pracę równoległą
-i powrót do wcześniejszego założenia. Nie usuwa jednak granicy. Uprawnienia,
-konkurencja, etyka i dokumentacja nadal obowiązują.
+i powrót do wcześniejszego założenia. W obu przypadkach obowiązują te same
+uprawnienia, zasady konkurencji, etyki i dokumentacji.
 
 ProcuraCost 2.3 porównuje właśnie takie dwa warianty:
 
@@ -49,24 +45,23 @@ Model nie zakłada, że drugi wariant jest szybszy albo tańszy. Oblicza skutki
 dwóch jawnych map przebiegu i dopuszcza wynik dodatni, ujemny lub zerowy.
 Obowiązkowe terminy prawne pozostają takie same po obu stronach.
 
-## Kiedy praca adaptacyjna ma konkretny mechanizm
+## Gdzie zmiana kolejności pracy może pomóc
 
-Adaptacja ma znaczenie tylko wtedy, gdy zmienia pracę, zależności albo
-konstrukcję umowy.
+Porównanie wymaga wskazania zmiany w czynnościach, ich czasie i zależnościach
+lub w konstrukcji umowy. Poniższe przykłady pokazują, czego można szukać.
 
 ### Transformacja ERP
 
 Przy niepełnych wymaganiach wczesne definiowanie problemu i modułowe podejście
 mogą zmienić sposób opisu potrzeby oraz sprawdzania możliwości rynku. Nie jest
-to automatyczne skrócenie. To wcześniejsze wykonanie pracy, która w sztywnym
-przebiegu mogłaby pojawić się dopiero po wyborze rozwiązania.
+to gwarancja skrócenia procesu: część pracy wykonuje się wcześniej, choć
+w innym przebiegu mogłaby pojawić się dopiero po wyborze rozwiązania.
 
 ### Przeprojektowanie usługi logistycznej
 
 Kontakt z rynkiem może służyć sprawdzeniu poziomów usług, interfejsów danych,
-odpowiedzialności za ciągłość i sposobu rozliczania. Mechanizm istnieje wtedy,
-gdy ustalenia zmieniają mapę procesu lub projekt umowy. Sama zmiana etykiety z
-formalnej na adaptacyjną nie tworzy wartości.
+odpowiedzialności za ciągłość i sposobu rozliczania. W porównaniu trzeba pokazać,
+jak te ustalenia zmieniają pracę zespołu lub projekt umowy.
 
 ### Publiczny zakup IT
 
@@ -74,17 +69,15 @@ Wstępne konsultacje rynkowe mogą pomóc Zamawiającemu poznać dostępne
 rozwiązania techniczne, ekonomiczne i organizacyjne przed postępowaniem.
 Konsultacja nie skraca ustawowego terminu składania ofert ani obowiązkowego
 terminu oczekiwania przed zawarciem umowy.
-Usprawniać można pracę przygotowawczą, nie obowiązek prawny.
 
 ### Odkrywanie i współprojektowanie
 
 Uczenie się, dialog i ponowne określenie zakresu są pracą. Mogą zwiększać czas
 i nakład zespołu. Taki wariant ma sens badawczy wtedy, gdy pozwala sprawdzić,
 czy dodatkowa wiedza wpływa później na wybór, wykonanie albo zmiany umowy.
-Dłuższy przebieg nie jest sam w sobie porażką, a krótszy nie jest sam w sobie
-sukcesem.
+Ocena powinna więc objąć także skutki tej pracy dla wykonania umowy.
 
-## Kiedy odrębnego mechanizmu pracy nie ma
+## Zakupy o takim samym przebiegu
 
 Stabilna, standardowa usługa może wymagać tych samych czynności w obu
 wariantach. W scenariuszu referencyjnym ProcuraCost osobno pozostaje ryzyko
@@ -94,15 +87,14 @@ krótką mapę. Zwolnienie zlecenia MRP może przebiegać identycznie, jeżeli
 korzysta z obowiązującej umowy i zatwierdzonych danych materiałowych.
 
 ProcuraCost traktuje katalog i MRP jako scenariusze kontrolne. Identyczne mapy,
-koszty i założenia konstrukcji umowy dają równy wynik centralny. To ważna
-kontrola jakości modelu: nazwa adaptacyjna nie
-powinna generować korzyści bez zmienionego mechanizmu.
+koszty i założenia konstrukcji umowy dają równy wynik centralny. W ten sposób
+sprawdza się, czy model nie przypisuje korzyści samej nazwie wariantu.
 
 ## Przed konfiguracją systemu
 
-Warsztat projektowy powinien zacząć się od kilku zakończonych zakupów, a nie od
-listy funkcji oprogramowania. Warto zebrać przedstawicieli biznesu, zakupów,
-finansów, zgodności, IT i właściciela danych. Mapa powinna ujawnić:
+Na warsztacie projektowym warto prześledzić kilka zakończonych zakupów razem
+z przedstawicielami biznesu, zakupów, finansów, zgodności, IT i właścicielem
+danych. Mapa powinna pokazać:
 
 - czynności i ich poprzedników;
 - czas aktywnej pracy i czas oczekiwania;
@@ -112,7 +104,7 @@ finansów, zgodności, IT i właściciela danych. Mapa powinna ujawnić:
 - decyzje podejmowane poza oficjalnym obiegiem;
 - obowiązkowe terminy oraz źródło każdego wymagania.
 
-Pięć pytań pomaga ocenić każde miejsce tarcia:
+Dla każdego kroku należy ustalić:
 
 1. Jakie ryzyko kontroluje ten krok?
 2. Jaką nową informację wnosi?
@@ -125,7 +117,7 @@ warto sprawdzić, czy obie są potrzebne. Jeżeli menedżer zatwierdza setki spr
 bez wyróżnienia odchyleń od budżetu lub umowy, dodatkowa bramka nie rozwiązuje
 problemu. Potrzebna jest reguła oddzielająca standard od wyjątku.
 
-## Zakupy operacyjne wymagają osobnej architektury
+## Obsługa zakupów operacyjnych
 
 Zamówienie katalogowe, zwolnienie MRP i strategiczne postępowanie nie powinny
 korzystać z jednej rozbudowanej ścieżki. Kanał realizacji zakupu jest odrębną
@@ -141,8 +133,7 @@ Dla transakcji operacyjnej system może automatycznie:
 
 Człowiek pozostaje tam, gdzie potrzebna jest ocena: przy niestandardowej
 potrzebie, analizie rynku, negocjowaniu podziału ryzyka i rozstrzyganiu wyjątku.
-Automatyzacja nie usuwa odpowiedzialności. Kieruje uwagę do spraw, które jej
-wymagają.
+Odpowiedzialność za te decyzje musi być przypisana także w procesie automatycznym.
 
 ## Lider wdrożenia i gotowość organizacyjna
 
@@ -170,7 +161,7 @@ przez nagranie. ProcuraCost oddziela je od rachunku kosztowego. Niezależne
 narzędzie zapisuje odpowiedzi bez punktów, wag, oceny zbiorczej i wpływu na
 deltę kosztu.
 
-## Uzasadnienie biznesowe bez fałszywej precyzji
+## Co obejmuje rachunek kosztów
 
 Rachunek ProcuraCost 2.3 rozdziela cztery grupy:
 
@@ -179,7 +170,7 @@ Rachunek ProcuraCost 2.3 rozdziela cztery grupy:
 3. czas przebiegu pomnożony przez dzienny koszt zwłoki;
 4. objęte monetyzacją elementy konstrukcji umowy.
 
-Najłatwiej zawyżyć koszt zwłoki. Iloczyn dni i deklarowanego kosztu dnia jest
+Koszt zwłoki wymaga osobnego uzasadnienia. Iloczyn dni i deklarowanego kosztu dnia jest
 tożsamością rachunkową, nie wynikiem badania. Wartość powinna wynikać z
 konkretnego mechanizmu, na przykład utraconej marży, przestoju albo kosztu
 rozwiązania zastępczego. Jeżeli nie można jej uzasadnić, należy pokazać zakres i
@@ -194,8 +185,8 @@ określonej populacji węgierskich zamówień i nie stanowi estymaty dla Polski 
 firm prywatnych.
 
 Różnice kosztu aneksów i TCO wynoszą w natywnych scenariuszach zero.
-Nieformalne obejście procesu pozostaje poza monetyzacją. Takie ograniczenie jest
-bardziej użyteczne niż pozorna precyzja oparta na uniwersalnym procencie.
+Nieformalne obejście procesu pozostaje poza monetyzacją z powodu braku podstaw
+do przypisania mu wartości.
 
 ## TCO i ograniczone wykorzystanie AI
 
@@ -205,14 +196,12 @@ może pomóc wydobyć i uporządkować informacje z materiałów rynkowych, ale 
 musi mieć jawne źródła i przejść kontrolę człowieka.
 
 W materiale Procurement&Beyond jako przykład pojawia się wykorzystanie modelu
-Bielik w projekcie „Czym pojadę”. Granica jest jednoznaczna: Bielik może
-strukturyzować dane. Przejrzysty model deterministyczny wykonuje rachunek TCO.
-Nie należy przypisywać modelowi językowemu obliczenia, którego nie można
-odtworzyć.
+Bielik w projekcie „Czym pojadę”. Służy on do porządkowania danych, na których
+odrębny, deterministyczny model wykonuje możliwy do odtworzenia rachunek TCO.
 
-## Rejestr decyzji zamiast jednego werdyktu
+## Co zapisać wraz z wynikiem
 
-Wynik powinien pokazywać więcej niż sumę. Rekord decyzji obejmuje:
+Rekord decyzji pozwala odtworzyć obliczenie. Obejmuje:
 
 - zadeklarowany kontekst zakupu;
 - obie mapy przebiegu;
@@ -225,8 +214,8 @@ Wynik powinien pokazywać więcej niż sumę. Rekord decyzji obejmuje:
 - status migracji starszych danych.
 
 Dodatnia delta oznacza, że przy zadeklarowanych wejściach wariant formalny ma
-wyższy koszt. Ujemna oznacza wyższy koszt wariantu adaptacyjnego. Zero jest
-pełnoprawnym wynikiem. Obwiednia łączy przeciwne końce zakresów obu wariantów;
+wyższy koszt. Ujemna oznacza wyższy koszt wariantu adaptacyjnego, a zero równe
+koszty centralne. Obwiednia łączy przeciwne końce zakresów obu wariantów;
 jej przecięcie zera nie dowodzi zmiany znaku przy wspólnym zestawie założeń.
 
 Porównanie przydatności procedur jest osobne i nie tworzy rankingu. Prawo,
@@ -255,15 +244,13 @@ kompletność dokumentacji. Dłuższy przebieg nie jest automatycznie zły, jeż
 jego zamierzonym mechanizmem jest uczenie się. Każdy efekt należy raportować
 osobno przed próbą monetyzacji.
 
-## Wspólna architektura
+## Różne przebiegi w jednej organizacji
 
-Organizacja nie musi wybierać jednej metafory dla wszystkich zakupów. Może
-projektować krótkie, kontrolowane sekwencje dla transakcji powtarzalnych oraz
-procesy z jawnymi etapami odkrywania dla problemów niepewnych. Wspólne powinny
-pozostać dane, uprawnienia, reguły konkurencji i odpowiedzialność.
-
-„Tunel ma ściany. Pole ma horyzont.” Wartość tej metafory polega na rozdzieleniu
-granicy od drogi. Nie zastępuje ona mapy procesu, oceny prawnej ani danych.
+W jednej organizacji mogą działać krótkie sekwencje dla transakcji
+powtarzalnych i dłuższe procesy z etapami definiowania problemu. Przy ich
+projektowaniu należy zachować wspólne dane, uprawnienia, reguły konkurencji
+i przypisaną odpowiedzialność. Zakres zmiany powinien wynikać z mapy procesu,
+oceny prawnej i danych z pilotażu.
 
 ## Źródła i granice twierdzeń
 
@@ -289,9 +276,7 @@ ani poradą prawną.
 
 ## O autorze
 
-Paweł Mamcarz jest autorem modelu ProcuraCost i gościem ósmego odcinka
-Procurement&Beyond, do którego odwołuje się ten tekst. Zajmuje się zakupami,
-negocjacjami i wdrożeniami systemów zakupowych od strony organizacji, nie
-dostawcy narzędzia. Więcej materiałów, w tym kalkulator porównania dwóch
-przebiegów procesu, znajduje się na https://mamcarz.com oraz w nagraniu
-rozmowy: https://www.youtube.com/watch?v=5KYUdTLlvvg.
+Paweł Mamcarz zajmuje się zakupami, negocjacjami i wdrożeniami systemów
+zakupowych po stronie organizacji. Jest autorem modelu ProcuraCost i rozmówcą
+w przywołanym ósmym odcinku Procurement&Beyond. Strona autora:
+https://mamcarz.com. Nagranie: https://www.youtube.com/watch?v=5KYUdTLlvvg.

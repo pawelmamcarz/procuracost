@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-07-tunel-pole-lepszy-biznes.md",
+  "line": 247,
+  "section": "## Różne przebiegi w jednej organizacji\n\nW jednej organizacji mogą działać krótkie sekwencje dla transakcji\npowtarzalnych i dłuższe procesy z etapami definiowania problemu. Przy ich\nprojektowaniu należy zachować wspólne dane, uprawnienia, reguły konkurencji\ni przypisaną odpowiedzialność. Zakres zmiany powinien wynikać z mapy procesu,\noceny prawnej i danych z pilotażu.\n",
+  "fileHash": "0b0c177b46173b28e47e98398ed8714545f6abc3c86e6ddb4cbddcd7c95a3a32",
+  "requestHash": "c6b3a16247fb013ed7d3358d5d3ce9ad0382ed12c18fb15845b0b99f348bac45",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.06
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.16
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.11
+    }
+  },
+  "usage": {
+    "input_tokens": 566,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

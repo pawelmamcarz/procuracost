@@ -1,0 +1,27 @@
+{
+  "file": "RESEARCH.md",
+  "line": 9,
+  "section": "## Abstract\n\nProcuraCost 2.3.0 compares the cost of two workflows for the same purchase under the same legal and governance boundary: formal/sequential and adaptive/compliant. Each alternative has its own process map and contract design. From declared inputs, the model calculates critical-path duration, staff costs by role, non-labour process costs, delay costs and specified contract costs. The decision record also identifies effects left outside the monetary calculation.\n\nThe calculation is deterministic. Inputs are classified as fixed, calibrated or stress values; the reported ranges are not statistical confidence intervals. Mandatory legal waits come from a dated ruleset and remain identical in both alternatives, regardless of system support. The cost difference is defined as formal/sequential total minus adaptive/compliant total. Swapping the alternatives must reverse its sign. These properties make the calculation reproducible, but do not establish whether either workflow causes a lower cost in practice.\n\nTen reference scenarios illustrate changes in sequencing, market consultation and discovery work, including the time and effort that learning may add. Two operational controls use identical maps and inputs. Official cases and practitioner observations inform the proposed mechanisms and research questions; any numerical use requires a separate evidence record.\n",
+  "fileHash": "efae17217ece6a72fe983aef38e3ea949671251506e40ee515e78d84a3de5bc4",
+  "requestHash": "c16b8c18b7505d000d1b2a7725bf8b3ff2db354b3e4ea4686d6a9c0e80122adb",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.11
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.24
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.11
+    }
+  },
+  "usage": {
+    "input_tokens": 680,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

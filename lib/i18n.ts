@@ -1462,17 +1462,17 @@ const researchPaperEn = {
     "Procurement workflow design under a shared legal and governance boundary",
   abstractTitle: "Abstract",
   abstract: [
-    "ProcuraCost compares the declared cost of two lawful procurement workflow designs: formal sequential and adaptive compliant. Both alternatives retain the same legal and governance boundary, procedure family, initiation date and mandatory legal waits. The model therefore tests workflow and contract design without treating compliance as a variable to be relaxed.",
-    "The calculation is deterministic. Scenario values are starting assumptions with explicit provenance, not measured organisational effects or probability estimates. The model records the direction and range of the cost difference but does not select a procedure, infer implementation readiness or prescribe an outcome.",
+    "ProcuraCost compares the declared cost of two lawful procurement workflows: formal sequential and adaptive compliant. Both use the same legal and governance boundary, procedure family, initiation date and mandatory legal waits. Each workflow has its own process map and contract design.",
+    "The calculation is deterministic and depends on declared assumptions, whose sources are recorded. Scenario values are not measured organisational effects or probability estimates. The result shows which alternative costs more under those assumptions and gives a scenario range. Procedure selection and implementation readiness are assessed separately.",
   ],
   modelContract: {
-    title: "Calculation contract",
+    title: "How costs are calculated",
     items: [
       "Each alternative has its own directed process map with activities, dependencies, role effort, waiting time and non-labour cost.",
       "Mandatory PZP periods come from the versioned legal ruleset. They remain locked and identical in both alternatives.",
       "Total cost comprises role effort, non-labour cost, delay cost and explicitly monetised contract-design dimensions.",
       "Informal process bypass is not monetised in model 2.3.",
-      "Every decision record exposes the assumptions, calculation anchors, evidence class, legal provenance and dimensions outside monetisation.",
+      "Every decision record lists the assumptions, calculation anchors, evidence classes and legal sources, along with effects left outside the monetary calculation.",
     ],
   },
   resultBoundary: {
@@ -1490,20 +1490,20 @@ const researchPaperEn = {
   evidenceBoundary: {
     title: "Evidence and transfer limits",
     body:
-      "The evidence register distinguishes empirical anchors, official examples, retained scenario assumptions, internal illustrative allocations, practitioner observations and research hypotheses. Source relevance does not by itself justify numerical transfer.",
+      "The evidence register records what each source can support. It distinguishes empirical anchors, official examples, retained scenario assumptions, illustrative model inputs, practitioner observations and research hypotheses. A source may describe a relevant mechanism without supplying a value for the calculation.",
     items: [
-      "Szucs provides the bounded empirical anchor for a competition-to-price channel in Hungarian procurement below the studied threshold. The 2, 6 and 9 per cent range is an explicit stress transfer, not an estimate for Poland.",
+      "Szucs provides the empirical anchor for the price effect of restricted competition in Hungarian procurement below the studied threshold. ProcuraCost uses 2, 6 and 9 per cent as a declared stress range, not an estimate for Poland.",
       "Official material from UZP, the European Commission, OECD and California describes mechanisms such as market consultation, problem definition and modular contracting. It does not calibrate ProcuraCost cost effects.",
       "Economic values, hourly rates, aggregate day totals, system-support multipliers and coordination or tool-cost profiles retained from model 2.2.2 remain labelled historical assumptions. For the five mechanism scenarios, step order, day allocation and role-hour allocation are illustrative model 2.3 inputs; external cases support constructs only, not duration, effort or cost.",
     ],
   },
-  practitionerTitle: "Practitioner-material boundary",
+  practitionerTitle: "Use of the practitioner interview",
   practitionerBoundary:
     "Procurement&Beyond episode 8 informs questions about process friction, internal ownership, requirements, TCO and responsible automation. It supports question design and hypothesis generation only. It does not calibrate thresholds, weights, ranges or expected implementation effects.",
   scope: {
     title: "Scope and limitations",
     items: [
-      "The legal ruleset covers the stated classic procurement contexts initiated in 2026 or 2027. Sectoral, defence and security contexts fail closed.",
+      "The legal ruleset covers the stated classic procurement contexts initiated in 2026 or 2027. The calculation is blocked for sectoral, defence and security contexts, which are outside its scope.",
       "Procedure-family suitability is compared separately and without scoring. Special procedures still require a competent legal assessment of their statutory grounds.",
       "The output is an auditable cost record for scenario analysis. It is neither legal advice nor statistical validation of an organisational outcome.",
     ],

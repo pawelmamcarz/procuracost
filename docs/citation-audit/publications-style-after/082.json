@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-3-empiria-PZP-PL.md",
+  "line": 16,
+  "section": "## 1. Pytanie i granica wnioskowania\n\nPytanie badawcze brzmi:\n\n> Jak projekt przebiegu procesu obowiązujący przed rozpoczęciem zakupu wiąże się\n> z czasem, nakładem pracy, dostępem do rynku i wynikami umowy, przy\n> porównywalnym przedmiocie, wartości oraz warunkach rynku?\n\nW tym samym trybie przygotowanie zakupu może przebiegać sekwencyjnie lub\nczęściowo równolegle. Badanie rozdziela zatem rodzinę procedury i organizację\npracy, a także konstrukcję umowy, wsparcie systemowe i gotowość organizacyjną.\n\nNie wolno porównywać postępowania ustawowego z bezprawnym zakupem bez\nkonkurencji. Obowiązkowe terminy prawne powinny być identyfikowane i\nkontrolowane osobno. Adaptacyjny wariant ProcuraCost pozostaje wewnątrz tej\nsamej granicy prawnej.\n\nOd 1 stycznia 2026 r. próg stosowania PZP do zamówień klasycznych udzielanych\nprzez zamawiających publicznych wynosi 170 000 zł netto na podstawie\n[Dz.U. 2025 poz. 1173](https://eli.gov.pl/eli/DU/2025/1173/ogl). Właściwe progi unijne\nzależą od przedmiotu i rodzaju Zamawiającego. Przed analizą należy zweryfikować\naktualny tekst prawa i stan na dzień każdego postępowania. Próg prawny nie jest\nautomatycznie prawidłowym instrumentem identyfikacji.\n",
+  "fileHash": "b1ec9f1effb2f3a2271b97a2b362f804537c7b9a2af82c07a21e14c47f974cce",
+  "requestHash": "2cecff516d36cbe496e7f3bb8fb239297147d5268d999b9645878cc65d38ce69",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.11
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.3
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.14
+    }
+  },
+  "usage": {
+    "input_tokens": 885,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

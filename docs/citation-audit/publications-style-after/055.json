@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-1-tunnel-or-field-EN.md",
+  "line": 70,
+  "section": "## 3. Competitive access and formal requirements\n\nSzucs (2024) studies a Hungarian reform affecting access to a\nhigh-discretion invitational procedure below a value threshold. The analysis\naddresses manipulation around the threshold and identifies a price and\nselection channel associated with discretion in that institutional setting.\n\nIf an adaptive workflow changes\ncompetitive access, a potential time benefit must be considered alongside\npossible price or selection loss. The study does not estimate the effect of\nworkflow topology in Poland, so ProcuraCost uses it only as an anchor for a\ndeclared 2, 6 and 9 per cent competition-transfer stress where the comparison\nstates that supplier access differs and identifies the restricted alternative.\n\nPublicity and procurement-cycle duration require separate measurement.\nCoviello and Mariniello (2014) report that greater publicity at Italian\npublic-works thresholds increased participation and detected no adverse effect\non the probability of late delivery of the works. They do not thereby establish\nthe effect on time from an approved need to contract signature. ProcuraCost\nderives that elapsed time from the declared work and dependencies.\n",
+  "fileHash": "7344f34cddce2b959ed1a0a1cc874a84dd02bdee5c7207f856a4fec7290b80ef",
+  "requestHash": "16c4c345c94fe0ad8f1b3cd4ba209ad3cb24ed0a708b3ec5d0e1bbb4bb6c764b",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.12
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.32
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.28
+    }
+  },
+  "usage": {
+    "input_tokens": 666,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-1-tunnel-or-field-EN.md",
+  "line": 48,
+  "section": "## 2. Two geometries under one boundary\n\nLet the boundary contain applicable authorisations, competition duties, ethical\nrequirements and documentation obligations. Let a workflow specify how\nactivities proceed inside that boundary.\n\nA **tunnel** is a workflow in which activities and approvals are substantially\npre-ordered. It can support predictability, repeatability and a clear decision\ntrail. It can also create queues, repeated hand-offs and late discovery of\nrequirement problems.\n\nA **field** is a workflow in which an authorised team may parallelise, revisit\nor select activities while the same boundary remains in force. It can support\nearlier learning and different sequencing. It can also require additional\ndiscovery work and create greater discretion if market-access controls are\nweakened.\n\nIn Polish public procurement, both counterfactuals must comply with PZP. Mandatory submission\nand standstill periods are fixed and identical in the two ProcuraCost\nalternatives. Comparing a lawful procedure with an unlawful direct award would\nnot identify the effect of workflow design.\n",
+  "fileHash": "7344f34cddce2b959ed1a0a1cc874a84dd02bdee5c7207f856a4fec7290b80ef",
+  "requestHash": "e04bdd9043ba5c43718c699abbb1e2c2a301ae147c51f776f8ff9244947a229e",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.19
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.22
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.13
+    }
+  },
+  "usage": {
+    "input_tokens": 664,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

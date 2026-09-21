@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-1-tunnel-or-field-EN.md",
+  "line": 149,
+  "section": "## 6. Contract adaptation, bypass and system support\n\nIncomplete contracts create adaptation costs when relevant contingencies cannot\nbe fully specified ex ante (Bajari, Houghton and Tadelis 2014). Beuve, Moszoro\nand Spiller (2023) study contractual rigidity and formal-amendment frequency in\nFrench car-park contracts. Their empirical object is not the number of sourcing\napprovals or the topology of a procurement workflow.\n\nNative model 2.3 therefore starts contract-amendment and TCO differentials at\nzero. The cited literature motivates questions about contract design but does\nnot set a numerical ProcuraCost parameter without a valid allocation convention\nand evidence for the specific comparison.\n\nThe field metaphor can include revisiting a requirement. In the executable\nacyclic model, a planned repeat is a separate step with its own duration and\neffort. The model does not simulate an indefinite feedback loop or infer how\nmany rounds a real project will require.\n\nStreet-level discretion, normalisation of deviance and multitask incentives\nprovide plausible explanations for informal workarounds. They do not estimate\na procurement bypass probability. Model 2.3 discloses bypass as non-monetised.\n\nSystem support also needs a separate measure. Software can enforce approval\nlimits, retain evidence and prevent unauthorised commitments. Merely owning\nit does not show that these controls are configured or used.\nOrganisational implementation readiness is a separate self-description and cannot\nchange the cost comparison.\n",
+  "fileHash": "7344f34cddce2b959ed1a0a1cc874a84dd02bdee5c7207f856a4fec7290b80ef",
+  "requestHash": "a4c7280ff35e320147216c627f4c860e0f720cbfd02bfe15cc316f7865479432",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.15
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.27
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.16
+    }
+  },
+  "usage": {
+    "input_tokens": 763,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

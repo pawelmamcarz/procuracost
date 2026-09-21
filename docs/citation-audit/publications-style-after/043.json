@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 104,
+  "section": "## Co sprawdzić przed odwzorowaniem obecnego procesu\n\nPrzy ustalaniu konfiguracji przydatne są trzy tematy poruszone w rozmowie.\n\nPierwszy to [System nie powinien kopiować archaicznej sekwencji (39:45 do 41:35)](https://youtu.be/5KYUdTLlvvg?t=2385).\nOdwzorowanie obecnego obiegu zatwierdzeń jeden do jednego może wydawać się\nłatwiejsze niż uzgodnienie nowej kolejności. Może jednak utrwalić zbędną pracę.\nPorównanie wariantów pozwala ocenić, czy zmiana kolejności rzeczywiście\nograniczy jej koszt.\n\nDrugi to [Polityka jako granica kontroli (43:34 do 44:19)](https://youtu.be/5KYUdTLlvvg?t=2614).\nPolityka zakupowa może wyznaczać szerszą granicę zgodności niż jedna stała\nsekwencja kroków. Uprawnienia, zasady konkurencji, wymagany ślad decyzji i tryb\nobsługi wyjątków pozostają niezmienne. Kolejność czynności wewnątrz tych ram\nmoże być projektowana. Dla każdego zatwierdzenia trzeba więc ustalić, z jakiego\nwymagania wynika i czy wymaga ono właśnie takiej kolejności.\n\nTrzeci fragment jest uzupełnieniem obu poprzednich:\n[Standaryzacja pracy i osąd ekspercki (04:31 do 06:48)](https://youtu.be/5KYUdTLlvvg?t=271).\nRozmowa odróżnia pracę nadającą się do standaryzacji od sytuacji wymagających\nosądu. To podstawa do wskazania czynności automatycznych oraz wyjątków\nwymagających decyzji człowieka.\n",
+  "fileHash": "c44a04aaf4a00a6ed0cb74ace569789da6b7d3a0faa766b3c31333167a46feab",
+  "requestHash": "027f040a249c83afa7fa69b9f4f0044738f0b12897120ba5cc8ba8af757b3247",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.29
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.22
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.1
+    }
+  },
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

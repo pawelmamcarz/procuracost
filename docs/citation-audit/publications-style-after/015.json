@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-07-tunel-pole-lepszy-biznes.md",
+  "line": 48,
+  "section": "## Gdzie zmiana kolejności pracy może pomóc\n\nPorównanie wymaga wskazania zmiany w czynnościach, ich czasie i zależnościach\nlub w konstrukcji umowy. Poniższe przykłady pokazują, czego można szukać.\n\n### Transformacja ERP\n\nPrzy niepełnych wymaganiach wczesne definiowanie problemu i modułowe podejście\nmogą zmienić sposób opisu potrzeby oraz sprawdzania możliwości rynku. Nie jest\nto gwarancja skrócenia procesu: część pracy wykonuje się wcześniej, choć\nw innym przebiegu mogłaby pojawić się dopiero po wyborze rozwiązania.\n\n### Przeprojektowanie usługi logistycznej\n\nKontakt z rynkiem może służyć sprawdzeniu poziomów usług, interfejsów danych,\nodpowiedzialności za ciągłość i sposobu rozliczania. W porównaniu trzeba pokazać,\njak te ustalenia zmieniają pracę zespołu lub projekt umowy.\n\n### Publiczny zakup IT\n\nWstępne konsultacje rynkowe mogą pomóc Zamawiającemu poznać dostępne\nrozwiązania techniczne, ekonomiczne i organizacyjne przed postępowaniem.\nKonsultacja nie skraca ustawowego terminu składania ofert ani obowiązkowego\nterminu oczekiwania przed zawarciem umowy.\n\n### Odkrywanie i współprojektowanie\n\nUczenie się, dialog i ponowne określenie zakresu są pracą. Mogą zwiększać czas\ni nakład zespołu. Taki wariant ma sens badawczy wtedy, gdy pozwala sprawdzić,\nczy dodatkowa wiedza wpływa później na wybór, wykonanie albo zmiany umowy.\nOcena powinna więc objąć także skutki tej pracy dla wykonania umowy.\n",
+  "fileHash": "0b0c177b46173b28e47e98398ed8714545f6abc3c86e6ddb4cbddcd7c95a3a32",
+  "requestHash": "fc7b5bbf74fe45dc970b6df7ef9a747e2ff8e5a821fc7aaac25818c3b18c9401",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.16
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.28
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.07
+    }
+  },
+  "usage": {
+    "input_tokens": 924,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

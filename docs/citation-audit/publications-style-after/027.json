@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-bariery-autonomicznego-sourcingu.md",
+  "line": 1,
+  "section": "---\ntytuł: \"Bariery autonomicznego sourcingu i negocjacji\"\npodtytuł: \"Kiedy zacząć od ogona wydatków, a kiedy zachować decyzję po stronie kupca\"\ndata: 2026-09\nautor: \"Paweł Mamcarz\"\nautor_www: \"https://mamcarz.com\"\nmodel: \"ProcuraCost 2.3.0\"\nstatus: \"szkic po przeglądzie źródeł, do akceptacji redakcyjnej\"\n---\n\n# Bariery autonomicznego sourcingu i negocjacji\n",
+  "fileHash": "f9d178a7c12477cf2bb8d556beefba14541656a1a86d561c43e414b9380c1ddd",
+  "requestHash": "866e9f13e2431bc89a53ccf4f70917158413d1d1133e425ce3f05a483b1e0388",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.13
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.13
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.07
+    }
+  },
+  "usage": {
+    "input_tokens": 575,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

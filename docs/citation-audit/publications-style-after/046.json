@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 157,
+  "section": "## Gotowość organizacyjna w ProcuraCost\n\nModel ProcuraCost 2.3 nie liczy gotowości organizacyjnej. Porównuje koszt\ndwóch projektów przebiegu procesu zakupowego w tych samych ramach prawnych i\nładzie zakupowym. Odpowiedzi o właścicielu, mandacie i ciągłości są zapisywane\noddzielnie od wejść kosztowych.\n\nGotowość organizacyjna do wdrożenia jest osobnym samoopisem. Obejmuje osiem\nobszarów: cel, właściciel biznesowy i mandat, proces, wymagania, dane i\nautomatyzacja, ład, adopcja oraz wartość i wdrożenie. Zawiera szesnaście pytań,\nkażde z trzema odpowiedziami: warunek niespełniony, do uzupełnienia,\npotwierdzony. Obszar właściciela biznesowego i mandatu czerpie tematycznie z\ntrzech fragmentów omawianych w tym tekście.\n\nSamoopis nie przyznaje punktów ani wag i nie wydaje zbiorczej oceny lub decyzji\no uruchomieniu. Przy identycznych wejściach kosztowych wynik porównania\npozostaje taki sam niezależnie od odpowiedzi o gotowości. W serwisie samoopis\njest dostępny po zapisaniu porównania kosztu.\n",
+  "fileHash": "c44a04aaf4a00a6ed0cb74ace569789da6b7d3a0faa766b3c31333167a46feab",
+  "requestHash": "8ac0d9b90482a6a845a7af2fa0487d234237fa06f7ed6f555cb209ec56bfaee2",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.22
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.27
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.2
+    }
+  },
+  "usage": {
+    "input_tokens": 798,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

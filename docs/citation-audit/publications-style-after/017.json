@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-07-tunel-pole-lepszy-biznes.md",
+  "line": 93,
+  "section": "## Przed konfiguracją systemu\n\nNa warsztacie projektowym warto prześledzić kilka zakończonych zakupów razem\nz przedstawicielami biznesu, zakupów, finansów, zgodności, IT i właścicielem\ndanych. Mapa powinna pokazać:\n\n- czynności i ich poprzedników;\n- czas aktywnej pracy i czas oczekiwania;\n- ponowne wprowadzanie tych samych danych;\n- przekazania między rolami;\n- cofnięcia i ponowne zatwierdzenia;\n- decyzje podejmowane poza oficjalnym obiegiem;\n- obowiązkowe terminy oraz źródło każdego wymagania.\n\nDla każdego kroku należy ustalić:\n\n1. Jakie ryzyko kontroluje ten krok?\n2. Jaką nową informację wnosi?\n3. Czy można wykonać go równolegle z inną pracą?\n4. Co dzieje się po zmianie zakresu, ceny albo terminu?\n5. Czy system zapisuje decyzję i jej podstawę, czy tylko formularz?\n\nJeżeli dwie akceptacje używają tych samych danych i kontrolują to samo ryzyko,\nwarto sprawdzić, czy obie są potrzebne. Jeżeli menedżer zatwierdza setki spraw\nbez wyróżnienia odchyleń od budżetu lub umowy, dodatkowa bramka nie rozwiązuje\nproblemu. Potrzebna jest reguła oddzielająca standard od wyjątku.\n",
+  "fileHash": "0b0c177b46173b28e47e98398ed8714545f6abc3c86e6ddb4cbddcd7c95a3a32",
+  "requestHash": "c7b36b5a4ca38a7303006901f392dfbccd921855caad21612d82c4e1cc0b2b13",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.39
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.17
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.11
+    }
+  },
+  "usage": {
+    "input_tokens": 826,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

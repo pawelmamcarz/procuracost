@@ -1,0 +1,29 @@
+{
+  "files": [
+    "RESEARCH.md",
+    "docs/articles/pl/2026-07-tunel-pole-lepszy-biznes.md",
+    "docs/articles/pl/2026-09-bariery-autonomicznego-sourcingu.md",
+    "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+    "docs/articles/doktorat/article-1-tunnel-or-field-EN.md",
+    "docs/articles/doktorat/article-2-model-kosztu-PL.md",
+    "docs/articles/doktorat/article-3-empiria-PZP-PL.md",
+    "lib/i18n.ts#researchPaperEn"
+  ],
+  "excluded": [],
+  "sections": 96,
+  "questions": {
+    "stockRhetoric": {
+      "type": "noul",
+      "instructions": "Does this section contain generic promotional filler, a stock motivational punchline, or a rhetorical not-X-but-Y contrast that should be replaced with concrete prose? Do not flag necessary scientific distinctions, explicit evidence limits, equations, source titles, or labelled hypotheses."
+    },
+    "redundancy": {
+      "type": "noul",
+      "instructions": "Does this section unnecessarily restate the same substantive point or use several sentences only to announce a point without adding information? Do not flag a concise abstract, necessary definition, formula explanation, evidence limitation, or reference list merely because it is formal."
+    },
+    "overclaim": {
+      "type": "noul",
+      "instructions": "Does section present an unqualified universal, causal certainty, frequency ranking or numerical empirical claim beyond its stated evidence? Do not flag explicitly labelled hypotheses, assumptions, examples, proposals, or normative advice solely because they are unproven."
+    }
+  },
+  "model": "jev-1.13.0"
+}

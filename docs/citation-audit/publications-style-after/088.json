@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-3-empiria-PZP-PL.md",
+  "line": 215,
+  "section": "## 7. Strategia analityczna\n\n### 7.1 Wariant A: związek w obrębie organizacji\n\nSpecyfikacja bazowa:\n\n`log(dni) = beta x prescriptiveness + gamma'X + alpha_organizacja + delta_CPV + theta_rok + epsilon`\n\nPorównywane są zdarzenia w tej samej organizacji i kategorii. Błędy standardowe\nsą klastrowane na poziomie organizacji. Przy mniej niż 30 klastrach planowany\njest wild cluster bootstrap. Przy 4 do 6 organizacjach wyniki pozostają\neksploracyjne i wymagają analizy leave-one-organisation-out.\n\nWariant szacuje związek po uwzględnieniu wskazanych zmiennych kontrolnych.\nTrudniejsze lub pilniejsze zakupy mogą być kierowane do bardziej\npreskryptywnego przebiegu, co ogranicza interpretację przyczynową.\n\n### 7.2 Wariant B: jednorazowa zmiana procesu\n\nRozszerzenie przyczynowe wymaga porównywalnej, jasno datowanej zmiany oraz grup\njeszcze nieobjętych interwencją. Przy zróżnicowanych terminach można rozważyć\nstaggered DiD z estymatorem Callaway-Sant'Anna albo Sun-Abraham.\n\nWymagane są ocena trendów przed zmianą, brak antycypacji w prerejestrowanym\noknie, brak równoległej transformacji, wiarygodne grupy porównawcze i\nudokumentowanie wpływu interwencji na ekspozycję. Brak widocznych różnic przed\nzmianą nie dowodzi trendów równoległych.\n\n### 7.3 Wariant C: próg prawny\n\nProjekt progowy wymaga potwierdzenia aktualnego stanu prawnego, testu gęstości,\nciągłości kowariat i oceny sortowania wartości. Szucs (2024) pokazuje, dlaczego\nmanipulacja przy progu może unieważnić prosty RDD w podobnej klasie danych.\nUsunięcie obserwacji najbliżej progu nie naprawia automatycznie identyfikacji.\nWariant C nie jest podstawą planu głównego.\n",
+  "fileHash": "b1ec9f1effb2f3a2271b97a2b362f804537c7b9a2af82c07a21e14c47f974cce",
+  "requestHash": "6c626d84829aa82b29cc36a29d0848d3a204f2db910d27cf3133ded4f6e8d27c",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.05
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.25
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.12
+    }
+  },
+  "usage": {
+    "input_tokens": 1023,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

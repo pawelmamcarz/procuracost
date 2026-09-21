@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-3-empiria-PZP-PL.md",
+  "line": 271,
+  "section": "## 9. Walidacja modelu 2.3\n\nWalidacja modelu obejmuje pięć pytań:\n\n1. Czy z dokumentów i logów można odtworzyć graf kroków, poprzedników, pracy,\n   kolejek oraz blokad prawnych?\n2. Czy przewidywany czas i nakład ról odpowiadają obserwowanym komponentom na\n   próbie testowej, niewykorzystanej do dopasowania modelu?\n3. Jak szeroki jest zadeklarowany zakres względem rozrzutu obserwowanego?\n4. Czy prognoza składnika jest trafniejsza od prostej metody odniesienia,\n   na przykład mediany kategorii?\n5. Który składnik odpowiada za błąd?\n\nPełna walidacja `deltaCost` wymaga kontrfaktycznego wyniku drugiej mapy i\nniezależnie uzasadnionego dziennego kosztu zwłoki. Pojedyncze zdarzenie nie\ndostarcza tych danych. Dziennego kosztu zwłoki nie można wyprowadzić z samego\nrejestru postępowania. Potrzebny jest protokół z właścicielem wyniku biznesowego\nprzeprowadzony przed poznaniem czasu badanego cyklu.\n\nKoszt zmian umowy i TCO mają w scenariuszach startowych deltę równą zero.\nNieformalne obejście procesu pozostaje nieobjęte monetyzacją. Te składniki\nnie dostarczają obecnie prognoz do walidacji.\n",
+  "fileHash": "b1ec9f1effb2f3a2271b97a2b362f804537c7b9a2af82c07a21e14c47f974cce",
+  "requestHash": "74c349f1e63ce7f40860f86330d488e5b0e51fa042ebfa4a99dbee9bf0c50480",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.05
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.23
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.21
+    }
+  },
+  "usage": {
+    "input_tokens": 826,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

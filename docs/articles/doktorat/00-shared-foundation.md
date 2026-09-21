@@ -16,8 +16,8 @@ The comparison between a formal/sequential and an adaptive/compliant design is
 conditional. A more adaptive design may reduce queues or permit earlier
 learning. It may also add discovery work, role effort or competition exposure.
 A more prescribed design may protect access, documentation and control. Which
-cost is larger is a question for declared inputs and empirical study, not a
-premise.
+cost is larger depends on the declared inputs; empirical study is needed to
+assess whether those inputs describe actual procurement.
 
 ## Domain contract
 
@@ -58,7 +58,7 @@ The outer range is:
 `[formal.low - adaptive.high, formal.high - adaptive.low]`
 
 Positive and negative values are both admissible. Swapping alternatives reverses
-the sign. The model does not set a quota on either side of zero.
+the sign. The calculation does not constrain which alternative costs more.
 
 Low, central and high values are declared scenario cases, not statistical
 confidence intervals. All mandatory legal waits are fixed, sourced and
@@ -123,8 +123,8 @@ numbers.
 - An MRP release can use identical maps under an existing agreement and
   approved material data.
 
-Catalogue and MRP are neutral controls. Equal maps produce equal central
-results. The stable-service starting scenario is a topology control only. It
+Catalogue and MRP are neutral controls. Their identical maps, cost inputs and
+contract dimensions produce equal central results. The stable-service starting scenario is a topology control only. It
 separately compares open policy-qualified competition with a restricted
 shortlist or incumbent continuation and identifies the adaptive/compliant
 starting alternative as restricted. That allocation can be reversed or removed
@@ -186,8 +186,7 @@ It also cannot validate a causal net delta from one observed event. That would
 require a credible counterfactual for the alternative map and an independently
 defensible daily cost of delay.
 
-These are deliberate interpretation boundaries, not evidence that the
-hypotheses are true or false.
+Testing these hypotheses requires data beyond the calculator's outputs.
 
 ## Practitioner material
 

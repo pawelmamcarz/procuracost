@@ -1,0 +1,27 @@
+{
+  "file": "RESEARCH.md",
+  "line": 210,
+  "section": "## 6. Suitability and implementation readiness\n\nThe suitability comparison presents candidate procedure families associated with the declared boundary; it does not establish legal availability. Every candidate receives the same six qualitative criteria: legal boundary, requirement definition, competitive access, execution channel, workflow learning and system support. Candidate rows have equal visual and logical status. System support cannot change the candidate set or legal waits. Procedures whose statutory grounds are not evaluated are disclosed as withheld rather than scored.\n\nOrganisational implementation readiness is recorded through sixteen questions in eight domains: purpose, ownership, process, requirements, data and automation, governance, adoption, and value and rollout. Each response is `not_met`, `to_complete` or `confirmed`. Once all questions are answered, the module reports counts by response and domain. It does not validate the answers, aggregate them into an overall status or issue a go/no-go decision. The checklist has not been validated as a measurement instrument. Responses receive no points, percentages, weights or benchmarks and never enter the cost model.\n",
+  "fileHash": "efae17217ece6a72fe983aef38e3ea949671251506e40ee515e78d84a3de5bc4",
+  "requestHash": "0f3047ce095e73509eaadf2ca8522015efc18c5dc2dd86221b2e297e9b60c069",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.21
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.29
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.11
+    }
+  },
+  "usage": {
+    "input_tokens": 643,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

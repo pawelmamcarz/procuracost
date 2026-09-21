@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-07-tunel-pole-lepszy-biznes.md",
+  "line": 164,
+  "section": "## Co obejmuje rachunek kosztów\n\nRachunek ProcuraCost 2.3 rozdziela cztery grupy:\n\n1. koszt pracy według roli;\n2. niepracowniczy koszt procesu;\n3. czas przebiegu pomnożony przez dzienny koszt zwłoki;\n4. objęte monetyzacją elementy konstrukcji umowy.\n\nKoszt zwłoki wymaga osobnego uzasadnienia. Iloczyn dni i deklarowanego kosztu dnia jest\ntożsamością rachunkową, nie wynikiem badania. Wartość powinna wynikać z\nkonkretnego mechanizmu, na przykład utraconej marży, przestoju albo kosztu\nrozwiązania zastępczego. Jeżeli nie można jej uzasadnić, należy pokazać zakres i\nograniczyć interpretację.\n\nModel stosuje zakres 0,25, 1 i 4 razy centralny koszt dnia jako jawny test\nwarunkowy. To założenie, nie przedział ufności.\n\nKanał konkurencji wykorzystuje stres 2, 6 i 9 procent tylko wtedy, gdy dostęp do\nrynku rzeczywiście różni się między wariantami. Badanie Szucsa dotyczy\nokreślonej populacji węgierskich zamówień i nie stanowi estymaty dla Polski ani\nfirm prywatnych.\n\nRóżnice kosztu aneksów i TCO wynoszą w natywnych scenariuszach zero.\nNieformalne obejście procesu pozostaje poza monetyzacją z powodu braku podstaw\ndo przypisania mu wartości.\n",
+  "fileHash": "0b0c177b46173b28e47e98398ed8714545f6abc3c86e6ddb4cbddcd7c95a3a32",
+  "requestHash": "1db9dca87ab31fe3e0ef824afb2375e4ba6ce5d67c082714c12741c2dd2b5e2a",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.07
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.22
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.2
+    }
+  },
+  "usage": {
+    "input_tokens": 844,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

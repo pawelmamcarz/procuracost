@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-bariery-autonomicznego-sourcingu.md",
+  "line": 324,
+  "section": "## Wybór zakresu pilotażu\n\nPrzywołane przypadki opisują między innymi pilotaże obejmujące ogon wydatków.\nW innej organizacji dobór kategorii wymaga osobnej oceny jakości danych,\nskutków błędu i możliwości nadzoru. Przed startem trzeba zapisać dopuszczalne\nwarunki cenowe, pozostałe uprawnienia agenta i zasady przekazywania spraw kupcowi.\n",
+  "fileHash": "f9d178a7c12477cf2bb8d556beefba14541656a1a86d561c43e414b9380c1ddd",
+  "requestHash": "aaaa61baeca867cc11885b998d9f43ac1e9ba053e4cd9edba6d9480e9beef40a",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.1
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.25
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.11
+    }
+  },
+  "usage": {
+    "input_tokens": 547,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-2-model-kosztu-PL.md",
+  "line": 44,
+  "section": "## 2. Wersje modelu, danych i reguł\n\nRekord modelu 2.3 zawiera:\n\n- `schemaVersion: 2`;\n- `modelVersion: 2.3.0`;\n- `calibrationId: source-scenario-2026-08-28`;\n- `legalRulesetId: pl-pzp-2026-2027`.\n\nTen zestaw identyfikuje strukturę danych, wersję obliczeń, rejestr założeń oraz\nreguły prawne. Wersja serwisu nie zastępuje wersji modelu.\n\nStarsze linki przechodzą przez jawny adapter migracji. Migracja dokładna lub\nczęściowa pozostawia ślad w rekordzie decyzji. Migracja niejednoznaczna blokuje\nobliczenie do czasu potwierdzenia brakujących pól.\n",
+  "fileHash": "d28c067484a43d527731bede82cfc85524f897ff5c4c43741dea5caf455772f9",
+  "requestHash": "34d023c476072a6b35d57c1f1afacf61c5c5c3279d6abd888d3f3bea8432891e",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.13
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.22
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.19
+    }
+  },
+  "usage": {
+    "input_tokens": 658,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

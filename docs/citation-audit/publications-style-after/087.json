@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-3-empiria-PZP-PL.md",
+  "line": 170,
+  "section": "## 6. Wyniki i kontrole\n\n### 6.1 Wynik główny\n\n`log(dni cyklu zakupowego)` od autoryzacji potrzeby do zawarcia umowy, obliczony\nz audytowalnych znaczników czasu.\n\nPrzed analizą trzeba ustalić rozdzielczość czasu i obsługę spraw zakończonych\nw dniu rozpoczęcia, ponieważ logarytm z zera nie istnieje. Postępowania\nniezakończone na dzień odcięcia są cenzurowane, a unieważnione mają odrębny\nrodzaj zakończenia. Nie należy ich usuwać bez raportowania skali i przyczyn.\nModel czasu do podpisania umowy wymaga osobnej analizy selekcji do zawarcia\numowy lub prerejestrowanego modelu czasu do zdarzenia.\n\nObowiązkowe terminy prawne pozostają częścią wyniku głównego. Zmienna\n`applicable_mandatory_wait_days` jest wyznaczana według stanu prawnego na dzień\nwszczęcia, granicy, rodziny procedury, przedmiotu zamówienia i sposobu\nkomunikacji. Wchodzi do specyfikacji głównej jako jawna kontrola. Obserwacja bez\ndanych pozwalających ją rozstrzygnąć nie trafia do estymacji H1. Analiza\nwrażliwości może odjąć wyłącznie te zidentyfikowane terminy; nie odejmuje\npozostałych kolejek organizacyjnych.\n\n### 6.2 Wyniki wtórne\n\n- nakład pracy według roli;\n- liczba ważnych ofert;\n- cena względem benchmarku ustalonego ex ante;\n- liczba i typ aneksów;\n- udokumentowane odstępstwa;\n- ustalenia audytowe;\n- uzgodnione miary wykonania dostawy.\n\n### 6.3 Kontrole\n\nZmienne kontrolne mierzone przed ekspozycją obejmują wartość szacunkową, CPV,\nzłożoność techniczną, pilność zadeklarowaną przed wszczęciem, rok i efekty stałe\norganizacji.\n\nLiczba ofert, cena, aneksy i wynik dostawy są zmiennymi po ekspozycji. Nie mogą\npełnić roli kontroli w modelu czasu, jeżeli projekt procesu mógł na nie wpłynąć.\nLiczba ważnych ofert pozostaje wynikiem w modelu konkurencji.\n\nTwierdzenie o braku efektu wymaga prerejestrowanego testu równoważności.\n`p > 0,05` nie potwierdza równoważności.\n",
+  "fileHash": "b1ec9f1effb2f3a2271b97a2b362f804537c7b9a2af82c07a21e14c47f974cce",
+  "requestHash": "9ab489f52ead01e58e57d32c078a44a2f55aaaeafca1e34f828616fb0305c43c",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.05
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.26
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.13
+    }
+  },
+  "usage": {
+    "input_tokens": 1130,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

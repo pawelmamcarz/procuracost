@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-3-empiria-PZP-PL.md",
+  "line": 294,
+  "section": "## 10. Prerejestracja i falsyfikacja\n\nPrzed estymacją należy zamrozić populację, okno, ekspozycję, wyniki, kontrole,\nestymator, poziom klastrowania, reguły wyłączeń, MSI, granice równoważności,\nobsługę braków i plan testów wielokrotnych.\n\nPoniższe warunki należy oceniać z uwzględnieniem przedziałów niepewności,\nmocy i prerejestrowanych MSI. Sam punktowy wynik poniżej MSI albo brak\nistotności statystycznej nie falsyfikuje hipotezy; wynik może być nierozstrzygający.\nHipotezy słabną, jeżeli dane z dostateczną precyzją wskazują, że:\n\n- H1a lub H1b osobno nie osiąga prerejestrowanego dodatniego MSI albo ma znak\n  przeciwny odpowiednio dla czasu i godzin koordynacji;\n- szerszy dostęp ex ante wiąże się z materialnie mniejszą liczbą ważnych ofert\n  albo wyższą ceną względem niezależnego benchmarku;\n- sztywność klauzul nie wiąże się dodatnio z liczbą aneksów na rok kontraktu lub\n  warunkowy efekt liczby bram wykracza poza granicę równoważności;\n- dla potrzeb niekompletnych interakcja adaptacyjnego odkrywania nie jest\n  dodatnia dla pracy przed wszczęciem i ujemna dla dni wyjaśnień oraz ponownej\n  pracy po rozpoczęciu konkurencji albo dla potrzeb stabilnych wykracza poza\n  granice równoważności;\n- odsetek zarejestrowanych kontroli nie wiąże się z mniejszą liczbą działań poza\n  systemem i braków śladu audytowego ponad informację o posiadaniu systemu;\n- komponent modelu nie przewyższa prerejestrowanej prostej bazy.\n\nPotwierdzenie przewidywanych różnic między grupami wymaga zgodności\nz prerejestrowanym mechanizmem i sprawdzenia poza próbą używaną do dopasowania.\nInne różnice można raportować jako eksploracyjne. Należy raportować również\nwyniki zerowe i przeciwne do hipotez.\n",
+  "fileHash": "b1ec9f1effb2f3a2271b97a2b362f804537c7b9a2af82c07a21e14c47f974cce",
+  "requestHash": "5d804e4fd0b1008766ba48953ada56e9ef07b4abb8d8af7d35aa55a361208106",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.05
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.24
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.13
+    }
+  },
+  "usage": {
+    "input_tokens": 1058,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

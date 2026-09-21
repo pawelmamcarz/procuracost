@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-3-empiria-PZP-PL.md",
+  "line": 107,
+  "section": "## 4. Mechanizmy do zbadania\n\nScenariusze 2.3 nie są obserwacjami. Pomagają określić, jaki mechanizm należy\nzmierzyć.\n\n### 4.1 Zmiany czynności i zależności\n\n- Transformacja ERP może wymagać definiowania problemu i modularnego podejścia,\n  gdy wymagania są niepełne.\n- Przeprojektowanie logistyki może wymagać kontaktu z rynkiem w celu sprawdzenia\n  poziomów usług, interfejsów danych i alokacji ryzyka.\n- Publiczny zakup IT może korzystać ze wstępnych konsultacji rynkowych przed\n  postępowaniem otwartym, przy zachowaniu tych samych terminów ustawowych.\n- Odkrywanie i współprojektowanie może zwiększać czas oraz nakład pracy, ponieważ\n  uczenie się i ponowne określenie zakresu są pracą.\n\n### 4.2 Porównania o identycznym przebiegu\n\nStabilna standardowa usługa może wymagać tej samej pracy w obu projektach.\nScenariusz startowy tej usługi osobno deklaruje różnicę konkurencji, więc nie\njest neutralną kontrolą kosztu całkowitego.\nZamówienie katalogowe i zwolnienie zlecenia MRP mają identyczne mapy oraz\nzałożenia kosztowe i kontraktowe w scenariuszach kontrolnych. To łączne\nzrównanie wejść daje równy wynik centralny. W badaniu należy kodować faktyczne\nczynności i koszty niezależnie od nazwy nadanej wariantowi.\n",
+  "fileHash": "b1ec9f1effb2f3a2271b97a2b362f804537c7b9a2af82c07a21e14c47f974cce",
+  "requestHash": "6a89d9ffc7ff014b1b317acb7a181217b7db138890846077fe6dcf24a3f3a0be",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.13
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.3
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.15
+    }
+  },
+  "usage": {
+    "input_tokens": 877,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}
