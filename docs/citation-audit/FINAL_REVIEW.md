@@ -1,5 +1,9 @@
 # Końcowy przegląd publikacji i materiału praktycznego
 
+Dalsze ustalenia po PR #38: [SOURCE_FOLLOWUP.md](SOURCE_FOLLOWUP.md).
+Poniższy raport zachowuje stan poprzedniego przeglądu.
+
+
 Data: 21 września 2026. Stan wyjściowy: `b44a606` (PR #37).
 
 ## Zakres i wynik

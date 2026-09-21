@@ -73,7 +73,7 @@ Earlier ProcuraCost versions used the study as an order-of-magnitude anchor. Nat
 
 ### 3.3 Administrative effort and delay
 
-The European Commission's 2011 study concerns authority and supplier effort for EU procurement procedures. A historical model 2.2.2 audit asserted that the former `pzp_eu` template's authority-side person-days fell within the report's published distribution. This conformity assertion was not freshly verified in the 21 September 2026 scholarly review; the exact supporting report table and page locator remain unresolved. It is retained as historical provenance, not confirmed calibration evidence for the active 2.3 process maps, non-labour overheads or role rates.
+The European Commission's 2011 study reports authority effort of 22 person-days at the median and 36 at the mean (p. 84, final paragraph; Figure 2.1, p. 78 reports medians). The [full-text follow-up](docs/citation-audit/EC2011_FOLLOWUP.md) verifies these locators. The historical model 2.2.2 audit records 23.8 person-days for `pzp_eu` with `partial_erp`, which lies between those statistics. Its wider technology range, 16.8–33.0, does not lie entirely between them. These are effort statistics, not elapsed days, percentiles or a confidence interval. The historical calculation was not rerun; the comparison supports order of magnitude only and does not validate native model 2.3 inputs.
 
 Delay remains an accounting identity between critical-path elapsed days and a declared cost per day of inaction. It is not a measured effect of procedure type. [Coviello and Mariniello (2014)](https://tintin.hec.ca/pages/decio.coviello/research_files/publicity.pdf) found that publicity increased participation and detected no adverse effect on the probability of late delivery of the contracted works in their setting. That outcome is distinct from the duration of the procurement procedure; it does not establish whether publicity lengthens or shortens the procurement cycle.
 
@@ -257,7 +257,7 @@ Coviello, D., & Mariniello, M. (2014). Publicity requirements in public procurem
 
 European Commission. (2011). *Public procurement in Europe: Cost and effectiveness* (PwC, London Economics, & Ecorys).
 
-European Commission. (2021). *Guidance on innovation procurement*. Commission Notice 2021/C 267/01. https://public-buyers-community.ec.europa.eu/resources/guidance-innovation-procurement
+European Commission. (2021). *Commission Notice: Guidance on innovation procurement* (2021/C 267/01), §§4.1.2 and 4.1.8, pp. 35–37 and 46–47. Commission Notice 2021/C 267/01. https://public-buyers-community.ec.europa.eu/resources/guidance-innovation-procurement
 
 Fazekas, M., & Blum, J. R. (2021). *Improving public procurement outcomes: Review of tools and the state of the evidence base* (Policy Research Working Paper No. 9690). World Bank.
 

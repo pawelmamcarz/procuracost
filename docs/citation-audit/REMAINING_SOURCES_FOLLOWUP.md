@@ -1,0 +1,45 @@
+# Remaining source gaps: follow-up
+
+Checked **21 September 2026**. Scope: unresolved items in [SCHOLARLY_REVIEW.md](SCHOLARLY_REVIEW.md) and [OFFICIAL_VENDOR_REVIEW.md](OFFICIAL_VENDOR_REVIEW.md), not a repeat of their settled checks. Only this report is changed; no article, model or bibliography corrections are applied.
+
+**Result:** no verified published-version correction for Beuve, no full January 2026 ProcureCon report or Zero100 methodology obtained, and no verified legally open full original books. Additional primary-source previews narrow several gaps below. “Not found” describes these searches, not proof of non-existence. Tool errors are distinguished from access restrictions. No login, registration, paywall bypass or author contact was used.
+
+## 1. Beuve, Moszoro and Spiller: published version and discrepancy
+
+**Found:** the [OUP issue record](https://academic.oup.com/jleo/issue/39/1) identifies the published article, 39(1), 281–308, DOI [10.1093/jleo/ewab039](https://doi.org/10.1093/jleo/ewab039). The [abstract endpoint](https://academic.oup.com/jleo/article-abstract/39/1/281/6462048) returned OUP's minimal article page, not the relevant table. Opening the [full article endpoint](https://academic.oup.com/jleo/article/39/1/281/6462048) failed in the tool. No final Table 4 or §6.2 was read.
+
+**Version trail:** the [MPRA deposit](https://mpra.ub.uni-muenchen.de/117230/) points to the already audited `Renegotiations_v5c.pdf`; its publication citation does not make the manuscript a publisher facsimile. The [SSRN record](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3849236), available through indexed metadata, lists 33 pages and a last revision of 6 March 2023. Direct opening failed. Neither record supplied a later correction. The author's [CV](https://www.moszoro.net/docs/Moszoro_CV.pdf), available as indexed text, also identifies NBER working paper 28491. Both its [record](https://www.nber.org/papers/w28491) and [PDF](https://www.nber.org/system/files/working_papers/w28491/w28491.pdf) failed to open. A [licensed vLex presentation](https://vlex.co.uk/vid/doing-it-by-the-1087456983) exposed introductory material, not a verified reading of the disputed results.
+
+**Not found:** searches for `ewab039` with `correction`, `erratum` and `corrigendum`, plus title/author and OUP-restricted searches, produced no identifiable correction notice. This is not a complete Crossmark/version-history certification.
+
+**Unresolved calculation, carried forward from the existing audit:** Table 4's printed 0.014/0.011/0.012, multiplied by seven category-SD increments, yield **0.098/0.077/0.084 amendments per contract-year**. They do not establish the prose range 7.7–10.5% or its relative-percent interpretation. Reaching 0.105 by the same multiplication would require 0.015; that is arithmetic, **not evidence that 0.015 was intended**. Do not replace a coefficient, interpret this as amendment probability, or claim the final published article contains the same mismatch without inspecting it. Quantitative use remains withheld.
+
+## 2. January 2026 Annual ProcureCon CPO Report
+
+**Partial addition:** the co-sponsor [Icertis announcement](https://www.icertis.com/company/news/features/only-1-in-10-procurement-leaders-have-progressed-beyond-ai-pilots-according-to-icertis-sponsored-study/) says respondents work in procurement, supply-chain management and risk management across US and Canadian organisations; more than 45% represent companies with over $250 million under management. These are sponsor-reported sample characteristics, not an independently inspected methodology appendix.
+
+**Attempts:** inspected the [ProcureAbility report page](https://procureability.com/2026-annual-procurecon-cpo-report/) and [Icertis report landing page](https://www.icertis.com/research/analyst-reports/procurecon-cpo/intro/). Neither tool-readable page delivered the full report. [GEP's report page](https://www.gep.com/research-reports/2026-annual-procurecon-cpo-report) was search-indexed with a download label, but direct opening failed; no download was completed. Exact-title searches with `pdf`, `sample`, `methodology` and `respondents`, and searches restricted to ProcureAbility uploads, IQPC's public CDN and ProcureCon East/West, did not locate a usable primary full text. A direct public-page HTML read also failed locally at DNS resolution. No form was submitted, and no hidden download route was reconstructed.
+
+**Still not found:** N, fieldwork dates, recruitment/sampling frame, response rate, weighting, questionnaire, skip logic, and item-level denominators. In particular, the denominator behind **67%/54%/51%** is not resolved. Do not assume these are shares of the entire sample, or calculate respondent counts from the 89% readiness framing.
+
+**Report-identity traps:**
+
+- ProcureAbility's separate [September 2026 CPO Benchmark Study announcement](https://procureability.com/news/procurement-benchmark-insights-for-2026-leaders/) reports **160** leaders across **21** industries. Its title is *Five Priorities for a Future-Ready Procurement Function*. Those sample details cannot be assigned to January's Annual ProcureCon report.
+- The separately titled [2026 CPO–CIO report](https://procureability.com/2026-procurecon-cpo-cio-report/) and the [August AI-in-procurement study described by co-sponsor Opstream](https://www.opstream.ai/blog/procurecon-ai-in-procurement-report-2026/) are also different studies. The latter's N=100 does not close this gap. Nor does the search-indexed N=100 in the [2025 Annual CPO report](https://procureability.com/wp-content/uploads/2025/01/the-2025-annual-procurecon-cpo-report.pdf).
+
+## 3. Zero100: Rise of the AI-Enabled CPO
+
+**Partial method detail found:** the [30 January 2026 preview](https://zero100.com/insights/rise-of-the-ai-enabled-cpo/) describes respondents locating eight core sourcing jobs on a spectrum from human ownership to autonomous AI execution with human oversight, both currently and three years ahead. This adds question-design context, but does not reveal the complete instrument or the denominators for the headline 85% and 78%.
+
+**Attempts and boundary:** followed the preview's full-report link to the [member hub](https://members.zero100.com/), which redirected to [login](https://members.zero100.com/login/). Stopped there. Exact-title searches with sample, methodology and respondent terms found no public methods appendix or full report. Public contributor posts surfaced the report/foreword but did not supply the missing methods.
+
+**Still not found:** N, fieldwork dates, recruitment, geography/industry composition, weighting, response rate, item non-response and complete question wording. The preview's separate 90% AI-agent statistic explicitly concerns a survey from the previous year; it cannot establish this survey's sample. Keep all figures as attributed respondent statements, not market prevalence or observed procurement effects.
+
+## 4. Original books: lawful public access
+
+| Work | Additional access found / attempted | Specific remaining limit |
+|---|---|---|
+| Lipsky (1980), *Street-Level Bureaucracy* | [JSTOR's original-edition record](https://www.jstor.org/stable/10.7758/9781610447713) identifies copyright 1980, Russell Sage Foundation, 272 pages, and displays chapter-opening previews. Chapter 3, pp. 29–39, introduces resource/information constraints; chapter 4, pp. 40–53, introduces goals and performance measures. Opening the [chapter 3 record](https://www.jstor.org/stable/10.7758/9781610447713.8) failed. | Original-edition chapter locators and short previews are now available, beyond the previously checked 2010 catalogue. These are chapter ranges, not exact supporting-page verification. Full chapters/book were not obtained; no claim of complete original-text review or procurement-bypass evidence. |
+| Vaughan (1996), *The Challenger Launch Decision* | [Google Books' 1996 record](https://books.google.co.uk/books?id=vpoc-vWvF_IC) exposes metadata and contents, including the risk/work-group-culture/normalisation chapter starting at p. 73. Opening its front-cover preview failed. The [original-edition Open Library record](https://openlibrary.org/books/OL803384M/The_Challenger_launch_decision), found in search, labels access preview-only. | No original substantive passage or full book verified. The p. 73 locator is contents metadata, not proof of a particular statement. Later expanded editions must not silently supply original-edition page references. |
+
+Unverified third-party book uploads were not used. Closing these gaps requires an authorised accessible original text or an explicitly identified edition-specific excerpt. None of this follow-up supports numerical model calibration; the existing evidence boundaries remain in force.

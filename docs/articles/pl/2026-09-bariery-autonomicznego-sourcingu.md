@@ -112,19 +112,21 @@ Trzeba także ocenić skutki zachowania systemu. Konsekwentne
 zachowanie agenta, na przykład przyjmowanie ofert w powtarzalnym schemacie, może
 w niektórych porządkach prawnych rodzić skutki nawet bez formalnego podpisu.
 
-Osobnej oceny wymaga zakres regulacji AI. W pierwotnym brzmieniu
-rozporządzenia (UE) 2024/1689 z 13 czerwca 2024 r. art. 6 ust. 2
+Osobnej oceny wymaga zakres regulacji AI. Art. 6 ust. 2
+rozporządzenia (UE) 2024/1689 z 13 czerwca 2024 r.
 w powiązaniu z załącznikiem III nie klasyfikuje automatycznie każdego systemu
 wpływającego na decyzje gospodarcze jako wysokiego ryzyka. Załącznik III wymienia konkretne
 zastosowania, a typowa negocjacja handlowa między przedsiębiorcami do nich nie
-należy wyłącznie z racji prowadzenia negocjacji. W tej wersji art. 50 ust. 1 dotyczy
+należy wyłącznie z racji prowadzenia negocjacji. Art. 50 ust. 1 dotyczy
 dostawców systemów przeznaczonych do bezpośredniej interakcji z osobami
 fizycznymi: mają zapewnić informację o interakcji z AI, chyba że jest to
 oczywiste w okolicznościach wskazanych w przepisie. Nie jest to identyczny
-obowiązek dla każdej wymiany między systemami. Portal urzędowy ostrzega,
-że wyświetlany tekst art. 50 nie uwzględnia jeszcze zmian Digital Omnibus.
-Nie potwierdzono tu aktualnego brzmienia całego przepisu po tych zmianach;
-przed zastosowaniem należy sprawdzić właściwą wersję prawa.
+obowiązek dla każdej wymiany między systemami. Digital Omnibus
+(rozporządzenie 2026/1744) nie zmienia ust. 1. Zmienia ust. 7 dotyczący
+kodeksów praktyk, a w art. 111 ust. 4 dodaje termin 2 grudnia 2026 r.
+dla dostosowania systemów generujących treści, wprowadzonych na rynek przed
+2 sierpnia 2026 r., do obowiązku oznaczania z art. 50 ust. 2.
+Ten okres przejściowy nie odracza obowiązku z ust. 1.
 Zastosowanie w sektorze publicznym oraz
 przetwarzanie danych osób kontaktowych po stronie dostawcy wymagają odrębnej
 analizy.
@@ -373,11 +375,14 @@ jest niezależnym potwierdzeniem wyniku organizacji:
   https://pactum.com/clients
 - Parlament Europejski i Rada Unii Europejskiej. (2024). Rozporządzenie
   (UE) 2024/1689 z 13 czerwca 2024 r., art. 6 ust. 2, art. 50 ust. 1
-  i załącznik III. Odwołanie dotyczy pierwotnego brzmienia; urzędowa strona
-  art. 50 ostrzega o nieuwzględnionych zmianach Digital Omnibus.
+  i załącznik III, z uwzględnieniem zmian rozporządzeniem 2026/1744.
   https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng
   https://ai-act-service-desk.ec.europa.eu/en/ai-act/article-50
   https://ai-act-service-desk.ec.europa.eu/en/ai-act/annex-3
+- Parlament Europejski i Rada Unii Europejskiej. (2026). Rozporządzenie
+  (UE) 2026/1744 z 8 lipca 2026 r. (Digital Omnibus on AI), art. 1 pkt 20
+  oraz pkt 39 lit. b; Dz.U. UE L, 2026/1744, 24 lipca 2026.
+  https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32026R1744
 - Komisja Europejska. (b.d.). *Transparency obligations under Article 50 of
   the AI Act* [FAQ, materiał objaśniający]. Nie zastępuje tekstu aktu prawnego.
   https://digital-strategy.ec.europa.eu/en/faqs/transparency-obligations-under-article-50-ai-act

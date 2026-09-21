@@ -1,5 +1,9 @@
 # Scholarly citation review
 
+Dalsze ustalenia po PR #38: [SOURCE_FOLLOWUP.md](SOURCE_FOLLOWUP.md).
+Poniższy raport zachowuje stan poprzedniego przeglądu.
+
+
 Review date: **21 September 2026**. Model context: **ProcuraCost 2.3.0**.
 
 Scope: the eleven unique scholarly articles, research reports and books named below in `RESEARCH.md` and doctoral Articles 1, 2 and 3. Article 2 was reviewed but was not edited. Official cases, legal sources, code and practitioner/video material are outside this scholarly review. EC2011 is recorded separately because an existing historical conformity assertion needs qualification.
