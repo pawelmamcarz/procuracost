@@ -2,6 +2,8 @@
 
 Checked **21 September 2026**. Scope: unresolved items in [SCHOLARLY_REVIEW.md](SCHOLARLY_REVIEW.md) and [OFFICIAL_VENDOR_REVIEW.md](OFFICIAL_VENDOR_REVIEW.md), not a repeat of their settled checks. Only this report is changed; no article, model or bibliography corrections are applied.
 
+**Update, 22 September 2026 (source closure):** items 1-3 below are superseded by the later audit. (1) The MPRA post-print 117230 was verified as the published-version text (Table 4: 0.014/0.011/0.012, implying 0.077-0.098 per contract-year; prose 7.7-10.5% is a working-paper leftover; no erratum; OUP version of record unread, access blocked), and native model 2.3.0 now anchors the amendment differential under a documented signed allocation convention. (2) The 67%/54%/51% denominators were confirmed as the "not fully ready" subgroup (89% of the sample) by the ProcureCon Insights release of 3-4 March 2026; N of the 2026 edition remains undisclosed. (3) For Zero100, N=100 and fieldwork around December 2025 remain circumstantial (Zero100 article, 4 February 2026), not officially confirmed. Item 4 (Lipsky/Vaughan original passages) remains open and unchanged.
+
 **Result:** no verified published-version correction for Beuve, no full January 2026 ProcureCon report or Zero100 methodology obtained, and no verified legally open full original books. Additional primary-source previews narrow several gaps below. “Not found” describes these searches, not proof of non-existence. Tool errors are distinguished from access restrictions. No login, registration, paywall bypass or author contact was used.
 
 ## 1. Beuve, Moszoro and Spiller: published version and discrepancy
