@@ -23,6 +23,7 @@ const EVIDENCE_COPY_KEYS = {
   uzp_preliminary_market_consultation: "uzpConsultation",
   ec_innovation_procurement_guidance: "ecInnovation",
   szucs_discretion_price_2024: "szucs",
+  beuve_amendment_frequency_2023: "beuve",
 } as const;
 
 function formatNumber(value: number, lang: Lang): string {
