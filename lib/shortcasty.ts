@@ -79,9 +79,9 @@ export const EPISODES: Episode[] = [
     focus: "Przegląd źródła",
     focusEn: "Source review",
     thesis:
-      "Estymacja 0,077–0,105 dotyczy dodatkowych formalnych aneksów na rok kontraktu przy jednoczesnym wzroście o jedno odchylenie standardowe w każdej z siedmiu kategorii sztywności w sektorze francuskich parkingów. To częstość, nie prawdopodobieństwo zdarzenia ani efekt projektu przebiegu procesu. W modelu 2.3 nie wyznacza różnicy kosztu aneksów.",
+      "Tabela 4 wersji wydawniczej implikuje 0,077–0,098 dodatkowych formalnych aneksów na rok kontraktu przy jednoczesnym wzroście o jedno odchylenie standardowe w każdej z siedmiu kategorii sztywności w sektorze francuskich parkingów; proza 7,7–10,5% pozostała po wersji roboczej. To częstość, nie prawdopodobieństwo zdarzenia ani efekt projektu przebiegu procesu. W modelu 2.3 dyferencjał jest zakotwiczony w zweryfikowanym post-princie i monetyzowany wyłącznie przy zadeklarowanej różnicy sztywności umów.",
     thesisEn:
-      "The 0.077-0.105 estimate concerns additional formal amendments per contract-year for a simultaneous one-standard-deviation increase in each of seven rigidity categories in French car-park contracts. It is a frequency, not an event probability or an effect of workflow design. It does not set the amendment-cost differential in model 2.3.",
+      "Table 4 of the published version implies 0.077-0.098 additional formal amendments per contract-year for a simultaneous one-standard-deviation increase in each of seven rigidity categories in French car-park contracts; the 7.7-10.5 per cent prose is a working-paper leftover. It is a frequency, not an event probability or an effect of workflow design. In model 2.3 the differential is anchored to the verified post-print and monetised only under a declared contract-rigidity difference.",
     practiceNote:
       "Rejestruj konstrukcję klauzul niezależnie od liczby czynności, nakładu pracy i czasu postępowania.",
     practiceNoteEn:
