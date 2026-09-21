@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-2-model-kosztu-PL.md",
+  "line": 90,
+  "section": "## 4. Resolver prawny\n\nReguły `pl-pzp-2026-2027` obejmują daty wszczęcia od 1 stycznia 2026 do\n31 grudnia 2027. Konteksty sektorowy oraz obronności i bezpieczeństwa są poza\nzakresem pierwszego resolvera i kończą się kontrolowanym błędem.\n\nDla wspieranych klasycznych procedur PZP resolver tworzy kroki na podstawie\nart. 283, art. 308 ust. 2, art. 138 ust. 1, art. 144 ust. 1,\nart. 151 ust. 1 i art. 264 ust. 1 PZP. Dokładne wartości zależne od procedury,\nprzedmiotu i sposobu komunikacji opisuje rejestr parametrów.\n\nKażda blokada prawna ma stałą wartość niską, centralną i wysoką, zero aktywnych\ndni oraz identyczny czas oczekiwania w obu wariantach. Wsparcie systemowe nie\nskraca tych kroków.\n\nResolver nie ocenia, czy w konkretnym postępowaniu zachodzi podstawa skrócenia,\nwyjątku albo innego reżimu. Taka ocena należy do Zamawiającego i jego doradców.\n",
+  "fileHash": "b9d4935cffb9d999cbe19edaac673f00b02af79867fc6c807188b3f4b36f5827",
+  "requestHash": "cce90ad065a67ac43c6fb3717eae792c29de83b1de2cc8b8824b94b7327518b4",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.14
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.33
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.87
+    }
+  },
+  "usage": {
+    "input_tokens": 750,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

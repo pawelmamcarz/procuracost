@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-2-model-kosztu-PL.md",
+  "line": 196,
+  "section": "## 8. Założenia przeniesione i ilustracyjne alokacje map\n\nWartości ekonomiczne, agregaty bazowych dni, stawki ról, profile wsparcia i\ncentralne koszty zwłoki zostały przeniesione z rejestru 2.2.2 jako\n`retained_legacy_assumption`. W pięciu mapach mechanizmowych model 2.3\nwprowadza ilustracyjną kolejność kroków, podział agregatu dni oraz alokację\ngodzin ról. Zachowanie pochodzenia umożliwia odtworzenie punktu startowego, ale\nnie nadaje żadnej z tych klas statusu estymat.\n\nDomyślny zakres dziennego kosztu zwłoki wynosi 0,25, 1 i 4 razy wartość\ncentralną. Model nie potrafi zweryfikować tego wejścia. W zastosowaniu\norganizacyjnym należy je wyprowadzić z jawnego mechanizmu, na przykład\nutraconej marży, przestoju albo kosztu rozwiązania zastępczego.\n\nProfile wsparcia systemowego modyfikują czasy aktywne, nakład ról oraz\nzadeklarowane koszty koordynacji i narzędzia. Są założeniami startowymi, a nie\nszacunkiem efektu wdrożenia. W mapach mechanizmowych są stosowane do nowych\nalokacji ilustracyjnych, dlatego rekord decyzji ujawnia obie klasy pochodzenia.\nNie przekładają się na gotowość organizacyjną.\n",
+  "fileHash": "fdc4ef6f9be1c931f048ed111080d3415ccc8ecd3167765786d0a56076b498d2",
+  "requestHash": "cb84ee65821f50722c045121d9d0f5c2eeb580a40d259403e6e50f5826825846",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.19
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.12
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.11
+    }
+  },
+  "usage": {
+    "input_tokens": 815,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

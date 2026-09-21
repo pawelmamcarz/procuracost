@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 183,
+  "section": "## Jak ProcuraCost trzyma tę warstwę osobno\n\nModel ProcuraCost 2.3 nie liczy gotowości organizacyjnej. Porównuje koszt\ndwóch projektów przebiegu procesu zakupowego w tych samych ramach prawnych i\nładzie zakupowym. Pytania o właściciela, mandat i ciągłość nie mają w tym\nrachunku żadnego miejsca, i to jest decyzja projektowa, nie przeoczenie.\n\nGotowość organizacyjna do wdrożenia jest osobnym samoopisem. Obejmuje osiem\nobszarów: cel, właściciel biznesowy i mandat, proces, wymagania, dane i\nautomatyzacja, ład, adopcja oraz wartość i wdrożenie. W sumie szesnaście pytań.\nNa każde są trzy odpowiedzi: warunek niespełniony, do uzupełnienia,\npotwierdzony. Obszar właściciela biznesowego i mandatu czerpie tematycznie z\ntrzech fragmentów omawianych w tym tekście.\n\nSamoopis nie ma punktów, wag, oceny zbiorczej ani decyzji „idziemy albo nie\".\nNie zmienia różnicy kosztu ani o złotówkę. Organizacja, która odpowie\n„niespełniony\" na wszystkie szesnaście pytań, przy identycznych wejściach\nkosztowych dostanie ten sam wynik\nco organizacja, która odpowie „potwierdzony\". Powód jest prosty: gotowość nie\njest parametrem modelu kosztowego, a mieszanie tych warstw prowadzi do rachunku,\nktórego nie da się odtworzyć.\n\nJeżeli ktoś chce zobaczyć, jak to wygląda w praktyce, kolejność jest ustalona:\nnajpierw zapis porównania kosztu, dopiero potem samoopis gotowości. Nie\nodwrotnie i nie równolegle.\n",
+  "fileHash": "4e7208025ceb8bade398b14d9e9019f8237dc3d948b81a411fb035ce0707e804",
+  "requestHash": "fd48fb19ce8716a179bda157988b58c55502b82db51089af5712097b4df87248",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.1
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.23
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.43
+    }
+  },
+  "usage": {
+    "input_tokens": 902,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

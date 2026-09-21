@@ -64,6 +64,11 @@ Low, central and high values are declared scenario cases, not statistical
 confidence intervals. All mandatory legal waits are fixed, sourced and
 identical in both alternatives.
 
+The outer envelope can combine incompatible endpoints of shared inputs.
+Crossing zero is not proof of a feasible sign reversal when shared inputs are
+varied together. Identical alternatives can have a non-zero-width envelope
+while retaining a zero difference at every matched input setting.
+
 ## Monetisation boundary
 
 Native model 2.3 includes:

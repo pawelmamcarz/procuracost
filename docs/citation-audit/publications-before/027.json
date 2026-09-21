@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-bariery-autonomicznego-sourcingu.md",
+  "line": 1,
+  "section": "---\ntytuł: \"Bariery autonomicznego sourcingu i negocjacji\"\npodtytuł: \"Dlaczego agent szybciej wejdzie na tail niż na strategiczny BOM\"\ndata: 2026-09\nautor: \"Paweł Mamcarz\"\nautor_www: \"https://mamcarz.com\"\nmodel: \"ProcuraCost 2.3.0\"\nstatus: \"szkic do redakcji, część liczb wymaga potwierdzenia u źródła\"\n---\n\n# Bariery autonomicznego sourcingu i negocjacji\n",
+  "fileHash": "fb0e3f4f5441dd180b361d83da53b9e5c1fb0bbd1d2cecfc24643d3a1a157d2a",
+  "requestHash": "098cb75b1ac741ca81f0e61317aaee3103b86863d201e31697e3870ed80ef827",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.16
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.27
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.38
+    }
+  },
+  "usage": {
+    "input_tokens": 540,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

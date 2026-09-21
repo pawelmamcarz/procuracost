@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-2-model-kosztu-PL.md",
+  "line": 309,
+  "section": "## 13. Wkład i ograniczenia\n\nWkładem artykułu jest audytowalny kontrakt łączący dwie mapy procesu z zakresem\nmonetyzacji, pochodzeniem założeń i testem symetrii. Model pokazuje, jaka część\nróżnicy wynika z jawnych działań i kosztu czasu, a jaka pozostaje poza\nrachunkiem.\n\nModel nie szacuje pełnego dobrobytu społecznego, jakości trudnej do\nmonetyzacji, wszystkich sankcji ani ryzyka prawnego. Nie obejmuje procedur\nsektorowych oraz obronności i bezpieczeństwa. Nie jest opinią prawną,\nbenchmarkiem organizacji ani rekomendacją procedury.\n",
+  "fileHash": "b9d4935cffb9d999cbe19edaac673f00b02af79867fc6c807188b3f4b36f5827",
+  "requestHash": "206ec8d04bd597281be5c7332fbf62cd826884d0a6e4a0b944cdd4643ad95f56",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.09
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.09
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.07
+    }
+  },
+  "usage": {
+    "input_tokens": 598,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

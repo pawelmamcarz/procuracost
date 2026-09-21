@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-3-empiria-PZP-PL.md",
+  "line": 284,
+  "section": "## 10. Prerejestracja i falsyfikacja\n\nPrzed estymacją należy zamrozić populację, okno, ekspozycję, wyniki, kontrole,\nestymator, poziom klastrowania, reguły wyłączeń, MSI, granice równoważności,\nobsługę braków i plan testów wielokrotnych.\n\nHipotezy słabną, jeżeli:\n\n- H1a lub H1b osobno nie osiąga prerejestrowanego dodatniego MSI albo ma znak\n  przeciwny odpowiednio dla czasu i godzin koordynacji;\n- szerszy dostęp ex ante wiąże się z materialnie mniejszą liczbą ważnych ofert\n  albo wyższą ceną względem niezależnego benchmarku;\n- sztywność klauzul nie wiąże się dodatnio z liczbą aneksów na rok kontraktu lub\n  warunkowy efekt liczby bram wykracza poza granicę równoważności;\n- dla potrzeb niekompletnych interakcja adaptacyjnego odkrywania nie jest\n  dodatnia dla pracy przed wszczęciem i ujemna dla dni wyjaśnień oraz ponownej\n  pracy po rozpoczęciu konkurencji albo dla potrzeb stabilnych wykracza poza\n  granice równoważności;\n- odsetek zarejestrowanych kontroli nie wiąże się z mniejszą liczbą działań poza\n  systemem i braków śladu audytowego ponad informację o posiadaniu systemu;\n- komponent modelu nie przewyższa prerejestrowanej prostej bazy.\n\nHeterogeniczność jest wynikiem tylko wtedy, gdy odpowiada prerejestrowanemu\nmechanizmowi i pojawia się poza próbą używaną do dopasowania. Wynik zerowy lub\nprzeciwny pozostaje wynikiem badania.\n",
+  "fileHash": "9fcdaac622b79a56d62e64456690ccfd089ac879a0019c9807cf864870a88919",
+  "requestHash": "3f029a58e45319307a5e775b607c7805e6e457d6a14b504528ae1d08bf7b8534",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.25
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.22
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.16
+    }
+  },
+  "usage": {
+    "input_tokens": 902,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-2-model-kosztu-PL.md",
+  "line": 216,
+  "section": "## 9. Scenariusze i warunki zastosowania\n\nRejestr zawiera dziesięć scenariuszy. Służą do demonstracji mechanizmów,\ntestowania neutralności oraz zapisu pochodzenia założeń.\n\n### 9.1 Warunki z odrębnym mechanizmem\n\n- Transformacja ERP przy niepełnym wymaganiu może wykorzystywać definiowanie\n  problemu i modularne podejście.\n- Przeprojektowanie usługi logistycznej może wykorzystywać kontakt z rynkiem do\n  sprawdzenia poziomów usług, interfejsów i podziału ryzyka.\n- Publiczny zakup IT może korzystać ze wstępnych konsultacji rynkowych przed\n  postępowaniem otwartym, bez zmiany obowiązkowych terminów.\n- Odkrywanie i współprojektowanie może zwiększać czas i nakład pracy, jeżeli\n  uczenie się oraz ponowne określenie zakresu są rzeczywistymi czynnościami.\n\n### 9.2 Warunki bez odrębnego mechanizmu pracy\n\nStabilna standardowa usługa może wymagać tej samej pracy w obu wariantach.\nJej scenariusz startowy osobno deklaruje jednak różnicę konkurencji, więc nie\njest neutralną kontrolą kosztu całkowitego. Zamówienie katalogowe i zwolnienie\nzlecenia MRP mają identyczne mapy i brak różnicy konkurencji. Są neutralnymi\nkontrolami. Ich centralna delta wynosi zero.\n\nPrzykłady opisują warunki, nie zalecenia. Oficjalne przypadki z Kalifornii,\nOECD, UZP i Komisji Europejskiej wspierają mechanizmy jakościowe, lecz nie\nwyznaczają czasów ani kosztów scenariuszy.\n",
+  "fileHash": "fdc4ef6f9be1c931f048ed111080d3415ccc8ecd3167765786d0a56076b498d2",
+  "requestHash": "2408fa6a44b7961a696a6f9256ead6253cfe9247681e520194a738cb8b0f0bcf",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.26
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.16
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.7
+    }
+  },
+  "usage": {
+    "input_tokens": 895,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

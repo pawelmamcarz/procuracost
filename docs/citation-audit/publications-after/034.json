@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-bariery-autonomicznego-sourcingu.md",
+  "line": 363,
+  "section": "## Teza\n\nBariery autonomicznego sourcingu i negocjacji nie sprowadzają się do pytania,\nczy model językowy potrafi napisać zapytanie ofertowe. Sprowadzają się do\nmandatu handlowego, gotowości dostawcy, jakości opisu potrzeby, zapisu do\nsystemu transakcyjnego i prawa konkurencji.\n\nOgraniczony pilotaż na ogonie wydatków jest jedną z dróg opisanych w\nprzywołanych przypadkach. Nie jest uniwersalną kolejnością wdrożenia.\nWybór zakresu powinien wynikać z jakości danych, skutków błędu i możliwości\nkontroli. Granice ceny, warunków i eskalacji należy określić przed startem.\n",
+  "fileHash": "55085066f5ca858a529dfcd95fc0bdc09c0776b38cc5288acef29c963b86f45a",
+  "requestHash": "cdb3c0fd99c101a025bb8512fb9d574532f62a648e3f98efa59c2246b7f1b7d2",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.15
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.15
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.36
+    }
+  },
+  "usage": {
+    "input_tokens": 600,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

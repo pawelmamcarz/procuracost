@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-07-tunel-pole-lepszy-biznes.md",
+  "line": 127,
+  "section": "## Zakupy operacyjne wymagają osobnej architektury\n\nZamówienie katalogowe, zwolnienie MRP i strategiczne postępowanie nie powinny\nkorzystać z jednej rozbudowanej ścieżki. Kanał realizacji zakupu jest odrębną\ndecyzją od rodziny procedury i projektu pracy.\n\nDla transakcji operacyjnej system może automatycznie:\n\n- sprawdzić budżet, uprawnienia i zgodność z umową;\n- pobrać zatwierdzone dane dostawcy, materiału i centrum kosztów;\n- porównać zapotrzebowanie, zamówienie, odbiór i fakturę;\n- skierować odchylenie do wskazanego właściciela;\n- zachować ślad zwolnienia i wyjątku.\n\nCzłowiek pozostaje tam, gdzie potrzebna jest ocena: przy niestandardowej\npotrzebie, analizie rynku, negocjowaniu podziału ryzyka i rozstrzyganiu wyjątku.\nAutomatyzacja nie usuwa odpowiedzialności. Kieruje uwagę do spraw, które jej\nwymagają.\n",
+  "fileHash": "0622978d486844e49a3a07f125fcccd004c31f21d7251c2a5f08aef74cc952e4",
+  "requestHash": "88eec41bf209e27484cad52535806b0eae5f23e94496d83a3f6c3ecaf4fab8b3",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.11
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.15
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.11
+    }
+  },
+  "usage": {
+    "input_tokens": 699,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

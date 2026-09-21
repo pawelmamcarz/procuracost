@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-bariery-autonomicznego-sourcingu.md",
+  "line": 13,
+  "section": "## Dlaczego agent szybciej wejdzie na tail niż na strategiczny BOM\n\nDyskusja o sztucznej inteligencji w zakupach zwykle miesza dwie różne sprawy.\nPierwsza to asystent, który streszcza umowę, porządkuje wniosek zakupowy albo\npodpowiada kategorię. Druga to agent, który samodzielnie uruchamia zapytanie\nofertowe, prowadzi negocjację i doprowadza sprawę do rozstrzygnięcia. Bariery\ndla obu są zupełnie inne, dlatego wnioski z jednej dyskusji nie przenoszą się na\ndrugą.\n\nRóżnica sprowadza się do konsekwencji błędu. Źle zinterpretowany wniosek\nzakupowy psuje jedno zgłoszenie i kosztuje kilkanaście minut korekty.\nAutonomiczna negocjacja może zepsuć relację z dostawcą, unieważnić\npostępowanie albo doprowadzić do zobowiązania, którego organizacja nie\nzamierzała zaciągnąć. To nie jest różnica stopnia. To różnica rodzaju.\n\nStąd bierze się przepaść między deklaracją a wdrożeniem. Badania rynkowe\npokazują niemal powszechne eksperymentowanie i jednocześnie znikomy odsetek\norganizacji, które faktycznie oddały agentowi mandat handlowy. Według raportu\nEFESO tylko pięć procent organizacji zakupowych realnie zeskalowało generatywną\nsztuczną inteligencję, przy trzech czwartych pozostających w fazie\neksperymentu. Pilotaż jest łatwy. Produkcja jest trudna, ponieważ dopiero na\nprodukcji uruchamiają się bariery opisane niżej.\n\nTen tekst porządkuje je w kolejności, w jakiej blokują uruchomienie, a nie w\nkolejności, w jakiej pojawiają się w prezentacjach dostawców.\n",
+  "fileHash": "fb0e3f4f5441dd180b361d83da53b9e5c1fb0bbd1d2cecfc24643d3a1a157d2a",
+  "requestHash": "fade49f08b9f5b277ae16a1db91ef390cae53412e27f5f0304dc3b8cf5d88a15",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.21
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.54
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.95
+    }
+  },
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

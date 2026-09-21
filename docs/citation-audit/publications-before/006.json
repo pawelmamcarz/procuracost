@@ -1,0 +1,27 @@
+{
+  "file": "RESEARCH.md",
+  "line": 178,
+  "section": "## 5. Reference scenarios and interpretation\n\nThe ten canonical scenarios are structured starting points:\n\n1. `fleet_tco_reframing`\n2. `erp_transformation_discovery`\n3. `logistics_service_redesign`\n4. `critical_material_continuity`\n5. `public_it_open_with_market_consultation`\n6. `stable_private_standard_service`\n7. `stable_capex_replacement`\n8. `discovery_solution_codesign`\n9. `catalog_calloff_control`\n10. `mrp_release_control`\n\nTheir economic values are labelled retained model 2.2.2 assumptions after\nmigration into the native schema. For the first five scenarios, aggregate\nbase-day totals are also retained, while step order, allocation of days and\nrole-hour allocations are illustrative model 2.3 inputs. Official evidence\nattached to a scenario supports a mechanism, not the retained values or the new\nnumerical allocations. Users must assess whether each assumption is defensible\nfor the intended decision.\n\nAdaptive work has a plausible procurement mechanism when requirements are incomplete, supplier input can improve problem definition, market consultation is lawful and useful, or contract design must accommodate learning. The ERP discovery, logistics redesign, public IT market-consultation and solution co-design scenarios are intended to expose those conditions. The solution co-design scenario also makes an important counterpoint: learning may add process time and role effort.\n\nAn adaptive workflow may add no distinct workflow value when the requirement is stable, the call-off is already governed by a framework or catalogue, or an MRP release simply executes an established commercial arrangement. The catalogue call-off and MRP release controls use identical maps and no supplier-access difference. They return equal alternative ranges, a zero central difference and a symmetric outer envelope. The stable standard-service starting scenario is a topology control only: its maps are identical, but it separately declares a restricted-access sensitivity and is therefore not a neutral total-cost control. The stable capital-replacement scenario also asks whether an adaptation mechanism is present rather than presuming one.\n\nThese are conditions for analysis, not procedure recommendations. The cost result does not determine legal availability, and organisational readiness is self-described separately.\n",
+  "fileHash": "9a9581ef3c2b73b2e843741b5a6b4a4abd783f231c804664b3f7e357f1bd8f41",
+  "requestHash": "1f9ec94482521410a7dd1a51b814c826ae01b7e465e6497e14beabdc2a7fa625",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.21
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.14
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.21
+    }
+  },
+  "usage": {
+    "input_tokens": 864,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 123,
+  "section": "## Dwa fragmenty, które właściciel powinien znać na pamięć\n\nDwa fragmenty rozmowy dotyczą decyzji, które właściciel podejmuje w pierwszych\ntygodniach i których później nie da się łatwo cofnąć.\n\nPierwszy to [System nie powinien kopiować archaicznej sekwencji (39:45 do 41:35)](https://youtu.be/5KYUdTLlvvg?t=2385).\nOdwzorowanie obecnego obiegu zatwierdzeń jeden do jednego może wydawać się\nłatwiejsze niż uzgodnienie nowej kolejności. Może jednak utrwalić zbędną pracę. Ocena\njej kosztu wymaga porównania wariantów, a nie założenia, że odwzorowanie\nobecnego obiegu jest zawsze najdroższe.\n\nDrugi to [Polityka jako granica kontroli (43:34 do 44:19)](https://youtu.be/5KYUdTLlvvg?t=2614).\nPolityka zakupowa może wyznaczać szerszą granicę zgodności niż jedna stała\nsekwencja kroków. Uprawnienia, zasady konkurencji, wymagany ślad decyzji i tryb\nobsługi wyjątków pozostają niezmienne. Kolejność czynności wewnątrz tych ram\nmoże być projektowana. Właściciel, który tego rozróżnienia nie rozumie, będzie\nbronił każdego kroku jako wymogu zgodności. Właściciel, który je rozumie,\npotrafi wskazać, które kroki są granicą, a które nawykiem.\n\nTrzeci fragment jest uzupełnieniem obu poprzednich:\n[Standaryzacja pracy i osąd ekspercki (04:31 do 06:48)](https://youtu.be/5KYUdTLlvvg?t=271).\nRozmowa odróżnia pracę nadającą się do standaryzacji od sytuacji wymagających\nosądu. Właściciel, który potrafi to rozdzielić, wie, gdzie system ma prowadzić,\na gdzie ma zostawić miejsce na decyzję człowieka.\n",
+  "fileHash": "4e7208025ceb8bade398b14d9e9019f8237dc3d948b81a411fb035ce0707e804",
+  "requestHash": "dc0d02b1a2ac638ec2d0f8afc50db532b34698b8816fae68e6eec79f89cd4920",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.17
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.19
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.37
+    }
+  },
+  "usage": {
+    "input_tokens": 978,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

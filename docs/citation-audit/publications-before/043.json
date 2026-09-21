@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 123,
+  "section": "## Dwa fragmenty, które właściciel powinien znać na pamięć\n\nDwa fragmenty rozmowy dotyczą decyzji, które właściciel podejmuje w pierwszych\ntygodniach i których później nie da się łatwo cofnąć.\n\nPierwszy to [System nie powinien kopiować archaicznej sekwencji (39:45 do 41:35)](https://youtu.be/5KYUdTLlvvg?t=2385).\nNajprostszą decyzją konfiguracyjną jest odwzorowanie obecnego obiegu\nzatwierdzeń jeden do jednego. Jest najprostsza, ponieważ nikogo nie trzeba\nprzekonywać. Jest też najdroższa, ponieważ cyfryzuje nieefektywność zamiast ją\nusuwać. Bez kwestionującego z mandatem ta decyzja zapada domyślnie.\n\nDrugi to [Polityka jako granica kontroli (43:34 do 44:19)](https://youtu.be/5KYUdTLlvvg?t=2614).\nPolityka zakupowa może wyznaczać szerszą granicę zgodności niż jedna stała\nsekwencja kroków. Uprawnienia, zasady konkurencji, wymagany ślad decyzji i tryb\nobsługi wyjątków pozostają niezmienne. Kolejność czynności wewnątrz tych ram\nmoże być projektowana. Właściciel, który tego rozróżnienia nie rozumie, będzie\nbronił każdego kroku jako wymogu zgodności. Właściciel, który je rozumie,\npotrafi wskazać, które kroki są granicą, a które nawykiem.\n\nTrzeci fragment jest uzupełnieniem obu poprzednich:\n[Standaryzacja pracy i osąd ekspercki (04:31 do 06:48)](https://youtu.be/5KYUdTLlvvg?t=271).\nRozmowa odróżnia pracę nadającą się do standaryzacji od sytuacji wymagających\nosądu. Właściciel, który potrafi to rozdzielić, wie, gdzie system ma prowadzić,\na gdzie ma zostawić miejsce na decyzję człowieka.\n",
+  "fileHash": "69e36840ec0c7207803ffa66323b85a46dd3294eb87f5f996fd8461a45cc94df",
+  "requestHash": "0119e73c7d1f72b505d605f129e99d651e712fef5492e810e4d17cd584ee8b99",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.16
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.26
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.38
+    }
+  },
+  "usage": {
+    "input_tokens": 982,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

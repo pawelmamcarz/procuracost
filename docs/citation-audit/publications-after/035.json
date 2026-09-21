@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-bariery-autonomicznego-sourcingu.md",
+  "line": 375,
+  "section": "## Źródła i granice twierdzeń\n\nŹródła sprawdzone 21 września 2026 r. Potwierdzenie publikacji liczby nie\njest niezależnym potwierdzeniem wyniku organizacji:\n\n- Zero100. *Rise of the AI-Enabled CPO*. Osiemdziesiąt pięć procent zgadza się\n  co do zmiany w sourcingu, siedemdziesiąt osiem procent chce zachowania\n  kontroli nad pracą strategiczną.\n  https://zero100.com/insights/rise-of-the-ai-enabled-cpo/\n- ProcureAbility. *2026 Annual ProcureCon CPO Report*. Pięćdziesiąt jeden\n  procent respondentów w opisie barier grupy bez pełnej gotowości do AI\n  wskazuje obawę przed zastąpieniem ludzkiego osądu.\n  https://www.prnewswire.com/news-releases/procureabilitys-2026-cpo-report-reveals-the-top-barriers-to-ai-adoption-among-procurement-organizations-302666226.html\n- EFESO Management Consultants. *2026 CPO Annual Pulse Report*. Pięć procent\n  szerokich wdrożeń GenAI i siedemdziesiąt pięć procent eksperymentowania;\n  raport opiera się na rozmowach z 50 europejskimi CPO.\n  https://www.efeso.com/en-americas/insights-events/bring-genai-to-procurement-organizations/\n- Procure Ai. *Kärcher case study*. Dziewięćdziesiąt procent zaangażowania\n  dostawców, pięćdziesiąt procent skuteczności negocjacji i sześć procent\n  średniego rabatu według dostawcy narzędzia.\n  https://www.procure.ai/case-studies/kaercher\n- Pactum. *Client success*, w tym kampanie Walmart na ogonie wydatków.\n  https://pactum.com/clients\n- Komisja Europejska. *Transparency obligations under Article 50 of the AI Act*.\n  Zakres bezpośredniej interakcji z osobami fizycznymi oraz wyjątek oczywistości.\n  https://digital-strategy.ec.europa.eu/en/faqs/transparency-obligations-under-article-50-ai-act\n- Procurement&Beyond. (2026, 26 sierpnia). *Odcinek 8. Nawet najlepsze\n  narzędzie nie uratuje złego wdrożenia*. Rozmowa praktyczna z Pawłem\n  Mamcarzem, 67 minut. Odnośniki czasowe w tekście prowadzą do czternastu\n  zarejestrowanych fragmentów.\n  https://www.youtube.com/watch?v=5KYUdTLlvvg\n\nNiepotwierdzone zestawy procentów przypisywane BCG i Ardent Partners,\nnieudokumentowane oceny platform oraz wskaźnik łatwości obsługi Walmart\nzostały wyłączone z argumentacji. Nie służą jako dowody pośrednie.\n\nGranice interpretacyjne:\n\nLiczby rynkowe pochodzą z badań deklaratywnych i materiałów dostawców.\nOpisują badaną grupę i deklarowane obawy, nie stanowią estymat efektu dla\nkonkretnej organizacji. Przypadki wdrożeniowe publikowane przez dostawców\nnarzędzi wspierają opis mechanizmu, nie wielkości efektu.\n\nŻadna z powyższych wartości nie kalibruje modelu ProcuraCost 2.3, nie ustawia\nprogów ani wag i nie wpływa na różnicę kosztu. Materiał praktyczny służy do\nprojektowania pytań i hipotez. Bariery wdrożeniowe należą do warstwy gotowości\norganizacyjnej, opisywanej bez punktacji i bez wpływu na rachunek.\n\nTekst nie stanowi porady prawnej. Ocena umocowania, dopuszczalności w\nzamówieniach publicznych oraz zgodności z prawem konkurencji wymaga analizy dla\nkonkretnego stanu faktycznego.\n",
+  "fileHash": "55085066f5ca858a529dfcd95fc0bdc09c0776b38cc5288acef29c963b86f45a",
+  "requestHash": "0d71e10627d18263bdaf9a978fdf3af52f24eed6537425a50c5aef3e1338c8c4",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.15
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.12
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.96
+    }
+  },
+  "usage": {
+    "input_tokens": 1480,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

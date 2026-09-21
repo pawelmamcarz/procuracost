@@ -1,0 +1,27 @@
+{
+  "file": "RESEARCH.md",
+  "line": 96,
+  "section": "## 4. Native model 2.3.0\n\n### 4.1 Process maps and critical path\n\nFor alternative \\(j \\in \\{F,A\\}\\), the workflow is a directed acyclic graph. Each step contains calibrated active days, queue days, role hours and non-labour cost. Its predecessor identifiers define the graph.\n\nFor range case \\(k \\in \\{low, central, high\\}\\), the finish time of step \\(s\\) is:\n\n\\[\nt_{s,j}^{k}=a_{s,j}^{k}+q_{s,j}^{k}+\\max_{p\\in pred(s)}t_{p,j}^{k}.\n\\]\n\nThe elapsed duration \\(T_j^k\\) is the maximum finish time across the map. Role and non-labour costs include all steps, not only the critical path:\n\n\\[\nC_{role,j}^{k}=\\sum_s\\sum_r h_{s,r,j}^{k}w_r^{k},\n\\qquad\nC_{nonlab,j}^{k}=\\sum_s n_{s,j}^{k}.\n\\]\n\nDelay cost is:\n\n\\[\nC_{delay,j}^{k}=T_j^k c_d^k.\n\\]\n\nThe engine rejects cycles, unknown predecessors, invalid calibrated ranges, missing role rates and modifications to locked legal waits.\n\nFive mechanism-specific maps use a mixed provenance contract. Fleet, ERP,\nlogistics and critical-material maps retain the former `44/24` aggregate base-day\ntotals; public IT retains `42/26` non-legal days. Model 2.3 introduces the step\norder, division of those totals across steps and role-hour allocations as\n`illustrative_scenario` inputs. Retained support multipliers, coordination costs\nand tool costs are then applied to those allocations. The internal provenance\nrecord discloses this composition. Official cases support only the named\nmechanisms; they provide none of these numerical inputs.\n\n### 4.2 Contract cost and monetary coverage\n\nContract design contains four named dimensions: competition transfer, contract amendment, TCO and informal bypass. Every dimension must be either monetised with a traceable calibrated value or reported as not monetised with a reason.\n\nThe alternative total is:\n\n\\[\nC_j^k=C_{role,j}^{k}+C_{nonlab,j}^{k}+C_{delay,j}^{k}+C_{contract,j}^{k}.\n\\]\n\nIn the native starting points, competition transfer is the only non-zero contract allocation. It appears only in the stable standard-service sensitivity, which explicitly compares open policy-qualified competition with a restricted shortlist or incumbent continuation and identifies the restricted alternative. The allocation can be reversed or removed; it is never inferred from a workflow label. Contract amendment and TCO are fixed at zero. Informal bypass is not monetised.\nBajari, Houghton and Tadelis (2014) estimate adaptation costs in incomplete\ncontracts; that evidence motivates the contract-design dimension, but the\nnative model monetises no amendment differential without a signed allocation\nconvention.\n\nThe decision record lists a calculation anchor for every included monetary\ninput. It separately lists internal workflow provenance, external evidence,\nretained assumptions and non-monetised dimensions. Reproducing the arithmetic\ntherefore does not imply that every input is empirically estimated.\n\n### 4.3 Difference and range semantics\n\nThe comparison identity is:\n\n\\[\n\\Delta C=C_F-C_A.\n\\]\n\nPositive and negative signs are both admissible. The outer envelope is calculated conservatively from the two alternative ranges:\n\n\\[\n\\Delta C_{low}=C_F^{low}-C_A^{high},\n\\qquad\n\\Delta C_{high}=C_F^{high}-C_A^{low}.\n\\]\n\nThis is a declared scenario envelope, not a confidence interval. Swapping the two alternatives must swap their results, negate the central difference and reverse the envelope. The test guards algebraic neutrality; it does not validate the calibration.\n\n### 4.4 Legal and governance boundary\n\nLegal resolution uses the declared initiation date and the versioned `pl-pzp-2026-2027` ruleset. Mandatory waits include source provenance and fixed active and queue days. Where a wait applies, it appears with identical values in both alternatives and cannot be edited or removed. System support cannot shorten it.\n\nThe current legal resolver covers classic procurement contexts within its declared national and EU scope. Sectoral and defence/security regimes fail closed. Missing public-procurement declarations and incompatible combinations also block calculation. ProcuraCost does not replace legal analysis.\n",
+  "fileHash": "9a9581ef3c2b73b2e843741b5a6b4a4abd783f231c804664b3f7e357f1bd8f41",
+  "requestHash": "25573a00ff4e29559f144df8e248d709cf575c60bcb323f51967ac7a552325ad",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.2
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.16
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.93
+    }
+  },
+  "usage": {
+    "input_tokens": 1413,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

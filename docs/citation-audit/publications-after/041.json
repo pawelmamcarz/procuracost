@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 84,
+  "section": "## Warunek ciągłości właścicielstwa\n\nCiągłość nie jest trzecią rolą, lecz warunkiem utrzymania odpowiedzialności. Fragment\n[Ciągłość właścicielstwa (29:41 do 29:49)](https://youtu.be/5KYUdTLlvvg?t=1781)\njest krótki i dotyczy sytuacji, w której osoba napędzająca projekt odchodzi, a\nnikt nie przygotował zastępstwa ani ścieżki decyzji.\n\nOdejście właściciela może przerwać decyzje o zakresie i kontakt z użytkownikami,\njeżeli nikt nie przejmuje tych zadań. Jest to ryzyko do oceny w danym projekcie.\nRozmowa nie ustala częstości takiego przebiegu, typowego czasu wdrożenia ani\nwpływu rotacji na adopcję.\n\nSponsor powinien zapytać: kto przejmie tę rolę, jeżeli obecny właściciel\nzmieni pracę w trzecim kwartale, i czy ta osoba wie o tym dzisiaj. Odpowiedź\n„zobaczymy\" oznacza, że warunek nie jest spełniony. Odpowiedź z nazwiskiem i\ndatą rozmowy oznacza, że jest spełniony do potwierdzenia.\n",
+  "fileHash": "4e7208025ceb8bade398b14d9e9019f8237dc3d948b81a411fb035ce0707e804",
+  "requestHash": "549c7d679bc41a5df8340ab3d5bc1fdb8e02d60243d0b36bf713d1c8317076b6",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.13
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.11
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.35
+    }
+  },
+  "usage": {
+    "input_tokens": 746,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

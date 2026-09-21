@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-3-empiria-PZP-PL.md",
+  "line": 106,
+  "section": "## 4. Scenariusze jako źródło testów\n\nScenariusze 2.3 nie są obserwacjami. Pomagają określić, jaki mechanizm należy\nzmierzyć.\n\n### 4.1 Adaptacja z mechanizmem\n\n- Transformacja ERP może wymagać definiowania problemu i modularnego podejścia,\n  gdy wymagania są niepełne.\n- Przeprojektowanie logistyki może wymagać kontaktu z rynkiem w celu sprawdzenia\n  poziomów usług, interfejsów danych i alokacji ryzyka.\n- Publiczny zakup IT może korzystać ze wstępnych konsultacji rynkowych przed\n  postępowaniem otwartym, przy zachowaniu tych samych terminów ustawowych.\n- Odkrywanie i współprojektowanie może zwiększać czas oraz nakład pracy, ponieważ\n  uczenie się i ponowne określenie zakresu są pracą.\n\n### 4.2 Brak odrębnego mechanizmu pracy\n\nStabilna standardowa usługa może wymagać tej samej pracy w obu projektach.\nScenariusz startowy tej usługi osobno deklaruje różnicę konkurencji, więc nie\njest neutralną kontrolą kosztu całkowitego.\nZamówienie katalogowe i zwolnienie zlecenia MRP mają identyczne mapy w\nscenariuszach kontrolnych. Równe mapy powinny dawać równy wynik. Badanie powinno\nsprawdzić mechanizm, a nie etykietę wariantu.\n",
+  "fileHash": "9fcdaac622b79a56d62e64456690ccfd089ac879a0019c9807cf864870a88919",
+  "requestHash": "b64010a9f954cafae620569d76eed26227b804d0a49d04c16bb201e646d3a6be",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.29
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.23
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.2
+    }
+  },
+  "usage": {
+    "input_tokens": 816,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

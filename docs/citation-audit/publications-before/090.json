@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-3-empiria-PZP-PL.md",
+  "line": 262,
+  "section": "## 9. Walidacja modelu 2.3\n\nWalidacja zaczyna się od komponentów, a nie od pytania, który wariant wygrał.\n\n1. Czy z dokumentów i logów można odtworzyć graf kroków, poprzedników, pracy,\n   kolejek oraz blokad prawnych?\n2. Czy przewidywany czas i nakład ról odpowiadają obserwowanym komponentom na\n   próbie odłożonej?\n3. Jak szeroki jest zadeklarowany zakres względem rozrzutu obserwowanego?\n4. Czy komponent modelu przewyższa prostą bazę, na przykład medianę kategorii?\n5. Który kanał generuje błąd?\n\nPełna walidacja `deltaCost` wymaga kontrfaktycznego wyniku drugiej mapy i\nniezależnie uzasadnionego dziennego kosztu zwłoki. Pojedyncze zdarzenie nie\ndostarcza tych danych. Dziennego kosztu zwłoki nie można wyprowadzić z samego\nrejestru postępowania. Potrzebny jest protokół z właścicielem wyniku biznesowego\nprzeprowadzony przed poznaniem czasu badanego cyklu.\n\nKoszt zmian umowy i TCO mają w scenariuszach startowych deltę równą zero.\nNieformalne obejście procesu pozostaje nieobjęte monetyzacją. Nie wolno przedstawiać tych kanałów jako\nzwalidowanych prognoz.\n",
+  "fileHash": "9fcdaac622b79a56d62e64456690ccfd089ac879a0019c9807cf864870a88919",
+  "requestHash": "056656a6dd20ce69b44ae37fafb709fc25a575b5175c15e226482394638dc886",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.19
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.23
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.16
+    }
+  },
+  "usage": {
+    "input_tokens": 784,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

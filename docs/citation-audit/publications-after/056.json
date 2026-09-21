@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-1-tunnel-or-field-EN.md",
+  "line": 94,
+  "section": "## 4. Where adaptive work can have a mechanism\n\nA mechanism exists when the alternative changes identifiable work or\ndependencies.\n\nThe five mechanism-specific reference maps are illustrative model 2.3\nallocations, not observed cases. They retain aggregate base-day totals from\n2.2.2, then allocate those totals and role hours across named steps before\napplying retained support profiles. The official sources below support only the\nqualitative mechanism. They do not supply step days, role hours or cost effects.\n\n### 4.1 ERP transformation discovery\n\nWhen requirements are incomplete, early problem framing and modular\ncontracting can change how the need is defined and how supplier capability is\ntested. The California Department of Technology describes modular state\ntechnology procurement and opportunities to change course. That official case\nsupports the existence of a modular mechanism. It does not supply a ProcuraCost\nduration or cost effect.\n\n### 4.2 Logistics service redesign\n\nA complex logistics service can require market engagement around service\nlevels, operational interfaces, data exchange and allocation of continuity\nrisk. Adaptation has a mechanism only if that work changes the process map or\ncontract design. Calling a conventional request for quotation adaptive adds\nnothing by itself.\n\n### 4.3 Public IT with preliminary market consultation\n\nUZP describes preliminary market consultation as a way for a contracting\nauthority to learn about technical, economic and organisational solutions\nbefore a procedure. The consultation can inform an open procedure while the\nstatutory tender and standstill periods remain unchanged. The source establishes\na lawful qualitative mechanism, not a cost saving.\n\n### 4.4 Discovery and solution co-design\n\nProblem definition and supplier dialogue are work. The OECD RVUL example\ndescribes substantial preparation before an innovation-procurement pilot. The\nexample does not provide a universal duration. It does, however, show why an\nadaptive design can take longer and require more role effort when learning and\nre-scoping are the intended mechanism.\n",
+  "fileHash": "955757954d600d02fc3668298d27fed59ebd1e482a7993b9906dabcf37c984ab",
+  "requestHash": "d369bf00963e56327a31060319aa43afcb795090d5d6d92c962f2fabf7102c5f",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.24
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.1
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.87
+    }
+  },
+  "usage": {
+    "input_tokens": 819,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

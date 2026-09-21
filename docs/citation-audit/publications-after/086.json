@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-3-empiria-PZP-PL.md",
+  "line": 133,
+  "section": "## 5. Warstwy danych\n\n### 5.1 Warstwa rejestrowa\n\nRejestry publiczne mogą dostarczyć:\n\n- identyfikatory Zamawiającego i wykonawcy;\n- CPV, wartość i tryb;\n- daty ogłoszenia i udzielenia;\n- liczbę złożonych lub ważnych ofert, jeżeli definicja pola jest jednoznaczna;\n- kryteria i wynik;\n- część informacji o opublikowanych zmianach umowy.\n\nPrzed analizą należy zamrozić schemat danych, reguły deduplikacji, definicje pól\ni obsługę braków. Każda liczba opisowa powinna być generowana kodem z\nwersjonowanego wycinka.\n\nWarstwa nie ujawnia pełnego przygotowania wewnętrznego, roboczogodzin,\ndziennego kosztu zwłoki, pełnego TCO, wszystkich klauzul ani nieformalnego\nobejścia. Brak rekordu obejścia nie oznacza braku zjawiska.\n\n### 5.2 Warstwa organizacyjna\n\nJednostką analizy jest zdarzenie zakupowe. W zależności od hipotezy wymagane są:\n\n1. znaczniki rozpoczęcia, przekazań, zatwierdzeń i zawarcia umowy;\n2. aktywna praca i oczekiwanie według roli;\n3. poprzednicy, równoległość i cofnięcia;\n4. zaproszenia, oferty i powody wykluczeń;\n5. klauzule zmiany, aneksy i koszty;\n6. zaobserwowane odstępstwa oraz sposób ich wykrycia;\n7. logi konfiguracji i użycia kontroli systemowych;\n8. mierniki wykonania ustalone przed poznaniem przebiegu.\n\nWyniki finansowe powinny być oddzielone od kodowania procesu. Ogranicza to\ndopasowanie oceny przebiegu do wyniku.\n",
+  "fileHash": "bcbcaef51d9c8ddaf95ded9a2609faa8f9b5e894de8ee2f24084ca1ce721babd",
+  "requestHash": "14a09b59686823ee5734fd7ab407ff301e325a895dbb8f2908eafcff8f0954ad",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.15
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.12
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.11
+    }
+  },
+  "usage": {
+    "input_tokens": 904,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

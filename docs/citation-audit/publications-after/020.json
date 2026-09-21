@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-07-tunel-pole-lepszy-biznes.md",
+  "line": 173,
+  "section": "## Uzasadnienie biznesowe bez fałszywej precyzji\n\nRachunek ProcuraCost 2.3 rozdziela cztery grupy:\n\n1. koszt pracy według roli;\n2. niepracowniczy koszt procesu;\n3. czas przebiegu pomnożony przez dzienny koszt zwłoki;\n4. objęte monetyzacją elementy konstrukcji umowy.\n\nNajłatwiej zawyżyć koszt zwłoki. Iloczyn dni i deklarowanego kosztu dnia jest\ntożsamością rachunkową, nie wynikiem badania. Wartość powinna wynikać z\nkonkretnego mechanizmu, na przykład utraconej marży, przestoju albo kosztu\nrozwiązania zastępczego. Jeżeli nie można jej uzasadnić, należy pokazać zakres i\nograniczyć interpretację.\n\nModel stosuje zakres 0,25, 1 i 4 razy centralny koszt dnia jako jawny test\nwarunkowy. To założenie, nie przedział ufności.\n\nKanał konkurencji wykorzystuje stres 2, 6 i 9 procent tylko wtedy, gdy dostęp do\nrynku rzeczywiście różni się między wariantami. Badanie Szucsa dotyczy\nokreślonej populacji węgierskich zamówień i nie stanowi estymaty dla Polski ani\nfirm prywatnych.\n\nRóżnice kosztu aneksów i TCO wynoszą w natywnych scenariuszach zero.\nNieformalne obejście procesu pozostaje poza monetyzacją. Takie ograniczenie jest\nbardziej użyteczne niż pozorna precyzja oparta na uniwersalnym procencie.\n",
+  "fileHash": "9c8ddd0321c3ec61d5e96d482200df5af0749a79214e5aceea71433b6586955c",
+  "requestHash": "f4b04d372d7b7d8cce570fa52a1623861443ee5bc9db8dfe8334c014a32bf257",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.18
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.13
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.88
+    }
+  },
+  "usage": {
+    "input_tokens": 840,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

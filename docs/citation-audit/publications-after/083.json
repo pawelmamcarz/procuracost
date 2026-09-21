@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-3-empiria-PZP-PL.md",
+  "line": 40,
+  "section": "## 2. Hipotezy\n\n- **H1a:** większa preskryptywność projektu przebiegu mierzona ex ante wiąże się\n  z większą liczbą dni od zatwierdzenia potrzeby do zawarcia umowy, po\n  uwzględnieniu złożoności, granicy prawnej, rodziny procedury i liczby\n  właściwych obowiązkowych dni oczekiwania. **H1b:** przy tych samych kontrolach\n  wiąże się z większą liczbą godzin koordynacji kupca, prawnika i kierownika.\n- **H2:** szerszy dostęp do rynku mierzony ex ante wiąże się z większą liczbą\n  ważnych ofert i niższą ceną wyboru względem prerejestrowanego, niezależnego\n  benchmarku, niezależnie od topologii pracy.\n- **H3:** większa sztywność klauzul zmiany określona ex ante wiąże się z większą\n  liczbą formalnych aneksów na rok kontraktu. Po uwzględnieniu konstrukcji\n  klauzul związek z liczbą akceptacji przed wszczęciem powinien mieścić się w\n  prerejestrowanej granicy równoważności.\n- **H4:** dla potrzeb sklasyfikowanych przed wyborem procesu jako niekompletne\n  adaptacyjne odkrywanie wiąże się z większym nakładem ról przed wszczęciem,\n  lecz z mniejszą liczbą dni wyjaśnień i ponownej pracy po rozpoczęciu\n  konkurencji niż projekt sekwencyjny. Obie interakcje powinny być nieobecne\n  albo mieścić się w prerejestrowanych granicach równoważności dla potrzeb\n  sklasyfikowanych jako stabilne.\n- **H5:** wyższy odsetek wymaganych kontroli faktycznie zarejestrowanych w\n  systemie wiąże się z mniejszą liczbą akceptacji lub zamówień poza systemem\n  oraz mniejszą liczbą braków w śladzie audytowym. Samo posiadanie systemu i\n  odpowiedzi o gotowości nie są ekspozycją operacyjną.\n\nKażda hipoteza dopuszcza wynik zerowy lub przeciwny. H3 i H5 nie są testowalne\nprzez sam kalkulator. W natywnych scenariuszach różnica kosztu aneksów wynosi\nzero, nieformalne obejście procesu jest nieobjęte monetyzacją, a gotowość\npozostaje niezależna od rachunku.\n",
+  "fileHash": "bcbcaef51d9c8ddaf95ded9a2609faa8f9b5e894de8ee2f24084ca1ce721babd",
+  "requestHash": "06afe94a1c6d6a8eeae4842e8f7f5358d2d20051c513e3bd939f3531d57cfcc4",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.25
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.2
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.12
+    }
+  },
+  "usage": {
+    "input_tokens": 1099,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

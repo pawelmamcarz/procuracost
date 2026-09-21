@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-bariery-autonomicznego-sourcingu.md",
+  "line": 321,
+  "section": "## Co z tego wynika dla wyboru narzędzia\n\nPorównanie narzędzi powinno dotyczyć konkretnej wersji i zakresu wdrożenia.\nOgólne pozycjonowanie marki nie wystarcza do ustalenia jej uprawnień ani\nzdolności integracyjnych. Na demonstracji warto użyć tych samych pytań:\n\n| Obszar | Co pokazać na rzeczywistym przykładzie |\n|---|---|\n| Mandat | Które warunki agent może uzgodnić, a które wymagają zatwierdzenia? |\n| Dostawca | Jak odmawia udziału i jak przekazuje wyjątek człowiekowi? |\n| Dane | Jak system zatrzymuje niekompletną lub sprzeczną specyfikację? |\n| Integracja | Jak zaakceptowane warunki trafiają do właściwego rekordu umowy lub zamówienia? |\n| Kontrola | Jak odtworzyć wejścia, uprawnienia, zmianę warunków i decyzję zatwierdzającą? |\n\nOdpowiedzi trzeba sprawdzić w oferowanej konfiguracji. Artykuł nie zawiera\nniezależnego testu porównawczego platform.\n",
+  "fileHash": "55085066f5ca858a529dfcd95fc0bdc09c0776b38cc5288acef29c963b86f45a",
+  "requestHash": "8cbeb66af7744bb2284f544de943e95a7ec2cd281b5adc49d46a6e8eb2b2e5cf",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.09
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.08
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.14
+    }
+  },
+  "usage": {
+    "input_tokens": 720,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 1,
+  "section": "---\ntytuł: \"Wdrożenie bez właściciela\"\npodtytuł: \"Trzy role, bez których najlepsze narzędzie zakupowe nie uratuje projektu\"\ndata: 2026-09\nautor: \"Paweł Mamcarz\"\nautor_www: \"https://mamcarz.com\"\nmodel: \"ProcuraCost 2.3.0\"\nstatus: \"szkic do redakcji\"\n---\n\n# Wdrożenie bez właściciela\n",
+  "fileHash": "69e36840ec0c7207803ffa66323b85a46dd3294eb87f5f996fd8461a45cc94df",
+  "requestHash": "047c29854f1387314493b6926e5e66b609c9ff6c6e61133fbf80bfbca5ab6427",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.11
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.15
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.1
+    }
+  },
+  "usage": {
+    "input_tokens": 518,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

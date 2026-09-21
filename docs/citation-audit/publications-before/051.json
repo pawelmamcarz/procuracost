@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-1-tunnel-or-field-EN.md",
+  "line": 1,
+  "section": "# Tunnel or Field: Separating Governance Boundaries from Procurement Workflow\n\n**Doctoral-cycle article 1 | conceptual paper | ProcuraCost 2.3.0 | draft**\n",
+  "fileHash": "10544b99cb4bb48d0939f687252e133e8bee6c464100141a58fff7a369f1f3fa",
+  "requestHash": "759dd8865b781691635b2dc27bc3384840cc4fd774f2ad196d0bb03e0d0bf7e2",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.16
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.09
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.09
+    }
+  },
+  "usage": {
+    "input_tokens": 443,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

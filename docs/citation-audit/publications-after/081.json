@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-3-empiria-PZP-PL.md",
+  "line": 5,
+  "section": "## Streszczenie\n\nArtykuł przekłada hipotezy związane z ProcuraCost 2.3 na falsyfikowalny plan\nbadania polskich zamówień publicznych. Nie przedstawia wyników, ponieważ dane\nnie zostały zebrane. Rejestry BZP, TED i e-Zamówień mogą opisywać widoczne daty,\nuczestnictwo, wynik i część zmian umowy. Nie mierzą pełnego projektu procesu\nwewnętrznego, pracy według roli, dziennego kosztu zwłoki, TCO ani nieformalnych\nobejść. Protokół łączy zatem warstwę rejestrową z wersjonowanymi dokumentami i\nlogami organizacyjnymi. Głównym wynikiem jest czas cyklu. Pozostałe mechanizmy\nsą badane osobno, bez tworzenia jednego obserwowanego miernika dojrzałości.\n",
+  "fileHash": "bcbcaef51d9c8ddaf95ded9a2609faa8f9b5e894de8ee2f24084ca1ce721babd",
+  "requestHash": "c67235a633965590b766ca8f311ab78d67f0a66e7b211c3a2f4d0655cf310145",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.17
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.09
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.2
+    }
+  },
+  "usage": {
+    "input_tokens": 644,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

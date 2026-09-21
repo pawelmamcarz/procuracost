@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-bariery-autonomicznego-sourcingu.md",
+  "line": 345,
+  "section": "## Co mierzyć na pilotażu\n\nNajczęstszym błędem pilotażu jest sprowadzenie oceny do procentu oszczędności.\nTa liczba nie odpowiada na pytanie, czy bariery faktycznie opadły, a przy małej\npróbie bywa artefaktem doboru kategorii.\n\nCztery mierniki mówią więcej:\n\n1. Wskaźnik udziału dostawców w zainicjowanych rozmowach. Odpowiada na barierę\n   drugą. Bez niego oszczędność liczy się na kilku podmiotach, które i tak by\n   ustąpiły.\n2. Wskaźnik eskalacji do człowieka wraz z przyczyną. Odróżnia wyjątek\n   projektowy od luki w opisie potrzeby.\n3. Odsetek rozstrzygnięć odwróconych albo skorygowanych przez kupca. Mierzy\n   realny mandat, a nie mandat deklarowany.\n4. Czas od rozstrzygnięcia do zapisu w systemie transakcyjnym. Odpowiada na\n   barierę czwartą i ujawnia ukrytą pracę administracyjną.\n\nDo tego warto prowadzić rejestr decyzji w kształcie, jaki stosuje model: obie\nmapy przebiegu przed zmianą i po zmianie, wartość centralną i zakres, składniki\nróżnicy, wymiary pozostawione poza rachunkiem oraz pochodzenie obowiązkowych\nterminów. Krótszy cykl nie wystarcza, jeżeli pogarsza się dostęp do konkurencji\nalbo kompletność dokumentacji.\n",
+  "fileHash": "fb0e3f4f5441dd180b361d83da53b9e5c1fb0bbd1d2cecfc24643d3a1a157d2a",
+  "requestHash": "863d73438ce1d0c2dfd607c54057b130cebd0738c34e1e22e57ce593e338d6ba",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.11
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.33
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.08
+    }
+  },
+  "usage": {
+    "input_tokens": 833,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 101,
+  "section": "## Jak rozpoznać ryzyka związane z tymi zadaniami\n\nPoniższe wzorce są scenariuszami diagnostycznymi. Mogą pomóc zadać pytania,\nale nie pozwalają przypisać przyczyny na podstawie samego objawu.\n\nBez kwestionowania zakresu projekt może zakończyć się systemem, który robi dużo rzeczy i nie\nusuwa nieefektywności, dla której powstał. Objawem jest lista funkcji dłuższa\nniż lista problemów. Interwencją jest powrót do mapy tarcia sprzed wyboru\nsystemu.\n\nBez wsparcia adopcji może powstać system technicznie działający, lecz rzadko\nużywany. Sygnałem jest rozjazd między raportem z systemu a faktycznym przebiegiem\nspraw. Interwencją jest osoba z mandatem, która zaczyna rozmawiać z\nwnioskodawcami biznesowymi.\n\nBez ciągłości odpowiedzialności rozwój systemu może się zatrzymać. Sygnałem\njest brak zmian konfiguracji przez kilka kwartałów mimo zgłoszeń. Interwencją\njest wyznaczenie właściciela na nowo, z pełnym mandatem, a nie „opiekuna\".\n\nPodobne objawy mogą wynikać także z wad narzędzia, integracji lub niedoboru\nzasobów. Diagnoza wymaga rozpatrzenia tych wyjaśnień, a nie tylko właścicielstwa.\n",
+  "fileHash": "4e7208025ceb8bade398b14d9e9019f8237dc3d948b81a411fb035ce0707e804",
+  "requestHash": "32683277bd7dcdb1c0d196f9aff23355c17c7c4e42155da94881daacd44a18e1",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.14
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.1
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.05
+    }
+  },
+  "usage": {
+    "input_tokens": 796,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

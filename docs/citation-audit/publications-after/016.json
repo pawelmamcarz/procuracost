@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-07-tunel-pole-lepszy-biznes.md",
+  "line": 87,
+  "section": "## Kiedy odrębnego mechanizmu pracy nie ma\n\nStabilna, standardowa usługa może wymagać tych samych czynności w obu\nwariantach. W scenariuszu referencyjnym ProcuraCost osobno pozostaje ryzyko\nróżnicy konkurencji, dlatego nie jest to neutralna kontrola kosztu całkowitego.\nZamówienie katalogowe po ustanowieniu umowy ramowej może mieć jedną\nkrótką mapę. Zwolnienie zlecenia MRP może przebiegać identycznie, jeżeli\nkorzysta z obowiązującej umowy i zatwierdzonych danych materiałowych.\n\nProcuraCost traktuje katalog i MRP jako scenariusze kontrolne. Identyczne mapy,\nkoszty i założenia konstrukcji umowy dają równy wynik centralny. To ważna\nkontrola jakości modelu: nazwa adaptacyjna nie\npowinna generować korzyści bez zmienionego mechanizmu.\n",
+  "fileHash": "9c8ddd0321c3ec61d5e96d482200df5af0749a79214e5aceea71433b6586955c",
+  "requestHash": "f66782feefd4b1ac0994dca08bcda8b2513e99cbc649dd47acb7f1004f4e9fbd",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.29
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.2
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.16
+    }
+  },
+  "usage": {
+    "input_tokens": 660,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 233,
+  "section": "## Pytanie do zadania przed podpisem\n\nWszystko powyższe sprowadza się do jednego pytania, które sponsor powinien\nzadać, zanim podpisze umowę na system zakupowy:\n\n> Kto po naszej stronie rozumie ten zakup, ma mandat, żeby powiedzieć\n> dostawcy „nie\", będzie rozmawiał z użytkownikami po odbiorze i ma następcę,\n> który o tym wie?\n\nJedno nazwisko nie wystarcza do potwierdzenia mandatu, a podział zadań między\nkilka osób nie oznacza braku właścicielstwa. Istotne jest, czy odpowiedzialność,\nuprawnienia i zastępstwo są uzgodnione oraz możliwe do wykonania.\n",
+  "fileHash": "4e7208025ceb8bade398b14d9e9019f8237dc3d948b81a411fb035ce0707e804",
+  "requestHash": "b13ee78068418714acfeed32cedb7216c7f0f169f7301973bbba06a8606349c5",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.1
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.09
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.07
+    }
+  },
+  "usage": {
+    "input_tokens": 590,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-3-empiria-PZP-PL.md",
+  "line": 206,
+  "section": "## 7. Strategia analityczna\n\n### 7.1 Wariant A: asocjacja wewnątrz organizacji\n\nSpecyfikacja bazowa:\n\n`log(dni) = beta x prescriptiveness + gamma'X + alpha_organizacja + delta_CPV + theta_rok + epsilon`\n\nPorównywane są zdarzenia w tej samej organizacji i kategorii. Błędy standardowe\nsą klastrowane na poziomie organizacji. Przy mniej niż 30 klastrach planowany\njest wild cluster bootstrap. Przy 4 do 6 organizacjach wyniki pozostają\neksploracyjne i wymagają analizy leave-one-organisation-out.\n\nWariant identyfikuje asocjację warunkową. Trudniejsze lub pilniejsze zakupy mogą\nbyć kierowane do bardziej preskryptywnego przebiegu, więc nie jest to efekt\nprzyczynowy.\n\n### 7.2 Wariant B: jednorazowa zmiana procesu\n\nRozszerzenie przyczynowe wymaga porównywalnej, jasno datowanej zmiany oraz grup\njeszcze nieobjętych interwencją. Przy zróżnicowanych terminach można rozważyć\nstaggered DiD z estymatorem Callaway-Sant'Anna albo Sun-Abraham.\n\nWymagane są ocena trendów przed zmianą, brak antycypacji w prerejestrowanym\noknie, brak równoległej transformacji, wiarygodne grupy porównawcze i\nudokumentowanie wpływu interwencji na ekspozycję. Brak widocznych różnic przed\nzmianą nie dowodzi trendów równoległych.\n\n### 7.3 Wariant C: próg prawny\n\nProjekt progowy wymaga potwierdzenia aktualnego stanu prawnego, testu gęstości,\nciągłości kowariat i oceny sortowania wartości. Szucs (2024) pokazuje, dlaczego\nmanipulacja przy progu może unieważnić prosty RDD w podobnej klasie danych.\nUsunięcie obserwacji najbliżej progu nie naprawia automatycznie identyfikacji.\nWariant C nie jest podstawą planu głównego.\n",
+  "fileHash": "9fcdaac622b79a56d62e64456690ccfd089ac879a0019c9807cf864870a88919",
+  "requestHash": "6c25a049b783c8f3c3918ca474d200e7f5f545668bd9ea13484e32ec73c77e0e",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.16
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.12
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.92
+    }
+  },
+  "usage": {
+    "input_tokens": 980,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

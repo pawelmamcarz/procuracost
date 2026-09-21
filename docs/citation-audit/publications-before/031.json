@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-bariery-autonomicznego-sourcingu.md",
+  "line": 242,
+  "section": "## Co o tych barierach mówi praktyka wdrożeń\n\nÓsmy odcinek Procurement&Beyond dotyczy wdrożeń systemów zakupowych, nie\nagentów negocjacyjnych. Mimo to większość barier opisanych wyżej pojawia się w\nrozmowie w innym przebraniu. Poniżej zestawiam je z konkretnymi fragmentami\nnagrania. Każdy fragment stawia pytanie, którego warto użyć w warsztacie przed\npilotażem. Żaden nie dowodzi tezy ani nie ustala parametru.\n\nBariera pierwsza, mandat, sprowadza się w rozmowie do pytania, czy po stronie\norganizacji jest osoba, która rozumie zakup i potrafi zakwestionować założenia\ndostawcy narzędzia. Bez takiej osoby agent dostaje mandat, którego nikt\nświadomie nie nadał. Fragmenty:\n[Wewnętrzny właściciel decyzji](https://youtu.be/5KYUdTLlvvg?t=1639)\n(27:19 do 28:09),\n[Mandat i komunikacja](https://youtu.be/5KYUdTLlvvg?t=1707)\n(28:27 do 29:06) oraz\n[Ciągłość właścicielstwa](https://youtu.be/5KYUdTLlvvg?t=1781)\n(29:41 do 29:49). Hipoteza do sprawdzenia: trwałe wewnętrzne właścicielstwo\nprzewiduje, czy rozstrzygnięcia agenta są odwracane, czy przyjmowane.\n\nBariera trzecia, dane i specyfikacja, ma w rozmowie trzy odsłony. Pierwsza\ndotyczy tego, czy organizacja rozpoznała konkretną nieefektywność, zanim\nwybrała narzędzie. Druga dotyczy ryzyka rozbudowy wymagań o szczegóły bez\nznaczenia dla głównego problemu. Trzecia dotyczy obszarów pominiętych mimo\ndługiej listy funkcji. Dla agenta negocjacyjnego to dokładnie pytanie o jakość\nopisu potrzeby na wejściu. Fragmenty:\n[Nieefektywność procesu przed wyborem systemu](https://youtu.be/5KYUdTLlvvg?t=592)\n(09:52 do 10:56),\n[Wymagania marginalne](https://youtu.be/5KYUdTLlvvg?t=946)\n(15:46 do 16:57) oraz\n[Luki w specyfikacji](https://youtu.be/5KYUdTLlvvg?t=1074)\n(17:54 do 18:23).\n\nBariera czwarta, zapis do systemu, odpowiada w rozmowie obserwacji, że wybór\ndostawcy nie wyczerpuje procesu zakupowego. Zamówienie, odbiór, faktura i\nwyjątek muszą być ujęte w zakresie. Agent, który kończy pracę na\nrozstrzygnięciu, zostawia resztę przebiegu bez właściciela. Fragment:\n[Zakupy operacyjne w pełnym przebiegu procesu](https://youtu.be/5KYUdTLlvvg?t=1023)\n(17:03 do 17:48).\n\nBariera piąta, w części dotyczącej łańcuchów zatwierdzeń, ma w rozmowie\nodpowiednik w pytaniu, czy konfiguracja utrwala historyczne kroki bez ponownego\nuzasadnienia. Dla agenta jest to pytanie, czy jego granice odtwarzają starą\nsekwencję, czy wynikają z polityki. Polityka może wyznaczać szerszą granicę\nzgodności niż jedna stała kolejność kroków. Fragmenty:\n[System nie powinien kopiować archaicznej sekwencji](https://youtu.be/5KYUdTLlvvg?t=2385)\n(39:45 do 41:35) oraz\n[Polityka jako granica kontroli](https://youtu.be/5KYUdTLlvvg?t=2614)\n(43:34 do 44:19).\n\nBariera siódma, rola kupca, pojawia się w rozmowie jako rozróżnienie pracy\nnadającej się do standaryzacji od sytuacji wymagających osądu eksperta. To\nsamo rozróżnienie decyduje, które kategorie mogą trafić do agenta, a które\nzostają przy człowieku. Fragment:\n[Standaryzacja pracy i osąd ekspercki](https://youtu.be/5KYUdTLlvvg?t=271)\n(04:31 do 06:48).\n\nBariera ósma, zwrot poza pilotażem, ma w rozmowie odpowiednik w pytaniu o\npełny koszt zamiast ceny zakupu: wdrożenie, integrację, utrzymanie i zmianę\norganizacyjną. Licencja agenta jest najmniejszą pozycją w tym rachunku.\nFragment:\n[Pełny koszt zamiast ceny zakupu](https://youtu.be/5KYUdTLlvvg?t=2863)\n(47:43 do 49:14).\n\nGranica wykorzystania sztucznej inteligencji, opisana w sekcji o osiach\nmodelu, ma w rozmowie dwa fragmenty. Pierwszy pokazuje użycie modelu\njęzykowego do porządkowania danych rynkowych z jawnym kompromisem czasu i\nkosztu. Drugi rozdziela przygotowanie danych, deterministyczne obliczenie i\nwsparcie modelu jako trzy odrębne role. Ta sama zasada dotyczy agenta:\nstrukturyzuje i proponuje, a rachunek i decyzja pozostają przejrzyste.\nFragmenty:\n[Bielik i strukturyzowanie danych rynkowych](https://youtu.be/5KYUdTLlvvg?t=3539)\n(58:59 do 60:49) oraz\n[Oddzielenie danych, matematyki i wsparcia ML](https://youtu.be/5KYUdTLlvvg?t=3810)\n(63:30 do 65:54).\n\nRozmowa została nagrana, zanim narzędzia agentowej negocjacji pojawiły się na\npolskim rynku w skali, o której mowa w tym tekście, dlatego nie odnosi się do\nnich wprost. Pytania, które stawia o właściciela, opis potrzeby, pełny przebieg\ni pełny koszt, przenoszą się na nie bez zmian.\n",
+  "fileHash": "fb0e3f4f5441dd180b361d83da53b9e5c1fb0bbd1d2cecfc24643d3a1a157d2a",
+  "requestHash": "c9ae74582866a2a97937bbb113930000346436179186f676e9d3cb45dd4af065",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.21
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.12
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.59
+    }
+  },
+  "usage": {
+    "input_tokens": 2105,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

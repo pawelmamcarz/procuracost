@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-3-empiria-PZP-PL.md",
+  "line": 251,
+  "section": "## 8. Wielkość próby i moc\n\nDla wyniku czasu proponowany MSI wynosi 10 procent na jedno odchylenie\nstandardowe indeksu:\n\n`beta_MSI = ln(1,10) ~= 0,095`\n\nJest to kryterium istotności praktycznej do zatwierdzenia przed zebraniem\ndanych, nie benchmark zewnętrzny. Nakład pracy i inne wyniki wymagają odrębnych\nMSI.\n\nPilotaż planistyczny obejmuje 2 organizacje po 25 zdarzeń. Jego celem jest ocena\nwykonalności kodowania, wariancji, ICC, kompletności i struktury klastrów. Nie\nsłuży testowaniu hipotez.\n\nOstateczną liczebność i minimalny wykrywalny efekt określi prerejestrowana\nsymulacja Monte Carlo odtwarzająca estymator, klastry, terminy interwencji i\nbraki danych. Liczba niezależnych organizacji jest ważniejsza dla inferencji niż\nsama liczba zdarzeń.\n",
+  "fileHash": "bcbcaef51d9c8ddaf95ded9a2609faa8f9b5e894de8ee2f24084ca1ce721babd",
+  "requestHash": "753da6446e3f1fdf7eb08461165f5669135cae5c8eb477214116e7b214c8a162",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.14
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.15
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.09
+    }
+  },
+  "usage": {
+    "input_tokens": 694,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

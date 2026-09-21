@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-07-tunel-pole-lepszy-biznes.md",
+  "line": 147,
+  "section": "## Lider wdrożenia i gotowość organizacyjna\n\nW [8. odcinku\nProcurement&Beyond](https://www.youtube.com/watch?v=5KYUdTLlvvg) Paweł Mamcarz\nomawia między innymi rolę wewnętrznego lidera, mapowanie tarcia, wymagania,\nzakupy operacyjne, stare procedury i rozróżnienie pomiędzy narzędziem a\nwdrożeniem. Materiał ma charakter rozmowy praktycznej i korzysta z\nautomatycznych napisów w języku polskim.\n\nTe obserwacje prowadzą do pytań, które warto zadać przed uruchomieniem projektu:\n\n- Czy jest właściciel wyniku i osoba zdolna utrzymać decyzje przez cały okres\n  wdrożenia?\n- Czy organizacja rozumie obecny proces i potrafi wskazać miejsca tarcia?\n- Czy wymagania odnoszą się do najważniejszych zakupów operacyjnych, czy do\n  marginalnych funkcji?\n- Czy polityka zakupowa opisuje potrzebne granice, czy wymusza historyczną\n  sekwencję?\n- Czy użytkownicy, dane i zasady kontroli są gotowe do konfiguracji oraz\n  wdrożenia?\n\nSą to hipotezy i pytania do samoopisu, nie empiryczne prawidłowości ustalone\nprzez nagranie. ProcuraCost oddziela je od rachunku kosztowego. Niezależne\nnarzędzie zapisuje odpowiedzi bez punktów, wag, oceny zbiorczej i wpływu na\ndeltę kosztu.\n",
+  "fileHash": "9c8ddd0321c3ec61d5e96d482200df5af0749a79214e5aceea71433b6586955c",
+  "requestHash": "85bec936eeb3aa93680f30a1fb50553412a8deba0f8af7d03918a20c1d173208",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.15
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.06
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.51
+    }
+  },
+  "usage": {
+    "input_tokens": 827,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

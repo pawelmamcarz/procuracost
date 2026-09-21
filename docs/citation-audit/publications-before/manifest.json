@@ -1,0 +1,28 @@
+{
+  "files": [
+    "RESEARCH.md",
+    "docs/articles/pl/2026-07-tunel-pole-lepszy-biznes.md",
+    "docs/articles/pl/2026-09-bariery-autonomicznego-sourcingu.md",
+    "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+    "docs/articles/doktorat/article-1-tunnel-or-field-EN.md",
+    "docs/articles/doktorat/article-2-model-kosztu-PL.md",
+    "docs/articles/doktorat/article-3-empiria-PZP-PL.md"
+  ],
+  "excluded": [],
+  "sections": 95,
+  "questions": {
+    "internalConflict": {
+      "type": "noul",
+      "instructions": "Does section contradict itself, confuse a proposed hypothesis with an established finding, or mix incompatible definitions? Historical descriptions and future research proposals are not current model claims."
+    },
+    "overclaim": {
+      "type": "noul",
+      "instructions": "Does section present an unqualified universal, causal certainty, frequency ranking or numerical empirical claim beyond its stated evidence? Do not flag explicitly labelled hypotheses, assumptions, examples, proposals, or normative advice solely because they are unproven."
+    },
+    "externalCheck": {
+      "type": "noul",
+      "instructions": "Does section contain a factual external research result, market statistic, product capability, legal rule or attributed practitioner statement requiring original-source verification? This is a coverage flag, not an error verdict."
+    }
+  },
+  "model": "jev-1.13.0"
+}

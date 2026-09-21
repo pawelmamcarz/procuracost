@@ -4,7 +4,7 @@
 
 **Model:** ProcuraCost 2.3.0
 
-**Updated:** 29 August 2026
+**Updated:** 21 September 2026
 
 ## Abstract
 
@@ -33,9 +33,10 @@ The output supports four narrower tasks:
 
 A procurement policy defines objectives and constraints. A legal and governance boundary specifies authority, competition, ethics, documentation and other applicable obligations. A procedure family identifies an admissible method. A procurement workflow design orders and connects the work performed within that method. A contract design allocates commercial and adaptation mechanisms. The purchase execution channel and system support describe how the work is carried out.
 
-Model 2.3.0 therefore records six decision areas separately:
+Model 2.3.0 therefore records seven decision areas separately:
 
 - **Legal and governance boundary:** private policy, public internal rules, PZP classic national or PZP classic EU.
+- **Procedure family:** the declared procurement method, kept separate from workflow topology and subject to the model's supported legal scope.
 - **Purchase archetype:** standardised recurring purchase, incomplete requirement, complex service, continuity-critical purchase or capital investment.
 - **Procurement workflow design:** an independent directed process map for each alternative.
 - **Purchase execution channel:** sourcing event, catalogue call-off, MRP release or a declared custom channel.
@@ -64,7 +65,7 @@ ProcuraCost monetises the price channel only. Productivity remains a separate ou
 
 ### 3.2 Contract amendments
 
-Beuve, Moszoro and Spiller (2023) examine French car-park contracts. Their 2SLS/IV result is an increase of 0.077 to 0.105 formal amendments per contract-year for a simultaneous one-standard-deviation increase in each of seven z-scored rigidity categories. It is a frequency, not an event probability. It does not measure procurement workflow formality and it cannot be applied directly to a hand-authored zero-to-one profile.
+Beuve, Moszoro and Spiller (2023) examine French car-park contracts. Their 2SLS/IV analysis relates contractual rigidity to the annual frequency of formal amendments. The outcome is amendments per contract-year, not the probability of an amendment; the rigidity index sums seven category z-scores. It does not measure procurement workflow formality and cannot be applied directly to a hand-authored zero-to-one profile. No numerical effect is transferred here: the precise magnitude requires reconciliation between the prose and the printed coefficients in the accessible author version (section 6.2 and Table 4).
 
 Earlier ProcuraCost versions used the study as an order-of-magnitude anchor. Native model 2.3.0 does not allocate a contract-amendment differential. The central, low and high values remain zero until a supported signed allocation convention is introduced. The study remains relevant to research design, not to the active scenario calculation.
 
@@ -72,7 +73,7 @@ Earlier ProcuraCost versions used the study as an order-of-magnitude anchor. Nat
 
 The European Commission's 2011 study estimates authority and supplier effort for EU procurement procedures. The model 2.2.2 calibration audit compared the former `pzp_eu` template with the full report and found its authority-side person-days within the report's published distribution. That audit supports order of magnitude only. It does not validate the active 2.3 process maps, non-labour overheads or role rates.
 
-Delay remains an accounting identity between critical-path elapsed days and a declared cost per day of inaction. It is not a measured effect of procedure type. Coviello and Mariniello (2014) found that publicity increased participation without worsening delivery delay in their setting. That result is inconsistent with any blanket claim that competition itself causes delay.
+Delay remains an accounting identity between critical-path elapsed days and a declared cost per day of inaction. It is not a measured effect of procedure type. Coviello and Mariniello (2014) found that publicity increased participation and detected no adverse effect on the probability of late delivery of the contracted works in their setting. That outcome is distinct from the duration of the procurement procedure; it does not establish whether publicity lengthens or shortens the procurement cycle.
 
 **Historical calibration result:** under the model 2.2.2 combined stress envelope, all ten then-active scenarios crossed zero. Where workflow duration differed, the delay bucket carried most of the absolute central difference, while the process bucket alone favoured the formal path in seven scenarios. These figures describe the archived 2.2.2 templates and must not be presented as results of the native 2.3 scenario registry.
 
@@ -105,7 +106,7 @@ For range case \(k \in \{low, central, high\}\), the finish time of step \(s\) i
 t_{s,j}^{k}=a_{s,j}^{k}+q_{s,j}^{k}+\max_{p\in pred(s)}t_{p,j}^{k}.
 \]
 
-The elapsed duration \(T_j^k\) is the maximum finish time across the map. Role and non-labour costs include all steps, not only the critical path:
+For a step without predecessors, the predecessor maximum is zero. The elapsed duration \(T_j^k\) is the maximum finish time across the map. Planned rounds of discovery or rework must be represented as separate finite steps; the acyclic map does not simulate open-ended loops. Role and non-labour costs include all steps, not only the critical path:
 
 \[
 C_{role,j}^{k}=\sum_s\sum_r h_{s,r,j}^{k}w_r^{k},
@@ -168,6 +169,8 @@ Positive and negative signs are both admissible. The outer envelope is calculate
 \]
 
 This is a declared scenario envelope, not a confidence interval. Swapping the two alternatives must swap their results, negate the central difference and reverse the envelope. The test guards algebraic neutrality; it does not validate the calibration.
+
+Opposite endpoints can combine different values of inputs shared by both alternatives. An envelope crossing zero therefore does not establish that the sign can reverse under a common feasible input setting. That requires a separate comparison with shared inputs varied together. Even identical alternatives can have a non-zero-width outer envelope while their matched-input difference remains zero.
 
 ### 4.4 Legal and governance boundary
 
@@ -273,6 +276,6 @@ Vaughan, D. (1996). *The Challenger launch decision*. University of Chicago Pres
 
 ### Legal sources
 
-Ustawa z dnia 11 września 2019 r. Prawo zamówień publicznych, as amended through 2026. The application threshold is 170,000 PLN net from 1 January 2026.
+Ustawa z dnia 11 września 2019 r. Prawo zamówień publicznych. The application threshold for classic contracts awarded by public contracting authorities is 170,000 PLN net from 1 January 2026 under [Dz.U. 2025 poz. 1173](https://eli.gov.pl/eli/DU/2025/1173/ogl). This is not a universal threshold for every procurement regime.
 
 Obwieszczenie Prezesa Urzędu Zamówień Publicznych z dnia 8 grudnia 2025 r., M.P. 2025 poz. 1247 (EU thresholds for 2026–2027).

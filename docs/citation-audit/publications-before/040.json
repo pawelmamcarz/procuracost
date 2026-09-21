@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 57,
+  "section": "## Rola druga: wewnętrzny ambasador\n\nDrugą rolą jest ambasador. Fragment\n[Mandat i komunikacja (28:27 do 29:06)](https://youtu.be/5KYUdTLlvvg?t=1707)\nłączy trzy rzeczy, które w praktyce rzadko spotykają się w jednej osobie:\nwizję biznesową, mandat decyzyjny i komunikację z użytkownikami.\n\nKwestionujący chroni zakres. Ambasador chroni adopcję. Bez niego system\nzostaje wdrożony technicznie i pozostaje pusty. Wnioskodawcy biznesowi wracają\ndo poczty i arkuszy, ponieważ nikt nie przetłumaczył im, po co nowy przebieg\nistnieje i co zmienia w ich pracy. Zespół zakupowy uczy się omijać ekrany,\nktóre nie mają dla niego sensu. Raporty pokazują, że system działa, a\norganizacja pracuje obok niego.\n\nTa rola wymaga czegoś więcej niż entuzjazmu. Wymaga mandatu. Osoba, która\nkomunikuje zmianę, ale nie może zdecydować o wyjątku, szybko traci wiarygodność.\nOsoba, która ma mandat, ale nie rozmawia z użytkownikami, szybko traci kontakt\nz tym, co się dzieje na ekranach.\n\nSponsor powinien zapytać: kto będzie tłumaczył ten przebieg wnioskodawcom\nbiznesowym po zakończeniu projektu, kiedy integrator już wyjdzie, i jaki ma\nmandat, żeby zmienić konfigurację, gdy użytkownicy pokażą, że coś nie działa.\nJeżeli odpowiedź brzmi „zespół projektowy\", warto dopytać, kto z tego zespołu\nzostaje po odbiorze.\n",
+  "fileHash": "69e36840ec0c7207803ffa66323b85a46dd3294eb87f5f996fd8461a45cc94df",
+  "requestHash": "a7292284462a373c1f6dfc4d8173b793dcdf4e8acab393f958bde8251a2d673c",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.1
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.38
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.17
+    }
+  },
+  "usage": {
+    "input_tokens": 886,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-bariery-autonomicznego-sourcingu.md",
+  "line": 202,
+  "section": "## Gdzie te bariery leżą na osiach ProcuraCost\n\nModel 2.3 rozdziela ramy prawne i ład zakupowy, rodzinę procedury, archetyp\nzakupu, projekt przebiegu procesu zakupowego, kanał realizacji, wsparcie\nsystemowe i konstrukcję umowy. To rozdzielenie jest tu użyteczne, ponieważ\nwiększość nieporozumień wokół agentów bierze się ze sklejenia tych osi w jedną\netykietę technologiczną.\n\nAgent negocjacyjny jest zmianą na osi wsparcia systemowego. Sam z siebie nie\nzmienia ram prawnych, rodziny procedury ani obowiązkowych terminów oczekiwania.\nMoże natomiast zmienić projekt przebiegu procesu, jeżeli usuwa czynność,\nuruchamia pracę równolegle albo skraca oczekiwanie na odpowiedź dostawcy. Może\nteż zmienić konstrukcję umowy, jeżeli negocjuje warunki płatności lub formułę\nindeksacji.\n\nZ tego wynika reguła porządkująca dyskusję o uzasadnieniu biznesowym.\nWprowadzenie agenta nie jest samo w sobie mechanizmem oszczędności. Mechanizmem\njest konkretna zmiana w mapie przebiegu albo w projekcie umowy, którą agent\numożliwia. Jeżeli zmienia się wyłącznie nazwa narzędzia, nie ma podstawy do\nprzypisania mu korzyści. Przy tej samej topologii mogą jednak zmienić się czasy\nkroków, nakład ról i koszty wsparcia. Model może porównać takie zadeklarowane wejścia.\n\nTrzy granice modelu mają tu bezpośrednie zastosowanie:\n\n1. Znak różnicy kosztu nie jest z góry ustalony. Agent może wydłużyć przebieg,\n   na przykład przez rundę wyjaśnień z dostawcą, który nie zrozumiał zapytania.\n   Wynik ujemny jest pełnoprawnym wynikiem.\n2. Obowiązkowe terminy prawne pozostają zablokowane i identyczne po obu\n   stronach porównania. Automatyzacja przygotowania nie skraca ustawowego\n   terminu składania ofert ani terminu oczekiwania przed zawarciem umowy.\n3. Gotowość organizacyjna do wdrożenia jest opisywana osobno i nie wpływa na\n   różnicę kosztu. Bariery od pierwszej do ósmej opisanej wyżej należą właśnie\n   do tej warstwy. Są warunkami uruchomienia, nie składnikami rachunku.\n\nNieformalne obejście procesu pozostaje poza monetyzacją. Jest to istotne przy\nocenie agentów, ponieważ obejście nieprzejrzystego procesu jest jednym z ryzyk\ndo zbadania. Przywołane źródła nie ustalają jego częstości względem eskalacji.\n",
+  "fileHash": "55085066f5ca858a529dfcd95fc0bdc09c0776b38cc5288acef29c963b86f45a",
+  "requestHash": "310b0092b3b1f380458ddcccef99613e2d76accf303ce854e546207ae94a3ce8",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.16
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.18
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.41
+    }
+  },
+  "usage": {
+    "input_tokens": 1181,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

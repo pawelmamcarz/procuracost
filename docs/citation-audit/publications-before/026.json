@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-07-tunel-pole-lepszy-biznes.md",
+  "line": 288,
+  "section": "## O autorze\n\nPaweł Mamcarz jest autorem modelu ProcuraCost i gościem ósmego odcinka\nProcurement&Beyond, do którego odwołuje się ten tekst. Zajmuje się zakupami,\nnegocjacjami i wdrożeniami systemów zakupowych od strony organizacji, nie\ndostawcy narzędzia. Więcej materiałów, w tym kalkulator porównania dwóch\nprzebiegów procesu, znajduje się na https://mamcarz.com oraz w nagraniu\nrozmowy: https://www.youtube.com/watch?v=5KYUdTLlvvg.\n",
+  "fileHash": "0622978d486844e49a3a07f125fcccd004c31f21d7251c2a5f08aef74cc952e4",
+  "requestHash": "03e6fa9a286809bd4a5c242388e7ab362deefd0acedccd9f8cd826bd30e96c3a",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.08
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.06
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.45
+    }
+  },
+  "usage": {
+    "input_tokens": 554,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

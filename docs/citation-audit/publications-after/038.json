@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 13,
+  "section": "## Dwie role i ciągłość odpowiedzialności we wdrożeniu systemu zakupowego\n\nTytuł ósmego odcinka Procurement&Beyond brzmi jak przestroga: nawet najlepsze\nnarzędzie nie uratuje złego wdrożenia. W rozmowie o systemach zakupowych łatwo\nusłyszeć w tym zdaniu krytykę narzędzi. Chodzi o coś innego. Chodzi o to, że\nwdrożenie ma właściciela albo go nie ma, a system tego nie zmienia.\n\nDwa wcześniejsze teksty z tej serii zajmują się innymi warstwami. Artykuł\n[Tunel czy pole](2026-07-tunel-pole-lepszy-biznes.md) opisuje geometrię\nprzebiegu procesu: co musi zostać sekwencją, a co może być polem z granicą.\nArtykuł o [barierach autonomicznego sourcingu](2026-09-bariery-autonomicznego-sourcingu.md)\npyta, kiedy organizacja odda mandat handlowy agentowi. Ten tekst zostawia\nnarzędzie i mapę procesu na boku i pyta o osobę. Kto po stronie organizacji\nrozumie zakup, ma mandat i zostanie do końca.\n\nNa podstawie rozmowy proponuję rozróżnić dwie role i jeden warunek ich\nutrzymania. To interpretacja praktyczna do sprawdzenia, nie przetestowana\ntypologia ani dowód, że brak jednej z ról przesądza o wyniku projektu.\n",
+  "fileHash": "4e7208025ceb8bade398b14d9e9019f8237dc3d948b81a411fb035ce0707e804",
+  "requestHash": "0d39ab7ce0734bb10c0d3d734a5dbf8a328d63fb604fe0254b00ed74a4e15c1f",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.15
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.1
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.18
+    }
+  },
+  "usage": {
+    "input_tokens": 813,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

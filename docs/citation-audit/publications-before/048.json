@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 233,
+  "section": "## Pytanie do zadania przed podpisem\n\nWszystko powyższe sprowadza się do jednego pytania, które sponsor powinien\nzadać, zanim podpisze umowę na system zakupowy:\n\n> Kto po naszej stronie rozumie ten zakup, ma mandat, żeby powiedzieć\n> dostawcy „nie\", będzie rozmawiał z użytkownikami po odbiorze i ma następcę,\n> który o tym wie?\n\nJeżeli na to pytanie jest jedna odpowiedź z nazwiskiem, projekt ma właściciela.\nJeżeli są cztery różne odpowiedzi, projekt ma komitet. Jeżeli odpowiedzi nie\nma, narzędzie nie ma znaczenia.\n",
+  "fileHash": "69e36840ec0c7207803ffa66323b85a46dd3294eb87f5f996fd8461a45cc94df",
+  "requestHash": "d767ef454fef38dac7f606c9b2d7396920cd6d209447c96efa1aff36f5cb7201",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.09
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.22
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.1
+    }
+  },
+  "usage": {
+    "input_tokens": 580,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

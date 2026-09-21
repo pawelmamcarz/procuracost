@@ -1,7 +1,9 @@
 ---
-title: "Tunel czy pole? Jak skrócić zakupy bez osłabiania kontroli"
+title: "Tunel czy pole? Jak projektować przebieg zakupów bez osłabiania kontroli"
 magazyn: "Lepszy Biznes (All for One)"
 data: 2026-07
+autor: "Paweł Mamcarz"
+autor_www: "https://mamcarz.com"
 model: "ProcuraCost 2.3.0"
 status: "wersja do redakcji"
 ---
@@ -10,10 +12,10 @@ status: "wersja do redakcji"
 
 ## Jak projektować przebieg zakupów bez osłabiania kontroli
 
-Cyfryzacja nie naprawi procesu, którego logiki nikt nie potrafi wyjaśnić.
+Sama cyfryzacja nie gwarantuje poprawy procesu, którego logiki nikt nie potrafi wyjaśnić.
 Przeniesienie do systemu pięciu formularzy, trzech ręcznych zatwierdzeń i
 dwukrotnego przepisywania danych utrwala ten sam problem w nowym interfejsie.
-Wartość powstaje dopiero wtedy, gdy organizacja oddzieli potrzebne
+Dlatego przed konfiguracją warto oddzielić potrzebne
 zabezpieczenia od odziedziczonej kolejności pracy.
 
 Proces zakupowy ma chronić budżet, zapewniać właściwy dostęp do konkurencji,
@@ -91,8 +93,9 @@ Zamówienie katalogowe po ustanowieniu umowy ramowej może mieć jedną
 krótką mapę. Zwolnienie zlecenia MRP może przebiegać identycznie, jeżeli
 korzysta z obowiązującej umowy i zatwierdzonych danych materiałowych.
 
-ProcuraCost traktuje katalog i MRP jako scenariusze kontrolne. Identyczne mapy
-dają równy wynik. To ważna kontrola jakości modelu: nazwa adaptacyjna nie
+ProcuraCost traktuje katalog i MRP jako scenariusze kontrolne. Identyczne mapy,
+koszty i założenia konstrukcji umowy dają równy wynik centralny. To ważna
+kontrola jakości modelu: nazwa adaptacyjna nie
 powinna generować korzyści bez zmienionego mechanizmu.
 
 ## Przed konfiguracją systemu
@@ -222,8 +225,9 @@ Wynik powinien pokazywać więcej niż sumę. Rekord decyzji obejmuje:
 - status migracji starszych danych.
 
 Dodatnia delta oznacza, że przy zadeklarowanych wejściach wariant formalny ma
-wyższy koszt. Ujemna oznacza wyższy koszt wariantu adaptacyjnego. Zero i zmiana
-znaku w zakresie są pełnoprawnymi wynikami.
+wyższy koszt. Ujemna oznacza wyższy koszt wariantu adaptacyjnego. Zero jest
+pełnoprawnym wynikiem. Obwiednia łączy przeciwne końce zakresów obu wariantów;
+jej przecięcie zera nie dowodzi zmiany znaku przy wspólnym zestawie założeń.
 
 Porównanie przydatności procedur jest osobne i nie tworzy rankingu. Prawo,
 uwarunkowania zakupu i zdolność realizacji wymagają profesjonalnej oceny poza
@@ -282,3 +286,12 @@ Przypadki oficjalne wspierają opis mechanizmu, nie wartości liczbowe
 ProcuraCost. Materiał praktyczny służy do projektowania pytań i hipotez, nie
 kalibracji. Model 2.3 jest narzędziem porównawczym, nie estymatorem przyczynowym
 ani poradą prawną.
+
+## O autorze
+
+Paweł Mamcarz jest autorem modelu ProcuraCost i gościem ósmego odcinka
+Procurement&Beyond, do którego odwołuje się ten tekst. Zajmuje się zakupami,
+negocjacjami i wdrożeniami systemów zakupowych od strony organizacji, nie
+dostawcy narzędzia. Więcej materiałów, w tym kalkulator porównania dwóch
+przebiegów procesu, znajduje się na https://mamcarz.com oraz w nagraniu
+rozmowy: https://www.youtube.com/watch?v=5KYUdTLlvvg.

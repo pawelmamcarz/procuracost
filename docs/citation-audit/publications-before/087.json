@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-3-empiria-PZP-PL.md",
+  "line": 168,
+  "section": "## 6. Wyniki i kontrole\n\n### 6.1 Wynik główny\n\n`log(dni cyklu zakupowego)` od autoryzacji potrzeby do zawarcia umowy, obliczony\nz audytowalnych znaczników czasu.\n\nObowiązkowe terminy prawne pozostają częścią wyniku głównego. Zmienna\n`applicable_mandatory_wait_days` jest wyznaczana według stanu prawnego na dzień\nwszczęcia, granicy, rodziny procedury, przedmiotu zamówienia i sposobu\nkomunikacji. Wchodzi do specyfikacji głównej jako jawna kontrola. Obserwacja bez\ndanych pozwalających ją rozstrzygnąć nie trafia do estymacji H1. Analiza\nwrażliwości może odjąć wyłącznie te zidentyfikowane terminy; nie odejmuje\npozostałych kolejek organizacyjnych.\n\n### 6.2 Wyniki wtórne\n\n- nakład pracy według roli;\n- liczba ważnych ofert;\n- cena względem benchmarku ustalonego ex ante;\n- liczba i typ aneksów;\n- udokumentowane odstępstwa;\n- ustalenia audytowe;\n- uzgodnione miary wykonania dostawy.\n\n### 6.3 Kontrole\n\nDozwolone zmienne przed ekspozycją obejmują wartość szacunkową, CPV,\nzłożoność techniczną, pilność zadeklarowaną przed wszczęciem, rok i efekty stałe\norganizacji.\n\nLiczba ofert, cena, aneksy i wynik dostawy są zmiennymi po ekspozycji. Nie mogą\npełnić roli kontroli w modelu czasu, jeżeli projekt procesu mógł na nie wpłynąć.\nLiczba ważnych ofert pozostaje wynikiem w modelu konkurencji.\n\nTwierdzenie o braku efektu wymaga prerejestrowanego testu równoważności.\n`p > 0,05` nie potwierdza równoważności.\n",
+  "fileHash": "9fcdaac622b79a56d62e64456690ccfd089ac879a0019c9807cf864870a88919",
+  "requestHash": "9840c7397bd2bedf3145534e1bd87a7abb6b427599295d9caa327961d9567a7b",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.17
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.17
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.37
+    }
+  },
+  "usage": {
+    "input_tokens": 945,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

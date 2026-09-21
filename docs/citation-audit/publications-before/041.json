@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 82,
+  "section": "## Rola trzecia: ciągłość właścicielstwa\n\nTrzecia rola nie jest osobą, lecz warunkiem. Fragment\n[Ciągłość właścicielstwa (29:41 do 29:49)](https://youtu.be/5KYUdTLlvvg?t=1781)\njest krótki i dotyczy sytuacji, w której osoba napędzająca projekt odchodzi, a\nnikt nie przygotował zastępstwa ani ścieżki decyzji.\n\nTo najczęstszy sposób, w jaki dobrze rozpoczęte wdrożenie zamienia się w\nutrzymanie bez rozwoju. Projekt trwa dwanaście do dwudziestu czterech\nmiesięcy. Rotacja na stanowiskach kierowniczych w tym czasie nie jest\nwyjątkiem. Kiedy odchodzi kwestionujący, zakres zaczyna rosnąć. Kiedy odchodzi\nambasador, adopcja zaczyna spadać. Kiedy odchodzą oboje bez następcy, system\nzostaje na wersji z dnia odbioru.\n\nSponsor powinien zapytać: kto przejmie tę rolę, jeżeli obecny właściciel\nzmieni pracę w trzecim kwartale, i czy ta osoba wie o tym dzisiaj. Odpowiedź\n„zobaczymy\" oznacza, że warunek nie jest spełniony. Odpowiedź z nazwiskiem i\ndatą rozmowy oznacza, że jest spełniony do potwierdzenia.\n",
+  "fileHash": "69e36840ec0c7207803ffa66323b85a46dd3294eb87f5f996fd8461a45cc94df",
+  "requestHash": "63a143716d232a4e095c68d1c7c09a7d2494370d7a185d67681a2f6b51272c0b",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.11
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.62
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.28
+    }
+  },
+  "usage": {
+    "input_tokens": 778,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

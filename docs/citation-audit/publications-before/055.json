@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-1-tunnel-or-field-EN.md",
+  "line": 73,
+  "section": "## 3. Why formal structure can protect value\n\nSzucs (2024) studies a Hungarian reform affecting access to a\nhigh-discretion invitational procedure below a value threshold. The analysis\naddresses manipulation around the threshold and identifies a price and\nselection channel associated with discretion in that institutional setting.\n\nThe transferable implication is limited. If an adaptive workflow changes\ncompetitive access, a potential time benefit must be considered alongside\npossible price or selection loss. The study does not estimate the effect of\nworkflow topology in Poland, so ProcuraCost uses it only as an anchor for a\ndeclared 2, 6 and 9 per cent competition-transfer stress where the comparison\nstates that supplier access differs and identifies the restricted alternative.\n\nPublicity itself should not receive a universal delay penalty. Coviello and\nMariniello (2014) report that greater publicity at Italian public-works\nthresholds increased participation without worsening delivery delay. Elapsed\ntime should therefore be derived from the actual work and dependencies, not\nfrom the existence of competition alone.\n",
+  "fileHash": "10544b99cb4bb48d0939f687252e133e8bee6c464100141a58fff7a369f1f3fa",
+  "requestHash": "f4d374409dbe684ceb949ae79850d60ff3ec2f0ce689bba6887ee44c4f081295",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.26
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.26
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.96
+    }
+  },
+  "usage": {
+    "input_tokens": 628,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

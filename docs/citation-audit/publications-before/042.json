@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 101,
+  "section": "## Co dzieje się bez każdej z ról\n\nTrzy role usunięte pojedynczo dają trzy różne wzorce niepowodzenia. Warto je\nrozróżniać, ponieważ wymagają różnych interwencji.\n\nBez kwestionującego projekt kończy się systemem, który robi dużo rzeczy i nie\nusuwa nieefektywności, dla której powstał. Objawem jest lista funkcji dłuższa\nniż lista problemów. Interwencją jest powrót do mapy tarcia sprzed wyboru\nsystemu.\n\nBez ambasadora projekt kończy się systemem, który działa i którego nikt nie\nużywa. Objawem jest rozjazd między raportem z systemu a faktycznym przebiegiem\nspraw. Interwencją jest osoba z mandatem, która zaczyna rozmawiać z\nwnioskodawcami biznesowymi.\n\nBez ciągłości projekt kończy się systemem zamrożonym na dniu odbioru. Objawem\njest brak zmian konfiguracji przez kilka kwartałów mimo zgłoszeń. Interwencją\njest wyznaczenie właściciela na nowo, z pełnym mandatem, a nie „opiekuna\".\n\nŻaden z tych wzorców nie jest wadą narzędzia. Wszystkie trzy występują przy\nnajlepszym narzędziu na rynku.\n",
+  "fileHash": "69e36840ec0c7207803ffa66323b85a46dd3294eb87f5f996fd8461a45cc94df",
+  "requestHash": "5a18aae93c9f8e8b9844291cc7e76b3288a1dafbb883557b90031d2347cbd81f",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.11
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.52
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.09
+    }
+  },
+  "usage": {
+    "input_tokens": 760,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

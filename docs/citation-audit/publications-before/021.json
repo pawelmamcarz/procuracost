@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-07-tunel-pole-lepszy-biznes.md",
+  "line": 199,
+  "section": "## TCO i ograniczone wykorzystanie AI\n\nAnaliza TCO wymaga ujednoliconych danych o cenie, finansowaniu, użytkowaniu,\nenergii lub paliwie, serwisie, ryzyku i wartości rezydualnej. Model językowy\nmoże pomóc wydobyć i uporządkować informacje z materiałów rynkowych, ale wynik\nmusi mieć jawne źródła i przejść kontrolę człowieka.\n\nW materiale Procurement&Beyond jako przykład pojawia się wykorzystanie modelu\nBielik w projekcie „Czym pojadę”. Granica jest jednoznaczna: Bielik może\nstrukturyzować dane. Przejrzysty model deterministyczny wykonuje rachunek TCO.\nNie należy przypisywać modelowi językowemu obliczenia, którego nie można\nodtworzyć.\n",
+  "fileHash": "0622978d486844e49a3a07f125fcccd004c31f21d7251c2a5f08aef74cc952e4",
+  "requestHash": "a955e279ab6c310b1030b1069391addfebcf533bf92e4a1add0fc950a1ac9244",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.15
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.12
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.76
+    }
+  },
+  "usage": {
+    "input_tokens": 621,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

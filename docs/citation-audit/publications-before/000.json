@@ -1,0 +1,27 @@
+{
+  "file": "RESEARCH.md",
+  "line": 1,
+  "section": "# Procurement Workflow Design Under a Shared Governance Boundary\n\n**Working paper, draft for review**\n\n**Model:** ProcuraCost 2.3.0\n\n**Updated:** 29 August 2026\n",
+  "fileHash": "9a9581ef3c2b73b2e843741b5a6b4a4abd783f231c804664b3f7e357f1bd8f41",
+  "requestHash": "218acec3c5688c42e180c5381e8ed0487db8faa8de0daa9c1c2508b24b291936",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.11
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.06
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.11
+    }
+  },
+  "usage": {
+    "input_tokens": 448,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

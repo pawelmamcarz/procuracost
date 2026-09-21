@@ -155,6 +155,13 @@ powinny dawać równy wynik.
 `log(dni cyklu zakupowego)` od autoryzacji potrzeby do podpisania umowy, na
 podstawie audytowalnych znaczników czasu.
 
+Przed analizą należy ustalić rozdzielczość czasu i obsługę zakończeń w dniu
+rozpoczęcia: logarytm z zera nie istnieje. Sprawy niezakończone na dzień
+odcięcia są cenzurowane, a unieważnienia stanowią odrębny rodzaj zakończenia.
+Ich skala i przyczyny wymagają raportowania. Analiza wyłącznie podpisanych
+umów wymaga oceny selekcji; alternatywą jest prerejestrowany model czasu do
+zdarzenia, uwzględniający inne sposoby zakończenia.
+
 Obowiązkowe terminy prawne pozostają częścią wyniku głównego. Zmienna
 `applicable_mandatory_wait_days` jest wyznaczana według stanu prawnego na dzień
 wszczęcia, granicy, rodziny procedury, przedmiotu zamówienia i sposobu
@@ -261,8 +268,9 @@ spełnią warunki i symulacja wykaże użyteczną moc.
 
 ### 7.3 Wariant C: próg ustawowy
 
-Zmiana progu stosowania PZP ze 130 000 do 170 000 zł od 1 stycznia 2026,
-wskazana w dotychczasowym planie jako Dz.U. 2025 poz. 1173, może tworzyć
+Zmiana progu stosowania PZP do zamówień klasycznych udzielanych przez
+zamawiających publicznych ze 130 000 do 170 000 zł od 1 stycznia 2026,
+określona w [Dz.U. 2025 poz. 1173](https://eli.gov.pl/eli/DU/2025/1173/ogl), może tworzyć
 nieciągłość. Przed wykorzystaniem należy ponownie zweryfikować podstawę prawną
 i brak innych zmian w tym samym czasie.
 
@@ -353,8 +361,11 @@ obejście procesu jest nieobjęte monetyzacją.
 
 ## 11. Warunki osłabienia hipotez
 
-Hipotezy słabną, jeżeli po uwzględnieniu złożoności i zgodnie z
-prerejestracją:
+Ocena wymaga uwzględnienia przedziałów niepewności, mocy i prerejestrowanych
+MSI. Sam punktowy wynik poniżej MSI albo brak istotności statystycznej nie
+falsyfikuje hipotezy; wynik może być nierozstrzygający. Hipotezy słabną, jeżeli
+dane z dostateczną precyzją, po uwzględnieniu złożoności i zgodnie z prerejestracją,
+wskazują, że:
 
 - H1a lub H1b osobno nie osiąga prerejestrowanego dodatniego MSI albo ma znak
   przeciwny odpowiednio dla czasu i godzin koordynacji;

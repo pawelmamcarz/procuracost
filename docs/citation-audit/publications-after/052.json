@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-1-tunnel-or-field-EN.md",
+  "line": 5,
+  "section": "## Abstract\n\nProcurement rules constrain authority and discretion, organise work, shape\nmarket access and govern contractual adaptation. A single label such as\nrigidity cannot identify these mechanisms. This paper limits the Tunnel and\nField metaphor to procurement workflow topology. A tunnel represents a\nprescribed sequence. A field permits alternative paths inside the same legal\nand governance boundary. Formal competition may protect value by constraining\nselection discretion. Adaptive work may protect value by changing queues,\nhand-offs or the timing of learning, but it may also add discovery effort or\nweaken market access. The sign of the resulting difference is an empirical\nquestion. The paper defines a lawful counterfactual, identifies conditions in\nwhich adaptation has or lacks a mechanism and derives six separately testable\npropositions in five proposition families.\n",
+  "fileHash": "955757954d600d02fc3668298d27fed59ebd1e482a7993b9906dabcf37c984ab",
+  "requestHash": "88f17efecd458d41d6b16e0516c58f675ac690ffcb51d56beb70be908cc28fa1",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.13
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.09
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.09
+    }
+  },
+  "usage": {
+    "input_tokens": 571,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

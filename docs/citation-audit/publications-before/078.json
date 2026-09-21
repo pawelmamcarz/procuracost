@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-2-model-kosztu-PL.md",
+  "line": 312,
+  "section": "## 14. Obserwacje praktyków\n\n[Procurement&Beyond, odcinek\n8](https://www.youtube.com/watch?v=5KYUdTLlvvg) wskazuje pytania o właściciela\nwdrożenia, tarcie procesu, wymagania, zakupy operacyjne, uproszczenie polityki,\nTCO i ograniczone zastosowanie AI. Materiał jest wywiadem praktycznym opartym\nna automatycznych napisach w języku polskim.\n\nMoże służyć do projektowania pytań i hipotez. Nie może ustalać wartości,\nzakresów, odpowiedzi w samoopisie gotowości ani progu decyzyjnego.\n",
+  "fileHash": "fdc4ef6f9be1c931f048ed111080d3415ccc8ecd3167765786d0a56076b498d2",
+  "requestHash": "e858d9724c5508b85c03ad4e22a66f26ab0429420a76d3831cbe89a4482e23d2",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.14
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.07
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.55
+    }
+  },
+  "usage": {
+    "input_tokens": 582,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

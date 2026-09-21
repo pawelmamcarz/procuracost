@@ -30,8 +30,9 @@ konkurencji. Obowiązkowe terminy prawne powinny być identyfikowane i
 kontrolowane osobno. Adaptacyjny wariant ProcuraCost pozostaje wewnątrz tej
 samej granicy prawnej.
 
-Od 1 stycznia 2026 r. dotychczasowy plan przyjmuje próg stosowania PZP równy
-170 000 zł netto na podstawie Dz.U. 2025 poz. 1173. Właściwe progi unijne
+Od 1 stycznia 2026 r. próg stosowania PZP do zamówień klasycznych udzielanych
+przez zamawiających publicznych wynosi 170 000 zł netto na podstawie
+[Dz.U. 2025 poz. 1173](https://eli.gov.pl/eli/DU/2025/1173/ogl). Właściwe progi unijne
 zależą od przedmiotu i rodzaju Zamawiającego. Przed analizą należy zweryfikować
 aktualny tekst prawa i stan na dzień każdego postępowania. Próg prawny nie jest
 automatycznie prawidłowym instrumentem identyfikacji.
@@ -124,8 +125,9 @@ zmierzyć.
 Stabilna standardowa usługa może wymagać tej samej pracy w obu projektach.
 Scenariusz startowy tej usługi osobno deklaruje różnicę konkurencji, więc nie
 jest neutralną kontrolą kosztu całkowitego.
-Zamówienie katalogowe i zwolnienie zlecenia MRP mają identyczne mapy w
-scenariuszach kontrolnych. Równe mapy powinny dawać równy wynik. Badanie powinno
+Zamówienie katalogowe i zwolnienie zlecenia MRP mają identyczne mapy oraz
+założenia kosztowe i kontraktowe w scenariuszach kontrolnych. To łączne
+zrównanie wejść daje równy wynik centralny. Badanie powinno
 sprawdzić mechanizm, a nie etykietę wariantu.
 
 ## 5. Warstwy danych
@@ -171,6 +173,13 @@ dopasowanie oceny przebiegu do wyniku.
 
 `log(dni cyklu zakupowego)` od autoryzacji potrzeby do zawarcia umowy, obliczony
 z audytowalnych znaczników czasu.
+
+Przed analizą trzeba ustalić rozdzielczość czasu i obsługę spraw zakończonych
+w dniu rozpoczęcia, ponieważ logarytm z zera nie istnieje. Postępowania
+niezakończone na dzień odcięcia są cenzurowane, a unieważnione mają odrębny
+rodzaj zakończenia. Nie należy ich usuwać bez raportowania skali i przyczyn.
+Model czasu do podpisania umowy wymaga osobnej analizy selekcji do zawarcia
+umowy lub prerejestrowanego modelu czasu do zdarzenia.
 
 Obowiązkowe terminy prawne pozostają częścią wyniku głównego. Zmienna
 `applicable_mandatory_wait_days` jest wyznaczana według stanu prawnego na dzień
@@ -287,7 +296,10 @@ Przed estymacją należy zamrozić populację, okno, ekspozycję, wyniki, kontro
 estymator, poziom klastrowania, reguły wyłączeń, MSI, granice równoważności,
 obsługę braków i plan testów wielokrotnych.
 
-Hipotezy słabną, jeżeli:
+Poniższe warunki należy oceniać z uwzględnieniem przedziałów niepewności,
+mocy i prerejestrowanych MSI. Sam punktowy wynik poniżej MSI albo brak
+istotności statystycznej nie falsyfikuje hipotezy; wynik może być nierozstrzygający.
+Hipotezy słabną, jeżeli dane z dostateczną precyzją wskazują, że:
 
 - H1a lub H1b osobno nie osiąga prerejestrowanego dodatniego MSI albo ma znak
   przeciwny odpowiednio dla czasu i godzin koordynacji;

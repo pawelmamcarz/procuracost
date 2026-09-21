@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-2-model-kosztu-PL.md",
+  "line": 5,
+  "section": "## Streszczenie\n\nArtykuł przedstawia deterministyczny model porównujący dwa zgodne projekty\nprzebiegu procesu zakupowego dla tego samego zakupu i tych samych ram prawnych\noraz ładu zakupowego. Model 2.3 wykorzystuje dwie niezależne mapy zależności,\noblicza ścieżkę krytyczną i rozdziela koszt ról, koszt niepracowniczy, koszt\nzwłoki oraz objęte monetyzacją elementy konstrukcji umowy. Obowiązkowe terminy\nprawne są stałe i wspólne dla obu wariantów. Wynik ma znak dodatni, ujemny albo\nzerowy zależnie od jawnych danych wejściowych. Zakresy niski, centralny i wysoki\nsą scenariuszami, nie przedziałami ufności. Model nie jest estymatorem,\nrekomendacją procedury ani oceną gotowości organizacyjnej.\n",
+  "fileHash": "fdc4ef6f9be1c931f048ed111080d3415ccc8ecd3167765786d0a56076b498d2",
+  "requestHash": "0dc0bc7a52c7c1a70b3492457acebd4fe0ee617a342be8f1f9d459fd10a86395",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.13
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.15
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.11
+    }
+  },
+  "usage": {
+    "input_tokens": 660,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

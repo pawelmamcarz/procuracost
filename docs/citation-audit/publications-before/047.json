@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 209,
+  "section": "## Co jest obserwacją, a co hipotezą\n\nWarto jasno oddzielić trzy rodzaje twierdzeń w tym tekście.\n\nObserwacje praktyczne pochodzą z rozmowy. Trzy role, dwa wzorce decyzji\nkonfiguracyjnych i uwaga o koszcie zmiany są tym, co widziałem w projektach i o\nczym mówiłem w nagraniu. Nie są wynikiem badania.\n\nZałożenia zachowane to konstrukcja samoopisu gotowości: osiem obszarów,\nszesnaście pytań, trzy odpowiedzi. Lista została opracowana jako zbiór hipotez\noperacyjnych. Rozmowa dostarczyła kontekstu do jej pytań, ale nie dowodzi, że\nktórykolwiek warunek jest spełniony w jakiejkolwiek organizacji.\n\nHipotezy wymagające niezależnych danych są trzy:\n\n1. Trwałe wewnętrzne właścicielstwo przewiduje adopcję systemu lepiej niż\n   jakość narzędzia.\n2. Zmapowanie tarcia w procesie przed wdrożeniem ogranicza zbędną konfigurację.\n3. Uproszczenie polityki zmniejsza obciążenie zatwierdzeniami bez osłabienia\n   kontroli na granicy.\n\nKażda z nich brzmi przekonująco. Żadna nie została sprawdzona na danych. Ich\nsformułowanie jest celem tego tekstu, nie ich udowodnienie.\n",
+  "fileHash": "69e36840ec0c7207803ffa66323b85a46dd3294eb87f5f996fd8461a45cc94df",
+  "requestHash": "a4cf8fd185b505a7e62433e153335e028dad17ff99808074d3dde180cc17c01a",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.14
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.1
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.16
+    }
+  },
+  "usage": {
+    "input_tokens": 799,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

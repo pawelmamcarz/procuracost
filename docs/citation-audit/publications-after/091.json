@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-3-empiria-PZP-PL.md",
+  "line": 293,
+  "section": "## 10. Prerejestracja i falsyfikacja\n\nPrzed estymacją należy zamrozić populację, okno, ekspozycję, wyniki, kontrole,\nestymator, poziom klastrowania, reguły wyłączeń, MSI, granice równoważności,\nobsługę braków i plan testów wielokrotnych.\n\nPoniższe warunki należy oceniać z uwzględnieniem przedziałów niepewności,\nmocy i prerejestrowanych MSI. Sam punktowy wynik poniżej MSI albo brak\nistotności statystycznej nie falsyfikuje hipotezy; wynik może być nierozstrzygający.\nHipotezy słabną, jeżeli dane z dostateczną precyzją wskazują, że:\n\n- H1a lub H1b osobno nie osiąga prerejestrowanego dodatniego MSI albo ma znak\n  przeciwny odpowiednio dla czasu i godzin koordynacji;\n- szerszy dostęp ex ante wiąże się z materialnie mniejszą liczbą ważnych ofert\n  albo wyższą ceną względem niezależnego benchmarku;\n- sztywność klauzul nie wiąże się dodatnio z liczbą aneksów na rok kontraktu lub\n  warunkowy efekt liczby bram wykracza poza granicę równoważności;\n- dla potrzeb niekompletnych interakcja adaptacyjnego odkrywania nie jest\n  dodatnia dla pracy przed wszczęciem i ujemna dla dni wyjaśnień oraz ponownej\n  pracy po rozpoczęciu konkurencji albo dla potrzeb stabilnych wykracza poza\n  granice równoważności;\n- odsetek zarejestrowanych kontroli nie wiąże się z mniejszą liczbą działań poza\n  systemem i braków śladu audytowego ponad informację o posiadaniu systemu;\n- komponent modelu nie przewyższa prerejestrowanej prostej bazy.\n\nHeterogeniczność jest wynikiem tylko wtedy, gdy odpowiada prerejestrowanemu\nmechanizmowi i pojawia się poza próbą używaną do dopasowania. Wynik zerowy lub\nprzeciwny pozostaje wynikiem badania.\n",
+  "fileHash": "bcbcaef51d9c8ddaf95ded9a2609faa8f9b5e894de8ee2f24084ca1ce721babd",
+  "requestHash": "44ea63d5ae19c34cdee1bd661d20b846ccc9a633801ad095f3047b50b39bcff1",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.22
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.15
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.11
+    }
+  },
+  "usage": {
+    "input_tokens": 1000,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

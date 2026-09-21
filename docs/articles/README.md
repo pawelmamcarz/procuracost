@@ -9,6 +9,12 @@ publication-oriented working paper is [`RESEARCH.md`](../../RESEARCH.md).
 Active texts:
 
 - [`pl/2026-07-tunel-pole-lepszy-biznes.md`](pl/2026-07-tunel-pole-lepszy-biznes.md);
+- [`pl/2026-09-bariery-autonomicznego-sourcingu.md`](pl/2026-09-bariery-autonomicznego-sourcingu.md),
+  draft after source review: survey populations and vendor-reported results
+  are qualified; unverified market figures and platform comparisons are excluded;
+- [`pl/2026-09-wdrozenie-bez-wlasciciela.md`](pl/2026-09-wdrozenie-bez-wlasciciela.md),
+  draft, ownership and implementation readiness, built on episode 8 question
+  design;
 - [`doktorat/article-1-tunnel-or-field-EN.md`](doktorat/article-1-tunnel-or-field-EN.md);
 - [`doktorat/article-2-model-kosztu-PL.md`](doktorat/article-2-model-kosztu-PL.md);
 - [`doktorat/article-3-empiria-PZP-PL.md`](doktorat/article-3-empiria-PZP-PL.md).
@@ -67,3 +73,10 @@ recommendation.
 English drafts use British spelling. Polish drafts use professional procurement
 terminology from `CLAUDE_DESIGN.md` and reserve `Zamawiający` for the PZP
 context.
+
+## Editorial review, 21 September 2026
+
+The seven active papers/articles were screened section by section with Jev and
+reviewed against the current model and selected primary sources. The audit
+record is in [`../citation-audit/PUBLICATIONS_REVIEW.md`](../citation-audit/PUBLICATIONS_REVIEW.md).
+AI screening is not independent empirical validation, author approval or publication.
