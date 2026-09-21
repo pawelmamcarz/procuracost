@@ -84,14 +84,25 @@ describe("server-safe model assumptions data", () => {
         expect(competition).toBeUndefined();
       }
 
-      for (const id of ["amendmentDifferential", "tcoDifferential"] as const) {
-        const value = scenario.calibratedValues.find(
-          (candidate) => candidate.id === id
-        )!.value;
-        expect(value.central).toBe(0);
-        expect(value.low).toBeLessThanOrEqual(0);
-        expect(value.high).toBeGreaterThanOrEqual(0);
-      }
+      const amendment = scenario.calibratedValues.find(
+        (candidate) => candidate.id === "amendmentDifferential"
+      )!;
+      expect(amendment.unit).toBe("percentage");
+      expect(amendment.value).toEqual({
+        low: 0.077,
+        central: 0.084,
+        high: 0.098,
+        rangeKind: "calibrated",
+        evidenceClass: "verified_postprint",
+        evidenceIds: ["beuve_amendment_frequency_2023"],
+      });
+
+      const tco = scenario.calibratedValues.find(
+        (candidate) => candidate.id === "tcoDifferential"
+      )!.value;
+      expect(tco.central).toBe(0);
+      expect(tco.low).toBeLessThanOrEqual(0);
+      expect(tco.high).toBeGreaterThanOrEqual(0);
       expect(scenario.bypass).toEqual({
         id: "informal_bypass",
         status: "notMonetized",

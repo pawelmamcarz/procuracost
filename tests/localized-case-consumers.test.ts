@@ -40,7 +40,7 @@ function modelCopy(lang: "pl" | "en", key: string): string {
 }
 
 describe("localised English evidence consumers", () => {
-  it("renders one shared five-record evidence register from both thin routes", () => {
+  it("renders one shared six-record evidence register from both thin routes", () => {
     const polishRoute = renderToStaticMarkup(createElement(PlCaseStudiesPage));
     const englishRoute = renderToStaticMarkup(createElement(EnCaseStudiesPage));
     const polishShared = renderToStaticMarkup(
@@ -60,7 +60,7 @@ describe("localised English evidence consumers", () => {
       expect(
         [...markup.matchAll(/data-evidence-id="([^"]+)"/g)].map(([, id]) => id)
       ).toEqual(EVIDENCE_REGISTRY.map(({ id }) => id));
-      expect(markup.match(/data-evidence-id=/g)).toHaveLength(5);
+      expect(markup.match(/data-evidence-id=/g)).toHaveLength(6);
     }
   });
 
