@@ -1,5 +1,9 @@
 # Audyt źródeł urzędowych i materiałów dostawców
 
+Dalsze ustalenia po PR #38: [SOURCE_FOLLOWUP.md](SOURCE_FOLLOWUP.md).
+Poniższy raport zachowuje stan poprzedniego przeglądu.
+
+
 Data weryfikacji internetowej i opracowania: **21 września 2026 r.**
 
 Zakres: RESEARCH.md, docs/articles/pl/*.md oraz sekcja prawna artykułu
