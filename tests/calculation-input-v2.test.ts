@@ -531,6 +531,81 @@ describe("model 2.3 draft calculation materialisation", () => {
     }
   });
 
+  it("derives the amendment allocation only under a declared rigidity difference", () => {
+    const draft = createScenarioDraft("fleet_tco_reframing");
+    draft.economicAssumptions.contractRigidityDiffers = true;
+    draft.economicAssumptions.amendmentDisadvantagedAlternative =
+      "formalSequential";
+
+    const input = buildCalculationInputFromDraft(draft);
+    const contractValue = draft.economicAssumptions.contractValue;
+    const dimensionCost = (alternative: "formalSequential" | "adaptiveCompliant") =>
+      input.alternatives[alternative].contractDesign.dimensions.find(
+        ({ id }) => id === "contract_amendment"
+      )!;
+    const formal = dimensionCost("formalSequential");
+    const adaptive = dimensionCost("adaptiveCompliant");
+    if (formal.status !== "monetized" || adaptive.status !== "monetized") {
+      throw new Error("Fixture requires monetized amendment dimensions");
+    }
+
+    expect(formal.cost).toMatchObject({
+      low: contractValue.low * 0.077,
+      central: contractValue.central * 0.084,
+      high: contractValue.high * 0.098,
+      rangeKind: "calibrated",
+      evidenceClass: "verified_postprint",
+      evidenceIds: ["beuve_amendment_frequency_2023"],
+    });
+    expect(adaptive.cost).toMatchObject({
+      low: 0,
+      central: 0,
+      high: 0,
+      rangeKind: "calibrated",
+      evidenceClass: "verified_postprint",
+      evidenceIds: ["beuve_amendment_frequency_2023"],
+    });
+
+    expect(() => calculateComparison(input)).not.toThrow();
+  });
+
+  it("rejects an incomplete or contradictory amendment allocation declaration", () => {
+    const missingSide = createScenarioDraft("fleet_tco_reframing");
+    missingSide.economicAssumptions.contractRigidityDiffers = true;
+    expect(() => buildCalculationInputFromDraft(missingSide)).toThrow(
+      /amendmentDisadvantagedAlternative.*required/i
+    );
+
+    const undeclaredSide = createScenarioDraft("fleet_tco_reframing");
+    undeclaredSide.economicAssumptions.amendmentDisadvantagedAlternative =
+      "adaptiveCompliant";
+    expect(() => buildCalculationInputFromDraft(undeclaredSide)).toThrow(
+      /amendmentDisadvantagedAlternative must be null/i
+    );
+
+    const negativeRate = createScenarioDraft("fleet_tco_reframing");
+    negativeRate.economicAssumptions.amendmentDifferential = {
+      ...negativeRate.economicAssumptions.amendmentDifferential,
+      low: -0.1,
+      central: 0,
+      high: 0.1,
+    };
+    expect(() => buildCalculationInputFromDraft(negativeRate)).toThrow(
+      /amendmentDifferential cannot be negative/i
+    );
+
+    const excessiveRate = createScenarioDraft("fleet_tco_reframing");
+    excessiveRate.economicAssumptions.amendmentDifferential = {
+      ...excessiveRate.economicAssumptions.amendmentDifferential,
+      low: 0,
+      central: 0.5,
+      high: 1.5,
+    };
+    expect(() => buildCalculationInputFromDraft(excessiveRate)).toThrow(
+      /amendmentDifferential cannot exceed 1/i
+    );
+  });
+
   it("remains sign-neutral when the materialised alternatives are swapped", () => {
     const input = buildCalculationInputFromDraft(
       createScenarioDraft("fleet_tco_reframing")
