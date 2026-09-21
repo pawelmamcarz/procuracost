@@ -135,13 +135,20 @@ identical value in all three cases.
 Evidence classes are:
 
 1. `empirical_anchor`;
-2. `official_case`;
-3. `practitioner_observation`;
-4. `illustrative_scenario`;
-5. `research_hypothesis`;
-6. `retained_legacy_assumption`;
-7. `user_input`;
-8. `legal_rule`.
+2. `verified_postprint`;
+3. `official_case`;
+4. `practitioner_observation`;
+5. `illustrative_scenario`;
+6. `research_hypothesis`;
+7. `retained_legacy_assumption`;
+8. `user_input`;
+9. `legal_rule`.
+
+`verified_postprint` marks a value anchored to a verified author post-print of
+the published version where the version of record could not be read directly
+and no erratum was found. It is stronger than a working-paper citation and
+weaker than a directly verified version of record, and the residual access
+uncertainty must be stated wherever the class is used.
 
 The three cases are declared scenario values. They are not confidence
 intervals, posterior intervals or estimates of sampling uncertainty. The engine
@@ -252,10 +259,46 @@ the market-access mechanism rather than infer it from the word adaptive.
 
 ### 7.2 Contract amendment and TCO
 
-Contract-amendment and TCO differentials are zero in every native 2.3 starting
-scenario. No coefficient from an amendment study and no general TCO percentage
-is monetised without a signed allocation convention and evidence for the
-specific comparison.
+The contract-amendment differential is anchored to Beuve, Moszoro and Spiller
+(2023, JLEO 39(1): 281-308), verified through the author post-print of the
+published version (MPRA paper 117230). Table 4 of that version reports
+contractual-rigidity coefficients of 0.014, 0.011 and 0.012 for the annual
+amendment frequency. The rigidity index sums seven category z-scores, so a
+one-standard-deviation increase in every category implies 0.098, 0.077 and
+0.084 additional amendments per contract-year:
+
+`amendmentDifferential = {0.077, 0.084, 0.098} per contract-year`
+
+The signed allocation convention maps the study index onto the model profile:
+the model does not observe the seven category z-scores, so a declared
+full-profile rigidity difference corresponds to profile 1 and carries the
+entire published range. The differential is monetised only where the
+comparison explicitly declares a contract-rigidity difference
+(`contractRigidityDiffers`) and names the more rigid alternative
+(`amendmentDisadvantagedAlternative`):
+
+`contractAmendment_moreRigid = contractValue x {0.077, 0.084, 0.098}`
+
+The other alternative receives zero. Applying the per-contract-year
+differential to the contract value is a declared transfer convention, not the
+study's dependent-variable unit; it is not an estimate for Poland and does not
+identify the effect of procurement workflow design. The allocation never
+follows from a workflow label. Every native 2.3 starting scenario declares no
+rigidity difference, so the monetised amendment dimension is zero in the
+canonical registry, and the builder rejects any hand-entered non-zero
+amendment allocation that lacks the declaration.
+
+Residual uncertainty: the earlier NBER working paper (w28491) reports a 0.015
+coefficient consistent with the 7.7-10.5 per cent prose range, while the
+published version prints 0.014 and its retained prose is internally
+inconsistent (7 x 0.014 = 0.098 < 0.105). No erratum or corrigendum was found
+in Crossref, Crossmark or the journal, and the OUP version of record was not
+read directly (access blocked), so a marginal possibility remains that it
+differs from the verified post-print.
+
+The TCO differential is zero in every native 2.3 starting scenario. No general
+TCO percentage is monetised without a signed allocation convention and
+evidence for the specific comparison.
 
 A TCO analysis may still be prepared outside this delta. A language model such
 as Bielik may structure market data for review, while the transparent
@@ -433,11 +476,17 @@ Active external records include:
   Procurement](https://public-buyers-community.ec.europa.eu/resources/guidance-innovation-procurement);
 - [Szucs (2024), Discretion and favoritism in public
   procurement](https://doi.org/10.1093/jeea/jvad017).
+- [Beuve, Moszoro and Spiller (2023), Doing It by the Book: Political
+  Contestability and Public Contract
+  Renegotiations](https://mpra.ub.uni-muenchen.de/117230/1/Renegotiations_v5c.pdf)
+  (verified author post-print of JLEO 39(1): 281-308).
 
 The four official cases support qualitative mechanisms only. The internal record
 `model_2_3_mechanism_workflow_allocations` documents the five illustrative step
 maps and their mixed provenance with the retained support profiles. Szucs supports
 the bounded competition-transfer stress under a stated transfer assumption.
+Beuve, Moszoro and Spiller support the bounded contract-amendment differential
+under the signed allocation convention of section 7.2, as `verified_postprint`.
 None supplies aggregate workflow days, step allocations, role hours, role rates,
 support costs or daily costs.
 
