@@ -1,0 +1,27 @@
+{
+  "file": "RESEARCH.md",
+  "line": 17,
+  "section": "## 1. Research question and scope\n\nThe research question is:\n\n> Under a shared legal and governance boundary, when does the design of a procurement workflow change total modelled cost, and which inputs carry that difference?\n\nProcuraCost does not answer which procedure an organisation should select. It does not infer legal admissibility from a cost result, infer organisational readiness from system support, or convert a practitioner account into a calibration parameter. Public-procurement comparisons must remain within the applicable PZP context. A comparison between a lawful competitive procedure and an unavailable exemption is outside the model boundary.\n\nThe output allows the user to:\n\n1. make the compared process maps and legal waits explicit;\n2. identify the cost drivers and assumptions responsible for a difference;\n3. disclose monetary coverage and dimensions left outside the calculation;\n4. formulate questions that can be tested against event-level procurement data.\n",
+  "fileHash": "efae17217ece6a72fe983aef38e3ea949671251506e40ee515e78d84a3de5bc4",
+  "requestHash": "0fbf52cf1d91b7e59c76c5a5fa18a151e6d6dbce1e1088e10de2482dd5e72bd1",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.16
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.25
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.09
+    }
+  },
+  "usage": {
+    "input_tokens": 618,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

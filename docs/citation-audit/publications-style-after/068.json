@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-2-model-kosztu-PL.md",
+  "line": 91,
+  "section": "## 4. Ustalanie obowiązkowych terminów prawnych\n\nReguły `pl-pzp-2026-2027` obejmują daty wszczęcia od 1 stycznia 2026 do\n31 grudnia 2027. Konteksty sektorowy oraz obronności i bezpieczeństwa są poza\nzakresem tego modułu; ich wybór blokuje obliczenie i zwraca komunikat błędu.\n\nDla obsługiwanych klasycznych procedur PZP moduł tworzy kroki na podstawie\nart. 283, art. 308 ust. 2, art. 138 ust. 1, art. 144 ust. 1,\nart. 151 ust. 1 i art. 264 ust. 1 PZP. Dokładne wartości zależne od procedury,\nprzedmiotu i sposobu komunikacji opisuje rejestr parametrów.\n\nKażda blokada prawna ma stałą wartość niską, centralną i wysoką, zero aktywnych\ndni oraz identyczny czas oczekiwania w obu wariantach. Wsparcie systemowe nie\nskraca tych kroków.\n\nModuł nie ocenia, czy w konkretnym postępowaniu zachodzi podstawa skrócenia,\nwyjątku albo innego reżimu. Taka ocena należy do Zamawiającego i jego doradców.\n",
+  "fileHash": "d28c067484a43d527731bede82cfc85524f897ff5c4c43741dea5caf455772f9",
+  "requestHash": "a60281e69bb942ea318f0686c5c73d9d5eea313fe9e3d0b3308f3143fe8cd47a",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.11
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.32
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.31
+    }
+  },
+  "usage": {
+    "input_tokens": 802,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

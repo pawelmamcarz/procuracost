@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-07-tunel-pole-lepszy-biznes.md",
+  "line": 202,
+  "section": "## Co zapisać wraz z wynikiem\n\nRekord decyzji pozwala odtworzyć obliczenie. Obejmuje:\n\n- zadeklarowany kontekst zakupu;\n- obie mapy przebiegu;\n- wartość centralną i zakres;\n- składniki różnicy;\n- zakres monetyzacji;\n- wymiary pozostawione poza rachunkiem;\n- założenia i źródła;\n- pochodzenie obowiązkowych terminów;\n- status migracji starszych danych.\n\nDodatnia delta oznacza, że przy zadeklarowanych wejściach wariant formalny ma\nwyższy koszt. Ujemna oznacza wyższy koszt wariantu adaptacyjnego, a zero równe\nkoszty centralne. Obwiednia łączy przeciwne końce zakresów obu wariantów;\njej przecięcie zera nie dowodzi zmiany znaku przy wspólnym zestawie założeń.\n\nPorównanie przydatności procedur jest osobne i nie tworzy rankingu. Prawo,\nuwarunkowania zakupu i zdolność realizacji wymagają profesjonalnej oceny poza\nsamym rachunkiem.\n",
+  "fileHash": "0b0c177b46173b28e47e98398ed8714545f6abc3c86e6ddb4cbddcd7c95a3a32",
+  "requestHash": "d2d1c59572069c0c8fefd8c6a594148d4f7e7607645f83e196e495a86c5fcd5b",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.11
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.2
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.15
+    }
+  },
+  "usage": {
+    "input_tokens": 733,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

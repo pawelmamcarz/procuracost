@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-2-model-kosztu-PL.md",
+  "line": 226,
+  "section": "## 9. Scenariusze i warunki zastosowania\n\nRejestr zawiera dziesięć scenariuszy. Służą do demonstracji mechanizmów,\ntestowania neutralności oraz zapisu pochodzenia założeń.\n\n### 9.1 Zmiany czynności i zależności\n\n- Transformacja ERP przy niepełnym wymaganiu może wykorzystywać definiowanie\n  problemu i modularne podejście.\n- Przeprojektowanie usługi logistycznej może wykorzystywać kontakt z rynkiem do\n  sprawdzenia poziomów usług, interfejsów i podziału ryzyka.\n- Publiczny zakup IT może korzystać ze wstępnych konsultacji rynkowych przed\n  postępowaniem otwartym, bez zmiany obowiązkowych terminów.\n- Odkrywanie i współprojektowanie może zwiększać czas i nakład pracy, jeżeli\n  uczenie się oraz ponowne określenie zakresu są rzeczywistymi czynnościami.\n\n### 9.2 Porównania o identycznym przebiegu\n\nStabilna standardowa usługa może wymagać tej samej pracy w obu wariantach.\nJej scenariusz startowy osobno deklaruje jednak różnicę konkurencji, więc nie\njest neutralną kontrolą kosztu całkowitego. Zamówienie katalogowe i zwolnienie\nzlecenia MRP mają identyczne mapy i brak różnicy konkurencji. Są neutralnymi\nkontrolami. Ich centralna delta wynosi zero.\n\nPrzykłady opisują warunki, nie zalecenia. Oficjalne przypadki z Kalifornii,\nOECD, UZP i Komisji Europejskiej wspierają mechanizmy jakościowe, lecz nie\nwyznaczają czasów ani kosztów scenariuszy.\n",
+  "fileHash": "d28c067484a43d527731bede82cfc85524f897ff5c4c43741dea5caf455772f9",
+  "requestHash": "a2fb88ff6e90c614a8d4ed3f9f2c91d2bc8834276780e16ba99cfe410915ec1b",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.1
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.32
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.16
+    }
+  },
+  "usage": {
+    "input_tokens": 928,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-bariery-autonomicznego-sourcingu.md",
+  "line": 170,
+  "section": "## Jak ująć zmianę w ProcuraCost\n\nModel 2.3 rozdziela ramy prawne i ład zakupowy, rodzinę procedury, archetyp\nzakupu, projekt przebiegu procesu zakupowego, kanał realizacji, wsparcie\nsystemowe i konstrukcję umowy. Pozwala to wskazać, które elementy zakupu\nzmienia wdrożenie agenta.\n\nAgent negocjacyjny jest zmianą na osi wsparcia systemowego. Sam z siebie nie\nzmienia ram prawnych, rodziny procedury ani obowiązkowych terminów oczekiwania.\nMoże natomiast zmienić projekt przebiegu procesu, jeżeli usuwa czynność,\nuruchamia pracę równolegle albo skraca oczekiwanie na odpowiedź dostawcy. Może\nteż zmienić konstrukcję umowy, jeżeli negocjuje warunki płatności lub formułę\nindeksacji.\n\nUzasadnienie biznesowe musi wskazać konkretną zmianę: w zależnościach między\nkrokami, ich czasie, nakładzie ról, koszcie wsparcia lub konstrukcji umowy.\nZmiana samej nazwy narzędzia nie daje podstawy do przypisania korzyści.\nModel porównuje zadeklarowane wejścia, także przy niezmienionej kolejności pracy.\n\nTrzy granice modelu mają tu bezpośrednie zastosowanie:\n\n1. Znak różnicy kosztu nie jest z góry ustalony. Agent może wydłużyć przebieg,\n   na przykład przez rundę wyjaśnień z dostawcą, który nie zrozumiał zapytania.\n   Przy przyjętej definicji delty wyższy koszt wariantu adaptacyjnego daje wynik ujemny.\n2. Obowiązkowe terminy prawne pozostają zablokowane i identyczne po obu\n   stronach porównania. Automatyzacja przygotowania nie skraca ustawowego\n   terminu składania ofert ani terminu oczekiwania przed zawarciem umowy.\n3. Gotowość organizacyjna do wdrożenia jest opisywana osobno i nie wpływa na\n   różnicę kosztu. Odpowiedzi o opisanych barierach nie są przeliczane na koszt.\n   Koszty integracji lub pracy można ująć tylko jako odrębnie uzasadnione wejścia.\n\nNieformalne obejście procesu pozostaje poza monetyzacją. Jego występowanie\nwymaga odrębnego badania; przywołane źródła nie ustalają częstości tego zjawiska.\n",
+  "fileHash": "f9d178a7c12477cf2bb8d556beefba14541656a1a86d561c43e414b9380c1ddd",
+  "requestHash": "8e3bdd4c043c2071bca6127615a42baf3804cbe6210249425edd77994e532d24",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.17
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.29
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.18
+    }
+  },
+  "usage": {
+    "input_tokens": 1112,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

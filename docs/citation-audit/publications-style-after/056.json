@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-1-tunnel-or-field-EN.md",
+  "line": 91,
+  "section": "## 4. Changes in work and dependencies\n\nTo assess adaptation, the comparison must identify which activities,\ndurations or dependencies change.\n\nThe five mechanism-specific reference maps are illustrative model 2.3\nallocations, not observed cases. They retain aggregate base-day totals from\n2.2.2, then allocate those totals and role hours across named steps before\napplying retained support profiles. The official sources below support only the\nqualitative mechanism. They do not supply step days, role hours or cost effects.\n\n### 4.1 ERP transformation discovery\n\nWhen requirements are incomplete, early problem framing and modular\ncontracting can change how the need is defined and how supplier capability is\ntested. The California Department of Technology describes modular state\ntechnology procurement and opportunities to change course during procurement.\n\n### 4.2 Logistics service redesign\n\nA complex logistics service can require market engagement around service\nlevels, operational interfaces, data exchange and allocation of continuity\nrisk. The comparison should record how those discussions change the process\nmap or contract design.\n\n### 4.3 Public IT with preliminary market consultation\n\nUZP describes preliminary market consultation as a way for a contracting\nauthority to learn about technical, economic and organisational solutions\nbefore a procedure. The consultation can inform an open procedure while the\nstatutory tender and standstill periods remain unchanged.\n\n### 4.4 Discovery and solution co-design\n\nProblem definition and supplier dialogue are work. The OECD RVUL example\ndescribes substantial preparation before an innovation-procurement pilot. The\nexample illustrates preparatory work that can lengthen a process and increase\nstaff effort. It does not provide a duration estimate for other projects.\n",
+  "fileHash": "7344f34cddce2b959ed1a0a1cc874a84dd02bdee5c7207f856a4fec7290b80ef",
+  "requestHash": "95b8459ca7287f98ad69226fea0a1ccdbab8364d384dfdaaebe7a4b04a085d71",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.12
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.37
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.12
+    }
+  },
+  "usage": {
+    "input_tokens": 788,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

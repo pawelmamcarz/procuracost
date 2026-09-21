@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-07-tunel-pole-lepszy-biznes.md",
+  "line": 225,
+  "section": "## Pilotaż, który można ocenić\n\nNowy przebieg warto pilotażowo zastosować do jednej kategorii lub jednego typu\nprojektu. Przed startem należy zamrozić okres, mierniki, warunki zatrzymania i\nzakres zmiany. Zasady konkurencji, uprawnienia i wymagania dokumentacyjne\npowinny pozostać jawne.\n\nOcena powinna objąć:\n\n- czas całkowity, pracę aktywną i oczekiwanie;\n- godziny według roli;\n- liczbę ważnych ofert i cenę względem benchmarku ustalonego ex ante;\n- liczbę cofnięć, wyjątków i spraw poza oficjalnym obiegiem;\n- kompletność rejestru decyzji;\n- zmiany umowy i wcześniej ustalone wyniki dostawy;\n- faktyczne wykorzystanie kontroli systemowych.\n\nKrótszy cykl nie wystarcza, jeżeli pogarsza się dostęp do konkurencji lub\nkompletność dokumentacji. Dłuższy przebieg nie jest automatycznie zły, jeżeli\njego zamierzonym mechanizmem jest uczenie się. Każdy efekt należy raportować\nosobno przed próbą monetyzacji.\n",
+  "fileHash": "0b0c177b46173b28e47e98398ed8714545f6abc3c86e6ddb4cbddcd7c95a3a32",
+  "requestHash": "0fc51731915451f75dd565aeb70f9c5e0f2463cb7d6dcd0e93b0ddc704432345",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.29
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.19
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.11
+    }
+  },
+  "usage": {
+    "input_tokens": 752,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

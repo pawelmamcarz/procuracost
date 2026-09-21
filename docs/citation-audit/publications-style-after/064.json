@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-2-model-kosztu-PL.md",
+  "line": 5,
+  "section": "## Streszczenie\n\nProcuraCost 2.3 porównuje koszt dwóch sposobów przeprowadzenia tego samego\nzakupu w tych samych ramach prawnych i przy tych samych zasadach ładu\nzakupowego. Dla każdego wariantu wykorzystuje osobną mapę zależności,\noblicza ścieżkę krytyczną i rozdziela koszt pracy według ról, koszt niepracowniczy, koszt\nzwłoki oraz objęte monetyzacją elementy konstrukcji umowy. Obowiązkowe terminy\nprawne są stałe i wspólne dla obu wariantów. Wynik ma znak dodatni, ujemny albo\nzerowy zależnie od jawnych danych wejściowych. Zakresy niski, centralny i wysoki\nsą scenariuszami, nie przedziałami ufności. Obliczenie jest deterministyczne;\nnie szacuje efektu przyczynowego ani nie wskazuje procedury do wyboru.\nGotowość organizacyjna jest opisywana oddzielnie.\n",
+  "fileHash": "d28c067484a43d527731bede82cfc85524f897ff5c4c43741dea5caf455772f9",
+  "requestHash": "c44c0e40241ab89c9ae4eedbb9b8682dc97f013692115933dda54afeb8b85925",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.09
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.17
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.14
+    }
+  },
+  "usage": {
+    "input_tokens": 703,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

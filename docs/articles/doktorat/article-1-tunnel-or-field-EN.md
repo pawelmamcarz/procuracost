@@ -4,20 +4,18 @@
 
 ## Abstract
 
-Procurement rules constrain authority and discretion, organise work, shape
-market access and govern contractual adaptation. A single label such as
-rigidity cannot identify these mechanisms. This paper limits the Tunnel and
-Field metaphor to procurement workflow topology. A tunnel represents a
-prescribed sequence. A field permits alternative paths inside the same legal
-and governance boundary. Formal competition may protect value by constraining
-selection discretion. Adaptive work may protect value by changing queues,
-hand-offs or the timing of learning, but it may also add discovery effort or
-weaken market access. The sign of the resulting difference is an empirical
-question. The paper defines a lawful counterfactual, identifies conditions in
-which adaptation has or lacks a mechanism and derives six separately testable
-propositions in five proposition families.
+Procurement rules govern several decisions: who may authorise a purchase, how
+work is ordered, which suppliers can compete and how a contract can change.
+Evidence about one of these decisions does not necessarily explain the others.
+This paper uses the Tunnel and Field metaphor to distinguish a prescribed
+workflow from alternative sequences of work within the same legal and
+governance boundary. It examines how queues, hand-offs and early learning may
+affect effort and duration, while treating competitive access and contract
+adaptation separately. The paper defines a lawful counterfactual and develops
+six testable propositions, grouped into five families. It does not assume
+which workflow will have the lower cost.
 
-## 1. The problem of conflation
+## 1. Distinguishing procurement decisions
 
 A procurement arrangement contains several distinct choices:
 
@@ -41,11 +39,11 @@ workflow designs independently and keeps readiness outside the cost model.
 Historical 2.2.2 material remains available for audit, but its profiles and
 thresholds are not current inputs.
 
-The question is deliberately narrow:
+The research question is:
 
 > For the same purchase and the same legal and governance boundary, how do two
 > declared procurement workflow designs differ in work, elapsed time and the
-> part of contract economics that can be supported?
+> contract costs for which the comparison has an explicit basis?
 
 ## 2. Two geometries under one boundary
 
@@ -64,20 +62,19 @@ earlier learning and different sequencing. It can also require additional
 discovery work and create greater discretion if market-access controls are
 weakened.
 
-The comparison is not between compliance and non-compliance. In Polish public
-procurement, both counterfactuals must remain within PZP. Mandatory submission
+In Polish public procurement, both counterfactuals must comply with PZP. Mandatory submission
 and standstill periods are fixed and identical in the two ProcuraCost
 alternatives. Comparing a lawful procedure with an unlawful direct award would
 not identify the effect of workflow design.
 
-## 3. Why formal structure can protect value
+## 3. Competitive access and formal requirements
 
 Szucs (2024) studies a Hungarian reform affecting access to a
 high-discretion invitational procedure below a value threshold. The analysis
 addresses manipulation around the threshold and identifies a price and
 selection channel associated with discretion in that institutional setting.
 
-The transferable implication is limited. If an adaptive workflow changes
+If an adaptive workflow changes
 competitive access, a potential time benefit must be considered alongside
 possible price or selection loss. The study does not estimate the effect of
 workflow topology in Poland, so ProcuraCost uses it only as an anchor for a
@@ -91,10 +88,10 @@ on the probability of late delivery of the works. They do not thereby establish
 the effect on time from an approved need to contract signature. ProcuraCost
 derives that elapsed time from the declared work and dependencies.
 
-## 4. Where adaptive work can have a mechanism
+## 4. Changes in work and dependencies
 
-A mechanism exists when the alternative changes identifiable work or
-dependencies.
+To assess adaptation, the comparison must identify which activities,
+durations or dependencies change.
 
 The five mechanism-specific reference maps are illustrative model 2.3
 allocations, not observed cases. They retain aggregate base-day totals from
@@ -107,35 +104,30 @@ qualitative mechanism. They do not supply step days, role hours or cost effects.
 When requirements are incomplete, early problem framing and modular
 contracting can change how the need is defined and how supplier capability is
 tested. The California Department of Technology describes modular state
-technology procurement and opportunities to change course. That official case
-supports the existence of a modular mechanism. It does not supply a ProcuraCost
-duration or cost effect.
+technology procurement and opportunities to change course during procurement.
 
 ### 4.2 Logistics service redesign
 
 A complex logistics service can require market engagement around service
 levels, operational interfaces, data exchange and allocation of continuity
-risk. Adaptation has a mechanism only if that work changes the process map or
-contract design. Calling a conventional request for quotation adaptive adds
-nothing by itself.
+risk. The comparison should record how those discussions change the process
+map or contract design.
 
 ### 4.3 Public IT with preliminary market consultation
 
 UZP describes preliminary market consultation as a way for a contracting
 authority to learn about technical, economic and organisational solutions
 before a procedure. The consultation can inform an open procedure while the
-statutory tender and standstill periods remain unchanged. The source establishes
-a lawful qualitative mechanism, not a cost saving.
+statutory tender and standstill periods remain unchanged.
 
 ### 4.4 Discovery and solution co-design
 
 Problem definition and supplier dialogue are work. The OECD RVUL example
 describes substantial preparation before an innovation-procurement pilot. The
-example does not provide a universal duration. It does, however, show why an
-adaptive design can take longer and require more role effort when learning and
-re-scoping are the intended mechanism.
+example illustrates preparatory work that can lengthen a process and increase
+staff effort. It does not provide a duration estimate for other projects.
 
-## 5. Where adaptation adds no distinct workflow mechanism
+## 5. Identical workflows as controls
 
 A stable standard service may require the same relevant activities under both
 labels. A catalogue call-off can follow an identical map once the framework and
@@ -149,10 +141,10 @@ starting alternative as restricted. The allocation can be reversed or removed;
 it is not a property of adaptive work. The scenario is therefore not a neutral
 total-cost control merely because its workflow maps are identical.
 
-ProcuraCost uses catalogue call-off and MRP release as neutral controls. Equal
-maps and contract dimensions produce equal central totals. This is a condition,
-not a recommendation. It prevents the model from assigning value to an
-adaptive label without a changed mechanism.
+ProcuraCost uses catalogue call-off and MRP release as neutral controls. Their
+maps, cost inputs and contract dimensions are identical, giving equal central
+totals. These controls check that the model does not assign a cost advantage
+to the workflow label itself.
 
 ## 6. Contract adaptation, bypass and system support
 
@@ -176,9 +168,9 @@ Street-level discretion, normalisation of deviance and multitask incentives
 provide plausible explanations for informal workarounds. They do not estimate
 a procurement bypass probability. Model 2.3 discloses bypass as non-monetised.
 
-The same boundary applies to technology. A system can enforce approval limits,
-retain evidence and prevent unauthorised commitments, but ownership does not
-show that controls are configured or used. System support is a context axis.
+System support also needs a separate measure. Software can enforce approval
+limits, retain evidence and prevent unauthorised commitments. Merely owning
+it does not show that these controls are configured or used.
 Organisational implementation readiness is a separate self-description and cannot
 change the cost comparison.
 
@@ -212,19 +204,19 @@ to H5 in `00-shared-foundation.md`.
 
 ## 8. Contribution and interpretation boundary
 
-The article contributes a decomposition of procedural rigidity into separately
-measurable constructs and shows why evidence about supplier-selection
-discretion or contractual clauses cannot be treated as direct evidence about
-workflow topology.
+The proposed framework separates measures of workflow, supplier-selection
+discretion and contract clauses. This allows researchers to specify which
+decision a study measures before using its results in a workflow comparison.
 
 This is a conceptual contribution. Establishing whether the wider procurement
 literature commonly makes the same conflation would require a systematic
 review. The present paper does not estimate a causal effect.
 
-For a procurement function, the framework implies a component-level review:
-identify the risk controlled by a gate, preserve competition when changing
-sequencing, record why learning work is required and measure timestamps, role
-effort, bids, amendments and execution outcomes before monetisation.
+In an organisational study, each approval should be linked to the risk it
+controls. Changes in sequencing should preserve the stated competition rules,
+and additional learning work should have a recorded purpose. Timestamps, staff
+effort, bids, amendments and execution outcomes should be measured before
+assigning monetary values.
 
 The framework has not been causally validated as an integrated model. Reference
 maps, role rates, support costs and daily costs are declared assumptions.
@@ -232,9 +224,6 @@ Contract-amendment and TCO differentials are zero. Bypass is non-monetised.
 Official cases support mechanisms rather than effect sizes. Estimates from
 Hungary, France and Italy do not automatically transfer to Poland or private
 procurement.
-
-The conditional thesis is therefore retained in a testable form: a prescribed
-sequence can add avoidable work, while formal structure can also protect value.
 
 ## 9. Practitioner observations as research prompts
 

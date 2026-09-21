@@ -1,0 +1,27 @@
+{
+  "file": "RESEARCH.md",
+  "line": 248,
+  "section": "## References\n\nBajari, P., Houghton, S., & Tadelis, S. (2014). Bidding for incomplete contracts: An empirical analysis of adaptation costs. *American Economic Review, 104*(4), 1288–1319. https://doi.org/10.1257/aer.104.4.1288\n\nBeuve, J., Moszoro, M. W., & Spiller, P. T. (2023). Doing it by the book: Political contestability and public contract renegotiations. *Journal of Law, Economics, and Organization, 39*(1), 281–308. https://doi.org/10.1093/jleo/ewab039\n\nCalifornia Department of Technology. (2022). *California redefines state technology procurement*. https://www.cdt.ca.gov/newsroom/2022/08/california-redefines-state-technology-procurement/\n\nCoviello, D., & Mariniello, M. (2014). Publicity requirements in public procurement: Evidence from a regression discontinuity design. *Journal of Public Economics, 109*, 76–100. https://doi.org/10.1016/j.jpubeco.2013.10.008\n\nEuropean Commission. (2011). *Public procurement in Europe: Cost and effectiveness* (PwC, London Economics, & Ecorys).\n\nEuropean Commission. (2021). *Guidance on innovation procurement*. https://public-buyers-community.ec.europa.eu/resources/guidance-innovation-procurement\n\nFazekas, M., & Blum, J. R. (2021). *Improving public procurement outcomes: Review of tools and the state of the evidence base* (Policy Research Working Paper No. 9690). World Bank.\n\nHolmström, B., & Milgrom, P. (1991). Multitask principal-agent analyses: Incentive contracts, asset ownership, and job design. *Journal of Law, Economics, & Organization, 7*(Special Issue), 24–52. https://doi.org/10.1093/jleo/7.special_issue.24\n\nLipsky, M. (1980). *Street-level bureaucracy*. Russell Sage Foundation.\n\nOECD. (2024). *Public procurement in Lithuania: Increasing efficiency through centralisation and professionalisation* (OECD Public Governance Reviews). https://www.oecd.org/en/publications/public-procurement-in-lithuania_aa1b196c-en/full-report/component-8.html\n\nProcurement&Beyond. (2026, August 26). *Odcinek 8. Nawet najlepsze narzędzie nie uratuje złego wdrożenia* [Practitioner interview]. https://www.youtube.com/watch?v=5KYUdTLlvvg\n\nSzucs, F. (2024). Discretion and favoritism in public procurement. *Journal of the European Economic Association, 22*(1), 117–160. https://doi.org/10.1093/jeea/jvad017\n\nUrząd Zamówień Publicznych. (n.d.). *Wstępne konsultacje rynkowe*. https://www.gov.pl/web/uzp/wstepne-konsultacje-rynkowe\n\nVaughan, D. (1996). *The Challenger launch decision*. University of Chicago Press.\n\n### Legal sources\n\nUstawa z dnia 11 września 2019 r. Prawo zamówień publicznych. The application threshold for classic contracts awarded by public contracting authorities is 170,000 PLN net from 1 January 2026 under [Dz.U. 2025 poz. 1173](https://eli.gov.pl/eli/DU/2025/1173/ogl). This is not a universal threshold for every procurement regime.\n\nObwieszczenie Prezesa Urzędu Zamówień Publicznych z dnia 8 grudnia 2025 r., M.P. 2025 poz. 1247 (EU thresholds for 2026–2027).\n",
+  "fileHash": "efae17217ece6a72fe983aef38e3ea949671251506e40ee515e78d84a3de5bc4",
+  "requestHash": "8341076b3b27a23f5f4e60da8fa4b9faa9054d82157277eca3c0c555a99230a4",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.21
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.12
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.19
+    }
+  },
+  "usage": {
+    "input_tokens": 1454,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-bariery-autonomicznego-sourcingu.md",
+  "line": 13,
+  "section": "## Kiedy zacząć od ogona wydatków, a kiedy zachować decyzję po stronie kupca\n\nAgent prowadzący negocjacje potrzebuje określonego zakresu uprawnień: trzeba\nustalić, jakie warunki może uzgodnić i kiedy ma przekazać sprawę kupcowi.\nTo szersza odpowiedzialność niż streszczanie umowy, porządkowanie wniosku czy\npodpowiadanie kategorii. Przy ocenie wdrożenia należy ustalić, które z tych\nzadań rzeczywiście powierzamy systemowi.\n\nKontrola jest potrzebna także przy zadaniach pomocniczych: błędna interpretacja\nwniosku może przejść niezauważona do dalszych decyzji. Zakres nadzoru należy\ndobrać do skutków działania systemu i możliwości ich cofnięcia.\n\nRaport EFESO z 2026 r., oparty na rozmowach z 50 europejskimi dyrektorami\nzakupów, podaje 5% szerokich wdrożeń GenAI i 75%\norganizacji w fazie eksperymentowania. To opis badanej grupy oraz\ngeneratywnej AI ogółem, nie pomiar odsetka firm, które oddały agentowi mandat\nnegocjacyjny. Pozwala postawić pytanie o skalowanie, ale nie wyjaśnia sam\nprzyczyn różnicy między pilotażem a wdrożeniem.\n\nPoniższy porządek jest propozycją pytań do projektu. Kolejność i znaczenie\nbarier zależą od kategorii, organizacji oraz zakresu uprawnień agenta.\n",
+  "fileHash": "f9d178a7c12477cf2bb8d556beefba14541656a1a86d561c43e414b9380c1ddd",
+  "requestHash": "93c798ad78991e39848294834a59e973677e45524683f33b78b66a7b52baa8d4",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.18
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.31
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.17
+    }
+  },
+  "usage": {
+    "input_tokens": 856,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 208,
+  "section": "## Źródła i granice twierdzeń\n\n- Procurement&Beyond. (2026, 26 sierpnia). *Odcinek 8. Nawet najlepsze\n  narzędzie nie uratuje złego wdrożenia* [rozmowa z praktykiem].\n  https://www.youtube.com/watch?v=5KYUdTLlvvg\n- Odnośniki czasowe w tekście prowadzą do fragmentów zarejestrowanych w\n  rejestrze źródeł praktycznych ProcuraCost 2.3: 04:31, 09:52, 27:19, 28:27,\n  29:41, 39:45, 43:34, 47:43.\n\nDostępna transkrypcja nagrania została wygenerowana automatycznie przez\nYouTube i nie została zweryfikowana przez człowieka. Tekst nie zawiera cytatów\ndosłownych. Opisy fragmentów są parafrazą autora, który jest rozmówcą w\nnagraniu.\n\nMateriał praktyczny służy do projektowania pytań i formułowania hipotez. Nie\nustala progów, wag, czasów przebiegu, stawek ról ani zakresów kalibracji modelu\nProcuraCost. Lista kontrolna gotowości jest zbiorem hipotez operacyjnych, nie\nzwalidowanym instrumentem pomiarowym. Odpowiedzi w samoopisie nie wpływają na\nróżnicę kosztu. Tekst nie stanowi porady prawnej ani rekomendacji procedury.\n",
+  "fileHash": "c44a04aaf4a00a6ed0cb74ace569789da6b7d3a0faa766b3c31333167a46feab",
+  "requestHash": "a901a2d23a982f0d44940881298ed5a1ea3b79a4358fb5ac6c71b0c8b5b0c709",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.17
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.2
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.1
+    }
+  },
+  "usage": {
+    "input_tokens": 850,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 13,
+  "section": "## Dwie role i ciągłość odpowiedzialności we wdrożeniu systemu zakupowego\n\nPrzed zakupem systemu trzeba ustalić, kto po stronie organizacji będzie\nrozstrzygał spory o wymagania, odbierał pracę dostawcy i odpowiadał na zgłoszenia\nużytkowników po uruchomieniu. Samo wskazanie sponsora lub kierownika projektu\nnie wyjaśnia, kto przejmie te zadania po odbiorze.\n\nDo tego problemu wracam po rozmowie w ósmym odcinku Procurement&Beyond.\nArtykuł uzupełnia dwa wcześniejsze teksty: [Tunel czy pole](2026-07-tunel-pole-lepszy-biznes.md),\npoświęcony kolejności pracy, oraz artykuł o\n[barierach autonomicznego sourcingu](2026-09-bariery-autonomicznego-sourcingu.md),\ndotyczący uprawnień agentów negocjacyjnych.\n\nNa podstawie rozmowy proponuję rozróżnić dwie role i jeden warunek ich\nutrzymania. To interpretacja praktyczna do sprawdzenia, nie przetestowana\ntypologia ani dowód, że brak jednej z ról przesądza o wyniku projektu.\n",
+  "fileHash": "c44a04aaf4a00a6ed0cb74ace569789da6b7d3a0faa766b3c31333167a46feab",
+  "requestHash": "dd7e40d6f9b40d0b8bbf632a531ee8d6d40856a99721b42260aa12f9fe1cf3fa",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.17
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.32
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.06
+    }
+  },
+  "usage": {
+    "input_tokens": 767,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

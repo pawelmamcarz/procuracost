@@ -4,14 +4,14 @@
 
 ## Streszczenie
 
-Artykuł przekłada hipotezy związane z ProcuraCost 2.3 na falsyfikowalny plan
-badania polskich zamówień publicznych. Nie przedstawia wyników, ponieważ dane
-nie zostały zebrane. Rejestry BZP, TED i e-Zamówień mogą opisywać widoczne daty,
+Artykuł przedstawia plan badania związku między organizacją pracy a czasem
+i kosztami polskich zamówień publicznych, oparty na hipotezach ProcuraCost 2.3.
+Dane nie zostały jeszcze zebrane. Rejestry BZP, TED i e-Zamówień mogą opisywać daty,
 uczestnictwo, wynik i część zmian umowy. Nie mierzą pełnego projektu procesu
 wewnętrznego, pracy według roli, dziennego kosztu zwłoki, TCO ani nieformalnych
 obejść. Protokół łączy zatem warstwę rejestrową z wersjonowanymi dokumentami i
-logami organizacyjnymi. Głównym wynikiem jest czas cyklu. Pozostałe mechanizmy
-są badane osobno, bez tworzenia jednego obserwowanego miernika dojrzałości.
+logami organizacyjnymi. Główną zmienną wynikową jest czas cyklu. Nakład pracy,
+konkurencja i wykonanie umowy są oceniane oddzielnie.
 
 ## 1. Pytanie i granica wnioskowania
 
@@ -21,9 +21,9 @@ Pytanie badawcze brzmi:
 > z czasem, nakładem pracy, dostępem do rynku i wynikami umowy, przy
 > porównywalnym przedmiocie, wartości oraz warunkach rynku?
 
-Rodzina procedury nie jest topologią pracy. Ten sam tryb może mieć sekwencyjne
-albo częściowo równoległe przygotowanie. Projekt przebiegu nie jest również
-konstrukcją umowy, wsparciem systemowym ani gotowością organizacyjną.
+W tym samym trybie przygotowanie zakupu może przebiegać sekwencyjnie lub
+częściowo równolegle. Badanie rozdziela zatem rodzinę procedury i organizację
+pracy, a także konstrukcję umowy, wsparcie systemowe i gotowość organizacyjną.
 
 Nie wolno porównywać postępowania ustawowego z bezprawnym zakupem bez
 konkurencji. Obowiązkowe terminy prawne powinny być identyfikowane i
@@ -94,7 +94,7 @@ Z ekspozycji wyklucza się długość ścieżki krytycznej i udział oczekiwania
 wielkości współtworzą wynik czasu, więc ich użycie w ekspozycji tworzyłoby
 mechaniczne powiązanie.
 
-### 3.2 Ochrona przed wyciekiem
+### 3.2 Kodowanie bez znajomości wyników
 
 - koder ekspozycji nie widzi wyników;
 - dokumenty muszą być datowane nie później niż `exposure_reference_at`;
@@ -104,12 +104,12 @@ mechaniczne powiązanie.
   `alpha >= 0,80`;
 - pozycja poniżej progu jest przeprojektowana albo usunięta.
 
-## 4. Scenariusze jako źródło testów
+## 4. Mechanizmy do zbadania
 
 Scenariusze 2.3 nie są obserwacjami. Pomagają określić, jaki mechanizm należy
 zmierzyć.
 
-### 4.1 Adaptacja z mechanizmem
+### 4.1 Zmiany czynności i zależności
 
 - Transformacja ERP może wymagać definiowania problemu i modularnego podejścia,
   gdy wymagania są niepełne.
@@ -120,15 +120,15 @@ zmierzyć.
 - Odkrywanie i współprojektowanie może zwiększać czas oraz nakład pracy, ponieważ
   uczenie się i ponowne określenie zakresu są pracą.
 
-### 4.2 Brak odrębnego mechanizmu pracy
+### 4.2 Porównania o identycznym przebiegu
 
 Stabilna standardowa usługa może wymagać tej samej pracy w obu projektach.
 Scenariusz startowy tej usługi osobno deklaruje różnicę konkurencji, więc nie
 jest neutralną kontrolą kosztu całkowitego.
 Zamówienie katalogowe i zwolnienie zlecenia MRP mają identyczne mapy oraz
 założenia kosztowe i kontraktowe w scenariuszach kontrolnych. To łączne
-zrównanie wejść daje równy wynik centralny. Badanie powinno
-sprawdzić mechanizm, a nie etykietę wariantu.
+zrównanie wejść daje równy wynik centralny. W badaniu należy kodować faktyczne
+czynności i koszty niezależnie od nazwy nadanej wariantowi.
 
 ## 5. Warstwy danych
 
@@ -147,7 +147,7 @@ Przed analizą należy zamrozić schemat danych, reguły deduplikacji, definicje
 i obsługę braków. Każda liczba opisowa powinna być generowana kodem z
 wersjonowanego wycinka.
 
-Warstwa nie ujawnia pełnego przygotowania wewnętrznego, roboczogodzin,
+Rejestry nie ujawniają pełnego przygotowania wewnętrznego, roboczogodzin,
 dziennego kosztu zwłoki, pełnego TCO, wszystkich klauzul ani nieformalnego
 obejścia. Brak rekordu obejścia nie oznacza braku zjawiska.
 
@@ -201,7 +201,7 @@ pozostałych kolejek organizacyjnych.
 
 ### 6.3 Kontrole
 
-Dozwolone zmienne przed ekspozycją obejmują wartość szacunkową, CPV,
+Zmienne kontrolne mierzone przed ekspozycją obejmują wartość szacunkową, CPV,
 złożoność techniczną, pilność zadeklarowaną przed wszczęciem, rok i efekty stałe
 organizacji.
 
@@ -214,7 +214,7 @@ Twierdzenie o braku efektu wymaga prerejestrowanego testu równoważności.
 
 ## 7. Strategia analityczna
 
-### 7.1 Wariant A: asocjacja wewnątrz organizacji
+### 7.1 Wariant A: związek w obrębie organizacji
 
 Specyfikacja bazowa:
 
@@ -225,9 +225,9 @@ są klastrowane na poziomie organizacji. Przy mniej niż 30 klastrach planowany
 jest wild cluster bootstrap. Przy 4 do 6 organizacjach wyniki pozostają
 eksploracyjne i wymagają analizy leave-one-organisation-out.
 
-Wariant identyfikuje asocjację warunkową. Trudniejsze lub pilniejsze zakupy mogą
-być kierowane do bardziej preskryptywnego przebiegu, więc nie jest to efekt
-przyczynowy.
+Wariant szacuje związek po uwzględnieniu wskazanych zmiennych kontrolnych.
+Trudniejsze lub pilniejsze zakupy mogą być kierowane do bardziej
+preskryptywnego przebiegu, co ogranicza interpretację przyczynową.
 
 ### 7.2 Wariant B: jednorazowa zmiana procesu
 
@@ -250,8 +250,8 @@ Wariant C nie jest podstawą planu głównego.
 
 ## 8. Wielkość próby i moc
 
-Dla wyniku czasu proponowany MSI wynosi 10 procent na jedno odchylenie
-standardowe indeksu:
+Dla czasu proponowana minimalna różnica istotna praktycznie (MSI) wynosi
+10 procent na jedno odchylenie standardowe indeksu:
 
 `beta_MSI = ln(1,10) ~= 0,095`
 
@@ -270,15 +270,16 @@ sama liczba zdarzeń.
 
 ## 9. Walidacja modelu 2.3
 
-Walidacja zaczyna się od komponentów, a nie od pytania, który wariant wygrał.
+Walidacja modelu obejmuje pięć pytań:
 
 1. Czy z dokumentów i logów można odtworzyć graf kroków, poprzedników, pracy,
    kolejek oraz blokad prawnych?
 2. Czy przewidywany czas i nakład ról odpowiadają obserwowanym komponentom na
-   próbie odłożonej?
+   próbie testowej, niewykorzystanej do dopasowania modelu?
 3. Jak szeroki jest zadeklarowany zakres względem rozrzutu obserwowanego?
-4. Czy komponent modelu przewyższa prostą bazę, na przykład medianę kategorii?
-5. Który kanał generuje błąd?
+4. Czy prognoza składnika jest trafniejsza od prostej metody odniesienia,
+   na przykład mediany kategorii?
+5. Który składnik odpowiada za błąd?
 
 Pełna walidacja `deltaCost` wymaga kontrfaktycznego wyniku drugiej mapy i
 niezależnie uzasadnionego dziennego kosztu zwłoki. Pojedyncze zdarzenie nie
@@ -287,8 +288,8 @@ rejestru postępowania. Potrzebny jest protokół z właścicielem wyniku biznes
 przeprowadzony przed poznaniem czasu badanego cyklu.
 
 Koszt zmian umowy i TCO mają w scenariuszach startowych deltę równą zero.
-Nieformalne obejście procesu pozostaje nieobjęte monetyzacją. Nie wolno przedstawiać tych kanałów jako
-zwalidowanych prognoz.
+Nieformalne obejście procesu pozostaje nieobjęte monetyzacją. Te składniki
+nie dostarczają obecnie prognoz do walidacji.
 
 ## 10. Prerejestracja i falsyfikacja
 
@@ -315,9 +316,10 @@ Hipotezy słabną, jeżeli dane z dostateczną precyzją wskazują, że:
   systemem i braków śladu audytowego ponad informację o posiadaniu systemu;
 - komponent modelu nie przewyższa prerejestrowanej prostej bazy.
 
-Heterogeniczność jest wynikiem tylko wtedy, gdy odpowiada prerejestrowanemu
-mechanizmowi i pojawia się poza próbą używaną do dopasowania. Wynik zerowy lub
-przeciwny pozostaje wynikiem badania.
+Potwierdzenie przewidywanych różnic między grupami wymaga zgodności
+z prerejestrowanym mechanizmem i sprawdzenia poza próbą używaną do dopasowania.
+Inne różnice można raportować jako eksploracyjne. Należy raportować również
+wyniki zerowe i przeciwne do hipotez.
 
 ## 11. Materiał praktyczny i hipotezy
 
@@ -325,10 +327,10 @@ przeciwny pozostaje wynikiem badania.
 8](https://www.youtube.com/watch?v=5KYUdTLlvvg) podnosi kwestie wewnętrznego
 właściciela wdrożenia, tarcia procesowego, dyscypliny wymagań, zakupów
 operacyjnych, uproszczenia polityki, TCO i ograniczonego wykorzystania AI.
-Materiał ma charakter wywiadu praktycznego i korzysta z automatycznych napisów
-w języku polskim.
+Do opracowania tej rozmowy wykorzystano automatyczne napisy w języku polskim,
+niezweryfikowane przez człowieka.
 
-Może informować pytania wywiadu i hipotezy. Nie jest źródłem parametru,
+Rozmowa może służyć do opracowania pytań wywiadu i hipotez. Nie jest źródłem parametru,
 częstości, efektu, odpowiedzi w samoopisie gotowości ani dowodu przyczynowego. Bielik może
 porządkować dane rynkowe do weryfikacji. Jawny model deterministyczny wykonuje
 rachunek.

@@ -1,0 +1,27 @@
+{
+  "file": "RESEARCH.md",
+  "line": 233,
+  "section": "## 8. Empirical agenda\n\nValidation requires event-level observations within organisations. The primary outcome should be procurement-cycle duration from auditable timestamps. Secondary outcomes should include active effort hours by role, queue time, bidder participation, price benchmarks, contract amendments, renegotiation cost, lifecycle performance, process bypass evidence, audit findings and supplier performance.\n\nThe empirical design should estimate components before monetisation. It should preserve the distinction between active work and waiting, record system support without treating it as readiness, and compare lawful alternatives within the same governance boundary. Within-organisation and category controls are preferable where available. ProcuraCost outputs must not be used as calibration targets for the same model.\nThe evidence review by Fazekas and Blum (2021) informs the choice to study\nindividual components using event-level data rather than rely on comparisons\nof aggregate organisational results.\n",
+  "fileHash": "efae17217ece6a72fe983aef38e3ea949671251506e40ee515e78d84a3de5bc4",
+  "requestHash": "81bbbf7f8bf1ece88d3250cea6eae18c25b03e5dd2b1b326b99f418cc2616c38",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.11
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.21
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.12
+    }
+  },
+  "usage": {
+    "input_tokens": 615,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

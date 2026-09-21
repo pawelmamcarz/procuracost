@@ -8,13 +8,13 @@
 
 ## Abstract
 
-Procurement policy, legal constraints, procedure family, workflow design, contract design and system support are related but distinct. ProcuraCost 2.3.0 compares a formal/sequential workflow with an adaptive/compliant workflow for the same purchase inside one legal and governance boundary. Each alternative has an explicit directed process map and contract design. The model calculates critical-path duration, role cost, non-labour cost, delay cost and supported contract-cost allocations. It reports non-monetised dimensions rather than assigning unsupported values.
+ProcuraCost 2.3.0 compares the cost of two workflows for the same purchase under the same legal and governance boundary: formal/sequential and adaptive/compliant. Each alternative has its own process map and contract design. From declared inputs, the model calculates critical-path duration, staff costs by role, non-labour process costs, delay costs and specified contract costs. The decision record also identifies effects left outside the monetary calculation.
 
-The calculation is deterministic and conditional on declared inputs. Values are explicitly classified as fixed, calibrated or stress values; non-fixed ranges are not statistical confidence intervals. Mandatory legal waits are resolved from a dated ruleset, locked in both alternatives and excluded from system-support scaling. The difference is always defined as formal/sequential total minus adaptive/compliant total, and the engine is tested by swapping the alternatives. ProcuraCost is therefore a decision model, not an estimator of realised procurement outcomes and not evidence that one workflow causes a lower cost.
+The calculation is deterministic. Inputs are classified as fixed, calibrated or stress values; the reported ranges are not statistical confidence intervals. Mandatory legal waits come from a dated ruleset and remain identical in both alternatives, regardless of system support. The cost difference is defined as formal/sequential total minus adaptive/compliant total. Swapping the alternatives must reverse its sign. These properties make the calculation reproducible, but do not establish whether either workflow causes a lower cost in practice.
 
-Ten reference scenarios provide structured starting points. They include cases in which learning during procurement may have a useful mechanism, cases in which it may add time and effort, and two operational controls with identical maps. Official cases and practitioner observations are used to frame mechanisms and research questions. They do not determine scenario values unless a separate evidence record explicitly permits that use.
+Ten reference scenarios illustrate changes in sequencing, market consultation and discovery work, including the time and effort that learning may add. Two operational controls use identical maps and inputs. Official cases and practitioner observations inform the proposed mechanisms and research questions; any numerical use requires a separate evidence record.
 
-## 1. Research question and claim boundary
+## 1. Research question and scope
 
 The research question is:
 
@@ -22,7 +22,7 @@ The research question is:
 
 ProcuraCost does not answer which procedure an organisation should select. It does not infer legal admissibility from a cost result, infer organisational readiness from system support, or convert a practitioner account into a calibration parameter. Public-procurement comparisons must remain within the applicable PZP context. A comparison between a lawful competitive procedure and an unavailable exemption is outside the model boundary.
 
-The output supports four narrower tasks:
+The output allows the user to:
 
 1. make the compared process maps and legal waits explicit;
 2. identify the cost drivers and assumptions responsible for a difference;
@@ -33,7 +33,7 @@ The output supports four narrower tasks:
 
 A procurement policy defines objectives and constraints. A legal and governance boundary specifies authority, competition, ethics, documentation and other applicable obligations. A procedure family identifies an admissible method. A procurement workflow design orders and connects the work performed within that method. A contract design allocates commercial and adaptation mechanisms. The purchase execution channel and system support describe how the work is carried out.
 
-Model 2.3.0 therefore records seven decision areas separately:
+Model 2.3.0 records seven decision areas separately:
 
 - **Legal and governance boundary:** private policy, public internal rules, PZP classic national or PZP classic EU.
 - **Procedure family:** the declared procurement method, kept separate from workflow topology and subject to the model's supported legal scope.
@@ -45,7 +45,7 @@ Model 2.3.0 therefore records seven decision areas separately:
 
 The Tunnel and Field metaphor is secondary. A tunnel represents a prescribed sequence. A field represents alternative sequencing inside the same enforced boundary. The metaphor does not imply that adaptive work lacks controls or that sequential work is intrinsically inefficient.
 
-Five constructs must not be conflated:
+The analysis distinguishes five constructs:
 
 1. workflow burden and critical-path duration;
 2. competitive access and supplier selection;
@@ -61,7 +61,7 @@ Szucs (2024) studies a Hungarian reform that made a high-discretion invitational
 
 ProcuraCost monetises the price channel only. Productivity remains a separate outcome because converting it into contract-value loss would require another unsupported mapping and could double count the price effect. The active 2%, 6% and 9% range is a declared transfer stress. It applies only where the compared alternatives genuinely differ in competitive access. It is not a Polish estimate and is not a general coefficient for adaptive procurement.
 
-**Historical correction:** model 2.1 described the productivity effect as 28%, which was correct. Model 2.2 incorrectly changed it to 10% and incorrectly assigned 28 percentage points to the connected-winner outcome. Model 2.3 restores the source interpretation: 28% lower contractor productivity and an approximately 11-percentage-point increase in the probability that a right-connected firm wins. This correction does not change the native calculation because model 2.3 monetises only the declared 2%, 6% and 9% transfer stress for the price channel.
+**Historical correction:** model 2.2 replaced the correctly reported productivity effect in model 2.1 with 10% and assigned 28 percentage points to the connected-winner outcome. Model 2.3 restores the two source outcomes reported above. The correction does not change its calculation, which monetises only the price channel.
 
 ### 3.2 Contract amendments
 
@@ -122,13 +122,13 @@ C_{delay,j}^{k}=T_j^k c_d^k.
 
 The engine rejects cycles, unknown predecessors, invalid calibrated ranges, missing role rates and modifications to locked legal waits.
 
-Five mechanism-specific maps use a mixed provenance contract. Fleet, ERP,
+The values in five reference maps have two sources within the model's history. Fleet, ERP,
 logistics and critical-material maps retain the former `44/24` aggregate base-day
 totals; public IT retains `42/26` non-legal days. Model 2.3 introduces the step
 order, division of those totals across steps and role-hour allocations as
 `illustrative_scenario` inputs. Retained support multipliers, coordination costs
 and tool costs are then applied to those allocations. The internal provenance
-record discloses this composition. Official cases support only the named
+record identifies which values were retained and which were introduced. Official cases support only the named
 mechanisms; they provide none of these numerical inputs.
 
 ### 4.2 Contract cost and monetary coverage
@@ -147,10 +147,10 @@ contracts; that evidence motivates the contract-design dimension, but the
 native model monetises no amendment differential without a signed allocation
 convention.
 
-The decision record lists a calculation anchor for every included monetary
-input. It separately lists internal workflow provenance, external evidence,
-retained assumptions and non-monetised dimensions. Reproducing the arithmetic
-therefore does not imply that every input is empirically estimated.
+The decision record traces every monetary input to its source or declared
+assumption. It lists internal workflow assumptions, external evidence and
+non-monetised dimensions separately, so that a reproducible calculation can
+be distinguished from an empirically estimated input.
 
 ### 4.3 Difference and range semantics
 
@@ -201,17 +201,17 @@ attached to a scenario supports a mechanism, not the retained values or the new
 numerical allocations. Users must assess whether each assumption is defensible
 for the intended decision.
 
-Adaptive work has a plausible procurement mechanism when requirements are incomplete, supplier input can improve problem definition, market consultation is lawful and useful, or contract design must accommodate learning. The ERP discovery, logistics redesign, public IT market-consultation and solution co-design scenarios are intended to expose those conditions. The solution co-design scenario also makes an important counterpoint: learning may add process time and role effort.
+The ERP discovery, logistics redesign, public IT market-consultation and solution co-design scenarios examine work under incomplete requirements. Supplier input or consultation may help define the problem or change the proposed contract. The co-design scenario includes additional time and staff effort for that learning.
 
 An adaptive workflow may add no distinct workflow value when the requirement is stable, the call-off is already governed by a framework or catalogue, or an MRP release simply executes an established commercial arrangement. The catalogue call-off and MRP release controls use identical maps and no supplier-access difference. They return equal alternative ranges, a zero central difference and a symmetric outer envelope. The stable standard-service starting scenario is a topology control only: its maps are identical, but it separately declares a restricted-access sensitivity and is therefore not a neutral total-cost control. The stable capital-replacement scenario also asks whether an adaptation mechanism is present rather than presuming one.
 
-These are conditions for analysis, not procedure recommendations. The cost result does not determine legal availability, and organisational readiness is self-described separately.
+Legal availability must be assessed independently of cost. Organisational readiness is recorded separately through self-description.
 
 ## 6. Suitability and implementation readiness
 
 The suitability comparison presents candidate procedure families associated with the declared boundary; it does not establish legal availability. Every candidate receives the same six qualitative criteria: legal boundary, requirement definition, competitive access, execution channel, workflow learning and system support. Candidate rows have equal visual and logical status. System support cannot change the candidate set or legal waits. Procedures whose statutory grounds are not evaluated are disclosed as withheld rather than scored.
 
-Organisational implementation readiness is a separate self-description with eight domains and sixteen questions. The domains are purpose, ownership, process, requirements, data and automation, governance, adoption, and value and rollout. Each response is `not_met`, `to_complete` or `confirmed`. A complete response set returns counts by response and domain; an incomplete set returns no summary. The module does not infer an overall status, apply a worst-answer gate, validate the answers or issue a go/no-go decision. Its authored checklist is a hypothesis set rather than a validated instrument. There are no points, percentages, weights or benchmarks, and readiness never enters the cost model.
+Organisational implementation readiness is recorded through sixteen questions in eight domains: purpose, ownership, process, requirements, data and automation, governance, adoption, and value and rollout. Each response is `not_met`, `to_complete` or `confirmed`. Once all questions are answered, the module reports counts by response and domain. It does not validate the answers, aggregate them into an overall status or issue a go/no-go decision. The checklist has not been validated as a measurement instrument. Responses receive no points, percentages, weights or benchmarks and never enter the cost model.
 
 ## 7. Practitioner observation and hypothesis development
 
@@ -235,12 +235,13 @@ Testable hypotheses arising from this material include whether sustained interna
 Validation requires event-level observations within organisations. The primary outcome should be procurement-cycle duration from auditable timestamps. Secondary outcomes should include active effort hours by role, queue time, bidder participation, price benchmarks, contract amendments, renegotiation cost, lifecycle performance, process bypass evidence, audit findings and supplier performance.
 
 The empirical design should estimate components before monetisation. It should preserve the distinction between active work and waiting, record system support without treating it as readiness, and compare lawful alternatives within the same governance boundary. Within-organisation and category controls are preferable where available. ProcuraCost outputs must not be used as calibration targets for the same model.
-The evidence-base review of Fazekas and Blum (2021) motivates this
-component-first, event-level design over cross-sectional benchmarking.
+The evidence review by Fazekas and Blum (2021) informs the choice to study
+individual components using event-level data rather than rely on comparisons
+of aggregate organisational results.
 
 ## 9. Reproducibility
 
-The native 2.3 replication generator produces exactly three deterministic artefacts: JSON, CSV and Markdown. The JSON bundle contains the full decision records, including assumptions, evidence, role rates, calculation anchors and legal provenance. The CSV preserves metadata, axes, alternatives, comparison, coverage, non-monetised dimensions and migration context in stable machine rows. The Markdown rendering presents the comparison, coverage, non-monetised dimensions, migration and legal provenance for human review. None contains a generation timestamp.
+The model 2.3 replication generator produces three deterministic files: JSON, CSV and Markdown. JSON contains the full decision records, including assumptions, evidence, role rates, calculation anchors and legal provenance. CSV provides a stable row structure for analysis, including context, both alternatives, costs, coverage and migration status. Markdown presents those results for review. Generation timestamps are omitted so that repeated runs can be compared directly.
 
 `npm run recompute` audits canonical metadata, ordered ranges, the delta identity, neutral controls and locked legal waits. `npm run sweep` performs an alternative-swap symmetry audit. `npm run replicate` regenerates the three active artefacts from the native scenario registry and engine. These checks establish code-path consistency, not empirical validity.
 

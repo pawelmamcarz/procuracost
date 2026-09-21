@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-07-tunel-pole-lepszy-biznes.md",
+  "line": 13,
+  "section": "## Jak projektować przebieg zakupów bez osłabiania kontroli\n\nJeżeli zakup wymaga pięciu formularzy, trzech ręcznych zatwierdzeń i\ndwukrotnego przepisania danych, przed konfiguracją systemu warto sprawdzić,\nczemu służy każda z tych czynności. Część może wynikać z potrzebnej kontroli,\nczęść z ograniczeń starego obiegu dokumentów. Przeniesienie całej sekwencji\ndo nowego systemu może zachować również zbędną pracę.\n\nProces zakupowy ma chronić budżet, zapewniać właściwy dostęp do konkurencji,\nwspierać jakość decyzji i pozostawiać ślad audytowy. Jednocześnie ma dostarczyć\nwnioskodawcy biznesowemu potrzebne rozwiązanie w czasie, który pozwala\nwykorzystać szansę albo uniknąć przestoju. Projektując obieg, trzeba zatem\nustalić, które wymagania są obowiązkowe, a które czynności można uprościć,\nprowadzić równolegle lub powtarzać po uzyskaniu nowych informacji.\n",
+  "fileHash": "0b0c177b46173b28e47e98398ed8714545f6abc3c86e6ddb4cbddcd7c95a3a32",
+  "requestHash": "2dddda3701e4381e1f1d286fe5ddb6c35602bf1e07165eaa239ad405657c2045",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.19
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.17
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.1
+    }
+  },
+  "usage": {
+    "input_tokens": 748,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

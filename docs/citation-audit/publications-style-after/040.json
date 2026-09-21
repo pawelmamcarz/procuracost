@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 55,
+  "section": "## Kto pracuje z użytkownikami po uruchomieniu\n\nDrugie zadanie to przygotowanie użytkowników do zmiany i rozpatrywanie ich\nuwag. Fragment\n[Mandat i komunikacja (28:27 do 29:06)](https://youtu.be/5KYUdTLlvvg?t=1707)\ndotyczy celu wdrożenia, uprawnień do podejmowania decyzji i komunikacji.\n\nPo technicznym uruchomieniu wnioskodawcy mogą nadal korzystać z poczty i arkuszy.\nTrzeba wtedy ustalić, czy rozumieją nowy sposób pracy, czy potrafią obsłużyć\nsystem i czy konfiguracja odpowiada ich sprawom. Za taką diagnozę oraz decyzję\no poprawkach powinna odpowiadać wskazana osoba. Potrzebuje dostępu do\nużytkowników i uprawnień do rozstrzygania wyjątków lub kierowania ich do sponsora.\n\nSponsor powinien zapytać: kto będzie tłumaczył ten przebieg wnioskodawcom\nbiznesowym po zakończeniu projektu, kiedy integrator już wyjdzie, i jaki ma\nmandat, żeby zmienić konfigurację, gdy użytkownicy pokażą, że coś nie działa.\nJeżeli odpowiedź brzmi „zespół projektowy”, warto dopytać, kto z tego zespołu\nzostaje po odbiorze.\n",
+  "fileHash": "c44a04aaf4a00a6ed0cb74ace569789da6b7d3a0faa766b3c31333167a46feab",
+  "requestHash": "99adcc3bfef424b1602df4e73c673a2834dab0cea0cd0c9bdf5e9272ffd9bb30",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.07
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.25
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.08
+    }
+  },
+  "usage": {
+    "input_tokens": 816,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

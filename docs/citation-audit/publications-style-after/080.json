@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-3-empiria-PZP-PL.md",
+  "line": 1,
+  "section": "# Jak sprawdzić koszt projektu procesu? Protokół empiryczny dla polskich zamówień publicznych\n\n**Artykuł 3 cyklu doktorskiego | nauki o polityce i administracji | protokół badawczy**\n",
+  "fileHash": "b1ec9f1effb2f3a2271b97a2b362f804537c7b9a2af82c07a21e14c47f974cce",
+  "requestHash": "5e8b8afa01210a95ad554da3ebc7b911a7079322a09ad824463b42206896d409",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.06
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.12
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.09
+    }
+  },
+  "usage": {
+    "input_tokens": 496,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

@@ -1,5 +1,11 @@
 # Przegląd publikacji z Jev, 21 września 2026
 
+Ten raport i katalogi `publications-before/` oraz `publications-after/` opisują
+przegląd merytoryczny wydany w commicie `b2b9dd3`. Zachowują ówczesne brzmienie
+tekstów. Późniejszą korektę językową i aktualne hashe opisuje
+[`STYLE_REVIEW.md`](STYLE_REVIEW.md); starszych wyników nie należy traktować
+jako oceny obecnego brzmienia sekcji.
+
 Status: korekty zaakceptowane przez autora do wydania w repozytorium
 21 września 2026. Nie oznacza walidacji empirycznej ani recenzji naukowej.
 

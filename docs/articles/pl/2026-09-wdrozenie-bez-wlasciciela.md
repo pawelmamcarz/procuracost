@@ -12,78 +12,68 @@ status: "szkic do redakcji"
 
 ## Dwie role i ciągłość odpowiedzialności we wdrożeniu systemu zakupowego
 
-Tytuł ósmego odcinka Procurement&Beyond brzmi jak przestroga: nawet najlepsze
-narzędzie nie uratuje złego wdrożenia. W rozmowie o systemach zakupowych łatwo
-usłyszeć w tym zdaniu krytykę narzędzi. Chodzi o coś innego. Chodzi o to, że
-wdrożenie ma właściciela albo go nie ma, a system tego nie zmienia.
+Przed zakupem systemu trzeba ustalić, kto po stronie organizacji będzie
+rozstrzygał spory o wymagania, odbierał pracę dostawcy i odpowiadał na zgłoszenia
+użytkowników po uruchomieniu. Samo wskazanie sponsora lub kierownika projektu
+nie wyjaśnia, kto przejmie te zadania po odbiorze.
 
-Dwa wcześniejsze teksty z tej serii zajmują się innymi warstwami. Artykuł
-[Tunel czy pole](2026-07-tunel-pole-lepszy-biznes.md) opisuje geometrię
-przebiegu procesu: co musi zostać sekwencją, a co może być polem z granicą.
-Artykuł o [barierach autonomicznego sourcingu](2026-09-bariery-autonomicznego-sourcingu.md)
-pyta, kiedy organizacja odda mandat handlowy agentowi. Ten tekst zostawia
-narzędzie i mapę procesu na boku i pyta o osobę. Kto po stronie organizacji
-rozumie zakup, ma mandat i zostanie do końca.
+Do tego problemu wracam po rozmowie w ósmym odcinku Procurement&Beyond.
+Artykuł uzupełnia dwa wcześniejsze teksty: [Tunel czy pole](2026-07-tunel-pole-lepszy-biznes.md),
+poświęcony kolejności pracy, oraz artykuł o
+[barierach autonomicznego sourcingu](2026-09-bariery-autonomicznego-sourcingu.md),
+dotyczący uprawnień agentów negocjacyjnych.
 
 Na podstawie rozmowy proponuję rozróżnić dwie role i jeden warunek ich
 utrzymania. To interpretacja praktyczna do sprawdzenia, nie przetestowana
 typologia ani dowód, że brak jednej z ról przesądza o wyniku projektu.
 
-## Rola pierwsza: wewnętrzny kwestionujący
+## Kto ocenia wymagania i pilnuje zakresu
 
-Pierwszą rolą jest osoba, która rozumie, co organizacja kupuje, i potrafi
-zakwestionować założenia dostawcy, integratora oraz własnego zespołu. Fragment
+Organizacja potrzebuje osoby lub zespołu, który zna jej zakupy i potrafi
+ocenić założenia dostawcy, integratora oraz użytkowników. Do tego zadania
+odnosi się fragment
 [Wewnętrzny właściciel decyzji (27:19 do 28:09)](https://youtu.be/5KYUdTLlvvg?t=1639)
-dotyczy właśnie tego: projekt potrzebuje kogoś, kto zna zakup od środka, a nie
-tylko zna system.
+rozmowy o kompetencjach po stronie klienta.
 
-Możliwy scenariusz bez tej roli wygląda następująco. Dostawca proponuje
-konfigurację, która sprawdziła się gdzie indziej. Integrator dopytuje o
+Rozważmy sytuację, w której dostawca proponuje konfigurację sprawdzoną
+w innej organizacji. Integrator dopytuje o
 wymagania i dostaje listę funkcji przepisaną z prezentacji. Nikt nie zadaje
-pytania, czy dana funkcja rozwiązuje problem, który uzasadnił zakup. Lista
-rośnie, zakres puchnie, a pierwotna nieefektywność procesu zostaje nietknięta.
+pytania, czy dana funkcja rozwiązuje problem, który uzasadnił zakup. Można w ten
+sposób rozbudować zakres bez poprawy procesu. To przykład ryzyka, które osoba
+oceniająca wymagania powinna wychwycić przed zatwierdzeniem konfiguracji.
 
 Sponsor powinien zapytać przed podpisem: kto w organizacji potrafi wskazać
 konkretną nieefektywność, którą ten system ma usunąć, i kto powie dostawcy
-„nie" w granicach uzgodnionego mandatu. Samo przypisanie zadania do IT albo
+„nie” w granicach uzgodnionego mandatu. Samo przypisanie zadania do IT albo
 komitetu nie rozstrzyga sprawy. Trzeba wskazać kompetencje zakupowe, osobę
 odpowiedzialną i sposób podejmowania decyzji; rolę można też pełnić zespołowo.
 
 Fragment [Nieefektywność procesu przed wyborem systemu (09:52 do 10:56)](https://youtu.be/5KYUdTLlvvg?t=592)
-pokazuje, skąd ta osoba czerpie mandat merytoryczny. Punktem wyjścia jest
-rozpoznana nieefektywność, nie deklaracja wdrożenia. Kto zmapował tarcie w
-procesie przed wyborem narzędzia, ten potrafi później odrzucić funkcję, która
-tego tarcia nie dotyka.
+dotyczy rozpoznania problemu przed zakupem. Mapa oczekiwania, powtórnej pracy
+i przekazań między rolami daje podstawę do oceny, które funkcje są potrzebne.
 
-## Rola druga: wewnętrzny ambasador
+## Kto pracuje z użytkownikami po uruchomieniu
 
-Drugą rolą jest ambasador. Fragment
+Drugie zadanie to przygotowanie użytkowników do zmiany i rozpatrywanie ich
+uwag. Fragment
 [Mandat i komunikacja (28:27 do 29:06)](https://youtu.be/5KYUdTLlvvg?t=1707)
-pozwala postawić pytanie o połączenie trzech rzeczy:
-wizję biznesową, mandat decyzyjny i komunikację z użytkownikami.
+dotyczy celu wdrożenia, uprawnień do podejmowania decyzji i komunikacji.
 
-Kwestionujący ma chronić zakres, a ambasador wspierać adopcję. Bez odpowiedzialności
-za komunikację istnieje ryzyko, że techniczne uruchomienie nie przełoży się na
-użytkowanie. W takim scenariuszu wnioskodawcy biznesowi wracają
-do poczty i arkuszy, ponieważ nikt nie przetłumaczył im, po co nowy przebieg
-istnieje i co zmienia w ich pracy. Zespół zakupowy uczy się omijać ekrany,
-które nie mają dla niego sensu. Raporty pokazują, że system działa, a
-organizacja pracuje obok niego.
-
-Ta rola wymaga czegoś więcej niż entuzjazmu. Wymaga mandatu. Osoba, która
-komunikuje zmianę, ale nie może zdecydować o wyjątku, szybko traci wiarygodność.
-Osoba, która ma mandat, ale nie rozmawia z użytkownikami, szybko traci kontakt
-z tym, co się dzieje na ekranach.
+Po technicznym uruchomieniu wnioskodawcy mogą nadal korzystać z poczty i arkuszy.
+Trzeba wtedy ustalić, czy rozumieją nowy sposób pracy, czy potrafią obsłużyć
+system i czy konfiguracja odpowiada ich sprawom. Za taką diagnozę oraz decyzję
+o poprawkach powinna odpowiadać wskazana osoba. Potrzebuje dostępu do
+użytkowników i uprawnień do rozstrzygania wyjątków lub kierowania ich do sponsora.
 
 Sponsor powinien zapytać: kto będzie tłumaczył ten przebieg wnioskodawcom
 biznesowym po zakończeniu projektu, kiedy integrator już wyjdzie, i jaki ma
 mandat, żeby zmienić konfigurację, gdy użytkownicy pokażą, że coś nie działa.
-Jeżeli odpowiedź brzmi „zespół projektowy", warto dopytać, kto z tego zespołu
+Jeżeli odpowiedź brzmi „zespół projektowy”, warto dopytać, kto z tego zespołu
 zostaje po odbiorze.
 
 ## Warunek ciągłości właścicielstwa
 
-Ciągłość nie jest trzecią rolą, lecz warunkiem utrzymania odpowiedzialności. Fragment
+Oba zadania wymagają zastępstwa na wypadek odejścia osoby odpowiedzialnej. Fragment
 [Ciągłość właścicielstwa (29:41 do 29:49)](https://youtu.be/5KYUdTLlvvg?t=1781)
 jest krótki i dotyczy sytuacji, w której osoba napędzająca projekt odchodzi, a
 nikt nie przygotował zastępstwa ani ścieżki decyzji.
@@ -93,69 +83,56 @@ jeżeli nikt nie przejmuje tych zadań. Jest to ryzyko do oceny w danym projekci
 Rozmowa nie ustala częstości takiego przebiegu, typowego czasu wdrożenia ani
 wpływu rotacji na adopcję.
 
-Sponsor powinien zapytać: kto przejmie tę rolę, jeżeli obecny właściciel
-zmieni pracę w trzecim kwartale, i czy ta osoba wie o tym dzisiaj. Odpowiedź
-„zobaczymy" oznacza, że warunek nie jest spełniony. Odpowiedź z nazwiskiem i
-datą rozmowy oznacza, że jest spełniony do potwierdzenia.
+Przed startem należy uzgodnić, kto przejmie decyzje i kontakt z użytkownikami
+w razie zmiany właściciela. Zastępca powinien znać zakres zadania, mieć dostęp
+do dokumentacji i potwierdzone uprawnienia. Samo wpisanie nazwiska do planu
+projektu nie potwierdza gotowości do przejęcia odpowiedzialności.
 
 ## Jak rozpoznać ryzyka związane z tymi zadaniami
 
-Poniższe wzorce są scenariuszami diagnostycznymi. Mogą pomóc zadać pytania,
-ale nie pozwalają przypisać przyczyny na podstawie samego objawu.
+Do diagnozy potrzebne są konkretne sprawy, zgłoszenia i decyzje.
 
-Bez kwestionowania zakresu projekt może zakończyć się systemem, który robi dużo rzeczy i nie
-usuwa nieefektywności, dla której powstał. Objawem jest lista funkcji dłuższa
-niż lista problemów. Interwencją jest powrót do mapy tarcia sprzed wyboru
-systemu.
-
-Bez wsparcia adopcji może powstać system technicznie działający, lecz rzadko
-używany. Sygnałem jest rozjazd między raportem z systemu a faktycznym przebiegiem
-spraw. Interwencją jest osoba z mandatem, która zaczyna rozmawiać z
-wnioskodawcami biznesowymi.
-
-Bez ciągłości odpowiedzialności rozwój systemu może się zatrzymać. Sygnałem
-jest brak zmian konfiguracji przez kilka kwartałów mimo zgłoszeń. Interwencją
-jest wyznaczenie właściciela na nowo, z pełnym mandatem, a nie „opiekuna".
+Jeżeli nowe funkcje nie rozwiązują problemu uzasadniającego zakup, warto wrócić
+do mapy procesu i sprawdzić podstawę każdej zmiany zakresu. Gdy raport z systemu
+nie odpowiada rzeczywistemu obiegowi spraw, potrzebne są rozmowy z użytkownikami
+i prześledzenie konkretnych zakupów. Z kolei zaległe zgłoszenia mogą wymagać
+sprawdzenia, kto ma uprawnienia i czas na decyzje o konfiguracji.
 
 Podobne objawy mogą wynikać także z wad narzędzia, integracji lub niedoboru
 zasobów. Diagnoza wymaga rozpatrzenia tych wyjaśnień, a nie tylko właścicielstwa.
 
-## Dwa fragmenty, które właściciel powinien znać na pamięć
+## Co sprawdzić przed odwzorowaniem obecnego procesu
 
-Dwa fragmenty rozmowy dotyczą decyzji, które właściciel podejmuje w pierwszych
-tygodniach i których później nie da się łatwo cofnąć.
+Przy ustalaniu konfiguracji przydatne są trzy tematy poruszone w rozmowie.
 
 Pierwszy to [System nie powinien kopiować archaicznej sekwencji (39:45 do 41:35)](https://youtu.be/5KYUdTLlvvg?t=2385).
 Odwzorowanie obecnego obiegu zatwierdzeń jeden do jednego może wydawać się
-łatwiejsze niż uzgodnienie nowej kolejności. Może jednak utrwalić zbędną pracę. Ocena
-jej kosztu wymaga porównania wariantów, a nie założenia, że odwzorowanie
-obecnego obiegu jest zawsze najdroższe.
+łatwiejsze niż uzgodnienie nowej kolejności. Może jednak utrwalić zbędną pracę.
+Porównanie wariantów pozwala ocenić, czy zmiana kolejności rzeczywiście
+ograniczy jej koszt.
 
 Drugi to [Polityka jako granica kontroli (43:34 do 44:19)](https://youtu.be/5KYUdTLlvvg?t=2614).
 Polityka zakupowa może wyznaczać szerszą granicę zgodności niż jedna stała
 sekwencja kroków. Uprawnienia, zasady konkurencji, wymagany ślad decyzji i tryb
 obsługi wyjątków pozostają niezmienne. Kolejność czynności wewnątrz tych ram
-może być projektowana. Właściciel, który tego rozróżnienia nie rozumie, będzie
-bronił każdego kroku jako wymogu zgodności. Właściciel, który je rozumie,
-potrafi wskazać, które kroki są granicą, a które nawykiem.
+może być projektowana. Dla każdego zatwierdzenia trzeba więc ustalić, z jakiego
+wymagania wynika i czy wymaga ono właśnie takiej kolejności.
 
 Trzeci fragment jest uzupełnieniem obu poprzednich:
 [Standaryzacja pracy i osąd ekspercki (04:31 do 06:48)](https://youtu.be/5KYUdTLlvvg?t=271).
 Rozmowa odróżnia pracę nadającą się do standaryzacji od sytuacji wymagających
-osądu. Właściciel, który potrafi to rozdzielić, wie, gdzie system ma prowadzić,
-a gdzie ma zostawić miejsce na decyzję człowieka.
+osądu. To podstawa do wskazania czynności automatycznych oraz wyjątków
+wymagających decyzji człowieka.
 
-## Koszt, którego nie ma w ofercie
+## Nakład pracy po stronie organizacji
 
 Fragment [Pełny koszt zamiast ceny zakupu (47:43 do 49:14)](https://youtu.be/5KYUdTLlvvg?t=2863)
-dotyczy uzasadnienia biznesowego. Cena licencji i koszt wdrożenia są w ofercie.
-Koszt integracji, utrzymania i zmiany organizacyjnej trzeba policzyć samemu.
+dotyczy uzasadnienia biznesowego. Oprócz ceny licencji i usług dostawcy trzeba
+oszacować własną pracę przy integracji, utrzymaniu i zmianie organizacyjnej.
 
-Dwie role i zapewnienie ciągłości są częścią tego ostatniego składnika. Kwestionujący
-poświęca na projekt czas, którego nie ma w harmonogramie dostawcy. Ambasador
-prowadzi rozmowy, które nie są w zakresie integratora. Zastępstwo trzeba
-przygotować, zanim będzie potrzebne. To nie jest koszt ukryty. To koszt, który
-organizacja powinna ująć w planie, aby móc później ocenić faktyczny nakład.
+Ocena wymagań, rozmowy z użytkownikami i przygotowanie zastępstwa zajmują czas
+pracowników. W planie projektu należy przypisać im nakład i odpowiedzialność,
+a potem porównać te założenia z rzeczywistą pracą.
 
 ## Pierwsze trzydzieści dni właściciela
 
@@ -164,60 +141,47 @@ i trzy sprawy są roboczą skalą warsztatu, nie zwalidowanymi progami. Pytania
 warto rozważyć przed konfiguracją i dostosować do zakresu projektu.
 
 1. Wskazać jedną nieefektywność, która uzasadnia zakup, i zapisać ją w jednym
-   zdaniu. Jeżeli zdanie zaczyna się od nazwy systemu, trzeba je napisać od
-   nowa.
+   zdaniu, opisując problem użytkownika lub koszt obecnego procesu.
 2. Przejść trzy zakończone sprawy zakupowe od wniosku do faktury i zaznaczyć,
-   gdzie sprawa czekała, a nie była przetwarzana. To jest mapa tarcia.
+   czas pracy, oczekiwania i powtórzenia czynności.
 3. Dla każdego kroku obecnego obiegu zatwierdzeń odpowiedzieć, czy wynika z
    polityki, z przepisu, czy z przyzwyczajenia. Wymogi prawne wymagają poprawnego
    odwzorowania. Wymogi polityki również warto ocenić; ich zmiana wymaga
    decyzji uprawnionego właściciela, a nie samodzielnego pominięcia w konfiguracji.
 4. Ustalić z zarządem zakres własnego mandatu na piśmie: jakie decyzje
    konfiguracyjne podejmuje właściciel sam, a jakie wymagają sponsora.
-5. Wyznaczyć następcę i odbyć z nim pierwszą rozmowę o projekcie w pierwszym
-   miesiącu, nie w ostatnim.
+5. Wyznaczyć zastępcę i uzgodnić z nim sposób przejęcia odpowiedzialności.
 
-Pięć kroków nie gwarantuje udanego wdrożenia. Ich wartości prognostycznej
-nie sprawdzono; służą organizacji rozmowy i ujawnieniu brakujących ustaleń.
+Lista służy organizacji rozmowy i ujawnieniu brakujących ustaleń.
 
-## Jak ProcuraCost trzyma tę warstwę osobno
+## Gotowość organizacyjna w ProcuraCost
 
 Model ProcuraCost 2.3 nie liczy gotowości organizacyjnej. Porównuje koszt
 dwóch projektów przebiegu procesu zakupowego w tych samych ramach prawnych i
-ładzie zakupowym. Pytania o właściciela, mandat i ciągłość nie mają w tym
-rachunku żadnego miejsca, i to jest decyzja projektowa, nie przeoczenie.
+ładzie zakupowym. Odpowiedzi o właścicielu, mandacie i ciągłości są zapisywane
+oddzielnie od wejść kosztowych.
 
 Gotowość organizacyjna do wdrożenia jest osobnym samoopisem. Obejmuje osiem
 obszarów: cel, właściciel biznesowy i mandat, proces, wymagania, dane i
-automatyzacja, ład, adopcja oraz wartość i wdrożenie. W sumie szesnaście pytań.
-Na każde są trzy odpowiedzi: warunek niespełniony, do uzupełnienia,
+automatyzacja, ład, adopcja oraz wartość i wdrożenie. Zawiera szesnaście pytań,
+każde z trzema odpowiedziami: warunek niespełniony, do uzupełnienia,
 potwierdzony. Obszar właściciela biznesowego i mandatu czerpie tematycznie z
 trzech fragmentów omawianych w tym tekście.
 
-Samoopis nie ma punktów, wag, oceny zbiorczej ani decyzji „idziemy albo nie".
-Nie zmienia różnicy kosztu ani o złotówkę. Organizacja, która odpowie
-„niespełniony" na wszystkie szesnaście pytań, przy identycznych wejściach
-kosztowych dostanie ten sam wynik
-co organizacja, która odpowie „potwierdzony". Powód jest prosty: gotowość nie
-jest parametrem modelu kosztowego, a mieszanie tych warstw prowadzi do rachunku,
-którego nie da się odtworzyć.
-
-Jeżeli ktoś chce zobaczyć, jak to wygląda w praktyce, kolejność jest ustalona:
-najpierw zapis porównania kosztu, dopiero potem samoopis gotowości. Nie
-odwrotnie i nie równolegle.
+Samoopis nie przyznaje punktów ani wag i nie wydaje zbiorczej oceny lub decyzji
+o uruchomieniu. Przy identycznych wejściach kosztowych wynik porównania
+pozostaje taki sam niezależnie od odpowiedzi o gotowości. W serwisie samoopis
+jest dostępny po zapisaniu porównania kosztu.
 
 ## Co jest obserwacją, a co hipotezą
-
-Warto jasno oddzielić trzy rodzaje twierdzeń w tym tekście.
 
 Punktem wyjścia są obserwacje praktyczne z rozmowy. Podział na dwie role,
 warunek ciągłości i opisane scenariusze niepowodzenia są ich redakcyjnym
 rozwinięciem. Nie są wynikiem badania ani dosłownym odtworzeniem nagrania.
 
-Decyzje projektowe to konstrukcja samoopisu gotowości: osiem obszarów,
-szesnaście pytań, trzy odpowiedzi. Lista została opracowana jako zbiór hipotez
-operacyjnych. Rozmowa dostarczyła kontekstu do jej pytań, ale nie dowodzi, że
-którykolwiek warunek jest spełniony w jakiejkolwiek organizacji.
+Opisany wcześniej samoopis gotowości jest autorską listą kontrolną, której
+pytań dostarczyły także tematy rozmowy. Odpowiedzi wymagają potwierdzenia
+w danej organizacji.
 
 Hipotezy wymagające niezależnych danych są trzy:
 
@@ -227,16 +191,14 @@ Hipotezy wymagające niezależnych danych są trzy:
 3. Uproszczenie polityki zmniejsza obciążenie zatwierdzeniami bez osłabienia
    kontroli na granicy.
 
-Każda z nich brzmi przekonująco. Żadna nie została sprawdzona na danych. Ich
-sformułowanie jest celem tego tekstu, nie ich udowodnienie.
+Hipotezy te nie zostały sprawdzone na danych.
 
 ## Pytanie do zadania przed podpisem
 
-Wszystko powyższe sprowadza się do jednego pytania, które sponsor powinien
-zadać, zanim podpisze umowę na system zakupowy:
+Przed podpisaniem umowy sponsor powinien uzgodnić odpowiedź na pytanie:
 
 > Kto po naszej stronie rozumie ten zakup, ma mandat, żeby powiedzieć
-> dostawcy „nie", będzie rozmawiał z użytkownikami po odbiorze i ma następcę,
+> dostawcy „nie”, będzie rozmawiał z użytkownikami po odbiorze i ma następcę,
 > który o tym wie?
 
 Jedno nazwisko nie wystarcza do potwierdzenia mandatu, a podział zadań między

@@ -80,3 +80,9 @@ The seven active papers/articles were screened section by section with Jev and
 reviewed against the current model and selected primary sources. The audit
 record is in [`../citation-audit/PUBLICATIONS_REVIEW.md`](../citation-audit/PUBLICATIONS_REVIEW.md).
 AI screening is not independent empirical validation, author approval or publication.
+
+The subsequent language edit covers all seven texts, the shared foundation and
+the public working-paper summary. It removes rhetorical filler, repeated
+conclusions and awkward translations while retaining the equations, hypotheses
+and source links. See [`../citation-audit/STYLE_REVIEW.md`](../citation-audit/STYLE_REVIEW.md)
+for the scope and the separate Jev style review.

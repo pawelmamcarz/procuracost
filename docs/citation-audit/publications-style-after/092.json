@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-3-empiria-PZP-PL.md",
+  "line": 324,
+  "section": "## 11. Materiał praktyczny i hipotezy\n\n[Procurement&Beyond, odcinek\n8](https://www.youtube.com/watch?v=5KYUdTLlvvg) podnosi kwestie wewnętrznego\nwłaściciela wdrożenia, tarcia procesowego, dyscypliny wymagań, zakupów\noperacyjnych, uproszczenia polityki, TCO i ograniczonego wykorzystania AI.\nDo opracowania tej rozmowy wykorzystano automatyczne napisy w języku polskim,\nniezweryfikowane przez człowieka.\n\nRozmowa może służyć do opracowania pytań wywiadu i hipotez. Nie jest źródłem parametru,\nczęstości, efektu, odpowiedzi w samoopisie gotowości ani dowodu przyczynowego. Bielik może\nporządkować dane rynkowe do weryfikacji. Jawny model deterministyczny wykonuje\nrachunek.\n",
+  "fileHash": "b1ec9f1effb2f3a2271b97a2b362f804537c7b9a2af82c07a21e14c47f974cce",
+  "requestHash": "b8fece94261ffa56bb79cda72b9ea340c3f06513dacce6bb123148ed2faedaaf",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.09
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.29
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.1
+    }
+  },
+  "usage": {
+    "input_tokens": 690,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

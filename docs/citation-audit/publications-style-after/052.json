@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-1-tunnel-or-field-EN.md",
+  "line": 5,
+  "section": "## Abstract\n\nProcurement rules govern several decisions: who may authorise a purchase, how\nwork is ordered, which suppliers can compete and how a contract can change.\nEvidence about one of these decisions does not necessarily explain the others.\nThis paper uses the Tunnel and Field metaphor to distinguish a prescribed\nworkflow from alternative sequences of work within the same legal and\ngovernance boundary. It examines how queues, hand-offs and early learning may\naffect effort and duration, while treating competitive access and contract\nadaptation separately. The paper defines a lawful counterfactual and develops\nsix testable propositions, grouped into five families. It does not assume\nwhich workflow will have the lower cost.\n",
+  "fileHash": "7344f34cddce2b959ed1a0a1cc874a84dd02bdee5c7207f856a4fec7290b80ef",
+  "requestHash": "67940576721d2517aa5310270d899c23aadb9d59a3d38a3337ff30b7826dc1eb",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.11
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.17
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.08
+    }
+  },
+  "usage": {
+    "input_tokens": 576,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

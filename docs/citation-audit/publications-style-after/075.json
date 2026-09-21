@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-2-model-kosztu-PL.md",
+  "line": 271,
+  "section": "## 11. Diagnostyka i replikacja\n\nDiagnostyka dla wszystkich dziesięciu scenariuszy sprawdza:\n\n- zgodność metadanych;\n- uporządkowanie zakresów;\n- tożsamość delty;\n- neutralność scenariuszy kontrolnych;\n- wspólne i zablokowane terminy prawne;\n- symetrię po zamianie wariantów.\n\nPakiet replikacyjny generuje deterministyczne JSON, CSV i Markdown z tego samego\nrejestru i silnika, których używa aplikacja. Stała kolejność scenariuszy i brak\nznacznika czasu pozwalają sprawdzić, czy ponowne uruchomienie daje te same pliki.\n\nReplikacja potwierdza zgodność ścieżki obliczeniowej. Nie potwierdza\nempirycznej trafności wejść ani prawidłowości wyboru procedury dla konkretnego\nzakupu.\n",
+  "fileHash": "d28c067484a43d527731bede82cfc85524f897ff5c4c43741dea5caf455772f9",
+  "requestHash": "84aa495582ef4f5848117a26ce23c330dd35bbdffdf9e775926a85c1ff41af86",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.11
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.18
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.14
+    }
+  },
+  "usage": {
+    "input_tokens": 683,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

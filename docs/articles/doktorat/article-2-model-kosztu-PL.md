@@ -1,18 +1,19 @@
-# Ile kosztuje projekt przebiegu procesu zakupowego? Model porównawczy ProcuraCost 2.3
+# Jak porównać koszty dwóch przebiegów zakupu? Model ProcuraCost 2.3
 
 **Artykuł 2 cyklu doktorskiego | ekonomia i finanse | szkic metodologiczny**
 
 ## Streszczenie
 
-Artykuł przedstawia deterministyczny model porównujący dwa zgodne projekty
-przebiegu procesu zakupowego dla tego samego zakupu i tych samych ram prawnych
-oraz ładu zakupowego. Model 2.3 wykorzystuje dwie niezależne mapy zależności,
-oblicza ścieżkę krytyczną i rozdziela koszt ról, koszt niepracowniczy, koszt
+ProcuraCost 2.3 porównuje koszt dwóch sposobów przeprowadzenia tego samego
+zakupu w tych samych ramach prawnych i przy tych samych zasadach ładu
+zakupowego. Dla każdego wariantu wykorzystuje osobną mapę zależności,
+oblicza ścieżkę krytyczną i rozdziela koszt pracy według ról, koszt niepracowniczy, koszt
 zwłoki oraz objęte monetyzacją elementy konstrukcji umowy. Obowiązkowe terminy
 prawne są stałe i wspólne dla obu wariantów. Wynik ma znak dodatni, ujemny albo
 zerowy zależnie od jawnych danych wejściowych. Zakresy niski, centralny i wysoki
-są scenariuszami, nie przedziałami ufności. Model nie jest estymatorem,
-rekomendacją procedury ani oceną gotowości organizacyjnej.
+są scenariuszami, nie przedziałami ufności. Obliczenie jest deterministyczne;
+nie szacuje efektu przyczynowego ani nie wskazuje procedury do wyboru.
+Gotowość organizacyjna jest opisywana oddzielnie.
 
 ## 1. Obiekt porównania
 
@@ -26,7 +27,7 @@ zakupowego. W postępowaniu objętym PZP adaptacja oznacza wybór i sekwencjonow
 dopuszczalnej pracy wewnątrz właściwej procedury. Nie oznacza odstępstwa od
 ustawy.
 
-Model zachowuje odrębność następujących osi:
+Opis zakupu rozdziela następujące obszary:
 
 1. ramy prawne i ład zakupowy;
 2. rodzina procedury;
@@ -35,14 +36,14 @@ Model zachowuje odrębność następujących osi:
 5. wsparcie systemowe;
 6. projekt przebiegu procesu zakupowego dla każdego wariantu;
 7. konstrukcja umowy dla każdego wariantu;
-8. data wszczęcia stosowana przez wersjonowany resolver prawny.
+8. data wszczęcia, według której moduł prawny ustala obowiązkowe terminy.
 
 Gotowość organizacyjna do wdrożenia jest badana osobno. Nie jest ani wejściem,
 ani wynikiem modelu kosztowego.
 
-## 2. Kontrakt wersji
+## 2. Wersje modelu, danych i reguł
 
-Natywny rekord 2.3 zawiera:
+Rekord modelu 2.3 zawiera:
 
 - `schemaVersion: 2`;
 - `modelVersion: 2.3.0`;
@@ -69,7 +70,7 @@ Każdy wariant jest skierowanym grafem acyklicznym. Krok zawiera:
 - rodzaj kroku;
 - pochodzenie blokady prawnej, jeżeli krok wynika z reguły prawnej.
 
-Dla przypadku zakresu `r` czas zakończenia kroku `s` wynosi:
+Dla wariantu wartości `r` (niskiego, centralnego lub wysokiego) czas zakończenia kroku `s` wynosi:
 
 `finish_r(s) = max(finish_r(p)) + activeDays_r(s) + queueDays_r(s)`
 
@@ -87,13 +88,13 @@ liczby iteracji potrzebnych w rzeczywistym projekcie.
 Silnik odrzuca cykle, nieznanych poprzedników, zduplikowane identyfikatory i
 zmiany w obowiązkowych terminach prawnych.
 
-## 4. Resolver prawny
+## 4. Ustalanie obowiązkowych terminów prawnych
 
 Reguły `pl-pzp-2026-2027` obejmują daty wszczęcia od 1 stycznia 2026 do
 31 grudnia 2027. Konteksty sektorowy oraz obronności i bezpieczeństwa są poza
-zakresem pierwszego resolvera i kończą się kontrolowanym błędem.
+zakresem tego modułu; ich wybór blokuje obliczenie i zwraca komunikat błędu.
 
-Dla wspieranych klasycznych procedur PZP resolver tworzy kroki na podstawie
+Dla obsługiwanych klasycznych procedur PZP moduł tworzy kroki na podstawie
 art. 283, art. 308 ust. 2, art. 138 ust. 1, art. 144 ust. 1,
 art. 151 ust. 1 i art. 264 ust. 1 PZP. Dokładne wartości zależne od procedury,
 przedmiotu i sposobu komunikacji opisuje rejestr parametrów.
@@ -102,12 +103,12 @@ Każda blokada prawna ma stałą wartość niską, centralną i wysoką, zero ak
 dni oraz identyczny czas oczekiwania w obu wariantach. Wsparcie systemowe nie
 skraca tych kroków.
 
-Resolver nie ocenia, czy w konkretnym postępowaniu zachodzi podstawa skrócenia,
+Moduł nie ocenia, czy w konkretnym postępowaniu zachodzi podstawa skrócenia,
 wyjątku albo innego reżimu. Taka ocena należy do Zamawiającego i jego doradców.
 
 ## 5. Funkcje kosztu
 
-Dla wariantu `j` i przypadku zakresu `r`:
+Dla wariantu procesu `j` i wariantu wartości `r`:
 
 `roleCost_j,r = sum(roleHours_j,r x roleHourlyRate_r)`
 
@@ -143,13 +144,13 @@ zakres zewnętrzny. Model nie zawiera warunku, który wymusza preferowany znak.
 
 ## 6. Zakresy i status dowodowy
 
-Każda wartość zawiera przypadek niski, centralny i wysoki, rodzaj zakresu,
+Każde wejście zawiera wartość niską, centralną i wysoką, rodzaj zakresu,
 klasę dowodu oraz identyfikatory źródeł. Obowiązuje porządek
 `low <= central <= high`.
 
-Trzy przypadki są deklarowanymi scenariuszami. Nie są kwantylami,
+Te trzy wartości opisują deklarowane scenariusze. Nie są kwantylami,
 rozkładami prawdopodobieństwa ani przedziałami ufności. Obliczenie wykorzystuje
-wyrównane przypadki niski, centralny i wysoki, a następnie tworzy zewnętrzną
+osobno zestawy wartości niskich, centralnych i wysokich, a następnie tworzy zewnętrzną
 obwiednię różnicy.
 
 Rejestr rozróżnia:
@@ -170,7 +171,7 @@ wolno go użyć.
 
 ### 7.1 Transfer konkurencji
 
-Stres 2, 6 i 9 procent jest stosowany tylko wtedy, gdy porównanie jawnie
+Test warunkowy z wartościami 2, 6 i 9 procent jest stosowany tylko wtedy, gdy porównanie jawnie
 zakłada różnicę dostępu do konkurencji. Spośród scenariuszy startowych tylko
 `stable_private_standard_service` deklaruje taką różnicę i przypisuje koszt
 wariantowi adaptacyjnemu. W kalkulatorze użytkownik może wskazać dowolny
@@ -182,8 +183,8 @@ Jeżeli dostęp do konkurencji nie różni się, oba warianty otrzymują zero.
 
 Szucs (2024) dostarcza kotwicy dla kanału cenowego dyskrecji w węgierskich
 zamówieniach poniżej właściwego progu. Nie identyfikuje skutku projektu
-przebiegu procesu w Polsce. Zakres ProcuraCost jest jawnym transferem
-scenariuszowym, nie polską estymatą.
+przebiegu procesu w Polsce. Przyjęcie tych wartości w ProcuraCost jest
+założeniem scenariuszowym, a nie polską estymatą.
 
 ### 7.2 Zmiany umowy i TCO
 
@@ -202,14 +203,14 @@ wnioskuje prawdopodobieństwa obejścia z nazwy wariantu, posiadania systemu ani
 odpowiedzi w samoopisie gotowości. Do monetyzacji potrzebna byłaby obserwowana częstość,
 ekspozycja ekonomiczna i odrębna metoda.
 
-## 8. Założenia przeniesione i ilustracyjne alokacje map
+## 8. Pochodzenie założeń i wartości kroków
 
 Wartości ekonomiczne, agregaty bazowych dni, stawki ról, profile wsparcia i
 centralne koszty zwłoki zostały przeniesione z rejestru 2.2.2 jako
-`retained_legacy_assumption`. W pięciu mapach mechanizmowych model 2.3
-wprowadza ilustracyjną kolejność kroków, podział agregatu dni oraz alokację
-godzin ról. Zachowanie pochodzenia umożliwia odtworzenie punktu startowego, ale
-nie nadaje żadnej z tych klas statusu estymat.
+`retained_legacy_assumption`. W pięciu mapach referencyjnych model 2.3
+wprowadza przykładową kolejność kroków i przypisuje im dni oraz godziny pracy
+poszczególnych ról. Zapis pochodzenia pozwala odtworzyć te założenia.
+Wartości nie są estymatami z danych organizacyjnych.
 
 Domyślny zakres dziennego kosztu zwłoki wynosi 0,25, 1 i 4 razy wartość
 centralną. Model nie potrafi zweryfikować tego wejścia. W zastosowaniu
@@ -218,8 +219,8 @@ utraconej marży, przestoju albo kosztu rozwiązania zastępczego.
 
 Profile wsparcia systemowego modyfikują czasy aktywne, nakład ról oraz
 zadeklarowane koszty koordynacji i narzędzia. Są założeniami startowymi, a nie
-szacunkiem efektu wdrożenia. W mapach mechanizmowych są stosowane do nowych
-alokacji ilustracyjnych, dlatego rekord decyzji ujawnia obie klasy pochodzenia.
+szacunkiem efektu wdrożenia. W pięciu mapach referencyjnych są stosowane do
+nowych wartości przypisanych krokom; rekord decyzji ujawnia oba źródła założeń.
 Nie przekładają się na gotowość organizacyjną.
 
 ## 9. Scenariusze i warunki zastosowania
@@ -227,7 +228,7 @@ Nie przekładają się na gotowość organizacyjną.
 Rejestr zawiera dziesięć scenariuszy. Służą do demonstracji mechanizmów,
 testowania neutralności oraz zapisu pochodzenia założeń.
 
-### 9.1 Warunki z odrębnym mechanizmem
+### 9.1 Zmiany czynności i zależności
 
 - Transformacja ERP przy niepełnym wymaganiu może wykorzystywać definiowanie
   problemu i modularne podejście.
@@ -238,7 +239,7 @@ testowania neutralności oraz zapisu pochodzenia założeń.
 - Odkrywanie i współprojektowanie może zwiększać czas i nakład pracy, jeżeli
   uczenie się oraz ponowne określenie zakresu są rzeczywistymi czynnościami.
 
-### 9.2 Warunki bez odrębnego mechanizmu pracy
+### 9.2 Porównania o identycznym przebiegu
 
 Stabilna standardowa usługa może wymagać tej samej pracy w obu wariantach.
 Jej scenariusz startowy osobno deklaruje jednak różnicę konkurencji, więc nie
@@ -250,7 +251,7 @@ Przykłady opisują warunki, nie zalecenia. Oficjalne przypadki z Kalifornii,
 OECD, UZP i Komisji Europejskiej wspierają mechanizmy jakościowe, lecz nie
 wyznaczają czasów ani kosztów scenariuszy.
 
-## 10. Rekord decyzji i pokrycie
+## 10. Rekord decyzji i zakres rachunku
 
 Rekord decyzji ujawnia:
 
@@ -261,12 +262,11 @@ Rekord decyzji ujawnia:
 5. udział poszczególnych kanałów w różnicy;
 6. zakres monetyzacji i dokładne ścieżki założeń;
 7. wymiary nieobjęte monetyzacją;
-8. wewnętrzną proweniencję ilustracyjnych alokacji, założenia przeniesione,
+8. pochodzenie wartości przypisanych krokom, założenia przeniesione,
    dowody zewnętrzne i pochodzenie prawne.
 
-Taki układ pozwala oddzielić wynik arytmetyczny od zakresu interpretacji.
-Wysoka wartość całkowita nie oznacza, że wszystkie istotne skutki zostały
-objęte monetyzacją.
+Interpretacja sumy wymaga sprawdzenia jej składników oraz listy skutków
+pozostawionych poza rachunkiem.
 
 ## 11. Diagnostyka i replikacja
 
@@ -280,8 +280,8 @@ Diagnostyka dla wszystkich dziesięciu scenariuszy sprawdza:
 - symetrię po zamianie wariantów.
 
 Pakiet replikacyjny generuje deterministyczne JSON, CSV i Markdown z tego samego
-rejestru i silnika, których używa aplikacja. Brak znacznika czasu i stała
-kolejność scenariuszy pozwalają porównać czyste ponowne wygenerowanie.
+rejestru i silnika, których używa aplikacja. Stała kolejność scenariuszy i brak
+znacznika czasu pozwalają sprawdzić, czy ponowne uruchomienie daje te same pliki.
 
 Replikacja potwierdza zgodność ścieżki obliczeniowej. Nie potwierdza
 empirycznej trafności wejść ani prawidłowości wyboru procedury dla konkretnego
@@ -289,7 +289,7 @@ zakupu.
 
 ## 12. Walidacja empiryczna
 
-Najpierw należy oceniać osobne komponenty:
+Walidacja powinna objąć:
 
 - możliwość odtworzenia map z wersjonowanych dokumentów i logów;
 - zgodność przewidywanego czasu z obserwowanym czasem;
@@ -302,16 +302,16 @@ Pełna walidacja delty wymaga wiarygodnego kontrfaktycznego wyniku dla drugiego
 wariantu i niezależnie uzasadnionego dziennego kosztu zwłoki. Pojedynczy rekord
 zakupu nie dostarcza obu elementów.
 
-Ocena na danych odłożonych powinna raportować błąd komponentu, pokrycie przez
-zakres, szerokość zakresu i porównanie z prostą bazą. Nie wolno poszerzać zakresu
+Ocena na próbie testowej powinna raportować błąd składnika, pokrycie przez
+zakres, szerokość zakresu i porównanie z prostą metodą odniesienia. Nie wolno poszerzać zakresu
 wyłącznie w celu zwiększenia pokrycia.
 
 ## 13. Wkład i ograniczenia
 
-Wkładem artykułu jest audytowalny kontrakt łączący dwie mapy procesu z zakresem
-monetyzacji, pochodzeniem założeń i testem symetrii. Model pokazuje, jaka część
-różnicy wynika z jawnych działań i kosztu czasu, a jaka pozostaje poza
-rachunkiem.
+Artykuł opisuje sposób obliczania i zapisu porównania dwóch map procesu.
+Przy każdym wyniku można odtworzyć użyte założenia, zakres monetyzacji i test
+symetrii. Model rozdziela składniki policzonej różnicy oraz skutki, których
+wartości nie wyznacza.
 
 Model nie szacuje pełnego dobrobytu społecznego, jakości trudnej do
 monetyzacji, wszystkich sankcji ani ryzyka prawnego. Nie obejmuje procedur
@@ -323,8 +323,8 @@ benchmarkiem organizacji ani rekomendacją procedury.
 [Procurement&Beyond, odcinek
 8](https://www.youtube.com/watch?v=5KYUdTLlvvg) wskazuje pytania o właściciela
 wdrożenia, tarcie procesu, wymagania, zakupy operacyjne, uproszczenie polityki,
-TCO i ograniczone zastosowanie AI. Materiał jest wywiadem praktycznym opartym
-na automatycznych napisach w języku polskim.
+TCO i ograniczone zastosowanie AI. Do opracowania tej rozmowy wykorzystano
+automatyczne napisy w języku polskim, niezweryfikowane przez człowieka.
 
 Może służyć do projektowania pytań i hipotez. Nie może ustalać wartości,
 zakresów, odpowiedzi w samoopisie gotowości ani progu decyzyjnego.

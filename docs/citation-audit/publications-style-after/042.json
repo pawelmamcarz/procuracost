@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 91,
+  "section": "## Jak rozpoznać ryzyka związane z tymi zadaniami\n\nDo diagnozy potrzebne są konkretne sprawy, zgłoszenia i decyzje.\n\nJeżeli nowe funkcje nie rozwiązują problemu uzasadniającego zakup, warto wrócić\ndo mapy procesu i sprawdzić podstawę każdej zmiany zakresu. Gdy raport z systemu\nnie odpowiada rzeczywistemu obiegowi spraw, potrzebne są rozmowy z użytkownikami\ni prześledzenie konkretnych zakupów. Z kolei zaległe zgłoszenia mogą wymagać\nsprawdzenia, kto ma uprawnienia i czas na decyzje o konfiguracji.\n\nPodobne objawy mogą wynikać także z wad narzędzia, integracji lub niedoboru\nzasobów. Diagnoza wymaga rozpatrzenia tych wyjaśnień, a nie tylko właścicielstwa.\n",
+  "fileHash": "c44a04aaf4a00a6ed0cb74ace569789da6b7d3a0faa766b3c31333167a46feab",
+  "requestHash": "d499406ff1730e2aadfb59f08c1777dfba05d57c56537f7cf51806f556c47b50",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.19
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.2
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.08
+    }
+  },
+  "usage": {
+    "input_tokens": 670,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}
