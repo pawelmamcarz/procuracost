@@ -1,6 +1,7 @@
 # Plan walidacji empirycznej ProcuraCost
 
 **Wersja dokumentu:** 2.0 dla modelu 2.3.0, 29 sierpnia 2026
+**Aktualizacja metodologiczna:** 21 września 2026; grupy kontrolne w wariancie DiD.
 **Status:** projekt do oceny promotora. Nie zawiera wyników i nie opisuje
 zebranych danych.
 **Zastępuje:** aktywny plan dla modelu 2.2.2. Materiały modelu 1.x pozostają
@@ -249,9 +250,12 @@ kierowania trudniejszych zakupów do bardziej preskryptywnego przebiegu.
 ### 7.2 Wariant B: jednorazowa zmiana projektu procesu
 
 Warunkowe rozszerzenie przyczynowe wymaga jasno zdefiniowanej, porównywalnej
-zmiany oraz grup jeszcze nieobjętych zmianą. Przy zróżnicowanych terminach
-można rozważyć estymator staggered DiD odporny na heterogeniczne efekty w
-czasie, na przykład Callaway-Sant'Anna lub Sun-Abraham. Naiwna regresja z
+zmiany oraz uzasadnionej grupy porównawczej. Przy zróżnicowanych terminach
+wybór estymatora staggered DiD wymaga określenia estymandu i grup kontrolnych.
+Callaway–Sant'Anna dopuszcza grupy nigdy nieobjęte lub jeszcze nieobjęte zmianą;
+Sun–Abraham używa grupy nigdy nieobjętej lub objętej jako ostatnia. W drugim
+przypadku wyłącza się okresy od objęcia ostatniej grupy interwencją.
+Szczegóły i źródła podaje [artykuł nr 3, sekcja 7.2](../articles/doktorat/article-3-empiria-PZP-PL.md#72-wariant-b-jednorazowa-zmiana-procesu). Naiwna regresja z
 dwukierunkowymi efektami stałymi nie jest specyfikacją domyślną.
 
 Wymagane są:

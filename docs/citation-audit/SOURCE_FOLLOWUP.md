@@ -27,3 +27,6 @@ przez Jev, z aktualnymi hashami. Starsze rekordy pozostają historyczne.
 Nie zmieniono kodu aplikacji ani modelu; pełny zestaw CI uruchamiany jest
 przy wydaniu. Punkt powrotu: `rollback/pre-source-followup-20260921`,
 commit `84f97a90b99823cac972adcd64c19c3dcf868654`.
+
+Dalsze uzupełnienie paperu i bezpośrednia kontrola twierdzeń przez Jev:
+[RESEARCH_COMPLETION.md](RESEARCH_COMPLETION.md).

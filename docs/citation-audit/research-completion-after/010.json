@@ -1,0 +1,27 @@
+{
+  "file": "RESEARCH.md",
+  "line": 266,
+  "section": "## 9. Reproducibility\n\nThe [model parameter contract](docs/MODEL_PARAMETERS.md) records the active assumptions and evidence boundaries. The [replication output directory](replication/outputs/) contains the generated records. The model 2.3 replication generator produces three deterministic files: JSON, CSV and Markdown. JSON contains the full decision records, including assumptions, evidence, role rates, calculation anchors and legal provenance. CSV provides a stable row structure for analysis, including context, both alternatives, costs, coverage and migration status. Markdown presents those results for review. Generation timestamps are omitted so that repeated runs can be compared directly.\n\n`npm run recompute` audits canonical metadata, ordered ranges, the delta identity, neutral controls and locked legal waits. `npm run sweep` performs an alternative-swap symmetry audit. `npm run replicate` regenerates the three active artefacts from the native scenario registry and engine. These checks establish code-path consistency, not empirical validity.\n",
+  "fileHash": "7761674824146901cbc836bb100a7b9e35f9a79ba94562949959d47fc7e49738",
+  "requestHash": "1efd9a033d701144a21e1ac699a4de80c560cc324e7fddb7e419a3f7511c5197",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.06
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.19
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.16
+    }
+  },
+  "usage": {
+    "input_tokens": 637,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

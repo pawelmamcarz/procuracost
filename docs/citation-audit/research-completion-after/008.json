@@ -1,0 +1,27 @@
+{
+  "file": "RESEARCH.md",
+  "line": 232,
+  "section": "## 7. Practitioner observation and hypothesis development\n\n[Procurement&Beyond, episode 8](https://www.youtube.com/watch?v=5KYUdTLlvvg), published on 26 August 2026, is treated as a practitioner interview. The available Polish transcript was generated automatically by YouTube and has not been human-verified. No verbatim quotation from that transcript is used here. A [documented automatic comparison](docs/citation-audit/PRACTICE_REVIEW.md) checked fourteen referenced excerpts against a second, locally generated transcription. It supports thematic indexing, not word-level accuracy. The TCO passage introduces vehicle ownership costs; applying it to software implementation costs is the checklist author's interpretation.\n\nThe episode informs questions about:\n\n- whether a named internal owner can sustain the implementation and translate the process for users;\n- whether the organisation mapped process friction before selecting a system;\n- whether requirements focus on material operational purchasing rather than marginal feature requests;\n- whether obsolete approval chains are being reproduced in software instead of simplifying the policy and target process;\n- whether the business case measures whole-life cost and adoption, not only licence or implementation cost;\n- whether AI is confined to traceable support tasks, such as structuring market data, while a transparent deterministic model performs the TCO calculation.\n\nThese observations support question design and hypothesis generation only. They do not set ProcuraCost thresholds, weights, workflow durations, role rates or calibration ranges. In particular, Bielik may help structure source data for review, but the language model does not calculate the ProcuraCost result.\n\nTestable hypotheses arising from this material include whether sustained internal ownership predicts adoption, whether pre-implementation friction mapping reduces unnecessary configuration, and whether policy simplification reduces approval burden without weakening boundary controls. These propositions require independent data.\n",
+  "fileHash": "7761674824146901cbc836bb100a7b9e35f9a79ba94562949959d47fc7e49738",
+  "requestHash": "d03ce8c4b6d12d109b12fdba5b09359597c9dff72e79057d8cf71ceb5d54e279",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.09
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.27
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.08
+    }
+  },
+  "usage": {
+    "input_tokens": 817,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

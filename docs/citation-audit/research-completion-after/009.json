@@ -1,0 +1,27 @@
+{
+  "file": "RESEARCH.md",
+  "line": 249,
+  "section": "## 8. Empirical agenda\n\nValidation requires event-level observations within organisations. The primary outcome should be procurement-cycle duration from auditable timestamps. Secondary outcomes should include active effort hours by role, queue time, bidder participation, price benchmarks, contract amendments, renegotiation cost, lifecycle performance, process bypass evidence, audit findings and supplier performance.\n\nThe empirical design should estimate components before monetisation. It should preserve the distinction between active work and waiting, record system support without treating it as readiness, and compare lawful alternatives within the same governance boundary. Within-organisation and category controls are preferable where available. ProcuraCost outputs must not be used as calibration targets for the same model.\nThe [evidence review by Fazekas and Blum (2021)](https://documents1.worldbank.org/curated/en/656521623167062285/pdf/Improving-Public-Procurement-Outcomes-Review-of-Tools-and-the-State-of-the-Evidence-Base.pdf) identifies uneven evidence, limited comparability of outcomes and a need to study management practices. ProcuraCost draws a methodological inference from those limitations: study individual components using event-level data rather than rely on aggregate organisational comparisons. The review does not establish the superiority of that particular research design.\n\n### 8.1 Measurement and identification plan\n\nThe [empirical validation plan](docs/research/EMPIRICAL_VALIDATION_PLAN.md) is a proposal, not a report of collected data. Its unit is a procurement event from need authorisation to contract signature or another explicitly coded ending. Exposure is reconstructed from the policy, authority matrix and workflow configuration in force before the outcome. Coders must not see outcome values while coding that exposure.\n\nPublic procurement registers can support sampling and published-event measures. Internal logs and versioned documents are needed for pre-publication work, role effort and organisational approvals. The study must report missing timestamps, incomplete events and cancellations separately. Same-day completion requires an explicit rule before logarithmic duration is used; unfinished events must not silently disappear from the sample.\n\nThe primary comparison is within organisations and categories and estimates conditional associations. The recruitment target of four to six organisations with at least sixty events each is a feasibility target, not a power calculation. A causal extension requires a comparable dated intervention, a justified comparison group and explicit identification assumptions. Neither a threshold alone nor an insignificant pre-trend test establishes identification.\n\nValidation of the cost instrument requires observations held out from calibration and a declared simple baseline for each component. Preregistration must fix exposure coding, outcomes, missing-data rules, clustering, practically meaningful effects and sensitivity analyses before the main study. A failure to reject an effect is not evidence of equivalence. These requirements remain planned work; no empirical validation result is claimed here.\n",
+  "fileHash": "7761674824146901cbc836bb100a7b9e35f9a79ba94562949959d47fc7e49738",
+  "requestHash": "f3b3a137e87bbf4ec7d592f5851f2441e37194ba4d556ba611d202a1006fbd47",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.09
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.31
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.09
+    }
+  },
+  "usage": {
+    "input_tokens": 1041,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}
