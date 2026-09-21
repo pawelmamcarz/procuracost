@@ -1113,7 +1113,7 @@ export function buildResearchMarkdown(
     `### ${tx.fields.roleHourlyRates}`,
     "",
     `| ${tx.fields.role} | ${tx.range.low} / ${tx.range.central} / ${tx.range.high} | ${tx.fields.evidenceStatus} | ${tx.fields.evidenceIds} |`,
-    "|---|---|---|---|---|",
+    "|---|---|---|---|",
     ...Object.entries(record.roleHourlyRates).map(
       ([roleId, rate]) =>
         `| ${markdownRoleLabel(locale, roleId)} | ${rangeText(
