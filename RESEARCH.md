@@ -55,7 +55,7 @@ The analysis distinguishes five constructs:
 
 ## 3. Evidence audit
 
-The [scholarly citation review](docs/citation-audit/SCHOLARLY_REVIEW.md) records primary sources, access limits and unresolved issues as of 21 September 2026.
+The [scholarly citation review](docs/citation-audit/SCHOLARLY_REVIEW.md) and [source follow-up](docs/citation-audit/SOURCE_FOLLOWUP.md) record primary sources, access limits and unresolved issues as of 21 September 2026. The follow-up supersedes the earlier access status for EC2011 and EC2021.
 
 ### 3.1 Competition transfer
 
@@ -94,7 +94,21 @@ The active evidence registry includes four official sources:
 - the Polish Public Procurement Office material on preliminary market consultation, used to frame lawful market learning;
 - European Commission guidance on innovation procurement, used to frame innovation procurement, market consultation and contract adaptability.
 
+The Commission's 2021 guidance is non-binding. Section 4.1.2 (pp. 35–37) describes preliminary market consultation while preserving competition, equal treatment and transparency. Section 4.1.8 (pp. 46–47) discusses performance indicators, fair exit provisions and contract modification clauses. These provisions support bounded learning and contract design, not unrestricted renegotiation.
+
 These sources support the existence of mechanisms and implementation questions. They do not establish the monetary values in a ProcuraCost scenario and do not prove a causal advantage for the adaptive/compliant alternative.
+
+### 3.6 Evidence still required
+
+| Gap | Current treatment | Evidence needed to change it |
+|---|---|---|
+| Beuve manuscript effect magnitude | No numerical transfer; the published results table and a correction were not obtained. | An accessible final table or author clarification reconciling the coefficient, unit and reported magnitude. |
+| Transfer from historical EU effort statistics | EC2011 locators verified; the comparison concerns recorded model 2.2.2 outputs only. | Matched activity coverage and organisational effort data for the native process maps. |
+| TCO and informal bypass | TCO differential remains zero; bypass remains non-monetised. | Category-specific lifecycle observations and documented deviations, with a defined comparison and allocation convention. |
+| Readiness checklist | Sixteen authored questions, not a validated scale. | Evidence that respondents interpret the questions consistently and that responses correspond to independently observed implementation conditions. |
+| Practitioner account | Thematic input only; no human-verified transcript. | Human review of any passage used as a quotation; independent organisational data for the resulting hypotheses. |
+
+The [remaining-source report](docs/citation-audit/REMAINING_SOURCES_FOLLOWUP.md) also records unavailable survey methods and original-book passages. Supplier-survey percentages are not inputs to this paper's calculations. Finding a full text would resolve an access gap, not establish transferability or causal validity.
 
 ## 4. Native model 2.3.0
 
@@ -217,7 +231,7 @@ Organisational implementation readiness is recorded through sixteen questions in
 
 ## 7. Practitioner observation and hypothesis development
 
-[Procurement&Beyond, episode 8](https://www.youtube.com/watch?v=5KYUdTLlvvg), published on 26 August 2026, is treated as a practitioner interview. The available Polish transcript was generated automatically by YouTube and has not been human-verified. No verbatim quotation from that transcript is used here.
+[Procurement&Beyond, episode 8](https://www.youtube.com/watch?v=5KYUdTLlvvg), published on 26 August 2026, is treated as a practitioner interview. The available Polish transcript was generated automatically by YouTube and has not been human-verified. No verbatim quotation from that transcript is used here. A [documented automatic comparison](docs/citation-audit/PRACTICE_REVIEW.md) checked fourteen referenced excerpts against a second, locally generated transcription. It supports thematic indexing, not word-level accuracy. The TCO passage introduces vehicle ownership costs; applying it to software implementation costs is the checklist author's interpretation.
 
 The episode informs questions about:
 
@@ -239,9 +253,19 @@ Validation requires event-level observations within organisations. The primary o
 The empirical design should estimate components before monetisation. It should preserve the distinction between active work and waiting, record system support without treating it as readiness, and compare lawful alternatives within the same governance boundary. Within-organisation and category controls are preferable where available. ProcuraCost outputs must not be used as calibration targets for the same model.
 The [evidence review by Fazekas and Blum (2021)](https://documents1.worldbank.org/curated/en/656521623167062285/pdf/Improving-Public-Procurement-Outcomes-Review-of-Tools-and-the-State-of-the-Evidence-Base.pdf) identifies uneven evidence, limited comparability of outcomes and a need to study management practices. ProcuraCost draws a methodological inference from those limitations: study individual components using event-level data rather than rely on aggregate organisational comparisons. The review does not establish the superiority of that particular research design.
 
+### 8.1 Measurement and identification plan
+
+The [empirical validation plan](docs/research/EMPIRICAL_VALIDATION_PLAN.md) is a proposal, not a report of collected data. Its unit is a procurement event from need authorisation to contract signature or another explicitly coded ending. Exposure is reconstructed from the policy, authority matrix and workflow configuration in force before the outcome. Coders must not see outcome values while coding that exposure.
+
+Public procurement registers can support sampling and published-event measures. Internal logs and versioned documents are needed for pre-publication work, role effort and organisational approvals. The study must report missing timestamps, incomplete events and cancellations separately. Same-day completion requires an explicit rule before logarithmic duration is used; unfinished events must not silently disappear from the sample.
+
+The primary comparison is within organisations and categories and estimates conditional associations. The recruitment target of four to six organisations with at least sixty events each is a feasibility target, not a power calculation. A causal extension requires a comparable dated intervention, a justified comparison group and explicit identification assumptions. Neither a threshold alone nor an insignificant pre-trend test establishes identification.
+
+Validation of the cost instrument requires observations held out from calibration and a declared simple baseline for each component. Preregistration must fix exposure coding, outcomes, missing-data rules, clustering, practically meaningful effects and sensitivity analyses before the main study. A failure to reject an effect is not evidence of equivalence. These requirements remain planned work; no empirical validation result is claimed here.
+
 ## 9. Reproducibility
 
-The model 2.3 replication generator produces three deterministic files: JSON, CSV and Markdown. JSON contains the full decision records, including assumptions, evidence, role rates, calculation anchors and legal provenance. CSV provides a stable row structure for analysis, including context, both alternatives, costs, coverage and migration status. Markdown presents those results for review. Generation timestamps are omitted so that repeated runs can be compared directly.
+The [model parameter contract](docs/MODEL_PARAMETERS.md) records the active assumptions and evidence boundaries. The [replication output directory](replication/outputs/) contains the generated records. The model 2.3 replication generator produces three deterministic files: JSON, CSV and Markdown. JSON contains the full decision records, including assumptions, evidence, role rates, calculation anchors and legal provenance. CSV provides a stable row structure for analysis, including context, both alternatives, costs, coverage and migration status. Markdown presents those results for review. Generation timestamps are omitted so that repeated runs can be compared directly.
 
 `npm run recompute` audits canonical metadata, ordered ranges, the delta identity, neutral controls and locked legal waits. `npm run sweep` performs an alternative-swap symmetry audit. `npm run replicate` regenerates the three active artefacts from the native scenario registry and engine. These checks establish code-path consistency, not empirical validity.
 
@@ -255,11 +279,11 @@ California Department of Technology. (2022). *California redefines state technol
 
 Coviello, D., & Mariniello, M. (2014). Publicity requirements in public procurement: Evidence from a regression discontinuity design. *Journal of Public Economics, 109*, 76–100. https://doi.org/10.1016/j.jpubeco.2013.10.008
 
-European Commission. (2011). *Public procurement in Europe: Cost and effectiveness* (PwC, London Economics, & Ecorys).
+European Commission. (2011). *Public procurement in Europe: Cost and effectiveness* (PwC, London Economics, & Ecorys), pp. 76–78 and 84–85. [Report](https://op.europa.eu/en/publication-detail/-/publication/0cfa3445-7724-4af5-8c2b-d657cd690c03). [Methodology and data annex](https://op.europa.eu/en/publication-detail/-/publication/eb5f2d5a-a034-4123-83af-2ea7eb363825).
 
-European Commission. (2021). *Commission Notice: Guidance on innovation procurement* (2021/C 267/01), §§4.1.2 and 4.1.8, pp. 35–37 and 46–47. Commission Notice 2021/C 267/01. https://public-buyers-community.ec.europa.eu/resources/guidance-innovation-procurement
+European Commission. (2021). *Commission Notice: Guidance on innovation procurement* (2021/C 267/01), §§4.1.2 and 4.1.8, pp. 35–37 and 46–47. [Official publication](https://op.europa.eu/en/publication-detail/-/publication/9f9537e9-de23-11eb-895a-01aa75ed71a1).
 
-Fazekas, M., & Blum, J. R. (2021). *Improving public procurement outcomes: Review of tools and the state of the evidence base* (Policy Research Working Paper No. 9690). World Bank.
+Fazekas, M., & Blum, J. R. (2021). *Improving public procurement outcomes: Review of tools and the state of the evidence base* (Policy Research Working Paper No. 9690). World Bank. [Full report](https://documents1.worldbank.org/curated/en/656521623167062285/pdf/Improving-Public-Procurement-Outcomes-Review-of-Tools-and-the-State-of-the-Evidence-Base.pdf).
 
 Holmström, B., & Milgrom, P. (1991). Multitask principal-agent analyses: Incentive contracts, asset ownership, and job design. *Journal of Law, Economics, & Organization, 7*(Special Issue), 24–52. https://doi.org/10.1093/jleo/7.special_issue.24
 

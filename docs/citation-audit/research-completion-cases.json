@@ -1,0 +1,44 @@
+[
+  {
+    "id": "ec2011-statistics",
+    "claim": "The report gives government effort a median of 22 person-days and a mean of 36 person-days.",
+    "source": "The distribution of observations of time spent is skewed towards the low end. There is not a normal\ndistribution of costs. The standard deviation is 36 person-days, compared to a mean value of 36 and a\nmedian of 22 (governments). There is an accumulation of observations near the median, and a long\ntail towards the right (high end).",
+    "sourceRef": "EC2011, p.84; PDF SHA256 97a15b3f660f123d480e2d7040bedc218656b2421b78569447e734ebdc06b917; https://op.europa.eu/en/publication-detail/-/publication/0cfa3445-7724-4af5-8c2b-d657cd690c03",
+    "expected": "supports"
+  },
+  {
+    "id": "ec2021-status",
+    "claim": "The Commission's 2021 guidance is non-binding.",
+    "source": "The purpose of this Notice is to offer practical guidance on innovation public procurement. It is not legally\n           binding. While the Notice occasionally paraphrases the provisions of EU legislation, it is not meant to add to or\n           diminish the rights and obligations set out in that legislation. Insofar as the Notice could be understood as\n           interpreting EU legislation, it warrants stressing that only the Court of Justice of the European Union is\n           competent to give a legally binding interpretation of EU law.",
+    "sourceRef": "EC2021, 2021/C 267/01; PDF SHA256 402047ce7b0062e151429c48202a5035d0fb7247c5bfb7a3b3800b99b7fd1cf6; https://op.europa.eu/en/publication-detail/-/publication/9f9537e9-de23-11eb-895a-01aa75ed71a1 p.1",
+    "expected": "supports"
+  },
+  {
+    "id": "ec2021-consultation",
+    "claim": "Preliminary market consultation must preserve competition, equal treatment and transparency.",
+    "source": "Article 40 of Directive 2014/24/EU states that you can seek advice from independent experts, authorities or market\n     participants, provided this does not have the effect of distorting competition and does not result in a violation of the\n     principles of non-discrimination and transparency.\n\n     It is crucial to ensure that any information provided during market consultation is also made available to other\n     operators and that adequate time is allowed for the submission of tenders. Public buyers have a responsibility to\n     ensure that all bidders are treated equally in procurement procedures, so market consultation should not result in an\n     unfair advantage or disadvantage for a bidder.",
+    "sourceRef": "EC2021, 2021/C 267/01; PDF SHA256 402047ce7b0062e151429c48202a5035d0fb7247c5bfb7a3b3800b99b7fd1cf6; https://op.europa.eu/en/publication-detail/-/publication/9f9537e9-de23-11eb-895a-01aa75ed71a1 section 4.1.2, p.35",
+    "expected": "supports"
+  },
+  {
+    "id": "ec2021-contract",
+    "claim": "The guidance discusses measurable performance indicators, fair exit conditions for suppliers and contract modification clauses, referring to Article 72(1)(a) of Directive 2014/24/EU and Article 89(1)(a) of Directive 2014/25/EU.",
+    "source": "Contract performance clauses should have at least the following aspects:\n     — Contract performance criteria, measurable indicators of quality and performance targets (48)\n\n\n     — Exit clauses in case of underperformance or in case that the market brings even more suitable solution than the one\n       currently under development (with fair exit conditions for the supplier)\n\n\n     — Contract modification clauses, due to volatility and high potential of further innovation ascertained during the\n       contract performance (49).\n\n     (48) For an example of a holistic view in preparing tender documentation using Key Performance Indicators (KPI) in the outcome based\n          contract performance phase, please see Stop and Go project’s European Specifications Template:\n          http://stopandgoproject.eu/wp-content/uploads/2017/04/WP2_STOPandGO_D2.2_Update_European_Specification_Template_v1.2.pdf\n     (49) Article 72(1)(a) of Directive 2014/24/EU and Article 89(1)(a) of Directive 2014/25/EU.\n\f6.7.2021               EN                            Official Journal of the European Union                                             C 267/47",
+    "sourceRef": "EC2021, 2021/C 267/01; PDF SHA256 402047ce7b0062e151429c48202a5035d0fb7247c5bfb7a3b3800b99b7fd1cf6; https://op.europa.eu/en/publication-detail/-/publication/9f9537e9-de23-11eb-895a-01aa75ed71a1 section 4.1.8, p.46",
+    "expected": "supports"
+  },
+  {
+    "id": "control-reversed-statistics",
+    "claim": "The report gives government effort a mean of 22 person-days and a median of 36 person-days.",
+    "source": "The distribution of observations of time spent is skewed towards the low end. There is not a normal\ndistribution of costs. The standard deviation is 36 person-days, compared to a mean value of 36 and a\nmedian of 22 (governments). There is an accumulation of observations near the median, and a long\ntail towards the right (high end).",
+    "sourceRef": "EC2011, p.84; PDF SHA256 97a15b3f660f123d480e2d7040bedc218656b2421b78569447e734ebdc06b917; https://op.europa.eu/en/publication-detail/-/publication/0cfa3445-7724-4af5-8c2b-d657cd690c03",
+    "expected": "contradicts"
+  },
+  {
+    "id": "control-native-validation",
+    "claim": "This report empirically validates ProcuraCost native model 2.3.0.",
+    "source": "The distribution of observations of time spent is skewed towards the low end. There is not a normal\ndistribution of costs. The standard deviation is 36 person-days, compared to a mean value of 36 and a\nmedian of 22 (governments). There is an accumulation of observations near the median, and a long\ntail towards the right (high end).",
+    "sourceRef": "EC2011, p.84; PDF SHA256 97a15b3f660f123d480e2d7040bedc218656b2421b78569447e734ebdc06b917; https://op.europa.eu/en/publication-detail/-/publication/0cfa3445-7724-4af5-8c2b-d657cd690c03",
+    "expected": "unsupported"
+  }
+]

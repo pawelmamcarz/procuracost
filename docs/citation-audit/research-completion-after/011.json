@@ -1,0 +1,27 @@
+{
+  "file": "RESEARCH.md",
+  "line": 272,
+  "section": "## References\n\nBajari, P., Houghton, S., & Tadelis, S. (2014). Bidding for incomplete contracts: An empirical analysis of adaptation costs. *American Economic Review, 104*(4), 1288–1319. https://doi.org/10.1257/aer.104.4.1288\n\nBeuve, J., Moszoro, M. W., & Spiller, P. T. (2023). Doing it by the book: Political contestability and public contract renegotiations. *Journal of Law, Economics, and Organization, 39*(1), 281–308. https://doi.org/10.1093/jleo/ewab039\n\nCalifornia Department of Technology. (2022). *California redefines state technology procurement*. https://www.cdt.ca.gov/newsroom/2022/08/california-redefines-state-technology-procurement/\n\nCoviello, D., & Mariniello, M. (2014). Publicity requirements in public procurement: Evidence from a regression discontinuity design. *Journal of Public Economics, 109*, 76–100. https://doi.org/10.1016/j.jpubeco.2013.10.008\n\nEuropean Commission. (2011). *Public procurement in Europe: Cost and effectiveness* (PwC, London Economics, & Ecorys), pp. 76–78 and 84–85. [Report](https://op.europa.eu/en/publication-detail/-/publication/0cfa3445-7724-4af5-8c2b-d657cd690c03). [Methodology and data annex](https://op.europa.eu/en/publication-detail/-/publication/eb5f2d5a-a034-4123-83af-2ea7eb363825).\n\nEuropean Commission. (2021). *Commission Notice: Guidance on innovation procurement* (2021/C 267/01), §§4.1.2 and 4.1.8, pp. 35–37 and 46–47. [Official publication](https://op.europa.eu/en/publication-detail/-/publication/9f9537e9-de23-11eb-895a-01aa75ed71a1).\n\nFazekas, M., & Blum, J. R. (2021). *Improving public procurement outcomes: Review of tools and the state of the evidence base* (Policy Research Working Paper No. 9690). World Bank. [Full report](https://documents1.worldbank.org/curated/en/656521623167062285/pdf/Improving-Public-Procurement-Outcomes-Review-of-Tools-and-the-State-of-the-Evidence-Base.pdf).\n\nHolmström, B., & Milgrom, P. (1991). Multitask principal-agent analyses: Incentive contracts, asset ownership, and job design. *Journal of Law, Economics, & Organization, 7*(Special Issue), 24–52. https://doi.org/10.1093/jleo/7.special_issue.24\n\nLipsky, M. (1980). *Street-level bureaucracy: Dilemmas of the individual in public services*. Russell Sage Foundation. [Publisher description](https://www.russellsage.org/publications/book/street-level-bureaucracy) (2010 expanded edition; confirms first publication in 1980).\n\nOECD. (2024). *Public procurement in Lithuania: Increasing efficiency through centralisation and professionalisation* (OECD Public Governance Reviews), Annex B (RVUL pilot example). https://www.oecd.org/en/publications/public-procurement-in-lithuania_aa1b196c-en/full-report/component-8.html\n\nProcurement&Beyond. (2026, August 26). *Odcinek 8. Nawet najlepsze narzędzie nie uratuje złego wdrożenia* [Practitioner interview]. https://www.youtube.com/watch?v=5KYUdTLlvvg\n\nSzucs, F. (2024). Discretion and favoritism in public procurement. *Journal of the European Economic Association, 22*(1), 117–160. https://doi.org/10.1093/jeea/jvad017\n\nUrząd Zamówień Publicznych. (n.d.). *Wstępne konsultacje rynkowe*. https://www.gov.pl/web/uzp/wstepne-konsultacje-rynkowe\n\nVaughan, D. (1996). *The Challenger launch decision: Risky technology, culture, and deviance at NASA*. University of Chicago Press. [Publisher description](https://press.uchicago.edu/ucp/books/book/chicago/C/bo22781921) (enlarged edition; not the original 1996 text).\n\n### Legal sources\n\nUstawa z dnia 11 września 2019 r. Prawo zamówień publicznych, as amended. Original publication: [Dz.U. 2019 poz. 2019](https://eli.gov.pl/eli/DU/2019/2019/ogl). The application threshold for classic contracts awarded by public contracting authorities is 170,000 PLN net from 1 January 2026 under [Dz.U. 2025 poz. 1173](https://eli.gov.pl/eli/DU/2025/1173/ogl). This is not a universal threshold for every procurement regime. Amendment locators: art. 1 pkt 1 (threshold amendment), arts. 7–8 (transitional provisions), and art. 11 (entry into force).\n\nObwieszczenie Prezesa Urzędu Zamówień Publicznych z dnia 8 grudnia 2025 r., [M.P. 2025 poz. 1247](https://eli.gov.pl/eli/MP/2025/1247/ogl). Abbreviated description: EU thresholds for 2026–2027; the linked official publication supplies the full title.\n",
+  "fileHash": "7761674824146901cbc836bb100a7b9e35f9a79ba94562949959d47fc7e49738",
+  "requestHash": "37a51000b019eaed48d2ac74f41934d2951a8c20773e506553bc3ae2d2233c30",
+  "model": "jev-1.13.0",
+  "answers": {
+    "stockRhetoric": {
+      "type": "noul",
+      "noul": 0.16
+    },
+    "redundancy": {
+      "type": "noul",
+      "noul": 0.15
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.15
+    }
+  },
+  "usage": {
+    "input_tokens": 1964,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}
