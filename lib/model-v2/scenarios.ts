@@ -77,6 +77,8 @@ export interface ScenarioEconomicAssumptions {
   pathCompetitionDiffers: boolean;
   competitionDisadvantagedAlternative: AlternativeId | null;
   competitionTransferRate: CalibratedValue | null;
+  contractRigidityDiffers: boolean;
+  amendmentDisadvantagedAlternative: AlternativeId | null;
   amendmentDifferential: CalibratedValue;
   tcoDifferential: CalibratedValue;
   bypass: NonMonetizedContractDimension;
@@ -136,6 +138,7 @@ interface ScenarioSeed {
 const SCENARIO_SOURCE_URL = "https://www.procuracost.com/model/assumptions";
 const INITIATED_ON = "2026-08-28";
 const COMPETITION_EVIDENCE_ID = "szucs_discretion_price_2024";
+const AMENDMENT_EVIDENCE_ID = "beuve_amendment_frequency_2023";
 
 function retainedValue(value: number, evidenceId: string): CalibratedValue {
   return {
@@ -184,6 +187,26 @@ export function createCompetitionTransferStress(): CalibratedValue {
     rangeKind: "stress",
     evidenceClass: "empirical_anchor",
     evidenceIds: [COMPETITION_EVIDENCE_ID],
+  };
+}
+
+// Signed allocation convention: the published-version post-print of Beuve,
+// Moszoro and Spiller (JLEO 39(1): 281-308, verified as MPRA paper 117230)
+// reports contractual-rigidity coefficients 0.014, 0.011 and 0.012 in Table 4.
+// The rigidity index sums seven category z-scores, so a one-standard-deviation
+// increase in each category maps to the full model profile of 1 and yields
+// 7 x coefficient = 0.098, 0.077 and 0.084 additional amendments per
+// contract-year. The range is monetised only where a comparison explicitly
+// declares a contract-rigidity difference and names the more rigid
+// alternative; it never follows from a workflow label.
+export function createAmendmentDifferentialRange(): CalibratedValue {
+  return {
+    low: 0.077,
+    central: 0.084,
+    high: 0.098,
+    rangeKind: "calibrated",
+    evidenceClass: "verified_postprint",
+    evidenceIds: [AMENDMENT_EVIDENCE_ID],
   };
 }
 
@@ -511,6 +534,7 @@ function buildScenario(seed: ScenarioSeed): ScenarioV2 {
     assumptionId
   );
   const zeroDifferential = retainedValue(0, assumptionId);
+  const amendmentDifferential = createAmendmentDifferentialRange();
   const bypass: NonMonetizedContractDimension = {
     id: "informal_bypass",
     status: "notMonetized",
@@ -559,8 +583,10 @@ function buildScenario(seed: ScenarioSeed): ScenarioV2 {
       competitionTransferRate: seed.pathCompetitionDiffers
         ? createCompetitionTransferStress()
         : null,
-      amendmentDifferential: zeroDifferential,
-      tcoDifferential: retainedValue(0, assumptionId),
+      contractRigidityDiffers: false,
+      amendmentDisadvantagedAlternative: null,
+      amendmentDifferential,
+      tcoDifferential: zeroDifferential,
       bypass,
     },
     calculationInput: {

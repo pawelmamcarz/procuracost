@@ -161,7 +161,16 @@ describe("model 2.3 canonical scenarios", () => {
         rangeKind: "stress",
         evidenceClass: "retained_legacy_assumption",
       });
-      expect(economicAssumptions.amendmentDifferential.central).toBe(0);
+      expect(economicAssumptions.amendmentDifferential).toMatchObject({
+        low: 0.077,
+        central: 0.084,
+        high: 0.098,
+        rangeKind: "calibrated",
+        evidenceClass: "verified_postprint",
+        evidenceIds: ["beuve_amendment_frequency_2023"],
+      });
+      expect(economicAssumptions.contractRigidityDiffers).toBe(false);
+      expect(economicAssumptions.amendmentDisadvantagedAlternative).toBeNull();
       expect(economicAssumptions.tcoDifferential.central).toBe(0);
       expect(economicAssumptions.bypass.status).toBe("notMonetized");
 
@@ -175,6 +184,57 @@ describe("model 2.3 canonical scenarios", () => {
         });
       } else {
         expect(economicAssumptions.competitionTransferRate).toBeNull();
+      }
+    }
+  });
+
+  it("anchors the amendment differential to the published-version Table 4 coefficients", () => {
+    // Beuve, Moszoro and Spiller, JLEO 39(1): 281-308, verified post-print
+    // (MPRA 117230): Table 4 coefficients 0.014, 0.011 and 0.012 multiplied by
+    // the seven summed rigidity z-score categories.
+    const publishedTable4Coefficients = [0.014, 0.011, 0.012] as const;
+    const impliedPerContractYear = publishedTable4Coefficients.map(
+      (coefficient) => coefficient * 7
+    );
+    expect(impliedPerContractYear[0]).toBeCloseTo(0.098, 10);
+    expect(impliedPerContractYear[1]).toBeCloseTo(0.077, 10);
+    expect(impliedPerContractYear[2]).toBeCloseTo(0.084, 10);
+
+    for (const scenario of SCENARIOS_V2) {
+      const { amendmentDifferential } = scenario.economicAssumptions;
+      expect(amendmentDifferential.low).toBeCloseTo(0.011 * 7, 10);
+      expect(amendmentDifferential.central).toBeCloseTo(0.012 * 7, 10);
+      expect(amendmentDifferential.high).toBeCloseTo(0.014 * 7, 10);
+      expect(amendmentDifferential.low).toBe(0.077);
+      expect(amendmentDifferential.central).toBe(0.084);
+      expect(amendmentDifferential.high).toBe(0.098);
+    }
+
+    const record = EVIDENCE_REGISTRY.find(
+      ({ id }) => id === "beuve_amendment_frequency_2023"
+    );
+    expect(record).toBeDefined();
+    expect(record?.type).toBe("verified_postprint");
+    expect(record?.constructs).toContain("contract_amendment");
+  });
+
+  it("monetises no amendment differential without a declared rigidity difference", () => {
+    for (const scenario of SCENARIOS_V2) {
+      for (const alternative of [
+        scenario.calculationInput.alternatives.formalSequential,
+        scenario.calculationInput.alternatives.adaptiveCompliant,
+      ]) {
+        const dimension = alternative.contractDesign.dimensions.find(
+          ({ id }) => id === "contract_amendment"
+        )!;
+        expect(dimension.status).toBe("monetized");
+        if (dimension.status !== "monetized") continue;
+        expect(dimension.cost).toMatchObject({
+          low: 0,
+          central: 0,
+          high: 0,
+          evidenceClass: "retained_legacy_assumption",
+        });
       }
     }
   });

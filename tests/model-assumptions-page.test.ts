@@ -180,7 +180,7 @@ describe("model assumptions routes", () => {
       .map((match) => match[1])
       .filter((label) => label.startsWith(prefix));
 
-    expect(labels).toHaveLength(6);
-    expect(new Set(labels).size).toBe(6);
+    expect(labels).toHaveLength(7);
+    expect(new Set(labels).size).toBe(7);
   });
 });

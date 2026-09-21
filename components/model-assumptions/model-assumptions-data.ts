@@ -130,7 +130,7 @@ function scenarioCalibratedValues(
       : []),
     {
       id: "amendmentDifferential",
-      unit: "pln",
+      unit: "percentage",
       value: cloneValue(assumptions.amendmentDifferential),
     },
     {

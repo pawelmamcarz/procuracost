@@ -5,6 +5,7 @@ import {
 
 export const EVIDENCE_TYPES = [
   "empirical_anchor",
+  "verified_postprint",
   "official_case",
   "practitioner_observation",
   "illustrative_scenario",
@@ -219,6 +220,22 @@ export const EVIDENCE_REGISTRY: EvidenceRecord[] = [
     jurisdictionOrPopulationKey: "evidence.szucs.population",
     constructs: ["competition_transfer"],
     assumptionKeys: ["evidence.szucs.assumption"],
+  },
+  {
+    id: "beuve_amendment_frequency_2023",
+    type: "verified_postprint",
+    sourceUrl: "https://mpra.ub.uni-muenchen.de/117230/1/Renegotiations_v5c.pdf",
+    source: {
+      titleKey: "evidence.beuve.sourceTitle",
+      publisherKey: "evidence.beuve.publisher",
+      publishedOn: "2023-02-22",
+      publicationKind: "peer_reviewed_article",
+    },
+    supportedClaimKey: "evidence.beuve.supported",
+    unsupportedClaimKey: "evidence.beuve.unsupported",
+    jurisdictionOrPopulationKey: "evidence.beuve.population",
+    constructs: ["contract_amendment", "contract_adaptability"],
+    assumptionKeys: ["evidence.beuve.assumption"],
   },
 ];
 

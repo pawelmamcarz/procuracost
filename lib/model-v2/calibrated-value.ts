@@ -2,6 +2,7 @@ export type RangeKind = "fixed" | "calibrated" | "stress";
 
 export type EvidenceClass =
   | "empirical_anchor"
+  | "verified_postprint"
   | "official_case"
   | "practitioner_observation"
   | "illustrative_scenario"
@@ -28,6 +29,7 @@ export interface RangeValues {
 const RANGE_KINDS: readonly RangeKind[] = ["fixed", "calibrated", "stress"];
 const EVIDENCE_CLASSES: readonly EvidenceClass[] = [
   "empirical_anchor",
+  "verified_postprint",
   "official_case",
   "practitioner_observation",
   "illustrative_scenario",

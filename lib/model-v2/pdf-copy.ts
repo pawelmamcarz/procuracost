@@ -534,7 +534,8 @@ export function buildPdfCopy(
       "amendmentDifferential",
       tx.assumptions.amendmentDifferential,
       assumptions.amendmentDifferential,
-      locale
+      locale,
+      false
     ),
     calibratedAssumption(
       "tcoDifferential",

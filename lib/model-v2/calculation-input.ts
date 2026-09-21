@@ -109,6 +109,21 @@ function derivedCompetitionCost(
   };
 }
 
+function derivedAmendmentCost(
+  contractValue: CalibratedValue,
+  differential: CalibratedValue,
+  zero: boolean
+): CalibratedValue {
+  return {
+    low: zero ? 0 : contractValue.low * differential.low,
+    central: zero ? 0 : contractValue.central * differential.central,
+    high: zero ? 0 : contractValue.high * differential.high,
+    rangeKind: "calibrated",
+    evidenceClass: differential.evidenceClass,
+    evidenceIds: [...differential.evidenceIds],
+  };
+}
+
 function materializeContractDesign(
   draft: ScenarioDraft,
   alternative: AlternativeId
@@ -118,12 +133,42 @@ function materializeContractDesign(
   const amendment = monetizedDimensionCost(current, "contract_amendment");
   const tco = monetizedDimensionCost(current, "tco");
 
-  assertZeroAllocation(assumptions.amendmentDifferential, "contract_amendment");
+  assertNonNegativeValue(assumptions.amendmentDifferential, "amendmentDifferential");
+  if (assumptions.amendmentDifferential.high > 1) {
+    throw new Error("amendmentDifferential cannot exceed 1");
+  }
   assertZeroAllocation(assumptions.tcoDifferential, "tco");
-  assertZeroAllocation(amendment, "contract_amendment");
   assertZeroAllocation(tco, "tco");
   if (assumptions.bypass.status !== "notMonetized") {
     throw new Error("informal_bypass must remain non-monetised");
+  }
+
+  let amendmentCost: CalibratedValue;
+  if (assumptions.contractRigidityDiffers) {
+    const disadvantaged = assumptions.amendmentDisadvantagedAlternative;
+    if (!disadvantaged || !ALTERNATIVE_IDS.includes(disadvantaged)) {
+      throw new Error(
+        "amendmentDisadvantagedAlternative is required when contract rigidity differs"
+      );
+    }
+    amendmentCost = derivedAmendmentCost(
+      assumptions.contractValue,
+      assumptions.amendmentDifferential,
+      alternative !== disadvantaged
+    );
+  } else {
+    if (assumptions.amendmentDisadvantagedAlternative !== null) {
+      throw new Error(
+        "amendmentDisadvantagedAlternative must be null when contract rigidity does not differ"
+      );
+    }
+    assertValidCalibratedValue(amendment, "contract_amendment");
+    if (amendment.low !== 0 || amendment.central !== 0 || amendment.high !== 0) {
+      throw new Error(
+        "contract_amendment allocation requires a declared contract-rigidity difference"
+      );
+    }
+    amendmentCost = cloneValue(amendment);
   }
 
   let competitionCost: CalibratedValue;
@@ -175,7 +220,7 @@ function materializeContractDesign(
       {
         id: "contract_amendment",
         status: "monetized",
-        cost: cloneValue(amendment),
+        cost: amendmentCost,
       },
       { id: "tco", status: "monetized", cost: cloneValue(tco) },
       {

@@ -1089,7 +1089,8 @@ export function buildResearchMarkdown(
     markdownRangeRow(
       tx.assumptions.amendmentDifferential,
       record.assumptions.amendmentDifferential,
-      locale
+      locale,
+      false
     ).replace(
       / \|$/,
       ` | ${
