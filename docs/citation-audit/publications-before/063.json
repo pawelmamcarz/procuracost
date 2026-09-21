@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-2-model-kosztu-PL.md",
+  "line": 1,
+  "section": "# Ile kosztuje projekt przebiegu procesu zakupowego? Model porównawczy ProcuraCost 2.3\n\n**Artykuł 2 cyklu doktorskiego | ekonomia i finanse | szkic metodologiczny**\n",
+  "fileHash": "fdc4ef6f9be1c931f048ed111080d3415ccc8ecd3167765786d0a56076b498d2",
+  "requestHash": "6c0c8a958663cc6b32ea3fd15e82e30ccdbdd66675d37ebcc496408cba31d295",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.13
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.12
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.16
+    }
+  },
+  "usage": {
+    "input_tokens": 459,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

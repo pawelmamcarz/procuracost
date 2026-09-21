@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-07-tunel-pole-lepszy-biznes.md",
+  "line": 13,
+  "section": "## Jak projektować przebieg zakupów bez osłabiania kontroli\n\nSama cyfryzacja nie gwarantuje poprawy procesu, którego logiki nikt nie potrafi wyjaśnić.\nPrzeniesienie do systemu pięciu formularzy, trzech ręcznych zatwierdzeń i\ndwukrotnego przepisywania danych utrwala ten sam problem w nowym interfejsie.\nDlatego przed konfiguracją warto oddzielić potrzebne\nzabezpieczenia od odziedziczonej kolejności pracy.\n\nProces zakupowy ma chronić budżet, zapewniać właściwy dostęp do konkurencji,\nwspierać jakość decyzji i pozostawiać ślad audytowy. Jednocześnie ma dostarczyć\nwnioskodawcy biznesowemu potrzebne rozwiązanie w czasie, który pozwala\nwykorzystać szansę albo uniknąć przestoju. Szybkość bez kontroli bywa kosztowna.\nKontrola zbudowana głównie z kolejek może być równie kosztowna.\n\nWłaściwe pytanie nie brzmi zatem: formalnie czy elastycznie. Brzmi:\n\n> Które granice muszą pozostać niezmienne, a którą pracę można uprościć,\n> prowadzić równolegle albo wykonywać iteracyjnie?\n",
+  "fileHash": "9c8ddd0321c3ec61d5e96d482200df5af0749a79214e5aceea71433b6586955c",
+  "requestHash": "0ef4ec9fee18f121990513cde96c8d272202567fb4a85ac6e4f45cdd01d562d6",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.1
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.19
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.05
+    }
+  },
+  "usage": {
+    "input_tokens": 761,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

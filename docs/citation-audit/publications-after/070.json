@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-2-model-kosztu-PL.md",
+  "line": 144,
+  "section": "## 6. Zakresy i status dowodowy\n\nKażda wartość zawiera przypadek niski, centralny i wysoki, rodzaj zakresu,\nklasę dowodu oraz identyfikatory źródeł. Obowiązuje porządek\n`low <= central <= high`.\n\nTrzy przypadki są deklarowanymi scenariuszami. Nie są kwantylami,\nrozkładami prawdopodobieństwa ani przedziałami ufności. Obliczenie wykorzystuje\nwyrównane przypadki niski, centralny i wysoki, a następnie tworzy zewnętrzną\nobwiednię różnicy.\n\nRejestr rozróżnia:\n\n- kotwice empiryczne;\n- przypadki oficjalne;\n- obserwacje praktyków;\n- scenariusze ilustracyjne;\n- hipotezy badawcze;\n- założenia przeniesione z poprzedniej wersji;\n- dane użytkownika;\n- reguły prawne.\n\nTa klasyfikacja nie ocenia jakości całego źródła. Określa, do jakiego twierdzenia\nwolno go użyć.\n",
+  "fileHash": "b9d4935cffb9d999cbe19edaac673f00b02af79867fc6c807188b3f4b36f5827",
+  "requestHash": "6628aafefa3427f296eefdc6f447bd55db9e41d73e080be0ed5ba1cb51700788",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.16
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.14
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.14
+    }
+  },
+  "usage": {
+    "input_tokens": 699,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

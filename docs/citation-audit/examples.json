@@ -1,0 +1,8 @@
+[
+  {"id":"pl-supported","sourceRef":"Synthetic evaluation fixture, not research evidence","source":"Materiał praktyczny służy do projektowania pytań i hipotez, nie kalibracji.","claim":"Materiał praktyczny może służyć do tworzenia hipotez.","expected":"supports"},
+  {"id":"pl-contradiction","sourceRef":"Synthetic evaluation fixture, not research evidence","source":"Materiał praktyczny służy do projektowania pytań i hipotez, nie kalibracji.","claim":"Materiał praktyczny służy do kalibracji modelu.","expected":"contradicts"},
+  {"id":"pl-unsupported","sourceRef":"Synthetic evaluation fixture, not research evidence","source":"Przeprowadzono rozmowy z trzema kupcami.","claim":"Automatyzacja obniża koszty zakupów o 30%.","expected":"unsupported"},
+  {"id":"en-supported","sourceRef":"Synthetic evaluation fixture, not research evidence","source":"The pilot may reduce processing time. No causal effect has been established.","claim":"The pilot might reduce processing time.","expected":"supports"},
+  {"id":"en-overclaim","sourceRef":"Synthetic evaluation fixture, not research evidence","source":"The pilot may reduce processing time. No causal effect has been established.","claim":"The pilot has an established causal effect on processing time.","expected":"contradicts"},
+  {"id":"missing-quote","sourceRef":"Synthetic evaluation fixture, not research evidence","source":"The pilot involved three buyers.","quote":"Costs fell by 30%.","claim":"Costs fell by 30%.","expected":"quote_missing"}
+]

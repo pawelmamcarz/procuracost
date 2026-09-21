@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-2-model-kosztu-PL.md",
+  "line": 160,
+  "section": "## 7. Kanały konstrukcji umowy\n\n### 7.1 Transfer konkurencji\n\nStres 2, 6 i 9 procent jest stosowany tylko wtedy, gdy porównanie jawnie\nzakłada różnicę dostępu do konkurencji. Spośród scenariuszy startowych tylko\n`stable_private_standard_service` deklaruje taką różnicę i przypisuje koszt\nwariantowi adaptacyjnemu. W kalkulatorze użytkownik może wskazać dowolny\nwariant z ograniczonym dostępem dostawców albo wyłączyć ten kanał:\n\n`competitionTransfer = contractValue x {0,02; 0,06; 0,09}`\n\nJeżeli dostęp do konkurencji nie różni się, oba warianty otrzymują zero.\n\nSzucs (2024) dostarcza kotwicy dla kanału cenowego dyskrecji w węgierskich\nzamówieniach poniżej właściwego progu. Nie identyfikuje skutku projektu\nprzebiegu procesu w Polsce. Zakres ProcuraCost jest jawnym transferem\nscenariuszowym, nie polską estymatą.\n\n### 7.2 Zmiany umowy i TCO\n\nNatywne scenariusze 2.3 mają zerową różnicę kosztu aneksów i TCO. Literatura o\nniepełnych kontraktach oraz aneksach uzasadnia pytania badawcze, ale nie\ndostarcza podpisanej konwencji alokacji kosztu pomiędzy dwie mapy procesu.\n\nAnaliza TCO może być przygotowana jako odrębny rachunek dla zakupu. Narzędzie\njęzykowe, w tym Bielik, może porządkować dane rynkowe do weryfikacji przez\nczłowieka. Jawny model deterministyczny wykonuje obliczenie.\n\n### 7.3 Nieformalne obejście procesu\n\nObejście procesu jest ujawnione jako wymiar nieobjęty monetyzacją. Model nie\nwnioskuje prawdopodobieństwa obejścia z nazwy wariantu, posiadania systemu ani\nodpowiedzi w samoopisie gotowości. Do monetyzacji potrzebna byłaby obserwowana częstość,\nekspozycja ekonomiczna i odrębna metoda.\n",
+  "fileHash": "fdc4ef6f9be1c931f048ed111080d3415ccc8ecd3167765786d0a56076b498d2",
+  "requestHash": "1ead0bc42e2ca49ecaf5e134fb44169c600493ad6f92bf3e888bb582dcc1f5c3",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.34
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.19
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.9
+    }
+  },
+  "usage": {
+    "input_tokens": 1005,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

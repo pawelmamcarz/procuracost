@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-2-model-kosztu-PL.md",
+  "line": 290,
+  "section": "## 12. Walidacja empiryczna\n\nNajpierw należy oceniać osobne komponenty:\n\n- możliwość odtworzenia map z wersjonowanych dokumentów i logów;\n- zgodność przewidywanego czasu z obserwowanym czasem;\n- zgodność nakładu ról z ewidencją;\n- dostęp do konkurencji i liczbę ważnych ofert;\n- konstrukcję klauzul oraz aneksy;\n- zaobserwowane użycie kontroli systemowych.\n\nPełna walidacja delty wymaga wiarygodnego kontrfaktycznego wyniku dla drugiego\nwariantu i niezależnie uzasadnionego dziennego kosztu zwłoki. Pojedynczy rekord\nzakupu nie dostarcza obu elementów.\n\nOcena na danych odłożonych powinna raportować błąd komponentu, pokrycie przez\nzakres, szerokość zakresu i porównanie z prostą bazą. Nie wolno poszerzać zakresu\nwyłącznie w celu zwiększenia pokrycia.\n",
+  "fileHash": "b9d4935cffb9d999cbe19edaac673f00b02af79867fc6c807188b3f4b36f5827",
+  "requestHash": "e102c9b49ef2edfe2f30038b90ac2cd79419cda79e7b4b06ef833e24647c460b",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.15
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.15
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.09
+    }
+  },
+  "usage": {
+    "input_tokens": 678,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

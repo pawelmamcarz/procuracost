@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 160,
+  "section": "## Pierwsze trzydzieści dni właściciela\n\nPoniższa kolejność jest propozycją autora inspirowaną rozmową. Pierwszy miesiąc\ni trzy sprawy są roboczą skalą warsztatu, nie zwalidowanymi progami. Pytania\nwarto rozważyć przed konfiguracją i dostosować do zakresu projektu.\n\n1. Wskazać jedną nieefektywność, która uzasadnia zakup, i zapisać ją w jednym\n   zdaniu. Jeżeli zdanie zaczyna się od nazwy systemu, trzeba je napisać od\n   nowa.\n2. Przejść trzy zakończone sprawy zakupowe od wniosku do faktury i zaznaczyć,\n   gdzie sprawa czekała, a nie była przetwarzana. To jest mapa tarcia.\n3. Dla każdego kroku obecnego obiegu zatwierdzeń odpowiedzieć, czy wynika z\n   polityki, z przepisu, czy z przyzwyczajenia. Wymogi prawne wymagają poprawnego\n   odwzorowania. Wymogi polityki również warto ocenić; ich zmiana wymaga\n   decyzji uprawnionego właściciela, a nie samodzielnego pominięcia w konfiguracji.\n4. Ustalić z zarządem zakres własnego mandatu na piśmie: jakie decyzje\n   konfiguracyjne podejmuje właściciel sam, a jakie wymagają sponsora.\n5. Wyznaczyć następcę i odbyć z nim pierwszą rozmowę o projekcie w pierwszym\n   miesiącu, nie w ostatnim.\n\nPięć kroków nie gwarantuje udanego wdrożenia. Ich wartości prognostycznej\nnie sprawdzono; służą organizacji rozmowy i ujawnieniu brakujących ustaleń.\n",
+  "fileHash": "4e7208025ceb8bade398b14d9e9019f8237dc3d948b81a411fb035ce0707e804",
+  "requestHash": "6348742ea8bec706fc4230b2ecd3e6564ccd8272045625739b65eb420467c6e9",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.13
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.07
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.11
+    }
+  },
+  "usage": {
+    "input_tokens": 875,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

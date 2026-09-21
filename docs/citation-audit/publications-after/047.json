@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 209,
+  "section": "## Co jest obserwacją, a co hipotezą\n\nWarto jasno oddzielić trzy rodzaje twierdzeń w tym tekście.\n\nPunktem wyjścia są obserwacje praktyczne z rozmowy. Podział na dwie role,\nwarunek ciągłości i opisane scenariusze niepowodzenia są ich redakcyjnym\nrozwinięciem. Nie są wynikiem badania ani dosłownym odtworzeniem nagrania.\n\nDecyzje projektowe to konstrukcja samoopisu gotowości: osiem obszarów,\nszesnaście pytań, trzy odpowiedzi. Lista została opracowana jako zbiór hipotez\noperacyjnych. Rozmowa dostarczyła kontekstu do jej pytań, ale nie dowodzi, że\nktórykolwiek warunek jest spełniony w jakiejkolwiek organizacji.\n\nHipotezy wymagające niezależnych danych są trzy:\n\n1. Trwałe wewnętrzne właścicielstwo przewiduje adopcję systemu lepiej niż\n   jakość narzędzia.\n2. Zmapowanie tarcia w procesie przed wdrożeniem ogranicza zbędną konfigurację.\n3. Uproszczenie polityki zmniejsza obciążenie zatwierdzeniami bez osłabienia\n   kontroli na granicy.\n\nKażda z nich brzmi przekonująco. Żadna nie została sprawdzona na danych. Ich\nsformułowanie jest celem tego tekstu, nie ich udowodnienie.\n",
+  "fileHash": "4e7208025ceb8bade398b14d9e9019f8237dc3d948b81a411fb035ce0707e804",
+  "requestHash": "1fa80baf87c78ecffaf4ba481840a669e5c675e7ca0425182a9bfc6c1dd73b0b",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.15
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.11
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.13
+    }
+  },
+  "usage": {
+    "input_tokens": 803,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

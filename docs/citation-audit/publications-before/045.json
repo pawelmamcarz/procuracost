@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 161,
+  "section": "## Pierwsze trzydzieści dni właściciela\n\nZ rozmowy wynika też praktyczna kolejność pracy dla osoby, która właśnie\nprzyjęła rolę właściciela. Nie jest to metoda ani lista kontrolna z\npunktacją. Jest to sekwencja pytań, które warto zadać, zanim integrator\notworzy pierwszy ekran konfiguracji.\n\n1. Wskazać jedną nieefektywność, która uzasadnia zakup, i zapisać ją w jednym\n   zdaniu. Jeżeli zdanie zaczyna się od nazwy systemu, trzeba je napisać od\n   nowa.\n2. Przejść trzy zakończone sprawy zakupowe od wniosku do faktury i zaznaczyć,\n   gdzie sprawa czekała, a nie była przetwarzana. To jest mapa tarcia.\n3. Dla każdego kroku obecnego obiegu zatwierdzeń odpowiedzieć, czy wynika z\n   polityki, z przepisu, czy z przyzwyczajenia. Tylko dwie pierwsze kategorie\n   trafiają do konfiguracji bez dyskusji.\n4. Ustalić z zarządem zakres własnego mandatu na piśmie: jakie decyzje\n   konfiguracyjne podejmuje właściciel sam, a jakie wymagają sponsora.\n5. Wyznaczyć następcę i odbyć z nim pierwszą rozmowę o projekcie w pierwszym\n   miesiącu, nie w ostatnim.\n\nPięć kroków nie gwarantuje udanego wdrożenia. Ich brak dość niezawodnie\nzapowiada nieudane.\n",
+  "fileHash": "69e36840ec0c7207803ffa66323b85a46dd3294eb87f5f996fd8461a45cc94df",
+  "requestHash": "b387c5aa6321a14138feabdb25b493a41584648b635a821a153ac9affb6a0bf7",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.14
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.52
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.11
+    }
+  },
+  "usage": {
+    "input_tokens": 817,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 13,
+  "section": "## Trzy role, bez których najlepsze narzędzie zakupowe nie uratuje projektu\n\nTytuł ósmego odcinka Procurement&Beyond brzmi jak przestroga: nawet najlepsze\nnarzędzie nie uratuje złego wdrożenia. W rozmowie o systemach zakupowych łatwo\nusłyszeć w tym zdaniu krytykę narzędzi. Chodzi o coś innego. Chodzi o to, że\nwdrożenie ma właściciela albo go nie ma, a system tego nie zmienia.\n\nDwa wcześniejsze teksty z tej serii zajmują się innymi warstwami. Artykuł\n[Tunel czy pole](2026-07-tunel-pole-lepszy-biznes.md) opisuje geometrię\nprzebiegu procesu: co musi zostać sekwencją, a co może być polem z granicą.\nArtykuł o [barierach autonomicznego sourcingu](2026-09-bariery-autonomicznego-sourcingu.md)\npyta, kiedy organizacja odda mandat handlowy agentowi. Ten tekst zostawia\nnarzędzie i mapę procesu na boku i pyta o osobę. Kto po stronie organizacji\nrozumie zakup, ma mandat i zostanie do końca.\n\nW rozmowie pojawiają się trzy role. Każdą z nich można usunąć z projektu i\nobserwować, co się dzieje.\n",
+  "fileHash": "69e36840ec0c7207803ffa66323b85a46dd3294eb87f5f996fd8461a45cc94df",
+  "requestHash": "a0b9aac028edaa697176027aa4daa5655acf9b0b24d2e68001a35e5eddc707b5",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.11
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.26
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.12
+    }
+  },
+  "usage": {
+    "input_tokens": 773,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

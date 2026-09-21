@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-bariery-autonomicznego-sourcingu.md",
+  "line": 205,
+  "section": "## Gdzie te bariery leżą na osiach ProcuraCost\n\nModel 2.3 rozdziela ramy prawne i ład zakupowy, rodzinę procedury, archetyp\nzakupu, projekt przebiegu procesu zakupowego, kanał realizacji, wsparcie\nsystemowe i konstrukcję umowy. To rozdzielenie jest tu użyteczne, ponieważ\nwiększość nieporozumień wokół agentów bierze się ze sklejenia tych osi w jedną\netykietę technologiczną.\n\nAgent negocjacyjny jest zmianą na osi wsparcia systemowego. Sam z siebie nie\nzmienia ram prawnych, rodziny procedury ani obowiązkowych terminów oczekiwania.\nMoże natomiast zmienić projekt przebiegu procesu, jeżeli usuwa czynność,\nuruchamia pracę równolegle albo skraca oczekiwanie na odpowiedź dostawcy. Może\nteż zmienić konstrukcję umowy, jeżeli negocjuje warunki płatności lub formułę\nindeksacji.\n\nZ tego wynika reguła porządkująca dyskusję o uzasadnieniu biznesowym.\nWprowadzenie agenta nie jest samo w sobie mechanizmem oszczędności. Mechanizmem\njest konkretna zmiana w mapie przebiegu albo w projekcie umowy, którą agent\numożliwia. Jeżeli mapa procesu przed wdrożeniem i po wdrożeniu jest identyczna,\na zmienia się wyłącznie etykieta narzędzia, model nie ma czego policzyć.\n\nTrzy granice modelu mają tu bezpośrednie zastosowanie:\n\n1. Znak różnicy kosztu nie jest z góry ustalony. Agent może wydłużyć przebieg,\n   na przykład przez rundę wyjaśnień z dostawcą, który nie zrozumiał zapytania.\n   Wynik ujemny jest pełnoprawnym wynikiem.\n2. Obowiązkowe terminy prawne pozostają zablokowane i identyczne po obu\n   stronach porównania. Automatyzacja przygotowania nie skraca ustawowego\n   terminu składania ofert ani terminu oczekiwania przed zawarciem umowy.\n3. Gotowość organizacyjna do wdrożenia jest opisywana osobno i nie wpływa na\n   różnicę kosztu. Bariery od pierwszej do ósmej opisanej wyżej należą właśnie\n   do tej warstwy. Są warunkami uruchomienia, nie składnikami rachunku.\n\nNieformalne obejście procesu pozostaje poza monetyzacją. Jest to istotne przy\nocenie agentów, ponieważ najczęstszą reakcją organizacji na proces, który\nwydaje się nieprzejrzysty, jest ominięcie go, a nie eskalacja.\n",
+  "fileHash": "fb0e3f4f5441dd180b361d83da53b9e5c1fb0bbd1d2cecfc24643d3a1a157d2a",
+  "requestHash": "a8d346b4004be6a9ec9cb4b6ee5738ee329a8009b0aa697ac80bd8aa723e74ff",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.14
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.3
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.24
+    }
+  },
+  "usage": {
+    "input_tokens": 1139,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

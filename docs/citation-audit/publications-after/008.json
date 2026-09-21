@@ -1,0 +1,27 @@
+{
+  "file": "RESEARCH.md",
+  "line": 216,
+  "section": "## 7. Practitioner observation and hypothesis development\n\n[Procurement&Beyond, episode 8](https://www.youtube.com/watch?v=5KYUdTLlvvg), published on 26 August 2026, is treated as a practitioner interview. The available Polish transcript was generated automatically by YouTube and has not been human-verified. No verbatim quotation from that transcript is used here.\n\nThe episode informs questions about:\n\n- whether a named internal owner can sustain the implementation and translate the process for users;\n- whether the organisation mapped process friction before selecting a system;\n- whether requirements focus on material operational purchasing rather than marginal feature requests;\n- whether obsolete approval chains are being reproduced in software instead of simplifying the policy and target process;\n- whether the business case measures whole-life cost and adoption, not only licence or implementation cost;\n- whether AI is confined to traceable support tasks, such as structuring market data, while a transparent deterministic model performs the TCO calculation.\n\nThese observations support question design and hypothesis generation only. They do not set ProcuraCost thresholds, weights, workflow durations, role rates or calibration ranges. In particular, Bielik may help structure source data for review, but the language model does not calculate the ProcuraCost result.\n\nTestable hypotheses arising from this material include whether sustained internal ownership predicts adoption, whether pre-implementation friction mapping reduces unnecessary configuration, and whether policy simplification reduces approval burden without weakening boundary controls. These propositions require independent data.\n",
+  "fileHash": "0cc0ab5c647575de7321f3e123a52aa51deca7b4f0ad5ea2bbf9f87379564510",
+  "requestHash": "1f0f8454bdacfb21d2eeee9741dd30c600f3995c54e1adf0add121326fcabc83",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.13
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.08
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.43
+    }
+  },
+  "usage": {
+    "input_tokens": 720,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

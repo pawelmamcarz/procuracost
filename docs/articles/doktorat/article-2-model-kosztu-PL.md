@@ -80,6 +80,10 @@ Rozdzielenie czasu aktywnego, kolejki i zależności pozwala opisać sekwencje,
 pracę równoległą oraz ponowne połączenie gałęzi. Koszt ról i koszt
 niepracowniczy obejmują wszystkie kroki, nie tylko ścieżkę krytyczną.
 
+Zaplanowane powtórzenie pracy wymaga osobnego kroku z własnym czasem i nakładem.
+Graf acykliczny nie symuluje nieograniczonej pętli poprawek ani nie przewiduje
+liczby iteracji potrzebnych w rzeczywistym projekcie.
+
 Silnik odrzuca cykle, nieznanych poprzedników, zduplikowane identyfikatory i
 zmiany w obowiązkowych terminach prawnych.
 
@@ -124,6 +128,11 @@ Zakres zewnętrzny wynosi:
 `low = total_formalSequential,low - total_adaptiveCompliant,high`
 
 `high = total_formalSequential,high - total_adaptiveCompliant,low`
+
+Przeciwne końce zakresów mogą łączyć różne wartości wejść wspólnych dla obu
+wariantów. Przecięcie zera przez tę obwiednię nie dowodzi odwrócenia znaku przy
+jednym dopuszczalnym zestawie wspólnych założeń. Wymaga to osobnej analizy,
+w której wspólne wejścia zmienia się jednocześnie w obu wariantach.
 
 Dodatnia wartość oznacza wyższy koszt wariantu
 `formalSequential` przy zadeklarowanych wejściach. Ujemna oznacza wyższy koszt
@@ -180,7 +189,7 @@ scenariuszowym, nie polską estymatą.
 
 Natywne scenariusze 2.3 mają zerową różnicę kosztu aneksów i TCO. Literatura o
 niepełnych kontraktach oraz aneksach uzasadnia pytania badawcze, ale nie
-dostarcza podpisanej konwencji alokacji kosztu pomiędzy dwie mapy procesu.
+dostarcza konwencji określającej znak i przypisanie kosztu do dwóch map procesu.
 
 Analiza TCO może być przygotowana jako odrębny rachunek dla zakupu. Narzędzie
 językowe, w tym Bielik, może porządkować dane rynkowe do weryfikacji przez

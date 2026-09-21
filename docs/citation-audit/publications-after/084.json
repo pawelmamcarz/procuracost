@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-3-empiria-PZP-PL.md",
+  "line": 70,
+  "section": "## 3. Ekspozycja ex ante\n\n### 3.1 Indeks badawczy\n\nEkspozycją główną jest preskryptywność projektu przebiegu obowiązującego w\nchwili autoryzacji potrzeby. Źródłem są wersje polityki zakupowej, macierzy\nuprawnień i konfiguracji obiegu zakupowego ważne w dacie\n`exposure_reference_at`.\n\nIndeks jest narzędziem badawczym. Nie jest polem modelu 2.3, wynikiem publicznego\nprofilu procesu, oceną dojrzałości ani rekomendacją.\n\nProponowane składowe:\n\n1. liczba wymaganych bram decyzyjnych;\n2. liczba zależności, których nie wolno prowadzić równolegle;\n3. głębokość eskalacji;\n4. liczba obowiązkowych artefaktów bez wariantu uproszczonego;\n5. odwrócona autonomia zespołu w zmianie zakresu.\n\nPozycje są standaryzowane i sumowane z równymi wagami tylko po pozytywnym\npilotażu pomiaru. Należy raportować także każdy składnik osobno.\n\nZ ekspozycji wyklucza się długość ścieżki krytycznej i udział oczekiwania. Obie\nwielkości współtworzą wynik czasu, więc ich użycie w ekspozycji tworzyłoby\nmechaniczne powiązanie.\n\n### 3.2 Ochrona przed wyciekiem\n\n- koder ekspozycji nie widzi wyników;\n- dokumenty muszą być datowane nie później niż `exposure_reference_at`;\n- podręcznik kodowania jest zamrożony przed badaniem właściwym;\n- co najmniej dwóch koderów pracuje niezależnie;\n- dla pozycji uznaniowych prerejestrowany próg Krippendorffa wynosi\n  `alpha >= 0,80`;\n- pozycja poniżej progu jest przeprojektowana albo usunięta.\n",
+  "fileHash": "bcbcaef51d9c8ddaf95ded9a2609faa8f9b5e894de8ee2f24084ca1ce721babd",
+  "requestHash": "c1869b12c8c3b659b7bb8f666aa0919760c8dfd7eb2b6ca742f547b734957a7f",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.14
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.13
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.11
+    }
+  },
+  "usage": {
+    "input_tokens": 937,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

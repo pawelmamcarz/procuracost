@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-07-tunel-pole-lepszy-biznes.md",
+  "line": 52,
+  "section": "## Kiedy praca adaptacyjna ma konkretny mechanizm\n\nAdaptacja ma znaczenie tylko wtedy, gdy zmienia pracę, zależności albo\nkonstrukcję umowy.\n\n### Transformacja ERP\n\nPrzy niepełnych wymaganiach wczesne definiowanie problemu i modułowe podejście\nmogą zmienić sposób opisu potrzeby oraz sprawdzania możliwości rynku. Nie jest\nto automatyczne skrócenie. To wcześniejsze wykonanie pracy, która w sztywnym\nprzebiegu mogłaby pojawić się dopiero po wyborze rozwiązania.\n\n### Przeprojektowanie usługi logistycznej\n\nKontakt z rynkiem może służyć sprawdzeniu poziomów usług, interfejsów danych,\nodpowiedzialności za ciągłość i sposobu rozliczania. Mechanizm istnieje wtedy,\ngdy ustalenia zmieniają mapę procesu lub projekt umowy. Sama zmiana etykiety z\nformalnej na adaptacyjną nie tworzy wartości.\n\n### Publiczny zakup IT\n\nWstępne konsultacje rynkowe mogą pomóc Zamawiającemu poznać dostępne\nrozwiązania techniczne, ekonomiczne i organizacyjne przed postępowaniem.\nKonsultacja nie skraca ustawowego terminu składania ofert ani obowiązkowego\nterminu oczekiwania przed zawarciem umowy.\nUsprawniać można pracę przygotowawczą, nie obowiązek prawny.\n\n### Odkrywanie i współprojektowanie\n\nUczenie się, dialog i ponowne określenie zakresu są pracą. Mogą zwiększać czas\ni nakład zespołu. Taki wariant ma sens badawczy wtedy, gdy pozwala sprawdzić,\nczy dodatkowa wiedza wpływa później na wybór, wykonanie albo zmiany umowy.\nDłuższy przebieg nie jest sam w sobie porażką, a krótszy nie jest sam w sobie\nsukcesem.\n",
+  "fileHash": "9c8ddd0321c3ec61d5e96d482200df5af0749a79214e5aceea71433b6586955c",
+  "requestHash": "68d7f9933962ad62b7cd3ba9a5b5d207ba2949e48c20b8b51e6ca18017cb83ca",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.14
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.11
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.59
+    }
+  },
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

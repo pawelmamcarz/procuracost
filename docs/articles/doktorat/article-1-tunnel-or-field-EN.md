@@ -84,11 +84,12 @@ workflow topology in Poland, so ProcuraCost uses it only as an anchor for a
 declared 2, 6 and 9 per cent competition-transfer stress where the comparison
 states that supplier access differs and identifies the restricted alternative.
 
-Publicity itself should not receive a universal delay penalty. Coviello and
-Mariniello (2014) report that greater publicity at Italian public-works
-thresholds increased participation without worsening delivery delay. Elapsed
-time should therefore be derived from the actual work and dependencies, not
-from the existence of competition alone.
+Publicity and procurement-cycle duration require separate measurement.
+Coviello and Mariniello (2014) report that greater publicity at Italian
+public-works thresholds increased participation and detected no adverse effect
+on the probability of late delivery of the works. They do not thereby establish
+the effect on time from an approved need to contract signature. ProcuraCost
+derives that elapsed time from the declared work and dependencies.
 
 ## 4. Where adaptive work can have a mechanism
 
@@ -165,6 +166,11 @@ Native model 2.3 therefore starts contract-amendment and TCO differentials at
 zero. The cited literature motivates questions about contract design but does
 not set a numerical ProcuraCost parameter without a valid allocation convention
 and evidence for the specific comparison.
+
+The field metaphor can include revisiting a requirement. In the executable
+acyclic model, a planned repeat is a separate step with its own duration and
+effort. The model does not simulate an indefinite feedback loop or infer how
+many rounds a real project will require.
 
 Street-level discretion, normalisation of deviance and multitask incentives
 provide plausible explanations for informal workarounds. They do not estimate

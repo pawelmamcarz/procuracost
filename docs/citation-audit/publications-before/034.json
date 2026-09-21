@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-bariery-autonomicznego-sourcingu.md",
+  "line": 369,
+  "section": "## Teza\n\nBariery autonomicznego sourcingu i negocjacji nie sprowadzają się do pytania,\nczy model językowy potrafi napisać zapytanie ofertowe. Sprowadzają się do\nmandatu handlowego, gotowości dostawcy, jakości opisu potrzeby, zapisu do\nsystemu transakcyjnego i prawa konkurencji.\n\nDlatego przedsiębiorstwa zaczynają od wniosku zakupowego i pracy na umowach, a\nnegocjację wypuszczają najpierw na ogonie wydatków, z twardym ograniczeniem\nceny, warunków dostawy i terminów płatności oraz z człowiekiem przy\nrozstrzygnięciu. To nie jest brak ambicji. To kolejność wynikająca z tego, która\nbariera blokuje uruchomienie najwcześniej.\n",
+  "fileHash": "fb0e3f4f5441dd180b361d83da53b9e5c1fb0bbd1d2cecfc24643d3a1a157d2a",
+  "requestHash": "10ccc94d95e07dc2ac30e735770187d3627c94ecfe982feaa71b48d4ea173bc8",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.14
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.45
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.18
+    }
+  },
+  "usage": {
+    "input_tokens": 623,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

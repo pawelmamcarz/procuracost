@@ -1,0 +1,27 @@
+{
+  "file": "RESEARCH.md",
+  "line": 32,
+  "section": "## 2. Conceptual framework\n\nA procurement policy defines objectives and constraints. A legal and governance boundary specifies authority, competition, ethics, documentation and other applicable obligations. A procedure family identifies an admissible method. A procurement workflow design orders and connects the work performed within that method. A contract design allocates commercial and adaptation mechanisms. The purchase execution channel and system support describe how the work is carried out.\n\nModel 2.3.0 therefore records six decision areas separately:\n\n- **Legal and governance boundary:** private policy, public internal rules, PZP classic national or PZP classic EU.\n- **Purchase archetype:** standardised recurring purchase, incomplete requirement, complex service, continuity-critical purchase or capital investment.\n- **Procurement workflow design:** an independent directed process map for each alternative.\n- **Purchase execution channel:** sourcing event, catalogue call-off, MRP release or a declared custom channel.\n- **System support:** manual, sourcing platform, transactional ERP or integrated source-to-pay.\n- **Contract design:** competition transfer, contract amendment, TCO and informal bypass dimensions, each with an explicit monetary status.\n\nThe Tunnel and Field metaphor is secondary. A tunnel represents a prescribed sequence. A field represents alternative sequencing inside the same enforced boundary. The metaphor does not imply that adaptive work lacks controls or that sequential work is intrinsically inefficient.\n\nFive constructs must not be conflated:\n\n1. workflow burden and critical-path duration;\n2. competitive access and supplier selection;\n3. contractual adaptability;\n4. system-enabled execution and controls;\n5. organisational implementation readiness.\n",
+  "fileHash": "9a9581ef3c2b73b2e843741b5a6b4a4abd783f231c804664b3f7e357f1bd8f41",
+  "requestHash": "6d879f5bb707ffa67251bb7562d651637f18222d4d38c87d2dba4451dbc9afe7",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.15
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.08
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.13
+    }
+  },
+  "usage": {
+    "input_tokens": 740,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

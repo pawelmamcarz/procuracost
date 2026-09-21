@@ -1,0 +1,27 @@
+{
+  "file": "RESEARCH.md",
+  "line": 9,
+  "section": "## Abstract\n\nProcurement policy, legal constraints, procedure family, workflow design, contract design and system support are related but distinct. ProcuraCost 2.3.0 compares a formal/sequential workflow with an adaptive/compliant workflow for the same purchase inside one legal and governance boundary. Each alternative has an explicit directed process map and contract design. The model calculates critical-path duration, role cost, non-labour cost, delay cost and supported contract-cost allocations. It reports non-monetised dimensions rather than assigning unsupported values.\n\nThe calculation is deterministic and conditional on declared inputs. Values are explicitly classified as fixed, calibrated or stress values; non-fixed ranges are not statistical confidence intervals. Mandatory legal waits are resolved from a dated ruleset, locked in both alternatives and excluded from system-support scaling. The difference is always defined as formal/sequential total minus adaptive/compliant total, and the engine is tested by swapping the alternatives. ProcuraCost is therefore a decision model, not an estimator of realised procurement outcomes and not evidence that one workflow causes a lower cost.\n\nTen reference scenarios provide structured starting points. They include cases in which learning during procurement may have a useful mechanism, cases in which it may add time and effort, and two operational controls with identical maps. Official cases and practitioner observations are used to frame mechanisms and research questions. They do not determine scenario values unless a separate evidence record explicitly permits that use.\n",
+  "fileHash": "9a9581ef3c2b73b2e843741b5a6b4a4abd783f231c804664b3f7e357f1bd8f41",
+  "requestHash": "0d3d3af52aaa34ae7a50ba5e0df18b2f1dee4d422b1f2c8714cd9e0f3bb5557d",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.12
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.08
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.41
+    }
+  },
+  "usage": {
+    "input_tokens": 691,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

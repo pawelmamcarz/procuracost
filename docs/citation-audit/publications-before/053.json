@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-1-tunnel-or-field-EN.md",
+  "line": 20,
+  "section": "## 1. The problem of conflation\n\nA procurement arrangement contains several distinct choices:\n\n- legal and governance boundary;\n- procedure family;\n- purchase archetype;\n- procurement workflow design;\n- purchase execution channel;\n- system support;\n- contract design;\n- organisational implementation readiness.\n\nThese choices interact, but they are not interchangeable. An open procedure can\nuse parallel internal preparation. A private purchase can follow a heavily\ngated sequence. A detailed contract can follow a short sourcing process, while\na modular contract can emerge from a formal public procedure.\n\nEarlier ProcuraCost versions combined some of these constructs in aggregate\npath profiles and a prescriptive optimiser. Native model 2.3 represents the two\nworkflow designs independently and keeps readiness outside the cost model.\nHistorical 2.2.2 material remains available for audit, but its profiles and\nthresholds are not current inputs.\n\nThe question is deliberately narrow:\n\n> For the same purchase and the same legal and governance boundary, how do two\n> declared procurement workflow designs differ in work, elapsed time and the\n> part of contract economics that can be supported?\n",
+  "fileHash": "10544b99cb4bb48d0939f687252e133e8bee6c464100141a58fff7a369f1f3fa",
+  "requestHash": "71a51d6a2cbef3ece4ccdde165292ea0662b7bcd4ffb2b3b7b86a4c862d6ee5e",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.17
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.12
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.35
+    }
+  },
+  "usage": {
+    "input_tokens": 642,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

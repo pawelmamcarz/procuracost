@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-2-model-kosztu-PL.md",
+  "line": 43,
+  "section": "## 2. Kontrakt wersji\n\nNatywny rekord 2.3 zawiera:\n\n- `schemaVersion: 2`;\n- `modelVersion: 2.3.0`;\n- `calibrationId: source-scenario-2026-08-28`;\n- `legalRulesetId: pl-pzp-2026-2027`.\n\nTen zestaw identyfikuje strukturę danych, wersję obliczeń, rejestr założeń oraz\nreguły prawne. Wersja serwisu nie zastępuje wersji modelu.\n\nStarsze linki przechodzą przez jawny adapter migracji. Migracja dokładna lub\nczęściowa pozostawia ślad w rekordzie decyzji. Migracja niejednoznaczna blokuje\nobliczenie do czasu potwierdzenia brakujących pól.\n",
+  "fileHash": "b9d4935cffb9d999cbe19edaac673f00b02af79867fc6c807188b3f4b36f5827",
+  "requestHash": "6b1d7286529a0d443ae193c972d0f1e4e2e624d38d97fc088fc6fe11c5706e33",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.11
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.17
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.37
+    }
+  },
+  "usage": {
+    "input_tokens": 621,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-bariery-autonomicznego-sourcingu.md",
+  "line": 382,
+  "section": "## Źródła i granice twierdzeń\n\nTwierdzenia potwierdzone u źródła:\n\n- Zero100. *Rise of the AI-Enabled CPO*. Osiemdziesiąt pięć procent zgadza się\n  co do zmiany w sourcingu, siedemdziesiąt osiem procent chce zachowania\n  kontroli nad pracą strategiczną.\n  https://zero100.com/insights/rise-of-the-ai-enabled-cpo/\n- ProcureAbility. *2026 Annual ProcureCon CPO Report*. Pięćdziesiąt jeden\n  procent wskazuje obawę przed zastąpieniem ludzkiego osądu.\n  https://www.prnewswire.com/news-releases/procureabilitys-2026-cpo-report-reveals-the-top-barriers-to-ai-adoption-among-procurement-organizations-302666226.html\n- EFESO Management Consultants. *2026 CPO Annual Pulse Report*. Pięć procent\n  organizacji zakupowych zeskalowało generatywną sztuczną inteligencję,\n  siedemdziesiąt pięć procent pozostaje w fazie eksperymentu.\n  https://www.efeso.com/en-americas/insights-events/bring-genai-to-procurement-organizations/\n- Procure Ai. *Kärcher case study*. Dziewięćdziesiąt procent zaangażowania\n  dostawców, sześć procent średniego rabatu.\n  https://www.procure.ai/case-studies/kaercher\n- Pactum. *Client success*, w tym kampanie Walmart na ogonie wydatków.\n  https://pactum.com/clients\n- BCG. *AI-First Procurement: How Autonomous Agents Drive Competitive\n  Advantage* (2026). Publikacja opisuje przewagę z automatyzacji i wskazuje\n  ludzi, organizację oraz proces jako poważniejszą barierę niż technologia.\n  https://www.bcg.com/publications/2026/ai-in-procurement-drives-competitive-advantage\n- Procurement&Beyond. (2026, 26 sierpnia). *Odcinek 8. Nawet najlepsze\n  narzędzie nie uratuje złego wdrożenia*. Rozmowa praktyczna z Pawłem\n  Mamcarzem, 67 minut. Odnośniki czasowe w tekście prowadzą do czternastu\n  zarejestrowanych fragmentów.\n  https://www.youtube.com/watch?v=5KYUdTLlvvg\n\nTwierdzenia wymagające potwierdzenia przed publikacją:\n\n- Zestaw barier organizacyjnych w układzie siedemdziesiąt jeden, sześćdziesiąt\n  sześć, pięćdziesiąt siedem, pięćdziesiąt trzy i czterdzieści osiem procent\n  przypisywany BCG nie występuje w powyższej publikacji BCG. W obiegu funkcjonuje\n  odrębne badanie z marca 2026 na próbie ośmiuset osób zarządzających, w którym\n  pięćdziesiąt dziewięć procent wskazuje brak zaufania jako główną barierę.\n  Przed publikacją należy wskazać właściwy raport i próbę.\n- Odsetek czterech procent organizacji z agentami uruchamiającymi postępowania,\n  przypisywany Ardent Partners, nie został potwierdzony. Publicznie dostępne\n  dane Ardent dotyczą udziału organizacji używających lub pilotujących\n  sztuczną inteligencję oraz deklaracji wdrożenia w perspektywie dwóch do\n  trzech lat.\n- Udziały pięćdziesiąt dziewięć procent dla jakości danych i pięćdziesiąt jeden\n  procent dla integracji, a także czterdzieści dwa procent dla nieudowodnionego\n  zwrotu, wymagają wskazania konkretnego raportu i roku.\n- Dla przypadku Walmart z Pactum publiczne materiały podają odsetek zawartych\n  porozumień w przedziale od około sześćdziesięciu czterech procent w pilotażu\n  opisanym w Harvard Business Review do około siedemdziesięciu procent w\n  późniejszych kampaniach. Wartość osiemdziesięciu trzech procent dotycząca\n  łatwości obsługi nie została potwierdzona.\n- Przypadek Kärchera dotyczy wdrożenia z Procure Ai. Przypisanie go do Pactum\n  jest błędem atrybucji.\n\nGranice interpretacyjne:\n\nLiczby rynkowe pochodzą z badań deklaratywnych i materiałów dostawców.\nOpisują skalę zjawiska i kierunek obaw, nie stanowią estymat efektu dla\nkonkretnej organizacji. Przypadki wdrożeniowe publikowane przez dostawców\nnarzędzi wspierają opis mechanizmu, nie wielkości efektu.\n\nŻadna z powyższych wartości nie kalibruje modelu ProcuraCost 2.3, nie ustawia\nprogów ani wag i nie wpływa na różnicę kosztu. Materiał praktyczny służy do\nprojektowania pytań i hipotez. Bariery wdrożeniowe należą do warstwy gotowości\norganizacyjnej, opisywanej bez punktacji i bez wpływu na rachunek.\n\nTekst nie stanowi porady prawnej. Ocena umocowania, dopuszczalności w\nzamówieniach publicznych oraz zgodności z prawem konkurencji wymaga analizy dla\nkonkretnego stanu faktycznego.\n",
+  "fileHash": "fb0e3f4f5441dd180b361d83da53b9e5c1fb0bbd1d2cecfc24643d3a1a157d2a",
+  "requestHash": "07e5896e3a00decc151686cfd3dac3df8b720fd41c99cd842c958b9ee44e671e",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.27
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.22
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.97
+    }
+  },
+  "usage": {
+    "input_tokens": 1905,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

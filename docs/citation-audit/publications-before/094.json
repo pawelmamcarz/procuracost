@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-3-empiria-PZP-PL.md",
+  "line": 341,
+  "section": "## Bibliografia i źródła prawne\n\nBeuve, J., Moszoro, M. W., i Spiller, P. T. (2023). Doing It by the Book:\nPolitical Contestability and Public Contract Renegotiations. *Journal of Law,\nEconomics, and Organization, 39*(1), 281-308.\nhttps://doi.org/10.1093/jleo/ewab039\n\nCallaway, B., i Sant'Anna, P. H. C. (2021). Difference-in-Differences with\nMultiple Time Periods. *Journal of Econometrics, 225*(2), 200-230.\nhttps://doi.org/10.1016/j.jeconom.2020.12.001\n\nCattaneo, M. D., Jansson, M., i Ma, X. (2020). Simple Local Polynomial Density\nEstimators. *Journal of the American Statistical Association, 115*(531),\n1449-1455. https://doi.org/10.1080/01621459.2019.1635480\n\nCoviello, D., i Mariniello, M. (2014). Publicity Requirements in Public\nProcurement. *Journal of Public Economics, 109*, 76-100.\nhttps://doi.org/10.1016/j.jpubeco.2013.10.008\n\nSzucs, F. (2024). Discretion and Favoritism in Public Procurement. *Journal of\nthe European Economic Association, 22*(1), 117-160.\nhttps://doi.org/10.1093/jeea/jvad017\n\nSun, L., i Abraham, S. (2021). Estimating Dynamic Treatment Effects in Event\nStudies with Heterogeneous Treatment Effects. *Journal of Econometrics, 225*(2),\n175-199. https://doi.org/10.1016/j.jeconom.2020.09.006\n\nUstawa z dnia 11 września 2019 r. Prawo zamówień publicznych, z późniejszymi\nzmianami.\n\nUstawa z dnia 25 lipca 2025 r. o zmianie ustawy Prawo zamówień publicznych oraz\nniektórych innych ustaw, Dz.U. 2025 poz. 1173.\n\nObwieszczenie Prezesa Urzędu Zamówień Publicznych z dnia 8 grudnia 2025 r. w\nsprawie progów unijnych na lata 2026-2027, M.P. 2025 poz. 1247.\n",
+  "fileHash": "9fcdaac622b79a56d62e64456690ccfd089ac879a0019c9807cf864870a88919",
+  "requestHash": "84efb780b010f3be2fb45ab87ce0d00de84e48d69d41fba7e4bb026a688f61dd",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.08
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.06
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.83
+    }
+  },
+  "usage": {
+    "input_tokens": 1095,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

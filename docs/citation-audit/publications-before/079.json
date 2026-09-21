@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-2-model-kosztu-PL.md",
+  "line": 323,
+  "section": "## Bibliografia\n\nBajari, P., Houghton, S., i Tadelis, S. (2014). Bidding for Incomplete\nContracts: An Empirical Analysis of Adaptation Costs. *American Economic Review,\n104*(4), 1288-1319. https://doi.org/10.1257/aer.104.4.1288\n\nCalifornia Department of Technology. (2022). California Redefines State\nTechnology Procurement.\nhttps://www.cdt.ca.gov/newsroom/2022/08/california-redefines-state-technology-procurement/\n\nEuropean Commission. Guidance on Innovation Procurement.\nhttps://public-buyers-community.ec.europa.eu/resources/guidance-innovation-procurement\n\nOECD. Public Procurement in Lithuania, przykład pilotażu RVUL.\nhttps://www.oecd.org/en/publications/public-procurement-in-lithuania_aa1b196c-en/full-report/component-8.html\n\nSzucs, F. (2024). Discretion and Favoritism in Public Procurement. *Journal of\nthe European Economic Association, 22*(1), 117-160.\nhttps://doi.org/10.1093/jeea/jvad017\n\nUrząd Zamówień Publicznych. Wstępne konsultacje rynkowe.\nhttps://www.gov.pl/web/uzp/wstepne-konsultacje-rynkowe\n",
+  "fileHash": "fdc4ef6f9be1c931f048ed111080d3415ccc8ecd3167765786d0a56076b498d2",
+  "requestHash": "10505cdb79938fedcdf2cdaff9404fd02d4ce827135724a6d720f08a9491d910",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.1
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.06
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.8
+    }
+  },
+  "usage": {
+    "input_tokens": 763,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

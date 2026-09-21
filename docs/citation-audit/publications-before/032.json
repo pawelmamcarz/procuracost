@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-bariery-autonomicznego-sourcingu.md",
+  "line": 323,
+  "section": "## Co z tego wynika dla wyboru narzędzia\n\nPoniższe zestawienie jest opisem, nie rankingiem i nie rekomendacją. Pokazuje,\nna której barierze koncentruje się dana klasa rozwiązania, ponieważ to\ndeterminuje pytania, jakie warto zadać na demonstracji. Kolumny odpowiadają\nczterem platformom agentowym rozważanym poza klasycznymi pakietami źródło do\nzapłaty.\n\n| Bariera | Procure AI | Lio | Zip | Mercanis |\n|---|---|---|---|---|\n| Mandat i zaufanie | granice ustawiane per kategoria na ogonie | wirtualny kupiec, najwyższy próg zaufania | wniosek zakupowy bez rozstrzygnięcia, próg niski | człowiek zostaje przy rozstrzygnięciu |\n| Akceptacja dostawcy | krytyczna, raportowana jako wskaźnik zaangażowania | krytyczna przy agencie prowadzącym zapytanie | mniejsza, mniej rozmów jeden na jeden | portal i ustrukturyzowane zapytanie obniżają próg |\n| Dane i specyfikacja | warstwa danych jest osią produktu | słaby opis potrzeby daje słabego agenta | porządkuje opis potrzeby na wejściu | wymusza strukturę zapytania |\n| Zapis do systemu | integracja z istniejącym systemem transakcyjnym | działa na wierzchu systemu transakcyjnego | wejście obok systemu zapisu | własny rejestr postępowań |\n| Umocowanie i prawo | ograniczony zakres ułatwia audyt | pełny zakres rodzi więcej pytań | ład jako element produktu | zgodność w realiach niemieckojęzycznych |\n\nZestawienie opisuje pozycjonowanie deklarowane w materiałach dostawców i w\nobserwacji rynkowej, nie wynik niezależnego testu. Pytanie kontrolne na\ndemonstracji jest w każdej kolumnie takie samo: pokażcie ścieżkę od\nrozstrzygnięcia do zamówienia w systemie transakcyjnym oraz miejsce, w którym\ndostawca eskaluje wyjątek do człowieka.\n",
+  "fileHash": "fb0e3f4f5441dd180b361d83da53b9e5c1fb0bbd1d2cecfc24643d3a1a157d2a",
+  "requestHash": "4218de3195c86c06fdbc83b17317b2bf4787533ebda40b4d536e77f2d170daaa",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.14
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.11
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.84
+    }
+  },
+  "usage": {
+    "input_tokens": 987,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

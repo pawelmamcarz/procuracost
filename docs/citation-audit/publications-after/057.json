@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-1-tunnel-or-field-EN.md",
+  "line": 138,
+  "section": "## 5. Where adaptation adds no distinct workflow mechanism\n\nA stable standard service may require the same relevant activities under both\nlabels. A catalogue call-off can follow an identical map once the framework and\ncatalogue are established. An MRP release can follow an identical map when it\nuses an existing agreement and approved material data.\n\nThe stable-service starting scenario is a workflow-topology control only. It\nseparately compares open policy-qualified competition with a restricted\nshortlist or incumbent continuation and identifies the adaptive/compliant\nstarting alternative as restricted. The allocation can be reversed or removed;\nit is not a property of adaptive work. The scenario is therefore not a neutral\ntotal-cost control merely because its workflow maps are identical.\n\nProcuraCost uses catalogue call-off and MRP release as neutral controls. Equal\nmaps and contract dimensions produce equal central totals. This is a condition,\nnot a recommendation. It prevents the model from assigning value to an\nadaptive label without a changed mechanism.\n",
+  "fileHash": "955757954d600d02fc3668298d27fed59ebd1e482a7993b9906dabcf37c984ab",
+  "requestHash": "0aab1a81826f077e41e91f1d3da7f355345e0e023d4f87624cd2caa115e244f9",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.31
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.31
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.14
+    }
+  },
+  "usage": {
+    "input_tokens": 607,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

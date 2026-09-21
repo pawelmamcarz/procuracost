@@ -1,0 +1,86 @@
+[
+  {
+    "id": "efeso-before",
+    "claim": "EFESO shows that only five percent of procurement organisations gave an autonomous negotiation agent commercial authority.",
+    "source": "Reviewer paraphrase of the linked EFESO release: discussions with 50 European CPOs concern GenAI adoption generally. Reported categories are 5% widespread deployment, 20% partial deployment and 75% experimentation. The release does not measure delegation of commercial negotiation authority.",
+    "sourceRef": "https://www.efeso.com/en-americas/insights-events/bring-genai-to-procurement-organizations/",
+    "expected": "unsupported"
+  },
+  {
+    "id": "efeso-after",
+    "claim": "EFESO reports 5% widespread GenAI deployment in the studied group, not a measured rate of autonomous negotiation mandates.",
+    "source": "Reviewer paraphrase of the linked EFESO release: discussions with 50 European CPOs concern GenAI adoption generally. Reported categories are 5% widespread deployment, 20% partial deployment and 75% experimentation. The release does not measure delegation of commercial negotiation authority.",
+    "sourceRef": "https://www.efeso.com/en-americas/insights-events/bring-genai-to-procurement-organizations/",
+    "expected": "supports"
+  },
+  {
+    "id": "walmart-before",
+    "claim": "Pactum reports agreements with approximately two thirds of all suppliers invited.",
+    "source": "Reviewer paraphrase: Pactum's client page reports 68% agreements among suppliers engaged through its platform. It also reports extended payment terms. The page does not define engaged as all invited suppliers.",
+    "sourceRef": "https://pactum.com/clients",
+    "expected": "unsupported"
+  },
+  {
+    "id": "walmart-after",
+    "claim": "Pactum reports 68% agreements among suppliers engaged through the platform in its Walmart case.",
+    "source": "Reviewer paraphrase: Pactum's client page reports 68% agreements among suppliers engaged through its platform. It also reports extended payment terms. The page does not define engaged as all invited suppliers.",
+    "sourceRef": "https://pactum.com/clients",
+    "expected": "supports"
+  },
+  {
+    "id": "publicity-before",
+    "claim": "Coviello and Mariniello establish that greater publicity does not lengthen procurement-cycle duration.",
+    "source": "Reviewer paraphrase of the paper's abstract and introduction: wider publicity increases auction participation. The authors detect no adverse effect on the probability of delivering contracted works after their deadline. This delivery outcome is not the elapsed procurement cycle from approved need to contract signature.",
+    "sourceRef": "https://tintin.hec.ca/pages/decio.coviello/research_files/publicity.pdf",
+    "expected": "unsupported"
+  },
+  {
+    "id": "publicity-after",
+    "claim": "The authors detect no adverse effect on late delivery of the works; this does not establish the effect on procurement-cycle duration.",
+    "source": "Reviewer paraphrase of the paper's abstract and introduction: wider publicity increases auction participation. The authors detect no adverse effect on the probability of delivering contracted works after their deadline. This delivery outcome is not the elapsed procurement cycle from approved need to contract signature.",
+    "sourceRef": "https://tintin.hec.ca/pages/decio.coviello/research_files/publicity.pdf",
+    "expected": "supports"
+  },
+  {
+    "id": "procureability-after",
+    "claim": "The release places the 51% concern about replacing human judgment in the discussion of respondents not fully ready for AI, rather than establishing a population rate for all organisations.",
+    "source": "Reviewer paraphrase: the release says 89% of respondents are not fully ready for AI. In describing barriers for that group, it lists privacy/compliance 67%, data/integration 54%, and replacing human judgment 51%.",
+    "sourceRef": "https://www.prnewswire.com/news-releases/procureabilitys-2026-cpo-report-reveals-the-top-barriers-to-ai-adoption-among-procurement-organizations-302666226.html",
+    "expected": "supports"
+  },
+  {
+    "id": "kaercher-after",
+    "claim": "Procure Ai reports 90% supplier engagement, 50% negotiation success and 6% average discount for Kärcher. Engagement is not agreement.",
+    "source": "Reviewer paraphrase of vendor impact snapshot: supplier engagement 90%; negotiation success 50%; average discount 6%. These are separate vendor-reported indicators, not independently reproduced outcomes.",
+    "sourceRef": "https://www.procure.ai/case-studies/kaercher",
+    "expected": "supports"
+  },
+  {
+    "id": "zero100-retained",
+    "claim": "Zero100 reports 85% expecting agentic AI to change sourcing and 78% wanting human control of strategic work in its survey.",
+    "source": "Reviewer paraphrase: Zero100's preview describes a survey of CPOs and sourcing executives. It gives 85% agreement about fundamental sourcing change and 78% wishing to retain human control of all strategic work.",
+    "sourceRef": "https://zero100.com/insights/rise-of-the-ai-enabled-cpo/",
+    "expected": "supports"
+  },
+  {
+    "id": "szucs-retained",
+    "claim": "Szucs reports that discretion selects contractors with 28% lower productivity and increases right-connected firms' winning probability by about 11 percentage points in the selection-corrected results.",
+    "source": "Reviewer paraphrase of Table 2 discussion: the Hungarian procurement study corrects selection around manipulated contract values. Column 3 attributes 28% lower contractor productivity to discretion; column 4 attributes an 11-percentage-point increase in right-connected firms' winning probability. These are distinct outcomes.",
+    "sourceRef": "https://academic.oup.com/jeea/article/22/1/117/7071896",
+    "expected": "supports"
+  },
+  {
+    "id": "beuve-retained",
+    "claim": "The outcome is amendments per contract-year, not the probability of at least one renegotiation.",
+    "source": "Reviewer paraphrase of section 4.1: formal renegotiation frequency divides a contract's written amendment count by its elapsed or completed duration in years. The resulting measure is the average annual count per contract.",
+    "sourceRef": "https://mpra.ub.uni-muenchen.de/117230/1/Renegotiations_v5c.pdf",
+    "expected": "supports"
+  },
+  {
+    "id": "ai-transparency-after",
+    "claim": "Article 50(1) addresses providers of AI intended for direct interaction with natural persons, with an exception where the AI interaction is obvious; background machine-to-machine communication is outside this obligation.",
+    "source": "Reviewer paraphrase of the Commission FAQ: direct communication between an AI system and a natural person triggers the provider's disclosure requirement. The notice is not required where AI interaction is obvious to the reasonably informed, observant person. Systems operating only in the background or machine-to-machine are outside that particular obligation.",
+    "sourceRef": "https://digital-strategy.ec.europa.eu/en/faqs/transparency-obligations-under-article-50-ai-act",
+    "expected": "supports"
+  }
+]

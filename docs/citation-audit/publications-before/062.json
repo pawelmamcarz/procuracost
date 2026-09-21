@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-1-tunnel-or-field-EN.md",
+  "line": 246,
+  "section": "## References\n\nBajari, P., Houghton, S., and Tadelis, S. (2014). Bidding for Incomplete\nContracts: An Empirical Analysis of Adaptation Costs. *American Economic Review,\n104*(4), 1288-1319. https://doi.org/10.1257/aer.104.4.1288\n\nBeuve, J., Moszoro, M. W., and Spiller, P. T. (2023). Doing It by the Book:\nPolitical Contestability and Public Contract Renegotiations. *Journal of Law,\nEconomics, and Organization, 39*(1), 281-308.\nhttps://doi.org/10.1093/jleo/ewab039\n\nCalifornia Department of Technology. (2022). California Redefines State\nTechnology Procurement.\nhttps://www.cdt.ca.gov/newsroom/2022/08/california-redefines-state-technology-procurement/\n\nCoviello, D., and Mariniello, M. (2014). Publicity Requirements in Public\nProcurement: Evidence from a Regression Discontinuity Design. *Journal of Public\nEconomics, 109*, 76-100. https://doi.org/10.1016/j.jpubeco.2013.10.008\n\nHolmström, B., and Milgrom, P. (1991). Multitask Principal-Agent Analyses.\n*Journal of Law, Economics, & Organization, 7*(Special Issue), 24-52.\nhttps://doi.org/10.1093/jleo/7.special_issue.24\n\nLipsky, M. (1980). *Street-Level Bureaucracy*. Russell Sage Foundation.\n\nOECD. Public Procurement in Lithuania, RVUL pilot example.\nhttps://www.oecd.org/en/publications/public-procurement-in-lithuania_aa1b196c-en/full-report/component-8.html\n\nSzucs, F. (2024). Discretion and Favoritism in Public Procurement. *Journal of\nthe European Economic Association, 22*(1), 117-160.\nhttps://doi.org/10.1093/jeea/jvad017\n\nUrząd Zamówień Publicznych. Wstępne konsultacje rynkowe.\nhttps://www.gov.pl/web/uzp/wstepne-konsultacje-rynkowe\n\nVaughan, D. (1996). *The Challenger Launch Decision*. University of Chicago\nPress.\n",
+  "fileHash": "10544b99cb4bb48d0939f687252e133e8bee6c464100141a58fff7a369f1f3fa",
+  "requestHash": "b4f24790c26de32dd90854d2d535791eeb3e4ad819295eedec4a0cfcce57d9c9",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.08
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.07
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.72
+    }
+  },
+  "usage": {
+    "input_tokens": 1033,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

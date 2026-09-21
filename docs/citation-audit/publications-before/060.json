@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-1-tunnel-or-field-EN.md",
+  "line": 207,
+  "section": "## 8. Contribution and interpretation boundary\n\nThe article contributes a decomposition of procedural rigidity into separately\nmeasurable constructs and shows why evidence about supplier-selection\ndiscretion or contractual clauses cannot be treated as direct evidence about\nworkflow topology.\n\nThis is a conceptual contribution. Establishing whether the wider procurement\nliterature commonly makes the same conflation would require a systematic\nreview. The present paper does not estimate a causal effect.\n\nFor a procurement function, the framework implies a component-level review:\nidentify the risk controlled by a gate, preserve competition when changing\nsequencing, record why learning work is required and measure timestamps, role\neffort, bids, amendments and execution outcomes before monetisation.\n\nThe framework has not been causally validated as an integrated model. Reference\nmaps, role rates, support costs and daily costs are declared assumptions.\nContract-amendment and TCO differentials are zero. Bypass is non-monetised.\nOfficial cases support mechanisms rather than effect sizes. Estimates from\nHungary, France and Italy do not automatically transfer to Poland or private\nprocurement.\n\nThe conditional thesis is therefore retained in a testable form: a prescribed\nsequence can add avoidable work, while formal structure can also protect value.\n",
+  "fileHash": "10544b99cb4bb48d0939f687252e133e8bee6c464100141a58fff7a369f1f3fa",
+  "requestHash": "e11cf3a4304acf9d65d0ac7b2b517ee21664447b6913bd48338054b7b3c82aa3",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.15
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.07
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.38
+    }
+  },
+  "usage": {
+    "input_tokens": 671,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 148,
+  "section": "## Koszt, którego nie ma w ofercie\n\nFragment [Pełny koszt zamiast ceny zakupu (47:43 do 49:14)](https://youtu.be/5KYUdTLlvvg?t=2863)\ndotyczy uzasadnienia biznesowego. Cena licencji i koszt wdrożenia są w ofercie.\nKoszt integracji, utrzymania i zmiany organizacyjnej trzeba policzyć samemu.\n\nTrzy role opisane wyżej są częścią tego ostatniego składnika. Kwestionujący\npoświęca na projekt czas, którego nie ma w harmonogramie dostawcy. Ambasador\nprowadzi rozmowy, które nie są w zakresie integratora. Zastępstwo trzeba\nprzygotować, zanim będzie potrzebne. To nie jest koszt ukryty. To koszt, który\norganizacja zwykle decyduje się nie liczyć, a potem płaci w postaci wdrożenia\nbez adopcji.\n",
+  "fileHash": "69e36840ec0c7207803ffa66323b85a46dd3294eb87f5f996fd8461a45cc94df",
+  "requestHash": "46c94fc586e58aca1d843e657890cbc6643f4d0c67d09eb5113bb89f490ab916",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.14
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.3
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.16
+    }
+  },
+  "usage": {
+    "input_tokens": 647,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

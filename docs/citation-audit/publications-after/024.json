@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-07-tunel-pole-lepszy-biznes.md",
+  "line": 258,
+  "section": "## Wspólna architektura\n\nOrganizacja nie musi wybierać jednej metafory dla wszystkich zakupów. Może\nprojektować krótkie, kontrolowane sekwencje dla transakcji powtarzalnych oraz\nprocesy z jawnymi etapami odkrywania dla problemów niepewnych. Wspólne powinny\npozostać dane, uprawnienia, reguły konkurencji i odpowiedzialność.\n\n„Tunel ma ściany. Pole ma horyzont.” Wartość tej metafory polega na rozdzieleniu\ngranicy od drogi. Nie zastępuje ona mapy procesu, oceny prawnej ani danych.\n",
+  "fileHash": "9c8ddd0321c3ec61d5e96d482200df5af0749a79214e5aceea71433b6586955c",
+  "requestHash": "4717b06a77501d633a6f771e4ce477d8c625948964722113f3eb8b7236e347b9",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.12
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.07
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.13
+    }
+  },
+  "usage": {
+    "input_tokens": 567,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

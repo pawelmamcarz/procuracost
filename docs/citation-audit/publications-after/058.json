@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-1-tunnel-or-field-EN.md",
+  "line": 157,
+  "section": "## 6. Contract adaptation, bypass and system support\n\nIncomplete contracts create adaptation costs when relevant contingencies cannot\nbe fully specified ex ante (Bajari, Houghton and Tadelis 2014). Beuve, Moszoro\nand Spiller (2023) study contractual rigidity and formal-amendment frequency in\nFrench car-park contracts. Their empirical object is not the number of sourcing\napprovals or the topology of a procurement workflow.\n\nNative model 2.3 therefore starts contract-amendment and TCO differentials at\nzero. The cited literature motivates questions about contract design but does\nnot set a numerical ProcuraCost parameter without a valid allocation convention\nand evidence for the specific comparison.\n\nThe field metaphor can include revisiting a requirement. In the executable\nacyclic model, a planned repeat is a separate step with its own duration and\neffort. The model does not simulate an indefinite feedback loop or infer how\nmany rounds a real project will require.\n\nStreet-level discretion, normalisation of deviance and multitask incentives\nprovide plausible explanations for informal workarounds. They do not estimate\na procurement bypass probability. Model 2.3 discloses bypass as non-monetised.\n\nThe same boundary applies to technology. A system can enforce approval limits,\nretain evidence and prevent unauthorised commitments, but ownership does not\nshow that controls are configured or used. System support is a context axis.\nOrganisational implementation readiness is a separate self-description and cannot\nchange the cost comparison.\n",
+  "fileHash": "955757954d600d02fc3668298d27fed59ebd1e482a7993b9906dabcf37c984ab",
+  "requestHash": "e10a71e0121f061db8d8733d6d3417dc5b422c3139563e1c9a332dee59da70d7",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.21
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.15
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.85
+    }
+  },
+  "usage": {
+    "input_tokens": 735,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

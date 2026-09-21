@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-2-model-kosztu-PL.md",
+  "line": 244,
+  "section": "## 10. Rekord decyzji i pokrycie\n\nRekord decyzji ujawnia:\n\n1. pełny zestaw metadanych i status migracji;\n2. osie kontekstu;\n3. obie mapy przebiegu i konstrukcje umowy;\n4. wynik każdego wariantu i deltę;\n5. udział poszczególnych kanałów w różnicy;\n6. zakres monetyzacji i dokładne ścieżki założeń;\n7. wymiary nieobjęte monetyzacją;\n8. wewnętrzną proweniencję ilustracyjnych alokacji, założenia przeniesione,\n   dowody zewnętrzne i pochodzenie prawne.\n\nTaki układ pozwala oddzielić wynik arytmetyczny od zakresu interpretacji.\nWysoka wartość całkowita nie oznacza, że wszystkie istotne skutki zostały\nobjęte monetyzacją.\n",
+  "fileHash": "fdc4ef6f9be1c931f048ed111080d3415ccc8ecd3167765786d0a56076b498d2",
+  "requestHash": "1c50297bb9bfe464daf73bbb5025082758f501ca9bbba7a0b363b14c6d0dae55",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.12
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.18
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.15
+    }
+  },
+  "usage": {
+    "input_tokens": 643,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

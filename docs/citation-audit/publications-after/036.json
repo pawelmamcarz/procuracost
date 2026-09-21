@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-bariery-autonomicznego-sourcingu.md",
+  "line": 427,
+  "section": "## O autorze\n\nPaweł Mamcarz jest autorem modelu ProcuraCost i gościem ósmego odcinka\nProcurement&Beyond, z którego pochodzą fragmenty przywołane w tym tekście.\nZajmuje się zakupami, negocjacjami i wdrożeniami systemów zakupowych od strony\norganizacji, nie dostawcy narzędzia. Więcej materiałów, w tym kalkulator\nporównania dwóch przebiegów procesu, znajduje się na https://mamcarz.com oraz\nw nagraniu rozmowy: https://www.youtube.com/watch?v=5KYUdTLlvvg.\n",
+  "fileHash": "55085066f5ca858a529dfcd95fc0bdc09c0776b38cc5288acef29c963b86f45a",
+  "requestHash": "13288da06ff386263b97b6ce549828c2c2882164de7ab28be69d850bb1d602d4",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.07
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.06
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.47
+    }
+  },
+  "usage": {
+    "input_tokens": 560,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

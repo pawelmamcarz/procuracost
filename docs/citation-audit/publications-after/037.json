@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 1,
+  "section": "---\ntytuł: \"Wdrożenie bez właściciela\"\npodtytuł: \"Dwie role i ciągłość odpowiedzialności we wdrożeniu systemu zakupowego\"\ndata: 2026-09\nautor: \"Paweł Mamcarz\"\nautor_www: \"https://mamcarz.com\"\nmodel: \"ProcuraCost 2.3.0\"\nstatus: \"szkic do redakcji\"\n---\n\n# Wdrożenie bez właściciela\n",
+  "fileHash": "4e7208025ceb8bade398b14d9e9019f8237dc3d948b81a411fb035ce0707e804",
+  "requestHash": "4f5adf1ad603a8101bd57f9279d0e487910b6bd1ec43544c9697f0368c4529d5",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.14
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.06
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.1
+    }
+  },
+  "usage": {
+    "input_tokens": 525,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

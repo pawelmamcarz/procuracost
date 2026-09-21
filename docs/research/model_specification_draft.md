@@ -6,7 +6,7 @@
 **Legal ruleset:** `pl-pzp-2026-2027`
 **Status:** deterministic comparison specification, not an empirical estimator
 
-## 1. Estimand
+## 1. Quantity calculated
 
 For one purchase, one legal and governance boundary and two declared
 procurement workflow designs:
@@ -69,6 +69,9 @@ envelope is:
 
 Low, central and high values are declared scenario cases, not confidence
 intervals.
+
+The outer envelope pairs opposite endpoints, including shared inputs. Crossing
+zero does not establish a sign reversal at a common feasible input setting.
 
 ## 5. Contract dimensions in native 2.3
 

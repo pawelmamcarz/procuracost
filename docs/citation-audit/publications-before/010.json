@@ -1,0 +1,27 @@
+{
+  "file": "RESEARCH.md",
+  "line": 238,
+  "section": "## 9. Reproducibility\n\nThe native 2.3 replication generator produces exactly three deterministic artefacts: JSON, CSV and Markdown. The JSON bundle contains the full decision records, including assumptions, evidence, role rates, calculation anchors and legal provenance. The CSV preserves metadata, axes, alternatives, comparison, coverage, non-monetised dimensions and migration context in stable machine rows. The Markdown rendering presents the comparison, coverage, non-monetised dimensions, migration and legal provenance for human review. None contains a generation timestamp.\n\n`npm run recompute` audits canonical metadata, ordered ranges, the delta identity, neutral controls and locked legal waits. `npm run sweep` performs an alternative-swap symmetry audit. `npm run replicate` regenerates the three active artefacts from the native scenario registry and engine. These checks establish code-path consistency, not empirical validity.\n",
+  "fileHash": "9a9581ef3c2b73b2e843741b5a6b4a4abd783f231c804664b3f7e357f1bd8f41",
+  "requestHash": "000c38ff91615283d8b970abfb6c7a19ce1f4f23214faf2195c45995ff3ec1f1",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.14
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.21
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.23
+    }
+  },
+  "usage": {
+    "input_tokens": 583,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

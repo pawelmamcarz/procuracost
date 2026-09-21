@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-wdrozenie-bez-wlasciciela.md",
+  "line": 31,
+  "section": "## Rola pierwsza: wewnętrzny kwestionujący\n\nPierwszą rolą jest osoba, która rozumie, co organizacja kupuje, i potrafi\nzakwestionować założenia dostawcy, integratora oraz własnego zespołu. Fragment\n[Wewnętrzny właściciel decyzji (27:19 do 28:09)](https://youtu.be/5KYUdTLlvvg?t=1639)\ndotyczy właśnie tego: projekt potrzebuje kogoś, kto zna zakup od środka, a nie\ntylko zna system.\n\nBez tej roli projekt wygląda poprawnie i dryfuje. Dostawca proponuje\nkonfigurację, która sprawdziła się gdzie indziej. Integrator dopytuje o\nwymagania i dostaje listę funkcji przepisaną z prezentacji. Nikt nie zadaje\npytania, czy dana funkcja rozwiązuje problem, który uzasadnił zakup. Lista\nrośnie, zakres puchnie, a pierwotna nieefektywność procesu zostaje nietknięta.\n\nSponsor powinien zapytać przed podpisem: kto w organizacji potrafi wskazać\nkonkretną nieefektywność, którą ten system ma usunąć, i kto powie dostawcy\n„nie\" bez konsultacji z zarządem. Jeżeli odpowiedzią jest nazwisko osoby z\ndziału IT, która zna system, ale nie zna zakupów, roli nie ma. Jeżeli\nodpowiedzią jest komitet, roli nie ma tym bardziej.\n\nFragment [Nieefektywność procesu przed wyborem systemu (09:52 do 10:56)](https://youtu.be/5KYUdTLlvvg?t=592)\npokazuje, skąd ta osoba czerpie mandat merytoryczny. Punktem wyjścia jest\nrozpoznana nieefektywność, nie deklaracja wdrożenia. Kto zmapował tarcie w\nprocesie przed wyborem narzędzia, ten potrafi później odrzucić funkcję, która\ntego tarcia nie dotyka.\n",
+  "fileHash": "69e36840ec0c7207803ffa66323b85a46dd3294eb87f5f996fd8461a45cc94df",
+  "requestHash": "1b5601c9124e5100293967995b826ba7d7a558f9588c1c37abb6c9a11de46930",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.11
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.22
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.46
+    }
+  },
+  "usage": {
+    "input_tokens": 954,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/doktorat/article-2-model-kosztu-PL.md",
+  "line": 108,
+  "section": "## 5. Funkcje kosztu\n\nDla wariantu `j` i przypadku zakresu `r`:\n\n`roleCost_j,r = sum(roleHours_j,r x roleHourlyRate_r)`\n\n`nonLabourCost_j,r = sum(stepNonLabourCost_j,r)`\n\n`delayCost_j,r = elapsedDays_j,r x dailyCostOfInaction_r`\n\n`contractCost_j,r = sum(monetisedContractDimension_j,r)`\n\n`total_j,r = roleCost_j,r + nonLabourCost_j,r + delayCost_j,r + contractCost_j,r`\n\nRóżnica centralna jest zdefiniowana jako:\n\n`deltaCost = total_formalSequential,central - total_adaptiveCompliant,central`\n\nZakres zewnętrzny wynosi:\n\n`low = total_formalSequential,low - total_adaptiveCompliant,high`\n\n`high = total_formalSequential,high - total_adaptiveCompliant,low`\n\nPrzeciwne końce zakresów mogą łączyć różne wartości wejść wspólnych dla obu\nwariantów. Przecięcie zera przez tę obwiednię nie dowodzi odwrócenia znaku przy\njednym dopuszczalnym zestawie wspólnych założeń. Wymaga to osobnej analizy,\nw której wspólne wejścia zmienia się jednocześnie w obu wariantach.\n\nDodatnia wartość oznacza wyższy koszt wariantu\n`formalSequential` przy zadeklarowanych wejściach. Ujemna oznacza wyższy koszt\n`adaptiveCompliant`. Zero jest prawidłowym wynikiem.\n\nZamiana wariantów musi zamienić ich wyniki, odwrócić znak delty i odwrócić\nzakres zewnętrzny. Model nie zawiera warunku, który wymusza preferowany znak.\n",
+  "fileHash": "b9d4935cffb9d999cbe19edaac673f00b02af79867fc6c807188b3f4b36f5827",
+  "requestHash": "76a02bf11695220eca77f45805ca10f6f7b5b1dbd2248d8666d8ba36e48d07c9",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.19
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.13
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.05
+    }
+  },
+  "usage": {
+    "input_tokens": 873,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

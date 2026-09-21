@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-09-bariery-autonomicznego-sourcingu.md",
+  "line": 13,
+  "section": "## Kiedy zacząć od ogona wydatków, a kiedy zachować decyzję po stronie kupca\n\nDyskusja o sztucznej inteligencji w zakupach zwykle miesza dwie różne sprawy.\nPierwsza to asystent, który streszcza umowę, porządkuje wniosek zakupowy albo\npodpowiada kategorię. Druga to agent, który samodzielnie uruchamia zapytanie\nofertowe, prowadzi negocjację i doprowadza sprawę do rozstrzygnięcia. Bariery\ndla obu są zupełnie inne, dlatego wnioski z jednej dyskusji nie przenoszą się na\ndrugą.\n\nZnaczenie ma zakres uprawnień i konsekwencje błędu. Błędna interpretacja\nwniosku może wymagać korekty, ale może też przejść niezauważona do dalszych\ndecyzji. Agent negocjujący w imieniu organizacji dodatkowo wpływa na warunki\nhandlowe i relację z dostawcą. Dlatego oba zastosowania wymagają kontroli,\ndobranej do skutków działania i możliwości jego cofnięcia.\n\nRaport EFESO z 2026 r., oparty na rozmowach z 50 europejskimi dyrektorami\nzakupów, podaje pięć procent szerokich wdrożeń GenAI i siedemdziesiąt pięć\nprocent organizacji w fazie eksperymentowania. To opis badanej grupy oraz\ngeneratywnej AI ogółem, nie pomiar odsetka firm, które oddały agentowi mandat\nnegocjacyjny. Pozwala postawić pytanie o skalowanie, ale nie wyjaśnia sam\nprzyczyn różnicy między pilotażem a wdrożeniem.\n\nPoniższy porządek jest propozycją pytań do projektu. Kolejność i znaczenie\nbarier zależą od kategorii, organizacji oraz zakresu uprawnień agenta.\n",
+  "fileHash": "55085066f5ca858a529dfcd95fc0bdc09c0776b38cc5288acef29c963b86f45a",
+  "requestHash": "850a3468255408f0ad57c5651fe6ff751f7d43bc925947436f2e33dffb5aa7c9",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.22
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.16
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.95
+    }
+  },
+  "usage": {
+    "input_tokens": 912,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

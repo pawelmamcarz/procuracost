@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-07-tunel-pole-lepszy-biznes.md",
+  "line": 32,
+  "section": "## Jedna granica, dwa projekty przebiegu\n\nPolityka zakupowa określa między innymi uprawnienia, zasady konkurencji,\nwymagany ślad decyzji, rozdział ról i tryb obsługi wyjątków. Projekt przebiegu\nprocesu zakupowego organizuje czynności wewnątrz tych ram.\n\nMetafora tunelu i pola opisuje dwie geometrie pracy. Tunel prowadzi sprawę przez\nustaloną sekwencję. Pole dopuszcza kilka kontrolowanych tras, pracę równoległą\ni powrót do wcześniejszego założenia. Nie usuwa jednak granicy. Uprawnienia,\nkonkurencja, etyka i dokumentacja nadal obowiązują.\n\nProcuraCost 2.3 porównuje właśnie takie dwa warianty:\n\n- formalny i sekwencyjny;\n- adaptacyjny i zgodny.\n\nModel nie zakłada, że drugi wariant jest szybszy albo tańszy. Oblicza skutki\ndwóch jawnych map przebiegu i dopuszcza wynik dodatni, ujemny lub zerowy.\nObowiązkowe terminy prawne pozostają takie same po obu stronach.\n",
+  "fileHash": "9c8ddd0321c3ec61d5e96d482200df5af0749a79214e5aceea71433b6586955c",
+  "requestHash": "6403220b6bb983201a8031ca79bcdab4b79d68c9f007b425ae341cf96534a163",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.12
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.08
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.58
+    }
+  },
+  "usage": {
+    "input_tokens": 713,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}

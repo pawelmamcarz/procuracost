@@ -1,0 +1,27 @@
+{
+  "file": "docs/articles/pl/2026-07-tunel-pole-lepszy-biznes.md",
+  "line": 101,
+  "section": "## Przed konfiguracją systemu\n\nWarsztat projektowy powinien zacząć się od kilku zakończonych zakupów, a nie od\nlisty funkcji oprogramowania. Warto zebrać przedstawicieli biznesu, zakupów,\nfinansów, zgodności, IT i właściciela danych. Mapa powinna ujawnić:\n\n- czynności i ich poprzedników;\n- czas aktywnej pracy i czas oczekiwania;\n- ponowne wprowadzanie tych samych danych;\n- przekazania między rolami;\n- cofnięcia i ponowne zatwierdzenia;\n- decyzje podejmowane poza oficjalnym obiegiem;\n- obowiązkowe terminy oraz źródło każdego wymagania.\n\nPięć pytań pomaga ocenić każde miejsce tarcia:\n\n1. Jakie ryzyko kontroluje ten krok?\n2. Jaką nową informację wnosi?\n3. Czy można wykonać go równolegle z inną pracą?\n4. Co dzieje się po zmianie zakresu, ceny albo terminu?\n5. Czy system zapisuje decyzję i jej podstawę, czy tylko formularz?\n\nJeżeli dwie akceptacje używają tych samych danych i kontrolują to samo ryzyko,\nwarto sprawdzić, czy obie są potrzebne. Jeżeli menedżer zatwierdza setki spraw\nbez wyróżnienia odchyleń od budżetu lub umowy, dodatkowa bramka nie rozwiązuje\nproblemu. Potrzebna jest reguła oddzielająca standard od wyjątku.\n",
+  "fileHash": "9c8ddd0321c3ec61d5e96d482200df5af0749a79214e5aceea71433b6586955c",
+  "requestHash": "33afdc516fae96c4472b4edc283452f5d1ece10718d92886bff9ff1ad99532c7",
+  "model": "jev-1.13.0",
+  "answers": {
+    "internalConflict": {
+      "type": "noul",
+      "noul": 0.08
+    },
+    "overclaim": {
+      "type": "noul",
+      "noul": 0.12
+    },
+    "externalCheck": {
+      "type": "noul",
+      "noul": 0.08
+    }
+  },
+  "usage": {
+    "input_tokens": 814,
+    "output_tokens": 60
+  },
+  "reviewRequired": true
+}
