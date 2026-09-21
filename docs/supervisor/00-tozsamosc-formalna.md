@@ -61,7 +61,7 @@ organizacyjnego. To świadomy wybór interdyscyplinarny, nie niezdecydowanie.
 | # | Tytuł roboczy | Język | Charakter | Status |
 |---|---|---|---|---|
 | 1 | Tunnel or Field? Workflow topology under a shared governance boundary | EN | konceptualny | szkic |
-| 2 | Ile kosztuje projekt przebiegu procesu zakupowego? Model porównawczy ProcuraCost 2.3 | PL | metodologiczny | szkic |
+| 2 | Jak porównać koszty dwóch przebiegów zakupu? Model ProcuraCost 2.3 | PL | metodologiczny | szkic |
 | 3 | Jak sprawdzić koszt projektu procesu? Protokół empiryczny dla polskich zamówień publicznych | PL | protokół badawczy | szkic |
 
 Wiążącym kontraktem ilościowym dla wszystkich trzech jest
