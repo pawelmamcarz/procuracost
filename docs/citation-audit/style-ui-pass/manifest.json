@@ -4,11 +4,27 @@
   ],
   "excluded": [],
   "sections": 34,
-  "live": "skipped",
-  "reason": "TYPESAFE_API_KEY was not available in this environment. Local schema validation only. No model scores were invented.",
-  "mode": "local-only",
+  "live": "completed",
+  "completedAt": "2026-09-22T05:47:18.023Z",
+  "completedNote": "Live Jev ran outside this VM on 22 Sep 2026 (jev-1.13.0). 34/34 evaluated, 0 errors. 13 sections flagged at noul ≥ 0.5. The full per-section answer dump was run outside the VM and was not attached. Triage is committed in live-triage.json. No model scores were invented. TYPESAFE_API_KEY was still absent here, so live-results.json was not regenerated.",
+  "mode": "live-triage",
   "requestedModel": "jev-latest",
+  "returnedModels": [
+    "jev-1.13.0"
+  ],
   "questionHash": "e6d6f35f138909caea84def7810f98b09bf9c0005ab865c06224f335477ec6ab",
+  "questionHashNote": "Hash of the questions object used for the live run. overclaim.instructions then read 'Does section present'. scripts/audit-style.mjs now says 'Does this section present'; a later live run will hash differently. Do not rewrite live-triage scores to the new hash.",
+  "summary": {
+    "total": 34,
+    "evaluated": 34,
+    "matched": 0,
+    "errors": 0
+  },
+  "flags_ge_0_5_count": 13,
+  "triage": "docs/citation-audit/style-ui-pass/live-triage.json",
+  "localDryRun": "docs/citation-audit/style-ui-pass/local-dry-run.json",
+  "localDryRunNote": "21 Sep 2026 local-only skip: schema validation, verdict not_evaluated. Historical. No invented scores.",
+  "sectionsSnapshotNote": "sections.json texts are the second-rewrite copies. live-triage.json retains the evaluated first-pass texts.",
   "questions": {
     "stockRhetoric": {
       "type": "noul",
@@ -28,7 +44,7 @@
     },
     "overclaim": {
       "type": "noul",
-      "instructions": "Does section present an unqualified universal, causal certainty, frequency ranking or numerical empirical claim beyond its stated evidence? Do not flag explicitly labelled hypotheses, assumptions, examples, proposals, or normative advice solely because they are unproven.",
+      "instructions": "Does this section present an unqualified universal, causal certainty, frequency ranking or numerical empirical claim beyond its stated evidence? Do not flag explicitly labelled hypotheses, assumptions, examples, proposals, or normative advice solely because they are unproven.",
       "criteria": {
         "true": "The section states an unqualified universal, causal certainty, frequency ranking or numerical empirical claim beyond the evidence it cites.",
         "false": "Claims stay within stated evidence, or they are labelled hypotheses, assumptions, examples, proposals or advice."
@@ -43,5 +59,5 @@
       }
     }
   },
-  "createdAt": "2026-09-21T21:48:07.357Z"
+  "createdAt": "2026-09-22T05:47:18.023Z"
 }

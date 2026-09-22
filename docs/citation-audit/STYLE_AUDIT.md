@@ -64,8 +64,14 @@ human-validated editorial data. To load a local key file, use
 dotenv files themselves.
 
 A modest UI and remaining-research batch lives in
-`style-ui-pass/sections.json`. Live results belong in the same directory
-only when a key is present. The earlier publication language pass is
-documented in [`STYLE_REVIEW.md`](STYLE_REVIEW.md). The UI and
-remaining-research pass is documented in
-[`STYLE_UI_AND_REMAINING.md`](STYLE_UI_AND_REMAINING.md).
+`style-ui-pass/sections.json`. Live evaluation completed on 22 September
+2026 outside this VM (`jev-1.13.0`, 34/34, 0 errors). Thirteen sections
+were flagged at noul ≥ 0.5. The full per-section dump stayed outside the
+VM; `style-ui-pass/live-triage.json` is the committed triage. Scores were
+not invented. `live-results.json` is absent because the key was not
+available here. The live `questionHash` belongs to the pre-typo
+`overclaim` wording (`Does section present`). The script now reads
+`Does this section present`; later hashes will differ. The earlier
+publication language pass is documented in
+[`STYLE_REVIEW.md`](STYLE_REVIEW.md). The UI and remaining-research pass
+is documented in [`STYLE_UI_AND_REMAINING.md`](STYLE_UI_AND_REMAINING.md).

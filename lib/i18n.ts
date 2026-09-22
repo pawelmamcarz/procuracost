@@ -24,14 +24,14 @@ export const analyticsT = { pl: analyticsPl, en: analyticsEn };
 
 const ogPl = {
   supportLine:
-    "Dwa zgodne projekty przebiegu. Jeden jawny rachunek kosztu.",
+    "Porównanie dwóch zgodnych przebiegów i jawny zapis kosztu.",
 } as const;
 
 type OgShape = LangShape<typeof ogPl>;
 
 const ogEn = {
   supportLine:
-    "Two lawful workflow designs and one explicit cost record.",
+    "A comparison of two lawful workflows and an explicit cost record.",
 } satisfies OgShape;
 
 export const ogT = { pl: ogPl, en: ogEn } as const;
@@ -957,13 +957,13 @@ const homePl = {
     "Model dopuszcza oba kierunki różnicy. Znak wyniku nie jest założony.",
   boundary: {
     eyebrow: "Wspólna granica decyzji",
-    title: "Jedna granica. Dwa projekty przebiegu.",
+    title: "Ta sama granica prawna, dwa projekty przebiegu",
     tunnelLabel: "Formalna ścieżka sekwencyjna",
-    tunnelDescription: "Bramy prowadzą przez ustaloną kolejność.",
+    tunnelDescription: "Czynności idą jedną ustaloną kolejką zatwierdzeń.",
     boundaryLabel: "Ramy prawne i ład zakupowy",
     notation: PHI_SET.pl,
     fieldLabel: "Adaptacyjna ścieżka zgodna z ramami",
-    fieldDescription: "Rozgałęzienia pozwalają iterować i ponownie scalać pracę.",
+    fieldDescription: "Czynności mogą iść równolegle i wracać, zanim ścieżki się połączą.",
     note:
       "Schemat pokazuje konstrukcję pracy, nie wynik ani oszacowanie czasu lub kosztu.",
     caption:
@@ -1105,13 +1105,13 @@ const homeEn = {
     "The model permits either direction of difference. The sign is not assumed.",
   boundary: {
     eyebrow: "Shared decision boundary",
-    title: "One boundary. Two workflow designs.",
+    title: "The same legal boundary and two workflow designs",
     tunnelLabel: "Formal sequential alternative",
-    tunnelDescription: "Gates carry the work through an established sequence.",
+    tunnelDescription: "Activities follow one fixed approval sequence.",
     boundaryLabel: "Legal and governance boundary",
     notation: PHI_SET.en,
     fieldLabel: "Adaptive compliant alternative",
-    fieldDescription: "Branches allow work to iterate and rejoin.",
+    fieldDescription: "Activities may run in parallel and return before the paths rejoin.",
     note:
       "The diagram shows how work is structured, not an outcome or an estimate of time or cost.",
     caption:
@@ -1266,9 +1266,9 @@ const homeExperiencePl = {
   },
   record: {
     eyebrow: "Co zawiera wynik",
-    title: "Wynik z założeniami, który da się sprawdzić",
+    title: "Co jest w zapisie porównania",
     description:
-      "Otrzymasz zestawienie kosztów obu wariantów, przyjęte założenia i listę czynników, których model nie wycenia.",
+      "Zestawienie kosztów obu wariantów, przyjęte założenia i czynniki, których model nie wycenia.",
     fields: [
       "Nazwy wariantów i rodzaj przebiegu",
       "Wynik centralny",
@@ -1279,9 +1279,9 @@ const homeExperiencePl = {
   },
   journey: {
     eyebrow: "Ścieżka praktyczna",
-    title: "Od przypadku do zapisu w czterech krokach",
+    title: "Cztery kroki: przypadek, przebiegi, koszty, zapis",
     intro:
-      "Wybierz podobny zakup, dostosuj czynności i wpisz własne koszty. Na końcu pobierz wynik wraz z założeniami.",
+      "Wybierz podobny zakup, zmień czynności jeśli trzeba i wpisz koszty. Potem pobierz wynik z założeniami, których użyłeś.",
     steps: [
       {
         title: "Przypadek",
@@ -1354,9 +1354,9 @@ const homeExperienceEn = {
   },
   record: {
     eyebrow: "What the result contains",
-    title: "A result with its assumptions, ready to check",
+    title: "What the comparison record contains",
     description:
-      "The record lists the costs of both alternatives, the assumptions used and the factors the model leaves unpriced.",
+      "The costs of both alternatives, the assumptions used and the factors the model leaves unpriced.",
     fields: [
       "Alternative names and workflow types",
       "Central result",
@@ -1367,9 +1367,9 @@ const homeExperienceEn = {
   },
   journey: {
     eyebrow: "Practitioner path",
-    title: "From case to record in four steps",
+    title: "Four steps: case, workflows, costs, record",
     intro:
-      "Choose a similar purchase, adjust the activities and enter your costs. Then download the result with its assumptions.",
+      "Pick a similar purchase, change the activities if needed and type your costs. Then download the result with the assumptions you used.",
     steps: [
       {
         title: "Case",
@@ -2340,7 +2340,7 @@ const siteMetadataPl = {
   home: {
     title: "Ile kosztuje przetarg? Porównanie kosztów | ProcuraCost",
     description:
-      "Porównaj czas i koszt formalnej procedury sekwencyjnej i adaptacyjnego przebiegu zgodnego z PZP. Wynik z założeniami.",
+      "Czas i koszt formalnej procedury sekwencyjnej oraz adaptacyjnego przebiegu zgodnego z PZP. Wynik z założeniami.",
   },
   calculator: {
     title: "Kalkulator kosztów przetargu | ProcuraCost",
@@ -2600,9 +2600,9 @@ const methodologyOverviewPl = {
       "Deterministyczna metoda porównania formalnej procedury sekwencyjnej i adaptacyjnego przebiegu zgodnego z PZP. Jawne założenia i zablokowane terminy prawne.",
   },
   eyebrow: `Metodologia / model ${MODEL_V2_METADATA.modelVersion}`,
-  title: "Jak liczymy różnicę, bez założonego znaku",
+  title: "Różnica kosztu bez założonego znaku",
   intro:
-    "Model rozdziela zgodność prawną, projekt przebiegu, konstrukcję umowy, kanał realizacji i wsparcie systemowe. Każda z tych decyzji zostaje zapisana w rekordzie.",
+    "Model trzyma osobno zgodność prawną, projekt przebiegu, konstrukcję umowy, kanał realizacji i wsparcie systemowe. Rekord zapisuje każdą z tych decyzji.",
   steps: [
     {
       title: "Ustal wspólną granicę",
@@ -2705,9 +2705,9 @@ const methodologyOverviewEn = {
       "A deterministic method for comparing a formal sequential procurement procedure with an adaptive compliant workflow. Explicit assumptions, locked legal periods.",
   },
   eyebrow: `Methodology / model ${MODEL_V2_METADATA.modelVersion}`,
-  title: "How the difference is calculated, without a built-in sign",
+  title: "Cost difference with no assumed sign",
   intro:
-    "The model keeps legal compliance, workflow design, contract design, execution channel and system support as separate decisions. Each one stays visible in the record.",
+    "Legal compliance, workflow design, contract design, execution channel and system support stay separate. The record stores each of those decisions.",
   steps: [
     {
       title: "Set the shared boundary",
@@ -4285,18 +4285,18 @@ const teamPl = {
   metadataDescription:
     "Osoby odpowiedzialne za model ProcuraCost i za praktykę wdrożeń: zakupy, analityka, systemy, negocjacje i badania.",
   eyebrow: "Zespół",
-  title: "Kto odpowiada za model, a kto za wdrożenie",
+  title: "Role przy modelu i przy wdrożeniu",
   description:
-    "W zespole są osoby od zakupów, analityki, systemów, wdrożeń, negocjacji i badań.",
+    "W zespole pracują osoby od zakupów, analityki, systemów, wdrożeń, negocjacji i badań.",
   peopleTitle: "Osoby",
   competenciesTitle: "Obszary pracy",
   linkedinLabel: "Profil LinkedIn",
   collectiveLabel: "Zespół ProcuraCost",
   implementation: {
     eyebrow: "Praktyka wdrożeniowa",
-    title: "Osobna odpowiedzialność za model i za wdrożenie",
+    title: "Model i wdrożenie mają różnych właścicieli",
     body:
-      "Model porządkuje porównanie. Właściciel procesu nadal odpowiada za cel, wymagania, dane, decyzje, adopcję i pomiar wartości.",
+      "Model porównuje dwa projekty. Właściciel procesu nadal odpowiada za cel, wymagania, dane, decyzje, adopcję i pomiar wartości.",
     practiceAction: "Rozmowa Procurement&Beyond",
   },
   roles: {
@@ -4343,18 +4343,18 @@ const teamEn = {
   metadataDescription:
     "The people accountable for the ProcuraCost model and for implementation practice: procurement, analytics, systems, negotiation and research.",
   eyebrow: "Team",
-  title: "Who owns the model, and who owns implementation",
+  title: "Roles on the model and on implementation",
   description:
-    "The team covers procurement, analytics, systems, implementation, negotiation and research.",
+    "Members work in procurement, analytics, systems, implementation, negotiation and research.",
   peopleTitle: "People",
   competenciesTitle: "Areas of work",
   linkedinLabel: "LinkedIn profile",
   collectiveLabel: "ProcuraCost team",
   implementation: {
     eyebrow: "Implementation practice",
-    title: "Separate accountability for the model and for implementation",
+    title: "The model and implementation have different owners",
     body:
-      "The model organises a comparison. The process owner remains accountable for purpose, requirements, data, decisions, adoption and value measurement.",
+      "The model compares two designs. The process owner still owns purpose, requirements, data, decisions, adoption and value measurement.",
     practiceAction: "Procurement&Beyond conversation",
   },
   roles: {
@@ -5933,7 +5933,7 @@ const practicePl = {
   eyebrow: "Materiał praktyczny",
   title: "Nawet najlepsze narzędzie nie uratuje złego wdrożenia",
   subtitle:
-    "Obserwacje z ósmego odcinka Procurement&Beyond i zasady ich użycia w samoopisie warunków wdrożenia.",
+    "Indeks fragmentów odcinka 8. Służą do pytań o wdrożenie, nie do kalibracji modelu.",
   recordingLanguageNotice:
     "Nagranie jest w języku polskim. Odnośniki czasowe prowadzą do konkretnych fragmentów rozmowy.",
   embedTitle:
@@ -6050,7 +6050,7 @@ const practiceEn = {
   eyebrow: "Practitioner material",
   title: "Even the best tool cannot rescue a poor implementation",
   subtitle:
-    "Observations from Procurement&Beyond episode 8, and how they may be used in the implementation self-description.",
+    "An index of episode 8 clips. Use them for implementation questions, not to calibrate the model.",
   recordingLanguageNotice:
     "The recording is in Polish. Timestamp links open the relevant parts of the conversation.",
   embedTitle:

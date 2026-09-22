@@ -12,47 +12,47 @@
   {
     "id": "home-record-pl",
     "location": "lib/i18n.ts#homeExperiencePl.record",
-    "text": "Wynik z założeniami, który da się sprawdzić. Otrzymasz zestawienie kosztów obu wariantów, przyjęte założenia i listę czynników, których model nie wycenia."
+    "text": "Co jest w zapisie porównania. Zestawienie kosztów obu wariantów, przyjęte założenia i czynniki, których model nie wycenia."
   },
   {
     "id": "home-record-en",
     "location": "lib/i18n.ts#homeExperienceEn.record",
-    "text": "A result with its assumptions, ready to check. The record lists the costs of both alternatives, the assumptions used and the factors the model leaves unpriced."
+    "text": "What the comparison record contains. The costs of both alternatives, the assumptions used and the factors the model leaves unpriced."
   },
   {
     "id": "home-journey-pl",
     "location": "lib/i18n.ts#homeExperiencePl.journey",
-    "text": "Od przypadku do zapisu w czterech krokach. Wybierz podobny zakup, dostosuj czynności i wpisz własne koszty. Na końcu pobierz wynik wraz z założeniami."
+    "text": "Cztery kroki: przypadek, przebiegi, koszty, zapis. Wybierz podobny zakup, zmień czynności jeśli trzeba i wpisz koszty. Potem pobierz wynik z założeniami, których użyłeś."
   },
   {
     "id": "home-journey-en",
     "location": "lib/i18n.ts#homeExperienceEn.journey",
-    "text": "From case to record in four steps. Choose a similar purchase, adjust the activities and enter your costs. Then download the result with its assumptions."
+    "text": "Four steps: case, workflows, costs, record. Pick a similar purchase, change the activities if needed and type your costs. Then download the result with the assumptions you used."
   },
   {
     "id": "home-boundary-pl",
     "location": "lib/i18n.ts#homePl.boundary",
-    "text": "Jedna granica. Dwa projekty przebiegu. Formalna ścieżka sekwencyjna: bramy prowadzą przez ustaloną kolejność. Adaptacyjna ścieżka zgodna z ramami: rozgałęzienia pozwalają iterować i ponownie scalać pracę. Obie ścieżki pozostają w tych samych ramach uprawnień, konkurencji, etyki i dokumentacji."
+    "text": "Ta sama granica prawna, dwa projekty przebiegu. Formalna ścieżka sekwencyjna: czynności idą jedną ustaloną kolejką zatwierdzeń. Adaptacyjna ścieżka zgodna z ramami: czynności mogą iść równolegle i wracać, zanim ścieżki się połączą. Obie ścieżki pozostają w tych samych ramach uprawnień, konkurencji, etyki i dokumentacji."
   },
   {
     "id": "home-boundary-en",
     "location": "lib/i18n.ts#homeEn.boundary",
-    "text": "One boundary. Two workflow designs. Formal sequential alternative: gates carry the work through an established sequence. Adaptive compliant alternative: branches allow work to iterate and rejoin. Both paths remain within the same boundaries of authority, competition, ethics and documentation."
+    "text": "The same legal boundary and two workflow designs. Formal sequential alternative: activities follow one fixed approval sequence. Adaptive compliant alternative: activities may run in parallel and return before the paths rejoin. Both paths remain within the same boundaries of authority, competition, ethics and documentation."
   },
   {
     "id": "og-pl",
     "location": "lib/i18n.ts#ogPl.supportLine",
-    "text": "Dwa zgodne projekty przebiegu. Jeden jawny rachunek kosztu."
+    "text": "Porównanie dwóch zgodnych przebiegów i jawny zapis kosztu."
   },
   {
     "id": "og-en",
     "location": "lib/i18n.ts#ogEn.supportLine",
-    "text": "Two lawful workflow designs and one explicit cost record."
+    "text": "A comparison of two lawful workflows and an explicit cost record."
   },
   {
     "id": "metadata-home-pl",
     "location": "lib/i18n.ts#siteMetadataPl.home",
-    "text": "Ile kosztuje przetarg? Porównanie kosztów | ProcuraCost. Porównaj czas i koszt formalnej procedury sekwencyjnej i adaptacyjnego przebiegu zgodnego z PZP. Wynik z założeniami."
+    "text": "Ile kosztuje przetarg? Porównanie kosztów | ProcuraCost. Czas i koszt formalnej procedury sekwencyjnej oraz adaptacyjnego przebiegu zgodnego z PZP. Wynik z założeniami."
   },
   {
     "id": "metadata-home-en",
@@ -92,12 +92,12 @@
   {
     "id": "methodology-intro-pl",
     "location": "lib/i18n.ts#methodologyOverviewPl.intro",
-    "text": "Jak liczymy różnicę, bez założonego znaku. Model rozdziela zgodność prawną, projekt przebiegu, konstrukcję umowy, kanał realizacji i wsparcie systemowe. Każda z tych decyzji zostaje zapisana w rekordzie."
+    "text": "Różnica kosztu bez założonego znaku. Model trzyma osobno zgodność prawną, projekt przebiegu, konstrukcję umowy, kanał realizacji i wsparcie systemowe. Rekord zapisuje każdą z tych decyzji."
   },
   {
     "id": "methodology-intro-en",
     "location": "lib/i18n.ts#methodologyOverviewEn.intro",
-    "text": "How the difference is calculated, without a built-in sign. The model keeps legal compliance, workflow design, contract design, execution channel and system support as separate decisions. Each one stays visible in the record."
+    "text": "Cost difference with no assumed sign. Legal compliance, workflow design, contract design, execution channel and system support stay separate. The record stores each of those decisions."
   },
   {
     "id": "readiness-intro-pl",
@@ -127,27 +127,27 @@
   {
     "id": "team-pl",
     "location": "lib/i18n.ts#teamPl",
-    "text": "Kto odpowiada za model, a kto za wdrożenie. W zespole są osoby od zakupów, analityki, systemów, wdrożeń, negocjacji i badań. Model porządkuje porównanie. Właściciel procesu nadal odpowiada za cel, wymagania, dane, decyzje, adopcję i pomiar wartości."
+    "text": "Role przy modelu i przy wdrożeniu. W zespole pracują osoby od zakupów, analityki, systemów, wdrożeń, negocjacji i badań. Model porównuje dwa projekty. Właściciel procesu nadal odpowiada za cel, wymagania, dane, decyzje, adopcję i pomiar wartości."
   },
   {
     "id": "team-en",
     "location": "lib/i18n.ts#teamEn",
-    "text": "Who owns the model, and who owns implementation. The team covers procurement, analytics, systems, implementation, negotiation and research. The model organises a comparison. The process owner remains accountable for purpose, requirements, data, decisions, adoption and value measurement."
+    "text": "Roles on the model and on implementation. Members work in procurement, analytics, systems, implementation, negotiation and research. The model compares two designs. The process owner still owns purpose, requirements, data, decisions, adoption and value measurement."
   },
   {
     "id": "practice-pl",
     "location": "lib/i18n.ts#practicePl.subtitle",
-    "text": "Nawet najlepsze narzędzie nie uratuje złego wdrożenia. Obserwacje z ósmego odcinka Procurement&Beyond i zasady ich użycia w samoopisie warunków wdrożenia."
+    "text": "Indeks fragmentów odcinka 8. Służą do pytań o wdrożenie, nie do kalibracji modelu."
   },
   {
     "id": "practice-en",
     "location": "lib/i18n.ts#practiceEn.subtitle",
-    "text": "Even the best tool cannot rescue a poor implementation. Observations from Procurement&Beyond episode 8, and how they may be used in the implementation self-description."
+    "text": "An index of episode 8 clips. Use them for implementation questions, not to calibrate the model."
   },
   {
     "id": "phd-roadmap-purpose",
     "location": "PHD_ROADMAP.md#purpose",
-    "text": "Purpose: prepare the doctoral package, keep the comparison instrument auditable, and approach supervisors and research partners with a bounded proposition."
+    "text": "Purpose: Prepare the doctoral materials, keep the comparison code and records auditable, and send supervisors a bounded research proposition."
   },
   {
     "id": "phd-roadmap-proposition",

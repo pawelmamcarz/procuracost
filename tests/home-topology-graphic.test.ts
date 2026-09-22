@@ -56,10 +56,10 @@ describe("shared-boundary topology graphic", () => {
 
   it("uses decision-facing copy for the rebuilt figure", () => {
     expect(homeT.pl.boundary.title).toBe(
-      "Jedna granica. Dwa projekty przebiegu."
+      "Ta sama granica prawna, dwa projekty przebiegu"
     );
     expect(homeT.en.boundary.title).toBe(
-      "One boundary. Two workflow designs."
+      "The same legal boundary and two workflow designs"
     );
   });
 });

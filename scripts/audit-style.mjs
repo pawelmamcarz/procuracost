@@ -25,7 +25,7 @@ export const questions = {
   overclaim: {
     type: 'noul',
     instructions:
-      'Does section present an unqualified universal, causal certainty, frequency ranking or numerical empirical claim beyond its stated evidence? Do not flag explicitly labelled hypotheses, assumptions, examples, proposals, or normative advice solely because they are unproven.',
+      'Does this section present an unqualified universal, causal certainty, frequency ranking or numerical empirical claim beyond its stated evidence? Do not flag explicitly labelled hypotheses, assumptions, examples, proposals, or normative advice solely because they are unproven.',
     criteria: {
       true: 'The section states an unqualified universal, causal certainty, frequency ranking or numerical empirical claim beyond the evidence it cites.',
       false: 'Claims stay within stated evidence, or they are labelled hypotheses, assumptions, examples, proposals or advice.',

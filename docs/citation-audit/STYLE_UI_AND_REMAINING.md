@@ -1,4 +1,4 @@
-# Korekta UI i pozostałych tekstów badawczych, 21 września 2026
+# Korekta UI i pozostałych tekstów badawczych, 21–22 września 2026
 
 Uzupełnia [`STYLE_REVIEW.md`](STYLE_REVIEW.md). Ten plik opisuje skrypt
 stylu, korektę kopii interfejsu oraz pozostałe teksty badawcze poza
@@ -15,9 +15,21 @@ Jev tylko ocenia sekcje. Nie generuje nowej prozy. Pytania Noul:
 - `aiStockVoice` (sygnał redakcyjny o generycznym głosie LLM, nie detektor
   autorstwa).
 
-W tym środowisku nie było `TYPESAFE_API_KEY`. Uruchomiono wyłącznie tryb
-lokalny: walidacja schematu i werdykt `not_evaluated`. Nie zapisano
-fikcyjnych ocen modelu. Ponowny audyt na żywo:
+Live ukończono 22 września 2026 poza tą maszyną wirtualną: `jev-1.13.0`,
+34/34 ocenione, 0 błędów. Trzynaście sekcji miało noul ≥ 0,5. Pełny zrzut
+odpowiedzi na sekcję pozostał poza VM; w repozytorium jest triage
+[`style-ui-pass/live-triage.json`](style-ui-pass/live-triage.json).
+Ocen nie wymyślano. `TYPESAFE_API_KEY` nadal nie było tutaj, więc
+`live-results.json` nie zapisano. Lokalny przebieg z 21 września zostaje
+w `local-dry-run.json` jako historyczny skip (schemat, `not_evaluated`).
+
+`questionHash` live to
+`e6d6f35f138909caea84def7810f98b09bf9c0005ab865c06224f335477ec6ab`.
+W tym przebiegu `overclaim.instructions` zaczynało się od „Does section
+present”. Skrypt ma już „Does this section present”; kolejny live hash
+będzie inny. Hashu triage nie przepisano.
+
+Próg 0,5 jest wygodą triage, nie progiem publikacji. Ponowny audyt:
 
 ```sh
 node --env-file=.env.local scripts/audit-style.mjs \
@@ -26,8 +38,9 @@ node --env-file=.env.local scripts/audit-style.mjs \
 
 Wsadowo 34 sekcje (strona główna, metadane, kalkulator, rekord decyzji,
 model, metodologia, gotowość, shortcasty, agenda, zespół, praktyka,
-`PHD_ROADMAP.md` i pakiet dla promotora). Katalog
-`style-ui-pass/` zawiera wejście. Wyników live nie ma, bo klucza nie było.
+`PHD_ROADMAP.md` i pakiet dla promotora). `sections.json` ma teksty po
+drugiej korekcie. `live-triage.json` zachowuje teksty ocenione w pierwszym
+przebiegu.
 
 Sześć fixture'ów w `examples-style.json` służy do testów offline, nie do
 pomiaru jakości redakcyjnej.
@@ -41,17 +54,18 @@ prawne i testowane frazy, które nadal obowiązują.
 
 | Klucze | Co zmieniono |
 |---|---|
-| `ogT` | krótsza linia PL; EN bez „transparent cost record” |
-| `homeExperienceT.hero`, `.record` | konkretny zakup zamiast „podejść zgodnych z regulacjami”; wynik z założeniami zamiast „reproducible result” |
+| `ogT` | druga korekta: „Porównanie dwóch zgodnych przebiegów…” / „A comparison of two lawful workflows…” |
+| `homeExperienceT.hero`, `.record`, `.journey` | zakup i zapis zamiast sloganu; druga korekta: „Co jest w zapisie…” / „Four steps: case, workflows, costs, record” |
 | `homeT.hero.description`, `.jobs`, `.evidenceRegister`, `.evidence`, `.implementation` | mniej kadencji „from X to Y” i „start with the decision” |
-| `siteMetadataT.home` | krótszy opis PL; EN nazywa oba przebiegi osobno |
+| `homeT.boundary` | druga korekta: ta sama granica prawna i dwie kolejki zatwierdzeń, bez „Jedna granica. Dwa projekty” |
+| `siteMetadataT.home` | krótszy opis PL z zachowanym „Wynik z założeniami”; EN nazywa oba przebiegi osobno |
 | `modelOverviewT.title`, `.intro`, `.reproducibility.title` | „Model, źródła i replikacja” zamiast „centrum” i „od hipotezy do wyniku” |
-| `methodologyOverviewT.title`, `.intro` | jak liczymy różnicę, bez założonego znaku |
+| `methodologyOverviewT.title`, `.intro` | „Różnica kosztu bez założonego znaku” / „Cost difference with no assumed sign” |
 | `researchAgendaT.title`, `.intro` | „najpierw zmierz”, bez hasła walidacyjnego |
 | `readinessT.subtitle` | samoopis przed wyborem i przed konfiguracją |
 | `shortcastsT.intro` | krótsze zdanie o tym, czym wynik nie jest |
-| `teamT` | kto za co odpowiada, bez „łączymy perspektywy” |
-| `practiceT.subtitle` | obserwacje i zasady użycia, bez „structured review” |
+| `teamT` | druga korekta: osobni właściciele modelu i wdrożenia, bez „Who owns the model, and who owns implementation” |
+| `practiceT.subtitle` | druga korekta: indeks fragmentów odcinka 8; tytuł odcinka YouTube bez zmian |
 
 Nie ruszano etykiet osi, stawek, klas dowodowych, tożsamości delty,
 komunikatów walidacji kalkulatora ani pytań gotowości, poza podtytułem
@@ -61,7 +75,7 @@ strony. `lib/i18n.ts#researchPaperEn` pozostaje po STYLE_REVIEW.
 
 | Tekst | Korekta |
 |---|---|
-| `PHD_ROADMAP.md` | cel bez „defensible package”; mechanizm do zaobserwowania, nie etykieta; ocena na końcu horyzontu według dowodów |
+| `PHD_ROADMAP.md` | druga korekta celu: materiały doktorskie, audytowalny kod i zapis, bounded proposition; bez „doctoral package” |
 | `docs/supervisor/README.md` | cel spotkania w jednym zdaniu wprowadzającym |
 | `docs/supervisor/01-one-pager.md` | problem: mieszanie mechanizmów, nie „łączenie” jako ozdobnik |
 | `docs/research/README.md` | pierwsza linia bez „intentionally small” jako ozdobnika |
@@ -89,5 +103,30 @@ przedmiotem tej korekty.
 - `lib/model-v2/`: bez zmian ekonomii, wzorów, terminów prawnych,
   scenariuszy, neutralności i granic dowodowych.
 
+## Druga korekta, 22 września 2026
+
+Po triage przepisano residualne teksty z noul ≥ 0,5. Znaczenie, pary PL/EN,
+słownictwo `formalSequential` / `adaptiveCompliant` i brak myślników w prozie
+zostały zachowane. Angielski pozostaje brytyjski. Tytuł odcinka YouTube
+(`practiceT.title`) nie był ruszany.
+
+Sygnały z `live-triage.json` (nie wymyślone):
+
+| Id | Flagi ≥ 0,5 |
+|---|---|
+| `practice-pl` | stockRhetoric 0,75; overclaim 0,59 |
+| `practice-en` | stockRhetoric 0,80; overclaim 0,66; aiStockVoice 0,58 |
+| `home-boundary-pl` | aiStockVoice 0,79 |
+| `home-boundary-en` | aiStockVoice 0,85 |
+| `team-en` | aiStockVoice 0,69 |
+| `og-pl` | aiStockVoice 0,65 |
+| `og-en` | aiStockVoice 0,53 |
+| `phd-roadmap-purpose` | aiStockVoice 0,78 |
+| `home-record-pl` | aiStockVoice 0,58 |
+| `home-journey-en` | aiStockVoice 0,54 |
+| `metadata-home-pl` | aiStockVoice 0,50 |
+| `methodology-intro-pl` | aiStockVoice 0,54 |
+| `methodology-intro-en` | aiStockVoice 0,50 |
+
 Korekta jest redakcyjna. Nie jest detektorem autorstwa AI ani nowym
-wynikiem empirycznym.
+wynikiem empirycznym. Druga korekta nie była ponownie oceniana na żywo.

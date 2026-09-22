@@ -73,5 +73,6 @@ test('missing credentials, duplicate identifiers and invalid expected flags reje
 test('question definitions stay reviewable and hashed', async () => {
   assert.equal(questions.aiStockVoice.type, 'noul');
   assert.match(questions.aiStockVoice.instructions, /not an authorship detector/);
+  assert.match(questions.overclaim.instructions, /^Does this section present /);
   assert.equal(questionIds.length, 4);
 });
