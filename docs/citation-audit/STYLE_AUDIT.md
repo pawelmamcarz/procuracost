@@ -65,13 +65,14 @@ dotenv files themselves.
 
 A modest UI and remaining-research batch lives in
 `style-ui-pass/sections.json`. Live evaluation completed on 22 September
-2026 outside this VM (`jev-1.13.0`, 34/34, 0 errors). Thirteen sections
-were flagged at noul ≥ 0.5. The full per-section dump stayed outside the
-VM; `style-ui-pass/live-triage.json` is the committed triage. Scores were
-not invented. `live-results.json` is absent because the key was not
-available here. The live `questionHash` belongs to the pre-typo
-`overclaim` wording (`Does section present`). The script now reads
-`Does this section present`; later hashes will differ. The earlier
-publication language pass is documented in
-[`STYLE_REVIEW.md`](STYLE_REVIEW.md). The UI and remaining-research pass
-is documented in [`STYLE_UI_AND_REMAINING.md`](STYLE_UI_AND_REMAINING.md).
+2026 outside this VM (`jev-1.13.0`, 34/34, 0 errors). First pass: 13
+flags ≥ 0.5 (`live-triage.json`). After the second rewrite: 5 flags
+(`live-triage-pass2.json`); practice and OG cleared; `phd-roadmap-purpose`
+stayed high at 0.80. Scores were not invented. `live-results.json` is
+absent because the key was not available here. The first-pass
+`questionHash` belongs to the pre-typo `overclaim` wording
+(`Does section present`). The script now reads `Does this section
+present`; later hashes will differ. The earlier publication language
+pass is documented in [`STYLE_REVIEW.md`](STYLE_REVIEW.md). The UI and
+remaining-research pass is documented in
+[`STYLE_UI_AND_REMAINING.md`](STYLE_UI_AND_REMAINING.md).

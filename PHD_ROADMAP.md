@@ -3,8 +3,9 @@
 **Current research baseline:** native model 2.3.0
 
 **Planning horizon:** September 2026 to January 2027
-**Purpose:** Prepare the doctoral materials, keep the comparison code and
-records auditable, and send supervisors a bounded research proposition.
+**Purpose:** Assemble the doctoral file for native model 2.3.0. Keep the
+comparison code and records open to audit, and give supervisors a bounded
+proposition.
 
 ## Historical re-baselines
 

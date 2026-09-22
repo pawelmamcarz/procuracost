@@ -32,12 +32,12 @@
   {
     "id": "home-boundary-pl",
     "location": "lib/i18n.ts#homePl.boundary",
-    "text": "Ta sama granica prawna, dwa projekty przebiegu. Formalna ścieżka sekwencyjna: czynności idą jedną ustaloną kolejką zatwierdzeń. Adaptacyjna ścieżka zgodna z ramami: czynności mogą iść równolegle i wracać, zanim ścieżki się połączą. Obie ścieżki pozostają w tych samych ramach uprawnień, konkurencji, etyki i dokumentacji."
+    "text": "Dwa projekty przebiegu pod tą samą granicą prawną. Formalna ścieżka sekwencyjna: czynności idą jedną ustaloną kolejką zatwierdzeń. Adaptacyjna ścieżka zgodna z ramami: czynności mogą iść równolegle i wracać, zanim ścieżki się połączą. Uprawnienia, konkurencja, etyka i dokumentacja obowiązują obie ścieżki."
   },
   {
     "id": "home-boundary-en",
     "location": "lib/i18n.ts#homeEn.boundary",
-    "text": "The same legal boundary and two workflow designs. Formal sequential alternative: activities follow one fixed approval sequence. Adaptive compliant alternative: activities may run in parallel and return before the paths rejoin. Both paths remain within the same boundaries of authority, competition, ethics and documentation."
+    "text": "Two workflow designs under the same legal boundary. Formal sequential alternative: activities follow one fixed approval sequence. Adaptive compliant alternative: activities may run in parallel and return before the paths rejoin. Authority, competition, ethics and documentation apply to both paths."
   },
   {
     "id": "og-pl",
@@ -127,12 +127,12 @@
   {
     "id": "team-pl",
     "location": "lib/i18n.ts#teamPl",
-    "text": "Role przy modelu i przy wdrożeniu. W zespole pracują osoby od zakupów, analityki, systemów, wdrożeń, negocjacji i badań. Model porównuje dwa projekty. Właściciel procesu nadal odpowiada za cel, wymagania, dane, decyzje, adopcję i pomiar wartości."
+    "text": "Role przy modelu i przy wdrożeniu. W zespole pracują osoby od zakupów, analityki, systemów, wdrożeń, negocjacji i badań. Model porównuje dwa projekty. Cel, wymagania, dane, decyzje, adopcja i pomiar wartości zostają u właściciela procesu."
   },
   {
     "id": "team-en",
     "location": "lib/i18n.ts#teamEn",
-    "text": "Roles on the model and on implementation. Members work in procurement, analytics, systems, implementation, negotiation and research. The model compares two designs. The process owner still owns purpose, requirements, data, decisions, adoption and value measurement."
+    "text": "Roles for the model and for implementation. Members work in procurement, analytics, systems, implementation, negotiation and research. The model compares two designs. Purpose, requirements, data, decisions, adoption and value measurement stay with the process owner."
   },
   {
     "id": "practice-pl",
@@ -147,7 +147,7 @@
   {
     "id": "phd-roadmap-purpose",
     "location": "PHD_ROADMAP.md#purpose",
-    "text": "Purpose: Prepare the doctoral materials, keep the comparison code and records auditable, and send supervisors a bounded research proposition."
+    "text": "Purpose: Assemble the doctoral file for native model 2.3.0. Keep the comparison code and records open to audit, and give supervisors a bounded proposition."
   },
   {
     "id": "phd-roadmap-proposition",

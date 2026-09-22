@@ -6,7 +6,7 @@
   "sections": 34,
   "live": "completed",
   "completedAt": "2026-09-22T05:47:18.023Z",
-  "completedNote": "Live Jev ran outside this VM on 22 Sep 2026 (jev-1.13.0). 34/34 evaluated, 0 errors. 13 sections flagged at noul ≥ 0.5. The full per-section answer dump was run outside the VM and was not attached. Triage is committed in live-triage.json. No model scores were invented. TYPESAFE_API_KEY was still absent here, so live-results.json was not regenerated.",
+  "completedNote": "Live Jev ran outside this VM on 22 Sep 2026 (jev-1.13.0). First pass: 34/34, 0 errors, 13 flags ≥ 0.5 (live-triage.json). Second-rewrite re-score: 34/34, 0 errors, 5 flags (live-triage-pass2.json). Practice and OG cleared. phd-roadmap-purpose stayed at 0.80. No model scores were invented. TYPESAFE_API_KEY was still absent here, so live-results.json was not regenerated.",
   "mode": "live-triage",
   "requestedModel": "jev-latest",
   "returnedModels": [
@@ -21,10 +21,12 @@
     "errors": 0
   },
   "flags_ge_0_5_count": 13,
+  "flags_ge_0_5_count_pass2": 5,
   "triage": "docs/citation-audit/style-ui-pass/live-triage.json",
+  "triagePass2": "docs/citation-audit/style-ui-pass/live-triage-pass2.json",
   "localDryRun": "docs/citation-audit/style-ui-pass/local-dry-run.json",
   "localDryRunNote": "21 Sep 2026 local-only skip: schema validation, verdict not_evaluated. Historical. No invented scores.",
-  "sectionsSnapshotNote": "sections.json texts are the second-rewrite copies. live-triage.json retains the evaluated first-pass texts.",
+  "sectionsSnapshotNote": "sections.json texts are the third light rewrite (purpose, boundary, team). live-triage.json retains first-pass texts. live-triage-pass2.json retains second-rewrite texts as scored.",
   "questions": {
     "stockRhetoric": {
       "type": "noul",

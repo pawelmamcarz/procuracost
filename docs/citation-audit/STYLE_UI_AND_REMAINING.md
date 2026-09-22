@@ -39,8 +39,8 @@ node --env-file=.env.local scripts/audit-style.mjs \
 Wsadowo 34 sekcje (strona główna, metadane, kalkulator, rekord decyzji,
 model, metodologia, gotowość, shortcasty, agenda, zespół, praktyka,
 `PHD_ROADMAP.md` i pakiet dla promotora). `sections.json` ma teksty po
-drugiej korekcie. `live-triage.json` zachowuje teksty ocenione w pierwszym
-przebiegu.
+trzeciej lekkiej korekcie. `live-triage.json` zachowuje pierwszy przebieg;
+`live-triage-pass2.json` zachowuje teksty ocenione po drugiej korekcie.
 
 Sześć fixture'ów w `examples-style.json` służy do testów offline, nie do
 pomiaru jakości redakcyjnej.
@@ -57,14 +57,14 @@ prawne i testowane frazy, które nadal obowiązują.
 | `ogT` | druga korekta: „Porównanie dwóch zgodnych przebiegów…” / „A comparison of two lawful workflows…” |
 | `homeExperienceT.hero`, `.record`, `.journey` | zakup i zapis zamiast sloganu; druga korekta: „Co jest w zapisie…” / „Four steps: case, workflows, costs, record” |
 | `homeT.hero.description`, `.jobs`, `.evidenceRegister`, `.evidence`, `.implementation` | mniej kadencji „from X to Y” i „start with the decision” |
-| `homeT.boundary` | druga korekta: ta sama granica prawna i dwie kolejki zatwierdzeń, bez „Jedna granica. Dwa projekty” |
+| `homeT.boundary` | trzecia korekta: dwa projekty pod jedną granicą; podpis bez „obie ścieżki pozostają” |
 | `siteMetadataT.home` | krótszy opis PL z zachowanym „Wynik z założeniami”; EN nazywa oba przebiegi osobno |
 | `modelOverviewT.title`, `.intro`, `.reproducibility.title` | „Model, źródła i replikacja” zamiast „centrum” i „od hipotezy do wyniku” |
 | `methodologyOverviewT.title`, `.intro` | „Różnica kosztu bez założonego znaku” / „Cost difference with no assumed sign” |
 | `researchAgendaT.title`, `.intro` | „najpierw zmierz”, bez hasła walidacyjnego |
 | `readinessT.subtitle` | samoopis przed wyborem i przed konfiguracją |
 | `shortcastsT.intro` | krótsze zdanie o tym, czym wynik nie jest |
-| `teamT` | druga korekta: osobni właściciele modelu i wdrożenia, bez „Who owns the model, and who owns implementation” |
+| `teamT` | trzecia korekta EN: role for the model; lista obowiązków zostaje u właściciela procesu |
 | `practiceT.subtitle` | druga korekta: indeks fragmentów odcinka 8; tytuł odcinka YouTube bez zmian |
 
 Nie ruszano etykiet osi, stawek, klas dowodowych, tożsamości delty,
@@ -75,7 +75,7 @@ strony. `lib/i18n.ts#researchPaperEn` pozostaje po STYLE_REVIEW.
 
 | Tekst | Korekta |
 |---|---|
-| `PHD_ROADMAP.md` | druga korekta celu: materiały doktorskie, audytowalny kod i zapis, bounded proposition; bez „doctoral package” |
+| `PHD_ROADMAP.md` | trzecia korekta celu: plik doktorski modelu 2.3.0 i zapis otwarty do audytu; bez trójdzielnej kadencji „prepare, keep, send” |
 | `docs/supervisor/README.md` | cel spotkania w jednym zdaniu wprowadzającym |
 | `docs/supervisor/01-one-pager.md` | problem: mieszanie mechanizmów, nie „łączenie” jako ozdobnik |
 | `docs/research/README.md` | pierwsza linia bez „intentionally small” jako ozdobnika |
@@ -129,4 +129,30 @@ Sygnały z `live-triage.json` (nie wymyślone):
 | `methodology-intro-en` | aiStockVoice 0,50 |
 
 Korekta jest redakcyjna. Nie jest detektorem autorstwa AI ani nowym
-wynikiem empirycznym. Druga korekta nie była ponownie oceniana na żywo.
+wynikiem empirycznym.
+
+## Ponowna ocena po drugiej korekcie, 22 września 2026
+
+Live `jev-1.13.0` poza VM: 34/34, 0 błędów. Flag ≥ 0,5 spadło z 13 do 5.
+Triage: [`live-triage-pass2.json`](style-ui-pass/live-triage-pass2.json).
+Ocen nie wymyślano.
+
+Zeszły poniżej 0,5: `practice-pl`, `practice-en`, `og-pl`, `og-en`,
+`home-record-pl`, `home-journey-en`, `metadata-home-pl`,
+`methodology-intro-pl`. `stockRhetoric` i `overclaim` nie wróciły.
+
+Zostały wyłącznie `aiStockVoice`:
+
+| Id | Flagi ≥ 0,5 |
+|---|---|
+| `home-boundary-pl` | 0,62 |
+| `home-boundary-en` | 0,57 |
+| `methodology-intro-en` | 0,52 |
+| `team-en` | 0,56 |
+| `phd-roadmap-purpose` | 0,80 |
+
+Cel w `PHD_ROADMAP.md` nadal był wysoki (0,80). Przepisano go raz jeszcze,
+lekko też `homeT.boundary` i `teamEn`. `methodology-intro-en` przy 0,52
+zostawiono: próg 0,5 jest wygodą triage, a zdanie w triage cytuje jeszcze
+pierwszą kadencję („How the difference is calculated…”); bieżąca kopia
+strony już jest inna. Trzeciej oceny na żywo nie było.

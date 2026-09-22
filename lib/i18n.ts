@@ -957,7 +957,7 @@ const homePl = {
     "Model dopuszcza oba kierunki różnicy. Znak wyniku nie jest założony.",
   boundary: {
     eyebrow: "Wspólna granica decyzji",
-    title: "Ta sama granica prawna, dwa projekty przebiegu",
+    title: "Dwa projekty przebiegu pod tą samą granicą prawną",
     tunnelLabel: "Formalna ścieżka sekwencyjna",
     tunnelDescription: "Czynności idą jedną ustaloną kolejką zatwierdzeń.",
     boundaryLabel: "Ramy prawne i ład zakupowy",
@@ -967,7 +967,7 @@ const homePl = {
     note:
       "Schemat pokazuje konstrukcję pracy, nie wynik ani oszacowanie czasu lub kosztu.",
     caption:
-      "Obie ścieżki pozostają w tych samych ramach uprawnień, konkurencji, etyki i dokumentacji.",
+      "Uprawnienia, konkurencja, etyka i dokumentacja obowiązują obie ścieżki.",
     action: "Otwórz edytowalne porównanie procesów",
   },
   modelContract: {
@@ -1105,7 +1105,7 @@ const homeEn = {
     "The model permits either direction of difference. The sign is not assumed.",
   boundary: {
     eyebrow: "Shared decision boundary",
-    title: "The same legal boundary and two workflow designs",
+    title: "Two workflow designs under the same legal boundary",
     tunnelLabel: "Formal sequential alternative",
     tunnelDescription: "Activities follow one fixed approval sequence.",
     boundaryLabel: "Legal and governance boundary",
@@ -1115,7 +1115,7 @@ const homeEn = {
     note:
       "The diagram shows how work is structured, not an outcome or an estimate of time or cost.",
     caption:
-      "Both paths remain within the same boundaries of authority, competition, ethics and documentation.",
+      "Authority, competition, ethics and documentation apply to both paths.",
     action: "Open the editable process comparison",
   },
   modelContract: {
@@ -4296,7 +4296,7 @@ const teamPl = {
     eyebrow: "Praktyka wdrożeniowa",
     title: "Model i wdrożenie mają różnych właścicieli",
     body:
-      "Model porównuje dwa projekty. Właściciel procesu nadal odpowiada za cel, wymagania, dane, decyzje, adopcję i pomiar wartości.",
+      "Model porównuje dwa projekty. Cel, wymagania, dane, decyzje, adopcja i pomiar wartości zostają u właściciela procesu.",
     practiceAction: "Rozmowa Procurement&Beyond",
   },
   roles: {
@@ -4343,7 +4343,7 @@ const teamEn = {
   metadataDescription:
     "The people accountable for the ProcuraCost model and for implementation practice: procurement, analytics, systems, negotiation and research.",
   eyebrow: "Team",
-  title: "Roles on the model and on implementation",
+  title: "Roles for the model and for implementation",
   description:
     "Members work in procurement, analytics, systems, implementation, negotiation and research.",
   peopleTitle: "People",
@@ -4354,7 +4354,7 @@ const teamEn = {
     eyebrow: "Implementation practice",
     title: "The model and implementation have different owners",
     body:
-      "The model compares two designs. The process owner still owns purpose, requirements, data, decisions, adoption and value measurement.",
+      "The model compares two designs. Purpose, requirements, data, decisions, adoption and value measurement stay with the process owner.",
     practiceAction: "Procurement&Beyond conversation",
   },
   roles: {
