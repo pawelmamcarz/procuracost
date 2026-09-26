@@ -29,6 +29,7 @@ function formatCurrency(value: number, lang: Lang): string {
     }).format(value);
   }
   return `${new Intl.NumberFormat("en-GB", {
+    minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(value)} PLN`;
 }

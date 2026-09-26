@@ -320,6 +320,10 @@ export function CalculatorWorkspaceView({
                     result={migrationControl.result}
                   />
                 ) : null}
+                <CalculatorValidationSummary
+                  issues={validation.issues.filter((issue) => issue.source === "url")}
+                  lang={lang}
+                />
                 {state.urlOrigin !== "empty" && !validation.canSubmit ? (
                   <button
                     className="inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 underline decoration-blue-300 underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"

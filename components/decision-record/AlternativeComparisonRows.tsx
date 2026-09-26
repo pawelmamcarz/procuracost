@@ -39,7 +39,10 @@ function formatCurrency(value: number, lang: Lang): string {
       maximumFractionDigits: 2,
     }).format(value);
   }
-  return `${formatNumber(value, lang)} PLN`;
+  return `${new Intl.NumberFormat("en-GB", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value)} PLN`;
 }
 
 function labelledRange(
