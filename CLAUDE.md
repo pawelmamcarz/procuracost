@@ -228,8 +228,10 @@ configuration.
   must match `year.ISO-week.release.patch` or the config throws before the
   server starts. Quantitative model metadata is separate and lives in
   `lib/model-v2/domain.ts`.
-- **Design:** follow `CLAUDE_DESIGN.md`. Do not add prose em dashes, gradients,
-  shadows, generic card grids, JSX comments or a new chart library.
+- **Design:** follow `CLAUDE_DESIGN.md`, and walk its editor quality checklist
+  in the running app before handing off any UI change. Do not add prose em
+  dashes, gradients, shadows, generic card grids, JSX comments or a new chart
+  library.
 
 ## Repo sync (machine-specific)
 

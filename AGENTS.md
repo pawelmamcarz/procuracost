@@ -227,9 +227,10 @@ Verified state at the time of writing: `npm test` passes (79 files, 858 tests).
   (Procurement&Beyond episode 8) may inform questions and hypotheses only —
   never thresholds, weights or calibration. Bielik may structure market data;
   the transparent model performs the calculation.
-- **Design:** follow `CLAUDE_DESIGN.md`. No prose em dashes, gradients,
-  shadows, generic card grids, JSX comments in returned markup, or a second
-  chart library. Colour semantics: red/green identify the two compared
+- **Design:** follow `CLAUDE_DESIGN.md`, and walk its editor quality checklist
+  in the running app before handing off any UI change. No prose em dashes,
+  gradients, shadows, generic card grids, JSX comments in returned markup, or a
+  second chart library. Colour semantics: red/green identify the two compared
   alternatives only — never a judgement.
 - **Style:** match the surrounding code; no multi-paragraph docstrings or
   comment blocks on functions; no magic numbers or legal rules in components —

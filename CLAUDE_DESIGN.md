@@ -14,7 +14,7 @@ entries.
 | Readiness not met | `gray-300`, `gray-100`, `gray-700/900` | A self-described condition not currently met |
 | Readiness confirmed | `blue-200/500`, `blue-50`, `blue-700` | A self-described condition confirmed by the respondent |
 | Section surface | `gray-50`, `gray-100`, `border-gray-100` | Quiet grouped sections |
-| Text hierarchy | `gray-900` → `gray-700` → `gray-600` → `gray-400` | h → body → label → meta/source |
+| Text hierarchy | `gray-900` → `gray-700` → `gray-600` → `gray-500` | h → body → label → meta/source |
 | Legal lock | `amber-400`, `amber-50`, `amber-800` | Fixed legal provenance and mandatory waits |
 
 Chart colour constants (Recharts): formal/sequential = `#ef4444`,
@@ -35,13 +35,15 @@ Body text:            text-sm text-gray-700
 Small body / notes:   text-xs text-gray-500 leading-relaxed
 Monospace values:     font-mono text-xs
 Math / formulas:      font-mono text-xs text-gray-400
-Source citations:     text-xs text-gray-400
+Source citations:     text-xs text-gray-500
 Numeric highlights:   text-2xl font-bold text-blue-700
 ```
 
 Use tabular numerals for ranges, costs and elapsed days. Use plain-language
 headings for procurement decisions. Internal identifiers may appear only in
-monospace provenance or export views.
+monospace provenance or export views. Reserve `gray-400` for decorative mono
+notation; small prose and meta text uses `gray-500` or darker to hold WCAG AA
+contrast.
 
 ## Visual composition
 
@@ -113,12 +115,13 @@ only for a single high-priority next step. Page heroes must not use gradients.
 
 For dense model output, use this order:
 
-1. Compared alternatives and interpretation boundary
-2. Central values and declared ranges
+1. Difference summary with the interpretation boundary
+2. Compared alternatives with central values and declared ranges
 3. Driver analysis
 4. Monetisation coverage and non-monetised dimensions
 5. Assumptions, evidence and legal provenance
-6. Export actions
+6. Reference-scenario comparison
+7. Export actions
 
 Do not collapse assumptions or evidence behind vague labels such as "Learn
 more". A decision record must make its coverage limits visible before export.
@@ -254,3 +257,49 @@ The field is bounded by the same admissibility constraints as the tunnel. Any fi
 - No generic card grid for a process, evidence chain or decision record.
 - No public scoring, ranking, preferred-procedure badge or aggregate capability percentage.
 - No `grid-cols-5` on mobile.
+
+## Editor quality checklist
+
+UI work is not done when it builds. Before hand-off of any UI change, walk
+this checklist in the running app in both languages, at 320 CSS pixels and at
+desktop width. The question behind every item is the same: does this element
+strengthen the readability of the auditable decision record? If not, cut it.
+
+Point of view:
+
+- Every element maps to one colour role above; red and green still identify
+  only the two compared alternatives, never a judgement.
+- Depth comes from spacing, rules and typography. The screen reads as an
+  interactive working paper, not a SaaS dashboard.
+- No stock pattern has replaced a signature motif.
+
+Encoded standards:
+
+- All strings through `lib/i18n.ts` with matching PL/EN leaf paths; British
+  spelling; the terminology table is honoured.
+- No magic numbers or legal rules in components; Recharts only; every chart
+  has a text equivalent.
+
+Real use, not screenshots:
+
+- Walk case, workflows, costs and record stages in PL and EN. The stages read
+  as one narrative, not four separate prototypes.
+- At 320 px the rail is vertical with connectors intact and no horizontal
+  page scrolling.
+- Legal waits show the lock, amber accent, source reference and no edit
+  affordance in both lanes.
+- Monetisation coverage and non-monetised dimensions are visible before any
+  export action.
+- Keyboard: process-map nodes reachable, focus rings visible, reduced motion
+  honoured.
+- The field visual shows the ∂Φ boundary.
+
+Uniqueness and detail:
+
+- Signature motifs (cobalt numbered rule, process rail, Tunnel and Field) are
+  developed further, not diluted.
+- Micro-details hold up: tabular numerals in ranges, costs and elapsed days;
+  aligned formal/adaptive pairs with equal visual status; source citations in
+  quiet meta styles.
+- A fast, polished-looking element that solves no real problem is rejected,
+  however finished it looks.

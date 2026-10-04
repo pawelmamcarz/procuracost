@@ -1,5 +1,39 @@
 # Changelog
 
+## 2026-10-04: design-contract pass and editor quality checklist
+
+A full design audit against `CLAUDE_DESIGN.md`, followed by same-day fixes.
+
+- Added the editor quality checklist to `CLAUDE_DESIGN.md` and pointed
+  `AGENTS.md` and `CLAUDE.md` at it: UI work is reviewed in the running app,
+  in both languages, at 320 px and desktop width, before hand-off.
+- Surfaced the bounded Tunnel and Field visual (`BoundaryField`) on the model
+  page in both locales; deleted the orphaned `PipeFieldDiagram`, which carried
+  hardcoded copy and the obsolete SIWZ term.
+- Process rail: connectors now show arrow direction, the critical path uses
+  line weight plus blue emphasis (lane red/green is identity-only), the mobile
+  sequence draws vertical connectors, and node timings use tabular numerals.
+- Unified the cobalt numbered-rule motif behind
+  `components/NumberedProvenanceRule.tsx` across the homepage record
+  structure, the four-stage journey, the evidence docket and the practice
+  reference chain.
+- Accessibility: small meta text moved from gray-400 to gray-500 for WCAG AA
+  (the contract now reserves gray-400 for decorative mono notation); reduced
+  motion honoured on the suitability controls; tabular numerals added to the
+  assumptions-page cost and day values and to the comparison-row counts.
+- Copy: removed winner, ranking and recommendation vocabulary, American
+  spellings and the obsolete SIWZ term from the legacy dictionaries and
+  `lib/process-templates.ts`; replaced "Zamawiający (biznes)" with
+  "Wnioskodawca biznesowy"; migration fallback strings moved into the paired
+  calculatorV2 dictionary.
+- Legacy quarantine components brought inside the visual contract: no
+  gradients, shadows, glass, radar charts or five-column grids anywhere in the
+  repo. `tests/design-contract.test.ts` now enforces the radar ban, the
+  hex-in-className ban and the red/green colour semantics.
+- Fixed the red HEAD: added the missing `evidence.beuve.*` copy and the
+  `verified_postprint` labels to all PL/EN dictionaries for the committed
+  `beuve_amendment_frequency_2023` evidence record.
+
 ## 2026-09-22: contract-amendment differential anchored to the published Beuve version
 
 Source audit closure for the contract-amendment dimension of native model
