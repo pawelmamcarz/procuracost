@@ -199,8 +199,8 @@ const PZP_EU_STEPS: ProcessStep[] = [
   },
   {
     id: "siwz_prep",
-    name: "Opracowanie SIWZ/SWZ",
-    nameEn: "Specification of terms (SIWZ/SWZ) preparation",
+    name: "Opracowanie SWZ",
+    nameEn: "Specification of terms (SWZ) preparation",
     rigidDays: 10,
     flexibleDays: 7,
     mandatoryWait: false,
@@ -217,7 +217,7 @@ const PZP_EU_STEPS: ProcessStep[] = [
     mandatoryWait: true,
     participation: { buyer: 4 },
     note: "Modelowany standardowy termin składania ofert: 35 dni — art. 138 ust. 1 PZP. Powyżej progów unijnych ogłoszenie trafia do Dz.Urz. UE / TED; BZP jest kanałem dla postępowań krajowych (Dział III). Uwaga: art. 138 ust. 4 pozwala skrócić termin do 30 dni przy pełnej komunikacji elektronicznej, a art. 61 ust. 1 czyni ją ustawowym domyślnym trybem — skrócenie jest więc w praktyce dostępne w większości postępowań. Model zachowuje 35 dni jako wariant konserwatywny; 30 dni jest udokumentowanym przypadkiem wrażliwości.",
-    noteEn: "Modeled standard bid-submission period: 35 days — Art. 138(1) PZP. Above the EU thresholds the notice goes to the OJ EU / TED; BZP is the channel for national (Dział III) procedures. Note that Art. 138(4) permits a reduction to 30 days for fully electronic submission and Art. 61(1) makes electronic communication the statutory default, so the reduction is in practice available in most procedures. The model keeps 35 days as the conservative variant; 30 days is a documented sensitivity case.",
+    noteEn: "Modelled standard bid-submission period: 35 days — Art. 138(1) PZP. Above the EU thresholds the notice goes to the OJ EU / TED; BZP is the channel for national (Dział III) procedures. Note that Art. 138(4) permits a reduction to 30 days for fully electronic submission and Art. 61(1) makes electronic communication the statutory default, so the reduction is in practice available in most procedures. The model keeps 35 days as the conservative variant; 30 days is a documented sensitivity case.",
   },
   {
     id: "bid_evaluation",
@@ -261,7 +261,7 @@ const PZP_EU_STEPS: ProcessStep[] = [
     mandatoryWait: true,
     participation: {},
     note: "Modelowany standstill: 10 dni przy komunikacji elektronicznej (15 dni w inny sposób) — art. 264 ust. 1 PZP. Wyjątki z ust. 2 wymagają osobnego scenariusza.",
-    noteEn: "Modeled standstill: 10 days for electronic communication (15 days otherwise) — Art. 264(1) PZP. Exceptions under paragraph 2 require a separate scenario.",
+    noteEn: "Modelled standstill: 10 days for electronic communication (15 days otherwise) — Art. 264(1) PZP. Exceptions under paragraph 2 require a separate scenario.",
   },
   {
     id: "contract_signing",
@@ -308,7 +308,7 @@ const PZP_KRAJOWY_STEPS: ProcessStep[] = [
     mandatoryWait: true,
     participation: { buyer: 3 },
     note: "Minimum dla dostaw/usług: 7 dni — art. 283 PZP. Roboty budowlane wymagają 14 dni i należy je modelować odrębnie.",
-    noteEn: "Supplies/services minimum: 7 days — Art. 283 PZP. Construction works require 14 days and must be modeled separately.",
+    noteEn: "Supplies/services minimum: 7 days — Art. 283 PZP. Construction works require 14 days and must be modelled separately.",
   },
   {
     id: "bid_evaluation",
@@ -445,7 +445,7 @@ const DISCOVERY_STEPS: ProcessStep[] = [
     flexibleDays: 8,
     mandatoryWait: false,
     participation: { requestor: 12, buyer: 10, manager: 4 },
-    note: "Ścieżka formalna zamraża wymaganie wcześnie, żeby dało się je opisać w SIWZ. Ścieżka adaptacyjna świadomie zostawia je otwarte dłużej — to kosztuje czas, a zwraca lepsze dopasowanie.",
+    note: "Ścieżka formalna zamraża wymaganie wcześnie, żeby dało się je opisać w SWZ. Ścieżka adaptacyjna świadomie zostawia je otwarte dłużej — to kosztuje czas, a zwraca lepsze dopasowanie.",
     noteEn: "The formal path freezes the requirement early so it can be specified. The adaptive path deliberately leaves it open for longer — that costs time and buys fit.",
   },
   {
@@ -780,7 +780,7 @@ export const PROCESS_TYPE_META: Record<Exclude<ProcessType, "custom">, { categor
     name: "Strategiczna inwestycja CAPEX (uzasadnione zarządzanie)",
     nameEn: "Strategic CAPEX investment (justified governance)",
     description: "Zakup środków trwałych. Governance może tworzyć wartość; potencjał skrócenia zależy od kroków i danych wejściowych.",
-    descriptionEn: "Fixed-asset procurement. Governance may create value; any time reduction depends on the modeled steps and inputs.",
+    descriptionEn: "Fixed-asset procurement. Governance may create value; any time reduction depends on the modelled steps and inputs.",
   },
   catalog_order: {
     category: "operational",

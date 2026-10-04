@@ -94,7 +94,7 @@ const calculatorPl = {
   // Stakeholders section
   stakeholdersTitle: "Uczestnicy procesu",
   stakeholderRoles: {
-    requestor: "Zamawiający (biznes)",
+    requestor: "Wnioskodawca biznesowy",
     buyer: "Kupiec",
     lawyer: "Prawnik",
     finance: "Finanse",
@@ -146,7 +146,7 @@ const calculatorEn = {
     private_formal: "Strategic private tender (RFQ/RFP)",
     policy_only: "Strategic adaptive and compliant path",
     discovery: "Strategic discovery purchase (requirement unknown)",
-    catalog_order: "Operational catalog order",
+    catalog_order: "Operational catalogue order",
     mrp_order: "Operational MRP / production cycle",
     capex: "Strategic CAPEX investment",
     custom: "Custom",
@@ -160,7 +160,7 @@ const calculatorEn = {
   },
   stakeholdersTitle: "Process participants",
   stakeholderRoles: {
-    requestor: "Requestor (business)",
+    requestor: "Business requestor",
     buyer: "Buyer",
     lawyer: "Lawyer",
     finance: "Finance",
@@ -198,9 +198,17 @@ const migrationRolesEn: Record<string, string> = {
   executive: "Executive",
 };
 
+type MigrationFieldFallbacks = {
+  unknownRole: string;
+  stakeholderCount: string;
+  stakeholderDailyRate: string;
+  otherMigratedField: string;
+};
+
 function migrationFieldLabel(
   field: string,
-  lang: Lang
+  lang: Lang,
+  fallbacks: MigrationFieldFallbacks
 ): string {
   const labels =
     lang === "pl"
@@ -286,19 +294,14 @@ function migrationFieldLabel(
   );
   if (stakeholder) {
     const roles = lang === "pl" ? migrationRolesPl : migrationRolesEn;
-    const role = roles[stakeholder[1]] ??
-      (lang === "pl" ? "Inna rola" : "Other role");
+    const role = roles[stakeholder[1]] ?? fallbacks.unknownRole;
     const measure =
       stakeholder[2] === "count"
-        ? lang === "pl"
-          ? "liczba osób"
-          : "participant count"
-        : lang === "pl"
-          ? "stawka dzienna"
-          : "daily rate";
+        ? fallbacks.stakeholderCount
+        : fallbacks.stakeholderDailyRate;
     return `${role}: ${measure}`;
   }
-  return lang === "pl" ? "Inne przeniesione pole" : "Other migrated field";
+  return fallbacks.otherMigratedField;
 }
 
 const calculatorV2Pl = {
@@ -441,6 +444,7 @@ const calculatorV2Pl = {
     noEvidenceIds: "brak",
     evidenceClasses: {
       empirical_anchor: "Kotwica empiryczna",
+      verified_postprint: "Zweryfikowany postprint",
       official_case: "Przypadek urzędowy",
       practitioner_observation: "Obserwacja praktyka",
       illustrative_scenario: "Scenariusz ilustracyjny",
@@ -553,7 +557,12 @@ const calculatorV2Pl = {
       "Potwierdzam użycie przeniesionych danych wejściowych w modelu 2.3.0.",
     recalculation:
       "Poprzedni wynik nie jest odtwarzany. Dane zostaną ponownie obliczone w modelu 2.3.0.",
-    fieldLabel: (field: string): string => migrationFieldLabel(field, "pl"),
+    unknownRole: "Inna rola",
+    stakeholderCount: "liczba osób",
+    stakeholderDailyRate: "stawka dzienna",
+    otherMigratedField: "Inne przeniesione pole",
+    fieldLabel: (field: string): string =>
+      migrationFieldLabel(field, "pl", calculatorV2Pl.migration),
   },
   share: {
     action: "Kopiuj link do scenariusza bazowego",
@@ -758,6 +767,7 @@ const calculatorV2En = {
     noEvidenceIds: "none",
     evidenceClasses: {
       empirical_anchor: "Empirical anchor",
+      verified_postprint: "Verified postprint",
       official_case: "Official case",
       practitioner_observation: "Practitioner observation",
       illustrative_scenario: "Illustrative scenario",
@@ -868,7 +878,12 @@ const calculatorV2En = {
       "I confirm the use of the retained inputs under model 2.3.0.",
     recalculation:
       "The former result is not being reproduced. The inputs will be recalculated under model 2.3.0.",
-    fieldLabel: (field: string) => migrationFieldLabel(field, "en"),
+    unknownRole: "Other role",
+    stakeholderCount: "participant count",
+    stakeholderDailyRate: "daily rate",
+    otherMigratedField: "Other migrated field",
+    fieldLabel: (field: string): string =>
+      migrationFieldLabel(field, "en", calculatorV2En.migration),
   },
   share: {
     action: "Copy base-scenario link",
@@ -1733,14 +1748,14 @@ const comparisonEn = {
   decompositionDelay: "Delay (days × your daily cost)",
   decompositionLifecycle: "Lifecycle (amendments, TCO)",
   decompositionNote:
-    "The delay bucket is the template day difference multiplied by the daily cost you supplied. It is an accounting identity, not a modeled result. Read it separately from the other two.",
+    "The delay bucket is the template day difference multiplied by the daily cost you supplied. It is an accounting identity, not a modelled result. Read it separately from the other two.",
   breakEvenLabel: "Break-even daily cost of inaction",
   breakEvenAboveZero:
-    "Above this daily inaction cost, the adaptive path has the lower modeled total.",
+    "Above this daily inaction cost, the adaptive path has the lower modelled total.",
   breakEvenAboveZeroFormalFaster:
-    "Above this daily inaction cost, the formal path has the lower modeled total because it is faster in this profile.",
+    "Above this daily inaction cost, the formal path has the lower modelled total because it is faster in this profile.",
   breakEvenGeneral:
-    "The break-even threshold is the daily inaction cost at which the central result changes sign. Above it, the faster path in the selected profile has the lower modeled total, and that path is not always adaptive.",
+    "The break-even threshold is the daily inaction cost at which the central result changes sign. Above it, the faster path in the selected profile has the lower modelled total, and that path is not always adaptive.",
   breakEvenFormalLoses:
     "the formal path already costs more at zero delay cost. The delay channel is not needed for this result.",
   breakEvenAdaptiveLoses:
@@ -1777,12 +1792,12 @@ const comparisonEn = {
   matrixContextDownstream: "Downstream (operational)",
   matrixContextDetail: "explicit broad staff-effort and coordination factors; step timing and daily inaction cost have no hidden context adjustment.",
   matrixNoContextNote: "Matrix shows all technology × process mode combinations for the selected procurement type.",
-  matrixColorLegend: "Neutral magnitude scale: gray indicates a lower numeric value and blue a higher one. The highlighted row marks the current selection. Values include Spend Type × Process Phase effects.",
+  matrixColorLegend: "Neutral magnitude scale: grey indicates a lower numeric value and blue a higher one. The highlighted row marks the current selection. Values include Spend Type × Process Phase effects.",
   appliedMultipliersTitle: "Applied context multipliers",
-  appliedMultipliersNote: `Model ${LEGACY_MODEL_VERSION} applies broad context multipliers only to staff effort and non-labor coordination overhead. Other mechanisms use separate profiles; 1.00 means no adjustment.`,
+  appliedMultipliersNote: `Model ${LEGACY_MODEL_VERSION} applies broad context multipliers only to staff effort and non-labour coordination overhead. Other mechanisms use separate profiles; 1.00 means no adjustment.`,
   staffCost: "Staff (hours × rates)",
-  coordCost: "Administrative overhead (excluding role labor)",
-  toolCost: "Tool license",
+  coordCost: "Administrative overhead (excluding role labour)",
+  toolCost: "Tool licence",
   pipeFieldTitle: "Why does this gap exist? The Tunnel and Field model.",
   pipeLabel: "Formal path = tunnel topology",
   pipeDesc:
@@ -1791,7 +1806,7 @@ const comparisonEn = {
   fieldDesc:
     "The adaptive path operates within the same authorisation, competition, ethics and documentation boundary. It can speed iteration, but weak competition or control can reverse its advantage.",
   pipeFieldSource: "Model sources: Lipsky (1980) Street-Level Bureaucracy; Vaughan (1996) Challenger; Holmström & Milgrom (1991) Multitask Principal-Agent",
-  radarTitle: "Cost profile: 6 dimensions (normalized)",
+  radarTitle: "Cost profile: 6 dimensions (normalised)",
   radarSubtitle: "Each axis shows the cost in that dimension as a % of the higher value (100 = maximum). Smaller area = lower cost.",
   sensitivityTitle: "Sensitivity: cost vs. contract value",
   sensitivitySubtitle: "How total costs change as contract value varies. All other parameters fixed.",
@@ -2017,6 +2032,7 @@ const researchExportV2Pl = {
   },
   evidenceClasses: {
     empirical_anchor: "Kotwica empiryczna",
+    verified_postprint: "Zweryfikowany postprint",
     official_case: "Przypadek urzędowy",
     practitioner_observation: "Obserwacja praktyka",
     illustrative_scenario: "Scenariusz ilustracyjny",
@@ -2237,6 +2253,7 @@ const researchExportV2En = {
   },
   evidenceClasses: {
     empirical_anchor: "Empirical anchor",
+    verified_postprint: "Verified postprint",
     official_case: "Official case",
     practitioner_observation: "Practitioner observation",
     illustrative_scenario: "Illustrative scenario",
@@ -3403,8 +3420,8 @@ const optimizerPl = {
   marketMaturity: "Dojrzałość rynku (1=nowy, 5=towar)",
   publicSector: "Sektor publiczny (PZP)",
   innovationRequired: "Wymagana innowacyjność",
-  findPath: "Znajdź optymalną ścieżkę →",
-  recommended: "Rekomendowana ścieżka zakupowa",
+  findPath: "Porównaj ścieżki zakupowe →",
+  recommended: "Ścieżka zakupowa wskazana przez porównanie",
   modelConfidence: "Stabilność wag",
   treeVotes: "Zgodne przebiegi (z 30)",
   singleCandidateLabel: "Zbiór wyboru",
@@ -3413,13 +3430,13 @@ const optimizerPl = {
   outOfScopeTitle: "Poza zakresem narzędzia",
   withheldTitle: "Tryby pominięte przez filtr",
   withheldBody:
-    "Filtr ogranicza się do trybów dostępnych bez odrębnej oceny przesłanek ustawowych. Poniższe tryby mogą być w Twojej sprawie zgodne z prawem, ale wymagają oceny przesłanek, których ten formularz nie zbiera. Brak trybu na liście rekomendacji nie oznacza, że jest niedopuszczalny.",
+    "Filtr ogranicza się do trybów dostępnych bez odrębnej oceny przesłanek ustawowych. Poniższe tryby mogą być w Twojej sprawie zgodne z prawem, ale wymagają oceny przesłanek, których ten formularz nie zbiera. Brak trybu na liście porównania nie oznacza, że jest niedopuszczalny.",
   typicalTime: "Typowy czas",
   pzpNote: "Nota PZP",
-  rankingTitle: "Ranking ścieżek (wspólne kryteria, 30 przebiegów wrażliwości wag)",
-  importanceTitle: "Ważność kryteriów: co zmienia ranking",
+  rankingTitle: "Porządek ścieżek (wspólne kryteria, 30 przebiegów wrażliwości wag)",
+  importanceTitle: "Ważność kryteriów: co zmienia porządek",
   importanceNote:
-    "Zmiana marginesu lidera nad najlepszą alternatywą po ustawieniu kryterium na wartość neutralną (ablacja deterministyczna).",
+    "Zmiana marginesu ścieżki pierwszej względem kolejnej po ustawieniu kryterium na wartość neutralną (ablacja deterministyczna).",
   whenToUse: "Kiedy stosować",
   risks: "Ryzyka",
   sliderLevels: {
@@ -3430,11 +3447,11 @@ const optimizerPl = {
     5: "Bardzo wysoki",
   } as Record<number, string>,
   modelNote:
-    "Model: każda ścieżka jest oceniana na tych samych kryteriach i wspólnym mianowniku. NIE jest to ML ani prognoza wyniku zamówienia. 30 przebiegów zmienia wszystkie wagi o ±25% i pokazuje lokalną stabilność rankingu. Wagi i profile dopasowania są jawnymi założeniami, nie parametrami uczonymi. Narzędzie ilustracyjne, niewalidowane na realnych danych; rekomendacje publiczne są twardo filtrowane do dopuszczalnych trybów PZP.",
+    "Model: każda ścieżka jest oceniana na tych samych kryteriach i wspólnym mianowniku. NIE jest to ML ani prognoza wyniku zamówienia. 30 przebiegów zmienia wszystkie wagi o ±25% i pokazuje lokalną stabilność porządku. Wagi i profile dopasowania są jawnymi założeniami, nie parametrami uczonymi. Narzędzie ilustracyjne, niewalidowane na realnych danych; wyniki porównania są twardo filtrowane do dopuszczalnych trybów PZP.",
   importanceUnit: "%",
   importance: "Ważność",
-  explanationTitle: "Dlaczego ta rekomendacja?",
-  scoringContextLabel: "Kontekst scoringu:",
+  explanationTitle: "Skąd ten porządek ścieżek?",
+  scoringContextLabel: "Kontekst porównania:",
   contextUpstreamLabel: "Upstream (strategiczny)",
   contextDownstreamLabel: "Downstream (operacyjny)",
   scoringContextDirectUpstream: "Profil Direct × Upstream zwiększa dopasowanie ścieżek przeznaczonych dla złożonych i strategicznych zakupów; nadal konkurują one na tych samych kryteriach.",
@@ -3462,8 +3479,8 @@ const optimizerEn = {
   marketMaturity: "Market maturity (1=new, 5=commodity)",
   publicSector: "Public sector (Public Procurement Law / PZP)",
   innovationRequired: "Innovation required",
-  findPath: "Find optimal path →",
-  recommended: "Recommended procurement path",
+  findPath: "Compare procurement paths →",
+  recommended: "Procurement path indicated by the comparison",
   modelConfidence: "Weight stability",
   treeVotes: "Agreeing runs (of 30)",
   singleCandidateLabel: "Choice set",
@@ -3472,13 +3489,13 @@ const optimizerEn = {
   outOfScopeTitle: "Outside this tool's scope",
   withheldTitle: "Procedures withheld by the filter",
   withheldBody:
-    "The filter is limited to procedures available without a separate assessment of statutory grounds. The procedures below may well be lawful in your case, but they require grounds this form does not collect. Absence from the ranking does not mean a procedure is unavailable to you.",
+    "The filter is limited to procedures available without a separate assessment of statutory grounds. The procedures below may well be lawful in your case, but they require grounds this form does not collect. Absence from the comparison does not mean a procedure is unavailable to you.",
   typicalTime: "Typical time",
   pzpNote: "PZP note",
-  rankingTitle: "All paths ranked (common criteria, 30 weight-sensitivity runs)",
-  importanceTitle: "Criterion importance: what changes the ranking",
+  rankingTitle: "All paths in order (common criteria, 30 weight-sensitivity runs)",
+  importanceTitle: "Criterion importance: what changes the order",
   importanceNote:
-    "Change in the leader's margin over the best alternative when a criterion is set to its neutral value (deterministic ablation).",
+    "Change in the first path's margin over the next alternative when a criterion is set to its neutral value (deterministic ablation).",
   whenToUse: "When to use",
   risks: "Risks",
   sliderLevels: {
@@ -3489,11 +3506,11 @@ const optimizerEn = {
     5: "Very high",
   } as Record<number, string>,
   modelNote:
-    "Model: every path is evaluated on the same criteria and denominator. This is NOT ML or an outcome prediction. The 30 runs vary all weights by ±25% and show local ranking stability. Weights and suitability profiles are explicit assumptions, not learned parameters. The tool is illustrative and unvalidated on real procurement data; public recommendations are hard-filtered to lawful PZP procedures.",
+    "Model: every path is evaluated on the same criteria and denominator. This is NOT ML or an outcome prediction. The 30 runs vary all weights by ±25% and show local order stability. Weights and suitability profiles are explicit assumptions, not learned parameters. The tool is illustrative and unvalidated on real procurement data; public comparison results are hard-filtered to lawful PZP procedures.",
   importanceUnit: "%",
   importance: "Importance",
-  explanationTitle: "Why this recommendation?",
-  scoringContextLabel: "Scoring context:",
+  explanationTitle: "Why this path order?",
+  scoringContextLabel: "Comparison context:",
   contextUpstreamLabel: "Upstream (strategic)",
   contextDownstreamLabel: "Downstream (operational)",
   scoringContextDirectUpstream: "Direct × Upstream increases the fit of paths designed for complex strategic purchases; they still compete on the same criteria.",
@@ -4194,9 +4211,9 @@ const decisionMapPl = {
   description:
     "Oś pozioma pokazuje podany koszt dnia bezczynności. Każdy pas wskazuje, czy pełny zakres niepewności daje odporny wynik, czy o wyborze ścieżki decydują założenia.",
   legend: {
-    formal: "formalna wygrywa odpornie",
+    formal: "odporna przewaga kosztowa formalnej",
     undecided: "decydują założenia",
-    adaptive: "adaptacyjna wygrywa odpornie",
+    adaptive: "odporna przewaga kosztowa adaptacyjnej",
     central: "próg centralny",
   },
   ariaLabel: "Mapa progów decyzyjnych według kategorii zakupu",
@@ -4226,9 +4243,9 @@ const decisionMapEn = {
   description:
     "The horizontal axis shows the supplied daily cost of inaction. Each band indicates whether the full uncertainty range gives a robust result or assumptions determine the path choice.",
   legend: {
-    formal: "formal wins robustly",
+    formal: "robust formal cost advantage",
     undecided: "assumptions decide",
-    adaptive: "adaptive wins robustly",
+    adaptive: "robust adaptive cost advantage",
     central: "central threshold",
   },
   ariaLabel: "Decision-threshold map by purchase category",
@@ -4244,7 +4261,7 @@ const decisionMapEn = {
     capex: "CAPEX investment",
     discovery: "Discovery purchase",
     policyOnly: "Adaptive path",
-    catalog: "Catalog order",
+    catalog: "Catalogue order",
     mrp: "MRP order",
   } satisfies Record<DecisionMapRowId, string>,
   note:
@@ -4677,6 +4694,18 @@ const modelV2Pl = {
       assumption:
         "Kolejność kroków, podział dni i rozkład godzin ról są ilustracyjnymi założeniami modelu 2.3. Oddzielny zapis przeniesiony ze scenariusza obejmuje wartości ekonomiczne, stawki godzinowe, mnożnik wsparcia oraz profil kosztów koordynacji i narzędzi.",
     },
+    beuve: {
+      sourceTitle:
+        "Doing It by the Book: Political Contestability and Public Contract Renegotiations",
+      publisher: "The Journal of Law, Economics, and Organization",
+      supported:
+        "Analiza 2SLS wiąże sztywność umowy z roczną częstością formalnych aneksów we francuskich kontraktach parkingowych.",
+      unsupported:
+        "Nie mierzy formalności przebiegu procesu zakupowego ani prawdopodobieństwa aneksu. Wynik to liczba aneksów na rok kontraktu.",
+      population: "Francuskie kontrakty samorządowe na obsługę parkingów",
+      assumption:
+        "Zakres 0,077, 0,084 i 0,098 aneksu na rok kontraktu ze zweryfikowanego postprintu (tabela 4) jest monetyzowany wyłącznie przy jawnie zadeklarowanej różnicy sztywności umowy. W rejestrze kanonicznym pozostaje zerowy.",
+    },
   },
   workflow: {
     defineNeed: "Zdefiniowanie potrzeby",
@@ -4974,6 +5003,18 @@ const modelV2En: WidenModelV2Copy<typeof modelV2Pl> = {
       assumption:
         "Step order, day allocation and role-hour distribution are illustrative model 2.3 assumptions. A separate retained scenario record covers economic values, hourly rates, the support multiplier, and coordination and tool-cost profiles.",
     },
+    beuve: {
+      sourceTitle:
+        "Doing It by the Book: Political Contestability and Public Contract Renegotiations",
+      publisher: "The Journal of Law, Economics, and Organization",
+      supported:
+        "The 2SLS analysis relates contractual rigidity to the annual frequency of formal amendments in French car-park contracts.",
+      unsupported:
+        "It does not measure procurement workflow formality or the probability of an amendment. The outcome is amendments per contract-year.",
+      population: "French municipal car-park contracts",
+      assumption:
+        "The 0.077, 0.084 and 0.098 amendments per contract-year range from the verified post-print (Table 4) is monetised only under an explicitly declared contract-rigidity difference. It stays zero in the canonical registry.",
+    },
   },
   workflow: {
     defineNeed: "Define the need",
@@ -5206,6 +5247,7 @@ const modelAssumptionsPl = {
   },
   evidenceTypes: {
     empirical_anchor: "kotwica empiryczna",
+    verified_postprint: "zweryfikowany postprint",
     official_case: "materiał urzędowy",
     practitioner_observation: "obserwacja praktyka",
     illustrative_scenario: "scenariusz ilustracyjny",
@@ -5362,6 +5404,7 @@ const modelAssumptionsEn = {
   },
   evidenceTypes: {
     empirical_anchor: "empirical anchor",
+    verified_postprint: "verified postprint",
     official_case: "official material",
     practitioner_observation: "practitioner observation",
     illustrative_scenario: "illustrative scenario",
