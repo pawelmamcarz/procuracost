@@ -1,6 +1,7 @@
 import Link from "next/link";
 
-import { modelOverviewT, type Lang } from "@/lib/i18n";
+import BoundaryField from "@/components/BoundaryField";
+import { homeT, modelOverviewT, type Lang } from "@/lib/i18n";
 
 const sectionKeys = [
   "legalBoundary",
@@ -11,6 +12,7 @@ const sectionKeys = [
 
 export default function ModelOverview({ lang }: { lang: Lang }) {
   const tx = modelOverviewT[lang];
+  const boundaryTx = homeT[lang].boundary;
   const prefix = lang === "en" ? "/en" : "";
   const researchGroups = [
     {
@@ -139,6 +141,24 @@ export default function ModelOverview({ lang }: { lang: Lang }) {
             </article>
           );
         })}
+      </section>
+
+      <section
+        aria-label={boundaryTx.title}
+        className="grid gap-5 border-b border-gray-200 py-12 md:grid-cols-[12rem_minmax(0,1fr)] md:gap-8"
+      >
+        <div>
+          <p className="font-mono text-xs font-semibold uppercase tracking-[0.12em] text-blue-700">
+            {boundaryTx.eyebrow}
+          </p>
+          <h2 className="mt-3 text-lg font-semibold text-gray-900">
+            {boundaryTx.title}
+          </h2>
+          <p className="mt-2 text-sm leading-6 text-gray-600">
+            {boundaryTx.note}
+          </p>
+        </div>
+        <BoundaryField lang={lang} />
       </section>
 
       <section className="grid gap-5 py-12 md:grid-cols-[12rem_minmax(0,1fr)] md:gap-8">

@@ -1,5 +1,10 @@
 import Link from "next/link";
 
+import {
+  NumberedPoint,
+  NumberedProvenanceItem,
+  NumberedProvenanceRule,
+} from "@/components/NumberedProvenanceRule";
 import { homeExperienceT, type Lang } from "@/lib/i18n";
 import { SITE_ROUTES } from "@/lib/site-routes";
 
@@ -105,20 +110,14 @@ export default function EvidenceFieldHome({ lang }: EvidenceFieldHomeProps) {
           </h2>
           <p className="mt-4 text-sm leading-6 text-gray-600">{tx.record.description}</p>
         </div>
-        <ol className="relative border-l-2 border-blue-700 pl-6">
+        <NumberedProvenanceRule>
           {tx.record.fields.map((field, index) => (
-            <li className="relative border-b border-gray-200 py-4 first:pt-0 last:border-b-0 last:pb-0" key={field}>
-              <span
-                aria-hidden="true"
-                className="absolute -left-[1.82rem] top-[1.35rem] h-2.5 w-2.5 rounded-full border-2 border-blue-700 bg-white first:top-1"
-              />
-              <span className="mr-3 font-mono text-xs text-blue-700">
-                {String(index + 1).padStart(2, "0")}
-              </span>
+            <NumberedProvenanceItem key={field}>
+              <NumberedPoint className="mr-3" index={index} />
               <span className="text-sm font-semibold text-gray-800">{field}</span>
-            </li>
+            </NumberedProvenanceItem>
           ))}
-        </ol>
+        </NumberedProvenanceRule>
       </section>
 
       <section aria-labelledby="home-journey-title" className="border-b border-gray-200 py-12">
@@ -133,21 +132,19 @@ export default function EvidenceFieldHome({ lang }: EvidenceFieldHomeProps) {
           </div>
           <p className="text-sm leading-6 text-gray-600 lg:pt-7">{tx.journey.intro}</p>
         </div>
-        <ol className="mt-8 border-y border-gray-200">
+        <NumberedProvenanceRule className="mt-8">
           {tx.journey.steps.map((step, index) => (
-            <li
-              className="grid gap-3 border-t border-gray-100 py-5 first:border-t-0 sm:grid-cols-[4rem_11rem_minmax(0,1fr)] sm:items-baseline"
+            <NumberedProvenanceItem
+              className="grid gap-3 py-5 sm:grid-cols-[4rem_11rem_minmax(0,1fr)] sm:items-baseline"
               data-guided-step={index + 1}
               key={step.title}
             >
-              <span className="font-mono text-xs font-semibold text-blue-700">
-                {String(index + 1).padStart(2, "0")}
-              </span>
+              <NumberedPoint className="font-semibold" index={index} />
               <h3 className="font-semibold text-gray-900">{step.title}</h3>
               <p className="text-sm leading-6 text-gray-600">{step.body}</p>
-            </li>
+            </NumberedProvenanceItem>
           ))}
-        </ol>
+        </NumberedProvenanceRule>
       </section>
 
       <section aria-label={tx.trust.eyebrow} className="border-b border-gray-200 py-12">

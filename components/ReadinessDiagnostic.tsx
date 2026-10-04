@@ -256,7 +256,7 @@ export default function ReadinessDiagnostic({ lang }: { lang: Lang }) {
               className="rounded-xl border border-gray-200 bg-gray-50 p-4 sm:p-5"
             >
               <legend className="px-1 text-base font-semibold leading-relaxed text-gray-900">
-                <span className="mr-2 font-mono text-xs text-gray-400">
+                <span className="mr-2 font-mono text-xs text-gray-500">
                   {domainIndex + 1}.{questionIndex + 1}
                 </span>
                 {copy.prompt}

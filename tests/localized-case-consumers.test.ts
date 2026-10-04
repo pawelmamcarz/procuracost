@@ -112,7 +112,7 @@ describe("localised English evidence consumers", () => {
     expect(markup).not.toMatch(/Enforcement Fallacy|5KYUdTLlvvg|data-result-reveal/);
     expect(markup).not.toContain("<table");
     expect(markup).not.toMatch(/bg-gradient|shadow-/);
-    expect(markup).not.toContain("slate-");
+    expect(markup).not.toMatch(/\bslate-/);
   });
 
   it("renders English model 2.3 record and supplied evidence copy", () => {

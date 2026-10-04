@@ -242,6 +242,27 @@ describe("process rail UI", () => {
     expect(html).not.toContain("<table");
   });
 
+  it("marks the critical path with blue line weight and arrow direction instead of lane colour", () => {
+    const html = renderRail();
+
+    expect(html).toContain("<marker");
+    expect(html).toContain('orient="auto"');
+    expect(html).toContain('marker-end="url(#process-rail-arrow-');
+    expect(html).toContain('stroke-width="4"');
+    expect(html).toContain("text-blue-600");
+    expect(html).toContain("border-t-blue-600");
+    expect(html).not.toContain("text-red-500");
+    expect(html).not.toContain("text-green-500");
+    expect(html).not.toContain("border-t-red-500");
+    expect(html).not.toContain("border-t-green-500");
+  });
+
+  it("renders the node timing summary with tabular numerals", () => {
+    const html = renderRail();
+
+    expect(html).toContain("tabular-nums");
+  });
+
   it("uses a shared geometric boundary and instrument-style nodes instead of basic framed boxes", () => {
     const html = renderRail();
 
@@ -313,6 +334,7 @@ describe("process rail UI", () => {
     expect(html).toContain("hidden lg:block");
     expect(html).toContain("lg:hidden");
     expect(html).toContain('data-mobile-sequence="true"');
+    expect(html).toContain('data-mobile-connector="true"');
     expect(html).toContain("Split");
     expect(html).toContain("Merge");
     expect(html).not.toContain("min-w-[");

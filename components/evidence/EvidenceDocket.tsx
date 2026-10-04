@@ -1,6 +1,11 @@
 import { ExternalLink, Info } from "lucide-react";
 
 import {
+  NumberedPoint,
+  NumberedProvenanceItem,
+  NumberedProvenanceRule,
+} from "@/components/NumberedProvenanceRule";
+import {
   decisionRecordT,
   modelV2T,
   researchExportV2T,
@@ -52,15 +57,12 @@ export default function EvidenceDocket({
   const exportTx = researchExportV2T[lang];
 
   return (
-    <ol
-      className="divide-y divide-gray-200 border-y border-gray-200"
-      data-evidence-variant={variant}
-    >
-      {records.map((record) => {
+    <NumberedProvenanceRule data-evidence-variant={variant}>
+      {records.map((record, index) => {
         const title = modelCopy(lang, record.source.titleKey);
         const publisher = modelCopy(lang, record.source.publisherKey);
         return (
-          <li
+          <NumberedProvenanceItem
             className={cn(
               "space-y-5 py-6",
               variant === "compact" ? "sm:py-5" : "sm:py-7"
@@ -70,7 +72,10 @@ export default function EvidenceDocket({
           >
             <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
               <div>
-                <p className="font-mono text-xs text-gray-500">{record.id}</p>
+                <p className="font-mono text-xs text-gray-500">
+                  <NumberedPoint className="mr-2" index={index} />
+                  {record.id}
+                </p>
                 <p className="mt-1 text-sm font-semibold text-gray-900">
                   {title}
                 </p>
@@ -154,9 +159,9 @@ export default function EvidenceDocket({
                 <ExternalLink aria-hidden="true" className="h-4 w-4" />
               </a>
             </div>
-          </li>
+          </NumberedProvenanceItem>
         );
       })}
-    </ol>
+    </NumberedProvenanceRule>
   );
 }

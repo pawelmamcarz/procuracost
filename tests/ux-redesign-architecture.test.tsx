@@ -60,6 +60,9 @@ describe("decision-led service architecture", () => {
         `href="${lang === "en" ? "/research" : "/research-agenda"}"`
       );
       expect(html).toContain('href="https://github.com/pawelmamcarz/procuracost"');
+      expect(html).toContain(`data-home-topology="${lang}"`);
+      expect(html).toContain('data-boundary="shared"');
+      expect(html).toContain('role="img"');
     }
   });
 

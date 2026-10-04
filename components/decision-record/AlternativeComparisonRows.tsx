@@ -178,7 +178,7 @@ export default function AlternativeComparisonRows({
                   <dt className="text-xs font-medium text-gray-500">
                     {tx.stepCount}
                   </dt>
-                  <dd className="mt-1 font-mono text-xs text-gray-800">
+                  <dd className="mt-1 font-mono text-xs tabular-nums text-gray-800">
                     {alternative.workflow.steps.length}
                   </dd>
                 </div>
@@ -186,7 +186,7 @@ export default function AlternativeComparisonRows({
                   <dt className="text-xs font-medium text-gray-500">
                     {tx.lockCount}
                   </dt>
-                  <dd className="mt-1 font-mono text-xs text-gray-800">
+                  <dd className="mt-1 font-mono text-xs tabular-nums text-gray-800">
                     {lockCount}
                   </dd>
                 </div>

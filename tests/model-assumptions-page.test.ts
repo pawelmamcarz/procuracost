@@ -115,6 +115,17 @@ describe("model assumptions routes", () => {
     expect(markup).toContain("data-neutral-delta=\"0\"");
   });
 
+  it("locks tabular numerals on locked legal days and neutral-control costs", () => {
+    const source = readFileSync("components/ModelAssumptionsPage.tsx", "utf8");
+    const numericDdClass =
+      "font-mono text-sm font-semibold tabular-nums text-gray-950";
+
+    expect(source).not.toContain(
+      "font-mono text-sm font-semibold text-gray-950"
+    );
+    expect(occurrences(source, numericDdClass)).toBe(7);
+  });
+
   it("keeps the complete assumptions dictionary in exact PL/EN leaf parity", () => {
     expect(leafPaths(modelAssumptionsT.pl).sort()).toEqual(
       leafPaths(modelAssumptionsT.en).sort()

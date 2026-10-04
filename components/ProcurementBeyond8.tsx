@@ -1,5 +1,10 @@
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
+import {
+  NumberedPoint,
+  NumberedProvenanceItem,
+  NumberedProvenanceRule,
+} from "@/components/NumberedProvenanceRule";
 import { practiceT, type Lang } from "@/lib/i18n";
 import { PROCUREMENT_BEYOND_8 } from "@/lib/model-v2/evidence";
 
@@ -71,17 +76,17 @@ export default function ProcurementBeyond8({ lang }: { lang: Lang }) {
         <h2 id="practice-sections" className="text-2xl font-bold text-gray-900">
           {tx.sectionsTitle}
         </h2>
-        <ol className="mt-6 divide-y divide-gray-200 border-y border-gray-200">
+        <NumberedProvenanceRule className="mt-6">
           {PROCUREMENT_BEYOND_8.refs.map((ref, index) => {
             const copy = tx.sections[ref.id];
             return (
-              <li
+              <NumberedProvenanceItem
                 key={ref.id}
                 className="grid grid-cols-1 gap-3 py-5 sm:grid-cols-[7rem_1fr]"
               >
                 <div>
-                  <p className="font-mono text-xs text-gray-400">
-                    {String(index + 1).padStart(2, "0")}
+                  <p>
+                    <NumberedPoint index={index} />
                   </p>
                   <a
                     href={ref.url}
@@ -98,10 +103,10 @@ export default function ProcurementBeyond8({ lang }: { lang: Lang }) {
                   <h3 className="font-semibold text-gray-900">{copy.title}</h3>
                   <p className="mt-1 text-sm leading-relaxed text-gray-600">{copy.body}</p>
                 </div>
-              </li>
+              </NumberedProvenanceItem>
             );
           })}
-        </ol>
+        </NumberedProvenanceRule>
       </section>
 
       <section aria-labelledby="practice-boundary" className="space-y-6">

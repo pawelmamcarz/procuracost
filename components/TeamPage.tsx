@@ -130,7 +130,7 @@ export default function TeamPage({ lang }: { lang: Lang }) {
               className="grid gap-2 py-4 sm:grid-cols-[minmax(13rem,0.8fr)_minmax(0,1.2fr)] sm:items-baseline"
             >
               <dt className="grid grid-cols-[3rem_1fr] text-sm font-semibold text-gray-900">
-                <span className="font-mono text-xs font-normal text-gray-400" aria-hidden="true">
+                <span className="font-mono text-xs font-normal text-gray-500" aria-hidden="true">
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <span>{t.competencies[competency].label}</span>

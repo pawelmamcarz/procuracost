@@ -37,7 +37,7 @@ const DEFAULT_PROFILE: SuitabilityProfileV2 = {
 };
 
 const SELECT_CLASS =
-  "mt-2 w-full border-0 border-b border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 transition-colors focus:border-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700";
+  "mt-2 w-full border-0 border-b border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 transition-colors motion-reduce:transition-none focus:border-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700";
 
 function criterionIcon(state: SuitabilityCriterion["state"]) {
   if (state === "condition_present") return CircleCheck;
@@ -415,7 +415,7 @@ export default function SuitabilityComparison({
         <div className="flex justify-end py-6">
           <button
             type="submit"
-            className="border border-blue-800 bg-blue-800 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-900 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-700"
+            className="border border-blue-800 bg-blue-800 px-6 py-3 text-sm font-semibold text-white transition-colors motion-reduce:transition-none hover:bg-blue-900 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-700"
           >
             {copy.submit}
           </button>

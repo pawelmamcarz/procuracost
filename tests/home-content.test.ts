@@ -7,7 +7,7 @@ import EvidenceFieldHome from "@/components/EvidenceFieldHome";
 import {
   HOME_EVIDENCE_IDS,
   homeEvidenceRecords,
-} from "@/components/home/home-surface-data";
+} from "@/tests/fixtures/home-surface-data";
 import { homeExperienceT } from "@/lib/i18n";
 import { EVIDENCE_REGISTRY } from "@/lib/model-v2";
 import { SITE_ROUTES } from "@/lib/site-routes";

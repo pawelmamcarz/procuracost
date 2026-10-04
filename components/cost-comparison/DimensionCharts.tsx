@@ -7,10 +7,6 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  RadarChart,
-  Radar,
-  PolarGrid,
-  PolarAngleAxis,
 } from "recharts";
 import { ComparisonResult, formatPLN, formatCompact } from "@/lib/calculations";
 import { comparisonT, Lang } from "@/lib/i18n";
@@ -20,7 +16,7 @@ interface Props {
   lang: Lang;
 }
 
-const RADAR_DIMENSIONS = [
+const DIMENSIONS = [
   { key: "timeCost", label: { pl: "Czas", en: "Time" } },
   { key: "opportunityCost", label: { pl: "Okazje", en: "Opportunity" } },
   { key: "renegotiationCost", label: { pl: "Renegocjacje", en: "Renegotiation" } },
@@ -40,7 +36,12 @@ export default function DimensionCharts({ result, lang }: Props) {
     [tx.flexibleLabel]: flexible[key as keyof typeof flexible] as number,
   }));
 
-  const radarData = RADAR_DIMENSIONS.map(({ key, label }) => {
+  const formatValue = (value: number) =>
+    new Intl.NumberFormat(lang === "pl" ? "pl-PL" : "en-GB", {
+      maximumFractionDigits: 0,
+    }).format(value);
+
+  const dimensionData = DIMENSIONS.map(({ key, label }) => {
     const r = rigid[key as keyof typeof rigid] as number;
     const f = flexible[key as keyof typeof flexible] as number;
     const maxVal = Math.max(r, f, 1);
@@ -84,27 +85,35 @@ export default function DimensionCharts({ result, lang }: Props) {
         <h3 className="mb-1 text-sm font-semibold text-gray-700">{tx.radarTitle}</h3>
         <p className="mb-3 text-xs text-gray-400">{tx.radarSubtitle}</p>
         <ResponsiveContainer width="100%" height={300}>
-          <RadarChart data={radarData} margin={{ top: 10, right: 30, left: 30, bottom: 10 }}>
-            <PolarGrid stroke="#e5e7eb" />
-            <PolarAngleAxis dataKey="dimension" tick={{ fontSize: 11, fill: "#6b7280" }} />
-            <Radar
-              name={tx.rigidLabel}
-              dataKey={tx.rigidLabel}
-              stroke="#ef4444"
-              fill="#ef4444"
-              fillOpacity={0.18}
+          <BarChart data={dimensionData} margin={{ top: 5, right: 10, left: 10, bottom: 20 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+            <XAxis
+              dataKey="dimension"
+              tick={{ fontSize: 11, fill: "#6b7280" }}
+              interval={0}
             />
-            <Radar
-              name={tx.flexibleLabel}
-              dataKey={tx.flexibleLabel}
-              stroke="#22c55e"
-              fill="#22c55e"
-              fillOpacity={0.18}
+            <YAxis
+              tickFormatter={formatValue}
+              tick={{ fontSize: 11, fill: "#6b7280" }}
+              unit="%"
             />
-            <Legend wrapperStyle={{ fontSize: 12 }} />
-            <Tooltip formatter={(v) => `${v}%`} contentStyle={{ fontSize: 12 }} />
-          </RadarChart>
+            <Tooltip
+              formatter={(value) => [`${formatValue(Number(value ?? 0))}%`, ""]}
+              contentStyle={{ fontSize: 12 }}
+            />
+            <Legend wrapperStyle={{ fontSize: 12, paddingTop: "8px" }} />
+            <Bar dataKey={tx.rigidLabel} fill="#ef4444" radius={[4, 4, 0, 0]} />
+            <Bar dataKey={tx.flexibleLabel} fill="#22c55e" radius={[4, 4, 0, 0]} />
+          </BarChart>
         </ResponsiveContainer>
+        <ul className="sr-only">
+          {dimensionData.map((d) => (
+            <li key={d.dimension}>
+              {d.dimension}: {tx.rigidLabel} {formatValue(Number(d[tx.rigidLabel]))}%,{" "}
+              {tx.flexibleLabel} {formatValue(Number(d[tx.flexibleLabel]))}%
+            </li>
+          ))}
+        </ul>
       </div>
     </>
   );

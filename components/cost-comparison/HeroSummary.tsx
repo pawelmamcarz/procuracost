@@ -31,23 +31,23 @@ export default function HeroSummary({ result, scenario, inputs, lang }: Props) {
     : null;
 
   return (
-    <div className="rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-6 text-white">
-      <p className="text-sm font-medium uppercase tracking-wide opacity-80">
+    <div className="rounded-2xl bg-gray-50 p-6">
+      <p className="text-sm font-medium uppercase tracking-wide text-gray-500">
         {tx.deltaHeadline}
       </p>
-      <p className="mt-1 font-mono text-4xl font-bold">{formatPLN(delta)}</p>
-      <p className="mt-1 text-lg opacity-90">
+      <p className="mt-1 font-mono text-4xl font-bold text-blue-700">{formatPLN(delta)}</p>
+      <p className="mt-1 text-lg text-gray-700">
         <span className="font-mono">{formatPercent(Math.abs(deltaPercent))}</span>{" "}
         {deltaPercent >= 0 ? tx.higherThan : tx.lowerThan}
       </p>
-      <div className="mt-3 rounded-xl border border-white/20 bg-white/10 p-3 text-sm">
-        <p className="font-semibold">
+      <div className="mt-3 border-l-2 border-gray-300 pl-3 text-sm">
+        <p className="font-semibold text-gray-900">
           {lang === "en" ? "Scenario range" : "Przedział scenariuszowy"}:{" "}
           <span className="font-mono">
             {formatPLN(uncertainty.lowDelta)} – {formatPLN(uncertainty.highDelta)}
           </span>
         </p>
-        <div className="mt-1.5 space-y-0.5 text-xs text-white/80">
+        <div className="mt-1.5 space-y-0.5 text-xs text-gray-600">
           <div>
             {tx.axisEvidence}:{" "}
             <span className="font-mono">
@@ -61,10 +61,10 @@ export default function HeroSummary({ result, scenario, inputs, lang }: Props) {
             </span>
           </div>
         </div>
-        <p className="mt-1.5 text-xs text-white/70">
+        <p className="mt-1.5 text-xs text-gray-500">
           {uncertainty.widthDrivenBy === "structural" ? tx.axisNoteStructural : tx.axisNoteEvidence}
         </p>
-        <p className="mt-1 text-xs text-white/70">
+        <p className="mt-1 text-xs text-gray-500">
           {uncertainty.crossesZero
             ? (lang === "en"
                 ? "The sign changes across defensible assumptions; neither path is a universal winner."
@@ -74,17 +74,17 @@ export default function HeroSummary({ result, scenario, inputs, lang }: Props) {
                 : "Znak jest stabilny w zadeklarowanym zakresie scenariuszy, ale nie stanowi dowodu statystycznego.")}
         </p>
       </div>
-      <div className="mt-3 flex gap-4 text-sm">
-        <span className="rounded-lg bg-white/10 px-3 py-1">
+      <div className="mt-3 flex gap-4 text-sm text-gray-700">
+        <span>
           {tx.rigidLabel}: <strong className="font-mono">{rigidDays}</strong> {lang === "en" ? "days" : "dni"}
         </span>
-        <span className="rounded-lg bg-white/10 px-3 py-1">
+        <span>
           {tx.flexibleLabel}: <strong className="font-mono">{flexibleDays}</strong> {lang === "en" ? "days" : "dni"}
         </span>
       </div>
-      <div className="mt-3 rounded-xl border border-white/20 bg-white/10 p-3 text-sm">
-        <p className="font-semibold">{tx.decompositionTitle}</p>
-        <div className="mt-1.5 space-y-0.5 text-xs text-white/85">
+      <div className="mt-3 border-l-2 border-gray-300 pl-3 text-sm">
+        <p className="font-semibold text-gray-900">{tx.decompositionTitle}</p>
+        <div className="mt-1.5 space-y-0.5 text-xs text-gray-600">
           <div>{tx.decompositionProcess}: <strong className="font-mono">{formatPLN(deltaDecomposition.process)}</strong></div>
           <div>
             {tx.decompositionDelay}: <strong className="font-mono">{formatPLN(deltaDecomposition.delay)}</strong>
@@ -94,10 +94,10 @@ export default function HeroSummary({ result, scenario, inputs, lang }: Props) {
           </div>
           <div>{tx.decompositionLifecycle}: <strong className="font-mono">{formatPLN(deltaDecomposition.lifecycle)}</strong></div>
         </div>
-        <p className="mt-1.5 text-xs text-white/70">{tx.decompositionNote}</p>
+        <p className="mt-1.5 text-xs text-gray-500">{tx.decompositionNote}</p>
       </div>
 
-      <p className="mt-2 text-xs text-white/75">
+      <p className="mt-2 text-xs text-gray-500">
         {tx.breakEvenLabel}:{" "}
         {decisionThreshold.status === "threshold_above_zero" ? (
           <>
@@ -120,23 +120,23 @@ export default function HeroSummary({ result, scenario, inputs, lang }: Props) {
       {(spendLabel || phaseLabel) && (
         <div className="mt-3 flex flex-wrap gap-2 text-xs">
           {spendLabel && (
-            <span className="rounded-full bg-white/20 px-3 py-0.5">
+            <span className="rounded-full border border-gray-200 bg-white px-3 py-0.5 text-gray-700">
               {lang === "en" ? "Spend" : "Wydatki"}: <strong>{spendLabel}</strong>
             </span>
           )}
           {phaseLabel && (
-            <span className="rounded-full bg-white/20 px-3 py-0.5">
+            <span className="rounded-full border border-gray-200 bg-white px-3 py-0.5 text-gray-700">
               {lang === "en" ? "Phase" : "Faza"}: <strong>{phaseLabel}</strong>
             </span>
           )}
-          <span className="text-white/60 italic ml-1">• {tx.modelAdjustContext}</span>
+          <span className="text-gray-500 italic ml-1">• {tx.modelAdjustContext}</span>
         </div>
       )}
 
       {(inputs.spendType || inputs.processPhase) && (
-        <div className="mt-4 rounded-xl border border-white/20 bg-white/5 p-3 text-xs text-white/90">
-          <p className="font-medium mb-1">{tx.modelAdjustTitle}</p>
-          <ul className="space-y-0.5 pl-1 text-white/80">
+        <div className="mt-4 border-l-2 border-gray-200 pl-3 text-xs text-gray-600">
+          <p className="font-medium mb-1 text-gray-700">{tx.modelAdjustTitle}</p>
+          <ul className="space-y-0.5 pl-1">
             {inputs.spendType === "direct" && (
               <li>• {tx.modelAdjustDirectTco}</li>
             )}
@@ -153,34 +153,34 @@ export default function HeroSummary({ result, scenario, inputs, lang }: Props) {
         </div>
       )}
 
-      <div className="mt-4 flex items-start gap-3 rounded-xl bg-white/10 p-3">
+      <div className="mt-4 border-t border-gray-200 pt-3">
         <div className="flex-1">
-          <p className="text-xs font-semibold uppercase tracking-wide opacity-70">
+          <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
             {tx.bypassLabel}
           </p>
           <div className="mt-1.5 flex items-center gap-2">
-            <div className="h-2 flex-1 overflow-hidden rounded-full bg-white/20">
+            <div className="h-2 flex-1 overflow-hidden rounded-full bg-gray-200">
               <div
                 className="h-full rounded-full bg-amber-400"
                 style={{ width: `${Math.round(bypassProbability * 100)}%` }}
               />
             </div>
-            <span className="font-mono text-sm font-bold">{Math.round(bypassProbability * 100)}%</span>
+            <span className="font-mono text-sm font-bold text-gray-900">{Math.round(bypassProbability * 100)}%</span>
           </div>
-          <p className="mt-1 text-xs opacity-60">
+          <p className="mt-1 text-xs text-gray-500">
             {tx.bypassNote} {lang === "en" ? "Scenario assumption, not a predicted probability." : "Założenie scenariuszowe, nie prognoza prawdopodobieństwa."}
           </p>
         </div>
       </div>
       {scenario.caseStudy && (
-        <div className="mt-3 rounded-xl bg-white/10 p-3 text-sm">
-          <p className="font-semibold">
+        <div className="mt-3 border-l-2 border-gray-200 pl-3 text-sm">
+          <p className="font-semibold text-gray-900">
             {lang === "en" ? scenario.caseStudy.titleEn : scenario.caseStudy.title}
           </p>
-          <p className="mt-1 opacity-90">
+          <p className="mt-1 text-gray-700">
             {lang === "en" ? scenario.caseStudy.insightEn : scenario.caseStudy.insight}
           </p>
-          <p className="mt-1 text-xs opacity-60">
+          <p className="mt-1 text-xs text-gray-500">
             {lang === "en" ? "Source" : "Źródło"}: {lang === "en" ? scenario.caseStudy.sourceEn : scenario.caseStudy.source}
           </p>
         </div>

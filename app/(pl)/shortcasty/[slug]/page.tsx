@@ -165,7 +165,7 @@ export default async function EpisodePage({ params }: { params: Promise<{ slug: 
             href={`/shortcasty/${prev.slug}`}
             className="py-5 pr-5 text-left sm:border-r sm:border-gray-200"
           >
-            <p className="text-xs text-gray-400">← {tx.previous}</p>
+            <p className="text-xs text-gray-500">← {tx.previous}</p>
             <p className="mt-2 text-sm font-semibold leading-snug text-gray-700 hover:text-blue-700">{prev.title}</p>
           </Link>
         ) : (
@@ -176,7 +176,7 @@ export default async function EpisodePage({ params }: { params: Promise<{ slug: 
             href={`/shortcasty/${next.slug}`}
             className="py-5 pl-5 text-right"
           >
-            <p className="text-xs text-gray-400">{tx.next} →</p>
+            <p className="text-xs text-gray-500">{tx.next} →</p>
             <p className="mt-2 text-sm font-semibold leading-snug text-gray-700 hover:text-blue-700">{next.title}</p>
           </Link>
         ) : (

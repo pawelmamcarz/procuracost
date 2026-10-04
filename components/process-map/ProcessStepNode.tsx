@@ -62,12 +62,7 @@ export function ProcessStepNode({
     node.selected && "border-b-blue-500 bg-blue-50",
     node.locked && "border-l-4 border-l-amber-400",
     node.invalid && !node.locked && "border-l-4 border-l-amber-400",
-    node.critical &&
-      alternativeId === "formalSequential" &&
-      "border-t-[3px] border-t-red-500",
-    node.critical &&
-      alternativeId === "adaptiveCompliant" &&
-      "border-t-[3px] border-t-green-500",
+    node.critical && "border-t-[3px] border-t-blue-600",
     mobile && node.parallel && "ml-4 w-[calc(100%-1rem)]"
   );
   const domId = `${idPrefix ? `${idPrefix}-` : ""}process-step-${alternativeId}-${node.stepId}${focusIdSuffix}`;
@@ -92,7 +87,7 @@ export function ProcessStepNode({
         {node.label}
       </span>
       {node.timingSummary ? (
-        <span className="font-mono text-[11px] leading-relaxed text-gray-600">
+        <span className="font-mono tabular-nums text-[11px] leading-relaxed text-gray-600">
           {node.timingSummary}
         </span>
       ) : null}

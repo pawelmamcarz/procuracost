@@ -31,7 +31,7 @@ export default function DecisionMap({ lang = "pl" }: Props) {
     value >= 1_000_000 ? `${value / 1_000_000}M` : `${value / 1_000}k`;
 
   return (
-    <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-gray-100 bg-white p-6">
       <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
         {tx.eyebrow}
       </p>

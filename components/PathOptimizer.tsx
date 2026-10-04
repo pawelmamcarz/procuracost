@@ -64,7 +64,7 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
 
   return (
     <div className="space-y-8">
-      <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+      <div className="rounded-2xl border border-gray-100 bg-white p-6">
         <h2 className="mb-5 text-base font-bold text-gray-900">{tx.parametersTitle}</h2>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -287,78 +287,79 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
           aria-label={tx.recommended}
           className="scroll-mt-6 space-y-6 outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
         >
-          <div
-            className="rounded-2xl p-6 text-white"
-            style={{ background: `linear-gradient(135deg, ${result.topPath.path.color}, ${result.topPath.path.color}cc)` }}
-          >
-            <p className="text-xs font-semibold uppercase tracking-widest opacity-80">
+          <div className="rounded-2xl border border-gray-200 bg-white p-6">
+            <p className="text-xs font-semibold uppercase tracking-widest text-gray-500">
               {tx.recommended}
             </p>
-            <p className="mt-2 text-3xl font-bold">
+            <p className="mt-2 flex items-center gap-2 text-3xl font-bold text-gray-900">
+              <span
+                className="inline-block h-3 w-3 shrink-0 rounded-full"
+                style={{ background: result.topPath.path.color }}
+              />
               {lang === "en" ? result.topPath.path.nameEn : result.topPath.path.name}
             </p>
             {result.pzpApplies ? (
               result.topPath.path.pzpArticle && (
-                <p className="mt-1 text-sm opacity-80">{result.topPath.path.pzpArticle}</p>
+                <p className="mt-1 font-mono text-xs text-gray-500">{result.topPath.path.pzpArticle}</p>
               )
             ) : (
-              <p className="mt-1 text-sm opacity-80">{tx.outsidePzpLabel}</p>
+              <p className="mt-1 text-sm text-gray-500">{tx.outsidePzpLabel}</p>
             )}
-            <p className="mt-3 opacity-90">
+            <p className="mt-3 text-sm text-gray-700">
               {lang === "en" ? result.topPath.path.descriptionEn : result.topPath.path.description}
             </p>
 
             <div className="mt-4 flex gap-4">
               {result.ranked.length > 1 ? (
                 <>
-                  <div className="rounded-xl bg-white/15 px-4 py-2 text-center">
-                    <p className="text-xs opacity-70">{tx.modelConfidence}</p>
-                    <p className="font-mono text-xl font-bold">
+                  <div className="rounded-xl bg-gray-50 px-4 py-2 text-center">
+                    <p className="text-xs text-gray-500">{tx.modelConfidence}</p>
+                    <p className="font-mono text-xl font-bold text-gray-900">
                       {Math.round(result.topPath.weightStability * 100)}%
                     </p>
                   </div>
-                  <div className="rounded-xl bg-white/15 px-4 py-2 text-center">
-                    <p className="text-xs opacity-70">{tx.treeVotes}</p>
-                    <p className="font-mono text-xl font-bold">{result.topPath.votes}/30</p>
+                  <div className="rounded-xl bg-gray-50 px-4 py-2 text-center">
+                    <p className="text-xs text-gray-500">{tx.treeVotes}</p>
+                    <p className="font-mono text-xl font-bold text-gray-900">{result.topPath.votes}/30</p>
                   </div>
                 </>
               ) : (
-                <div className="rounded-xl bg-white/15 px-4 py-2 text-center">
-                  <p className="text-xs opacity-70">{tx.singleCandidateLabel}</p>
-                  <p className="text-sm font-semibold">{tx.singleCandidateValue}</p>
+                <div className="rounded-xl bg-gray-50 px-4 py-2 text-center">
+                  <p className="text-xs text-gray-500">{tx.singleCandidateLabel}</p>
+                  <p className="text-sm font-semibold text-gray-900">{tx.singleCandidateValue}</p>
                 </div>
               )}
-              <div className="rounded-xl bg-white/15 px-4 py-2 text-center">
-                <p className="text-xs opacity-70">{tx.typicalTime}</p>
-                <p className="font-mono text-xl font-bold">
+              <div className="rounded-xl bg-gray-50 px-4 py-2 text-center">
+                <p className="text-xs text-gray-500">{tx.typicalTime}</p>
+                <p className="font-mono text-xl font-bold text-gray-900">
                   {result.topPath.path.typicalDays[0]}–{result.topPath.path.typicalDays[1]} {tx.days}
                 </p>
               </div>
             </div>
 
             {(features.spendType || features.processPhase) && (
-              <div className="mt-3 rounded bg-white/10 px-2.5 py-2 text-xs">
-                <div className="font-medium opacity-90">
+              <div className="mt-3 rounded bg-gray-50 px-2.5 py-2 text-xs text-gray-600">
+                <div className="font-medium text-gray-700">
                   {tx.scoringContextLabel}{" "}
                   <span className="font-semibold">
                     {features.spendType === "direct" ? "Direct" : features.spendType === "indirect" ? "Indirect" : "—"} ×{" "}
                     {features.processPhase === "upstream" ? tx.contextUpstreamLabel : features.processPhase === "downstream" ? tx.contextDownstreamLabel : "—"}
                   </span>
                 </div>
-                <div className="mt-1 text-[10px] opacity-75 leading-snug">
+                <div className="mt-1 text-[10px] text-gray-500 leading-snug">
                   {features.spendType === "direct" && features.processPhase === "upstream" && tx.scoringContextDirectUpstream}
                   {features.spendType === "indirect" && features.processPhase === "downstream" && tx.scoringContextIndirectDownstream}
                   {!(features.spendType === "direct" && features.processPhase === "upstream") && !(features.spendType === "indirect" && features.processPhase === "downstream") && tx.scoringContextOther}
                 </div>
-                <div className="mt-1.5 text-[10px] opacity-60">
+                <div className="mt-1.5 text-[10px] text-gray-400">
                   {tx.scoringContextWeightsNote}
                 </div>
               </div>
             )}
 
-            <div className="mt-4 rounded-xl bg-white/10 p-3 text-sm">
-              <p className="font-semibold opacity-80">{tx.pzpNote}</p>
-              <p className="mt-1 opacity-90">{result.policyNote}</p>
+            <div className="mt-4 border-l-2 border-gray-200 pl-3 text-sm">
+              <p className="font-semibold text-gray-700">{tx.pzpNote}</p>
+              <p className="mt-1 text-gray-600">{result.policyNote}</p>
             </div>
           </div>
 
@@ -385,7 +386,7 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
             <p className="text-sm text-blue-900 leading-relaxed">{result.explanation}</p>
           </div>
 
-          <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+          <div className="rounded-2xl border border-gray-100 bg-white p-6">
             <h3 className="mb-4 text-sm font-bold text-gray-900">
               {tx.rankingTitle}
             </h3>
@@ -426,7 +427,7 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+          <div className="rounded-2xl border border-gray-100 bg-white p-6">
             <h3 className="mb-4 text-sm font-bold text-gray-900">
               {tx.importanceTitle}
             </h3>
@@ -461,12 +462,9 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
             <p className="mt-2 text-xs text-gray-400">{tx.importanceNote}</p>
           </div>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="border-t border-gray-200">
             {result.ranked.slice(0, 2).map((r) => (
-              <div
-                key={r.path.id}
-                className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm"
-              >
+              <div key={r.path.id} className="border-b border-gray-200 py-5">
                 <div className="flex items-center gap-2">
                   <span
                     className="h-3 w-3 rounded-full"
@@ -474,25 +472,27 @@ export default function PathOptimizer({ lang = "pl" }: { lang?: Lang }) {
                   />
                   <h4 className="font-bold text-gray-900">{lang === "en" ? r.path.nameEn : r.path.name}</h4>
                 </div>
-                <div className="mt-3">
-                  <p className="mb-1 text-xs font-semibold text-green-600">{tx.whenToUse}</p>
-                  <ul className="space-y-0.5">
-                    {(lang === "en" ? r.path.conditionsEn : r.path.conditions).map((c) => (
-                      <li key={c} className="text-xs text-gray-600 before:mr-1 before:content-['✓']">
-                        {c}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="mt-3">
-                  <p className="mb-1 text-xs font-semibold text-red-500">{tx.risks}</p>
-                  <ul className="space-y-0.5">
-                    {(lang === "en" ? r.path.risksEn : r.path.risks).map((risk) => (
-                      <li key={risk} className="text-xs text-gray-600 before:mr-1 before:content-['⚠']">
-                        {risk}
-                      </li>
-                    ))}
-                  </ul>
+                <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div className="border-l-2 border-gray-200 pl-3">
+                    <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-gray-500">{tx.whenToUse}</p>
+                    <ul className="space-y-0.5">
+                      {(lang === "en" ? r.path.conditionsEn : r.path.conditions).map((c) => (
+                        <li key={c} className="text-xs text-gray-600 before:mr-1 before:content-['✓']">
+                          {c}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="border-l-2 border-amber-400 pl-3">
+                    <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-amber-800">{tx.risks}</p>
+                    <ul className="space-y-0.5">
+                      {(lang === "en" ? r.path.risksEn : r.path.risks).map((risk) => (
+                        <li key={risk} className="text-xs text-gray-600 before:mr-1 before:content-['⚠']">
+                          {risk}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
             ))}

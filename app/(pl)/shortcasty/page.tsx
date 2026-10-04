@@ -114,7 +114,7 @@ export default function ShortcastyPage() {
                 key={episode.slug}
                 className="grid gap-4 py-5 sm:grid-cols-[3rem_minmax(0,1fr)]"
               >
-                <span className="font-mono text-sm text-gray-400">
+                <span className="font-mono text-sm text-gray-500">
                   {String(episode.number).padStart(2, "0")}
                 </span>
                 <div className="min-w-0 flex-1">

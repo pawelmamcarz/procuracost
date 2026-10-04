@@ -633,7 +633,7 @@ function LegalProvenance({
                     <dt className="text-sm font-medium text-gray-600">
                       {copy.fields.lockedActiveDays}
                     </dt>
-                    <dd className="mt-1 font-mono text-sm font-semibold text-gray-950">
+                    <dd className="mt-1 font-mono text-sm font-semibold tabular-nums text-gray-950">
                       {formatNumber(record.lockedActiveDays, lang)}
                     </dd>
                   </div>
@@ -641,7 +641,7 @@ function LegalProvenance({
                     <dt className="text-sm font-medium text-gray-600">
                       {copy.fields.lockedQueueDays}
                     </dt>
-                    <dd className="mt-1 font-mono text-sm font-semibold text-gray-950">
+                    <dd className="mt-1 font-mono text-sm font-semibold tabular-nums text-gray-950">
                       {formatNumber(record.lockedQueueDays, lang)}
                     </dd>
                   </div>
@@ -718,7 +718,7 @@ function NeutralControl({
             <dt className="text-sm font-medium text-gray-600">
               {copy.fields.delta}
             </dt>
-            <dd className="mt-1 font-mono text-sm font-semibold text-gray-950">
+            <dd className="mt-1 font-mono text-sm font-semibold tabular-nums text-gray-950">
               {formatValue(record.comparison.deltaCost, "pln", lang, copy)}
             </dd>
           </div>
@@ -726,7 +726,7 @@ function NeutralControl({
             <dt className="text-sm font-medium text-gray-600">
               {copy.fields.formalCentralTotal}
             </dt>
-            <dd className="mt-1 font-mono text-sm font-semibold text-gray-950">
+            <dd className="mt-1 font-mono text-sm font-semibold tabular-nums text-gray-950">
               {formatValue(formal, "pln", lang, copy)}
             </dd>
           </div>
@@ -734,7 +734,7 @@ function NeutralControl({
             <dt className="text-sm font-medium text-gray-600">
               {copy.fields.adaptiveCentralTotal}
             </dt>
-            <dd className="mt-1 font-mono text-sm font-semibold text-gray-950">
+            <dd className="mt-1 font-mono text-sm font-semibold tabular-nums text-gray-950">
               {formatValue(adaptive, "pln", lang, copy)}
             </dd>
           </div>
@@ -742,7 +742,7 @@ function NeutralControl({
             <dt className="text-sm font-medium text-gray-600">
               {copy.fields.outerStressRange}
             </dt>
-            <dd className="mt-1 font-mono text-sm font-semibold text-gray-950">
+            <dd className="mt-1 font-mono text-sm font-semibold tabular-nums text-gray-950">
               {formatValue(envelope.low, "pln", lang, copy)} {"–"}{" "}
               {formatValue(envelope.high, "pln", lang, copy)}
             </dd>

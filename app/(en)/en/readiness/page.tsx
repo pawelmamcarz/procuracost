@@ -33,7 +33,7 @@ export default function EnReadinessPage() {
           {tx.title}
         </h1>
         <p className="mt-4 text-base leading-relaxed text-gray-600">{tx.subtitle}</p>
-        <p className="mt-3 font-mono text-xs text-gray-400">{tx.duration}</p>
+        <p className="mt-3 font-mono text-xs text-gray-500">{tx.duration}</p>
       </header>
       <div className="mt-10">
         <ReadinessDiagnostic lang="en" />

@@ -96,7 +96,7 @@ export default function CostCalculator({ onCalculate, lang = "pl", initialInputs
     <form onSubmit={handleSubmit} className="space-y-5">
       <div>
         <label className={labelClass}>{tx.scenarioLabel}</label>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
           {SCENARIOS.map((s) => (
             <button
               key={s.id}

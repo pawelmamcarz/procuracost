@@ -34,14 +34,8 @@ function laneRule(alternativeId: AlternativeId): string {
     : "border-green-500";
 }
 
-function connectorTone(
-  alternativeId: AlternativeId,
-  critical: boolean
-): string {
-  if (!critical) return "text-gray-300";
-  return alternativeId === "formalSequential"
-    ? "text-red-500"
-    : "text-green-500";
+function connectorTone(critical: boolean): string {
+  return critical ? "text-blue-600" : "text-gray-300";
 }
 
 function DesktopLane({
@@ -71,14 +65,33 @@ function DesktopLane({
             viewBox={`0 0 ${lane.canvasWidth} ${lane.canvasHeight}`}
             width={lane.canvasWidth}
           >
+            <defs>
+              <marker
+                id={`process-rail-arrow-${lane.alternativeId}`}
+                markerHeight="8"
+                markerUnits="userSpaceOnUse"
+                markerWidth="8"
+                orient="auto"
+                refX="7"
+                refY="4"
+              >
+                <path
+                  className="fill-none stroke-current"
+                  d="M 1 1 L 7 4 L 1 7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </marker>
+            </defs>
             {lane.connectors.map((connector) => (
               <path
                 className={cn(
                   "fill-none stroke-current",
-                  connectorTone(lane.alternativeId, connector.critical)
+                  connectorTone(connector.critical)
                 )}
                 d={connector.path}
                 key={`${connector.fromStepId}-${connector.toStepId}`}
+                markerEnd={`url(#process-rail-arrow-${lane.alternativeId})`}
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={connector.critical ? 4 : 1.5}
@@ -145,8 +158,18 @@ function MobileLane({
       data-mobile-sequence="true"
     >
       <p className="font-mono text-[11px] text-gray-500">{lane.startLabel}</p>
-      {lane.mobileSequence.map((node) => (
+      {lane.mobileSequence.map((node, index) => (
         <div className="space-y-2" key={node.stepId}>
+          {index > 0 ? (
+            <div
+              aria-hidden="true"
+              className="flex flex-col items-start pl-3"
+              data-mobile-connector="true"
+            >
+              <span className="block h-4 w-px bg-gray-300" />
+              <span className="-ml-[2.5px] block h-0 w-0 border-x-[3px] border-x-transparent border-t-[5px] border-t-gray-300" />
+            </div>
+          ) : null}
           {node.parallel && node.branchIndex === 0 ? (
             <p className="flex items-center gap-2 text-xs font-medium text-gray-600">
               <span aria-hidden="true">↳</span>
