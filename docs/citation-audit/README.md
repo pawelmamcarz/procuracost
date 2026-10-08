@@ -39,6 +39,8 @@ Pattern: https://docs.typesafe.ai/cookbooks/citation_check
 
 The complete active-publication editorial pass is documented in
 [`PUBLICATIONS_REVIEW.md`](PUBLICATIONS_REVIEW.md). Its section triage is
-separate from claim/source checking. To load a local key file, use
-`node --env-file=.env.local` before the script path; the scripts do not load
-dotenv files themselves.
+separate from claim/source checking. The reusable style-audit script, with
+Noul questions for stock rhetoric, redundancy, overclaim and generic LLM
+voice, is documented in [`STYLE_AUDIT.md`](STYLE_AUDIT.md). To load a local
+key file, use `node --env-file=.env.local` before the script path; the
+scripts do not load dotenv files themselves.

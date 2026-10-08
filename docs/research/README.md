@@ -1,6 +1,6 @@
 # Research materials for model 2.3.0
 
-The active research layer is intentionally small:
+The active research layer is small on purpose:
 
 - [`RESEARCH.md`](../../RESEARCH.md) is the current working paper, evidence audit
   and bibliography.

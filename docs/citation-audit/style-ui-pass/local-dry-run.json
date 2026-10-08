@@ -1,0 +1,355 @@
+{
+  "mode": "local-only",
+  "requestedModel": "jev-latest",
+  "questions": {
+    "stockRhetoric": {
+      "type": "noul",
+      "instructions": "Does this section contain generic promotional filler, a stock motivational punchline, or a rhetorical not-X-but-Y contrast that should be replaced with concrete prose? Do not flag necessary scientific distinctions, explicit evidence limits, equations, source titles, or labelled hypotheses.",
+      "criteria": {
+        "true": "The section uses promotional slogans, stock contrasts or motivational filler that should be replaced with concrete prose.",
+        "false": "The section is concrete, or any contrast is a necessary distinction, evidence limit, equation, source title or labelled hypothesis."
+      }
+    },
+    "redundancy": {
+      "type": "noul",
+      "instructions": "Does this section unnecessarily restate the same substantive point or use several sentences only to announce a point without adding information? Do not flag a concise abstract, necessary definition, formula explanation, evidence limitation, or reference list merely because it is formal.",
+      "criteria": {
+        "true": "The section repeats a point already made, or uses several sentences only to announce a point.",
+        "false": "Each sentence adds information, or the formality is a necessary abstract, definition, formula, limit or reference list."
+      }
+    },
+    "overclaim": {
+      "type": "noul",
+      "instructions": "Does section present an unqualified universal, causal certainty, frequency ranking or numerical empirical claim beyond its stated evidence? Do not flag explicitly labelled hypotheses, assumptions, examples, proposals, or normative advice solely because they are unproven.",
+      "criteria": {
+        "true": "The section states an unqualified universal, causal certainty, frequency ranking or numerical empirical claim beyond the evidence it cites.",
+        "false": "Claims stay within stated evidence, or they are labelled hypotheses, assumptions, examples, proposals or advice."
+      }
+    },
+    "aiStockVoice": {
+      "type": "noul",
+      "instructions": "Does this section read like generic large-language-model prose: balanced parallel slogans, empty fluency, interchangeable corporate voice, or a tidy three-part cadence with little specific content? This is an editorial signal for revision, not an authorship detector. Do not flag necessary legal or model vocabulary, labelled hypotheses, equations, or a deliberately plain technical register.",
+      "criteria": {
+        "true": "The section has generic LLM cadence, interchangeable corporate voice or empty parallel slogans.",
+        "false": "The section has a specific voice, necessary technical vocabulary, or plain practitioner prose."
+      }
+    }
+  },
+  "questionHash": "e6d6f35f138909caea84def7810f98b09bf9c0005ab865c06224f335477ec6ab",
+  "fixtureFlagThreshold": 0.5,
+  "createdAt": "2026-09-21T21:48:07.357Z",
+  "summary": {
+    "total": 34,
+    "evaluated": 0,
+    "matched": 0,
+    "errors": 0
+  },
+  "results": [
+    {
+      "id": "home-hero-pl",
+      "text": "Porównaj dwa dopuszczalne sposoby przeprowadzenia tego samego zakupu. Regulacje firmy oraz PZP, gdy ma zastosowanie, wyznaczają wspólne ramy obu wariantów. Porównaj czas i koszt, zachowując zapis założeń, wyniku i ograniczeń.",
+      "location": "lib/i18n.ts#homeExperiencePl.hero",
+      "path": "lib/i18n.ts#homeExperiencePl.hero",
+      "sourceHash": "a0a8fb912240f649f7721cea3dedc7ee33fbed8f22bfa32fac627576da37119f",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "home-hero-en",
+      "text": "Compare two lawful ways of running the same purchase. Company policies and the Polish Public Procurement Law (PZP), where applicable, set the same boundaries for both alternatives. Compare time and cost, and keep a record of the assumptions, the result and the limits.",
+      "location": "lib/i18n.ts#homeExperienceEn.hero",
+      "path": "lib/i18n.ts#homeExperienceEn.hero",
+      "sourceHash": "79db1fe393d8ef71ed11864217ae5b24926c0388e4b432b8824473cd44bf71f3",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "home-record-pl",
+      "text": "Wynik z założeniami, który da się sprawdzić. Otrzymasz zestawienie kosztów obu wariantów, przyjęte założenia i listę czynników, których model nie wycenia.",
+      "location": "lib/i18n.ts#homeExperiencePl.record",
+      "path": "lib/i18n.ts#homeExperiencePl.record",
+      "sourceHash": "a01538c77c7e356bd89918bda6bd9b3ec7a1bc4ee12773772b65a7699d5b323a",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "home-record-en",
+      "text": "A result with its assumptions, ready to check. The record lists the costs of both alternatives, the assumptions used and the factors the model leaves unpriced.",
+      "location": "lib/i18n.ts#homeExperienceEn.record",
+      "path": "lib/i18n.ts#homeExperienceEn.record",
+      "sourceHash": "500df4a4777edff613a5231ff8a49ec592a44c9ac4e256c8fc7e88a685f734bc",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "home-journey-pl",
+      "text": "Od przypadku do zapisu w czterech krokach. Wybierz podobny zakup, dostosuj czynności i wpisz własne koszty. Na końcu pobierz wynik wraz z założeniami.",
+      "location": "lib/i18n.ts#homeExperiencePl.journey",
+      "path": "lib/i18n.ts#homeExperiencePl.journey",
+      "sourceHash": "25b4442d961beac78c8b5dd51efef9f96f3a0af2a31e3bf3c3e7f820e6af04ba",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "home-journey-en",
+      "text": "From case to record in four steps. Choose a similar purchase, adjust the activities and enter your costs. Then download the result with its assumptions.",
+      "location": "lib/i18n.ts#homeExperienceEn.journey",
+      "path": "lib/i18n.ts#homeExperienceEn.journey",
+      "sourceHash": "f3d616199e0b5894caf702b6ce7ad1c23531f822a7bbde78994e9708fbcf33a6",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "home-boundary-pl",
+      "text": "Jedna granica. Dwa projekty przebiegu. Formalna ścieżka sekwencyjna: bramy prowadzą przez ustaloną kolejność. Adaptacyjna ścieżka zgodna z ramami: rozgałęzienia pozwalają iterować i ponownie scalać pracę. Obie ścieżki pozostają w tych samych ramach uprawnień, konkurencji, etyki i dokumentacji.",
+      "location": "lib/i18n.ts#homePl.boundary",
+      "path": "lib/i18n.ts#homePl.boundary",
+      "sourceHash": "2061620199ab901235a28a29094d23ab4cf02eedfc561b2dc17a3135ed372e1c",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "home-boundary-en",
+      "text": "One boundary. Two workflow designs. Formal sequential alternative: gates carry the work through an established sequence. Adaptive compliant alternative: branches allow work to iterate and rejoin. Both paths remain within the same boundaries of authority, competition, ethics and documentation.",
+      "location": "lib/i18n.ts#homeEn.boundary",
+      "path": "lib/i18n.ts#homeEn.boundary",
+      "sourceHash": "27f6f3990ea6ff6cb0c90e3fa851801a94ed10a00670f125162d434871c1c071",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "og-pl",
+      "text": "Dwa zgodne projekty przebiegu. Jeden jawny rachunek kosztu.",
+      "location": "lib/i18n.ts#ogPl.supportLine",
+      "path": "lib/i18n.ts#ogPl.supportLine",
+      "sourceHash": "fdf451be7f23d4eee094f9a8ea83ff9929e6d6b19547a74e181d65caca2cb5ef",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "og-en",
+      "text": "Two lawful workflow designs and one explicit cost record.",
+      "location": "lib/i18n.ts#ogEn.supportLine",
+      "path": "lib/i18n.ts#ogEn.supportLine",
+      "sourceHash": "52aa7691c0848e28e955c2d7b98b4562e80e6f4c3c78950644549d5fab5dea55",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "metadata-home-pl",
+      "text": "Ile kosztuje przetarg? Porównanie kosztów | ProcuraCost. Porównaj czas i koszt formalnej procedury sekwencyjnej i adaptacyjnego przebiegu zgodnego z PZP. Wynik z założeniami.",
+      "location": "lib/i18n.ts#siteMetadataPl.home",
+      "path": "lib/i18n.ts#siteMetadataPl.home",
+      "sourceHash": "3678c4be5ffbc1ae7414bb704e53c79560c2c36bd62fce76828ac402b5c2ad0e",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "metadata-home-en",
+      "text": "Procurement process cost comparison | ProcuraCost. Compare the time and cost of a formal sequential workflow and an adaptive compliant workflow under PZP. Result with its assumptions.",
+      "location": "lib/i18n.ts#siteMetadataEn.home",
+      "path": "lib/i18n.ts#siteMetadataEn.home",
+      "sourceHash": "3f620f51f385af98f70b3be32b093bb47711e7bca15a95d6af5be63deb0271b5",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "calculator-journey-pl",
+      "text": "Porównaj dwa sposoby przeprowadzenia zakupu. Wybierz podobny zakup, dostosuj dwa przebiegi i podaj koszty. Otrzymasz porównanie z zapisanymi założeniami.",
+      "location": "lib/i18n.ts#calculatorV2Pl.journey",
+      "path": "lib/i18n.ts#calculatorV2Pl.journey",
+      "sourceHash": "60b0c006a5248f77c47b7241aa87ee8ab3e7a627d662e6629c6e6954decd3880",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "calculator-journey-en",
+      "text": "Compare two ways to run a procurement. Choose a similar purchase, adjust two workflows and enter your costs. Get a comparison with the assumptions recorded.",
+      "location": "lib/i18n.ts#calculatorV2En.journey",
+      "path": "lib/i18n.ts#calculatorV2En.journey",
+      "sourceHash": "413d06329181cd0700b654941376a701bcc8a6e97f0fd3a4710b81ca29bb4206",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "decision-record-delta-pl",
+      "text": "Koszt formalnej ścieżki sekwencyjnej minus koszt adaptacyjnej ścieżki zgodnej z ramami. Zewnętrzny zakres obejmuje wartości ujemne i dodatnie. To konserwatywna granica różnicy, a nie dowód zmiany znaku przy wspólnych założeniach dla obu wariantów.",
+      "location": "lib/i18n.ts#decisionRecordPl.delta",
+      "path": "lib/i18n.ts#decisionRecordPl.delta",
+      "sourceHash": "d08d8f6fa46ec174487b6489b34b93fa14d8445ab2171241ebc4676b2fe7988c",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "decision-record-delta-en",
+      "text": "Formal sequential total minus adaptive compliant total. The outer range crosses zero. This conservative bound does not prove that the sign reverses when both alternatives use the same shared assumptions.",
+      "location": "lib/i18n.ts#decisionRecordEn.delta",
+      "path": "lib/i18n.ts#decisionRecordEn.delta",
+      "sourceHash": "db07bb59bbabb2411786fee45bc147b3d46022214de7605f08c5371297859e5d",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "model-intro-pl",
+      "text": "Model, źródła i replikacja. Ta strona zbiera kontrakt obliczeniowy, źródła, ograniczenia i pliki potrzebne do odtworzenia modelu 2.3. ProcuraCost nie wybiera procedury za użytkownika i nie zakłada, który wariant jest tańszy.",
+      "location": "lib/i18n.ts#modelOverviewPl.intro",
+      "path": "lib/i18n.ts#modelOverviewPl.intro",
+      "sourceHash": "151bad384fb7f2a207fd95768d4b8e0450283ab50bf4365980a0d4c50bd6d8f1",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "model-intro-en",
+      "text": "Model, sources and replication. This page collects the calculation contract, sources, limits and the files needed to reproduce model 2.3. ProcuraCost does not choose a procedure or assume which alternative costs less.",
+      "location": "lib/i18n.ts#modelOverviewEn.intro",
+      "path": "lib/i18n.ts#modelOverviewEn.intro",
+      "sourceHash": "077a95707979283927405331328b707a4d514522199b727c0f28131a2087086a",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "methodology-intro-pl",
+      "text": "Jak liczymy różnicę, bez założonego znaku. Model rozdziela zgodność prawną, projekt przebiegu, konstrukcję umowy, kanał realizacji i wsparcie systemowe. Każda z tych decyzji zostaje zapisana w rekordzie.",
+      "location": "lib/i18n.ts#methodologyOverviewPl.intro",
+      "path": "lib/i18n.ts#methodologyOverviewPl.intro",
+      "sourceHash": "31cdaa7b23f5d515f74d92df40b18b53836a208b774c61127112a03eb66e3c25",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "methodology-intro-en",
+      "text": "How the difference is calculated, without a built-in sign. The model keeps legal compliance, workflow design, contract design, execution channel and system support as separate decisions. Each one stays visible in the record.",
+      "location": "lib/i18n.ts#methodologyOverviewEn.intro",
+      "path": "lib/i18n.ts#methodologyOverviewEn.intro",
+      "sourceHash": "def1c09fd8d5e747c795529c144b00355d01fb502187cdc2a5e14286a08fe0bc",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "readiness-intro-pl",
+      "text": "Gotowość organizacyjna do wdrożenia. Osiem obszarów do samoopisu przed wyborem systemu i przed konfiguracją. Zestawienie nie jest audytem dojrzałości i nie zmienia modelu kosztowego ProcuraCost.",
+      "location": "lib/i18n.ts#readinessPl",
+      "path": "lib/i18n.ts#readinessPl",
+      "sourceHash": "8e1869d6fd08b23ab57028410f581741884c15ba24bcca6638909e5b45d7e3e5",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "readiness-intro-en",
+      "text": "Organisational implementation readiness. Eight areas for self-description before system selection and before configuration. The summary is not a maturity audit and does not change the ProcuraCost cost model.",
+      "location": "lib/i18n.ts#readinessEn",
+      "path": "lib/i18n.ts#readinessEn",
+      "sourceHash": "b545b266554ddd18e44ce6b1fe4d828e3cf7bf56afb8ef238494e89d73042381",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "shortcasts-intro-pl",
+      "text": "Noty metodologiczne ProcuraCost. Seria oddziela ustalenia ze źródeł od założeń scenariusza. Wyniki ProcuraCost nie są zmierzonymi efektami organizacyjnymi ani rekomendacją procedury.",
+      "location": "lib/i18n.ts#shortcastsPl.intro",
+      "path": "lib/i18n.ts#shortcastsPl.intro",
+      "sourceHash": "2a9fe056ad997467ac8f559d7cf6a861755d7dbaccdbc70be7735bcf0883623f",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "shortcasts-intro-en",
+      "text": "ProcuraCost methodology notes. The series separates source findings from scenario assumptions. ProcuraCost outputs are not measured organisational effects or procedure recommendations.",
+      "location": "lib/i18n.ts#shortcastsEn.intro",
+      "path": "lib/i18n.ts#shortcastsEn.intro",
+      "sourceHash": "5aefe752ee01a3bcae2a625700d440e6732f64d6524a08ac43cc14f293c8ad03",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "research-agenda-pl",
+      "text": "Najpierw zmierz mechanizmy, potem je wyceniaj. ProcuraCost porównuje koszty na jawnych założeniach. Nie jest oszacowanym efektem organizacyjnym. Program empiryczny zaczyna się od osobnego pomiaru przebiegu pracy, konkurencji i konstrukcji umowy.",
+      "location": "lib/i18n.ts#researchAgendaPl",
+      "path": "lib/i18n.ts#researchAgendaPl",
+      "sourceHash": "11d612facd444b21a7133138209f29a45d1290063ccfbad2e4bbaedcd0e00c97",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "team-pl",
+      "text": "Kto odpowiada za model, a kto za wdrożenie. W zespole są osoby od zakupów, analityki, systemów, wdrożeń, negocjacji i badań. Model porządkuje porównanie. Właściciel procesu nadal odpowiada za cel, wymagania, dane, decyzje, adopcję i pomiar wartości.",
+      "location": "lib/i18n.ts#teamPl",
+      "path": "lib/i18n.ts#teamPl",
+      "sourceHash": "af70580c3e67630c6487f805e95f412fb8dff8a9ed2b3d61a54ac4042b56d344",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "team-en",
+      "text": "Who owns the model, and who owns implementation. The team covers procurement, analytics, systems, implementation, negotiation and research. The model organises a comparison. The process owner remains accountable for purpose, requirements, data, decisions, adoption and value measurement.",
+      "location": "lib/i18n.ts#teamEn",
+      "path": "lib/i18n.ts#teamEn",
+      "sourceHash": "e7fa14228199507bb39931ec874e5ca2f1dc5583eeba65fa1e2c37821354ac9c",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "practice-pl",
+      "text": "Nawet najlepsze narzędzie nie uratuje złego wdrożenia. Obserwacje z ósmego odcinka Procurement&Beyond i zasady ich użycia w samoopisie warunków wdrożenia.",
+      "location": "lib/i18n.ts#practicePl.subtitle",
+      "path": "lib/i18n.ts#practicePl.subtitle",
+      "sourceHash": "29ea2d591d312c72204293907f86c7ce6fb579f313b12dd3e146c4662e1ce520",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "practice-en",
+      "text": "Even the best tool cannot rescue a poor implementation. Observations from Procurement&Beyond episode 8, and how they may be used in the implementation self-description.",
+      "location": "lib/i18n.ts#practiceEn.subtitle",
+      "path": "lib/i18n.ts#practiceEn.subtitle",
+      "sourceHash": "6f05debdee001f4f81177751793dfbc7998f0f891cf229eac14513d9a3e719fa",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "phd-roadmap-purpose",
+      "text": "Purpose: prepare the doctoral package, keep the comparison instrument auditable, and approach supervisors and research partners with a bounded proposition.",
+      "location": "PHD_ROADMAP.md#purpose",
+      "path": "PHD_ROADMAP.md#purpose",
+      "sourceHash": "ea359e15f2c2d60e8706610cd0cc216918e66e07b0a9ef2d000a2c7f12baef0d",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "phd-roadmap-proposition",
+      "text": "ProcuraCost asks how two lawful procurement workflow designs differ in elapsed time, internal effort, non-labour process cost, delay exposure and the monetised part of contract economics when the legal and governance boundary is held constant. The model does not assume that an adaptive/compliant workflow is cheaper or faster.",
+      "location": "PHD_ROADMAP.md#research-proposition",
+      "path": "PHD_ROADMAP.md#research-proposition",
+      "sourceHash": "4c6b95df48c0ea71ab8e4afa5cfbff46cc7a7c950ef057b5a1483f6c29dd0279",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "supervisor-one-pager",
+      "text": "Debata o „sztywnych zakupach” często miesza przebieg pracy, dostęp do konkurencji, dyskrecję, konstrukcję umowy, kanał realizacji, wsparcie systemowe i gotowość organizacyjną. Ustalenie o jednym mechanizmie jest wtedy przenoszone na pozostałe bez podstawy.",
+      "location": "docs/supervisor/01-one-pager.md#problem",
+      "path": "docs/supervisor/01-one-pager.md#problem",
+      "sourceHash": "245f3ee4b87b89a7b80e236f08d34b8526848b7e019496d354132d924481d548",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "supervisor-readme-purpose",
+      "text": "Uzyskać ocenę, czy te cztery elementy tworzą spójny rdzeń cyklu: warunkowa teoria dwóch zgodnych projektów przebiegu; natywny model oparty na grafach procesu; jawna granica dowodowa i monetyzacyjna; proponowany projekt empiryczny.",
+      "location": "docs/supervisor/README.md#cel",
+      "path": "docs/supervisor/README.md#cel",
+      "sourceHash": "246afce2fb68d329157f5eb14d14aef1ff4f05a3c3208d04fa78a52b2684adde",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    },
+    {
+      "id": "research-readme",
+      "text": "The active research layer is small on purpose. Official cases support mechanisms only. Practitioner material, including Procurement&Beyond episode 8, may inform questions and hypotheses but cannot set model parameters.",
+      "location": "docs/research/README.md",
+      "path": "docs/research/README.md",
+      "sourceHash": "1548666185277ff6fbd494db6bec76f543479dfb1a6da3a4c25e7d270560f7df",
+      "reviewRequired": true,
+      "verdict": "not_evaluated"
+    }
+  ]
+}

@@ -10,14 +10,12 @@ aktualizacji modelu. Dokument `00-tozsamosc-formalna.md` zachowuje ich stan z
 
 ## Cel spotkania
 
-Uzyskać ocenę, czy:
+Uzyskać ocenę, czy te cztery elementy tworzą spójny rdzeń cyklu:
 
 - warunkowa teoria dwóch zgodnych projektów przebiegu;
 - natywny model oparty na grafach procesu;
 - jawna granica dowodowa i monetyzacyjna;
-- oraz proponowany projekt empiryczny
-
-tworzą spójny rdzeń cyklu doktorskiego.
+- proponowany projekt empiryczny.
 
 Spotkanie nie ma zatwierdzać wyników. ProcuraCost 2.3 jest deterministycznym
 modelem scenariuszowym, a dane do badania empirycznego nie zostały zebrane.

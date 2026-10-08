@@ -1,0 +1,58 @@
+[
+  {
+    "id": "pl-plain",
+    "location": "Synthetic editorial fixture, not a quality benchmark",
+    "text": "Obowiązkowe terminy PZP pozostają zablokowane i identyczne w obu wariantach. Model nie zakłada znaku różnicy kosztu.",
+    "expected": {
+      "stockRhetoric": false,
+      "redundancy": false,
+      "overclaim": false,
+      "aiStockVoice": false
+    }
+  },
+  {
+    "id": "en-plain",
+    "location": "Synthetic editorial fixture, not a quality benchmark",
+    "text": "Mandatory PZP periods stay locked and identical in both alternatives. The model does not assume the sign of the cost difference.",
+    "expected": {
+      "stockRhetoric": false,
+      "redundancy": false,
+      "overclaim": false,
+      "aiStockVoice": false
+    }
+  },
+  {
+    "id": "pl-slogan",
+    "location": "Synthetic editorial fixture, not a quality benchmark",
+    "text": "To nie jest kolejny kalkulator. To rewolucja w zakupach, która odblokowuje pełny potencjał organizacji i zmienia zasady gry.",
+    "expected": {
+      "stockRhetoric": true,
+      "aiStockVoice": true
+    }
+  },
+  {
+    "id": "en-slogan",
+    "location": "Synthetic editorial fixture, not a quality benchmark",
+    "text": "This is not just a calculator. It is a seamless end-to-end journey that empowers teams, unlocks value and transforms procurement forever.",
+    "expected": {
+      "stockRhetoric": true,
+      "aiStockVoice": true
+    }
+  },
+  {
+    "id": "pl-overclaim",
+    "location": "Synthetic editorial fixture, not a quality benchmark",
+    "text": "Adaptacyjny przebieg zawsze obniża koszt polskich zamówień publicznych o 30 procent i jest jedyną prawidłową drogą.",
+    "expected": {
+      "overclaim": true
+    }
+  },
+  {
+    "id": "en-redundancy",
+    "location": "Synthetic editorial fixture, not a quality benchmark",
+    "text": "The result can be checked. The result can be verified. The result can be reproduced. In short, the result can be checked, verified and reproduced.",
+    "expected": {
+      "redundancy": true
+    }
+  }
+]
