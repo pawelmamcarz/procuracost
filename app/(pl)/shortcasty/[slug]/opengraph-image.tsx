@@ -1,9 +1,13 @@
+export const dynamic = "force-static";
 import { ImageResponse } from "next/og";
 
 import OpenGraphBoundaryMark from "@/components/OpenGraphBoundaryMark";
 import { shortcastsT } from "@/lib/i18n";
 import { MODEL_V2_METADATA } from "@/lib/model-v2/domain";
-import { getEpisode } from "@/lib/shortcasty";
+import { EPISODES, getEpisode } from "@/lib/shortcasty";
+export function generateStaticParams() {
+  return EPISODES.filter((e) => e.publishedAt).map((e) => ({ slug: e.slug }));
+}
 
 export const alt = shortcastsT.pl.metadataTitle();
 export const size = { width: 1200, height: 630 };

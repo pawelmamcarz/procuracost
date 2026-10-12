@@ -1,3 +1,4 @@
+export const dynamic = "force-static";
 import type { MetadataRoute } from "next";
 import { SITE_ROUTES, sitemapPaths } from "@/lib/site-routes";
 import { EPISODES } from "@/lib/shortcasty";

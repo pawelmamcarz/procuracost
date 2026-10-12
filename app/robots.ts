@@ -1,3 +1,4 @@
+export const dynamic = "force-static";
 import type { MetadataRoute } from "next";
 import { IS_PREVIEW, SITE_URL } from "./seo-config";
 
