@@ -31,8 +31,8 @@ describe("decision-led service architecture", () => {
   });
 
   it.each([
-    ["pl", "Porównaj dwa sposoby zakupu zgodne z obowiązującymi regulacjami."],
-    ["en", "Compare two procurement approaches that comply with the applicable rules."],
+    ["pl", "Procedura czy polityka? Policz ten sam zakup na dwa sposoby."],
+    ["en", "Procedure or policy? Cost the same purchase two ways."],
   ] as const)("gives %s visitors two explicit entry paths", (lang, promise) => {
     const html = renderToStaticMarkup(
       createElement(EvidenceFieldHome, { lang })

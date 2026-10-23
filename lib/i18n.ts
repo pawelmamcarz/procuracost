@@ -1,4 +1,4 @@
-import { LEGACY_MODEL_VERSION, MODEL_VERSION } from "./version";
+import { LEGACY_MODEL_VERSION } from "./version";
 import type { DecisionMapRowId } from "./decision-map";
 import { MODEL_V2_METADATA } from "./model-v2/domain";
 
@@ -419,9 +419,9 @@ function migrationFieldLabel(
             "Koszt pozapracowniczy ścieżki formalnej",
           "retainedNonLabourCost.adaptiveCompliant":
             "Koszt pozapracowniczy ścieżki adaptacyjnej",
-          "retainedLegacyInputs.contractValue": "Wartość kontraktu",
+          "retainedLegacyInputs.contractValue": "Wartość umowy",
           "retainedLegacyInputs.tcoHorizonYears": "Horyzont TCO",
-          "retainedLegacyInputs.contractDurationYears": "Czas trwania kontraktu",
+          "retainedLegacyInputs.contractDurationYears": "Czas trwania umowy",
           "retainedLegacyInputs.dailyCostOfInaction":
             "Dzienny koszt zwłoki",
           "retainedLegacyInputs.renegotiationCost": "Koszt renegocjacji",
@@ -709,7 +709,7 @@ const calculatorV2Pl = {
   economics: {
     introduction:
       "Wartości niska, centralna i wysoka opisują jawny zakres założeń. Koszt i stawki są wyrażone w PLN.",
-    contractValue: "Wartość kontraktu",
+    contractValue: "Wartość umowy",
     dailyCostOfDelay: "Dzienny koszt zwłoki",
     competitionTransfer: "Zakres transferu konkurencji cenowej",
     competitionDisadvantagedAlternative:
@@ -784,7 +784,7 @@ const calculatorV2Pl = {
     incompatibleContractDesign:
       "Konstrukcja umowy nie należy do tej ścieżki i scenariusza bazowego.",
     calculationRejected:
-      "Stan porównania nie spełnia kontraktu obliczeniowego modelu 2.3.",
+      "Stan porównania nie spełnia zasad obliczeń modelu 2.3.",
     incoherentWorkspaceSource:
       "Źródło stanu kalkulatora jest niespójne. Otwórz ponownie pierwotny link albo wybierz scenariusz bazowy.",
     processMap: {
@@ -797,7 +797,7 @@ const calculatorV2Pl = {
       invalid_value:
         "Krok zawiera nieprawidłowy zakres. Popraw wartości niską, centralną i wysoką.",
       invalid_required_legal_dependency_contract:
-        "Mapa nie zachowuje pełnego zarejestrowanego kontraktu zależności prawnych. Wczytaj ponownie zgodny scenariusz bazowy.",
+        "Mapa nie zachowuje pełnego zestawu zarejestrowanych zależności prawnych. Wczytaj ponownie zgodny scenariusz bazowy.",
       missing_required_legal_ancestor:
         "Krok nie następuje już po wymaganym terminie prawnym. Przywróć zależność prowadzącą od zablokowanego terminu.",
       invalid_locked_legal_wait:
@@ -1143,17 +1143,6 @@ export const PHI_SET = {
 } as const;
 
 const homePl = {
-  hero: {
-    eyebrow: "Model decyzji zakupowych",
-    title: "Porównaj koszt dwóch dopuszczalnych projektów procesu zakupowego.",
-    tagline: "Tunel ma ściany. Pole ma horyzont.",
-    description:
-      "Ustaw wspólne ramy, osobno zaprojektuj przebieg procesu i umowę dla obu alternatyw, a następnie odczytaj wynik w zakresie niskim, centralnym i wysokim.",
-    primaryAction: "Porównaj koszty",
-    secondaryAction: "Zobacz mechanizmy i źródła",
-  },
-  neutrality:
-    "Model dopuszcza oba kierunki różnicy. Znak wyniku nie jest założony.",
   boundary: {
     eyebrow: "Wspólna granica decyzji",
     title: "Jedna granica. Dwa projekty przebiegu.",
@@ -1169,139 +1158,11 @@ const homePl = {
       "Obie ścieżki pozostają w tych samych ramach uprawnień, konkurencji, etyki i dokumentacji.",
     action: "Otwórz edytowalne porównanie procesów",
   },
-  modelContract: {
-    eyebrow: "Kontrakt modelu",
-    title: "Co wynik mówi, a czego nie rozstrzyga",
-    modelVersionLabel: "Wersja modelu",
-    modelVersion: MODEL_VERSION,
-    modelVersionDisplay: `Model ${MODEL_VERSION}`,
-    uncertaintyLabel: "Deklarowany zakres scenariusza",
-    uncertaintyValue: "niski · centralny · wysoki",
-    winnerLabel: "Kierunek różnicy",
-    winnerValue: "Nie jest założony",
-    note:
-      "Wynik centralny jest jednym punktem. Zakres propaguje jawnie zadeklarowane wartości niskie i wysokie danych wejściowych; nie jest przedziałem ufności ani mnożnikiem jakości dowodów. Może objąć oba znaki. Różnica dni pomnożona przez koszt dnia podany przez użytkownika jest tożsamością rachunkową, nie efektem empirycznym.",
-  },
-  jobs: {
-    eyebrow: "Narzędzia do decyzji zakupowej",
-    title: "Zacznij od decyzji, którą masz podjąć",
-    items: [
-      {
-        label: "Porównaj koszt",
-        body: "Zaprojektuj dwie dopuszczalne alternatywy i odczytaj różnicę w zakresie niskim, centralnym i wysokim.",
-        action: "Otwórz porównanie kosztów",
-      },
-      {
-        label: "Porównaj dopasowanie",
-        body: "Zestaw warunki dopasowania dopuszczalnych ścieżek bez punktacji ani rekomendacji.",
-        action: "Otwórz porównanie dopasowania",
-      },
-      {
-        label: "Opisz profil projektu procesu",
-        body: "Opisz dziesięć wymiarów przebiegu bez punktacji, poziomu dojrzałości ani zalecanej ścieżki.",
-        action: "Otwórz profil procesu",
-      },
-    ],
-    compare: {
-      label: "Porównaj koszty",
-      body: "Policz ten sam zakup dla ścieżki formalnej i adaptacyjnej. Sprawdź koszty pracy, oczekiwania i organizacji procesu.",
-      action: "Otwórz kalkulator",
-    },
-    choose: {
-      label: "Porównaj dopasowanie",
-      body: "Zestaw warunki dopasowania dopuszczalnych ścieżek bez punktacji ani rekomendacji.",
-      action: "Otwórz porównanie dopasowania",
-    },
-    assess: {
-      label: "Oceń proces",
-      body: "Opisz sposób pracy organizacji. Samoocena jest opisowa i nie stanowi audytu ani walidacji.",
-      action: "Przejdź do samooceny",
-    },
-  },
-  evidenceRegister: {
-    eyebrow: "Mechanizmy i źródła",
-    title: "Cztery oficjalne rekordy do interpretacji mechanizmów",
-    description:
-      "Każdy rekord oddziela to, co źródło wspiera, od tego, czego nie rozstrzyga. Rejestr nie przypisuje organizacji wyniku modelu.",
-    allAction: "Otwórz pełny rejestr mechanizmów i źródeł",
-  },
-  scenarios: {
-    eyebrow: "Porównywalne rekordy",
-    title: "Scenariusze referencyjne",
-    description:
-      "Każdy wiersz korzysta z jawnych danych wejściowych i tego samego modelu. Czasy oraz zakres są wynikami ilustracyjnymi, nie danymi z cytowanego źródła.",
-    money: {
-      locale: "pl-PL",
-      currencyCode: "PLN",
-      thousandSuffix: " tys.",
-      millionSuffix: " mln",
-    },
-    columns: {
-      scenario: "Scenariusz",
-      contractValue: "Wartość zakupu",
-      formalDays: "Formalna, dni",
-      adaptiveDays: "Adaptacyjna, dni",
-      uncertainty: "Zakres ΔC",
-      source: "Źródło i status",
-    },
-    allAction: "Zobacz wszystkie scenariusze",
-  },
-  evidence: {
-    eyebrow: "Łańcuch dowodowy",
-    title: "Od założenia do odtworzenia wyniku",
-    description:
-      "Każdy poziom odsłania kolejną warstwę: parametry, metodę, argument naukowy i materiały do reprodukcji.",
-    assumptions: {
-      title: "Założenia",
-      body: "Parametry, profile i status każdej wartości użytej w rachunku.",
-      action: "Sprawdź założenia",
-    },
-    methodology: {
-      title: "Metodologia",
-      body: "Kontrakt obliczeniowy, pokrycie monetyzacji i granice interpretacji.",
-      action: "Przeczytaj metodologię",
-    },
-    paper: {
-      title: "Artykuł naukowy",
-      body: "Formalny model, hipotezy i projekt empirycznej walidacji.",
-      action: "Otwórz artykuł",
-    },
-    replication: {
-      title: "Replikacja",
-      body: "Kod, testy i generowane wyniki używane do audytu obliczeń.",
-      action: "Otwórz pakiet replikacyjny",
-    },
-  },
-  implementation: {
-    eyebrow: "Od modelu do wdrożenia",
-    title: "Rachunek kosztu i samoopis gotowości to odrębne analizy",
-    body:
-      "Porównanie kosztów nie potwierdza właścicielstwa, jakości wymagań, danych ani adopcji. Samoopis porządkuje deklarowane warunki, a materiał Procurement&Beyond pokazuje ich praktyczny kontekst.",
-    readinessAction: "Otwórz samoopis gotowości do wdrożenia",
-    practiceAction: "Przejdź do materiału Procurement&Beyond",
-  },
-  finalAction: {
-    eyebrow: "Twój przypadek",
-    title: "Porównaj dwa projekty przebiegu własnego zakupu.",
-    body: "Ustal wspólną granicę, zaprojektuj obie mapy i zadeklaruj założenia kosztowe. Rekord pokaże wynik centralny, zakres scenariusza i granice monetyzacji.",
-    action: "Otwórz kalkulator",
-  },
 } as const;
 
 type HomeShape = LangShape<typeof homePl>;
 
 const homeEn = {
-  hero: {
-    eyebrow: "Procurement decision model",
-    title: "Compare the cost of two lawful procurement workflow designs.",
-    tagline: "A tunnel has walls. A field has a horizon.",
-    description:
-      "Set the shared boundary, design the workflow and contract for each alternative separately, then read the result under low, central, and high assumptions.",
-    primaryAction: "Compare costs",
-    secondaryAction: "View mechanisms and evidence",
-  },
-  neutrality:
-    "The model permits either direction of difference. The sign is not assumed.",
   boundary: {
     eyebrow: "Shared decision boundary",
     title: "One boundary. Two workflow designs.",
@@ -1317,133 +1178,16 @@ const homeEn = {
       "Both paths remain within the same boundaries of authority, competition, ethics and documentation.",
     action: "Open the editable process comparison",
   },
-  modelContract: {
-    eyebrow: "Model contract",
-    title: "What the result says and what it does not settle",
-    modelVersionLabel: "Model version",
-    modelVersion: MODEL_VERSION,
-    modelVersionDisplay: `Model ${MODEL_VERSION}`,
-    uncertaintyLabel: "Declared scenario range",
-    uncertaintyValue: "low · central · high",
-    winnerLabel: "Direction of difference",
-    winnerValue: "Not assumed",
-    note:
-      "The central result is one point. The range propagates explicitly declared low and high input values; it is neither a confidence interval nor an evidence-quality multiplier. It may span both signs. The day difference multiplied by the user-supplied daily cost is an accounting identity, not an empirical effect.",
-  },
-  jobs: {
-    eyebrow: "Procurement decision tools",
-    title: "Start with the decision you need to make",
-    items: [
-      {
-        label: "Compare cost",
-        body: "Design two lawful alternatives and read the difference under low, central, and high assumptions.",
-        action: "Open the cost comparison",
-      },
-      {
-        label: "Compare suitability",
-        body: "Compare the suitability conditions of lawful routes without scoring or a recommendation.",
-        action: "Open the suitability comparison",
-      },
-      {
-        label: "Describe the process design profile",
-        body: "Describe ten workflow dimensions without a score, maturity level or prescribed route.",
-        action: "Open the process profile",
-      },
-    ],
-    compare: {
-      label: "Compare costs",
-      body: "Calculate the same purchase for formal and adaptive paths. Inspect staff, waiting and process costs.",
-      action: "Open calculator",
-    },
-    choose: {
-      label: "Compare suitability",
-      body: "Compare the suitability conditions of lawful routes without scoring or a recommendation.",
-      action: "Open the suitability comparison",
-    },
-    assess: {
-      label: "Assess a process",
-      body: "Describe how the organisation works. The self-assessment is descriptive, not an audit or validation.",
-      action: "Open self-assessment",
-    },
-  },
-  evidenceRegister: {
-    eyebrow: "Mechanisms and evidence",
-    title: "Four official records for interpreting mechanisms",
-    description:
-      "Each record separates what the source supports from what it does not establish. The register assigns no model outcome to an organisation.",
-    allAction: "Open the full mechanisms and evidence register",
-  },
-  scenarios: {
-    eyebrow: "Comparable records",
-    title: "Reference scenarios",
-    description:
-      "Each row uses declared inputs and the same model. Durations and ranges are illustrative outputs, not observations from the cited source.",
-    money: {
-      locale: "en-GB",
-      currencyCode: "PLN",
-      thousandSuffix: "k",
-      millionSuffix: "M",
-    },
-    columns: {
-      scenario: "Scenario",
-      contractValue: "Purchase value",
-      formalDays: "Formal, days",
-      adaptiveDays: "Adaptive, days",
-      uncertainty: "ΔC range",
-      source: "Source and status",
-    },
-    allAction: "View all scenarios",
-  },
-  evidence: {
-    eyebrow: "Evidence chain",
-    title: "From assumption to reproducible result",
-    description:
-      "Each level opens another layer: parameters, method, research argument, and reproduction materials.",
-    assumptions: {
-      title: "Assumptions",
-      body: "Parameters, profiles, and the status of every value used in the calculation.",
-      action: "Review assumptions",
-    },
-    methodology: {
-      title: "Methodology",
-      body: "Calculation contract, monetisation coverage and interpretation limits.",
-      action: "Read the methodology",
-    },
-    paper: {
-      title: "Research paper",
-      body: "The formal model, hypotheses, and empirical validation design.",
-      action: "Open the paper",
-    },
-    replication: {
-      title: "Replication",
-      body: "Code, tests, and generated outputs used to audit the calculations.",
-      action: "Open replication package",
-    },
-  },
-  implementation: {
-    eyebrow: "From model to implementation",
-    title: "Cost analysis and readiness self-description are separate exercises",
-    body:
-      "A cost comparison does not establish ownership, requirement quality, data readiness or adoption. The self-description structures declared conditions, while Procurement&Beyond material provides practitioner context.",
-    readinessAction: "Open the implementation-readiness self-description",
-    practiceAction: "Open the Procurement&Beyond material",
-  },
-  finalAction: {
-    eyebrow: "Your case",
-    title: "Compare two workflow designs for your purchase.",
-    body: "Set the shared boundary, design both maps and declare cost assumptions. The record reports the central result, scenario range and monetisation boundary.",
-    action: "Open the calculator",
-  },
 } satisfies HomeShape;
 
 export const homeT = { pl: homePl, en: homeEn } as const;
 
 const homeExperiencePl = {
   hero: {
-    eyebrow: "Decyzja zakupowa / model 2.3",
-    title: "Porównaj dwa sposoby zakupu zgodne z obowiązującymi regulacjami.",
+    eyebrow: "Model decyzji zakupowych / 2.3",
+    title: "Procedura czy polityka? Policz ten sam zakup na dwa sposoby.",
     description:
-      "Regulacje firmy oraz PZP, gdy ma zastosowanie, wyznaczają wspólne ramy obu wariantów. Porównaj czas i koszt, zachowując zapis założeń, wyniku i ograniczeń.",
+      "Oba warianty działają w tych samych ramach: regulaminie firmy i PZP, gdy ma zastosowanie. Porównasz czas i koszt, a wynik zapiszesz razem z założeniami i ograniczeniami.",
     primaryAction: "Zacznij porównanie",
     secondaryAction: "Sprawdź model i źródła",
   },
@@ -1465,7 +1209,7 @@ const homeExperiencePl = {
   },
   record: {
     eyebrow: "Co zawiera wynik",
-    title: "Wynik, który można sprawdzić i odtworzyć",
+    title: "Dostajesz wynik, założenia i listę tego, czego model nie wycenia",
     description:
       "Otrzymasz zestawienie kosztów obu wariantów, przyjęte założenia i listę czynników, których model nie wycenia.",
     fields: [
@@ -1502,20 +1246,8 @@ const homeExperiencePl = {
   },
   trust: {
     eyebrow: "Jak działa porównanie",
-    items: [
-      {
-        title: "Neutralny wynik",
-        body: "Model dopuszcza oba kierunki różnicy i nie zakłada tańszego wariantu.",
-      },
-      {
-        title: "Dane pod kontrolą użytkownika",
-        body: "Szkic lokalny działa wyłącznie po zgodzie i nie trafia na serwer.",
-      },
-      {
-        title: "Wspólna granica prawna",
-        body: "Obowiązkowe terminy i reguły pozostają zablokowane po obu stronach.",
-      },
-    ],
+    description:
+      "Model nie zakłada, który wariant wyjdzie taniej. Obowiązkowe terminy prawne są zablokowane po obu stronach, a szkic zapisuje się w przeglądarce tylko za Twoją zgodą.",
   },
   finalAction: {
     title: "Masz zakup do porównania?",
@@ -1528,10 +1260,10 @@ type HomeExperienceShape = LangShape<typeof homeExperiencePl>;
 
 const homeExperienceEn = {
   hero: {
-    eyebrow: "Procurement decision / model 2.3",
-    title: "Compare two procurement approaches that comply with the applicable rules.",
+    eyebrow: "Procurement decision model / 2.3",
+    title: "Procedure or policy? Cost the same purchase two ways.",
     description:
-      "Company policies and the Polish Public Procurement Law (PZP), where applicable, set the same boundaries for both alternatives. Compare time and cost, keeping a record of assumptions, results and limitations.",
+      "Both alternatives work within the same boundary: company policy and, where it applies, Polish public procurement law (PZP). Compare time and cost and keep the result together with its assumptions and limits.",
     primaryAction: "Start a comparison",
     secondaryAction: "Check the model and evidence",
   },
@@ -1553,7 +1285,7 @@ const homeExperienceEn = {
   },
   record: {
     eyebrow: "What the result contains",
-    title: "A result that can be checked and reproduced",
+    title: "You get the result, its assumptions and what the model does not price",
     description:
       "The record contains the costs of both alternatives, the assumptions used and the factors the model leaves unpriced.",
     fields: [
@@ -1590,20 +1322,8 @@ const homeExperienceEn = {
   },
   trust: {
     eyebrow: "How the comparison works",
-    items: [
-      {
-        title: "Neutral result",
-        body: "The model permits either direction of difference and assumes no cheaper alternative.",
-      },
-      {
-        title: "User-controlled data",
-        body: "A local draft works only with consent and is never sent to a server.",
-      },
-      {
-        title: "Shared legal boundary",
-        body: "Mandatory periods and rules remain locked on both sides.",
-      },
-    ],
+    description:
+      "The model does not assume which alternative will be cheaper. Mandatory legal periods are locked on both sides, and the draft is saved in your browser only with your consent.",
   },
   finalAction: {
     title: "Do you have a procurement to compare?",
@@ -1773,12 +1493,12 @@ const researchAgendaPl = {
   eyebrow: (version: string) => `Agenda badawcza · Model ${version}`,
   title: "Waliduj mechanizmy przed ich wyceną",
   intro:
-    "ProcuraCost jest przejrzystym modelem porównania kosztów, a nie oszacowanym efektem organizacyjnym. Program empiryczny zaczyna się od oddzielnego pomiaru przebiegu pracy, konkurencji i konstrukcji kontraktu. Narzędzia badawcze wymagają przeglądu przed rozpoczęciem zbierania danych.",
+    "ProcuraCost porównuje koszty przy jawnych założeniach. Nie mierzy efektu w organizacjach. Program empiryczny zaczyna się od oddzielnego pomiaru przebiegu pracy, konkurencji i konstrukcji umowy. Narzędzia badawcze wymagają przeglądu przed rozpoczęciem zbierania danych.",
   prioritiesTitle: "Priorytety pomiaru",
   priorities: [
     "Przebieg pracy: znaczniki czasu, praca równoległa i godziny pracy według ról.",
     "Konkurencja: udział oferentów, kwalifikacja i benchmarki cenowe.",
-    "Konstrukcja kontraktu: adaptowalność na poziomie klauzul i aneksy.",
+    "Konstrukcja umowy: adaptowalność na poziomie klauzul i aneksy.",
     "Wyniki: opóźnienie, efekty w cyklu życia, obejścia i ustalenia audytowe.",
   ],
   identificationTitle: "Reguła identyfikacji",
@@ -2182,7 +1902,7 @@ const researchExportV2Pl = {
     informal_bypass: "Zakup poza zatwierdzonym procesem",
   },
   assumptions: {
-    contractValue: "Wartość kontraktu",
+    contractValue: "Wartość umowy",
     dailyCostOfInaction: "Dzienny koszt zwłoki",
     pathCompetitionDiffers: "Czy konkurencja między ścieżkami się różni",
     competitionDisadvantagedAlternative:
@@ -2599,17 +2319,17 @@ export const siteMetadataT = {
 
 const modelOverviewPl = {
   metadata: {
-    title: "Dokumentacja modelu kosztów przetargu | ProcuraCost",
+    title: "Dokumentacja modelu ProcuraCost",
     description:
-      "Kontrakt obliczeniowy, zakres dowodowy i ograniczenia modelu kosztów przetargu ProcuraCost: co jest liczone i skąd pochodzą dane.",
+      "Jak ProcuraCost liczy koszt dwóch przebiegów tego samego zakupu: zasady obliczeń, źródła i ograniczenia.",
   },
   eyebrow: `Model ${MODEL_V2_METADATA.modelVersion}`,
   title: "Centrum badawcze",
   intro:
-    "Tu można prześledzić kontrakt obliczeniowy, źródła, ograniczenia i materiały potrzebne do odtworzenia modelu 2.3. ProcuraCost nie wybiera procedury za użytkownika i nie zakłada kierunku różnicy kosztu.",
+    "Tu można prześledzić zasady obliczeń, źródła, ograniczenia i materiały potrzebne do odtworzenia modelu 2.3. ProcuraCost nie wybiera procedury za użytkownika i nie zakłada kierunku różnicy kosztu.",
   groups: {
     contract: {
-      eyebrow: "Kontrakt modelu",
+      eyebrow: "Co model liczy, a czego nie",
       title: "Co model liczy i na jakich warunkach",
       items: {
         assumptions: {
@@ -2636,7 +2356,7 @@ const modelOverviewPl = {
         },
         repository: {
           title: "Kod i pakiet replikacyjny",
-          body: "Publiczna implementacja, testy oraz deterministyczne artefakty modelu 2.3.",
+          body: "Publiczna implementacja, testy oraz pliki wynikowe modelu 2.3.",
         },
       },
     },
@@ -2646,7 +2366,7 @@ const modelOverviewPl = {
       items: {
         practice: {
           title: "Materiał praktyczny",
-          body: "Pytania o tarcie procesu, wymagania, odpowiedzialność i adopcję.",
+          body: "Pytania o miejsca, w których proces się zacina, wymagania, odpowiedzialność i korzystanie z systemu.",
         },
         team: {
           title: "Zespół",
@@ -2666,13 +2386,13 @@ const modelOverviewPl = {
       label: "02 / dwa projekty",
       title: "Przebieg procesu i konstrukcja umowy",
       body:
-        "Każda alternatywa ma własną mapę czynności i zależności oraz zakresy czasu pracy, oczekiwania i kosztów nieosobowych. Konstrukcja umowy pozostaje osobnym wymiarem i nie jest zastępowana etykietą technologii.",
+        "Każda alternatywa ma własną mapę czynności i zależności oraz zakresy czasu pracy, oczekiwania i kosztów innych niż praca. Konstrukcja umowy pozostaje osobnym wymiarem i nie jest zastępowana etykietą technologii.",
     },
     costRecord: {
       label: "03 / jawny rachunek",
       title: "Rekord kosztu i pokrycia",
       body:
-        "Silnik sumuje koszt pracy ról, koszt nieosobowy, koszt zwłoki oraz wyłącznie jawnie monetyzowane wymiary kontraktowe. Rekord pokazuje też czynniki nieobjęte wyceną i źródło każdego założenia.",
+        "Silnik sumuje koszt pracy ról, koszty inne niż praca, koszt zwłoki oraz elementy umowy wycenione w złotych. Rekord pokazuje też czynniki nieobjęte wyceną i źródło każdego założenia.",
     },
     evidenceBoundary: {
       label: "04 / granica wnioskowania",
@@ -2683,7 +2403,7 @@ const modelOverviewPl = {
   },
   rangeTitle: "Jak czytać wynik",
   rangeDisclosure:
-    "Delta oznacza koszt alternatywy formalnej i sekwencyjnej pomniejszony o koszt alternatywy adaptacyjnej i zgodnej. Zakres niski, centralny i wysoki jest deklarowanym stresem scenariuszowym, a nie oszacowaniem prawdopodobieństwa. Zewnętrzny zakres łączy przeciwne krańce kosztów obu wariantów. Przecięcie zera nie dowodzi zmiany znaku przy wspólnych założeniach.",
+    "Delta oznacza koszt alternatywy formalnej i sekwencyjnej pomniejszony o koszt alternatywy adaptacyjnej i zgodnej. Zakres niski, centralny i wysoki wynika z zakresu założeń, a nie z oszacowania prawdopodobieństwa. Zewnętrzny zakres łączy przeciwne krańce kosztów obu wariantów. Przecięcie zera nie dowodzi zmiany znaku przy wspólnych założeniach.",
   actionsTitle: "Materiały do decyzji",
   actions: {
     assumptions: "Rejestr założeń",
@@ -2813,7 +2533,7 @@ const methodologyOverviewPl = {
     },
     {
       title: "Zaprojektuj obie mapy",
-      body: "Dla każdej alternatywy zdefiniuj czynności, poprzedniki, pracę aktywną, oczekiwanie, role i koszt nieosobowy. Czas wynika z najdłuższej ścieżki w grafie zależności.",
+      body: "Dla każdej alternatywy zdefiniuj czynności, poprzedniki, pracę aktywną, oczekiwanie, role i koszty inne niż praca. Czas wynika z najdłuższej ścieżki w grafie zależności.",
     },
     {
       title: "Zablokuj reguły prawne",
@@ -2821,11 +2541,11 @@ const methodologyOverviewPl = {
     },
     {
       title: "Oblicz każdą alternatywę",
-      body: "Koszt całkowity obejmuje pracę ról, koszt nieosobowy, iloczyn czasu i dziennego kosztu zwłoki oraz jawnie wycenione elementy konstrukcji umowy.",
+      body: "Koszt całkowity obejmuje pracę ról, koszty inne niż praca, iloczyn czasu i dziennego kosztu zwłoki oraz jawnie wycenione elementy umowy.",
     },
     {
       title: "Zapisz granice wyniku",
-      body: "Rekord decyzji zachowuje osie, oba projekty, pokrycie monetyzacji, wymiary niemonetyzowane, założenia, źródła, pochodzenie prawne i historię migracji.",
+      body: "Rekord decyzji zachowuje osie, oba projekty, informacje o tym, co jest wycenione, a co nie, założenia, źródła, pochodzenie prawne i historię migracji.",
     },
   ],
   examplesTitle: "Kiedy adaptacja wnosi wartość, a kiedy nie jest potrzebna",
@@ -2873,7 +2593,7 @@ const methodologyOverviewPl = {
         {
           scenarioId: "catalog_calloff_control / mrp_release_control",
           title: "Realizacja z katalogu albo MRP",
-          body: "Dostawca, cena i warunki są już zakontraktowane. Właściwym problemem jest sprawna realizacja transakcji i obsługa wyjątków, nie ponowne projektowanie postępowania zakupowego.",
+          body: "Dostawca, cena i warunki są już uzgodnione w umowie. Właściwym problemem jest sprawna realizacja transakcji i obsługa wyjątków, nie ponowne projektowanie postępowania zakupowego.",
         },
       ],
     },
@@ -2890,7 +2610,7 @@ const methodologyOverviewPl = {
     "Model obsługuje wskazane zakupy klasyczne. Konteksty sektorowe oraz obronności i bezpieczeństwa są celowo odrzucane. Dobór procedury szczególnej nadal wymaga oceny przesłanek przez właściwą osobę.",
   practitionerTitle: "Granica materiału praktycznego",
   practitionerBoundary:
-    "Obserwacje z Procurement&Beyond, odcinek 8, wspierają pytania o tarcie procesu, właścicielstwo, wymagania, TCO i odpowiedzialną automatyzację. Nie są dowodem skuteczności wdrożeń i nie kalibrują modelu kosztowego.",
+    "Obserwacje z Procurement&Beyond, odcinek 8, wspierają pytania o miejsca, w których proces się zacina, ciągłość odpowiedzialności, wymagania, TCO i odpowiedzialną automatyzację. Nie są dowodem skuteczności wdrożeń i nie kalibrują modelu kosztowego.",
   actions: {
     model: "Model i założenia",
     calculator: "Kalkulator",
@@ -3715,7 +3435,7 @@ const suitabilityPl = {
   metadataDescription:
     "Równorzędne rodziny procedur przetargowych, obowiązkowe terminy PZP i warunki do potwierdzenia dla zadeklarowanego kontekstu zakupu.",
   intro:
-    "Wskaż granicę prawną i kontekst procesu. Narzędzie pokaże równorzędny zbiór rodzin procedur objętych modelem oraz warunki, które trzeba potwierdzić przed wyborem.",
+    "Pokazuje warunki każdej dopuszczalnej ścieżki. Nie wskazuje najlepszej.",
   neutralityNote:
     "Kolejność na liście ma wyłącznie znaczenie techniczne. Każda rodzina ma ten sam status, a wynik nie zastępuje analizy prawnej.",
   visualSteps: ["Deklaracja", "Granica prawna", "Równy status"],
@@ -3831,7 +3551,7 @@ const suitabilityPl = {
     "suitability.limitations.notLegalAdvice": "Wynik nie zastępuje analizy prawnej, regulaminu ani udokumentowanego uzasadnienia.",
     "suitability.limitations.noReadinessInference": "Deklarowane wsparcie systemowe nie potwierdza gotowości organizacyjnej do wdrożenia.",
     "suitability.limitations.customGroundsNotEvaluated": "Model nie ocenia przesłanek prawnych ani organizacyjnych dla konstrukcji niestandardowej.",
-    "suitability.conditions.frameworkApplicable": "Istnieje właściwa umowa ramowa, katalog lub kontrakt z dostawcą, z którego można wykonać zamówienie.",
+    "suitability.conditions.frameworkApplicable": "Istnieje właściwa umowa ramowa, katalog lub umowa z dostawcą, z której można wykonać zamówienie.",
     "suitability.conditions.learningMayAddWork": "Kontrolowane rozpoznanie potrzeby może zwiększyć czas i nakład pracy; jego wartość trzeba uzasadnić redukcją niepewności.",
     "suitability.reasons.invalidInput": "Dane wejściowe nie mają oczekiwanej struktury.",
     "suitability.reasons.invalidOrUnsupportedProfile": "Profil zawiera nieobsługiwaną wartość, wersję reguł albo datę poza zakresem 2026–2027.",
@@ -3866,7 +3586,7 @@ const suitabilityPl = {
     },
     execution_channel: {
       sourcing_event: "Kanał służy przeprowadzeniu udokumentowanego postępowania sourcingowego.",
-      catalog_calloff: "Kanał służy zamówieniu z istniejącego katalogu, umowy ramowej lub kontraktu. Nie zastępuje nowego sourcingu.",
+      catalog_calloff: "Kanał służy zamówieniu z istniejącego katalogu lub umowy ramowej. Nie zastępuje nowego sourcingu.",
       mrp_release: "Kanał służy zwolnieniu zapotrzebowania do istniejącego, zatwierdzonego dostawcy. Nie zastępuje nowego sourcingu.",
       custom: "Niestandardowy kanał wymaga opisania kontroli, autoryzacji i śladu decyzyjnego.",
     },
@@ -3874,14 +3594,14 @@ const suitabilityPl = {
       verify: "Iteracyjne rozpoznanie może zwiększyć czas i nakład pracy. Należy wskazać decyzje, które mają zostać wsparte nową informacją.",
       notAssessed: "Model nie zakłada wartości dodatkowego uczenia dla tego archetypu.",
     },
-    system_support: "Narzędzie może wspierać czynności, ale samo nie potwierdza właściciela procesu, jakości danych ani adopcji.",
+    system_support: "Narzędzie może wspierać czynności, ale samo nie potwierdza właściciela procesu, jakości danych ani korzystania z systemu.",
   },
   conditionText: {
     boundary: "Potwierdź właściwość zadeklarowanej granicy prawnej i regulaminu.",
     archetype: "Potwierdź opis potrzeby i ryzyka właściwe dla wybranego archetypu.",
     channel: {
       sourcing_event: "Potwierdź zakres, role i ślad decyzyjny postępowania sourcingowego.",
-      catalog_calloff: "Potwierdź podstawę zamówienia w istniejącym katalogu, umowie ramowej lub kontrakcie.",
+      catalog_calloff: "Potwierdź podstawę zamówienia w istniejącym katalogu lub umowie ramowej.",
       mrp_release: "Potwierdź zatwierdzone źródło dostawy, parametry MRP i kontrolę wyjątku.",
       custom: "Udokumentuj właściciela, kontrolę i autoryzację niestandardowego kanału.",
     },
@@ -3897,7 +3617,7 @@ const suitabilityEn = {
   title: "Procurement procedure suitability conditions",
   metadataTitle: "Procurement procedure suitability conditions: ProcuraCost",
   metadataDescription: "Equal-status procurement procedure families, mandatory PZP legal periods and conditions to confirm for the declared procurement context.",
-  intro: "Declare the legal boundary and process context. The tool will show an equal-status set of procedure families covered by the model and the conditions that need confirmation before selection.",
+  intro:   "It shows the conditions for every lawful route. It does not identify a best option.",
   neutralityNote: "List order is technical only. Every family has the same status, and the result does not replace legal analysis.",
   visualSteps: ["Declaration", "Legal boundary", "Equal status"],
   formTitle: "Declared procurement context",
@@ -4073,7 +3793,7 @@ const processProfilePl = {
   badge: "Opis projektu procesu",
   title: "Profil projektu procesu zakupowego",
   subtitle:
-    "Opisz dziesięć wymiarów przebiegu. Orientacje sekwencyjna, mieszana i adaptacyjna nie są skalą od gorszego do lepszego.",
+    "Opisz dziesięć wymiarów przebiegu. Narzędzie niczego nie ocenia.",
   orientations: {
     sequential: "Sekwencyjna",
     mixed: "Mieszana",
@@ -4183,7 +3903,7 @@ const processProfilePl = {
     countsTitle: "Liczba wymiarów według orientacji",
     selectionsTitle: "Opis dziesięciu wymiarów",
     description:
-      "Profil pokazuje, gdzie projekt procesu jest sekwencyjny, mieszany lub adaptacyjny. Nie mierzy dojrzałości organizacji i nie wyznacza zalecanej ścieżki.",
+      "Profil pokazuje, gdzie projekt procesu jest sekwencyjny, mieszany lub adaptacyjny.",
     validationCaveat:
       "Profil ma charakter opisowy i nie jest zwalidowanym narzędziem oceny.",
   },
@@ -4199,7 +3919,7 @@ const processProfileEn = {
   badge: "Workflow design description",
   title: "Procurement process design profile",
   subtitle:
-    "Describe ten workflow dimensions. Sequential, mixed and adaptive orientations are descriptive categories, not a better-to-worse scale.",
+    "Describe ten workflow dimensions. The tool does not assess them.",
   orientations: {
     sequential: "Sequential",
     mixed: "Mixed",
@@ -4309,7 +4029,7 @@ const processProfileEn = {
     countsTitle: "Dimensions by orientation",
     selectionsTitle: "Selected design by dimension",
     description:
-      "The profile shows where the workflow design is sequential, mixed, or adaptive. It does not measure organisational maturity or prescribe a route.",
+      "The profile shows where the workflow design is sequential, mixed, or adaptive.",
     validationCaveat:
       "The profile is descriptive and has not been validated as an assessment instrument.",
   },
@@ -4499,7 +4219,7 @@ const teamPl = {
     eyebrow: "Praktyka wdrożeniowa",
     title: "Odpowiedzialność za model i odpowiedzialność za wdrożenie",
     body:
-      "Model wspiera uporządkowanie porównania. Właściciel procesu nadal odpowiada za cel, wymagania, dane, decyzje, adopcję i mierzenie wartości.",
+      "Model wspiera uporządkowanie porównania. Właściciel procesu nadal odpowiada za cel, wymagania, dane, decyzje, korzystanie z systemu i mierzenie wartości.",
     practiceAction: "Rozmowa Procurement&Beyond",
   },
   roles: {
@@ -4731,7 +4451,7 @@ const modelV2Pl = {
       name: "Transformacja ERP: etap odkrywania",
       description:
         "Zakup systemu ERP, w którym definicja potrzeb i kontakt z rynkiem są widocznymi elementami procesu.",
-      sourceTitle: "Scenariusz 2.2.2: kontrakt IT i ERP",
+      sourceTitle: "Scenariusz 2.2.2: umowa IT i ERP",
       assumptionLabel: "Przeniesione założenia scenariusza ERP",
       assumptionDetail:
         "Wartości ekonomiczne, surowe sumy 44/24 dni oraz profil wsparcia systemowego i kosztów koordynacji lub narzędzi zachowują centra modelu 2.2.2. Kolejność kroków, podział dni i alokacje godzin ról są ilustracyjnymi założeniami modelu 2.3. Zewnętrzne studia przypadków wspierają wyłącznie nazwane mechanizmy, nie czasy, nakład pracy ani koszty.",
@@ -4779,7 +4499,7 @@ const modelV2Pl = {
       sourceTitle: "Scenariusz 2.2.2: inwestycja CAPEX",
       assumptionLabel: "Przeniesione założenia inwestycji CAPEX",
       assumptionDetail:
-        "Wartość kontraktu, koszt dnia, stawki i czasy są zakresami założeń przeniesionymi z modelu 2.2.2.",
+        "Wartość umowy, koszt dnia, stawki i czasy są zakresami założeń przeniesionymi z modelu 2.2.2.",
     },
     discovery_solution_codesign: {
       name: "Odkrywanie i współprojektowanie rozwiązania",
@@ -4802,7 +4522,7 @@ const modelV2Pl = {
     mrp_release_control: {
       name: "Kontrola zwolnienia zlecenia MRP",
       description:
-        "Realizacja zakontraktowanego zapotrzebowania MRP przy identycznych mapach obu wariantów.",
+        "Realizacja zapotrzebowania MRP uzgodnionego w umowie przy identycznych mapach obu wariantów.",
       sourceTitle: "Scenariusz 2.2.2: zlecenie MRP",
       assumptionLabel: "Przeniesione założenia zlecenia MRP",
       assumptionDetail:
@@ -4885,12 +4605,12 @@ const modelV2Pl = {
         "Doing It by the Book: Political Contestability and Public Contract Renegotiations",
       publisher: "The Journal of Law, Economics, and Organization",
       supported:
-        "Analiza 2SLS wiąże sztywność umowy z roczną częstością formalnych aneksów we francuskich kontraktach parkingowych.",
+        "Analiza 2SLS wiąże sztywność umowy z roczną częstością formalnych aneksów w umowach parkingowych we Francji.",
       unsupported:
-        "Nie mierzy formalności przebiegu procesu zakupowego ani prawdopodobieństwa aneksu. Wynik to liczba aneksów na rok kontraktu.",
-      population: "Francuskie kontrakty samorządowe na obsługę parkingów",
+        "Nie mierzy formalności przebiegu procesu zakupowego ani prawdopodobieństwa aneksu. Wynik to liczba aneksów na rok umowy.",
+      population: "Francuskie samorządowe umowy na obsługę parkingów",
       assumption:
-        "Zakres 0,077, 0,084 i 0,098 aneksu na rok kontraktu ze zweryfikowanego postprintu (tabela 4) jest monetyzowany wyłącznie przy jawnie zadeklarowanej różnicy sztywności umowy. W rejestrze kanonicznym pozostaje zerowy.",
+        "Zakres 0,077, 0,084 i 0,098 aneksu na rok umowy ze zweryfikowanego postprintu (tabela 4) jest wyceniany wyłącznie przy jawnie zadeklarowanej różnicy sztywności umowy. W rejestrze kanonicznym pozostaje zerowy.",
     },
   },
   workflow: {
@@ -5415,7 +5135,7 @@ const modelAssumptionsPl = {
     none: "brak",
   },
   assumptions: {
-    contractValue: "Wartość kontraktu",
+    contractValue: "Wartość umowy",
     dailyCostOfInaction: "Dzienny koszt zwłoki",
     competitionTransferRate: "Transfer konkurencji cenowej",
     amendmentDifferential: "Różnica kosztu aneksów",
@@ -5452,10 +5172,10 @@ const modelAssumptionsPl = {
     role_effort: "nakład pracy ról",
     problem_definition: "definicja problemu zakupowego",
     market_consultation: "konsultacje rynkowe",
-    modular_contracting: "modułowa konstrukcja kontraktu",
+    modular_contracting: "modułowa konstrukcja umowy",
     supplier_access: "dostęp dostawców",
     competition_transfer: "transfer konkurencji",
-    contract_adaptability: "adaptowalność kontraktu",
+    contract_adaptability: "adaptowalność umowy",
     contract_amendment: "aneksy do umowy",
     tco: "całkowity koszt posiadania",
     informal_bypass: "zakup poza procesem",
@@ -5719,7 +5439,7 @@ const readinessPl = {
         "Przeprojektować zasady nadzoru przed konfiguracją. Zachować wymogi zgodności, ale usunąć kroki bez właściciela i uzasadnienia.",
     },
     adoption: {
-      label: "Adopcja i zdolność do zmiany",
+      label: "Korzystanie z systemu i zdolność do zmiany",
       toCompleteAction:
         "Przydzielić czas użytkownikom oraz ustalić plan testów akceptacyjnych i właścicieli komunikacji, szkoleń i wsparcia.",
       notMetAction:
@@ -5840,10 +5560,10 @@ const readinessPl = {
       },
     },
     "adoption.plan": {
-      prompt: "Czy istnieje plan adopcji obejmujący komunikację, szkolenie, wsparcie i pomiar użycia?",
+      prompt: "Czy istnieje plan korzystania z systemu obejmujący komunikację, szkolenie, wsparcie i pomiar użycia?",
       answers: {
         not_met: "Nie. Miarą sukcesu jest wyłącznie uruchomienie produkcyjne, a obejścia mailowe i arkuszowe nie będą mierzone.",
-        to_complete: "Plan zmiany istnieje, ale brakuje właścicieli, wsparcia po starcie albo mierników adopcji.",
+        to_complete: "Plan zmiany istnieje, ale brakuje właścicieli, wsparcia po starcie albo mierników korzystania z systemu.",
         confirmed: "Plan ma właścicieli, harmonogram, wsparcie po starcie i mierniki, takie jak udział transakcji w systemie, wyjątki i czas cyklu.",
       },
     },
@@ -5858,7 +5578,7 @@ const readinessPl = {
     "value_rollout.rollout": {
       prompt: "Czy plan wdrożenia określa ograniczony pierwszy zakres, kryteria wyjścia i sposób zapewnienia ciągłości operacyjnej?",
       answers: {
-        not_met: "Plan zakłada nieodwracalne, jednorazowe uruchomienie w pełnym zakresie mimo nieuzupełnionych warunków dotyczących procesu, danych lub adopcji.",
+        not_met: "Plan zakłada nieodwracalne, jednorazowe uruchomienie w pełnym zakresie mimo nieuzupełnionych warunków dotyczących procesu, danych lub korzystania z systemu.",
         to_complete: "Są etapy, ale bez mierzalnych kryteriów decyzyjnych, zasad zatrzymania albo planu powrotu.",
         confirmed: "Pilotaż lub pierwsza fala ma ograniczony zakres, kryteria wejścia i wyjścia, właścicieli oraz plan ciągłości i powrotu.",
       },
@@ -6211,7 +5931,7 @@ const practicePl = {
         "Wewnętrzny ambasador łączy wizję biznesową, mandat decyzyjny i komunikację z użytkownikami.",
     },
     champion_continuity: {
-      title: "Ciągłość właścicielstwa",
+      title: "Ciągłość odpowiedzialności",
       body:
         "Odejście osoby napędzającej projekt może spowolnić pracę, jeśli nie przygotowano zastępstwa i ścieżki decyzji.",
     },
@@ -6250,7 +5970,7 @@ const practicePl = {
     title: "Granica wykorzystania materiału",
     supportsTitle: "Co materiał wspiera",
     supports: [
-      "Projektowanie pytań o nieefektywność procesu, odpowiedzialność biznesową, wymagania, dane, adopcję i TCO.",
+      "Projektowanie pytań o nieefektywność procesu, odpowiedzialność biznesową, wymagania, dane, korzystanie z systemu i TCO.",
       "Formułowanie hipotez do późniejszego sprawdzenia na danych organizacji.",
       "Planowanie warsztatów rozpoznania potrzeb, mapowania procesu i ograniczonego pilotażu.",
     ],

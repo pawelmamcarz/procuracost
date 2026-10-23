@@ -54,7 +54,7 @@ describe("legacy model version seal", () => {
     );
 
     expect(source).toContain(
-      'import { LEGACY_MODEL_VERSION, MODEL_VERSION } from "./version";',
+      'import { LEGACY_MODEL_VERSION } from "./version";',
     );
     expect(source).toContain("`Model ${LEGACY_MODEL_VERSION} stosuje szerokie mnożniki");
     expect(source).toContain("`Model ${LEGACY_MODEL_VERSION} applies broad context multipliers");
