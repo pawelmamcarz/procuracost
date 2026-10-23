@@ -45,7 +45,7 @@ describe("motion foundation", () => {
     const tween = read("components/motion/NumberTween.tsx");
     expect(tween).toContain("useReducedMotion");
     expect(tween).toContain("displayed.set(value)");
-    expect(tween).toContain("duration: 0.4");
+    expect(tween).toContain("duration: 0.65");
     expect(tween).toContain("controls.stop()");
     expect(tween).toContain("tabular-nums");
   });
@@ -68,5 +68,20 @@ describe("motion foundation", () => {
       const source = read(path);
       expect(source, path).not.toMatch(/whileHover[\s\S]{0,100}scale|repeat:\s*Infinity|boxShadow|shadow-|gradient|filter\s*:/);
     }
+  });
+
+  it("draws blueprint lanes and moves tokens without preference-dependent initial markup", () => {
+    const drawing = read("components/debate/BlueprintDiagram.tsx");
+    expect(drawing).toContain("initial: { pathLength: 1 }");
+    expect(drawing).toContain("pathLength: reducedMotion ? 1 : [0, 1]");
+    expect(drawing).toContain("initial={{ x: dx, y: dy }}");
+    expect(drawing).toContain("key={selected}");
+    expect(drawing).toContain("[0.22, 1, 0.36, 1]");
+    expect(drawing).toContain("duration: reducedMotion ? 0 : 0.9");
+    expect(drawing).toContain("viewport={{ once: true");
+    expect(drawing).not.toMatch(/initial=\{reducedMotion|initial:\s*reducedMotion/);
+    const chart = read("components/debate/ScenarioDrivers.tsx");
+    expect(chart).toContain("scaleX: reducedMotion ? 1 : [0, 1]");
+    expect(chart).toContain("initial={{ scaleX: 1 }}");
   });
 });

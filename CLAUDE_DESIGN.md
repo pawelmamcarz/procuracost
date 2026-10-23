@@ -71,6 +71,24 @@ shadows or gradients. Each tile must have a distinct content type tied to a
 signature motif or a concrete model output. Use one column on mobile. Keep
 decision records, process maps and evidence chains outside this pattern.
 
+The diagrammatic blueprint variant on the home page and article hub relaxes only:
+
+- Tile surfaces may use `gray-50` and `blue-50`. Red and green tints remain
+  inside their respective alternative's illustration area.
+- The lead figure spans all six columns. A fine SVG grid supports two lanes
+  on a shared schematic axis, with a separate portrait composition on mobile.
+- Display headings may reach `text-5xl`; model-derived figures use
+  `text-4xl` to `text-5xl`, IBM Plex Mono and tabular numerals. Body copy
+  remains at least `text-sm`.
+- Finite path drawing, travelling document tokens, staggered callouts and
+  waterfall reveals explain the drawing. They run on entry, may replay on
+  selection, and show the final static state with reduced motion. Initial
+  render props never depend on the motion preference.
+
+Numbered drawing references link to the four question panels. The compact
+waterfall reconciles role, non-labour, delay and contract differences to the
+native total. No new palette, shadows, gradients or judgement colours are allowed.
+
 ### Motion
 
 Import the motion package only from `motion/react`. Use `LazyMotion` with

@@ -19,7 +19,7 @@ export default function NumberTween({
       displayed.set(value);
       return;
     }
-    const controls = animate(displayed, value, { duration: 0.4 });
+    const controls = animate(displayed, value, { duration: 0.65, ease: [0.22, 1, 0.36, 1] });
     return () => controls.stop();
   }, [displayed, reducedMotion, value]);
 

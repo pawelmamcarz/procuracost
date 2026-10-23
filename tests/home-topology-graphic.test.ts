@@ -14,7 +14,7 @@ describe("shared-boundary topology graphic", () => {
       );
 
       expect(html).not.toContain(`data-home-topology="${lang}"`);
-      expect(html.match(/data-boundary="shared"/g)).toHaveLength(1);
+      expect(html.match(/data-boundary="shared"/g)).toHaveLength(2);
       expect(html).toContain(`data-debate-hub="${lang}"`);
       expect(html).toContain('data-record-preview="structure"');
       expect(html).not.toContain("data-home-process-rail");
