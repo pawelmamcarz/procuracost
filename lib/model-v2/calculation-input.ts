@@ -110,17 +110,26 @@ function derivedCompetitionCost(
 }
 
 function derivedAmendmentCost(
-  contractValue: CalibratedValue,
   differential: CalibratedValue,
+  contractYears: CalibratedValue,
+  costPerAmendment: CalibratedValue,
   zero: boolean
 ): CalibratedValue {
   return {
-    low: zero ? 0 : contractValue.low * differential.low,
-    central: zero ? 0 : contractValue.central * differential.central,
-    high: zero ? 0 : contractValue.high * differential.high,
+    low: zero ? 0 : differential.low * contractYears.low * costPerAmendment.low,
+    central: zero
+      ? 0
+      : differential.central * contractYears.central * costPerAmendment.central,
+    high: zero ? 0 : differential.high * contractYears.high * costPerAmendment.high,
     rangeKind: "calibrated",
     evidenceClass: differential.evidenceClass,
-    evidenceIds: [...differential.evidenceIds],
+    evidenceIds: [
+      ...new Set([
+        ...differential.evidenceIds,
+        ...contractYears.evidenceIds,
+        ...costPerAmendment.evidenceIds,
+      ]),
+    ],
   };
 }
 
@@ -134,9 +143,6 @@ function materializeContractDesign(
   const tco = monetizedDimensionCost(current, "tco");
 
   assertNonNegativeValue(assumptions.amendmentDifferential, "amendmentDifferential");
-  if (assumptions.amendmentDifferential.high > 1) {
-    throw new Error("amendmentDifferential cannot exceed 1");
-  }
   assertZeroAllocation(assumptions.tcoDifferential, "tco");
   assertZeroAllocation(tco, "tco");
   if (assumptions.bypass.status !== "notMonetized") {
@@ -151,12 +157,29 @@ function materializeContractDesign(
         "amendmentDisadvantagedAlternative is required when contract rigidity differs"
       );
     }
+    const { amendmentContractYears, costPerAmendment } = assumptions;
+    if (!amendmentContractYears || !costPerAmendment) {
+      throw new Error(
+        "amendmentContractYears and costPerAmendment are required when contract rigidity differs"
+      );
+    }
+    assertNonNegativeValue(amendmentContractYears, "amendmentContractYears");
+    assertNonNegativeValue(costPerAmendment, "costPerAmendment");
     amendmentCost = derivedAmendmentCost(
-      assumptions.contractValue,
       assumptions.amendmentDifferential,
+      amendmentContractYears,
+      costPerAmendment,
       alternative !== disadvantaged
     );
   } else {
+    if (
+      assumptions.amendmentContractYears !== null ||
+      assumptions.costPerAmendment !== null
+    ) {
+      throw new Error(
+        "amendmentContractYears and costPerAmendment must be null when contract rigidity does not differ"
+      );
+    }
     if (assumptions.amendmentDisadvantagedAlternative !== null) {
       throw new Error(
         "amendmentDisadvantagedAlternative must be null when contract rigidity does not differ"

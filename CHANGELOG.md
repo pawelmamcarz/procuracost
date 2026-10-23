@@ -1,5 +1,40 @@
 # Changelog
 
+## 2026-10-23: model 2.3.1
+
+Validation pass. No scenario economic value,
+legal rule, support multiplier, rate, day total or daily cost changed. All ten
+central differences and outer envelopes are unchanged.
+
+- Stale replication JSON: `replication/outputs/built-in-scenarios.json` on
+  `main` predated the Beuve amendment record (it still carried a zero
+  amendment differential with the retained-legacy class). Regenerated, and a
+  new freshness test now regenerates all three artefacts in memory and fails
+  on any byte difference, closing the gap left by CI not running `replicate`.
+- Paired-case difference: the engine, decision record, diagnostics and
+  replication artefacts now also report `deltaCostPairedCases` (formal minus
+  adaptive per aligned low, central and high case) with a separate
+  `pairedSign` classification. The outer envelope combines a low daily cost of
+  inaction for one alternative with a high one for the other, so it classified
+  every scenario, including the identical-map controls, as `crosses_zero`. The
+  controls now also classify as `equal`. The swap audit checks element-wise
+  negation of the paired cases.
+- Contract-amendment unit: the Beuve differential is a frequency (amendments
+  per contract-year) but was multiplied by the contract value, implying one
+  amendment costs the whole contract. Monetisation now requires a declared
+  rigidity difference plus `amendmentContractYears` and `costPerAmendment`
+  (`differential x years x cost per amendment`). The guard capping the
+  differential at 1 was removed because it is not a share. No canonical
+  scenario declares a rigidity difference, so results are unchanged.
+- Floating-point artefacts: materialised days, role hours and non-labour costs
+  and computed elapsed days are rounded to six decimals
+  (`MODEL_QUANTITY_DECIMALS`), so records show 50.6 and 2.1 days instead of
+  50.599999999999994 and 2.0999999999999996.
+- Documentation: `docs/MODEL_PARAMETERS.md` gains section 9.1 (driver table:
+  the delay term carries 78 to 111 per cent of every non-zero workflow
+  difference) and discloses that adaptive role hours are derived from formal
+  hours by the step day ratio.
+
 ## 2026-10-04: design-contract pass and editor quality checklist
 
 A full design audit against `CLAUDE_DESIGN.md`, followed by same-day fixes.

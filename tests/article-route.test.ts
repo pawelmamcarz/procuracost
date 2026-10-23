@@ -1,0 +1,99 @@
+import { readFileSync } from "node:fs";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { describe, expect, it } from "vitest";
+import { parseArticle } from "@/lib/article";
+import { debateT } from "@/lib/i18n";
+import { SITE_ROUTES, localizedCounterpart, navigationFor, sitemapPaths } from "@/lib/site-routes";
+import DebateArticlePage, { metadata } from "@/app/(pl)/kupiec-po-automatyzacji/page";
+import MotionProvider from "@/components/motion/MotionProvider";
+
+const markdown = readFileSync(new URL("../docs/articles/pl/2026-12-kupiec-po-automatyzacji.md", import.meta.url), "utf8");
+
+function visibleText(markup: string) {
+  return markup.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ");
+}
+
+function expectNoEventCopy(markup: string) {
+  expect(visibleText(markup)).not.toMatch(/panel|dyrektor|director|2 grudnia|2 December|debat|debate/i);
+}
+
+describe("Polish debate article", () => {
+  it("parses real frontmatter and all four questions without event framing", () => {
+    const { frontmatter, html } = parseArticle(markdown);
+    expectNoEventCopy(html);
+    expect(frontmatter).toMatchObject({
+      tytuł: "Kupiec po automatyzacji",
+      podtytuł: "Rola zakupów, gdy rutynę przejmują agenci AI",
+      data: "2026-12",
+      autor: "Paweł Mamcarz",
+    });
+    for (const heading of [
+      "1. Na co pójdzie odzyskany czas",
+      "2. Czas na strategię: kto pisze reguły i kto je zmienia",
+      "3. Procedura czy polityka zakupowa",
+      "4. Kontrola i miary",
+      "Pytania do dyskusji",
+    ]) expect(html).toContain(`<h2>${heading}</h2>`);
+    const questionsHtml = html.match(/<h2>Pytania do dyskusji<\/h2>\s*<ol>([\s\S]*?)<\/ol>/)?.[1] ?? "";
+    const articleQuestions = [...questionsHtml.matchAll(/<li>([\s\S]*?)<\/li>/g)]
+      .map(([, question]) => visibleText(question).trim());
+    expect(articleQuestions).toEqual(debateT.pl.questions);
+    expect(html).not.toMatch(/Agnieszka|Żabka|Zabka|tytuł:/);
+    expect(html).not.toMatch(/<h1\b/);
+    expect(html.trimStart().startsWith(`<h2>${frontmatter.podtytuł}</h2>`)).toBe(false);
+    for (const question of debateT.pl.questions) {
+      expect(html.replace(/\s+/g, " ")).toContain(question);
+    }
+  });
+
+  it("renders one page title and the article-specific summary", () => {
+    const html = renderToStaticMarkup(createElement(MotionProvider, null, createElement(DebateArticlePage)));
+    expectNoEventCopy(html);
+    expect(html.match(/<h1\b/g)).toHaveLength(1);
+    expect(html).toContain(debateT.pl.articleTitle);
+    expect(html).toContain(debateT.pl.articleIntro);
+  });
+
+  it("only drops matching leading title and immediately following subtitle headings", () => {
+    const frontmatter = '---\ntytuł: "Title"\npodtytuł: "Subtitle"\ndata: 2026-12\nautor: "Author"\n---\n';
+    expect(parseArticle(`${frontmatter}# Title\n\n## Subtitle\n\nBody`).html.trim()).toBe("<p>Body</p>");
+    expect(parseArticle(`${frontmatter}# Other\n\n## Subtitle`).html).toContain("<h1>Other</h1>\n<h2>Subtitle</h2>");
+    expect(parseArticle(`${frontmatter}# Title\n\n## Other`).html.trim()).toBe("<h2>Other</h2>");
+    expect(parseArticle(`${frontmatter}# Title\n\nBody\n\n## Subtitle`).html).toContain("<p>Body</p>\n<h2>Subtitle</h2>");
+    expect(parseArticle(`${frontmatter}Body\n\n# Title\n\n## Subtitle`).html).toContain("<h1>Title</h1>\n<h2>Subtitle</h2>");
+    expect(parseArticle(`${frontmatter}## Subtitle`).html.trim()).toBe("<h2>Subtitle</h2>");
+    expect(parseArticle(markdown.replace(/\n/g, "\r\n")).html).not.toMatch(/<h1\b/);
+  });
+
+  it("rewrites sibling Markdown links but not remote links or code", () => {
+    const { html } = parseArticle(markdown);
+    expect(html).toContain('href="https://github.com/pawelmamcarz/procuracost/blob/main/docs/articles/pl/2026-07-tunel-pole-lepszy-biznes.md"');
+    expect(html).not.toMatch(/href="(?:\.\/)?[^"/:]+\.md"/);
+    const custom = parseArticle('---\ntytuł: "Title"\npodtytuł: "Subtitle"\ndata: 2026-12\nautor: "Author"\n---\n[Sibling](./other.md#section) [Remote](https://example.com/other.md) `[Code](other.md)`');
+    expect(custom.html).toContain("https://github.com/pawelmamcarz/procuracost/blob/main/docs/articles/pl/other.md#section");
+    expect(custom.html).toContain('href="https://example.com/other.md"');
+    expect(custom.html).toContain("<code>[Code](other.md)</code>");
+  });
+
+  it("supports CRLF and fails explicitly for missing frontmatter or required fields", () => {
+    expect(parseArticle(markdown.replace(/\n/g, "\r\n")).frontmatter.tytuł).toBe("Kupiec po automatyzacji");
+    expect(() => parseArticle("# No frontmatter")).toThrow(/frontmatter/);
+    expect(() => parseArticle("---\ntytuł: Title\n---\nBody")).toThrow(/podtytuł/);
+  });
+
+  it("publishes a Polish-only discoverable route with frontmatter metadata and no navigation entry", () => {
+    expect(SITE_ROUTES.find(({ key }) => key === "debateArticle")).toEqual({
+      key: "debateArticle", pl: "/kupiec-po-automatyzacji", sitemap: true,
+    });
+    expect(sitemapPaths()).toContain("/kupiec-po-automatyzacji");
+    expect(localizedCounterpart("/kupiec-po-automatyzacji", "en")).toBe("/en");
+    expect(navigationFor("pl").map(({ href }) => href)).not.toContain("/kupiec-po-automatyzacji");
+    expect(metadata.title).toBe("Kupiec po automatyzacji");
+    expect(metadata.description).toBe("Rola zakupów, gdy rutynę przejmują agenci AI");
+    expect(metadata.other?.date).toBe("2026-12");
+    expect(metadata.alternates?.languages).toEqual({
+      "pl-PL": "/kupiec-po-automatyzacji", "x-default": "/kupiec-po-automatyzacji",
+    });
+  });
+});

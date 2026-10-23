@@ -44,6 +44,7 @@ describe("static language root ownership", () => {
       "app/(pl)/page.tsx",
       "app/(pl)/calculator/page.tsx",
       "app/(pl)/research-agenda/page.tsx",
+      "app/(pl)/kupiec-po-automatyzacji/page.tsx",
       "app/(en)/en/page.tsx",
       "app/(en)/en/calculator/page.tsx",
       "app/(en)/en/research/page.tsx",

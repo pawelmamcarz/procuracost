@@ -72,6 +72,7 @@ describe("public route contract", () => {
       "/model/assumptions", "/en/model/assumptions",
       "/research",
       "/research-agenda",
+      "/kupiec-po-automatyzacji",
       "/shortcasty", "/en/shortcasty",
     ]);
     expect(sitemapPaths()).not.toContain("/en/research");

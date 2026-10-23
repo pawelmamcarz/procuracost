@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import BoundaryField from "@/components/BoundaryField";
-import { homeT, modelOverviewT, type Lang } from "@/lib/i18n";
+import { debateT, homeT, modelOverviewT, type Lang } from "@/lib/i18n";
 
 const sectionKeys = [
   "legalBoundary",
@@ -52,6 +52,10 @@ export default function ModelOverview({ lang }: { lang: Lang }) {
       id: "context",
       copy: tx.groups.context,
       links: [
+        {
+          href: "/kupiec-po-automatyzacji",
+          copy: debateT[lang].researchLink,
+        },
         {
           href: `${prefix}/practice/procurement-beyond-8`,
           copy: tx.groups.context.items.practice,

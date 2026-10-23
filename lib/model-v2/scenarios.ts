@@ -80,6 +80,8 @@ export interface ScenarioEconomicAssumptions {
   contractRigidityDiffers: boolean;
   amendmentDisadvantagedAlternative: AlternativeId | null;
   amendmentDifferential: CalibratedValue;
+  amendmentContractYears: CalibratedValue | null;
+  costPerAmendment: CalibratedValue | null;
   tcoDifferential: CalibratedValue;
   bypass: NonMonetizedContractDimension;
 }
@@ -140,6 +142,13 @@ const INITIATED_ON = "2026-08-28";
 const COMPETITION_EVIDENCE_ID = "szucs_discretion_price_2024";
 const AMENDMENT_EVIDENCE_ID = "beuve_amendment_frequency_2023";
 
+export const MODEL_QUANTITY_DECIMALS = 6;
+
+export function roundModelQuantity(value: number): number {
+  const scale = 10 ** MODEL_QUANTITY_DECIMALS;
+  return Math.round(value * scale) / scale;
+}
+
 function retainedValue(value: number, evidenceId: string): CalibratedValue {
   return {
     low: value,
@@ -198,7 +207,8 @@ export function createCompetitionTransferStress(): CalibratedValue {
 // 7 x coefficient = 0.098, 0.077 and 0.084 additional amendments per
 // contract-year. The range is monetised only where a comparison explicitly
 // declares a contract-rigidity difference and names the more rigid
-// alternative; it never follows from a workflow label.
+// alternative, with declared contract years and cost per amendment;
+// it never follows from a workflow label.
 export function createAmendmentDifferentialRange(): CalibratedValue {
   return {
     low: 0.077,
@@ -291,7 +301,9 @@ function workflowFromSeed(
       alternative === "formalSequential"
         ? seedStep.formalDays
         : seedStep.adaptiveDays;
-    const activeDays = baseActiveDays * supportProfile.timeMultiplier;
+    const activeDays = roundModelQuantity(
+      baseActiveDays * supportProfile.timeMultiplier
+    );
 
     const effortRatio =
       alternative === "adaptiveCompliant" &&
@@ -306,7 +318,9 @@ function workflowFromSeed(
         ][]
       ).map(([roleId, hours]) => [
         roleId,
-        valueFor(hours * effortRatio * supportProfile.timeMultiplier),
+        valueFor(
+          roundModelQuantity(hours * effortRatio * supportProfile.timeMultiplier)
+        ),
       ])
     );
     const consumesEffort = Object.values(seedStep.roleHours).some(
@@ -328,9 +342,11 @@ function workflowFromSeed(
       queueDays: valueFor(0),
       roleHours,
       nonLabourCost: valueFor(
-        (consumesEffort
-          ? activeDays * supportProfile.coordinationCostPerActiveDay
-          : 0) + toolCost
+        roundModelQuantity(
+          (consumesEffort
+            ? activeDays * supportProfile.coordinationCostPerActiveDay
+            : 0) + toolCost
+        )
       ),
       kind: "activity",
     };
@@ -586,6 +602,8 @@ function buildScenario(seed: ScenarioSeed): ScenarioV2 {
       contractRigidityDiffers: false,
       amendmentDisadvantagedAlternative: null,
       amendmentDifferential,
+      amendmentContractYears: null,
+      costPerAmendment: null,
       tcoDifferential: zeroDifferential,
       bypass,
     },

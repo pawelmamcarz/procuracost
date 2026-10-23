@@ -30,6 +30,9 @@ export const REPLICATION_CSV_HEADERS = deepFreeze([
   "delta_low",
   "delta_central",
   "delta_high",
+  "delta_paired_low",
+  "delta_paired_central",
+  "delta_paired_high",
   "axes_json",
   "alternatives_json",
   "coverage_json",
@@ -192,6 +195,9 @@ export function renderReplicationCsv(bundle: ReplicationBundleV2): string {
         scenario.comparison.deltaCostOuterEnvelope.low,
         scenario.comparison.deltaCost,
         scenario.comparison.deltaCostOuterEnvelope.high,
+        scenario.comparison.deltaCostPairedCases.low,
+        scenario.comparison.deltaCostPairedCases.central,
+        scenario.comparison.deltaCostPairedCases.high,
         JSON.stringify(scenario.axes),
         JSON.stringify(scenario.alternatives),
         JSON.stringify(scenario.coverage),
@@ -286,6 +292,16 @@ export function renderReplicationMarkdown(
         range.low,
         lang
       )} / ${formatNumber(range.high, lang)} ${bundle.metadata.currency}`,
+      `- ${tx.fields.pairedCases}: ${formatNumber(
+        scenario.comparison.deltaCostPairedCases.low,
+        lang
+      )} / ${formatNumber(
+        scenario.comparison.deltaCostPairedCases.central,
+        lang
+      )} / ${formatNumber(
+        scenario.comparison.deltaCostPairedCases.high,
+        lang
+      )} ${bundle.metadata.currency}`,
       "",
       `### ${tx.sections.coverageAnchors}`,
       "",

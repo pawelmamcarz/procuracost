@@ -1,4 +1,5 @@
 import Link from "next/link";
+import DebateBento from "@/components/debate/DebateBento";
 
 import {
   NumberedPoint,
@@ -66,6 +67,8 @@ export default function EvidenceFieldHome({ lang }: EvidenceFieldHomeProps) {
           </div>
         </div>
       </header>
+
+      <DebateBento lang={lang} />
 
       <section aria-labelledby="home-paths-title" className="border-b border-gray-200 py-12">
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">
@@ -151,18 +154,9 @@ export default function EvidenceFieldHome({ lang }: EvidenceFieldHomeProps) {
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">
           04 / {tx.trust.eyebrow}
         </p>
-        <div className="mt-6 grid border-y border-gray-200 md:grid-cols-3">
-          {tx.trust.items.map((item, index) => (
-            <article
-              className="border-b border-gray-200 py-6 last:border-b-0 md:border-b-0 md:border-r md:px-6 md:first:pl-0 md:last:border-r-0 md:last:pr-0"
-              key={item.title}
-            >
-              <p className="font-mono text-xs text-blue-700">0{index + 1}</p>
-              <h2 className="mt-2 text-base font-bold text-gray-900">{item.title}</h2>
-              <p className="mt-2 text-sm leading-6 text-gray-600">{item.body}</p>
-            </article>
-          ))}
-        </div>
+        <p className="mt-6 border-y border-gray-200 py-6 text-sm leading-6 text-gray-700">
+          {tx.trust.description}
+        </p>
       </section>
 
       <section className="grid gap-6 py-12 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">

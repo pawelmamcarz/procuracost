@@ -48,7 +48,17 @@ describe("suitability comparison presentation", () => {
       expect(markup).toContain(suitabilityT[lang].fields.archetype);
       expect(markup).toContain(suitabilityT[lang].fields.channel);
       expect(markup).toContain(suitabilityT[lang].fields.support);
+      expect(markup).toContain(suitabilityT[lang].intro);
     }
+  });
+
+  it("discloses that the comparison does not identify a best procedure", () => {
+    expect(suitabilityT.pl.intro).toBe(
+      "Pokazuje warunki każdej dopuszczalnej ścieżki. Nie wskazuje najlepszej."
+    );
+    expect(suitabilityT.en.intro).toBe(
+      "It shows the conditions for every lawful route. It does not identify a best option."
+    );
   });
 
   it("renders equal, unnumbered candidate rows with text and icon status", () => {

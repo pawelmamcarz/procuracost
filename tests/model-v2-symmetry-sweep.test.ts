@@ -20,6 +20,12 @@ describe("native model 2.3 swap-symmetry sweep", () => {
         audit.original.formalSequential
       );
       expect(audit.swapped.deltaCost === -audit.original.deltaCost).toBe(true);
+      for (const rangeCase of ["low", "central", "high"] as const) {
+        expect(
+          audit.swapped.deltaCostPairedCases[rangeCase] ===
+            -audit.original.deltaCostPairedCases[rangeCase]
+        ).toBe(true);
+      }
       expect(
         audit.swapped.deltaCostOuterEnvelope.low ===
           -audit.original.deltaCostOuterEnvelope.high
@@ -53,7 +59,7 @@ describe("native model 2.3 swap-symmetry sweep", () => {
     );
     expect(report).toEqual({
       schemaVersion: 2,
-      modelVersion: "2.3.0",
+      modelVersion: "2.3.1",
       examined: 10,
       failures: [],
     });

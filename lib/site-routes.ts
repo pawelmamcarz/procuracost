@@ -32,6 +32,7 @@ export const SITE_ROUTES: readonly SiteRoute[] = [
   { key: "modelAssumptions", pl: "/model/assumptions", en: "/en/model/assumptions", sitemap: true },
   { key: "research", en: "/research", aliases: ["/en/research"], canonical: true, sitemap: true },
   { key: "researchAgenda", pl: "/research-agenda", sitemap: true },
+  { key: "debateArticle", pl: "/kupiec-po-automatyzacji", sitemap: true },
   { key: "shortcasts", pl: "/shortcasty", en: "/en/shortcasty", sitemap: true },
 ] as const;
 

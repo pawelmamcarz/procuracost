@@ -25,7 +25,7 @@ boundary:
 - `formalSequential` — a prescribed sequential design;
 - `adaptiveCompliant` — a policy-bounded adaptive design.
 
-The active model is **native model 2.3.0** (`schemaVersion: 2`,
+The active model is **native model 2.3.1** (`schemaVersion: 2`,
 `calibrationId: "source-scenario-2026-08-28"`, `legalRulesetId: "pl-pzp-2026-2027"`,
 Polish public procurement law). The model implementation is a self-contained
 pure-TypeScript layer in `lib/model-v2/`. There is **no backend, database or
@@ -208,7 +208,7 @@ match that format or the config throws before the server starts.
   artefacts are caught only by the local sequence above — run it before
   hand-off.
 
-Verified state at the time of writing: `npm test` passes (79 files, 858 tests).
+Verified state at the time of writing: `npm test` passes (80 files, 892 tests).
 
 ## Conventions and invariants that bite if ignored
 
@@ -222,8 +222,9 @@ Verified state at the time of writing: `npm test` passes (79 files, 858 tests).
   contract. Do not expose `rigid`, `flexible`, `processType`, `techLevel`,
   `spendType` or `processPhase` outside marked legacy metadata.
 - **Evidence boundary:** Szucs supports only the bounded competition-transfer
-  stress; contract-amendment and TCO differentials are zero in the native
-  calculation; informal bypass stays non-monetised. Practitioner material
+  stress; contract-amendment and TCO differentials are zero in every native
+  starting scenario (amendment cost needs a declared rigidity difference,
+  contract years and cost per amendment); informal bypass stays non-monetised. Practitioner material
   (Procurement&Beyond episode 8) may inform questions and hypotheses only —
   never thresholds, weights or calibration. Bielik may structure market data;
   the transparent model performs the calculation.
