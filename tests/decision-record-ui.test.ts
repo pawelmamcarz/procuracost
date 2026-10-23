@@ -1,3 +1,5 @@
+import { readdirSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
@@ -9,6 +11,7 @@ import {
 import CostComparison from "@/components/CostComparison";
 import DecisionRecord from "@/components/decision-record/DecisionRecord";
 import { decisionRecordT } from "@/lib/i18n";
+import { centralDelayShare } from "@/lib/decision-record-view";
 import {
   buildDecisionRecordV2,
   createScenarioDraft,
@@ -251,6 +254,91 @@ describe("neutral decision record UI", () => {
     expect(drivers).toContain("7,654.32 PLN");
     expect(drivers).not.toContain("Off-process purchasing");
     expect(coverage).toContain("Off-process purchasing");
+  });
+
+  it.each(["pl", "en"] as const)(
+    "keeps paired totals together with the components table and delay caveat in %s",
+    (lang) => {
+      const record = fleetDecisionRecord();
+      const markup = renderRecord(record, lang);
+      const drivers = section(markup, "drivers");
+      const tx = decisionRecordT[lang].drivers;
+      const table = drivers.match(/<table\b[\s\S]*?<\/table>/)?.[0];
+      const formatCurrency = (value: number) =>
+        lang === "pl"
+          ? new Intl.NumberFormat("pl-PL", {
+              style: "currency",
+              currency: "PLN",
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            }).format(value)
+          : `${new Intl.NumberFormat("en-GB", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            }).format(value)} PLN`;
+
+      expect(table).toContain(`<caption`);
+      expect(table).toContain(tx.pairedCaption);
+      expect(table?.match(/scope="col"/g)).toHaveLength(4);
+      expect(table?.match(/scope="row"/g)).toHaveLength(5);
+      const rows = table?.match(/<tbody>([\s\S]*?)<\/tbody>/)?.[1]
+        .match(/<tr\b[\s\S]*?<\/tr>/g);
+      const fields = ["roleCost", "nonLabourCost", "delayCost", "contractCost"] as const;
+      for (const [index, field] of fields.entries()) {
+        for (const member of ["low", "central", "high"] as const) {
+          const value = record.alternatives.formalSequential.result[field][member]
+            - record.alternatives.adaptiveCompliant.result[field][member];
+          expect(rows?.[index]).toContain(formatCurrency(value));
+        }
+      }
+      for (const value of Object.values(record.comparison.deltaCostPairedCases)) {
+        expect(table?.slice(table.indexOf("<tfoot>"))).toContain(formatCurrency(value));
+      }
+      expect(drivers).toContain(tx.pairedCaveat);
+      expect(drivers.indexOf(tx.pairedCaveat)).toBeGreaterThan(drivers.indexOf("</table>"));
+      expect(drivers).toContain(tx.delayShare(
+        new Intl.NumberFormat(lang === "pl" ? "pl-PL" : "en-GB", {
+          style: "percent",
+          maximumFractionDigits: 1,
+        }).format(centralDelayShare(record)!)
+      ));
+      expect(markup.replace(drivers, "")).not.toContain(tx.pairedCaption);
+      expect(drivers).toContain("border-l-2 border-gray-300");
+    }
+  );
+
+  it("confines paired-case values to DriverAnalysis in the record and workspace UI", () => {
+    function sources(directory: string): string[] {
+      return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+        const path = join(directory, entry.name);
+        return entry.isDirectory()
+          ? sources(path)
+          : /\.tsx?$/.test(path) ? [path] : [];
+      });
+    }
+    const pairedSources = [
+      ...sources("components/decision-record"),
+      ...sources("components/calculator-v2"),
+    ].filter((path) => /deltaCostPairedCases/.test(readFileSync(path, "utf8")));
+
+    expect(pairedSources).toEqual(["components/decision-record/DriverAnalysis.tsx"]);
+  });
+
+  it.each([
+    { total: 100, delay: 50, expected: 0.5 },
+    { total: -100, delay: -50, expected: 0.5 },
+    { total: 100, delay: -50, expected: -0.5 },
+    { total: 100, delay: 150, expected: 1.5 },
+    { total: 100, delay: 0, expected: 0 },
+    { total: 0, delay: 50, expected: null },
+  ])("reports the signed delay share without clamping: $total / $delay", ({ total, delay, expected }) => {
+    const record = decisionRecordWithSign(total, -200, 200);
+    record.drivers.find(({ id }) => id === "delay_cost")!.contribution.central = delay;
+    expect(centralDelayShare(record)).toBe(expected);
+    const drivers = section(renderRecord(record), "drivers");
+    expect(drivers).toContain(decisionRecordT.en.drivers.pairedCaveat);
+    expect(drivers.includes("Share of the central difference attributable to delay:"))
+      .toBe(total !== 0);
   });
 
   it("keeps every Task 5 decision-record dictionary leaf paired", () => {

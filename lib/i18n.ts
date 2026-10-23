@@ -3069,6 +3069,14 @@ const decisionRecordPl = {
       "Ten czynnik zwiększa centralną różnicę po stronie adaptacyjnej ścieżki zgodnej z ramami.",
     directionEqual:
       "Ten czynnik nie zmienia centralnej różnicy między alternatywami.",
+    pairedCaption: "Składniki różnicy i sparowane przypadki",
+    component: "Składnik",
+    contractCost: "Koszt umowy",
+    pairedTotal: "Suma sparowanych przypadków",
+    pairedCaveat:
+      "Sparowane przypadki trzymają stawki i dzienny koszt zwłoki na tym samym poziomie dla obu wariantów. Wiersz zwłoki to różnica dni razy zadeklarowany koszt dnia, którego model nie weryfikuje. To rachunek przy założeniach, nie wynik empiryczny.",
+    delayShare: (share: string) =>
+      `Udział zwłoki w centralnej różnicy: ${share}.`,
   },
   coverage: {
     included: "Ujęte w sumie pieniężnej",
@@ -3213,6 +3221,14 @@ const decisionRecordEn = {
       "This driver increases the central difference on the adaptive compliant side.",
     directionEqual:
       "This driver does not change the central difference between the alternatives.",
+    pairedCaption: "Difference components and paired cases",
+    component: "Component",
+    contractCost: "Contract cost",
+    pairedTotal: "Paired-case total",
+    pairedCaveat:
+      "Paired cases hold rates and the daily cost of delay at the same level for both alternatives. The delay row is the difference in days multiplied by the declared daily cost, which the model does not verify. This is a calculation under assumptions, not an empirical result.",
+    delayShare: (share: string) =>
+      `Share of the central difference attributable to delay: ${share}.`,
   },
   coverage: {
     included: "Included in the monetary total",

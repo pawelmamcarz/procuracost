@@ -175,6 +175,8 @@ difference and daily cost of inaction (section 9.1). It is not evidence that
 either workflow design is cheaper in practice. Under an alternative swap each
 paired case negates element-wise.
 
+The decision record shows paired cases only in driver analysis, in a table of per-case component differences (role, non-labour, delay, contract) whose columns sum to the paired totals, followed by the daily-delay-cost caveat and the central delay share (signed central delay difference divided by the central difference, omitted when that difference is zero). The summary and exports are unchanged.
+
 ## 5. Procurement process maps
 
 A workflow is a directed acyclic graph. Every step records:

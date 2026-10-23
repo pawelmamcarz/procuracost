@@ -49,6 +49,19 @@ describe("motion foundation", () => {
     expect(tween).toContain("tabular-nums");
   });
 
+  it("transitions the selected inspector using lightweight motion without changing rail focus", () => {
+    const inspector = read("components/calculator-v2/ProcessStepInspector.tsx");
+    expect(inspector).toMatch(/import\s*\{\s*AnimatePresence,\s*m\s*\}\s*from "motion\/react"/);
+    expect(inspector).toContain('<AnimatePresence mode="wait">');
+    expect(inspector).toContain("<m.div");
+    expect(inspector).toContain("key={`${alternativeId}-${step.id}`}");
+    expect(inspector).toContain("initial={{ opacity: 0, x: 8 }}");
+    expect(inspector).toContain("animate={{ opacity: 1, x: 0 }}");
+    expect(inspector).toContain("exit={{ opacity: 0 }}");
+    expect(inspector).toContain("duration: 0.15");
+    expect(inspector).not.toMatch(/autoFocus|\.focus\(|whileHover|repeat:|boxShadow/);
+  });
+
   it("excludes distracting motion and surface effects from editorial components", () => {
     for (const path of [...sources("components/debate"), ...sources("components/motion")]) {
       const source = read(path);
