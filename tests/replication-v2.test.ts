@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
 import {
@@ -68,7 +70,7 @@ describe("native model 2.3 replication artifacts", () => {
     expect(Object.keys(bundle)).toEqual(["metadata", "scenarios"]);
     expect(bundle.metadata).toEqual({
       schemaVersion: 2,
-      modelVersion: "2.3.0",
+      modelVersion: "2.3.1",
       calibrationId: "source-scenario-2026-08-28",
       legalRulesetId: "pl-pzp-2026-2027",
       currency: "PLN",
@@ -122,14 +124,28 @@ describe("native model 2.3 replication artifacts", () => {
     expect(rows.slice(1).map((row) => row[4])).toEqual(SCENARIO_V2_IDS);
     for (const [index, row] of rows.slice(1).entries()) {
       const scenario = bundle.scenarios[index];
-      expect(JSON.parse(row[10])).toEqual(scenario.axes);
-      expect(JSON.parse(row[11])).toEqual(scenario.alternatives);
-      expect(JSON.parse(row[12])).toEqual(scenario.coverage);
-      expect(JSON.parse(row[13])).toEqual(scenario.nonMonetizedDimensions);
-      expect(JSON.parse(row[14])).toEqual(scenario.migration);
+      expect(row.slice(10, 13).map(Number)).toEqual([
+        scenario.comparison.deltaCostPairedCases.low,
+        scenario.comparison.deltaCostPairedCases.central,
+        scenario.comparison.deltaCostPairedCases.high,
+      ]);
+      expect(JSON.parse(row[13])).toEqual(scenario.axes);
+      expect(JSON.parse(row[14])).toEqual(scenario.alternatives);
+      expect(JSON.parse(row[15])).toEqual(scenario.coverage);
+      expect(JSON.parse(row[16])).toEqual(scenario.nonMonetizedDimensions);
+      expect(JSON.parse(row[17])).toEqual(scenario.migration);
     }
     expect(renderReplicationCsv(bundle).endsWith("\r\n")).toBe(true);
   });
+
+  it("matches all three tracked artefacts byte for byte", () => {
+    for (const [filename, contents] of Object.entries(buildReplicationArtifacts())) {
+      expect(
+        readFileSync(resolve(process.cwd(), "replication/outputs", filename)),
+        filename
+      ).toEqual(Buffer.from(contents, "utf8"));
+    }
+  }, 30000);
 
   it("quotes commas, quotes, newlines and Polish characters without loss", () => {
     const value = 'Zażółć, "gęślą"\njaźń';
@@ -151,6 +167,12 @@ describe("native model 2.3 replication artifacts", () => {
     expect(markdown).toContain("Coverage anchors");
     expect(markdown).toContain("Non-monetised dimensions");
     expect(markdown).toContain("Migration status");
+    for (const scenario of bundle.scenarios) {
+      const paired = scenario.comparison.deltaCostPairedCases;
+      expect(markdown).toContain(
+        `- Paired-case cost difference (low / central / high): ${paired.low.toFixed(2)} / ${paired.central.toFixed(2)} / ${paired.high.toFixed(2)} PLN`
+      );
+    }
     expect(markdown).not.toMatch(/winner|recommended|robust|confidence score/i);
     expect(markdown).not.toMatch(/\b(?:rigid|flexible|processType|techLevel|spendType|processPhase)\b/);
   });

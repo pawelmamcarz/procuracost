@@ -28,6 +28,27 @@ function draftWithSteps(steps: ProcessMapStep[]) {
 }
 
 describe("independent model arithmetic audit", () => {
+  it("rounds elapsed days without changing user-entered durations", () => {
+    const days = 0.00000001;
+    const draft = draftWithSteps([step("work", days)]);
+    const input = buildCalculationInputFromDraft(draft);
+    const result = calculateComparison(input);
+    expect(input.alternatives.formalSequential.workflowDesign.steps[0].activeDays.central).toBe(days);
+    expect(result.formalSequential.elapsedDays.central).toBe(0);
+    expect(result.formalSequential.delayCost.central).toBe(0);
+  });
+
+  it("rounds only the completed critical path rather than each step", () => {
+    const draft = draftWithSteps([
+      step("start", 0.0000004),
+      step("work", 0.0000004, ["start"]),
+      step("end", 0.0000004, ["work"]),
+    ]);
+    const result = calculateComparison(buildCalculationInputFromDraft(draft));
+    expect(result.formalSequential.elapsedDays.central).toBe(0.000001);
+    expect(result.formalSequential.delayCost.central).toBe(0.000001 * 100);
+  });
+
   it("counts elapsed time on the longest branch and effort on every branch", () => {
     const draft = draftWithSteps([
       step("start", 2, [], 1),

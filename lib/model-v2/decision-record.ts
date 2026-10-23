@@ -151,6 +151,7 @@ export interface DecisionRecordV2 {
     operation: "formalSequential_minus_adaptiveCompliant";
     deltaCost: number;
     deltaCostOuterEnvelope: { low: number; high: number };
+    deltaCostPairedCases: ComparisonCalculationResult["deltaCostPairedCases"];
   };
   drivers: MonetaryDriverRecord[];
   coverage: MonetaryCoverageRecord[];
@@ -591,6 +592,7 @@ function assembleDecisionRecordV2(
       deltaCostOuterEnvelope: {
         ...calculationResult.deltaCostOuterEnvelope,
       },
+      deltaCostPairedCases: { ...calculationResult.deltaCostPairedCases },
     },
     drivers,
     coverage: buildCoverage(calculationInput, calculationResult, anchors),

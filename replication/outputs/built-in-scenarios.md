@@ -5,7 +5,7 @@ Declared ranges are not confidence intervals.
 Deterministic outputs are not empirical estimates.
 
 - Schema version: `2`
-- Model version: `2.3.0`
+- Model version: `2.3.1`
 - Calibration identifier: `source-scenario-2026-08-28`
 - Legal ruleset identifier: `pl-pzp-2026-2027`
 - Currency: `PLN`
@@ -17,6 +17,7 @@ Deterministic outputs are not empirical estimates.
 - Difference operation: `formalSequential_minus_adaptiveCompliant`
 - Central cost difference: 104185.62 PLN
 - Outer difference range: -420814.38 / 854185.62 PLN
+- Paired-case cost difference (low / central / high): 29185.62 / 104185.62 / 404185.62 PLN
 
 ### Coverage anchors
 
@@ -46,6 +47,7 @@ Deterministic outputs are not empirical estimates.
 - Difference operation: `formalSequential_minus_adaptiveCompliant`
 - Central cost difference: 205420.43 PLN
 - Outer difference range: -784729.57 / 1619920.43 PLN
+- Paired-case cost difference (low / central / high): 63970.43 / 205420.43 / 771220.43 PLN
 
 ### Coverage anchors
 
@@ -75,6 +77,7 @@ Deterministic outputs are not empirical estimates.
 - Difference operation: `formalSequential_minus_adaptiveCompliant`
 - Central cost difference: 44000.00 PLN
 - Outer difference range: -145000.00 / 314000.00 PLN
+- Paired-case cost difference (low / central / high): 17000.00 / 44000.00 / 152000.00 PLN
 
 ### Coverage anchors
 
@@ -104,6 +107,7 @@ Deterministic outputs are not empirical estimates.
 - Difference operation: `formalSequential_minus_adaptiveCompliant`
 - Central cost difference: 1421967.08 PLN
 - Outer difference range: -5928032.92 / 11921967.08 PLN
+- Paired-case cost difference (low / central / high): 371967.08 / 1421967.08 / 5621967.08 PLN
 
 ### Coverage anchors
 
@@ -133,6 +137,7 @@ Deterministic outputs are not empirical estimates.
 - Difference operation: `formalSequential_minus_adaptiveCompliant`
 - Central cost difference: 144177.08 PLN
 - Outer difference range: -2638322.92 / 3286677.08 PLN
+- Paired-case cost difference (low / central / high): 24177.08 / 144177.08 / 624177.08 PLN
 
 ### Coverage anchors
 
@@ -163,6 +168,7 @@ Deterministic outputs are not empirical estimates.
 - Difference operation: `formalSequential_minus_adaptiveCompliant`
 - Central cost difference: -300000.00 PLN
 - Outer difference range: -450000.00 / -100000.00 PLN
+- Paired-case cost difference (low / central / high): -100000.00 / -300000.00 / -450000.00 PLN
 
 ### Coverage anchors
 
@@ -192,6 +198,7 @@ Deterministic outputs are not empirical estimates.
 - Difference operation: `formalSequential_minus_adaptiveCompliant`
 - Central cost difference: 507975.71 PLN
 - Outer difference range: -4177424.29 / 6303075.71 PLN
+- Paired-case cost difference (low / central / high): 138075.71 / 507975.71 / 1987575.71 PLN
 
 ### Coverage anchors
 
@@ -221,6 +228,7 @@ Deterministic outputs are not empirical estimates.
 - Difference operation: `formalSequential_minus_adaptiveCompliant`
 - Central cost difference: -92224.17 PLN
 - Outer difference range: -1007974.17 / 662650.83 PLN
+- Paired-case cost difference (low / central / high): -38599.17 / -92224.17 / -306724.17 PLN
 
 ### Coverage anchors
 
@@ -250,6 +258,7 @@ Deterministic outputs are not empirical estimates.
 - Difference operation: `formalSequential_minus_adaptiveCompliant`
 - Central cost difference: 0.00 PLN
 - Outer difference range: -3937.50 / 3937.50 PLN
+- Paired-case cost difference (low / central / high): 0.00 / 0.00 / 0.00 PLN
 
 ### Coverage anchors
 
@@ -279,6 +288,7 @@ Deterministic outputs are not empirical estimates.
 - Difference operation: `formalSequential_minus_adaptiveCompliant`
 - Central cost difference: 0.00 PLN
 - Outer difference range: -42000.00 / 42000.00 PLN
+- Paired-case cost difference (low / central / high): 0.00 / 0.00 / 0.00 PLN
 
 ### Coverage anchors
 

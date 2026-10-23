@@ -1,6 +1,6 @@
 # ProcuraCost model 2.3 parameter and evidence contract
 
-**Model version:** 2.3.0
+**Model version:** 2.3.1
 
 **Schema version:** 2
 
@@ -162,6 +162,19 @@ sign reversal. For example, identical control maps have zero paired differences
 in all three cases while their outer envelope may extend below and above zero.
 An envelope touching zero admits equality; it does not contain both signs.
 
+Model 2.3.1 therefore also reports the paired-case difference:
+
+`pairedDelta_r = total_formalSequential,r - total_adaptiveCompliant,r` for `r` in low, central, high
+
+Paired cases hold the shared inputs of one purchase (role rates and the daily
+cost of inaction) at the same declared case for both alternatives. The
+diagnostics classify them separately as `equal`, `formalSequential_lower`,
+`adaptiveCompliant_lower` or `varies_across_cases`. A paired classification is
+conditional on the declared inputs, in particular on the declared elapsed-day
+difference and daily cost of inaction (section 9.1). It is not evidence that
+either workflow design is cheaper in practice. Under an alternative swap each
+paired case negates element-wise.
+
 ## 5. Procurement process maps
 
 A workflow is a directed acyclic graph. Every step records:
@@ -183,7 +196,10 @@ For range case `r`, the finish time of step `s` is:
 `finish_r(s) = max(finish_r(p) for p in predecessors(s)) + activeDays_r(s) + queueDays_r(s)`
 
 A step without a predecessor starts at zero. The alternative's elapsed duration
-is the maximum finish time across its steps. Staff effort and non-labour cost
+is the maximum finish time across its steps, rounded to six decimal places
+(`MODEL_QUANTITY_DECIMALS`) to remove binary floating-point artefacts such as
+2.0999999999999996 days. Materialised reference-map active days, role hours and
+non-labour costs use the same rounding. Staff effort and non-labour cost
 are summed over all steps, not only the critical path.
 
 The reported critical path includes zero-duration prerequisites and terminal
@@ -269,6 +285,9 @@ one-standard-deviation increase in every category implies 0.098, 0.077 and
 
 `amendmentDifferential = {0.077, 0.084, 0.098} per contract-year`
 
+Model 2.3.1 corrects the monetisation unit. The differential is a frequency
+(additional amendments per contract-year), so it is no longer multiplied by
+the contract value, which implied that one amendment costs the whole contract.
 The signed allocation convention maps the study index onto the model profile:
 the model does not observe the seven category z-scores, so a declared
 full-profile rigidity difference corresponds to profile 1 and carries the
@@ -277,12 +296,14 @@ comparison explicitly declares a contract-rigidity difference
 (`contractRigidityDiffers`) and names the more rigid alternative
 (`amendmentDisadvantagedAlternative`):
 
-`contractAmendment_moreRigid = contractValue x {0.077, 0.084, 0.098}`
+`contractAmendment_moreRigid,r = amendmentDifferential_r x amendmentContractYears_r x costPerAmendment_r`
 
-The other alternative receives zero. Applying the per-contract-year
-differential to the contract value is a declared transfer convention, not the
-study's dependent-variable unit; it is not an estimate for Poland and does not
-identify the effect of procurement workflow design. The allocation never
+`amendmentContractYears` and `costPerAmendment` are declared inputs (normally
+`user_input`) and are required whenever a rigidity difference is declared; both
+must be null otherwise. Beuve, Moszoro and Spiller supply only the frequency.
+They do not supply a cost per amendment, which must come from the organisation.
+The other alternative receives zero. The result is not an estimate for Poland
+and does not identify the effect of procurement workflow design. The allocation never
 follows from a workflow label. Every native 2.3 starting scenario declares no
 rigidity difference, so the monetised amendment dimension is zero in the
 canonical registry, and the builder rejects any hand-entered non-zero
@@ -309,7 +330,7 @@ deterministic calculation must remain separate and auditable.
 Informal bypass is present in the decision record as `notMonetized`. The model
 does not infer a bypass probability from workflow design, system ownership or
 readiness. Monetisation requires observed or user-supplied rates and an explicit
-method that is not part of native model 2.3.0.
+method that is not part of native model 2.3.1.
 
 ## 8. Retained starting assumptions
 
@@ -340,8 +361,13 @@ For the fleet, ERP, logistics and critical-material scenarios, model 2.3 retains
 the `44/24` aggregate base-day totals from the strategic-private template. The
 public-IT scenario retains the `42/26` non-legal totals from the PZP-open
 template. It does not retain the old step topology for these five scenarios.
-Step order, allocation of aggregate days across steps and role-hour allocations
-are new illustrative model 2.3 inputs. They expose the named mechanism and a
+Step order, allocation of aggregate days across steps and formal/sequential
+role-hour allocations are new illustrative model 2.3 inputs. Each reference-map
+step declares one set of role hours. The adaptive/compliant hours of that step
+are derived by multiplying them by the step's adaptive-to-formal day ratio, so
+staff effort is assumed proportional to active days. This coupling is a
+modelling convention, not evidence; a shorter adaptive step therefore also
+carries fewer hours, and a longer one (discovery) carries more. They expose the named mechanism and a
 visible trade-off; they are not observations or effects inferred from the
 official cases.
 
@@ -434,6 +460,33 @@ assumptions. Workflow-map provenance follows section 8.2. The catalogue and MRP 
 maps and no supplier-access difference, so the central comparison is zero. The
 outer envelope is symmetric because the aligned path ranges are identical.
 All canonical scenarios use the initiation date 28 August 2026.
+
+### 9.1 What drives the canonical results
+
+Central values, model 2.3.1. Differences are formal/sequential minus
+adaptive/compliant in PLN; `delay` is the elapsed-day difference times the
+central daily cost of inaction.
+
+| Scenario | Elapsed days (formal / adaptive) | Role | Non-labour | Delay | Contract | Central delta | Paired cases (low / central / high) |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| `fleet_tco_reframing` | 44 / 24 | 2,186 | 2,000 | 100,000 | 0 | 104,186 | 29,186 / 104,186 / 404,186 |
+| `erp_transformation_discovery` | 50.6 / 27.6 | 12,220 | 4,600 | 188,600 | 0 | 205,420 | 63,970 / 205,420 / 771,220 |
+| `logistics_service_redesign` | 44 / 24 | 6,000 | 2,000 | 36,000 | 0 | 44,000 | 17,000 / 44,000 / 152,000 |
+| `critical_material_continuity` | 61.6 / 33.6 | 7,967 | 14,000 | 1,400,000 | 0 | 1,421,967 | 371,967 / 1,421,967 / 5,621,967 |
+| `public_it_open_with_market_consultation` | 87 / 71 | -17,423 | 1,600 | 160,000 | 0 | 144,177 | 24,177 / 144,177 / 624,177 |
+| `stable_private_standard_service` | 14 / 14 | 0 | 0 | 0 | -300,000 | -300,000 | -100,000 / -300,000 / -450,000 |
+| `stable_capex_replacement` | 120 / 84 | 11,176 | 3,600 | 493,200 | 0 | 507,976 | 138,076 / 507,976 / 1,987,576 |
+| `discovery_solution_codesign` | 34 / 47 | -19,424 | -1,300 | -71,500 | 0 | -92,224 | -38,599 / -92,224 / -306,724 |
+| `catalog_calloff_control` | 2.1 / 2.1 | 0 | 0 | 0 | 0 | 0 | 0 / 0 / 0 |
+| `mrp_release_control` | 1.4 / 1.4 | 0 | 0 | 0 | 0 | 0 | 0 / 0 / 0 |
+
+In every scenario with a non-zero workflow difference the delay term carries
+most of the central difference (78 to 111 per cent). The sign of those results
+therefore follows the retained or illustrative elapsed-day totals of section
+8.2 multiplied by a daily cost of inaction that ProcuraCost cannot verify. The
+table describes the arithmetic of the declared starting points. It is not an
+empirical finding about formal or adaptive procurement and must not be quoted
+as one.
 
 ## 10. When adaptive work has or lacks a mechanism
 

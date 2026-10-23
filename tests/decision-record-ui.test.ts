@@ -65,7 +65,7 @@ describe("neutral decision record UI", () => {
 
     expect(indices.every((index) => index >= 0)).toBe(true);
     expect(indices).toEqual([...indices].sort((a, b) => a - b));
-    expect(markup).toContain("2.3.0");
+    expect(markup).toContain("2.3.1");
     expect(markup).toContain("source-scenario-2026-08-28");
     expect(markup).toContain("pl-pzp-2026-2027");
     expect(markup).toContain("fleet_tco_reframing");

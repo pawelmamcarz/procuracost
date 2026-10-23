@@ -95,7 +95,7 @@ describe("calculator workspace UI", () => {
     ];
 
     expect(html).toContain("Compare two ways to run a procurement");
-    expect(html).toContain("Model 2.3.0");
+    expect(html).toContain("Model 2.3.1");
     expect(html).toContain("Case");
     expect(html).toContain("Workflows");
     expect(html).toContain("Costs");
@@ -421,7 +421,7 @@ describe("calculator workspace UI", () => {
     expect(html).toContain("Business requestor: daily rate");
     expect(html).not.toContain("retainedLegacyInputs.contractValue");
     expect(html).toContain(
-      "The former result is not being reproduced. The inputs will be recalculated under model 2.3.0."
+      "The former result is not being reproduced. The inputs will be recalculated under model 2.3.1."
     );
   });
 

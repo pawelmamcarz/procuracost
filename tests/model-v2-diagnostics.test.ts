@@ -4,6 +4,7 @@ import { buildDecisionRecordV2 } from "@/lib/model-v2/decision-record";
 import {
   buildScenarioDiagnostic,
   classifyComparisonSign,
+  classifyPairedComparisonSign,
   renderDiagnosticsMarkdown,
   runCanonicalDiagnostics,
 } from "@/lib/model-v2/diagnostics";
@@ -19,6 +20,25 @@ function records() {
 }
 
 describe("native model 2.3 diagnostics", () => {
+  it.each([
+    [0, 0, 0, "equal"],
+    [-3, -2, -1, "formalSequential_lower"],
+    [3, 2, 1, "adaptiveCompliant_lower"],
+    [-1, 0, 1, "varies_across_cases"],
+    [0, 1, 2, "varies_across_cases"],
+    [-2, -1, 0, "varies_across_cases"],
+  ] as const)("classifies paired cases %s / %s / %s as %s", (low, central, high, sign) => {
+    expect(classifyPairedComparisonSign({
+      deltaCostPairedCases: { low, central, high },
+    })).toBe(sign);
+  });
+
+  it("rejects non-finite paired cases", () => {
+    expect(() => classifyPairedComparisonSign({
+      deltaCostPairedCases: { low: 0, central: NaN, high: 1 },
+    })).toThrow(/finite/);
+  });
+
   it.each([
     [-10, -20, -1, "formalSequential_lower"],
     [10, 1, 20, "adaptiveCompliant_lower"],
@@ -70,6 +90,12 @@ describe("native model 2.3 diagnostics", () => {
           scenario.formalSequential.totalCost.high -
           scenario.adaptiveCompliant.totalCost.low,
       });
+      for (const rangeCase of ["low", "central", "high"] as const) {
+        expect(scenario.comparison.deltaCostPairedCases[rangeCase]).toBe(
+          scenario.formalSequential.totalCost[rangeCase] -
+            scenario.adaptiveCompliant.totalCost[rangeCase]
+        );
+      }
     }
   });
 
@@ -86,6 +112,7 @@ describe("native model 2.3 diagnostics", () => {
         -scenario.comparison.deltaCostOuterEnvelope.high
       );
       expect(scenario.sign).toBe("crosses_zero");
+      expect(scenario.pairedSign).toBe("equal");
     }
   });
 
@@ -124,6 +151,9 @@ describe("native model 2.3 diagnostics", () => {
     ["delta identity", (values: ReturnType<typeof records>) => {
       values[0].comparison.deltaCost += 1;
     }],
+    ["paired identity", (values: ReturnType<typeof records>) => {
+      values[0].comparison.deltaCostPairedCases.low += 1;
+    }],
     ["control neutrality", (values: ReturnType<typeof records>) => {
       const control = values.find(
         ({ metadata }) => metadata.scenarioId === "catalog_calloff_control"
@@ -149,6 +179,12 @@ describe("native model 2.3 diagnostics", () => {
     const second = renderDiagnosticsMarkdown(report);
     expect(second).toBe(first);
     expect(first).toContain("formalSequential − adaptiveCompliant");
+    expect(first).toContain("Paired sign");
+    expect(first).toContain("Paired cases (low / central / high)");
+    expect(first).toContain("Declared ranges are scenario envelopes");
+    expect(first).toContain(
+      "Paired cases hold shared inputs (rates, daily cost of inaction) at the same declared case for both alternatives."
+    );
     expect(first).not.toMatch(/winner|recommended|confidence|robustly favours/i);
   });
 });

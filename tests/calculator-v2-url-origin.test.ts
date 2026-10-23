@@ -72,13 +72,17 @@ describe("calculator v2 URL bootstrap", () => {
       result: { status: "valid", canCalculate: true },
       draft: {
         derivedFromScenarioId: "public_it_open_with_market_consultation",
+        economicAssumptions: {
+          amendmentContractYears: null,
+          costPerAmendment: null,
+        },
       },
       gate: { kind: "v2_url", result: { status: "valid" } },
     });
   });
 
   it.each([
-    ["v2-era state without sv", new URLSearchParams({ mv: "2.3.0" })],
+    ["v2-era state without sv", new URLSearchParams({ mv: "2.3.1" })],
     ["unknown legacy scenario", new URLSearchParams({ sid: "unknown" })],
     ["missing legacy scenario", new URLSearchParams({ cv: "1000" })],
   ])("routes recognised %s through explicit blocked migration", async (_label, params) => {
@@ -102,7 +106,13 @@ describe("calculator v2 URL bootstrap", () => {
       result: { status: "exact", canCalculate: true },
       adaptation: {
         status: "ready",
-        draft: { derivedFromScenarioId: "fleet_tco_reframing" },
+        draft: {
+          derivedFromScenarioId: "fleet_tco_reframing",
+          economicAssumptions: {
+            amendmentContractYears: null,
+            costPerAmendment: null,
+          },
+        },
         gate: {
           kind: "legacy_migration",
           result: { status: "exact" },
@@ -133,6 +143,8 @@ describe("calculator v2 URL bootstrap", () => {
       draft: {
         economicAssumptions: {
           contractValue: { low: 5100000, central: 5100000, high: 5100000 },
+          amendmentContractYears: null,
+          costPerAmendment: null,
         },
       },
       gate: {

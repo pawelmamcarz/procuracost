@@ -504,7 +504,7 @@ describe("model 2.3 draft calculation materialisation", () => {
 
   it("rejects unsupported fixed metadata and non-zero amendment or TCO semantics", () => {
     const badMetadata = createScenarioDraft("fleet_tco_reframing");
-    (badMetadata.context as { modelVersion: string }).modelVersion = "2.3.1";
+    (badMetadata.context as { modelVersion: string }).modelVersion = "unsupported";
     expect(() => buildCalculationInputFromDraft(badMetadata)).toThrow(
       /modelVersion/i
     );
@@ -531,43 +531,102 @@ describe("model 2.3 draft calculation materialisation", () => {
     }
   });
 
-  it("derives the amendment allocation only under a declared rigidity difference", () => {
-    const draft = createScenarioDraft("fleet_tco_reframing");
-    draft.economicAssumptions.contractRigidityDiffers = true;
-    draft.economicAssumptions.amendmentDisadvantagedAlternative =
-      "formalSequential";
+  it.each(["formalSequential", "adaptiveCompliant"] as const)(
+    "derives frequency times years times cost per amendment only on %s",
+    (disadvantaged) => {
+      const draft = createScenarioDraft("fleet_tco_reframing");
+      draft.economicAssumptions.contractRigidityDiffers = true;
+      draft.economicAssumptions.amendmentDisadvantagedAlternative = disadvantaged;
+      draft.economicAssumptions.amendmentContractYears = {
+        ...userFixed(2, ["user.years"]),
+        low: 1,
+        high: 3,
+        rangeKind: "calibrated",
+      };
+      draft.economicAssumptions.costPerAmendment = {
+        ...userFixed(20_000, ["user.amendment-cost"]),
+        low: 10_000,
+        high: 30_000,
+        rangeKind: "calibrated",
+      };
 
-    const input = buildCalculationInputFromDraft(draft);
-    const contractValue = draft.economicAssumptions.contractValue;
-    const dimensionCost = (alternative: "formalSequential" | "adaptiveCompliant") =>
-      input.alternatives[alternative].contractDesign.dimensions.find(
-        ({ id }) => id === "contract_amendment"
-      )!;
-    const formal = dimensionCost("formalSequential");
-    const adaptive = dimensionCost("adaptiveCompliant");
-    if (formal.status !== "monetized" || adaptive.status !== "monetized") {
-      throw new Error("Fixture requires monetized amendment dimensions");
+      const input = buildCalculationInputFromDraft(draft);
+      const dimensionCost = (alternative: "formalSequential" | "adaptiveCompliant") =>
+        input.alternatives[alternative].contractDesign.dimensions.find(
+          ({ id }) => id === "contract_amendment"
+        )!;
+      const charged = dimensionCost(disadvantaged);
+      const other = dimensionCost(
+        disadvantaged === "formalSequential" ? "adaptiveCompliant" : "formalSequential"
+      );
+      if (charged.status !== "monetized" || other.status !== "monetized") {
+        throw new Error("Fixture requires monetized amendment dimensions");
+      }
+      const evidenceIds = [
+        "beuve_amendment_frequency_2023",
+        "user.years",
+        "user.amendment-cost",
+      ];
+      expect(charged.cost).toMatchObject({
+        low: 0.077 * 1 * 10_000,
+        central: 0.084 * 2 * 20_000,
+        high: 0.098 * 3 * 30_000,
+        rangeKind: "calibrated",
+        evidenceClass: "verified_postprint",
+        evidenceIds,
+      });
+      expect(other.cost).toMatchObject({
+        low: 0,
+        central: 0,
+        high: 0,
+        rangeKind: "calibrated",
+        evidenceClass: "verified_postprint",
+        evidenceIds,
+      });
+      expect(() => calculateComparison(input)).not.toThrow();
     }
+  );
 
-    expect(formal.cost).toMatchObject({
-      low: contractValue.low * 0.077,
-      central: contractValue.central * 0.084,
-      high: contractValue.high * 0.098,
-      rangeKind: "calibrated",
-      evidenceClass: "verified_postprint",
-      evidenceIds: ["beuve_amendment_frequency_2023"],
-    });
-    expect(adaptive.cost).toMatchObject({
-      low: 0,
-      central: 0,
-      high: 0,
-      rangeKind: "calibrated",
-      evidenceClass: "verified_postprint",
-      evidenceIds: ["beuve_amendment_frequency_2023"],
-    });
+  it.each(["amendmentContractYears", "costPerAmendment"] as const)(
+    "requires %s exactly when contract rigidity differs",
+    (field) => {
+      const missing = createScenarioDraft("fleet_tco_reframing");
+      missing.economicAssumptions.contractRigidityDiffers = true;
+      missing.economicAssumptions.amendmentDisadvantagedAlternative = "formalSequential";
+      missing.economicAssumptions.amendmentContractYears = userFixed(2);
+      missing.economicAssumptions.costPerAmendment = userFixed(10_000);
+      missing.economicAssumptions[field] = null;
+      expect(() => buildCalculationInputFromDraft(missing)).toThrow(
+        /amendmentContractYears and costPerAmendment are required/
+      );
+      Reflect.deleteProperty(missing.economicAssumptions, field);
+      expect(() => buildCalculationInputFromDraft(missing)).toThrow(
+        /amendmentContractYears and costPerAmendment are required/
+      );
 
-    expect(() => calculateComparison(input)).not.toThrow();
-  });
+      const unexpected = createScenarioDraft("fleet_tco_reframing");
+      unexpected.economicAssumptions[field] = userFixed(1);
+      expect(() => buildCalculationInputFromDraft(unexpected)).toThrow(
+        /amendmentContractYears and costPerAmendment must be null/
+      );
+
+      for (const invalid of [
+        userFixed(-1),
+        userFixed(Infinity),
+        { ...userFixed(1), low: 2 },
+      ]) {
+        const draft = createScenarioDraft("fleet_tco_reframing");
+        draft.economicAssumptions.contractRigidityDiffers = true;
+        draft.economicAssumptions.amendmentDisadvantagedAlternative = "formalSequential";
+        draft.economicAssumptions.amendmentContractYears = userFixed(2);
+        draft.economicAssumptions.costPerAmendment = userFixed(10_000);
+        draft.economicAssumptions[field] = invalid;
+        expect(() => buildCalculationInputFromDraft(draft)).toThrow(
+          new RegExp(field)
+        );
+      }
+    }
+  );
 
   it("rejects an incomplete or contradictory amendment allocation declaration", () => {
     const missingSide = createScenarioDraft("fleet_tco_reframing");
@@ -594,16 +653,18 @@ describe("model 2.3 draft calculation materialisation", () => {
       /amendmentDifferential cannot be negative/i
     );
 
-    const excessiveRate = createScenarioDraft("fleet_tco_reframing");
-    excessiveRate.economicAssumptions.amendmentDifferential = {
-      ...excessiveRate.economicAssumptions.amendmentDifferential,
+    const frequency = createScenarioDraft("fleet_tco_reframing");
+    frequency.economicAssumptions.contractRigidityDiffers = true;
+    frequency.economicAssumptions.amendmentDisadvantagedAlternative = "adaptiveCompliant";
+    frequency.economicAssumptions.amendmentContractYears = userFixed(2);
+    frequency.economicAssumptions.costPerAmendment = userFixed(10_000);
+    frequency.economicAssumptions.amendmentDifferential = {
+      ...frequency.economicAssumptions.amendmentDifferential,
       low: 0,
       central: 0.5,
       high: 1.5,
     };
-    expect(() => buildCalculationInputFromDraft(excessiveRate)).toThrow(
-      /amendmentDifferential cannot exceed 1/i
-    );
+    expect(() => buildCalculationInputFromDraft(frequency)).not.toThrow();
   });
 
   it("remains sign-neutral when the materialised alternatives are swapped", () => {

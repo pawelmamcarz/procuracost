@@ -554,9 +554,9 @@ const calculatorV2Pl = {
     fields: "Pola wymagające potwierdzenia",
     retainedValues: "przeniesione wartości starego modelu",
     confirmation:
-      "Potwierdzam użycie przeniesionych danych wejściowych w modelu 2.3.0.",
+      "Potwierdzam użycie przeniesionych danych wejściowych w modelu 2.3.1.",
     recalculation:
-      "Poprzedni wynik nie jest odtwarzany. Dane zostaną ponownie obliczone w modelu 2.3.0.",
+      "Poprzedni wynik nie jest odtwarzany. Dane zostaną ponownie obliczone w modelu 2.3.1.",
     unknownRole: "Inna rola",
     stakeholderCount: "liczba osób",
     stakeholderDailyRate: "stawka dzienna",
@@ -875,9 +875,9 @@ const calculatorV2En = {
     fields: "Fields requiring confirmation",
     retainedValues: "retained legacy values",
     confirmation:
-      "I confirm the use of the retained inputs under model 2.3.0.",
+      "I confirm the use of the retained inputs under model 2.3.1.",
     recalculation:
-      "The former result is not being reproduced. The inputs will be recalculated under model 2.3.0.",
+      "The former result is not being reproduced. The inputs will be recalculated under model 2.3.1.",
     unknownRole: "Other role",
     stakeholderCount: "participant count",
     stakeholderDailyRate: "daily rate",
@@ -2318,6 +2318,7 @@ const replicationPackageV2Pl = {
     deltaOperation: "Operacja różnicy",
     centralDifference: "Centralna różnica kosztu",
     outerEnvelope: "Zewnętrzny zakres różnicy",
+    pairedCases: "Różnica kosztu dla sparowanych przypadków (niski / centralny / wysoki)",
   },
   none: "Brak",
 } as const;
@@ -2339,6 +2340,7 @@ const replicationPackageV2En = {
     deltaOperation: "Difference operation",
     centralDifference: "Central cost difference",
     outerEnvelope: "Outer difference range",
+    pairedCases: "Paired-case cost difference (low / central / high)",
   },
   none: "None",
 } satisfies ReplicationPackageV2Shape;

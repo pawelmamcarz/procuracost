@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## What this is
 
 ProcuraCost is a bilingual (PL/EN) Next.js 16 site for a procurement-economics
-research project. Native model 2.3.0 compares `formalSequential` and
+research project. Native model 2.3.1 compares `formalSequential` and
 `adaptiveCompliant` procurement workflow designs under the same legal and
 governance boundary. The interactive tools use a self-contained model layer in
 `lib/model-v2/`. There is no backend, database or API.
@@ -73,7 +73,7 @@ internals, routing or framework APIs.
 Changes to procurement economics belong in pure model modules, not components.
 
 - **`domain.ts`** defines model metadata and the public axes. Fixed metadata is
-  `schemaVersion: 2`, `modelVersion: "2.3.0"`,
+  `schemaVersion: 2`, `modelVersion: "2.3.1"`,
   `calibrationId: "source-scenario-2026-08-28"` and
   `legalRulesetId: "pl-pzp-2026-2027"`.
 - **`calibrated-value.ts`** validates ordered low, central and high values plus
@@ -257,7 +257,8 @@ current parameter, citation or instruction source.
   waits cannot be compressed. Always show scenario ranges, permit sign reversal
   and distinguish empirical anchors from retained assumptions and user inputs.
 - **Evidence limit:** Szucs supports only the bounded competition-transfer
-  stress. Contract-amendment and TCO differentials are zero in the native
-  calculation. Informal bypass remains non-monetised in native model 2.3.0.
+  stress. Contract-amendment and TCO differentials are zero in every native
+  starting scenario; amendment cost needs a declared rigidity difference,
+  contract years and cost per amendment. Informal bypass remains non-monetised in native model 2.3.1.
 - **Historical scope:** references to model 2.1 or 2.2.2 are valid only when a
   document explicitly describes a past defect, audit or immutable archive.

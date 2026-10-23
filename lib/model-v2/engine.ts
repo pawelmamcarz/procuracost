@@ -16,7 +16,11 @@ import { resolveRegisteredWorkflowDesign } from "./design-registry";
 import { resolveLegalWaits, type ResolvedLegalWait } from "./legal";
 import { assertValidProcessMap } from "./process-map";
 import { assertSameRegisteredScenarioContext } from "./registered-context";
-import { scenarioV2ById, type ScenarioV2Id } from "./scenarios";
+import {
+  roundModelQuantity,
+  scenarioV2ById,
+  type ScenarioV2Id,
+} from "./scenarios";
 
 type RangeCase = keyof RangeValues;
 const RANGE_CASES: RangeCase[] = ["low", "central", "high"];
@@ -53,6 +57,7 @@ export interface ComparisonCalculationResult {
     low: number;
     high: number;
   };
+  deltaCostPairedCases: RangeValues;
 }
 
 interface CriticalPathCaseResult {
@@ -105,7 +110,10 @@ function criticalPathForCase(
     return result;
   };
 
-  let critical: CriticalPathCaseResult = { elapsedDays: 0, stepIds: [] };
+  let critical: CriticalPathCaseResult = {
+    elapsedDays: 0,
+    stepIds: [],
+  };
   for (const step of workflowDesign.steps) {
     const candidate = finishAt(step);
     if (
@@ -181,7 +189,7 @@ function calculateAlternative(
 
   for (const rangeCase of RANGE_CASES) {
     const criticalPath = criticalPathForCase(workflowDesign, rangeCase);
-    elapsedDays[rangeCase] = criticalPath.elapsedDays;
+    elapsedDays[rangeCase] = roundModelQuantity(criticalPath.elapsedDays);
     criticalPathStepIds[rangeCase] = criticalPath.stepIds;
 
     roleCost[rangeCase] = workflowDesign.steps.reduce((stepTotal, step) => {
@@ -301,6 +309,12 @@ function calculateComparisonCore(
     deltaCostOuterEnvelope: {
       low: formalSequential.totalCost.low - adaptiveCompliant.totalCost.high,
       high: formalSequential.totalCost.high - adaptiveCompliant.totalCost.low,
+    },
+    deltaCostPairedCases: {
+      low: formalSequential.totalCost.low - adaptiveCompliant.totalCost.low,
+      central:
+        formalSequential.totalCost.central - adaptiveCompliant.totalCost.central,
+      high: formalSequential.totalCost.high - adaptiveCompliant.totalCost.high,
     },
   };
 }

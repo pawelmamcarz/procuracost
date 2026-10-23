@@ -18,11 +18,19 @@ export type ComparisonSign =
 export interface ComparisonProjection {
   deltaCost: number;
   deltaCostOuterEnvelope: { low: number; high: number };
+  deltaCostPairedCases: ComparisonCalculationResult["deltaCostPairedCases"];
 }
+
+export type PairedComparisonSign =
+  | "equal"
+  | "formalSequential_lower"
+  | "adaptiveCompliant_lower"
+  | "varies_across_cases";
 
 export interface ScenarioDiagnosticV2 {
   scenarioId: ScenarioV2Id;
   sign: ComparisonSign;
+  pairedSign: PairedComparisonSign;
   formalSequential: {
     elapsedDays: { low: number; central: number; high: number };
     totalCost: { low: number; central: number; high: number };
@@ -83,7 +91,10 @@ function assertFiniteRange(value: unknown, path: string): void {
     if (![record.low, record.central, record.high].every(Number.isFinite)) {
       throw new Error(`${path} contains a non-finite range value`);
     }
-    if (!(record.low <= record.central && record.central <= record.high)) {
+    if (
+      !path.endsWith(".deltaCostPairedCases") &&
+      !(record.low <= record.central && record.central <= record.high)
+    ) {
       throw new Error(`${path} must satisfy low <= central <= high`);
     }
   }
@@ -114,6 +125,11 @@ function assertDeltaIdentity(record: DecisionRecordV2): void {
     deltaCostOuterEnvelope: {
       low: formal.low - adaptive.high,
       high: formal.high - adaptive.low,
+    },
+    deltaCostPairedCases: {
+      low: formal.low - adaptive.low,
+      central: formal.central - adaptive.central,
+      high: formal.high - adaptive.high,
     },
   };
   if (JSON.stringify(record.comparison) !== JSON.stringify(expected)) {
@@ -163,7 +179,7 @@ function assertLegalWaits(record: DecisionRecordV2): void {
 }
 
 export function classifyComparisonSign(
-  comparison: ComparisonProjection
+  comparison: Pick<ComparisonProjection, "deltaCost" | "deltaCostOuterEnvelope">
 ): ComparisonSign {
   const { low, high } = comparison.deltaCostOuterEnvelope;
   if (![comparison.deltaCost, low, high].every(Number.isFinite) || low > high) {
@@ -172,6 +188,19 @@ export function classifyComparisonSign(
   if (comparison.deltaCost === 0 && low === 0 && high === 0) return "equal";
   if (low <= 0 && high >= 0) return "crosses_zero";
   return high < 0 ? "formalSequential_lower" : "adaptiveCompliant_lower";
+}
+
+export function classifyPairedComparisonSign(
+  comparison: Pick<ComparisonProjection, "deltaCostPairedCases">
+): PairedComparisonSign {
+  const values = Object.values(comparison.deltaCostPairedCases);
+  if (!values.every(Number.isFinite)) {
+    throw new Error("Paired comparison cases must be finite");
+  }
+  if (values.every((value) => value === 0)) return "equal";
+  if (values.every((value) => value < 0)) return "formalSequential_lower";
+  if (values.every((value) => value > 0)) return "adaptiveCompliant_lower";
+  return "varies_across_cases";
 }
 
 export function buildScenarioDiagnostic(
@@ -190,6 +219,7 @@ export function buildScenarioDiagnostic(
   return deepFreeze({
     scenarioId: record.metadata.scenarioId,
     sign: classifyComparisonSign(record.comparison),
+    pairedSign: classifyPairedComparisonSign(record.comparison),
     formalSequential: projectAlternative("formalSequential"),
     adaptiveCompliant: projectAlternative("adaptiveCompliant"),
     comparison: clone(record.comparison),
@@ -211,6 +241,7 @@ function assertNeutralControl(record: DecisionRecordV2): void {
     JSON.stringify(record.alternatives.formalSequential.result) !==
       JSON.stringify(record.alternatives.adaptiveCompliant.result) ||
     record.comparison.deltaCost !== 0 ||
+    classifyPairedComparisonSign(record.comparison) !== "equal" ||
     low !== -high
   ) {
     throw new Error(`Control ${record.metadata.scenarioId} is not neutral`);
@@ -254,18 +285,21 @@ function formatNumber(value: number): string {
 }
 
 export function renderDiagnosticsMarkdown(report: ModelDiagnosticsV2): string {
-  const rows = report.scenarios.map(
-    (scenario) =>
-      `| ${scenario.scenarioId} | ${scenario.sign} | ${formatNumber(scenario.formalSequential.totalCost.central)} | ${formatNumber(scenario.adaptiveCompliant.totalCost.central)} | ${formatNumber(scenario.comparison.deltaCost)} | ${formatNumber(scenario.comparison.deltaCostOuterEnvelope.low)} to ${formatNumber(scenario.comparison.deltaCostOuterEnvelope.high)} |`
-  );
+  const rows = report.scenarios.map((scenario) => {
+    const pairedCases = (["low", "central", "high"] as const)
+      .map((key) => formatNumber(scenario.comparison.deltaCostPairedCases[key]))
+      .join(" / ");
+    return `| ${scenario.scenarioId} | ${scenario.sign} | ${scenario.pairedSign} | ${formatNumber(scenario.formalSequential.totalCost.central)} | ${formatNumber(scenario.adaptiveCompliant.totalCost.central)} | ${formatNumber(scenario.comparison.deltaCost)} | ${formatNumber(scenario.comparison.deltaCostOuterEnvelope.low)} to ${formatNumber(scenario.comparison.deltaCostOuterEnvelope.high)} | ${pairedCases} |`;
+  });
   return [
     `# Model ${report.metadata.modelVersion} diagnostics`,
     "",
     "Operation: formalSequential − adaptiveCompliant.",
     "Declared ranges are scenario envelopes, not statistical estimates.",
+    "Paired cases hold shared inputs (rates, daily cost of inaction) at the same declared case for both alternatives.",
     "",
-    "| Scenario | Classification | Formal central | Adaptive central | Delta central | Delta envelope |",
-    "|---|---|---:|---:|---:|---:|",
+    "| Scenario | Classification | Paired sign | Formal central | Adaptive central | Delta central | Delta envelope | Paired cases (low / central / high) |",
+    "|---|---|---|---:|---:|---:|---:|---:|",
     ...rows,
     "",
   ].join("\n");
@@ -290,6 +324,14 @@ export function auditSwapSymmetry(
   }
   if (!(swapped.deltaCost === -original.deltaCost)) {
     failures.push("central delta did not negate");
+  }
+  for (const rangeCase of ["low", "central", "high"] as const) {
+    if (
+      swapped.deltaCostPairedCases[rangeCase] !==
+      -original.deltaCostPairedCases[rangeCase]
+    ) {
+      failures.push(`paired ${rangeCase} case did not negate`);
+    }
   }
   if (
     !(
