@@ -17,7 +17,7 @@ Active texts:
   design;
 - [`pl/2026-12-kupiec-po-automatyzacji.md`](pl/2026-12-kupiec-po-automatyzacji.md),
   draft; buyer role, rules, procedure versus
-  policy, control and metrics; not yet linked from the site;
+  policy, control and metrics; published at `/kupiec-po-automatyzacji`;
 - [`doktorat/article-1-tunnel-or-field-EN.md`](doktorat/article-1-tunnel-or-field-EN.md);
 - [`doktorat/article-2-model-kosztu-PL.md`](doktorat/article-2-model-kosztu-PL.md);
 - [`doktorat/article-3-empiria-PZP-PL.md`](doktorat/article-3-empiria-PZP-PL.md).
@@ -33,6 +33,15 @@ Model 1.x drafts remain under
 be submitted or republished as current material. Statements explicitly
 describing model 2.2.2 history may remain historical; its optimiser, path
 profiles and thresholds are not active model 2.3 claims.
+
+## Site article content
+
+`pl/2026-12-kupiec-po-automatyzacji.md` remains the canonical source for the
+published page. After editing it, run `npm run articles` and include the updated
+`lib/articles/kupiec-po-automatyzacji.generated.ts` in the same change. The
+freshness test checks the generated module byte for byte. Production builds
+import that module so the Docker build context does not need `docs/` or
+`scripts/`. Generation is an explicit authoring step, not a build hook.
 
 ## Publication contract
 

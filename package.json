@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
+    "articles": "tsx scripts/generate-article-content.ts",
     "recompute": "tsx scripts/recompute.ts",
     "sweep": "tsx scripts/symmetry-sweep.ts",
     "replicate": "tsx scripts/generate-replication.ts",

@@ -1,13 +1,10 @@
-import { readFileSync } from "node:fs";
-import path from "node:path";
 import DebateBento from "@/components/debate/DebateBento";
 import { parseArticle } from "@/lib/article";
+import { kupiecPoAutomatyzacjiMarkdown } from "@/lib/articles/kupiec-po-automatyzacji.generated";
 import { debateT } from "@/lib/i18n";
 import { localizedPageMetadata } from "@/lib/page-metadata";
 
-const { frontmatter, html } = parseArticle(
-  readFileSync(path.join(process.cwd(), "docs/articles/pl/2026-12-kupiec-po-automatyzacji.md"), "utf8"),
-);
+const { frontmatter, html } = parseArticle(kupiecPoAutomatyzacjiMarkdown);
 
 export const metadata = {
   ...localizedPageMetadata({
