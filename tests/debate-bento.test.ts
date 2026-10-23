@@ -65,7 +65,7 @@ describe("editorial debate hub", () => {
     expect(html).toContain(tx.coverage);
   });
 
-  it.each(["pl", "en"] as const)("uses the article summary and keeps tile G questions without its self-link in %s", (lang) => {
+  it.each(["pl", "en"] as const)("uses the article summary and keeps all questions without self-links in %s", (lang) => {
     const html = renderToStaticMarkup(createElement(MotionProvider, null, createElement(DebateBento, { lang, variant: "article" })));
     const tx = debateT[lang];
     expectNoEventCopy(html);
@@ -74,6 +74,7 @@ describe("editorial debate hub", () => {
     expect(html).toContain(tx.articleIntro);
     expect(html).not.toContain(tx.intro);
     expect(html.match(/data-debate-tile="/g)).toHaveLength(7);
+    expect(html).not.toContain('href="/kupiec-po-automatyzacji"');
     const questionsTile = html.match(/<article data-debate-tile="7"[\s\S]*?<\/article>/)?.[0];
     expect(questionsTile).toBeDefined();
     expect(questionsTile).not.toContain('href="/kupiec-po-automatyzacji"');

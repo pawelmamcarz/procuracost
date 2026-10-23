@@ -60,6 +60,8 @@ function countUserSuppliedAssumptions(record: DecisionRecordV2): number {
   include(record.assumptions.dailyCostOfInaction);
   include(record.assumptions.competitionTransferRate);
   include(record.assumptions.amendmentDifferential);
+  include(record.assumptions.amendmentContractYears);
+  include(record.assumptions.costPerAmendment);
   include(record.assumptions.tcoDifferential);
 
   for (const rate of Object.values(record.roleHourlyRates)) include(rate);
@@ -133,6 +135,22 @@ export default function AssumptionsRecord({
       value: rangeText(assumptions.amendmentDifferential, lang, false),
       evidence: evidenceClass(assumptions.amendmentDifferential, lang),
     },
+    ...(assumptions.amendmentContractYears
+      ? [{
+          id: "amendmentContractYears",
+          label: exportTx.assumptions.amendmentContractYears,
+          value: rangeText(assumptions.amendmentContractYears, lang, false),
+          evidence: evidenceClass(assumptions.amendmentContractYears, lang),
+        }]
+      : []),
+    ...(assumptions.costPerAmendment
+      ? [{
+          id: "costPerAmendment",
+          label: exportTx.assumptions.costPerAmendment,
+          value: rangeText(assumptions.costPerAmendment, lang),
+          evidence: evidenceClass(assumptions.costPerAmendment, lang),
+        }]
+      : []),
     {
       id: "tcoDifferential",
       label: exportTx.assumptions.tcoDifferential,

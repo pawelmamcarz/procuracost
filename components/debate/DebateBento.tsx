@@ -74,7 +74,7 @@ export default function DebateBento({ lang, variant = "home" }: { lang: Lang; va
           </dl>
           <div className="mt-3 flex flex-wrap gap-x-4">
             <Link className={linkClass} href={`${prefix}/readiness`}>{tx.links.readiness}</Link>
-            <Link className={linkClass} href="/kupiec-po-automatyzacji">{tx.links.article}</Link>
+            {variant === "home" && <Link className={linkClass} href="/kupiec-po-automatyzacji">{tx.links.article}</Link>}
           </div>
         </>, 1)}
         {tile(4, "md:col-span-3", <>
@@ -97,7 +97,7 @@ export default function DebateBento({ lang, variant = "home" }: { lang: Lang; va
           <ul className="mt-6 divide-y divide-gray-200 text-base leading-7 text-gray-700">
             {tx.measures.map((measure) => <li className="py-5" key={measure}>{measure}</li>)}
           </ul>
-          <Link className={linkClass} href="/kupiec-po-automatyzacji">{tx.links.measures}</Link>
+          {variant === "home" && <Link className={linkClass} href="/kupiec-po-automatyzacji">{tx.links.measures}</Link>}
         </>, 4, "bg-gray-50")}
         {tile(5, "md:col-span-2", <>
           <dl className="mt-6 divide-y divide-gray-200">

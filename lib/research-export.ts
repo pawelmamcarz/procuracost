@@ -548,8 +548,20 @@ export function buildResearchCsv(
     ["contractValue", assumptions.contractValue],
     ["dailyCostOfInaction", assumptions.dailyCostOfInaction],
     ["amendmentDifferential", assumptions.amendmentDifferential],
-    ["tcoDifferential", assumptions.tcoDifferential],
   ];
+  if (assumptions.amendmentContractYears) {
+    calibratedAssumptions.push([
+      "amendmentContractYears",
+      assumptions.amendmentContractYears,
+    ]);
+  }
+  if (assumptions.costPerAmendment) {
+    calibratedAssumptions.push([
+      "costPerAmendment",
+      assumptions.costPerAmendment,
+    ]);
+  }
+  calibratedAssumptions.push(["tcoDifferential", assumptions.tcoDifferential]);
   if (assumptions.competitionTransferRate) {
     calibratedAssumptions.splice(2, 0, [
       "competitionTransferRate",
@@ -1097,6 +1109,31 @@ export function buildResearchMarkdown(
         tx.evidenceClasses[record.assumptions.amendmentDifferential.evidenceClass]
       } |`
     ),
+    ...(record.assumptions.amendmentContractYears
+      ? [
+          markdownRangeRow(
+            tx.assumptions.amendmentContractYears,
+            record.assumptions.amendmentContractYears,
+            locale,
+            false
+          ).replace(
+            / \|$/,
+            ` | ${tx.evidenceClasses[record.assumptions.amendmentContractYears.evidenceClass]} |`
+          ),
+        ]
+      : []),
+    ...(record.assumptions.costPerAmendment
+      ? [
+          markdownRangeRow(
+            tx.assumptions.costPerAmendment,
+            record.assumptions.costPerAmendment,
+            locale
+          ).replace(
+            / \|$/,
+            ` | ${tx.evidenceClasses[record.assumptions.costPerAmendment.evidenceClass]} |`
+          ),
+        ]
+      : []),
     markdownRangeRow(
       tx.assumptions.tcoDifferential,
       record.assumptions.tcoDifferential,

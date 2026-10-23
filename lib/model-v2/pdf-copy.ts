@@ -536,7 +536,30 @@ export function buildPdfCopy(
       assumptions.amendmentDifferential,
       locale,
       false
-    ),
+    )
+  );
+  if (assumptions.amendmentContractYears) {
+    assumptionCopies.push(
+      calibratedAssumption(
+        "amendmentContractYears",
+        tx.assumptions.amendmentContractYears,
+        assumptions.amendmentContractYears,
+        locale,
+        false
+      )
+    );
+  }
+  if (assumptions.costPerAmendment) {
+    assumptionCopies.push(
+      calibratedAssumption(
+        "costPerAmendment",
+        tx.assumptions.costPerAmendment,
+        assumptions.costPerAmendment,
+        locale
+      )
+    );
+  }
+  assumptionCopies.push(
     calibratedAssumption(
       "tcoDifferential",
       tx.assumptions.tcoDifferential,
