@@ -10,9 +10,18 @@ import MotionProvider from "@/components/motion/MotionProvider";
 
 const markdown = readFileSync(new URL("../docs/articles/pl/2026-12-kupiec-po-automatyzacji.md", import.meta.url), "utf8");
 
+function visibleText(markup: string) {
+  return markup.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ");
+}
+
+function expectNoEventCopy(markup: string) {
+  expect(visibleText(markup)).not.toMatch(/panel|dyrektor|director|2 grudnia|2 December|debat|debate/i);
+}
+
 describe("Polish debate article", () => {
-  it("parses real frontmatter and all four threads without panel participants' names", () => {
+  it("parses real frontmatter and all four questions without event framing", () => {
     const { frontmatter, html } = parseArticle(markdown);
+    expectNoEventCopy(html);
     expect(frontmatter).toMatchObject({
       tytuł: "Kupiec po automatyzacji",
       podtytuł: "Rola zakupów, gdy rutynę przejmują agenci AI",
@@ -24,8 +33,12 @@ describe("Polish debate article", () => {
       "2. Czas na strategię: kto pisze reguły i kto je zmienia",
       "3. Procedura czy polityka zakupowa",
       "4. Kontrola i miary",
-      "Pytania do panelu",
+      "Pytania do dyskusji",
     ]) expect(html).toContain(`<h2>${heading}</h2>`);
+    const questionsHtml = html.match(/<h2>Pytania do dyskusji<\/h2>\s*<ol>([\s\S]*?)<\/ol>/)?.[1] ?? "";
+    const articleQuestions = [...questionsHtml.matchAll(/<li>([\s\S]*?)<\/li>/g)]
+      .map(([, question]) => visibleText(question).trim());
+    expect(articleQuestions).toEqual(debateT.pl.questions);
     expect(html).not.toMatch(/Agnieszka|Żabka|Zabka|tytuł:/);
     expect(html).not.toMatch(/<h1\b/);
     expect(html.trimStart().startsWith(`<h2>${frontmatter.podtytuł}</h2>`)).toBe(false);
@@ -34,8 +47,9 @@ describe("Polish debate article", () => {
     }
   });
 
-  it("renders one page title and the article-specific panel summary", () => {
+  it("renders one page title and the article-specific summary", () => {
     const html = renderToStaticMarkup(createElement(MotionProvider, null, createElement(DebateArticlePage)));
+    expectNoEventCopy(html);
     expect(html.match(/<h1\b/g)).toHaveLength(1);
     expect(html).toContain(debateT.pl.articleTitle);
     expect(html).toContain(debateT.pl.articleIntro);

@@ -5,7 +5,7 @@ data: 2026-12
 autor: "Paweł Mamcarz"
 autor_www: "https://mamcarz.com"
 model: "ProcuraCost 2.3.1"
-status: "szkic do redakcji, materiał przed panelem 2 grudnia 2026 r."
+status: "szkic do redakcji"
 ---
 
 # Kupiec po automatyzacji
@@ -17,8 +17,8 @@ prowadzi proste negocjacje, kupcowi zostaje mniej przepisywania i ręcznych
 akceptacji. Nie wynika z tego jeszcze, czym ten kupiec ma się zająć, kto ustala
 reguły dla automatu ani kto odpowiada za decyzję, którą automat przygotował.
 
-2 grudnia 2026 r. prowadzę na ten temat panel z dwoma dyrektorami zakupów.
-Ten tekst porządkuje cztery wątki rozmowy. Przy każdym oddzielam to, co da się
+Ten tekst porządkuje cztery pytania, które warto rozstrzygnąć, zanim agent
+przejmie część pracy zakupów. Przy każdym oddzielam to, co da się
 oprzeć na modelu ProcuraCost i cytowanych w nim źródłach, od tego, co jest
 hipotezą albo pytaniem. Danych o tym, jak zmienia się praca kupców po
 wdrożeniu agentów, w projekcie nie ma. Tam, gdzie ich brakuje, piszę to wprost.
@@ -60,7 +60,7 @@ Z tych liczb wynika tyle, że wiele osób spodziewa się zmiany, a niewiele
 organizacji ma ją za sobą.
 
 Jakie kompetencje będą potrzebne za trzy lata? Na to pytanie model nie
-odpowiada. Proponuję pięć hipotez do sprawdzenia na panelu:
+odpowiada. Proponuję pięć hipotez do sprawdzenia:
 
 1. **Opis problemu przed wyborem rozwiązania.** Mechanizmy, które model
    rozpoznaje w zakupie ERP, usługi logistycznej czy publicznego IT, zaczynają
@@ -140,7 +140,7 @@ pomiarach w organizacjach. Ich układ jest jednak pouczający:
   różnica wynosi zero. To scenariusze kontrolne. Sprawdzają, że model nie
   przypisuje korzyści samej nazwie wariantu.
 
-Z tego układu wynikają dwie rzeczy ważne dla debaty. Po pierwsze, wynik
+Z tego układu wynikają dwie rzeczy. Po pierwsze, wynik
 porównania zależy od tego, ile kosztuje dzień zwłoki w konkretnym zakupie. To
 liczba, której model nie zna i nie może sprawdzić. Po drugie, przy zakupach
 operacyjnych różnica między tunelem a polem w samym przebiegu znika. Zysk z
@@ -187,7 +187,7 @@ przed jakąkolwiek próbą przeliczenia na złotówki:
 Odsetek poprawek kupca warto czytać ostrożnie. Sama korekta nie mówi, czy
 zawiodły dane, reguły mandatu czy osąd agenta. Mówi tyle, że nadzór działa.
 
-## Pytania do panelu
+## Pytania do dyskusji
 
 1. Na co w waszym zespole poszedł czas odzyskany dzięki automatyzacji i skąd
    to wiecie?

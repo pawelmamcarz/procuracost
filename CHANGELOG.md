@@ -2,7 +2,7 @@
 
 ## 2026-10-23: model 2.3.1
 
-Validation pass before the 2 December 2026 panel. No scenario economic value,
+Validation pass. No scenario economic value,
 legal rule, support multiplier, rate, day total or daily cost changed. All ten
 central differences and outer envelopes are unchanged.
 

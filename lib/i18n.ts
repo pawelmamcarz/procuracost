@@ -6,10 +6,10 @@ export type Lang = "pl" | "en";
 
 const debatePl = {
   title: "Kupiec po automatyzacji",
-  intro: "Panel 2 grudnia 2026 r. z dwoma dyrektorami zakupów: cztery wątki o pracy człowieka, regułach i granicach automatyzacji.",
-  articleTitle: "Cztery wątki panelu",
-  articleIntro: "Skrót artykułu: każdy kafel prowadzi do dowodów w modelu albo do pytań na debatę.",
-  threads: ["Wątek 3", "Wątek 1", "Wątek 4", "Wątki 3 i 4", "Wątek 2", "Wątek 3", "Wątki 1–4"],
+  intro: "Cztery pytania o pracę zakupów, gdy rutynę przejmują systemy i agenci AI: kto robi co, kto ustala reguły, procedura czy polityka, co mierzyć.",
+  articleTitle: "Cztery pytania w skrócie",
+  articleIntro: "Każdy kafel prowadzi do modelu albo do pytań do dyskusji.",
+  threads: ["Pytanie 3", "Pytanie 1", "Pytanie 4", "Pytania 3 i 4", "Pytanie 2", "Pytanie 3", "Pytania 1–4"],
   titles: [
     "Procedura czy polityka",
     "Na co pójdzie odzyskany czas",
@@ -17,7 +17,7 @@ const debatePl = {
     "Wynik zależy od kosztu dnia zwłoki",
     "Kto zmienia reguły",
     "Gdzie tunel i pole dają ten sam wynik",
-    "Pytania do panelu",
+    "Pytania do dyskusji w zespole zakupów",
   ],
   tunnel: "Tunel",
   field: "Pole",
@@ -90,19 +90,19 @@ const debatePl = {
     methodology: "Metoda i rejestr założeń",
     cases: "Scenariusze referencyjne",
   },
-  articleEyebrow: "Artykuł / debata 2 grudnia 2026",
+  articleEyebrow: "Artykuł / ProcuraCost",
   researchLink: {
     title: "Kupiec po automatyzacji",
-    body: "Cztery wątki debaty: podział pracy, właściciele reguł, przebieg procesu i miary.",
+    body: "Artykuł o roli kupca po automatyzacji: podział pracy, właściciele reguł, procedura czy polityka, miary.",
   },
 };
 
 const debateEn: LangShape<typeof debatePl> = {
   title: "The buyer after automation",
-  intro: "A panel on 2 December 2026 with two procurement directors: four threads on human work, rules and the boundaries of automation.",
-  articleTitle: "Four panel threads",
-  articleIntro: "Article summary: each tile leads to evidence in the model or questions for the debate.",
-  threads: ["Thread 3", "Thread 1", "Thread 4", "Threads 3 and 4", "Thread 2", "Thread 3", "Threads 1–4"],
+  intro: "Four questions about procurement work once systems and AI agents take over routine tasks: who does what, who sets the rules, procedure or policy, what to measure.",
+  articleTitle: "Four questions at a glance",
+  articleIntro: "Each tile leads to the model or to discussion questions.",
+  threads: ["Question 3", "Question 1", "Question 4", "Questions 3 and 4", "Question 2", "Question 3", "Questions 1–4"],
   titles: [
     "Procedure or policy",
     "Where will the recovered time go?",
@@ -110,7 +110,7 @@ const debateEn: LangShape<typeof debatePl> = {
     "The result depends on the cost of a day's delay",
     "Who changes the rules?",
     "Where tunnel and field give the same result",
-    "Questions for the panel",
+    "Questions for a procurement team discussion",
   ],
   tunnel: "Tunnel",
   field: "Field",
@@ -183,10 +183,10 @@ const debateEn: LangShape<typeof debatePl> = {
     methodology: "Method and assumptions register",
     cases: "Reference scenarios",
   },
-  articleEyebrow: "Article / debate on 2 December 2026",
+  articleEyebrow: "Article / ProcuraCost",
   researchLink: {
     title: "The buyer after automation (in Polish)",
-    body: "Four debate threads: division of work, rule owners, workflow design and measures.",
+    body: "Artykuł o roli kupca po automatyzacji: podział pracy, właściciele reguł, procedura czy polityka, miary.",
   },
 };
 
