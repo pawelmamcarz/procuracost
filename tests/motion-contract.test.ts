@@ -39,6 +39,7 @@ describe("motion foundation", () => {
   it("keeps reveal and number transitions bounded and reduced-motion aware", () => {
     const reveal = read("components/motion/Reveal.tsx");
     expect(reveal).toContain("opacity: 0, y: 8");
+    expect(reveal).not.toContain("initial={reducedMotion");
     expect(reveal).toContain("once: true, amount: 0.2");
     expect(reveal).toContain("index * 0.04");
     const tween = read("components/motion/NumberTween.tsx");

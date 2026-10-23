@@ -1,9 +1,12 @@
 import { readFileSync } from "node:fs";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { parseArticle } from "@/lib/article";
 import { debateT } from "@/lib/i18n";
 import { SITE_ROUTES, localizedCounterpart, navigationFor, sitemapPaths } from "@/lib/site-routes";
-import { metadata } from "@/app/(pl)/kupiec-po-automatyzacji/page";
+import DebateArticlePage, { metadata } from "@/app/(pl)/kupiec-po-automatyzacji/page";
+import MotionProvider from "@/components/motion/MotionProvider";
 
 const markdown = readFileSync(new URL("../docs/articles/pl/2026-12-kupiec-po-automatyzacji.md", import.meta.url), "utf8");
 
@@ -24,9 +27,29 @@ describe("Polish debate article", () => {
       "Pytania do panelu",
     ]) expect(html).toContain(`<h2>${heading}</h2>`);
     expect(html).not.toMatch(/Agnieszka|Żabka|Zabka|tytuł:/);
+    expect(html).not.toMatch(/<h1\b/);
+    expect(html.trimStart().startsWith(`<h2>${frontmatter.podtytuł}</h2>`)).toBe(false);
     for (const question of debateT.pl.questions) {
       expect(html.replace(/\s+/g, " ")).toContain(question);
     }
+  });
+
+  it("renders one page title and the article-specific panel summary", () => {
+    const html = renderToStaticMarkup(createElement(MotionProvider, null, createElement(DebateArticlePage)));
+    expect(html.match(/<h1\b/g)).toHaveLength(1);
+    expect(html).toContain(debateT.pl.articleTitle);
+    expect(html).toContain(debateT.pl.articleIntro);
+  });
+
+  it("only drops matching leading title and immediately following subtitle headings", () => {
+    const frontmatter = '---\ntytuł: "Title"\npodtytuł: "Subtitle"\ndata: 2026-12\nautor: "Author"\n---\n';
+    expect(parseArticle(`${frontmatter}# Title\n\n## Subtitle\n\nBody`).html.trim()).toBe("<p>Body</p>");
+    expect(parseArticle(`${frontmatter}# Other\n\n## Subtitle`).html).toContain("<h1>Other</h1>\n<h2>Subtitle</h2>");
+    expect(parseArticle(`${frontmatter}# Title\n\n## Other`).html.trim()).toBe("<h2>Other</h2>");
+    expect(parseArticle(`${frontmatter}# Title\n\nBody\n\n## Subtitle`).html).toContain("<p>Body</p>\n<h2>Subtitle</h2>");
+    expect(parseArticle(`${frontmatter}Body\n\n# Title\n\n## Subtitle`).html).toContain("<h1>Title</h1>\n<h2>Subtitle</h2>");
+    expect(parseArticle(`${frontmatter}## Subtitle`).html.trim()).toBe("<h2>Subtitle</h2>");
+    expect(parseArticle(markdown.replace(/\n/g, "\r\n")).html).not.toMatch(/<h1\b/);
   });
 
   it("rewrites sibling Markdown links but not remote links or code", () => {

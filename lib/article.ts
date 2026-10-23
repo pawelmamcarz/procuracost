@@ -44,13 +44,25 @@ export function parseArticle(markdown: string): { frontmatter: ArticleFrontmatte
     autor: required("autor"),
   };
   const body = markdown.replace(/^\uFEFF/, "").slice(match[0].length);
-  const html = marked.parse(body, {
-    async: false,
-    walkTokens(token) {
-      if (token.type !== "link") return;
-      const sibling = token.href.match(/^(?:\.\/)?([^/:?#]+\.md)([?#].*)?$/);
-      if (sibling) token.href = `${ARTICLE_SOURCE_URL}${encodeURIComponent(sibling[1])}${sibling[2] ?? ""}`;
-    },
+  const tokens = marked.lexer(body);
+
+  function dropLeadingHeading(depth: number, text: string) {
+    const index = tokens.findIndex((token) => token.type !== "space");
+    const token = tokens[index];
+    if (token?.type !== "heading" || token.depth !== depth || token.text !== text) return false;
+    tokens.splice(0, index + 1);
+    return true;
+  }
+
+  if (dropLeadingHeading(1, frontmatter.tytuł)) {
+    dropLeadingHeading(2, frontmatter.podtytuł);
+  }
+
+  marked.walkTokens(tokens, (token) => {
+    if (token.type !== "link") return;
+    const sibling = token.href.match(/^(?:\.\/)?([^/:?#]+\.md)([?#].*)?$/);
+    if (sibling) token.href = `${ARTICLE_SOURCE_URL}${encodeURIComponent(sibling[1])}${sibling[2] ?? ""}`;
   });
+  const html = marked.parser(tokens);
   return { frontmatter, html };
 }

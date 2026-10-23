@@ -33,7 +33,7 @@ export default function DebateArticlePage() {
           {" / "}{frontmatter.autor}
         </p>
       </header>
-      <DebateBento lang="pl" />
+      <DebateBento lang="pl" variant="article" />
       <article className="article-prose max-w-3xl" dangerouslySetInnerHTML={{ __html: html }} />
     </div>
   );

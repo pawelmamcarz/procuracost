@@ -17,6 +17,8 @@ describe("editorial debate hub", () => {
   it.each(["pl", "en"] as const)("renders seven distinct tiles and the full panel questions in %s", (lang) => {
     const html = renderToStaticMarkup(createElement(MotionProvider, null, createElement(DebateBento, { lang })));
     const tx = debateT[lang];
+    expect(html).toContain(`aria-label="${tx.title}"`);
+    expect(html).toContain(tx.intro);
     expect(html.match(/data-debate-tile="/g)).toHaveLength(7);
     for (const title of tx.titles) {
       expect(html).toContain(renderToStaticMarkup(createElement("h3", null, title)).replace(/<\/?h3>/g, ""));
@@ -36,6 +38,24 @@ describe("editorial debate hub", () => {
     }
     expect(html).toContain(tx.caveat);
     expect(html).toContain(tx.coverage);
+  });
+
+  it.each(["pl", "en"] as const)("uses the article summary and keeps tile G questions without its self-link in %s", (lang) => {
+    const html = renderToStaticMarkup(createElement(MotionProvider, null, createElement(DebateBento, { lang, variant: "article" })));
+    const tx = debateT[lang];
+    expect(html).toContain(`aria-label="${tx.articleTitle}"`);
+    expect(html).toContain(`>${tx.articleTitle}</h2>`);
+    expect(html).toContain(tx.articleIntro);
+    expect(html).not.toContain(tx.intro);
+    expect(html.match(/data-debate-tile="/g)).toHaveLength(7);
+    const questionsTile = html.match(/<article data-debate-tile="7"[\s\S]*?<\/article>/)?.[0];
+    expect(questionsTile).toBeDefined();
+    expect(questionsTile).not.toContain('href="/kupiec-po-automatyzacji"');
+    for (const question of tx.questions) {
+      expect(questionsTile).toContain(renderToStaticMarkup(createElement("li", null, question)).replace(/<\/?li>/g, ""));
+    }
+    const home = renderToStaticMarkup(createElement(MotionProvider, null, createElement(DebateBento, { lang, variant: "home" })));
+    expect(home.match(/<article data-debate-tile="7"[\s\S]*?<\/article>/)?.[0]).toContain('href="/kupiec-po-automatyzacji"');
   });
 
   it("keeps both languages in exact leaf-path parity", () => {

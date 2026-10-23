@@ -15,8 +15,10 @@ const SCENARIOS: DebateScenarioId[] = [
 const CONTROLS = ["catalog_calloff_control", "mrp_release_control"] as const;
 const linkClass = "inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600";
 
-export default function DebateBento({ lang }: { lang: Lang }) {
+export default function DebateBento({ lang, variant = "home" }: { lang: Lang; variant?: "home" | "article" }) {
   const tx = debateT[lang];
+  const title = variant === "article" ? tx.articleTitle : tx.title;
+  const intro = variant === "article" ? tx.articleIntro : tx.intro;
   const prefix = lang === "en" ? "/en" : "";
   const scenarios: DebateScenario[] = SCENARIOS.map((id) => {
     const record = buildDecisionRecordV2(createScenarioDraft(id));
@@ -45,10 +47,10 @@ export default function DebateBento({ lang }: { lang: Lang }) {
   }
 
   return (
-    <section aria-label={tx.title} className="py-12" data-debate-hub={lang}>
+    <section aria-label={title} className="py-12" data-debate-hub={lang}>
       <header className="mb-7 max-w-3xl border-l-4 border-blue-700 pl-5">
-        <h2 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{tx.title}</h2>
-        <p className="mt-3 text-sm leading-7 text-gray-600">{tx.intro}</p>
+        <h2 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{title}</h2>
+        <p className="mt-3 text-sm leading-7 text-gray-600">{intro}</p>
       </header>
       <div className="grid grid-cols-1 gap-px border border-gray-200 bg-gray-200 md:grid-cols-6">
         {tile(0, "md:col-span-4 md:row-span-2", <>
@@ -112,7 +114,7 @@ export default function DebateBento({ lang }: { lang: Lang }) {
           <ol className="mt-5 list-decimal space-y-3 pl-5 text-sm leading-7 text-gray-700 marker:font-mono marker:text-blue-700">
             {tx.questions.map((question) => <li className="pl-2" key={question}>{question}</li>)}
           </ol>
-          <Link className={`${linkClass} mt-4`} href="/kupiec-po-automatyzacji">{tx.links.article}</Link>
+          {variant === "home" && <Link className={`${linkClass} mt-4`} href="/kupiec-po-automatyzacji">{tx.links.article}</Link>}
         </>)}
       </div>
     </section>

@@ -7,6 +7,8 @@ export type Lang = "pl" | "en";
 const debatePl = {
   title: "Kupiec po automatyzacji",
   intro: "Panel 2 grudnia 2026 r. z dwoma dyrektorami zakupów: cztery wątki o pracy człowieka, regułach i granicach automatyzacji.",
+  articleTitle: "Cztery wątki panelu",
+  articleIntro: "Skrót artykułu: każdy kafel prowadzi do dowodów w modelu albo do pytań na debatę.",
   threads: ["Wątek 3", "Wątek 1", "Wątek 4", "Wątki 3 i 4", "Wątek 2", "Wątek 3", "Wątki 1–4"],
   titles: [
     "Procedura czy polityka",
@@ -98,6 +100,8 @@ const debatePl = {
 const debateEn: LangShape<typeof debatePl> = {
   title: "The buyer after automation",
   intro: "A panel on 2 December 2026 with two procurement directors: four threads on human work, rules and the boundaries of automation.",
+  articleTitle: "Four panel threads",
+  articleIntro: "Article summary: each tile leads to evidence in the model or questions for the debate.",
   threads: ["Thread 3", "Thread 1", "Thread 4", "Threads 3 and 4", "Thread 2", "Thread 3", "Threads 1–4"],
   titles: [
     "Procedure or policy",
