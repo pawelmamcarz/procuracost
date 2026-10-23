@@ -1,4 +1,5 @@
 import Link from "next/link";
+import DebateBento from "@/components/debate/DebateBento";
 
 import {
   NumberedPoint,
@@ -66,6 +67,8 @@ export default function EvidenceFieldHome({ lang }: EvidenceFieldHomeProps) {
           </div>
         </div>
       </header>
+
+      <DebateBento lang={lang} />
 
       <section aria-labelledby="home-paths-title" className="border-b border-gray-200 py-12">
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">

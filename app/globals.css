@@ -17,3 +17,68 @@ body {
   background: var(--background);
   color: var(--foreground);
 }
+
+.article-prose {
+  @apply text-sm leading-7 text-gray-700;
+  overflow-wrap: anywhere;
+}
+
+.article-prose h1 {
+  @apply mb-6 text-3xl font-bold tracking-tight text-gray-900;
+}
+
+.article-prose h2 {
+  @apply mb-4 mt-10 text-2xl font-bold tracking-tight text-gray-900;
+}
+
+.article-prose h3 {
+  @apply mb-3 mt-8 text-lg font-semibold text-gray-900;
+}
+
+.article-prose p,
+.article-prose ul,
+.article-prose ol {
+  @apply my-4;
+}
+
+.article-prose ul {
+  @apply list-disc pl-6;
+}
+
+.article-prose ol {
+  @apply list-decimal pl-6;
+}
+
+.article-prose li {
+  @apply my-2 pl-1;
+}
+
+.article-prose a {
+  @apply text-blue-700 underline underline-offset-4;
+}
+
+.article-prose a:focus-visible {
+  @apply outline-2 outline-offset-2 outline-blue-600;
+}
+
+.article-prose code {
+  @apply font-mono text-xs;
+}
+
+.article-prose pre {
+  @apply my-4 whitespace-pre-wrap border border-gray-200 p-4;
+}
+
+.article-prose table {
+  @apply my-6 w-full border-collapse border border-gray-200 text-xs;
+  table-layout: fixed;
+}
+
+.article-prose th,
+.article-prose td {
+  @apply border border-gray-200 p-2 text-left align-top;
+}
+
+.article-prose th {
+  @apply bg-gray-50 font-semibold text-gray-900;
+}

@@ -63,6 +63,23 @@ Do not default to a dashboard grid of rounded text boxes.
   typography.
 - Do not render an important diagram as a table with text inside framed cells.
 
+## Editorial bento
+
+An asymmetric six-column grid is allowed only on the home page and the debate
+hub. Separate tiles with 1 px rules (`gap-px` on `gray-200`), without rounding,
+shadows or gradients. Each tile must have a distinct content type tied to a
+signature motif or a concrete model output. Use one column on mobile. Keep
+decision records, process maps and evidence chains outside this pattern.
+
+### Motion
+
+Import the motion package only from `motion/react`. Use `LazyMotion` with
+`domAnimation`, `m.*` elements and `MotionConfig reducedMotion="user"`.
+Allowed uses are a one-time scroll reveal (opacity and 8 px translation),
+the tunnel/field transition, number tweens and a rail node-to-inspector
+transition. Honour reduced motion in imperative number animations too.
+No parallax, hover scale, loops, shadow or blur animation.
+
 ## Decision-register architecture
 
 The primary product metaphor is a decision register. It should explain the
