@@ -10,13 +10,15 @@ describe("localized public-page metadata", () => {
     const metadata = localizedPageMetadata({
       lang: "pl",
       routeKey: "model",
-      title: "Model i założenia | ProcuraCost",
-      description: "Kontrakt obliczeniowy modelu.",
+      title: "Dokumentacja modelu ProcuraCost",
+      description:
+        "Jak ProcuraCost liczy koszt dwóch przebiegów tego samego zakupu: zasady obliczeń, źródła i ograniczenia.",
     });
 
     expect(metadata).toMatchObject({
-      title: "Model i założenia | ProcuraCost",
-      description: "Kontrakt obliczeniowy modelu.",
+      title: "Dokumentacja modelu ProcuraCost",
+      description:
+        "Jak ProcuraCost liczy koszt dwóch przebiegów tego samego zakupu: zasady obliczeń, źródła i ograniczenia.",
       alternates: {
         canonical: "/model",
         languages: {
@@ -26,8 +28,9 @@ describe("localized public-page metadata", () => {
         },
       },
       openGraph: {
-        title: "Model i założenia | ProcuraCost",
-        description: "Kontrakt obliczeniowy modelu.",
+        title: "Dokumentacja modelu ProcuraCost",
+        description:
+          "Jak ProcuraCost liczy koszt dwóch przebiegów tego samego zakupu: zasady obliczeń, źródła i ograniczenia.",
         url: "/model",
         siteName: "ProcuraCost",
         locale: "pl_PL",
@@ -36,8 +39,9 @@ describe("localized public-page metadata", () => {
       },
       twitter: {
         card: "summary_large_image",
-        title: "Model i założenia | ProcuraCost",
-        description: "Kontrakt obliczeniowy modelu.",
+        title: "Dokumentacja modelu ProcuraCost",
+        description:
+          "Jak ProcuraCost liczy koszt dwóch przebiegów tego samego zakupu: zasady obliczeń, źródła i ograniczenia.",
       },
     });
   });

@@ -139,7 +139,7 @@ describe("model 2.3 pure research exports", () => {
     ]);
     expect(payload.metadata).toEqual({
       schemaVersion: 2,
-      modelVersion: "2.3.0",
+      modelVersion: "2.3.1",
       calibrationId: "source-scenario-2026-08-28",
       legalRulesetId: "pl-pzp-2026-2027",
       scenarioId: "fleet_tco_reframing",
@@ -422,10 +422,10 @@ describe("model 2.3 pure research exports", () => {
 
   it("uses one exact base filename across locales", () => {
     expect(researchExportBaseName("fleet_tco_reframing", "pl")).toBe(
-      "procuracost-model-2.3.0-fleet_tco_reframing-pl"
+      "procuracost-model-2.3.1-fleet_tco_reframing-pl"
     );
     expect(researchExportBaseName("fleet_tco_reframing", "en")).toBe(
-      "procuracost-model-2.3.0-fleet_tco_reframing-en"
+      "procuracost-model-2.3.1-fleet_tco_reframing-en"
     );
   });
 

@@ -15,6 +15,9 @@ Active texts:
 - [`pl/2026-09-wdrozenie-bez-wlasciciela.md`](pl/2026-09-wdrozenie-bez-wlasciciela.md),
   draft, ownership and implementation readiness, built on episode 8 question
   design;
+- [`pl/2026-12-kupiec-po-automatyzacji.md`](pl/2026-12-kupiec-po-automatyzacji.md),
+  draft; buyer role, rules, procedure versus
+  policy, control and metrics; not yet linked from the site;
 - [`doktorat/article-1-tunnel-or-field-EN.md`](doktorat/article-1-tunnel-or-field-EN.md);
 - [`doktorat/article-2-model-kosztu-PL.md`](doktorat/article-2-model-kosztu-PL.md);
 - [`doktorat/article-3-empiria-PZP-PL.md`](doktorat/article-3-empiria-PZP-PL.md).

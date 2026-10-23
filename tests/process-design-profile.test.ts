@@ -178,8 +178,11 @@ describe("procurement process design profile presentation", () => {
       for (const choice of choices) expect(choice).not.toMatch(maturityCues);
     }
 
-    expect(assessmentT.pl.subtitle).toContain(
-      "nie są skalą od gorszego do lepszego"
+    expect(assessmentT.pl.subtitle).toBe(
+      "Opisz dziesięć wymiarów przebiegu. Narzędzie niczego nie ocenia."
+    );
+    expect(assessmentT.en.subtitle).toBe(
+      "Describe ten workflow dimensions. The tool does not assess them."
     );
     expect(assessmentT.en.questions[4].answers[0]).toBe(
       "Approvals follow an approved sequence under the delegation-of-authority matrix."

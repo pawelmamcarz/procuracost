@@ -132,7 +132,7 @@ describe("model 2.3 pure PDF copy", () => {
     const copy = buildPdfCopy(record, "en", EXPORTED_AT);
 
     expect(copy.filename).toBe(
-      "procuracost-model-2.3.0-fleet_tco_reframing-en.pdf"
+      "procuracost-model-2.3.1-fleet_tco_reframing-en.pdf"
     );
     expect(copy.title).toBe("ProcuraCost model 2.3 decision record");
     expect(copy.scenarioName).toBe("Fleet TCO reframing");
@@ -140,7 +140,7 @@ describe("model 2.3 pure PDF copy", () => {
     expect(copy.pageLabel(2, 4)).toBe("Page 2 of 4");
     expect(copy.metadata).toContainEqual({
       label: "Model version",
-      value: "2.3.0",
+      value: "2.3.1",
     });
     expect(copy.context[0]).toEqual({
       id: "legalGovernanceBoundary",
@@ -179,7 +179,7 @@ describe("model 2.3 pure PDF copy", () => {
     const copy = buildPdfCopy(fleetRecord(), "pl", EXPORTED_AT);
 
     expect(copy.filename).toBe(
-      "procuracost-model-2.3.0-fleet_tco_reframing-pl.pdf"
+      "procuracost-model-2.3.1-fleet_tco_reframing-pl.pdf"
     );
     expect(copy.title).toBe("Rekord decyzji modelu ProcuraCost 2.3");
     expect(copy.scenarioName).toBe("Flota: przeformułowanie TCO");

@@ -1,7 +1,7 @@
 {
   "metadata": {
     "schemaVersion": 2,
-    "modelVersion": "2.3.0",
+    "modelVersion": "2.3.1",
     "calibrationId": "source-scenario-2026-08-28",
     "legalRulesetId": "pl-pzp-2026-2027",
     "currency": "PLN",
@@ -754,9 +754,9 @@
                     ]
                   },
                   "buyer": {
-                    "low": 23.333333333333336,
-                    "central": 23.333333333333336,
-                    "high": 23.333333333333336,
+                    "low": 23.333333,
+                    "central": 23.333333,
+                    "high": 23.333333,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -776,9 +776,9 @@
                     ]
                   },
                   "manager": {
-                    "low": 9.333333333333334,
-                    "central": 9.333333333333334,
-                    "high": 9.333333333333334,
+                    "low": 9.333333,
+                    "central": 9.333333,
+                    "high": 9.333333,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -848,9 +848,9 @@
                     ]
                   },
                   "buyer": {
-                    "low": 4.800000000000001,
-                    "central": 4.800000000000001,
-                    "high": 4.800000000000001,
+                    "low": 4.8,
+                    "central": 4.8,
+                    "high": 4.8,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -920,9 +920,9 @@
                 },
                 "roleHours": {
                   "requestor": {
-                    "low": 1.1428571428571428,
-                    "central": 1.1428571428571428,
-                    "high": 1.1428571428571428,
+                    "low": 1.142857,
+                    "central": 1.142857,
+                    "high": 1.142857,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -931,9 +931,9 @@
                     ]
                   },
                   "buyer": {
-                    "low": 4.571428571428571,
-                    "central": 4.571428571428571,
-                    "high": 4.571428571428571,
+                    "low": 4.571429,
+                    "central": 4.571429,
+                    "high": 4.571429,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -992,9 +992,9 @@
                 },
                 "roleHours": {
                   "buyer": {
-                    "low": 5.538461538461538,
-                    "central": 5.538461538461538,
-                    "high": 5.538461538461538,
+                    "low": 5.538462,
+                    "central": 5.538462,
+                    "high": 5.538462,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -1003,9 +1003,9 @@
                     ]
                   },
                   "finance": {
-                    "low": 1.8461538461538463,
-                    "central": 1.8461538461538463,
-                    "high": 1.8461538461538463,
+                    "low": 1.846154,
+                    "central": 1.846154,
+                    "high": 1.846154,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -1014,9 +1014,9 @@
                     ]
                   },
                   "manager": {
-                    "low": 0.9230769230769231,
-                    "central": 0.9230769230769231,
-                    "high": 0.9230769230769231,
+                    "low": 0.923077,
+                    "central": 0.923077,
+                    "high": 0.923077,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -1075,9 +1075,9 @@
                 },
                 "roleHours": {
                   "buyer": {
-                    "low": 1.7142857142857142,
-                    "central": 1.7142857142857142,
-                    "high": 1.7142857142857142,
+                    "low": 1.714286,
+                    "central": 1.714286,
+                    "high": 1.714286,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -1086,9 +1086,9 @@
                     ]
                   },
                   "lawyer": {
-                    "low": 4.571428571428571,
-                    "central": 4.571428571428571,
-                    "high": 4.571428571428571,
+                    "low": 4.571429,
+                    "central": 4.571429,
+                    "high": 4.571429,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -1097,9 +1097,9 @@
                     ]
                   },
                   "executive": {
-                    "low": 0.5714285714285714,
-                    "central": 0.5714285714285714,
-                    "high": 0.5714285714285714,
+                    "low": 0.571429,
+                    "central": 0.571429,
+                    "high": 0.571429,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -1162,9 +1162,9 @@
               ]
             },
             "roleCost": {
-              "low": 18339.37728937729,
-              "central": 18339.37728937729,
-              "high": 18339.37728937729
+              "low": 18339.377525,
+              "central": 18339.377525,
+              "high": 18339.377525
             },
             "nonLabourCost": {
               "low": 3600,
@@ -1182,9 +1182,9 @@
               "high": 0
             },
             "totalCost": {
-              "low": 51939.37728937729,
-              "central": 141939.3772893773,
-              "high": 501939.37728937727
+              "low": 51939.377525,
+              "central": 141939.377525,
+              "high": 501939.377525
             },
             "nonMonetizedDimensions": [
               {
@@ -1198,10 +1198,15 @@
       },
       "comparison": {
         "operation": "formalSequential_minus_adaptiveCompliant",
-        "deltaCost": 104185.6227106227,
+        "deltaCost": 104185.62247500001,
         "deltaCostOuterEnvelope": {
-          "low": -420814.37728937727,
-          "high": 854185.6227106227
+          "low": -420814.377525,
+          "high": 854185.622475
+        },
+        "deltaCostPairedCases": {
+          "low": 29185.622474999996,
+          "central": 104185.62247500001,
+          "high": 404185.622475
         }
       },
       "coverage": [
@@ -1213,14 +1218,14 @@
             "high": 20525
           },
           "adaptiveCompliant": {
-            "low": 18339.37728937729,
-            "central": 18339.37728937729,
-            "high": 18339.37728937729
+            "low": 18339.377525,
+            "central": 18339.377525,
+            "high": 18339.377525
           },
           "contribution": {
-            "low": 2185.622710622709,
-            "central": 2185.622710622709,
-            "high": 2185.622710622709
+            "low": 2185.622475,
+            "central": 2185.622475,
+            "high": 2185.622475
           },
           "status": "included",
           "anchors": [
@@ -2038,16 +2043,20 @@
         "pathCompetitionDiffers": false,
         "competitionDisadvantagedAlternative": null,
         "competitionTransferRate": null,
+        "contractRigidityDiffers": false,
+        "amendmentDisadvantagedAlternative": null,
         "amendmentDifferential": {
-          "low": 0,
-          "central": 0,
-          "high": 0,
+          "low": 0.077,
+          "central": 0.084,
+          "high": 0.098,
           "rangeKind": "calibrated",
-          "evidenceClass": "retained_legacy_assumption",
+          "evidenceClass": "verified_postprint",
           "evidenceIds": [
-            "scenario.fleet_tco_reframing.retained-legacy"
+            "beuve_amendment_frequency_2023"
           ]
         },
+        "amendmentContractYears": null,
+        "costPerAmendment": null,
         "tcoDifferential": {
           "low": 0,
           "central": 0,
@@ -3050,9 +3059,9 @@
                     ]
                   },
                   "manager": {
-                    "low": 6.8999999999999995,
-                    "central": 6.8999999999999995,
-                    "high": 6.8999999999999995,
+                    "low": 6.9,
+                    "central": 6.9,
+                    "high": 6.9,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -3205,9 +3214,9 @@
                     ]
                   },
                   "buyer": {
-                    "low": 13.799999999999999,
-                    "central": 13.799999999999999,
-                    "high": 13.799999999999999,
+                    "low": 13.8,
+                    "central": 13.8,
+                    "high": 13.8,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -3254,9 +3263,9 @@
                   "erp_transformation_discovery.formalSequential.erp_modular_scope"
                 ],
                 "activeDays": {
-                  "low": 13.799999999999999,
-                  "central": 13.799999999999999,
-                  "high": 13.799999999999999,
+                  "low": 13.8,
+                  "central": 13.8,
+                  "high": 13.8,
                   "rangeKind": "calibrated",
                   "evidenceClass": "illustrative_scenario",
                   "evidenceIds": [
@@ -3277,9 +3286,9 @@
                 },
                 "roleHours": {
                   "buyer": {
-                    "low": 27.599999999999998,
-                    "central": 27.599999999999998,
-                    "high": 27.599999999999998,
+                    "low": 27.6,
+                    "central": 27.6,
+                    "high": 27.6,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -3360,9 +3369,9 @@
                 },
                 "roleHours": {
                   "buyer": {
-                    "low": 6.8999999999999995,
-                    "central": 6.8999999999999995,
-                    "high": 6.8999999999999995,
+                    "low": 6.9,
+                    "central": 6.9,
+                    "high": 6.9,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -3382,9 +3391,9 @@
                     ]
                   },
                   "executive": {
-                    "low": 3.4499999999999997,
-                    "central": 3.4499999999999997,
-                    "high": 3.4499999999999997,
+                    "low": 3.45,
+                    "central": 3.45,
+                    "high": 3.45,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -3394,9 +3403,9 @@
                   }
                 },
                 "nonLabourCost": {
-                  "low": 1839.9999999999998,
-                  "central": 1839.9999999999998,
-                  "high": 1839.9999999999998,
+                  "low": 1840,
+                  "central": 1840,
+                  "high": 1840,
                   "rangeKind": "calibrated",
                   "evidenceClass": "illustrative_scenario",
                   "evidenceIds": [
@@ -3416,9 +3425,9 @@
           },
           "result": {
             "elapsedDays": {
-              "low": 50.599999999999994,
-              "central": 50.599999999999994,
-              "high": 50.599999999999994
+              "low": 50.6,
+              "central": 50.6,
+              "high": 50.6
             },
             "criticalPathStepIds": {
               "low": [
@@ -3457,9 +3466,9 @@
               "high": 10920
             },
             "delayCost": {
-              "low": 103729.99999999999,
-              "central": 414919.99999999994,
-              "high": 1659679.9999999998
+              "low": 103730,
+              "central": 414920,
+              "high": 1659680
             },
             "contractCost": {
               "low": 0,
@@ -3468,8 +3477,8 @@
             },
             "totalCost": {
               "low": 152168.75,
-              "central": 463358.74999999994,
-              "high": 1708118.7499999998
+              "central": 463358.75,
+              "high": 1708118.75
             },
             "nonMonetizedDimensions": [
               {
@@ -3494,9 +3503,9 @@
                 "userLabel": null,
                 "predecessorIds": [],
                 "activeDays": {
-                  "low": 8.049999999999999,
-                  "central": 8.049999999999999,
-                  "high": 8.049999999999999,
+                  "low": 8.05,
+                  "central": 8.05,
+                  "high": 8.05,
                   "rangeKind": "calibrated",
                   "evidenceClass": "illustrative_scenario",
                   "evidenceIds": [
@@ -3517,9 +3526,9 @@
                 },
                 "roleHours": {
                   "requestor": {
-                    "low": 25.759999999999998,
-                    "central": 25.759999999999998,
-                    "high": 25.759999999999998,
+                    "low": 25.76,
+                    "central": 25.76,
+                    "high": 25.76,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -3528,9 +3537,9 @@
                     ]
                   },
                   "buyer": {
-                    "low": 12.879999999999999,
-                    "central": 12.879999999999999,
-                    "high": 12.879999999999999,
+                    "low": 12.88,
+                    "central": 12.88,
+                    "high": 12.88,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -3539,9 +3548,9 @@
                     ]
                   },
                   "manager": {
-                    "low": 6.4399999999999995,
-                    "central": 6.4399999999999995,
-                    "high": 6.4399999999999995,
+                    "low": 6.44,
+                    "central": 6.44,
+                    "high": 6.44,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -3577,9 +3586,9 @@
                   "erp_transformation_discovery.adaptiveCompliant.erp_current_state_baseline"
                 ],
                 "activeDays": {
-                  "low": 6.8999999999999995,
-                  "central": 6.8999999999999995,
-                  "high": 6.8999999999999995,
+                  "low": 6.9,
+                  "central": 6.9,
+                  "high": 6.9,
                   "rangeKind": "calibrated",
                   "evidenceClass": "illustrative_scenario",
                   "evidenceIds": [
@@ -3600,9 +3609,9 @@
                 },
                 "roleHours": {
                   "requestor": {
-                    "low": 27.599999999999998,
-                    "central": 27.599999999999998,
-                    "high": 27.599999999999998,
+                    "low": 27.6,
+                    "central": 27.6,
+                    "high": 27.6,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -3611,9 +3620,9 @@
                     ]
                   },
                   "buyer": {
-                    "low": 13.799999999999999,
-                    "central": 13.799999999999999,
-                    "high": 13.799999999999999,
+                    "low": 13.8,
+                    "central": 13.8,
+                    "high": 13.8,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -3660,9 +3669,9 @@
                   "erp_transformation_discovery.adaptiveCompliant.erp_problem_framing"
                 ],
                 "activeDays": {
-                  "low": 6.8999999999999995,
-                  "central": 6.8999999999999995,
-                  "high": 6.8999999999999995,
+                  "low": 6.9,
+                  "central": 6.9,
+                  "high": 6.9,
                   "rangeKind": "calibrated",
                   "evidenceClass": "illustrative_scenario",
                   "evidenceIds": [
@@ -3694,9 +3703,9 @@
                     ]
                   },
                   "buyer": {
-                    "low": 27.599999999999998,
-                    "central": 27.599999999999998,
-                    "high": 27.599999999999998,
+                    "low": 27.6,
+                    "central": 27.6,
+                    "high": 27.6,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -3766,9 +3775,9 @@
                 },
                 "roleHours": {
                   "requestor": {
-                    "low": 5.111111111111111,
-                    "central": 5.111111111111111,
-                    "high": 5.111111111111111,
+                    "low": 5.111111,
+                    "central": 5.111111,
+                    "high": 5.111111,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -3777,9 +3786,9 @@
                     ]
                   },
                   "buyer": {
-                    "low": 3.0666666666666664,
-                    "central": 3.0666666666666664,
-                    "high": 3.0666666666666664,
+                    "low": 3.066667,
+                    "central": 3.066667,
+                    "high": 3.066667,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -3788,9 +3797,9 @@
                     ]
                   },
                   "lawyer": {
-                    "low": 2.0444444444444443,
-                    "central": 2.0444444444444443,
-                    "high": 2.0444444444444443,
+                    "low": 2.044444,
+                    "central": 2.044444,
+                    "high": 2.044444,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -3800,9 +3809,9 @@
                   }
                 },
                 "nonLabourCost": {
-                  "low": 459.99999999999994,
-                  "central": 459.99999999999994,
-                  "high": 459.99999999999994,
+                  "low": 460,
+                  "central": 460,
+                  "high": 460,
                   "rangeKind": "calibrated",
                   "evidenceClass": "illustrative_scenario",
                   "evidenceIds": [
@@ -3860,9 +3869,9 @@
                     ]
                   },
                   "finance": {
-                    "low": 1.5333333333333332,
-                    "central": 1.5333333333333332,
-                    "high": 1.5333333333333332,
+                    "low": 1.533333,
+                    "central": 1.533333,
+                    "high": 1.533333,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -3871,9 +3880,9 @@
                     ]
                   },
                   "manager": {
-                    "low": 0.7666666666666666,
-                    "central": 0.7666666666666666,
-                    "high": 0.7666666666666666,
+                    "low": 0.766667,
+                    "central": 0.766667,
+                    "high": 0.766667,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -3883,9 +3892,9 @@
                   }
                 },
                 "nonLabourCost": {
-                  "low": 459.99999999999994,
-                  "central": 459.99999999999994,
-                  "high": 459.99999999999994,
+                  "low": 460,
+                  "central": 460,
+                  "high": 460,
                   "rangeKind": "calibrated",
                   "evidenceClass": "illustrative_scenario",
                   "evidenceIds": [
@@ -3932,9 +3941,9 @@
                 },
                 "roleHours": {
                   "buyer": {
-                    "low": 0.8624999999999999,
-                    "central": 0.8624999999999999,
-                    "high": 0.8624999999999999,
+                    "low": 0.8625,
+                    "central": 0.8625,
+                    "high": 0.8625,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -3954,9 +3963,9 @@
                     ]
                   },
                   "executive": {
-                    "low": 0.43124999999999997,
-                    "central": 0.43124999999999997,
-                    "high": 0.43124999999999997,
+                    "low": 0.43125,
+                    "central": 0.43125,
+                    "high": 0.43125,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -3966,9 +3975,9 @@
                   }
                 },
                 "nonLabourCost": {
-                  "low": 229.99999999999997,
-                  "central": 229.99999999999997,
-                  "high": 229.99999999999997,
+                  "low": 230,
+                  "central": 230,
+                  "high": 230,
                   "rangeKind": "calibrated",
                   "evidenceClass": "illustrative_scenario",
                   "evidenceIds": [
@@ -3988,9 +3997,9 @@
           },
           "result": {
             "elapsedDays": {
-              "low": 27.599999999999998,
-              "central": 27.599999999999998,
-              "high": 27.599999999999998
+              "low": 27.6,
+              "central": 27.6,
+              "high": 27.6
             },
             "criticalPathStepIds": {
               "low": [
@@ -4019,9 +4028,9 @@
               ]
             },
             "roleCost": {
-              "low": 25298.322916666668,
-              "central": 25298.322916666668,
-              "high": 25298.322916666668
+              "low": 25298.322900000003,
+              "central": 25298.322900000003,
+              "high": 25298.322900000003
             },
             "nonLabourCost": {
               "low": 6320,
@@ -4029,9 +4038,9 @@
               "high": 6320
             },
             "delayCost": {
-              "low": 56579.99999999999,
-              "central": 226319.99999999997,
-              "high": 905279.9999999999
+              "low": 56580,
+              "central": 226320,
+              "high": 905280
             },
             "contractCost": {
               "low": 0,
@@ -4039,9 +4048,9 @@
               "high": 0
             },
             "totalCost": {
-              "low": 88198.32291666666,
-              "central": 257938.32291666663,
-              "high": 936898.3229166665
+              "low": 88198.3229,
+              "central": 257938.3229,
+              "high": 936898.3229
             },
             "nonMonetizedDimensions": [
               {
@@ -4055,10 +4064,15 @@
       },
       "comparison": {
         "operation": "formalSequential_minus_adaptiveCompliant",
-        "deltaCost": 205420.4270833333,
+        "deltaCost": 205420.4271,
         "deltaCostOuterEnvelope": {
-          "low": -784729.5729166665,
-          "high": 1619920.427083333
+          "low": -784729.5729,
+          "high": 1619920.4271
+        },
+        "deltaCostPairedCases": {
+          "low": 63970.4271,
+          "central": 205420.4271,
+          "high": 771220.4271
         }
       },
       "coverage": [
@@ -4070,14 +4084,14 @@
             "high": 37518.75
           },
           "adaptiveCompliant": {
-            "low": 25298.322916666668,
-            "central": 25298.322916666668,
-            "high": 25298.322916666668
+            "low": 25298.322900000003,
+            "central": 25298.322900000003,
+            "high": 25298.322900000003
           },
           "contribution": {
-            "low": 12220.427083333332,
-            "central": 12220.427083333332,
-            "high": 12220.427083333332
+            "low": 12220.427099999997,
+            "central": 12220.427099999997,
+            "high": 12220.427099999997
           },
           "status": "included",
           "anchors": [
@@ -4533,19 +4547,19 @@
         {
           "id": "delay_cost",
           "formalSequential": {
-            "low": 103729.99999999999,
-            "central": 414919.99999999994,
-            "high": 1659679.9999999998
+            "low": 103730,
+            "central": 414920,
+            "high": 1659680
           },
           "adaptiveCompliant": {
-            "low": 56579.99999999999,
-            "central": 226319.99999999997,
-            "high": 905279.9999999999
+            "low": 56580,
+            "central": 226320,
+            "high": 905280
           },
           "contribution": {
-            "low": -801549.9999999999,
-            "central": 188599.99999999997,
-            "high": 1603099.9999999998
+            "low": -801550,
+            "central": 188600,
+            "high": 1603100
           },
           "status": "included",
           "anchors": [
@@ -4895,16 +4909,20 @@
         "pathCompetitionDiffers": false,
         "competitionDisadvantagedAlternative": null,
         "competitionTransferRate": null,
+        "contractRigidityDiffers": false,
+        "amendmentDisadvantagedAlternative": null,
         "amendmentDifferential": {
-          "low": 0,
-          "central": 0,
-          "high": 0,
+          "low": 0.077,
+          "central": 0.084,
+          "high": 0.098,
           "rangeKind": "calibrated",
-          "evidenceClass": "retained_legacy_assumption",
+          "evidenceClass": "verified_postprint",
           "evidenceIds": [
-            "scenario.erp_transformation_discovery.retained-legacy"
+            "beuve_amendment_frequency_2023"
           ]
         },
+        "amendmentContractYears": null,
+        "costPerAmendment": null,
         "tcoDifferential": {
           "low": 0,
           "central": 0,
@@ -6561,9 +6579,9 @@
                     ]
                   },
                   "lawyer": {
-                    "low": 7.199999999999999,
-                    "central": 7.199999999999999,
-                    "high": 7.199999999999999,
+                    "low": 7.2,
+                    "central": 7.2,
+                    "high": 7.2,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -6644,9 +6662,9 @@
                     ]
                   },
                   "buyer": {
-                    "low": 2.4000000000000004,
-                    "central": 2.4000000000000004,
-                    "high": 2.4000000000000004,
+                    "low": 2.4,
+                    "central": 2.4,
+                    "high": 2.4,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -6716,9 +6734,9 @@
                     ]
                   },
                   "finance": {
-                    "low": 1.3333333333333333,
-                    "central": 1.3333333333333333,
-                    "high": 1.3333333333333333,
+                    "low": 1.333333,
+                    "central": 1.333333,
+                    "high": 1.333333,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -6727,9 +6745,9 @@
                     ]
                   },
                   "manager": {
-                    "low": 0.6666666666666666,
-                    "central": 0.6666666666666666,
-                    "high": 0.6666666666666666,
+                    "low": 0.666667,
+                    "central": 0.666667,
+                    "high": 0.666667,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -6875,9 +6893,9 @@
               ]
             },
             "roleCost": {
-              "low": 17450,
-              "central": 17450,
-              "high": 17450
+              "low": 17450.000025,
+              "central": 17450.000025,
+              "high": 17450.000025
             },
             "nonLabourCost": {
               "low": 3600,
@@ -6895,9 +6913,9 @@
               "high": 0
             },
             "totalCost": {
-              "low": 31850,
-              "central": 64250,
-              "high": 193850
+              "low": 31850.000025,
+              "central": 64250.000025,
+              "high": 193850.00002500002
             },
             "nonMonetizedDimensions": [
               {
@@ -6911,10 +6929,15 @@
       },
       "comparison": {
         "operation": "formalSequential_minus_adaptiveCompliant",
-        "deltaCost": 44000,
+        "deltaCost": 43999.999975,
         "deltaCostOuterEnvelope": {
-          "low": -145000,
-          "high": 314000
+          "low": -145000.00002500002,
+          "high": 313999.999975
+        },
+        "deltaCostPairedCases": {
+          "low": 16999.999975,
+          "central": 43999.999975,
+          "high": 151999.99997499998
         }
       },
       "coverage": [
@@ -6926,14 +6949,14 @@
             "high": 23450
           },
           "adaptiveCompliant": {
-            "low": 17450,
-            "central": 17450,
-            "high": 17450
+            "low": 17450.000025,
+            "central": 17450.000025,
+            "high": 17450.000025
           },
           "contribution": {
-            "low": 6000,
-            "central": 6000,
-            "high": 6000
+            "low": 5999.999974999999,
+            "central": 5999.999974999999,
+            "high": 5999.999974999999
           },
           "status": "included",
           "anchors": [
@@ -7735,16 +7758,20 @@
         "pathCompetitionDiffers": false,
         "competitionDisadvantagedAlternative": null,
         "competitionTransferRate": null,
+        "contractRigidityDiffers": false,
+        "amendmentDisadvantagedAlternative": null,
         "amendmentDifferential": {
-          "low": 0,
-          "central": 0,
-          "high": 0,
+          "low": 0.077,
+          "central": 0.084,
+          "high": 0.098,
           "rangeKind": "calibrated",
-          "evidenceClass": "retained_legacy_assumption",
+          "evidenceClass": "verified_postprint",
           "evidenceIds": [
-            "scenario.logistics_service_redesign.retained-legacy"
+            "beuve_amendment_frequency_2023"
           ]
         },
+        "amendmentContractYears": null,
+        "costPerAmendment": null,
         "tcoDifferential": {
           "low": 0,
           "central": 0,
@@ -8625,9 +8652,9 @@
                 },
                 "roleHours": {
                   "requestor": {
-                    "low": 16.799999999999997,
-                    "central": 16.799999999999997,
-                    "high": 16.799999999999997,
+                    "low": 16.8,
+                    "central": 16.8,
+                    "high": 16.8,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -8647,9 +8674,9 @@
                     ]
                   },
                   "manager": {
-                    "low": 8.399999999999999,
-                    "central": 8.399999999999999,
-                    "high": 8.399999999999999,
+                    "low": 8.4,
+                    "central": 8.4,
+                    "high": 8.4,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -8802,9 +8829,9 @@
                     ]
                   },
                   "buyer": {
-                    "low": 16.799999999999997,
-                    "central": 16.799999999999997,
-                    "high": 16.799999999999997,
+                    "low": 16.8,
+                    "central": 16.8,
+                    "high": 16.8,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -8896,9 +8923,9 @@
                     ]
                   },
                   "lawyer": {
-                    "low": 8.399999999999999,
-                    "central": 8.399999999999999,
-                    "high": 8.399999999999999,
+                    "low": 8.4,
+                    "central": 8.4,
+                    "high": 8.4,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -8968,9 +8995,9 @@
                     ]
                   },
                   "buyer": {
-                    "low": 33.599999999999994,
-                    "central": 33.599999999999994,
-                    "high": 33.599999999999994,
+                    "low": 33.6,
+                    "central": 33.6,
+                    "high": 33.6,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -9040,9 +9067,9 @@
                 },
                 "roleHours": {
                   "buyer": {
-                    "low": 8.399999999999999,
-                    "central": 8.399999999999999,
-                    "high": 8.399999999999999,
+                    "low": 8.4,
+                    "central": 8.4,
+                    "high": 8.4,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -9062,9 +9089,9 @@
                     ]
                   },
                   "executive": {
-                    "low": 4.199999999999999,
-                    "central": 4.199999999999999,
-                    "high": 4.199999999999999,
+                    "low": 4.2,
+                    "central": 4.2,
+                    "high": 4.2,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -9174,9 +9201,9 @@
                 "userLabel": null,
                 "predecessorIds": [],
                 "activeDays": {
-                  "low": 8.399999999999999,
-                  "central": 8.399999999999999,
-                  "high": 8.399999999999999,
+                  "low": 8.4,
+                  "central": 8.4,
+                  "high": 8.4,
                   "rangeKind": "calibrated",
                   "evidenceClass": "illustrative_scenario",
                   "evidenceIds": [
@@ -9208,9 +9235,9 @@
                     ]
                   },
                   "buyer": {
-                    "low": 16.799999999999997,
-                    "central": 16.799999999999997,
-                    "high": 16.799999999999997,
+                    "low": 16.8,
+                    "central": 16.8,
+                    "high": 16.8,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -9231,9 +9258,9 @@
                   }
                 },
                 "nonLabourCost": {
-                  "low": 4199.999999999999,
-                  "central": 4199.999999999999,
-                  "high": 4199.999999999999,
+                  "low": 4200,
+                  "central": 4200,
+                  "high": 4200,
                   "rangeKind": "calibrated",
                   "evidenceClass": "illustrative_scenario",
                   "evidenceIds": [
@@ -9257,9 +9284,9 @@
                   "critical_material_continuity.adaptiveCompliant.critical_continuity_risk"
                 ],
                 "activeDays": {
-                  "low": 9.799999999999999,
-                  "central": 9.799999999999999,
-                  "high": 9.799999999999999,
+                  "low": 9.8,
+                  "central": 9.8,
+                  "high": 9.8,
                   "rangeKind": "calibrated",
                   "evidenceClass": "illustrative_scenario",
                   "evidenceIds": [
@@ -9280,9 +9307,9 @@
                 },
                 "roleHours": {
                   "requestor": {
-                    "low": 15.679999999999998,
-                    "central": 15.679999999999998,
-                    "high": 15.679999999999998,
+                    "low": 15.68,
+                    "central": 15.68,
+                    "high": 15.68,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -9291,9 +9318,9 @@
                     ]
                   },
                   "buyer": {
-                    "low": 39.199999999999996,
-                    "central": 39.199999999999996,
-                    "high": 39.199999999999996,
+                    "low": 39.2,
+                    "central": 39.2,
+                    "high": 39.2,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -9302,9 +9329,9 @@
                     ]
                   },
                   "finance": {
-                    "low": 7.839999999999999,
-                    "central": 7.839999999999999,
-                    "high": 7.839999999999999,
+                    "low": 7.84,
+                    "central": 7.84,
+                    "high": 7.84,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -9314,9 +9341,9 @@
                   }
                 },
                 "nonLabourCost": {
-                  "low": 4899.999999999999,
-                  "central": 4899.999999999999,
-                  "high": 4899.999999999999,
+                  "low": 4900,
+                  "central": 4900,
+                  "high": 4900,
                   "rangeKind": "calibrated",
                   "evidenceClass": "illustrative_scenario",
                   "evidenceIds": [
@@ -9340,9 +9367,9 @@
                   "critical_material_continuity.adaptiveCompliant.critical_supply_mapping"
                 ],
                 "activeDays": {
-                  "low": 8.399999999999999,
-                  "central": 8.399999999999999,
-                  "high": 8.399999999999999,
+                  "low": 8.4,
+                  "central": 8.4,
+                  "high": 8.4,
                   "rangeKind": "calibrated",
                   "evidenceClass": "illustrative_scenario",
                   "evidenceIds": [
@@ -9374,9 +9401,9 @@
                     ]
                   },
                   "buyer": {
-                    "low": 20.159999999999997,
-                    "central": 20.159999999999997,
-                    "high": 20.159999999999997,
+                    "low": 20.16,
+                    "central": 20.16,
+                    "high": 20.16,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -9397,9 +9424,9 @@
                   }
                 },
                 "nonLabourCost": {
-                  "low": 4199.999999999999,
-                  "central": 4199.999999999999,
-                  "high": 4199.999999999999,
+                  "low": 4200,
+                  "central": 4200,
+                  "high": 4200,
                   "rangeKind": "calibrated",
                   "evidenceClass": "illustrative_scenario",
                   "evidenceIds": [
@@ -9468,9 +9495,9 @@
                     ]
                   },
                   "lawyer": {
-                    "low": 2.0999999999999996,
-                    "central": 2.0999999999999996,
-                    "high": 2.0999999999999996,
+                    "low": 2.1,
+                    "central": 2.1,
+                    "high": 2.1,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -9529,9 +9556,9 @@
                 },
                 "roleHours": {
                   "requestor": {
-                    "low": 1.7230769230769232,
-                    "central": 1.7230769230769232,
-                    "high": 1.7230769230769232,
+                    "low": 1.723077,
+                    "central": 1.723077,
+                    "high": 1.723077,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -9540,9 +9567,9 @@
                     ]
                   },
                   "buyer": {
-                    "low": 5.1692307692307695,
-                    "central": 5.1692307692307695,
-                    "high": 5.1692307692307695,
+                    "low": 5.169231,
+                    "central": 5.169231,
+                    "high": 5.169231,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -9551,9 +9578,9 @@
                     ]
                   },
                   "finance": {
-                    "low": 1.7230769230769232,
-                    "central": 1.7230769230769232,
-                    "high": 1.7230769230769232,
+                    "low": 1.723077,
+                    "central": 1.723077,
+                    "high": 1.723077,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -9612,9 +9639,9 @@
                 },
                 "roleHours": {
                   "buyer": {
-                    "low": 0.9333333333333332,
-                    "central": 0.9333333333333332,
-                    "high": 0.9333333333333332,
+                    "low": 0.933333,
+                    "central": 0.933333,
+                    "high": 0.933333,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -9634,9 +9661,9 @@
                     ]
                   },
                   "executive": {
-                    "low": 0.4666666666666666,
-                    "central": 0.4666666666666666,
-                    "high": 0.4666666666666666,
+                    "low": 0.466667,
+                    "central": 0.466667,
+                    "high": 0.466667,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -9668,9 +9695,9 @@
           },
           "result": {
             "elapsedDays": {
-              "low": 33.599999999999994,
-              "central": 33.599999999999994,
-              "high": 33.599999999999994
+              "low": 33.6,
+              "central": 33.6,
+              "high": 33.6
             },
             "criticalPathStepIds": {
               "low": [
@@ -9699,19 +9726,19 @@
               ]
             },
             "roleCost": {
-              "low": 21310.423076923078,
-              "central": 21310.423076923078,
-              "high": 21310.423076923078
+              "low": 21310.4231875,
+              "central": 21310.4231875,
+              "high": 21310.4231875
             },
             "nonLabourCost": {
-              "low": 16799.999999999996,
-              "central": 16799.999999999996,
-              "high": 16799.999999999996
+              "low": 16800,
+              "central": 16800,
+              "high": 16800
             },
             "delayCost": {
-              "low": 419999.99999999994,
-              "central": 1679999.9999999998,
-              "high": 6719999.999999999
+              "low": 420000,
+              "central": 1680000,
+              "high": 6720000
             },
             "contractCost": {
               "low": 0,
@@ -9719,9 +9746,9 @@
               "high": 0
             },
             "totalCost": {
-              "low": 458110.423076923,
-              "central": 1718110.4230769228,
-              "high": 6758110.423076922
+              "low": 458110.4231875,
+              "central": 1718110.4231875,
+              "high": 6758110.4231875
             },
             "nonMonetizedDimensions": [
               {
@@ -9735,10 +9762,15 @@
       },
       "comparison": {
         "operation": "formalSequential_minus_adaptiveCompliant",
-        "deltaCost": 1421967.0769230772,
+        "deltaCost": 1421967.0768125,
         "deltaCostOuterEnvelope": {
-          "low": -5928032.923076922,
-          "high": 11921967.076923076
+          "low": -5928032.9231875,
+          "high": 11921967.0768125
+        },
+        "deltaCostPairedCases": {
+          "low": 371967.0768125,
+          "central": 1421967.0768125,
+          "high": 5621967.0768125
         }
       },
       "coverage": [
@@ -9750,14 +9782,14 @@
             "high": 29277.5
           },
           "adaptiveCompliant": {
-            "low": 21310.423076923078,
-            "central": 21310.423076923078,
-            "high": 21310.423076923078
+            "low": 21310.4231875,
+            "central": 21310.4231875,
+            "high": 21310.4231875
           },
           "contribution": {
-            "low": 7967.076923076922,
-            "central": 7967.076923076922,
-            "high": 7967.076923076922
+            "low": 7967.0768124999995,
+            "central": 7967.0768124999995,
+            "high": 7967.0768124999995
           },
           "status": "included",
           "anchors": [
@@ -10101,14 +10133,14 @@
             "high": 30800
           },
           "adaptiveCompliant": {
-            "low": 16799.999999999996,
-            "central": 16799.999999999996,
-            "high": 16799.999999999996
+            "low": 16800,
+            "central": 16800,
+            "high": 16800
           },
           "contribution": {
-            "low": 14000.000000000004,
-            "central": 14000.000000000004,
-            "high": 14000.000000000004
+            "low": 14000,
+            "central": 14000,
+            "high": 14000
           },
           "status": "included",
           "anchors": [
@@ -10218,13 +10250,13 @@
             "high": 12320000
           },
           "adaptiveCompliant": {
-            "low": 419999.99999999994,
-            "central": 1679999.9999999998,
-            "high": 6719999.999999999
+            "low": 420000,
+            "central": 1680000,
+            "high": 6720000
           },
           "contribution": {
-            "low": -5949999.999999999,
-            "central": 1400000.0000000002,
+            "low": -5950000,
+            "central": 1400000,
             "high": 11900000
           },
           "status": "included",
@@ -10575,16 +10607,20 @@
         "pathCompetitionDiffers": false,
         "competitionDisadvantagedAlternative": null,
         "competitionTransferRate": null,
+        "contractRigidityDiffers": false,
+        "amendmentDisadvantagedAlternative": null,
         "amendmentDifferential": {
-          "low": 0,
-          "central": 0,
-          "high": 0,
+          "low": 0.077,
+          "central": 0.084,
+          "high": 0.098,
           "rangeKind": "calibrated",
-          "evidenceClass": "retained_legacy_assumption",
+          "evidenceClass": "verified_postprint",
           "evidenceIds": [
-            "scenario.critical_material_continuity.retained-legacy"
+            "beuve_amendment_frequency_2023"
           ]
         },
+        "amendmentContractYears": null,
+        "costPerAmendment": null,
         "tcoDifferential": {
           "low": 0,
           "central": 0,
@@ -12325,9 +12361,9 @@
                 },
                 "roleHours": {
                   "requestor": {
-                    "low": 23.333333333333336,
-                    "central": 23.333333333333336,
-                    "high": 23.333333333333336,
+                    "low": 23.333333,
+                    "central": 23.333333,
+                    "high": 23.333333,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -12336,9 +12372,9 @@
                     ]
                   },
                   "buyer": {
-                    "low": 11.666666666666668,
-                    "central": 11.666666666666668,
-                    "high": 11.666666666666668,
+                    "low": 11.666667,
+                    "central": 11.666667,
+                    "high": 11.666667,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -12347,9 +12383,9 @@
                     ]
                   },
                   "finance": {
-                    "low": 9.333333333333334,
-                    "central": 9.333333333333334,
-                    "high": 9.333333333333334,
+                    "low": 9.333333,
+                    "central": 9.333333,
+                    "high": 9.333333,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -12358,9 +12394,9 @@
                     ]
                   },
                   "manager": {
-                    "low": 4.666666666666667,
-                    "central": 4.666666666666667,
-                    "high": 4.666666666666667,
+                    "low": 4.666667,
+                    "central": 4.666667,
+                    "high": 4.666667,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -12596,9 +12632,9 @@
                     ]
                   },
                   "buyer": {
-                    "low": 9.333333333333332,
-                    "central": 9.333333333333332,
-                    "high": 9.333333333333332,
+                    "low": 9.333333,
+                    "central": 9.333333,
+                    "high": 9.333333,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -12607,9 +12643,9 @@
                     ]
                   },
                   "lawyer": {
-                    "low": 6.666666666666666,
-                    "central": 6.666666666666666,
-                    "high": 6.666666666666666,
+                    "low": 6.666667,
+                    "central": 6.666667,
+                    "high": 6.666667,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -12721,9 +12757,9 @@
                 },
                 "roleHours": {
                   "requestor": {
-                    "low": 2.6666666666666665,
-                    "central": 2.6666666666666665,
-                    "high": 2.6666666666666665,
+                    "low": 2.666667,
+                    "central": 2.666667,
+                    "high": 2.666667,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -12743,9 +12779,9 @@
                     ]
                   },
                   "lawyer": {
-                    "low": 2.6666666666666665,
-                    "central": 2.6666666666666665,
-                    "high": 2.6666666666666665,
+                    "low": 2.666667,
+                    "central": 2.666667,
+                    "high": 2.666667,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -12754,9 +12790,9 @@
                     ]
                   },
                   "finance": {
-                    "low": 2.6666666666666665,
-                    "central": 2.6666666666666665,
-                    "high": 2.6666666666666665,
+                    "low": 2.666667,
+                    "central": 2.666667,
+                    "high": 2.666667,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -12815,9 +12851,9 @@
                 },
                 "roleHours": {
                   "buyer": {
-                    "low": 2.6666666666666665,
-                    "central": 2.6666666666666665,
-                    "high": 2.6666666666666665,
+                    "low": 2.666667,
+                    "central": 2.666667,
+                    "high": 2.666667,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -12826,9 +12862,9 @@
                     ]
                   },
                   "lawyer": {
-                    "low": 1.3333333333333333,
-                    "central": 1.3333333333333333,
-                    "high": 1.3333333333333333,
+                    "low": 1.333333,
+                    "central": 1.333333,
+                    "high": 1.333333,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -12887,9 +12923,9 @@
                 },
                 "roleHours": {
                   "buyer": {
-                    "low": 2.6666666666666665,
-                    "central": 2.6666666666666665,
-                    "high": 2.6666666666666665,
+                    "low": 2.666667,
+                    "central": 2.666667,
+                    "high": 2.666667,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -12898,9 +12934,9 @@
                     ]
                   },
                   "lawyer": {
-                    "low": 1.3333333333333333,
-                    "central": 1.3333333333333333,
-                    "high": 1.3333333333333333,
+                    "low": 1.333333,
+                    "central": 1.333333,
+                    "high": 1.333333,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -12909,9 +12945,9 @@
                     ]
                   },
                   "executive": {
-                    "low": 1.3333333333333333,
-                    "central": 1.3333333333333333,
-                    "high": 1.3333333333333333,
+                    "low": 1.333333,
+                    "central": 1.333333,
+                    "high": 1.333333,
                     "rangeKind": "calibrated",
                     "evidenceClass": "illustrative_scenario",
                     "evidenceIds": [
@@ -13122,9 +13158,9 @@
               ]
             },
             "roleCost": {
-              "low": 52847.91666666667,
-              "central": 52847.91666666667,
-              "high": 52847.91666666667
+              "low": 52847.9167,
+              "central": 52847.9167,
+              "high": 52847.9167
             },
             "nonLabourCost": {
               "low": 3800,
@@ -13142,9 +13178,9 @@
               "high": 0
             },
             "totalCost": {
-              "low": 234147.9166666667,
-              "central": 766647.9166666666,
-              "high": 2896647.9166666665
+              "low": 234147.9167,
+              "central": 766647.9167,
+              "high": 2896647.9167
             },
             "nonMonetizedDimensions": [
               {
@@ -13158,10 +13194,15 @@
       },
       "comparison": {
         "operation": "formalSequential_minus_adaptiveCompliant",
-        "deltaCost": 144177.08333333337,
+        "deltaCost": 144177.08330000006,
         "deltaCostOuterEnvelope": {
-          "low": -2638322.9166666665,
-          "high": 3286677.0833333335
+          "low": -2638322.9167,
+          "high": 3286677.0833
+        },
+        "deltaCostPairedCases": {
+          "low": 24177.0833,
+          "central": 144177.08330000006,
+          "high": 624177.0833
         }
       },
       "coverage": [
@@ -13173,14 +13214,14 @@
             "high": 35425
           },
           "adaptiveCompliant": {
-            "low": 52847.91666666667,
-            "central": 52847.91666666667,
-            "high": 52847.91666666667
+            "low": 52847.9167,
+            "central": 52847.9167,
+            "high": 52847.9167
           },
           "contribution": {
-            "low": -17422.91666666667,
-            "central": -17422.91666666667,
-            "high": -17422.91666666667
+            "low": -17422.9167,
+            "central": -17422.9167,
+            "high": -17422.9167
           },
           "status": "included",
           "anchors": [
@@ -14290,16 +14331,20 @@
         "pathCompetitionDiffers": false,
         "competitionDisadvantagedAlternative": null,
         "competitionTransferRate": null,
+        "contractRigidityDiffers": false,
+        "amendmentDisadvantagedAlternative": null,
         "amendmentDifferential": {
-          "low": 0,
-          "central": 0,
-          "high": 0,
+          "low": 0.077,
+          "central": 0.084,
+          "high": 0.098,
           "rangeKind": "calibrated",
-          "evidenceClass": "retained_legacy_assumption",
+          "evidenceClass": "verified_postprint",
           "evidenceIds": [
-            "scenario.public_it_open_with_market_consultation.retained-legacy"
+            "beuve_amendment_frequency_2023"
           ]
         },
+        "amendmentContractYears": null,
+        "costPerAmendment": null,
         "tcoDifferential": {
           "low": 0,
           "central": 0,
@@ -15576,9 +15621,9 @@
                     ]
                   },
                   "buyer": {
-                    "low": 8.399999999999999,
-                    "central": 8.399999999999999,
-                    "high": 8.399999999999999,
+                    "low": 8.4,
+                    "central": 8.4,
+                    "high": 8.4,
                     "rangeKind": "calibrated",
                     "evidenceClass": "retained_legacy_assumption",
                     "evidenceIds": [
@@ -15622,9 +15667,9 @@
                   "stable_private_standard_service.formalSequential.requirements"
                 ],
                 "activeDays": {
-                  "low": 4.8999999999999995,
-                  "central": 4.8999999999999995,
-                  "high": 4.8999999999999995,
+                  "low": 4.9,
+                  "central": 4.9,
+                  "high": 4.9,
                   "rangeKind": "calibrated",
                   "evidenceClass": "retained_legacy_assumption",
                   "evidenceIds": [
@@ -15674,9 +15719,9 @@
                   }
                 },
                 "nonLabourCost": {
-                  "low": 97.99999999999999,
-                  "central": 97.99999999999999,
-                  "high": 97.99999999999999,
+                  "low": 98,
+                  "central": 98,
+                  "high": 98,
                   "rangeKind": "calibrated",
                   "evidenceClass": "retained_legacy_assumption",
                   "evidenceIds": [
@@ -15699,9 +15744,9 @@
                   "stable_private_standard_service.formalSequential.evaluation"
                 ],
                 "activeDays": {
-                  "low": 2.0999999999999996,
-                  "central": 2.0999999999999996,
-                  "high": 2.0999999999999996,
+                  "low": 2.1,
+                  "central": 2.1,
+                  "high": 2.1,
                   "rangeKind": "calibrated",
                   "evidenceClass": "retained_legacy_assumption",
                   "evidenceIds": [
@@ -15741,9 +15786,9 @@
                   }
                 },
                 "nonLabourCost": {
-                  "low": 41.99999999999999,
-                  "central": 41.99999999999999,
-                  "high": 41.99999999999999,
+                  "low": 42,
+                  "central": 42,
+                  "high": 42,
                   "rangeKind": "calibrated",
                   "evidenceClass": "retained_legacy_assumption",
                   "evidenceIds": [
@@ -15829,9 +15874,9 @@
           },
           "result": {
             "elapsedDays": {
-              "low": 13.999999999999998,
-              "central": 13.999999999999998,
-              "high": 13.999999999999998
+              "low": 14,
+              "central": 14,
+              "high": 14
             },
             "criticalPathStepIds": {
               "low": [
@@ -15932,9 +15977,9 @@
                     ]
                   },
                   "buyer": {
-                    "low": 8.399999999999999,
-                    "central": 8.399999999999999,
-                    "high": 8.399999999999999,
+                    "low": 8.4,
+                    "central": 8.4,
+                    "high": 8.4,
                     "rangeKind": "calibrated",
                     "evidenceClass": "retained_legacy_assumption",
                     "evidenceIds": [
@@ -15978,9 +16023,9 @@
                   "stable_private_standard_service.adaptiveCompliant.requirements"
                 ],
                 "activeDays": {
-                  "low": 4.8999999999999995,
-                  "central": 4.8999999999999995,
-                  "high": 4.8999999999999995,
+                  "low": 4.9,
+                  "central": 4.9,
+                  "high": 4.9,
                   "rangeKind": "calibrated",
                   "evidenceClass": "retained_legacy_assumption",
                   "evidenceIds": [
@@ -16030,9 +16075,9 @@
                   }
                 },
                 "nonLabourCost": {
-                  "low": 97.99999999999999,
-                  "central": 97.99999999999999,
-                  "high": 97.99999999999999,
+                  "low": 98,
+                  "central": 98,
+                  "high": 98,
                   "rangeKind": "calibrated",
                   "evidenceClass": "retained_legacy_assumption",
                   "evidenceIds": [
@@ -16055,9 +16100,9 @@
                   "stable_private_standard_service.adaptiveCompliant.evaluation"
                 ],
                 "activeDays": {
-                  "low": 2.0999999999999996,
-                  "central": 2.0999999999999996,
-                  "high": 2.0999999999999996,
+                  "low": 2.1,
+                  "central": 2.1,
+                  "high": 2.1,
                   "rangeKind": "calibrated",
                   "evidenceClass": "retained_legacy_assumption",
                   "evidenceIds": [
@@ -16097,9 +16142,9 @@
                   }
                 },
                 "nonLabourCost": {
-                  "low": 41.99999999999999,
-                  "central": 41.99999999999999,
-                  "high": 41.99999999999999,
+                  "low": 42,
+                  "central": 42,
+                  "high": 42,
                   "rangeKind": "calibrated",
                   "evidenceClass": "retained_legacy_assumption",
                   "evidenceIds": [
@@ -16185,9 +16230,9 @@
           },
           "result": {
             "elapsedDays": {
-              "low": 13.999999999999998,
-              "central": 13.999999999999998,
-              "high": 13.999999999999998
+              "low": 14,
+              "central": 14,
+              "high": 14
             },
             "criticalPathStepIds": {
               "low": [
@@ -16250,6 +16295,11 @@
         "deltaCostOuterEnvelope": {
           "low": -450000,
           "high": -100000
+        },
+        "deltaCostPairedCases": {
+          "low": -100000,
+          "central": -300000,
+          "high": -450000
         }
       },
       "coverage": [
@@ -16827,16 +16877,20 @@
             "szucs_discretion_price_2024"
           ]
         },
+        "contractRigidityDiffers": false,
+        "amendmentDisadvantagedAlternative": null,
         "amendmentDifferential": {
-          "low": 0,
-          "central": 0,
-          "high": 0,
+          "low": 0.077,
+          "central": 0.084,
+          "high": 0.098,
           "rangeKind": "calibrated",
-          "evidenceClass": "retained_legacy_assumption",
+          "evidenceClass": "verified_postprint",
           "evidenceIds": [
-            "scenario.stable_private_standard_service.retained-legacy"
+            "beuve_amendment_frequency_2023"
           ]
         },
+        "amendmentContractYears": null,
+        "costPerAmendment": null,
         "tcoDifferential": {
           "low": 0,
           "central": 0,
@@ -18049,9 +18103,9 @@
                 },
                 "roleHours": {
                   "requestor": {
-                    "low": 17.142857142857142,
-                    "central": 17.142857142857142,
-                    "high": 17.142857142857142,
+                    "low": 17.142857,
+                    "central": 17.142857,
+                    "high": 17.142857,
                     "rangeKind": "calibrated",
                     "evidenceClass": "retained_legacy_assumption",
                     "evidenceIds": [
@@ -18059,9 +18113,9 @@
                     ]
                   },
                   "finance": {
-                    "low": 11.428571428571429,
-                    "central": 11.428571428571429,
-                    "high": 11.428571428571429,
+                    "low": 11.428571,
+                    "central": 11.428571,
+                    "high": 11.428571,
                     "rangeKind": "calibrated",
                     "evidenceClass": "retained_legacy_assumption",
                     "evidenceIds": [
@@ -18069,9 +18123,9 @@
                     ]
                   },
                   "manager": {
-                    "low": 5.714285714285714,
-                    "central": 5.714285714285714,
-                    "high": 5.714285714285714,
+                    "low": 5.714286,
+                    "central": 5.714286,
+                    "high": 5.714286,
                     "rangeKind": "calibrated",
                     "evidenceClass": "retained_legacy_assumption",
                     "evidenceIds": [
@@ -18079,9 +18133,9 @@
                     ]
                   },
                   "executive": {
-                    "low": 2.857142857142857,
-                    "central": 2.857142857142857,
-                    "high": 2.857142857142857,
+                    "low": 2.857143,
+                    "central": 2.857143,
+                    "high": 2.857143,
                     "rangeKind": "calibrated",
                     "evidenceClass": "retained_legacy_assumption",
                     "evidenceIds": [
@@ -18213,9 +18267,9 @@
                 },
                 "roleHours": {
                   "finance": {
-                    "low": 5.714285714285714,
-                    "central": 5.714285714285714,
-                    "high": 5.714285714285714,
+                    "low": 5.714286,
+                    "central": 5.714286,
+                    "high": 5.714286,
                     "rangeKind": "calibrated",
                     "evidenceClass": "retained_legacy_assumption",
                     "evidenceIds": [
@@ -18223,9 +18277,9 @@
                     ]
                   },
                   "manager": {
-                    "low": 4.285714285714286,
-                    "central": 4.285714285714286,
-                    "high": 4.285714285714286,
+                    "low": 4.285714,
+                    "central": 4.285714,
+                    "high": 4.285714,
                     "rangeKind": "calibrated",
                     "evidenceClass": "retained_legacy_assumption",
                     "evidenceIds": [
@@ -18233,9 +18287,9 @@
                     ]
                   },
                   "executive": {
-                    "low": 2.857142857142857,
-                    "central": 2.857142857142857,
-                    "high": 2.857142857142857,
+                    "low": 2.857143,
+                    "central": 2.857143,
+                    "high": 2.857143,
                     "rangeKind": "calibrated",
                     "evidenceClass": "retained_legacy_assumption",
                     "evidenceIds": [
@@ -18290,9 +18344,9 @@
                 },
                 "roleHours": {
                   "requestor": {
-                    "low": 11.428571428571429,
-                    "central": 11.428571428571429,
-                    "high": 11.428571428571429,
+                    "low": 11.428571,
+                    "central": 11.428571,
+                    "high": 11.428571,
                     "rangeKind": "calibrated",
                     "evidenceClass": "retained_legacy_assumption",
                     "evidenceIds": [
@@ -18300,9 +18354,9 @@
                     ]
                   },
                   "buyer": {
-                    "low": 22.857142857142858,
-                    "central": 22.857142857142858,
-                    "high": 22.857142857142858,
+                    "low": 22.857143,
+                    "central": 22.857143,
+                    "high": 22.857143,
                     "rangeKind": "calibrated",
                     "evidenceClass": "retained_legacy_assumption",
                     "evidenceIds": [
@@ -18310,9 +18364,9 @@
                     ]
                   },
                   "finance": {
-                    "low": 5.714285714285714,
-                    "central": 5.714285714285714,
-                    "high": 5.714285714285714,
+                    "low": 5.714286,
+                    "central": 5.714286,
+                    "high": 5.714286,
                     "rangeKind": "calibrated",
                     "evidenceClass": "retained_legacy_assumption",
                     "evidenceIds": [
@@ -18320,9 +18374,9 @@
                     ]
                   },
                   "manager": {
-                    "low": 5.714285714285714,
-                    "central": 5.714285714285714,
-                    "high": 5.714285714285714,
+                    "low": 5.714286,
+                    "central": 5.714286,
+                    "high": 5.714286,
                     "rangeKind": "calibrated",
                     "evidenceClass": "retained_legacy_assumption",
                     "evidenceIds": [
@@ -18377,9 +18431,9 @@
                 },
                 "roleHours": {
                   "lawyer": {
-                    "low": 17.142857142857142,
-                    "central": 17.142857142857142,
-                    "high": 17.142857142857142,
+                    "low": 17.142857,
+                    "central": 17.142857,
+                    "high": 17.142857,
                     "rangeKind": "calibrated",
                     "evidenceClass": "retained_legacy_assumption",
                     "evidenceIds": [
@@ -18387,9 +18441,9 @@
                     ]
                   },
                   "finance": {
-                    "low": 5.714285714285714,
-                    "central": 5.714285714285714,
-                    "high": 5.714285714285714,
+                    "low": 5.714286,
+                    "central": 5.714286,
+                    "high": 5.714286,
                     "rangeKind": "calibrated",
                     "evidenceClass": "retained_legacy_assumption",
                     "evidenceIds": [
@@ -18511,9 +18565,9 @@
                 },
                 "roleHours": {
                   "buyer": {
-                    "low": 2.6666666666666665,
-                    "central": 2.6666666666666665,
-                    "high": 2.6666666666666665,
+                    "low": 2.666667,
+                    "central": 2.666667,
+                    "high": 2.666667,
                     "rangeKind": "calibrated",
                     "evidenceClass": "retained_legacy_assumption",
                     "evidenceIds": [
@@ -18521,9 +18575,9 @@
                     ]
                   },
                   "lawyer": {
-                    "low": 5.333333333333333,
-                    "central": 5.333333333333333,
-                    "high": 5.333333333333333,
+                    "low": 5.333333,
+                    "central": 5.333333,
+                    "high": 5.333333,
                     "rangeKind": "calibrated",
                     "evidenceClass": "retained_legacy_assumption",
                     "evidenceIds": [
@@ -18531,9 +18585,9 @@
                     ]
                   },
                   "executive": {
-                    "low": 1.3333333333333333,
-                    "central": 1.3333333333333333,
-                    "high": 1.3333333333333333,
+                    "low": 1.333333,
+                    "central": 1.333333,
+                    "high": 1.333333,
                     "rangeKind": "calibrated",
                     "evidenceClass": "retained_legacy_assumption",
                     "evidenceIds": [
@@ -18597,9 +18651,9 @@
               ]
             },
             "roleCost": {
-              "low": 26324.285714285714,
-              "central": 26324.285714285714,
-              "high": 26324.285714285714
+              "low": 26324.2857,
+              "central": 26324.2857,
+              "high": 26324.2857
             },
             "nonLabourCost": {
               "low": 9600,
@@ -18617,9 +18671,9 @@
               "high": 0
             },
             "totalCost": {
-              "low": 323624.2857142857,
-              "central": 1186724.2857142857,
-              "high": 4639124.285714285
+              "low": 323624.2857,
+              "central": 1186724.2857,
+              "high": 4639124.2857
             },
             "nonMonetizedDimensions": [
               {
@@ -18633,10 +18687,15 @@
       },
       "comparison": {
         "operation": "formalSequential_minus_adaptiveCompliant",
-        "deltaCost": 507975.7142857143,
+        "deltaCost": 507975.7143000001,
         "deltaCostOuterEnvelope": {
-          "low": -4177424.2857142854,
-          "high": 6303075.714285715
+          "low": -4177424.2857,
+          "high": 6303075.7143
+        },
+        "deltaCostPairedCases": {
+          "low": 138075.7143,
+          "central": 507975.7143000001,
+          "high": 1987575.7143
         }
       },
       "coverage": [
@@ -18648,14 +18707,14 @@
             "high": 37500
           },
           "adaptiveCompliant": {
-            "low": 26324.285714285714,
-            "central": 26324.285714285714,
-            "high": 26324.285714285714
+            "low": 26324.2857,
+            "central": 26324.2857,
+            "high": 26324.2857
           },
           "contribution": {
-            "low": 11175.714285714286,
-            "central": 11175.714285714286,
-            "high": 11175.714285714286
+            "low": 11175.7143,
+            "central": 11175.7143,
+            "high": 11175.7143
           },
           "status": "included",
           "anchors": [
@@ -19485,16 +19544,20 @@
         "pathCompetitionDiffers": false,
         "competitionDisadvantagedAlternative": null,
         "competitionTransferRate": null,
+        "contractRigidityDiffers": false,
+        "amendmentDisadvantagedAlternative": null,
         "amendmentDifferential": {
-          "low": 0,
-          "central": 0,
-          "high": 0,
+          "low": 0.077,
+          "central": 0.084,
+          "high": 0.098,
           "rangeKind": "calibrated",
-          "evidenceClass": "retained_legacy_assumption",
+          "evidenceClass": "verified_postprint",
           "evidenceIds": [
-            "scenario.stable_capex_replacement.retained-legacy"
+            "beuve_amendment_frequency_2023"
           ]
         },
+        "amendmentContractYears": null,
+        "costPerAmendment": null,
         "tcoDifferential": {
           "low": 0,
           "central": 0,
@@ -20878,9 +20941,9 @@
                     ]
                   },
                   "buyer": {
-                    "low": 13.333333333333332,
-                    "central": 13.333333333333332,
-                    "high": 13.333333333333332,
+                    "low": 13.333333,
+                    "central": 13.333333,
+                    "high": 13.333333,
                     "rangeKind": "calibrated",
                     "evidenceClass": "retained_legacy_assumption",
                     "evidenceIds": [
@@ -20888,9 +20951,9 @@
                     ]
                   },
                   "manager": {
-                    "low": 5.333333333333333,
-                    "central": 5.333333333333333,
-                    "high": 5.333333333333333,
+                    "low": 5.333333,
+                    "central": 5.333333,
+                    "high": 5.333333,
                     "rangeKind": "calibrated",
                     "evidenceClass": "retained_legacy_assumption",
                     "evidenceIds": [
@@ -20955,9 +21018,9 @@
                     ]
                   },
                   "buyer": {
-                    "low": 67.19999999999999,
-                    "central": 67.19999999999999,
-                    "high": 67.19999999999999,
+                    "low": 67.2,
+                    "central": 67.2,
+                    "high": 67.2,
                     "rangeKind": "calibrated",
                     "evidenceClass": "retained_legacy_assumption",
                     "evidenceIds": [
@@ -20965,9 +21028,9 @@
                     ]
                   },
                   "manager": {
-                    "low": 16.799999999999997,
-                    "central": 16.799999999999997,
-                    "high": 16.799999999999997,
+                    "low": 16.8,
+                    "central": 16.8,
+                    "high": 16.8,
                     "rangeKind": "calibrated",
                     "evidenceClass": "retained_legacy_assumption",
                     "evidenceIds": [
@@ -21109,9 +21172,9 @@
                     ]
                   },
                   "finance": {
-                    "low": 4.199999999999999,
-                    "central": 4.199999999999999,
-                    "high": 4.199999999999999,
+                    "low": 4.2,
+                    "central": 4.2,
+                    "high": 4.2,
                     "rangeKind": "calibrated",
                     "evidenceClass": "retained_legacy_assumption",
                     "evidenceIds": [
@@ -21316,9 +21379,9 @@
               ]
             },
             "roleCost": {
-              "low": 40124.166666666664,
-              "central": 40124.166666666664,
-              "high": 40124.166666666664
+              "low": 40124.1665625,
+              "central": 40124.1665625,
+              "high": 40124.1665625
             },
             "nonLabourCost": {
               "low": 5900,
@@ -21336,9 +21399,9 @@
               "high": 0
             },
             "totalCost": {
-              "low": 110649.16666666666,
-              "central": 304524.1666666667,
-              "high": 1080024.1666666667
+              "low": 110649.1665625,
+              "central": 304524.1665625,
+              "high": 1080024.1665625
             },
             "nonMonetizedDimensions": [
               {
@@ -21352,10 +21415,15 @@
       },
       "comparison": {
         "operation": "formalSequential_minus_adaptiveCompliant",
-        "deltaCost": -92224.16666666669,
+        "deltaCost": -92224.1665625,
         "deltaCostOuterEnvelope": {
-          "low": -1007974.1666666667,
-          "high": 662650.8333333334
+          "low": -1007974.1665625,
+          "high": 662650.8334375
+        },
+        "deltaCostPairedCases": {
+          "low": -38599.1665625,
+          "central": -92224.1665625,
+          "high": -306724.16656249994
         }
       },
       "coverage": [
@@ -21367,14 +21435,14 @@
             "high": 20700
           },
           "adaptiveCompliant": {
-            "low": 40124.166666666664,
-            "central": 40124.166666666664,
-            "high": 40124.166666666664
+            "low": 40124.1665625,
+            "central": 40124.1665625,
+            "high": 40124.1665625
           },
           "contribution": {
-            "low": -19424.166666666664,
-            "central": -19424.166666666664,
-            "high": -19424.166666666664
+            "low": -19424.166562500002,
+            "central": -19424.166562500002,
+            "high": -19424.166562500002
           },
           "status": "included",
           "anchors": [
@@ -22092,16 +22160,20 @@
         "pathCompetitionDiffers": false,
         "competitionDisadvantagedAlternative": null,
         "competitionTransferRate": null,
+        "contractRigidityDiffers": false,
+        "amendmentDisadvantagedAlternative": null,
         "amendmentDifferential": {
-          "low": 0,
-          "central": 0,
-          "high": 0,
+          "low": 0.077,
+          "central": 0.084,
+          "high": 0.098,
           "rangeKind": "calibrated",
-          "evidenceClass": "retained_legacy_assumption",
+          "evidenceClass": "verified_postprint",
           "evidenceIds": [
-            "scenario.discovery_solution_codesign.retained-legacy"
+            "beuve_amendment_frequency_2023"
           ]
         },
+        "amendmentContractYears": null,
+        "costPerAmendment": null,
         "tcoDifferential": {
           "low": 0,
           "central": 0,
@@ -23048,9 +23120,9 @@
           },
           "result": {
             "elapsedDays": {
-              "low": 2.0999999999999996,
-              "central": 2.0999999999999996,
-              "high": 2.0999999999999996
+              "low": 2.1,
+              "central": 2.1,
+              "high": 2.1
             },
             "criticalPathStepIds": {
               "low": [
@@ -23080,9 +23152,9 @@
               "high": 102
             },
             "delayCost": {
-              "low": 262.49999999999994,
-              "central": 1049.9999999999998,
-              "high": 4199.999999999999
+              "low": 262.5,
+              "central": 1050,
+              "high": 4200
             },
             "contractCost": {
               "low": 0,
@@ -23091,8 +23163,8 @@
             },
             "totalCost": {
               "low": 605.125,
-              "central": 1392.6249999999998,
-              "high": 4542.624999999999
+              "central": 1392.625,
+              "high": 4542.625
             },
             "nonMonetizedDimensions": [
               {
@@ -23294,9 +23366,9 @@
           },
           "result": {
             "elapsedDays": {
-              "low": 2.0999999999999996,
-              "central": 2.0999999999999996,
-              "high": 2.0999999999999996
+              "low": 2.1,
+              "central": 2.1,
+              "high": 2.1
             },
             "criticalPathStepIds": {
               "low": [
@@ -23326,9 +23398,9 @@
               "high": 102
             },
             "delayCost": {
-              "low": 262.49999999999994,
-              "central": 1049.9999999999998,
-              "high": 4199.999999999999
+              "low": 262.5,
+              "central": 1050,
+              "high": 4200
             },
             "contractCost": {
               "low": 0,
@@ -23337,8 +23409,8 @@
             },
             "totalCost": {
               "low": 605.125,
-              "central": 1392.6249999999998,
-              "high": 4542.624999999999
+              "central": 1392.625,
+              "high": 4542.625
             },
             "nonMonetizedDimensions": [
               {
@@ -23354,8 +23426,13 @@
         "operation": "formalSequential_minus_adaptiveCompliant",
         "deltaCost": 0,
         "deltaCostOuterEnvelope": {
-          "low": -3937.499999999999,
-          "high": 3937.499999999999
+          "low": -3937.5,
+          "high": 3937.5
+        },
+        "deltaCostPairedCases": {
+          "low": 0,
+          "central": 0,
+          "high": 0
         }
       },
       "coverage": [
@@ -23544,19 +23621,19 @@
         {
           "id": "delay_cost",
           "formalSequential": {
-            "low": 262.49999999999994,
-            "central": 1049.9999999999998,
-            "high": 4199.999999999999
+            "low": 262.5,
+            "central": 1050,
+            "high": 4200
           },
           "adaptiveCompliant": {
-            "low": 262.49999999999994,
-            "central": 1049.9999999999998,
-            "high": 4199.999999999999
+            "low": 262.5,
+            "central": 1050,
+            "high": 4200
           },
           "contribution": {
-            "low": -3937.499999999999,
+            "low": -3937.5,
             "central": 0,
-            "high": 3937.499999999999
+            "high": 3937.5
           },
           "status": "included",
           "anchors": [
@@ -23798,16 +23875,20 @@
         "pathCompetitionDiffers": false,
         "competitionDisadvantagedAlternative": null,
         "competitionTransferRate": null,
+        "contractRigidityDiffers": false,
+        "amendmentDisadvantagedAlternative": null,
         "amendmentDifferential": {
-          "low": 0,
-          "central": 0,
-          "high": 0,
+          "low": 0.077,
+          "central": 0.084,
+          "high": 0.098,
           "rangeKind": "calibrated",
-          "evidenceClass": "retained_legacy_assumption",
+          "evidenceClass": "verified_postprint",
           "evidenceIds": [
-            "scenario.catalog_calloff_control.retained-legacy"
+            "beuve_amendment_frequency_2023"
           ]
         },
+        "amendmentContractYears": null,
+        "costPerAmendment": null,
         "tcoDifferential": {
           "low": 0,
           "central": 0,
@@ -24679,6 +24760,11 @@
         "deltaCostOuterEnvelope": {
           "low": -42000,
           "high": 42000
+        },
+        "deltaCostPairedCases": {
+          "low": 0,
+          "central": 0,
+          "high": 0
         }
       },
       "coverage": [
@@ -25093,16 +25179,20 @@
         "pathCompetitionDiffers": false,
         "competitionDisadvantagedAlternative": null,
         "competitionTransferRate": null,
+        "contractRigidityDiffers": false,
+        "amendmentDisadvantagedAlternative": null,
         "amendmentDifferential": {
-          "low": 0,
-          "central": 0,
-          "high": 0,
+          "low": 0.077,
+          "central": 0.084,
+          "high": 0.098,
           "rangeKind": "calibrated",
-          "evidenceClass": "retained_legacy_assumption",
+          "evidenceClass": "verified_postprint",
           "evidenceIds": [
-            "scenario.mrp_release_control.retained-legacy"
+            "beuve_amendment_frequency_2023"
           ]
         },
+        "amendmentContractYears": null,
+        "costPerAmendment": null,
         "tcoDifferential": {
           "low": 0,
           "central": 0,

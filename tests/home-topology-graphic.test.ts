@@ -7,14 +7,15 @@ import EvidenceFieldHome from "@/components/EvidenceFieldHome";
 import { homeT } from "@/lib/i18n";
 
 describe("shared-boundary topology graphic", () => {
-  it("keeps the detailed topology off the decision-led entry page", () => {
+  it("keeps the detailed topology off the entry page while allowing the bounded debate explainer", () => {
     for (const lang of ["pl", "en"] as const) {
       const html = renderToStaticMarkup(
         createElement(EvidenceFieldHome, { lang })
       );
 
       expect(html).not.toContain(`data-home-topology="${lang}"`);
-      expect(html).not.toContain('data-boundary="shared"');
+      expect(html.match(/data-boundary="shared"/g)).toHaveLength(2);
+      expect(html).toContain(`data-debate-hub="${lang}"`);
       expect(html).toContain('data-record-preview="structure"');
       expect(html).not.toContain("data-home-process-rail");
       expect(html).not.toContain("data-mobile-sequence");

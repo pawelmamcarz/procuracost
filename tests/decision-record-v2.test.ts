@@ -94,7 +94,7 @@ describe("model 2.3 neutral decision record", () => {
 
     expect(record.metadata).toEqual({
       schemaVersion: 2,
-      modelVersion: "2.3.0",
+      modelVersion: "2.3.1",
       calibrationId: "source-scenario-2026-08-28",
       legalRulesetId: "pl-pzp-2026-2027",
       scenarioId: "fleet_tco_reframing",
@@ -135,6 +135,7 @@ describe("model 2.3 neutral decision record", () => {
       operation: "formalSequential_minus_adaptiveCompliant",
       deltaCost: calculationResult.deltaCost,
       deltaCostOuterEnvelope: calculationResult.deltaCostOuterEnvelope,
+      deltaCostPairedCases: calculationResult.deltaCostPairedCases,
     });
     expect(JSON.parse(JSON.stringify(record))).toEqual(record);
   });

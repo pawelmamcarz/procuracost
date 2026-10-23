@@ -12,6 +12,8 @@ import {
   SCENARIO_V2_IDS,
   SCENARIOS_V2,
   createScenarioDraft,
+  MODEL_QUANTITY_DECIMALS,
+  roundModelQuantity,
 } from "@/lib/model-v2/scenarios";
 import * as scenarioModule from "@/lib/model-v2/scenarios";
 import {
@@ -50,6 +52,38 @@ function copyAt(lang: "pl" | "en", key: string): string | undefined {
 }
 
 describe("model 2.3 canonical scenarios", () => {
+  it("normalises support-profile quantities to six decimal places", () => {
+    expect(MODEL_QUANTITY_DECIMALS).toBe(6);
+    expect(roundModelQuantity(50.599999999999994)).toBe(50.6);
+    for (const value of [50.599999999999994, 0.12345678, 12.3456789]) {
+      expect(Math.abs(roundModelQuantity(value) - value)).toBeLessThanOrEqual(1e-6);
+    }
+    for (const scenario of SCENARIOS_V2) {
+      expect(scenario.economicAssumptions.amendmentContractYears).toBeNull();
+      expect(scenario.economicAssumptions.costPerAmendment).toBeNull();
+      for (const alternative of Object.values(scenario.calculationInput.alternatives)) {
+        for (const step of alternative.workflowDesign.steps) {
+          for (const value of [step.activeDays, step.nonLabourCost, ...Object.values(step.roleHours)]) {
+            expect(value.central).toBe(roundModelQuantity(value.central));
+          }
+        }
+      }
+    }
+  });
+
+  it.each([
+    ["catalog_calloff_control", 2.1],
+    ["erp_transformation_discovery", 50.6],
+  ] as const)("rounds %s central critical-path days exactly to %s", (id, expected) => {
+    const scenario = SCENARIOS_V2.find((scenario) => scenario.id === id)!;
+    const result = calculateComparison(scenario.calculationInput);
+
+    expect(result.formalSequential.elapsedDays.central).toBe(expected);
+    if (id === "catalog_calloff_control") {
+      expect(result.adaptiveCompliant.elapsedDays.central).toBe(expected);
+    }
+  });
+
   it("registers exactly the ten canonical IDs with manual legacy aliases", () => {
     expect(SCENARIO_V2_IDS).toEqual(EXPECTED_SCENARIOS.map(([id]) => id));
     expect(SCENARIOS_V2).toHaveLength(10);

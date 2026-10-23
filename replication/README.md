@@ -1,6 +1,6 @@
 # ProcuraCost Replication Package
 
-**Model version:** 2.3.0
+**Model version:** 2.3.1
 
 **Schema version:** 2
 

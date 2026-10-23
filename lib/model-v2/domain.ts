@@ -3,7 +3,7 @@ import { deepFreeze } from "./deep-freeze";
 
 export const MODEL_V2_METADATA = deepFreeze({
   schemaVersion: 2,
-  modelVersion: "2.3.0",
+  modelVersion: "2.3.1",
   calibrationId: "source-scenario-2026-08-28",
   legalRulesetId: "pl-pzp-2026-2027",
 } as const);

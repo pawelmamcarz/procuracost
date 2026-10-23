@@ -63,6 +63,41 @@ Do not default to a dashboard grid of rounded text boxes.
   typography.
 - Do not render an important diagram as a table with text inside framed cells.
 
+## Editorial bento
+
+An asymmetric six-column grid is allowed only on the home page and the debate
+hub. Separate tiles with 1 px rules (`gap-px` on `gray-200`), without rounding,
+shadows or gradients. Each tile must have a distinct content type tied to a
+signature motif or a concrete model output. Use one column on mobile. Keep
+decision records, process maps and evidence chains outside this pattern.
+
+The diagrammatic blueprint variant on the home page and article hub relaxes only:
+
+- Tile surfaces may use `gray-50` and `blue-50`. Red and green tints remain
+  inside their respective alternative's illustration area.
+- The lead figure spans all six columns. A fine SVG grid supports two lanes
+  on a shared schematic axis, with a separate portrait composition on mobile.
+- Display headings may reach `text-5xl`; model-derived figures use
+  `text-4xl` to `text-5xl`, IBM Plex Mono and tabular numerals. Body copy
+  remains at least `text-sm`.
+- Finite path drawing, travelling document tokens, staggered callouts and
+  waterfall reveals explain the drawing. They run on entry, may replay on
+  selection, and show the final static state with reduced motion. Initial
+  render props never depend on the motion preference.
+
+Numbered drawing references link to the four question panels. The compact
+waterfall reconciles role, non-labour, delay and contract differences to the
+native total. No new palette, shadows, gradients or judgement colours are allowed.
+
+### Motion
+
+Import the motion package only from `motion/react`. Use `LazyMotion` with
+`domAnimation`, `m.*` elements and `MotionConfig reducedMotion="user"`.
+Allowed uses are a one-time scroll reveal (opacity and 8 px translation),
+the tunnel/field transition, number tweens and a rail node-to-inspector
+transition. Honour reduced motion in imperative number animations too.
+No parallax, hover scale, loops, shadow or blur animation.
+
 ## Decision-register architecture
 
 The primary product metaphor is a decision register. It should explain the

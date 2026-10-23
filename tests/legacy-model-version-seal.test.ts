@@ -54,7 +54,7 @@ describe("legacy model version seal", () => {
     );
 
     expect(source).toContain(
-      'import { LEGACY_MODEL_VERSION, MODEL_VERSION } from "./version";',
+      'import { LEGACY_MODEL_VERSION } from "./version";',
     );
     expect(source).toContain("`Model ${LEGACY_MODEL_VERSION} stosuje szerokie mnożniki");
     expect(source).toContain("`Model ${LEGACY_MODEL_VERSION} applies broad context multipliers");
@@ -72,8 +72,8 @@ describe("legacy model version seal", () => {
 
   it("keeps model 2.2.2 traces independent from the native 2.3 model", () => {
     expect(LEGACY_MODEL_VERSION).toBe("2.2.2");
-    expect(MODEL_VERSION).toBe("2.3.0");
-    expect(MODEL_V2_METADATA.modelVersion).toBe("2.3.0");
+    expect(MODEL_VERSION).toBe("2.3.1");
+    expect(MODEL_V2_METADATA.modelVersion).toBe("2.3.1");
     expect(MODEL_VERSION).toBe(MODEL_V2_METADATA.modelVersion);
 
     const trace = calculateCosts(SCENARIOS[0].inputs).trace;
@@ -92,6 +92,6 @@ describe("legacy model version seal", () => {
 
     expect(provenance.length).toBeGreaterThan(0);
     expect(provenance.every((source) => source.includes("2.2.2"))).toBe(true);
-    expect(provenance.every((source) => !source.includes("2.3.0"))).toBe(true);
+    expect(provenance.every((source) => !source.includes("2.3.1"))).toBe(true);
   });
 });

@@ -1,4 +1,5 @@
 import { LockKeyhole, Trash2 } from "lucide-react";
+import { AnimatePresence, m } from "motion/react";
 
 import { calculatorV2T, type Lang } from "@/lib/i18n";
 import {
@@ -255,10 +256,18 @@ export function ProcessStepInspector({
       className="border-t border-gray-200 pt-6 lg:sticky lg:top-6 lg:max-h-[calc(100dvh-3rem)] lg:overflow-y-auto lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0"
       id="process-step-inspector"
     >
+      <AnimatePresence mode="wait">
       {!step ? (
-        <p className="text-sm leading-relaxed text-gray-600">{tx.selectStep}</p>
+        <p className="text-sm leading-relaxed text-gray-600" key="unselected">{tx.selectStep}</p>
       ) : (
-        <div className="space-y-6">
+        <m.div
+          animate={{ opacity: 1, x: 0 }}
+          className="space-y-6"
+          exit={{ opacity: 0 }}
+          initial={{ opacity: 0, x: 8 }}
+          key={`${alternativeId}-${step.id}`}
+          transition={{ duration: 0.15 }}
+        >
           <header>
             <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
               {tx.title}
@@ -541,8 +550,9 @@ export function ProcessStepInspector({
               )}
             </>
           )}
-        </div>
+        </m.div>
       )}
+      </AnimatePresence>
     </aside>
   );
 }

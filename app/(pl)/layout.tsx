@@ -3,6 +3,7 @@ import { IBM_Plex_Mono, Public_Sans } from "next/font/google";
 import "../globals.css";
 import AppShell from "@/components/AppShell";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import MotionProvider from "@/components/motion/MotionProvider";
 import { siteMetadataT } from "@/lib/i18n";
 import { jsonLdScriptContent, siteJsonLd } from "@/lib/structured-data";
 import { SITE_URL } from "../seo-config";
@@ -36,7 +37,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: jsonLdScriptContent(siteJsonLd("pl")) }}
         />
-        <AppShell lang="pl">{children}</AppShell>
+        <MotionProvider>
+          <AppShell lang="pl">{children}</AppShell>
+        </MotionProvider>
         <GoogleAnalytics lang="pl" />
       </body>
     </html>

@@ -56,8 +56,12 @@ describe("decision-led homepage presentation", () => {
     );
     expect(homeExperienceT.pl.journey.steps).toHaveLength(4);
     expect(homeExperienceT.en.journey.steps).toHaveLength(4);
-    expect(homeExperienceT.pl.trust.items).toHaveLength(3);
-    expect(homeExperienceT.en.trust.items).toHaveLength(3);
+    expect(homeExperienceT.pl.trust.description).toBe(
+      "Model nie zakłada, który wariant wyjdzie taniej. Obowiązkowe terminy prawne są zablokowane po obu stronach, a szkic zapisuje się w przeglądarce tylko za Twoją zgodą.",
+    );
+    expect(homeExperienceT.en.trust.description).toBe(
+      "The model does not assume which alternative will be cheaper. Mandatory legal periods are locked on both sides, and the draft is saved in your browser only with your consent.",
+    );
   });
 
   it("renders two paths, the record structure and four practical stages", () => {
@@ -68,6 +72,7 @@ describe("decision-led homepage presentation", () => {
       const tx = homeExperienceT[lang];
 
       expect(markup).toContain(tx.hero.title);
+      expect(markup).toContain(tx.trust.description);
       expect(markup.match(/data-home-path=/g)).toHaveLength(2);
       expect(markup.match(/data-guided-step=/g)).toHaveLength(4);
       expect(markup).toContain('data-record-preview="structure"');
@@ -97,5 +102,6 @@ describe("decision-led homepage presentation", () => {
       /BoundaryField|EvidenceDocket|homeEvidenceRecords|ProcessRail|DecisionMap|calculateCosts|@\/lib\/scenarios|\bSCENARIOS\b/,
     );
     expect(source).toContain("homeExperienceT");
+    expect(source).not.toContain("md:grid-cols-3");
   });
 });
