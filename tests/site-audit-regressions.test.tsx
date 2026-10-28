@@ -60,7 +60,7 @@ describe("site audit regressions", () => {
   });
 
   it("blocks preview indexing even when a page supplies permissive metadata", async () => {
-    vi.stubEnv("VERCEL_ENV", "preview");
+    vi.stubEnv("RAILWAY_ENVIRONMENT_NAME", "staging");
     vi.resetModules();
     const { default: robots } = await import("@/app/robots");
     const { localizedPageMetadata } = await import("@/lib/page-metadata");
@@ -69,8 +69,8 @@ describe("site audit regressions", () => {
   });
 
   it("keeps the production sitemap canonical, reciprocal and listing exactly the published episodes", async () => {
-    vi.stubEnv("VERCEL_ENV", "production");
-    vi.stubEnv("VERCEL_URL", "deployment.vercel.app");
+    vi.stubEnv("RAILWAY_ENVIRONMENT_NAME", "production");
+    vi.stubEnv("RAILWAY_PUBLIC_DOMAIN", "production.up.railway.app");
     vi.resetModules();
     const { default: sitemap } = await import("@/app/sitemap");
     const { default: robots } = await import("@/app/robots");

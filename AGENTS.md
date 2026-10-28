@@ -239,10 +239,12 @@ Verified state at the time of writing: `npm test` passes (80 files, 892 tests).
 
 ## Deployment and repository sync
 
-- Production runs on Railway service `procuracost-web` behind Cloudflare; the
-  canonical host is `https://www.procuracost.com`
-  (`VERCEL_URL` may win only for previews). Sitemap, robots and Open Graph
-  images read `app/seo-config.ts`.
+- Production runs on Railway service `procuracost-web` behind Cloudflare, at
+  `https://www.procuracost.com`. Non-production Railway environments are
+  excluded from indexing and use `RAILWAY_PUBLIC_DOMAIN` when available.
+  `NEXT_PUBLIC_SITE_URL` can override the origin at build time; configure it per
+  environment and rebuild after changing it. Sitemap, robots and Open Graph
+  metadata read `app/seo-config.ts`.
 - The working copy lives in an iCloud-synced folder shared with a second
   machine ("Rokale"); GitHub `main` is the source of truth. `bin/claude-pull.sh`,
   `bin/claude-push.sh` and `SYNC.md` document the workflow. Never put

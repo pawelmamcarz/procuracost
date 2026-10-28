@@ -148,4 +148,4 @@ npm run build
 
 Run focused browser or rendered-page checks for both languages at the homepage, calculator, result state, readiness, practice material, methodology, model, and evidence pages. Check mobile width, keyboard focus, locked legal steps, iframe title, exported filenames, and sitemap entries.
 
-Run a whole-branch review against this plan. Fix every Critical and Important finding, then repeat the relevant focused checks and the complete gate. Leave push, PR, merge, Vercel preview promotion, and production deployment for a separate approved integration step.
+Run a whole-branch review against this plan. Fix every Critical and Important finding, then repeat the relevant focused checks and the complete gate. Leave push, PR, merge, preview verification, and production deployment for a separate approved integration step.

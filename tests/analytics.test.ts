@@ -6,7 +6,7 @@ describe("analytics privacy boundary", () => {
     expect(analyticsLocation("https://www.procuracost.com/calculator?cost=123#private"))
       .toBe("https://www.procuracost.com/calculator");
     expect(analyticsLocation("http://localhost:3000/en")).toBeNull();
-    expect(analyticsLocation("https://preview.vercel.app/en")).toBeNull();
+    expect(analyticsLocation("https://preview.up.railway.app/en")).toBeNull();
   });
 
   it("requires consent and sends one view per route without private inputs", () => {

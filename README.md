@@ -74,6 +74,16 @@ Historical model 2.2.2 outputs remain in the immutable replication archive. Its 
 
 ## Local development
 
+Production runs on the Railway `procuracost-web` service behind Cloudflare at
+`https://www.procuracost.com`. GitHub Actions runs the repository checks; a
+successful push to the configured production branch triggers the Railway
+deployment. Non-production Railway environments block search indexing and use
+their Railway public domain when available. `NEXT_PUBLIC_SITE_URL`, if set,
+overrides the site origin at build time and must be set separately for each
+environment. The Docker build consumes the Railway environment and domain as
+build arguments. Rebuild after changing them, and do not reuse a build from a
+different environment for these statically generated pages.
+
 ```bash
 npm ci
 npm run dev

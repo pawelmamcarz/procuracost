@@ -8,6 +8,8 @@ COPY . .
 # Public browser configuration only. Server credentials belong at runtime.
 ARG NEXT_PUBLIC_SITE_URL
 ARG NEXT_PUBLIC_VERSION
+ARG RAILWAY_ENVIRONMENT_NAME
+ARG RAILWAY_PUBLIC_DOMAIN
 RUN npm run build && npm prune --omit=dev --ignore-scripts --no-audit --fund=false \
     && rm -rf .next/cache && mkdir -p .next/cache
 

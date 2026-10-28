@@ -205,9 +205,11 @@ artefacts use the separate pure functions in `lib/model-v2/replication.ts`.
 ### SEO and metadata
 
 `app/seo-config.ts` centralises `SITE_URL` and the canonical taglines. The
-canonical production host is `https://www.procuracost.com`. `VERCEL_URL` may win
-only for previews. The sitemap, robots file and Open Graph images read from this
-configuration.
+canonical production host is `https://www.procuracost.com` on Railway behind
+Cloudflare. Railway environments other than `production` block indexing and use
+`RAILWAY_PUBLIC_DOMAIN` when available. `NEXT_PUBLIC_SITE_URL` overrides the
+origin at build time and must be configured separately per environment. The
+sitemap, robots file and Open Graph metadata read from this configuration.
 
 ## Conventions that bite if ignored
 
