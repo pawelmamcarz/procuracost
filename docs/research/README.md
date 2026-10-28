@@ -1,4 +1,4 @@
-# Research materials for model 2.3.0
+# Research materials for model 2.3.2
 
 The active research layer is intentionally small:
 
@@ -13,7 +13,7 @@ The active research layer is intentionally small:
 - [`../supervisor/README.md`](../supervisor/README.md) is the current supervisor
   package.
 
-Model 2.3.0 separates legal and governance boundary, purchase archetype,
+Model 2.3.2 separates legal and governance boundary, purchase archetype,
 procurement workflow design, purchase execution channel, system support and
 contract design. Its ten reference scenarios are structured starting points;
 their economic values are not observed outcomes. Official cases support mechanisms only. Practitioner

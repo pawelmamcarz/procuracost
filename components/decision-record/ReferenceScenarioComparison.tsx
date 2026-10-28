@@ -107,19 +107,19 @@ export default function ReferenceScenarioComparison({
                   <dt className="font-sans text-[11px] text-gray-500">
                     {tx.low}
                   </dt>
-                  <dd>{low} {data.unit}</dd>
+                  <dd className="break-words">{low} {data.unit}</dd>
                 </div>
                 <div className="text-center">
                   <dt className="font-sans text-[11px] text-gray-500">
                     {tx.central}
                   </dt>
-                  <dd>{central} {data.unit}</dd>
+                  <dd className="break-words">{central} {data.unit}</dd>
                 </div>
                 <div className="text-right">
                   <dt className="font-sans text-[11px] text-gray-500">
                     {tx.high}
                   </dt>
-                  <dd>{high} {data.unit}</dd>
+                  <dd className="break-words">{high} {data.unit}</dd>
                 </div>
               </dl>
             </li>

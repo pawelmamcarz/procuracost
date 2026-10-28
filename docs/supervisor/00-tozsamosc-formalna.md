@@ -3,7 +3,7 @@
 **Stan formalny na:** 26 lipca 2026 · historyczny punkt odniesienia modelu 2.2.1
 
 > **Aktualizacja techniczna, 29 sierpnia 2026:** aktywnym kontraktem jest
-> ProcuraCost 2.3.0. Dane o uczelni, trybie, potencjalnym promotorze i
+> ProcuraCost 2.3.2. Dane o uczelni, trybie, potencjalnym promotorze i
 > wymaganiach instytucjonalnych poniżej pozostają zapisem stanu z 26 lipca i
 > wymagają potwierdzenia przed wysłaniem pakietu. Nie zostały ponownie
 > zweryfikowane w ramach aktualizacji modelu.

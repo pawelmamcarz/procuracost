@@ -1,5 +1,6 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { competitionStressDraft } from "@/tests/fixtures/competition-stress";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
@@ -14,7 +15,6 @@ import { decisionRecordT } from "@/lib/i18n";
 import { centralDelayShare } from "@/lib/decision-record-view";
 import {
   buildDecisionRecordV2,
-  createScenarioDraft,
   type CalibratedValue,
   type ScenarioDraft,
 } from "@/lib/model-v2";
@@ -60,6 +60,32 @@ function section(markup: string, name: (typeof SECTION_ORDER)[number]) {
 }
 
 describe("neutral decision record UI", () => {
+  it("shows the central difference without delay monetisation", () => {
+    const record = fleetDecisionRecord();
+    const delay = record.drivers.find((driver) => driver.id === "delay_cost")!;
+    const expected = record.comparison.deltaCost - delay.contribution.central;
+    const amount = new Intl.NumberFormat("en-GB", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(expected);
+    const summary = section(renderRecord(record), "summary");
+    expect(summary).toContain("Difference excluding delay cost");
+    expect(summary).toContain(`${amount} PLN`);
+    expect(summary).toContain("Sensitivity to daily delay cost");
+    const days = record.alternatives.formalSequential.result.elapsedDays.central -
+      record.alternatives.adaptiveCompliant.result.elapsedDays.central;
+    const lowRateDifference = expected + days * record.assumptions.dailyCostOfInaction.low;
+    expect(summary).toContain(`${new Intl.NumberFormat("en-GB", {
+      minimumFractionDigits: 2, maximumFractionDigits: 2,
+    }).format(lowRateDifference)} PLN`);
+  });
+
+  it("preserves amendment frequency precision in the record", () => {
+    const markup = renderRecord();
+    expect(markup).toContain("0.077");
+    expect(markup).toContain("0.084");
+    expect(markup).toContain("0.098");
+  });
   it("renders metadata and the exact eight-part hierarchy with actions last", () => {
     const markup = renderRecord();
     const indices = SECTION_ORDER.map((name) =>
@@ -68,8 +94,8 @@ describe("neutral decision record UI", () => {
 
     expect(indices.every((index) => index >= 0)).toBe(true);
     expect(indices).toEqual([...indices].sort((a, b) => a - b));
-    expect(markup).toContain("2.3.1");
-    expect(markup).toContain("source-scenario-2026-08-28");
+    expect(markup).toContain("2.3.2");
+    expect(markup).toContain("source-scenario-2026-10-28");
     expect(markup).toContain("pl-pzp-2026-2027");
     expect(markup).toContain("fleet_tco_reframing");
     expect(markup).toContain("PLN");
@@ -96,7 +122,7 @@ describe("neutral decision record UI", () => {
   it("names the explicitly disadvantaged competition side in the assumptions record", () => {
     const markup = renderRecord(
       buildDecisionRecordV2(
-        createScenarioDraft("stable_private_standard_service")
+        competitionStressDraft()
       )
     );
     const assumptions = section(markup, "assumptions");
@@ -140,7 +166,7 @@ describe("neutral decision record UI", () => {
       },
     },
   ])("counts $label once from the atomic record", ({ edit }) => {
-    const draft = createScenarioDraft("stable_private_standard_service");
+    const draft = competitionStressDraft();
     edit(draft, {
       low: 0.04,
       central: 0.06,

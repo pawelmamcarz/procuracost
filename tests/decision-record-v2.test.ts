@@ -1,3 +1,4 @@
+import { competitionStressDraft } from "@/tests/fixtures/competition-stress";
 import { describe, expect, it } from "vitest";
 
 import { encodeInputsToParams } from "@/components/calculator-url";
@@ -85,6 +86,14 @@ function userFixed(value: number, evidenceId: string) {
 }
 
 describe("model 2.3 neutral decision record", () => {
+  it("reports amendment impacts as outside monetary coverage", () => {
+    const record = buildDecisionRecordV2(createScenarioDraft("fleet_tco_reframing"));
+    expect(record.coverage.map(({ id }) => id)).not.toContain("contract_amendment");
+    expect(record.nonMonetizedDimensions).toEqual(expect.arrayContaining([
+      expect.objectContaining({ id: "contract_amendment" }),
+    ]));
+    expect(record.externalEvidence.map(({ id }) => id)).toContain("beuve_amendment_frequency_2023");
+  });
   it("serialises exact metadata, ordered axes, independent designs and engine-owned results", () => {
     const {
       draft,
@@ -94,8 +103,8 @@ describe("model 2.3 neutral decision record", () => {
 
     expect(record.metadata).toEqual({
       schemaVersion: 2,
-      modelVersion: "2.3.1",
-      calibrationId: "source-scenario-2026-08-28",
+      modelVersion: "2.3.2",
+      calibrationId: "source-scenario-2026-10-28",
       legalRulesetId: "pl-pzp-2026-2027",
       scenarioId: "fleet_tco_reframing",
       currency: "PLN",
@@ -148,7 +157,6 @@ describe("model 2.3 neutral decision record", () => {
       "role_cost",
       "non_labour_cost",
       "competition_transfer",
-      "contract_amendment",
       "tco",
     ]);
     expect(record.drivers[0]).toMatchObject({
@@ -160,10 +168,16 @@ describe("model 2.3 neutral decision record", () => {
       "non_labour_cost",
       "delay_cost",
       "competition_transfer",
-      "contract_amendment",
       "tco",
     ]);
     expect(record.nonMonetizedDimensions).toEqual([
+      {
+        id: "contract_amendment",
+        alternatives: {
+          formalSequential: { reasonKey: "reasons.amendmentNotMonetized", evidenceIds: ["beuve_amendment_frequency_2023"] },
+          adaptiveCompliant: { reasonKey: "reasons.amendmentNotMonetized", evidenceIds: ["beuve_amendment_frequency_2023"] },
+        },
+      },
       {
         id: "informal_bypass",
         alternatives: {
@@ -253,10 +267,7 @@ describe("model 2.3 neutral decision record", () => {
       "alternatives.formalSequential.contractDesign.dimensions[0].cost",
       "alternatives.adaptiveCompliant.contractDesign.dimensions[0].cost",
     ]);
-    expect(anchors.contract_amendment).toEqual([
-      "alternatives.formalSequential.contractDesign.dimensions[1].cost",
-      "alternatives.adaptiveCompliant.contractDesign.dimensions[1].cost",
-    ]);
+    expect(anchors.contract_amendment).toBeUndefined();
     expect(anchors.tco).toEqual([
       "alternatives.formalSequential.contractDesign.dimensions[2].cost",
       "alternatives.adaptiveCompliant.contractDesign.dimensions[2].cost",
@@ -288,7 +299,6 @@ describe("model 2.3 neutral decision record", () => {
       "illustrative_scenario",
     ]);
     for (const id of [
-      "contract_amendment",
       "tco",
     ] as const) {
       expect(evidenceClasses(id)).toEqual(["retained_legacy_assumption"]);
@@ -347,6 +357,7 @@ describe("model 2.3 neutral decision record", () => {
       "oecd_rvul_problem_definition",
       "uzp_preliminary_market_consultation",
       "ec_innovation_procurement_guidance",
+      "beuve_amendment_frequency_2023",
     ]);
     expect(record.internalEvidence.map(({ id }) => id)).toEqual([
       "model_2_3_mechanism_workflow_allocations",
@@ -379,7 +390,7 @@ describe("model 2.3 neutral decision record", () => {
   });
 
   it("keeps retained and user contract values separate from empirical rate anchors", () => {
-    const retainedDraft = createScenarioDraft("stable_private_standard_service");
+    const retainedDraft = competitionStressDraft();
     const retainedContractValue = structuredClone(
       retainedDraft.economicAssumptions.contractValue
     );
@@ -399,7 +410,7 @@ describe("model 2.3 neutral decision record", () => {
       )
     ).toBe(false);
 
-    const userDraft = createScenarioDraft("stable_private_standard_service");
+    const userDraft = competitionStressDraft();
     userDraft.economicAssumptions.contractValue = {
       low: 2_000_000,
       central: 4_000_000,

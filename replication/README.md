@@ -1,10 +1,10 @@
 # ProcuraCost Replication Package
 
-**Model version:** 2.3.1
+**Model version:** 2.3.2
 
 **Schema version:** 2
 
-**Calibration:** `source-scenario-2026-08-28`
+**Calibration:** `source-scenario-2026-10-28`
 
 **Legal ruleset:** `pl-pzp-2026-2027`
 
@@ -71,10 +71,9 @@ English.
 
 The catalogue call-off and MRP release scenarios are neutral controls because
 their process maps are identical and no competition difference is declared.
-The stable standard-service scenario is a topology control only. It separately
-declares the adaptive/compliant starting alternative as having restricted
-supplier access compared with open policy-qualified competition. That side is
-an editable transfer assumption, not a property of the workflow label.
+The stable standard-service scenario also starts with identical maps and no
+declared supplier-access difference. A restricted side can be selected as a
+separate transfer stress; it is not a property of the workflow label.
 Scenario values migrated from the former registry
 remain labelled `retained_legacy_assumption`. Attached official evidence supports
 a mechanism, not those monetary values.

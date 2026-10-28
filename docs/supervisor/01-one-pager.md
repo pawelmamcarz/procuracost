@@ -1,4 +1,4 @@
-# ProcuraCost 2.3.0: nota koncepcyjna
+# ProcuraCost 2.3.2: nota koncepcyjna
 
 ## Problem
 

@@ -158,11 +158,11 @@ describe("model assumptions routes", () => {
       "not a property of adaptive workflow design",
     ],
   ] as const)(
-    "discloses the bounded Szucs counterfactual and its side in %s",
+    "discloses the optional bounded Szucs counterfactual without a default side in %s",
     (_lang, Page, sideLabel, mechanism, boundary) => {
       const markup = renderToStaticMarkup(createElement(Page));
 
-      expect(markup).toContain(sideLabel);
+      expect(markup).not.toContain(sideLabel);
       expect(markup).toContain(mechanism);
       expect(markup).toContain(boundary);
     }

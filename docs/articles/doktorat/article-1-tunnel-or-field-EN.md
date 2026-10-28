@@ -1,6 +1,6 @@
 # Tunnel or Field: Separating Governance Boundaries from Procurement Workflow
 
-**Doctoral-cycle article 1 | conceptual paper | ProcuraCost 2.3.0 | draft**
+**Doctoral-cycle article 1 | conceptual paper | ProcuraCost 2.3.2 | draft**
 
 ## Abstract
 

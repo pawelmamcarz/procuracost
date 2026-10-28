@@ -165,6 +165,24 @@ export interface DecisionRecordV2 {
   legalProvenance: LegalProvenanceRecord[];
 }
 
+export function centralDifferenceWithoutDelay(record: DecisionRecordV2): number {
+  const delay = record.drivers.find((entry) => entry.id === "delay_cost");
+  if (!delay) throw new Error("Decision record is missing the delay cost driver");
+  return record.comparison.deltaCost - delay.contribution.central;
+}
+
+export function centralDelaySensitivity(record: DecisionRecordV2): RangeValues {
+  const base = centralDifferenceWithoutDelay(record);
+  const days = record.alternatives.formalSequential.result.elapsedDays.central -
+    record.alternatives.adaptiveCompliant.result.elapsedDays.central;
+  const rate = record.assumptions.dailyCostOfInaction;
+  return {
+    low: base + days * rate.low,
+    central: base + days * rate.central,
+    high: base + days * rate.high,
+  };
+}
+
 export function nativeV2MigrationMetadata(): DecisionRecordMigrationMetadata {
   return {
     sourceSchemaVersion: "v2",
@@ -239,7 +257,7 @@ function buildDrivers(
       result.formalSequential.delayCost,
       result.adaptiveCompliant.delayCost
     ),
-    ...(["competition_transfer", "contract_amendment", "tco"] as const).map(
+    ...(["competition_transfer", "tco"] as const).map(
       (id) =>
         driver(
           id,
@@ -371,7 +389,7 @@ function buildCoverage(
       result.formalSequential.delayCost,
       result.adaptiveCompliant.delayCost
     ),
-    ...(["competition_transfer", "contract_amendment", "tco"] as const).map(
+    ...(["competition_transfer", "tco"] as const).map(
       (id) =>
         driver(
           id,
@@ -391,7 +409,7 @@ function buildCoverage(
 function buildNonMonetizedDimensions(
   result: ComparisonCalculationResult
 ): DecisionNonMonetizedDimension[] {
-  const ids = new Set<ContractCostDimensionId>();
+  const ids = new Set<ContractCostDimensionId>(["contract_amendment"]);
   for (const alternative of ALTERNATIVE_IDS) {
     for (const dimension of result[alternative].nonMonetizedDimensions) {
       ids.add(dimension.id);
@@ -403,6 +421,9 @@ function buildNonMonetizedDimensions(
       id,
       alternatives: Object.fromEntries(
         ALTERNATIVE_IDS.map((alternative) => {
+          if (id === "contract_amendment") {
+            return [alternative, { reasonKey: "reasons.amendmentNotMonetized", evidenceIds: ["beuve_amendment_frequency_2023"] }];
+          }
           const dimension = result[alternative].nonMonetizedDimensions.find(
             (candidate) => candidate.id === id
           );
@@ -460,11 +481,13 @@ function collectCalculationAnchors(
 function buildEvidenceRecords(
   scenario: ScenarioV2,
   anchors: CalculationAnchorRecord[],
-  registry: readonly EvidenceRecord[]
+  registry: readonly EvidenceRecord[],
+  additionalIds: readonly string[] = []
 ): EvidenceRecord[] {
   const ids = new Set([
     ...scenario.evidenceIds,
     ...anchors.flatMap(({ evidenceIds }) => evidenceIds),
+    ...additionalIds,
   ]);
   return registry.filter(({ id }) => ids.has(id)).map((record) =>
     structuredClone(record)
@@ -534,6 +557,10 @@ function assembleDecisionRecordV2(
 ): DecisionRecordV2 {
   const context = source.context;
   const anchors = collectCalculationAnchors(calculationInput);
+  const nonMonetizedDimensions = buildNonMonetizedDimensions(calculationResult);
+  const nonMonetizedEvidenceIds = nonMonetizedDimensions.flatMap(({ alternatives }) =>
+    ALTERNATIVE_IDS.flatMap((id) => alternatives[id]?.evidenceIds ?? [])
+  );
   const internalEvidence = buildEvidenceRecords(
     scenario,
     anchors,
@@ -542,7 +569,8 @@ function assembleDecisionRecordV2(
   const externalEvidence = buildEvidenceRecords(
     scenario,
     anchors,
-    EVIDENCE_REGISTRY
+    EVIDENCE_REGISTRY,
+    nonMonetizedEvidenceIds
   );
   const drivers = buildDrivers(calculationInput, calculationResult);
   const alternatives = Object.fromEntries(
@@ -596,7 +624,7 @@ function assembleDecisionRecordV2(
     },
     drivers,
     coverage: buildCoverage(calculationInput, calculationResult, anchors),
-    nonMonetizedDimensions: buildNonMonetizedDimensions(calculationResult),
+    nonMonetizedDimensions,
     assumptions: structuredClone(source.economicAssumptions),
     roleHourlyRates: structuredClone(calculationInput.roleHourlyRates),
     calculationAnchors: anchors,

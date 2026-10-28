@@ -1,4 +1,4 @@
-# Pakiet dla promotora: ProcuraCost 2.3.0
+# Pakiet dla promotora: ProcuraCost 2.3.2
 
 **Aktualizacja techniczna:** 29 sierpnia 2026
 **Status:** pakiet do rozmowy metodologicznej, bez wyników empirycznych

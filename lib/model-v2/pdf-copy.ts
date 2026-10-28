@@ -1,5 +1,6 @@
 import {
   modelV2T,
+  decisionRecordT,
   pdfExportV2T,
   researchExportV2T,
   type Lang,
@@ -16,6 +17,7 @@ import type {
   DecisionRecordV2,
   MonetaryDriverId,
 } from "./decision-record";
+import { centralDelaySensitivity, centralDifferenceWithoutDelay } from "./decision-record";
 import type {
   LegacyMaterializedInputField,
   LegacyMaterializedPath,
@@ -277,6 +279,8 @@ export interface PdfCopyV2 {
   results: PdfResultCopy[];
   comparisonSummary: string;
   comparisonRange: PdfRangeCopy;
+  delaySensitivity: PdfLabelValue[];
+  delaySensitivityNote: string;
   drivers: PdfDriverCopy[];
   coverage: PdfCoverageCopy[];
   nonMonetizedDimensions: PdfNonMonetizedCopy[];
@@ -343,7 +347,7 @@ function scenarioName(record: DecisionRecordV2, lang: Lang): string {
 function formatNumber(value: number, lang: Lang): string {
   return new Intl.NumberFormat(lang === "en" ? "en-GB" : "pl-PL", {
     minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+    maximumFractionDigits: 3,
   }).format(value);
 }
 
@@ -356,7 +360,7 @@ function formatCurrency(value: number, lang: Lang): string {
       maximumFractionDigits: 2,
     }).format(value);
   }
-  return `${formatNumber(value, lang)} PLN`;
+  return `${new Intl.NumberFormat("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value)} PLN`;
 }
 
 function formatRange(
@@ -634,6 +638,14 @@ export function buildPdfCopy(
       central: formatCurrency(record.comparison.deltaCost, locale),
       high: formatCurrency(record.comparison.deltaCostOuterEnvelope.high, locale),
     },
+    delaySensitivity: [
+      { label: decisionRecordT[locale].delta.withoutDelay, value: formatCurrency(centralDifferenceWithoutDelay(record), locale) },
+      ...(["low", "central", "high"] as const).map((level) => ({
+        label: `${decisionRecordT[locale].delta.delaySensitivity} (${researchExportV2T[locale].range[level]}: ${formatCurrency(record.assumptions.dailyCostOfInaction[level], locale)})`,
+        value: formatCurrency(centralDelaySensitivity(record)[level], locale),
+      })),
+    ],
+    delaySensitivityNote: decisionRecordT[locale].delta.delaySensitivityNote,
     drivers: record.drivers.map((driver) => ({
       id: driver.id,
       label: (tx.drivers as Record<string, string>)[driver.id],

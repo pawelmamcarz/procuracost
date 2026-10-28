@@ -1,3 +1,4 @@
+import { competitionStressDraft } from "@/tests/fixtures/competition-stress";
 import { readFileSync } from "node:fs";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -95,7 +96,7 @@ describe("calculator workspace UI", () => {
     ];
 
     expect(html).toContain("Compare two ways to run a procurement");
-    expect(html).toContain("Model 2.3.1");
+    expect(html).toContain("Model 2.3.2");
     expect(html).toContain("Case");
     expect(html).toContain("Workflows");
     expect(html).toContain("Costs");
@@ -421,7 +422,7 @@ describe("calculator workspace UI", () => {
     expect(html).toContain("Business requestor: daily rate");
     expect(html).not.toContain("retainedLegacyInputs.contractValue");
     expect(html).toContain(
-      "The former result is not being reproduced. The inputs will be recalculated under model 2.3.1."
+      "The former result is not being reproduced. The inputs will be recalculated under model 2.3.2."
     );
   });
 
@@ -524,7 +525,7 @@ describe("calculator workspace UI", () => {
   });
 
   it("enforces the typed 0 to 1 competition-transfer range and links every field member to its error", () => {
-    const draft = createScenarioDraft("stable_private_standard_service");
+    const draft = competitionStressDraft();
     if (!draft.economicAssumptions.competitionTransferRate) {
       throw new Error("Expected competition-transfer fixture");
     }
@@ -568,7 +569,7 @@ describe("calculator workspace UI", () => {
     "renders an equal-status competition-side editor in %s",
     (lang, label, disclosure) => {
       const state = createCalculatorWorkspaceState(
-        createScenarioDraft("stable_private_standard_service")
+        competitionStressDraft()
       );
       const html = renderWorkspace(state, lang, undefined, "costs");
 
@@ -603,7 +604,7 @@ describe("calculator workspace UI", () => {
   });
 
   it("blocks calculation with a field-level message when a competition side is missing", () => {
-    const draft = createScenarioDraft("stable_private_standard_service");
+    const draft = competitionStressDraft();
     draft.economicAssumptions.competitionDisadvantagedAlternative = null;
     const state = createCalculatorWorkspaceState(draft);
     const validation = deriveCalculatorWorkspaceValidation(state);

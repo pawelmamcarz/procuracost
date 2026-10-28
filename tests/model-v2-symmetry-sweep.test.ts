@@ -59,7 +59,7 @@ describe("native model 2.3 swap-symmetry sweep", () => {
     );
     expect(report).toEqual({
       schemaVersion: 2,
-      modelVersion: "2.3.1",
+      modelVersion: "2.3.2",
       examined: 10,
       failures: [],
     });

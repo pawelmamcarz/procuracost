@@ -82,7 +82,7 @@ describe("calculator v2 URL bootstrap", () => {
   });
 
   it.each([
-    ["v2-era state without sv", new URLSearchParams({ mv: "2.3.1" })],
+    ["v2-era state without sv", new URLSearchParams({ mv: "2.3.2" })],
     ["unknown legacy scenario", new URLSearchParams({ sid: "unknown" })],
     ["missing legacy scenario", new URLSearchParams({ cv: "1000" })],
   ])("routes recognised %s through explicit blocked migration", async (_label, params) => {

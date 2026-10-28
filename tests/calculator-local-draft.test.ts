@@ -101,7 +101,7 @@ describe("versioned local calculator draft", () => {
     const incompatible = structuredClone(stored) as {
       metadata: { modelVersion: string };
     };
-    incompatible.metadata.modelVersion = "2.2.2";
+    incompatible.metadata.modelVersion = "2.3.1";
 
     expect(
       contract.parseLocalCalculatorDraft(JSON.stringify(incompatible))

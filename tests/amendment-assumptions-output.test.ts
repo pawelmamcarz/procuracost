@@ -56,7 +56,8 @@ describe("amendment assumption audit rows", () => {
       const csv = buildResearchCsv(record, lang);
       const markdown = buildResearchMarkdown(record, lang);
 
-      expect(record.drivers.find(({ id }) => id === "contract_amendment")?.contribution.central).toBeGreaterThan(0);
+      expect(record.drivers.find(({ id }) => id === "contract_amendment")).toBeUndefined();
+      expect(record.nonMonetizedDimensions.map(({ id }) => id)).toContain("contract_amendment");
       expect(html).toContain(decisionRecordT[lang].assumptions.summary(record.retainedAssumptions.length, 3));
       for (const field of FIELDS) {
         const value = record.assumptions[field]!;

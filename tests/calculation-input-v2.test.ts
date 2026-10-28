@@ -29,6 +29,7 @@ import {
   SCENARIO_V2_IDS,
   SCENARIOS_V2,
   createScenarioDraft,
+  selectCompetitionDisadvantagedAlternative,
   type ScenarioDraft,
 } from "@/lib/model-v2/scenarios";
 
@@ -97,6 +98,7 @@ describe("model 2.3 draft calculation materialisation", () => {
     const draft = createScenarioDraft("stable_private_standard_service");
     const sibling = createScenarioDraft("stable_private_standard_service");
     const siblingBefore = JSON.stringify(sibling);
+    draft.economicAssumptions = selectCompetitionDisadvantagedAlternative(draft.economicAssumptions, "adaptiveCompliant");
 
     draft.economicAssumptions.contractValue = {
       low: 2_000_000,
@@ -165,6 +167,7 @@ describe("model 2.3 draft calculation materialisation", () => {
     const adaptiveDraft = createScenarioDraft(
       "stable_private_standard_service"
     );
+    adaptiveDraft.economicAssumptions = selectCompetitionDisadvantagedAlternative(adaptiveDraft.economicAssumptions, "adaptiveCompliant");
     adaptiveDraft.economicAssumptions.competitionDisadvantagedAlternative =
       "adaptiveCompliant";
     const adaptiveInput = buildCalculationInputFromDraft(adaptiveDraft);
@@ -211,6 +214,7 @@ describe("model 2.3 draft calculation materialisation", () => {
     const missingSide = createScenarioDraft(
       "stable_private_standard_service"
     );
+    missingSide.economicAssumptions = selectCompetitionDisadvantagedAlternative(missingSide.economicAssumptions, "adaptiveCompliant");
     missingSide.economicAssumptions.competitionDisadvantagedAlternative = null;
     expect(() => buildCalculationInputFromDraft(missingSide)).toThrow(
       /competitionDisadvantagedAlternative.*required/i
@@ -532,7 +536,7 @@ describe("model 2.3 draft calculation materialisation", () => {
   });
 
   it.each(["formalSequential", "adaptiveCompliant"] as const)(
-    "derives frequency times years times cost per amendment only on %s",
+    "does not monetise amendments on either side when %s differs",
     (disadvantaged) => {
       const draft = createScenarioDraft("fleet_tco_reframing");
       draft.economicAssumptions.contractRigidityDiffers = true;
@@ -564,13 +568,11 @@ describe("model 2.3 draft calculation materialisation", () => {
       }
       const evidenceIds = [
         "beuve_amendment_frequency_2023",
-        "user.years",
-        "user.amendment-cost",
       ];
       expect(charged.cost).toMatchObject({
-        low: 0.077 * 1 * 10_000,
-        central: 0.084 * 2 * 20_000,
-        high: 0.098 * 3 * 30_000,
+        low: 0,
+        central: 0,
+        high: 0,
         rangeKind: "calibrated",
         evidenceClass: "verified_postprint",
         evidenceIds,
@@ -588,7 +590,7 @@ describe("model 2.3 draft calculation materialisation", () => {
   );
 
   it.each(["amendmentContractYears", "costPerAmendment"] as const)(
-    "requires %s exactly when contract rigidity differs",
+    "validates optional %s without monetising amendments",
     (field) => {
       const missing = createScenarioDraft("fleet_tco_reframing");
       missing.economicAssumptions.contractRigidityDiffers = true;
@@ -596,13 +598,9 @@ describe("model 2.3 draft calculation materialisation", () => {
       missing.economicAssumptions.amendmentContractYears = userFixed(2);
       missing.economicAssumptions.costPerAmendment = userFixed(10_000);
       missing.economicAssumptions[field] = null;
-      expect(() => buildCalculationInputFromDraft(missing)).toThrow(
-        /amendmentContractYears and costPerAmendment are required/
-      );
+      expect(() => buildCalculationInputFromDraft(missing)).not.toThrow();
       Reflect.deleteProperty(missing.economicAssumptions, field);
-      expect(() => buildCalculationInputFromDraft(missing)).toThrow(
-        /amendmentContractYears and costPerAmendment are required/
-      );
+      expect(() => buildCalculationInputFromDraft(missing)).not.toThrow();
 
       const unexpected = createScenarioDraft("fleet_tco_reframing");
       unexpected.economicAssumptions[field] = userFixed(1);

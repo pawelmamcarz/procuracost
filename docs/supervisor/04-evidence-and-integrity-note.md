@@ -1,6 +1,6 @@
 # Nota o dowodach i integralności
 
-**Aktywny model:** ProcuraCost 2.3.0
+**Aktywny model:** ProcuraCost 2.3.2
 **Aktualizacja:** 29 sierpnia 2026
 **Status:** nota metodologiczna do oceny promotora, bez wyników empirycznych
 

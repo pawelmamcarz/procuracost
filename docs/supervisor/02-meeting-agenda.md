@@ -1,6 +1,6 @@
 # Agenda spotkania z promotorem
 
-**Przedmiot:** ProcuraCost 2.3.0 i wykonalność cyklu doktorskiego
+**Przedmiot:** ProcuraCost 2.3.2 i wykonalność cyklu doktorskiego
 **Czas:** 55 do 60 minut
 **Status materiału:** szkice metodologiczne, bez wyników empirycznych
 

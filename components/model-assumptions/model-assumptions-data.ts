@@ -24,7 +24,7 @@ export type ModelAssumptionValueId =
   | "amendmentDifferential"
   | "tcoDifferential";
 
-export type ModelAssumptionUnit = "pln" | "plnPerDay" | "percentage";
+export type ModelAssumptionUnit = "pln" | "plnPerDay" | "percentage" | "amendmentsPerContractYear";
 
 export interface ModelAssumptionCalibratedValue {
   readonly id: ModelAssumptionValueId;
@@ -130,7 +130,7 @@ function scenarioCalibratedValues(
       : []),
     {
       id: "amendmentDifferential",
-      unit: "percentage",
+      unit: "amendmentsPerContractYear",
       value: cloneValue(assumptions.amendmentDifferential),
     },
     {

@@ -758,7 +758,7 @@ const calculatorV2Pl = {
     roleRates: "Stawki godzinowe ról",
     fixedDimensions: "Stała granica neutralności modelu",
     fixedNeutral: "W modelu 2.3 te składniki pozostają zerowe. Ich wycena wymaga odrębnej metody.",
-    amendmentDifferential: "Różnica kosztu aneksów",
+    amendmentDifferential: "Różnica częstości aneksów",
     tcoDifferential: "Różnica alokacji TCO",
     bypass: "Zakup poza zatwierdzonym procesem",
     notMonetized: "Raportowany, ale niemonetyzowany",
@@ -768,6 +768,7 @@ const calculatorV2Pl = {
     hourlyUnit: "PLN/h",
     currencyUnit: "PLN",
     rateUnit: "udział 0–1",
+    amendmentUnit: "aneksów / kontrakt-rok",
   },
   migration: {
     title: "Potwierdź przeniesione dane wejściowe",
@@ -776,9 +777,9 @@ const calculatorV2Pl = {
     fields: "Pola wymagające potwierdzenia",
     retainedValues: "przeniesione wartości starego modelu",
     confirmation:
-      "Potwierdzam użycie przeniesionych danych wejściowych w modelu 2.3.1.",
+      "Potwierdzam użycie przeniesionych danych wejściowych w modelu 2.3.2.",
     recalculation:
-      "Poprzedni wynik nie jest odtwarzany. Dane zostaną ponownie obliczone w modelu 2.3.1.",
+      "Poprzedni wynik nie jest odtwarzany. Dane zostaną ponownie obliczone w modelu 2.3.2.",
     unknownRole: "Inna rola",
     stakeholderCount: "liczba osób",
     stakeholderDailyRate: "stawka dzienna",
@@ -1079,7 +1080,7 @@ const calculatorV2En = {
     roleRates: "Role hourly rates",
     fixedDimensions: "Fixed model-neutrality boundary",
     fixedNeutral: "These dimensions remain zero in model 2.3. They require a separate method before they can be priced.",
-    amendmentDifferential: "Contract-amendment differential",
+    amendmentDifferential: "Amendment frequency difference",
     tcoDifferential: "TCO allocation differential",
     bypass: "Off-process purchasing",
     notMonetized: "Reported but not monetised",
@@ -1089,6 +1090,7 @@ const calculatorV2En = {
     hourlyUnit: "PLN/h",
     currencyUnit: "PLN",
     rateUnit: "ratio 0–1",
+    amendmentUnit: "amendments / contract-year",
   },
   migration: {
     title: "Confirm migrated inputs",
@@ -1097,9 +1099,9 @@ const calculatorV2En = {
     fields: "Fields requiring confirmation",
     retainedValues: "retained legacy values",
     confirmation:
-      "I confirm the use of the retained inputs under model 2.3.1.",
+      "I confirm the use of the retained inputs under model 2.3.2.",
     recalculation:
-      "The former result is not being reproduced. The inputs will be recalculated under model 2.3.1.",
+      "The former result is not being reproduced. The inputs will be recalculated under model 2.3.2.",
     unknownRole: "Other role",
     stakeholderCount: "participant count",
     stakeholderDailyRate: "daily rate",
@@ -1841,7 +1843,7 @@ const researchExportV2Pl = {
     nonLabourCost: "Koszt pozapłacowy",
     delayCost: "Koszt zwłoki",
     contractCost: "Koszt konstrukcji umowy",
-    totalCost: "Koszt całkowity",
+    totalCost: "Koszt elementów objętych modelem",
     deltaCost: "Różnica kosztu",
     outerEnvelope: "Zewnętrzny zakres różnicy",
     evidenceStatus: "Status dowodu",
@@ -1946,7 +1948,7 @@ const researchExportV2Pl = {
     competitionDisadvantagedAlternative:
       "Wariant z ograniczonym dostępem dostawców",
     competitionTransferRate: "Zakres transferu konkurencji",
-    amendmentDifferential: "Różnica kosztu aneksów",
+    amendmentDifferential: "Różnica częstości aneksów na kontrakt-rok",
     amendmentContractYears: "Lata umowy objęte aneksami",
     costPerAmendment: "Koszt jednego aneksu",
     tcoDifferential: "Różnica alokacji TCO",
@@ -2064,7 +2066,7 @@ const researchExportV2En = {
     nonLabourCost: "Non-labour cost",
     delayCost: "Delay cost",
     contractCost: "Contract-design cost",
-    totalCost: "Total cost",
+    totalCost: "Cost of modelled elements",
     deltaCost: "Cost difference",
     outerEnvelope: "Outer difference range",
     evidenceStatus: "Evidence status",
@@ -2169,7 +2171,7 @@ const researchExportV2En = {
     competitionDisadvantagedAlternative:
       "Alternative with restricted supplier access",
     competitionTransferRate: "Competition-transfer range",
-    amendmentDifferential: "Contract-amendment cost difference",
+    amendmentDifferential: "Amendment frequency difference per contract-year",
     amendmentContractYears: "Contract years subject to amendments",
     costPerAmendment: "Cost per amendment",
     tcoDifferential: "TCO-allocation difference",
@@ -2816,7 +2818,7 @@ const pdfExportV2Pl = {
       activeDays: "Dni pracy aktywnej",
       queueDays: "Dni oczekiwania",
       elapsedDays: "Czas trwania",
-      totalCost: "Koszt całkowity",
+      totalCost: "Koszt elementów objętych modelem",
       roleHours: "Godziny pracy ról",
       roleHourlyRates: "Stawki godzinowe ról",
       hourlyRate: "Stawka godzinowa",
@@ -2961,7 +2963,7 @@ const pdfExportV2En = {
       activeDays: "Active work days",
       queueDays: "Waiting days",
       elapsedDays: "Elapsed duration",
-      totalCost: "Total cost",
+      totalCost: "Cost of modelled elements",
       roleHours: "Role hours",
       roleHourlyRates: "Role hourly rates",
       hourlyRate: "Hourly rate",
@@ -3079,12 +3081,15 @@ const decisionRecordPl = {
     identity:
       "Koszt formalnej ścieżki sekwencyjnej minus koszt adaptacyjnej ścieżki zgodnej z ramami",
     centralLabel: "Centralna różnica kosztu",
+    withoutDelay: "Różnica bez kosztu zwłoki",
+    delaySensitivity: "Wrażliwość na dzienny koszt zwłoki",
+    delaySensitivityNote: "Centralne czasy i pozostałe koszty pozostają stałe; zmienia się wyłącznie dzienny koszt zwłoki.",
     outerRangeLabel: "Zewnętrzny zakres różnicy",
     positive:
-      "Formalna ścieżka sekwencyjna ma wyższy centralny koszt całkowity.",
+      "Formalna ścieżka sekwencyjna ma wyższy centralny koszt elementów objętych modelem.",
     negative:
-      "Adaptacyjna ścieżka zgodna z ramami ma wyższy centralny koszt całkowity.",
-    zero: "Centralne koszty całkowite są równe.",
+      "Adaptacyjna ścieżka zgodna z ramami ma wyższy centralny koszt elementów objętych modelem.",
+    zero: "Centralne koszty elementów objętych modelem są równe.",
     crossing:
       "Zewnętrzny zakres obejmuje wartości ujemne i dodatnie. To konserwatywna granica różnicy, a nie dowód zmiany znaku przy wspólnych założeniach dla obu wariantów.",
     touching: "Zewnętrzny zakres dochodzi do zera. Dopuszcza równość kosztów, ale nie obejmuje obu znaków.",
@@ -3092,7 +3097,7 @@ const decisionRecordPl = {
       "Znak jest stabilny w podanych zakresach. Nie jest to dowód statystyczny.",
   },
   alternatives: {
-    total: "Koszt całkowity",
+    total: "Koszt elementów objętych modelem",
     duration: "Czas ścieżki krytycznej",
     days: "dni",
     stepCount: "Liczba kroków procesu",
@@ -3231,6 +3236,9 @@ const decisionRecordEn = {
     identity:
       "Formal sequential total minus adaptive compliant total",
     centralLabel: "Central cost difference",
+    withoutDelay: "Difference excluding delay cost",
+    delaySensitivity: "Sensitivity to daily delay cost",
+    delaySensitivityNote: "Central durations and other costs remain fixed; only the daily delay cost changes.",
     outerRangeLabel: "Outer difference range",
     positive:
       "The formal sequential total is higher at the central assumptions.",
@@ -3244,7 +3252,7 @@ const decisionRecordEn = {
       "The sign is stable within the declared ranges; this is not statistical evidence.",
   },
   alternatives: {
-    total: "Total cost",
+    total: "Cost of modelled elements",
     duration: "Critical-path duration",
     days: "days",
     stepCount: "Process step count",
@@ -4544,7 +4552,7 @@ const modelV2Pl = {
     stable_private_standard_service: {
       name: "Stabilna standardowa usługa prywatna",
       description:
-        "Kontrola topologii pracy dla standaryzowanego zakupu: mapy są identyczne, lecz wynik nie jest neutralny, ponieważ scenariusz jawnie porównuje otwartą konkurencję z ograniczonym dostępem dostawców.",
+        "Kontrola topologii pracy dla standaryzowanego zakupu: mapy i dostęp do rynku są identyczne. Różnicę dostępu można zadeklarować osobno jako stres.",
       sourceTitle: "Scenariusz 2.2.2: kontrola mapy stabilnego zakupu",
       assumptionLabel: "Przeniesione założenia stabilnego zakupu",
       assumptionDetail:
@@ -4668,7 +4676,7 @@ const modelV2Pl = {
         "Nie mierzy formalności przebiegu procesu zakupowego ani prawdopodobieństwa aneksu. Wynik to liczba aneksów na rok umowy.",
       population: "Francuskie samorządowe umowy na obsługę parkingów",
       assumption:
-        "Zakres 0,077, 0,084 i 0,098 aneksu na rok umowy ze zweryfikowanego postprintu (tabela 4) jest wyceniany wyłącznie przy jawnie zadeklarowanej różnicy sztywności umowy. W rejestrze kanonicznym pozostaje zerowy.",
+        "Zakres 0,077, 0,084 i 0,098 aneksu na rok kontraktu ze zweryfikowanego postprintu (tabela 4) opisuje częstotliwość, nie koszt. Model nie przelicza go na kwotę.",
     },
   },
   workflow: {
@@ -4767,6 +4775,8 @@ const modelV2Pl = {
     },
   },
   reasons: {
+    amendmentNotMonetized:
+      "Częstotliwość aneksów nie mierzy ich kosztu pieniężnego, więc skutki aneksów pozostają poza rachunkiem.",
     bypassNotMonetized:
       "Obejście nie jest monetyzowane bez zaobserwowanej lub podanej przez użytkownika częstości.",
   },
@@ -4852,7 +4862,7 @@ const modelV2En: WidenModelV2Copy<typeof modelV2Pl> = {
     stable_private_standard_service: {
       name: "Stable private standard service",
       description:
-        "A workflow-topology control for a standardised purchase: the maps are identical, but the result is not neutral because the scenario explicitly compares open competition with restricted supplier access.",
+        "A workflow-topology control for a standardised purchase: the maps and market access are identical. A difference in access can be declared separately as a stress.",
       sourceTitle: "Model 2.2.2 scenario: stable-purchase map control",
       assumptionLabel: "Retained stable-purchase assumptions",
       assumptionDetail:
@@ -4977,7 +4987,7 @@ const modelV2En: WidenModelV2Copy<typeof modelV2Pl> = {
         "It does not measure procurement workflow formality or the probability of an amendment. The outcome is amendments per contract-year.",
       population: "French municipal car-park contracts",
       assumption:
-        "The 0.077, 0.084 and 0.098 amendments per contract-year range from the verified post-print (Table 4) is monetised only under an explicitly declared contract-rigidity difference. It stays zero in the canonical registry.",
+        "The 0.077, 0.084 and 0.098 amendments per contract-year range from the verified post-print (Table 4) describes frequency, not cost. The model does not convert it to money.",
     },
   },
   workflow: {
@@ -5070,6 +5080,8 @@ const modelV2En: WidenModelV2Copy<typeof modelV2Pl> = {
     },
   },
   reasons: {
+    amendmentNotMonetized:
+      "Amendment frequency does not measure monetary cost, so amendment impacts remain outside the calculation.",
     bypassNotMonetized:
       "Bypass is not monetised without an observed or user-supplied rate.",
   },
@@ -5196,13 +5208,14 @@ const modelAssumptionsPl = {
     contractValue: "Wartość umowy",
     dailyCostOfInaction: "Dzienny koszt zwłoki",
     competitionTransferRate: "Transfer konkurencji cenowej",
-    amendmentDifferential: "Różnica kosztu aneksów",
+    amendmentDifferential: "Różnica częstości aneksów",
     tcoDifferential: "Różnica kosztu TCO",
   },
   units: {
     pln: "PLN",
     plnPerDay: "PLN/dzień",
     percentage: "%",
+    amendmentsPerContractYear: "aneksów / kontrakt-rok",
   },
   rangeKinds: {
     fixed: "wartość stała",
@@ -5353,13 +5366,14 @@ const modelAssumptionsEn = {
     contractValue: "Contract value",
     dailyCostOfInaction: "Daily cost of delay",
     competitionTransferRate: "Competition price transfer",
-    amendmentDifferential: "Contract amendment cost difference",
+    amendmentDifferential: "Amendment frequency difference",
     tcoDifferential: "TCO cost difference",
   },
   units: {
     pln: "PLN",
     plnPerDay: "PLN/day",
     percentage: "%",
+    amendmentsPerContractYear: "amendments / contract-year",
   },
   rangeKinds: {
     fixed: "fixed value",

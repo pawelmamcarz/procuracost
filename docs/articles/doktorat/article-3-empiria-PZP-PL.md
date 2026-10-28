@@ -39,11 +39,11 @@ automatycznie prawidłowym instrumentem identyfikacji.
 
 ## 2. Hipotezy
 
-- **H1a:** większa preskryptywność projektu przebiegu mierzona ex ante wiąże się
+- **H1a:** większa liczba wymaganych bram decyzyjnych mierzona ex ante wiąże się
   z większą liczbą dni od zatwierdzenia potrzeby do zawarcia umowy, po
   uwzględnieniu złożoności, granicy prawnej, rodziny procedury i liczby
   właściwych obowiązkowych dni oczekiwania. **H1b:** przy tych samych kontrolach
-  wiąże się z większą liczbą godzin koordynacji kupca, prawnika i kierownika.
+  liczba bram wiąże się z większą liczbą godzin koordynacji kupca, prawnika i kierownika.
 - **H2:** szerszy dostęp do rynku mierzony ex ante wiąże się z większą liczbą
   ważnych ofert i niższą ceną wyboru względem prerejestrowanego, niezależnego
   benchmarku, niezależnie od topologii pracy.
@@ -69,14 +69,14 @@ pozostaje niezależna od rachunku.
 
 ## 3. Ekspozycja ex ante
 
-### 3.1 Indeks badawczy
+### 3.1 Cechy projektu procesu
 
-Ekspozycją główną jest preskryptywność projektu przebiegu obowiązującego w
+Ekspozycjami są osobne cechy projektu przebiegu obowiązującego w
 chwili autoryzacji potrzeby. Źródłem są wersje polityki zakupowej, macierzy
 uprawnień i konfiguracji obiegu zakupowego ważne w dacie
 `exposure_reference_at`.
 
-Indeks jest narzędziem badawczym. Nie jest polem modelu 2.3, wynikiem publicznego
+Indeks może być pomocniczym narzędziem badawczym po pilotażu. Nie jest polem modelu 2.3, wynikiem publicznego
 profilu procesu, oceną dojrzałości ani rekomendacją.
 
 Proponowane składowe:
@@ -87,8 +87,9 @@ Proponowane składowe:
 4. liczba obowiązkowych artefaktów bez wariantu uproszczonego;
 5. odwrócona autonomia zespołu w zmianie zakresu.
 
-Pozycje są standaryzowane i sumowane z równymi wagami tylko po pozytywnym
-pilotażu pomiaru. Należy raportować także każdy składnik osobno.
+Każdy składnik analizuje się i raportuje osobno. Sumowanie z równymi wagami
+może być analizą pomocniczą po pozytywnym pilotażu pomiaru; dobór głównych
+cech i sposób uwzględnienia wielokrotnych porównań wymaga prerejestracji.
 
 Z ekspozycji wyklucza się długość ścieżki krytycznej i udział oczekiwania. Obie
 wielkości współtworzą wynik czasu, więc ich użycie w ekspozycji tworzyłoby
@@ -218,7 +219,7 @@ Twierdzenie o braku efektu wymaga prerejestrowanego testu równoważności.
 
 Specyfikacja bazowa:
 
-`log(dni) = beta x prescriptiveness + gamma'X + alpha_organizacja + delta_CPV + theta_rok + epsilon`
+`log(dni) = beta' x cechy_procesu + gamma'X + alpha_organizacja + delta_CPV + theta_rok + epsilon`
 
 Porównywane są zdarzenia w tej samej organizacji i kategorii. Błędy standardowe
 są klastrowane na poziomie organizacji. Przy mniej niż 30 klastrach planowany

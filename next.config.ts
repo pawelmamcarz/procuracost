@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     globalNotFound: true,
+    turbopackPluginRuntimeStrategy: "workerThreads",
     // `next dev` bez limitu sterty w NODE_OPTIONS ustawia dziecku
     // --max-old-space-size na 50% RAM (na 64 GB maszynie to 32 GB), a restartuje
     // je dopiero po przekroczeniu 80% tego limitu - bez backoffu i bez limitu

@@ -203,6 +203,10 @@ export function renderDecisionRecordPdf(
   heading(copy.sectionLabels.results);
   writeWrapped(copy.comparisonSummary, { bold: true });
   writeWrapped(rangeDescription(copy.comparisonRange));
+  writeWrapped(copy.delaySensitivityNote);
+  for (const entry of copy.delaySensitivity) {
+    labelValue(entry.label, entry.value, 4);
+  }
   for (const result of copy.results) {
     subheading(result.label);
     labelValue(labels.fields.id, result.id, 4);

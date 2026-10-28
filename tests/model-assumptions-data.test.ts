@@ -87,7 +87,7 @@ describe("server-safe model assumptions data", () => {
       const amendment = scenario.calibratedValues.find(
         (candidate) => candidate.id === "amendmentDifferential"
       )!;
-      expect(amendment.unit).toBe("percentage");
+      expect(amendment.unit).toBe("amendmentsPerContractYear");
       expect(amendment.value).toEqual({
         low: 0.077,
         central: 0.084,
@@ -123,12 +123,7 @@ describe("server-safe model assumptions data", () => {
           id,
           competitionDisadvantagedAlternative,
         }))
-    ).toEqual([
-      {
-        id: "stable_private_standard_service",
-        competitionDisadvantagedAlternative: "adaptiveCompliant",
-      },
-    ]);
+    ).toEqual([]);
   });
 
   it("keeps retained, external, and locked legal provenance separate", () => {

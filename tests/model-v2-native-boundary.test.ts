@@ -56,7 +56,7 @@ function expectDeeplyFrozen(value: unknown, path = "root"): void {
 describe("native model 2.3 retained calculation boundary", () => {
   it("preserves the reviewed model-owned calculation inputs without drift", () => {
     expect(calculationBoundaryDigest()).toBe(
-      "38d64cb0cea1d063592478ada245e2f9dbd44e5d6510479ab4fb8827c7b0a1a3"
+      "8b51d0834c13c46e6e449dd888598a7876c1c86e2664ef2f3b704a1a45a66651"
     );
   });
 
@@ -171,7 +171,7 @@ describe("native model 2.3 retained calculation boundary", () => {
         .central
     ).toBe(4);
     expect(calculationBoundaryDigest()).toBe(
-      "38d64cb0cea1d063592478ada245e2f9dbd44e5d6510479ab4fb8827c7b0a1a3"
+      "8b51d0834c13c46e6e449dd888598a7876c1c86e2664ef2f3b704a1a45a66651"
     );
   });
 });

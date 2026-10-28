@@ -46,8 +46,8 @@ ani wynikiem modelu kosztowego.
 Rekord modelu 2.3 zawiera:
 
 - `schemaVersion: 2`;
-- `modelVersion: 2.3.0`;
-- `calibrationId: source-scenario-2026-08-28`;
+- `modelVersion: 2.3.2`;
+- `calibrationId: source-scenario-2026-10-28`;
 - `legalRulesetId: pl-pzp-2026-2027`.
 
 Ten zestaw identyfikuje strukturę danych, wersję obliczeń, rejestr założeń oraz

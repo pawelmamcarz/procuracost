@@ -84,6 +84,12 @@ describe("model 2.3 canonical scenarios", () => {
     }
   });
 
+
+  it("starts the standard service comparison with equal market access", () => {
+    const draft = createScenarioDraft("stable_private_standard_service");
+    expect(draft.economicAssumptions.pathCompetitionDiffers).toBe(false);
+    expect(draft.economicAssumptions.competitionDisadvantagedAlternative).toBeNull();
+  });
   it("registers exactly the ten canonical IDs with manual legacy aliases", () => {
     expect(SCENARIO_V2_IDS).toEqual(EXPECTED_SCENARIOS.map(([id]) => id));
     expect(SCENARIOS_V2).toHaveLength(10);
@@ -287,16 +293,9 @@ describe("model 2.3 canonical scenarios", () => {
         evidenceIds:
           economicAssumptions.competitionTransferRate?.evidenceIds,
       }))
-    ).toEqual([
-      {
-        id: "stable_private_standard_service",
-        disadvantaged: "adaptiveCompliant",
-        evidenceIds: ["szucs_discretion_price_2024"],
-      },
-    ]);
+    ).toEqual([]);
 
     for (const scenario of SCENARIOS_V2) {
-      if (scenario.id === "stable_private_standard_service") continue;
       expect(
         scenario.economicAssumptions.competitionDisadvantagedAlternative,
         scenario.id
@@ -343,9 +342,7 @@ describe("model 2.3 canonical scenarios", () => {
         evidenceIds: ["szucs_discretion_price_2024"],
       },
     });
-    expect(initial.competitionDisadvantagedAlternative).toBe(
-      "adaptiveCompliant"
-    );
+    expect(initial.competitionDisadvantagedAlternative).toBeNull();
   });
 
   it("retains the legacy scenario centres and workflow timings as labelled assumptions", () => {

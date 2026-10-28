@@ -1,4 +1,4 @@
-# Shared foundation: model 2.3.0
+# Shared foundation: model 2.3.2
 
 **Status:** binding conceptual and quantitative contract for the active doctoral
 article cycle.

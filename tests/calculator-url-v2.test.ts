@@ -36,6 +36,16 @@ function validationCopyExists(messageKey: string): boolean {
 }
 
 describe("model 2.3 calculator URL codec", () => {
+  it.each(["2.3.0", "2.3.1"])("rejects links from model %s without recalculating", (oldVersion) => {
+    const params = encodeV2CalculatorState(stateForScenarioV2("fleet_tco_reframing"));
+    expect(params.get("mv")).toBe("2.3.2");
+    params.set("mv", oldVersion);
+    const decoded = decodeV2CalculatorParams(params);
+    expect(decoded.canCalculate).toBe(false);
+    expect(decoded.validationErrors).toEqual(expect.arrayContaining([
+      expect.objectContaining({ field: "mv", code: "unsupported_version" }),
+    ]));
+  });
   it("round-trips every approved compact axis and metadata field", () => {
     const state = stateForScenarioV2("public_it_open_with_market_consultation");
     const params = encodeV2CalculatorState(state);
@@ -44,8 +54,8 @@ describe("model 2.3 calculator URL codec", () => {
     expect(V2_URL_KEYS).toEqual(REQUIRED_KEYS);
     expect([...params.keys()]).toEqual(REQUIRED_KEYS);
     expect(params.get("sv")).toBe("2");
-    expect(params.get("mv")).toBe("2.3.1");
-    expect(params.get("cid")).toBe("source-scenario-2026-08-28");
+    expect(params.get("mv")).toBe("2.3.2");
+    expect(params.get("cid")).toBe("source-scenario-2026-10-28");
     expect(decoded).toEqual({
       status: "valid",
       canCalculate: true,

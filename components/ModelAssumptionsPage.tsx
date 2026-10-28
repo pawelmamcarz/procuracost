@@ -41,6 +41,12 @@ function formatValue(
   if (unit === "percentage") {
     return `${formatNumber(value * 100, lang)}${copy.units.percentage}`;
   }
+  if (unit === "amendmentsPerContractYear") {
+    const number = new Intl.NumberFormat(lang === "pl" ? "pl-PL" : "en-GB", {
+      maximumFractionDigits: 3,
+    }).format(value);
+    return `${number} ${copy.units[unit]}`;
+  }
   return `${formatNumber(value, lang)} ${copy.units[unit]}`;
 }
 

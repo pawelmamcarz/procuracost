@@ -2,7 +2,7 @@
 
 > **A tunnel has walls. A field has a horizon.**
 
-ProcuraCost is an open-source, bilingual procurement decision model. Native model 2.3.1 compares a formal/sequential workflow with an adaptive/compliant workflow inside the same legal and governance boundary. It separates the boundary, purchase archetype, procurement workflow design, purchase execution channel, system support and contract design instead of treating them as one aggregate capability score.
+ProcuraCost is an open-source, bilingual procurement decision model. Native model 2.3.2 compares a formal/sequential workflow with an adaptive/compliant workflow inside the same legal and governance boundary. It separates the boundary, purchase archetype, procurement workflow design, purchase execution channel, system support and contract design instead of treating them as one aggregate capability score.
 
 The calculation is deterministic. It works from declared process maps, role rates, non-labour costs, contract cost allocations and the daily cost of inaction. It reports both alternatives, the central difference `formalSequential - adaptiveCompliant`, an outer scenario envelope, the critical path, monetisation coverage, non-monetised dimensions, assumptions and evidence provenance.
 
@@ -20,7 +20,7 @@ ProcuraCost is not a trained estimator and does not establish that either workfl
 
 ## Reference scenarios
 
-Model 2.3.1 provides ten named starting points. Their economic values are declared assumptions, not measured outcomes from the named sectors or organisations. Applicable legal waits remain fixed by the ruleset.
+Model 2.3.2 provides ten named starting points. Their economic values are declared assumptions, not measured outcomes from the named sectors or organisations. Applicable legal waits remain fixed by the ruleset.
 
 1. Fleet TCO reframing
 2. ERP transformation discovery
@@ -43,7 +43,7 @@ applied afterwards. The decision record exposes both provenance classes.
 
 ## Evidence boundary
 
-Szucs (2024) provides the empirical anchor for the competition-transfer stress where the compared alternatives explicitly differ in supplier access. The 2%, 6% and 9% values are a declared transfer range from a specific Hungarian public-procurement population, not a Polish estimate. Only the stable standard-service sensitivity starts with this difference: open policy-qualified competition is compared with a restricted shortlist or incumbent continuation. The user can assign the restricted access to either alternative or remove the difference; it is not inferred from a workflow label.
+Szucs (2024) provides the empirical anchor for the competition-transfer stress where the compared alternatives explicitly differ in supplier access. The 2%, 6% and 9% values are a declared transfer range from a specific Hungarian public-procurement population, not a Polish estimate. Starting scenarios assume equal market access; the user may explicitly assign restricted access to either alternative as a separate stress. It is not inferred from a workflow label.
 
 The active official cases cover modular technology procurement, problem
 definition, preliminary market consultation and innovation procurement. They
@@ -52,7 +52,7 @@ The internal record `model_2_3_mechanism_workflow_allocations` documents the
 illustrative map allocations. Contract-amendment and TCO differentials remain
 zero in the native calculation until a supported allocation convention is
 introduced. Informal bypass is disclosed but remains non-monetised in native
-model 2.3.1.
+model 2.3.2.
 
 Historical model 2.2.2 outputs remain in the immutable replication archive. Its calibration audit is explicitly historical in [`docs/research/CALIBRATION_BENCHMARKS.md`](./docs/research/CALIBRATION_BENCHMARKS.md). The active working paper is [`RESEARCH.md`](./RESEARCH.md), and the active parameter contract is [`docs/MODEL_PARAMETERS.md`](./docs/MODEL_PARAMETERS.md).
 

@@ -2,13 +2,13 @@
 
 **Working paper, draft for review**
 
-**Model:** ProcuraCost 2.3.0
+**Model:** ProcuraCost 2.3.2
 
 **Updated:** 21 September 2026
 
 ## Abstract
 
-ProcuraCost 2.3.0 compares the cost of two workflows for the same purchase under the same legal and governance boundary: formal/sequential and adaptive/compliant. Each alternative has its own process map and contract design. From declared inputs, the model calculates critical-path duration, staff costs by role, non-labour process costs, delay costs and specified contract costs. The decision record also identifies effects left outside the monetary calculation.
+ProcuraCost 2.3.2 compares the cost of two workflows for the same purchase under the same legal and governance boundary: formal/sequential and adaptive/compliant. Each alternative has its own process map and contract design. From declared inputs, the model calculates critical-path duration, staff costs by role, non-labour process costs, delay costs and specified contract costs. The decision record also identifies effects left outside the monetary calculation.
 
 The calculation is deterministic. Inputs are classified as fixed, calibrated or stress values; the reported ranges are not statistical confidence intervals. Mandatory legal waits come from a dated ruleset and remain identical in both alternatives, regardless of system support. The cost difference is defined as formal/sequential total minus adaptive/compliant total. Swapping the alternatives must reverse its sign. These properties make the calculation reproducible, but do not establish whether either workflow causes a lower cost in practice.
 
@@ -33,7 +33,7 @@ The output allows the user to:
 
 A procurement policy defines objectives and constraints. A legal and governance boundary specifies authority, competition, ethics, documentation and other applicable obligations. A procedure family identifies an admissible method. A procurement workflow design orders and connects the work performed within that method. A contract design allocates commercial and adaptation mechanisms. The purchase execution channel and system support describe how the work is carried out.
 
-Model 2.3.0 records seven decision areas separately:
+Model 2.3.2 records seven decision areas separately:
 
 - **Legal and governance boundary:** private policy, public internal rules, PZP classic national or PZP classic EU.
 - **Procedure family:** the declared procurement method, kept separate from workflow topology and subject to the model's supported legal scope.
@@ -69,7 +69,7 @@ ProcuraCost monetises the price channel only. Productivity remains a separate ou
 
 Beuve, Moszoro and Spiller (2023) examine French car-park contracts. Their 2SLS/IV analysis relates contractual rigidity to the annual frequency of formal amendments. The outcome is amendments per contract-year, not the probability of an amendment; the rigidity index sums seven category z-scores. It does not measure procurement workflow formality and cannot be applied directly to a hand-authored zero-to-one profile. The [accessible author post-print](https://mpra.ub.uni-muenchen.de/117230/1/Renegotiations_v5c.pdf) declares the published citation (JLEO 39(1): 281-308) and postdates the print publication, so it is treated here as the published-version text. Its Table 4 prints coefficients of 0.014, 0.011 and 0.012, while its Section 6.2 prose still reports 7.7–10.5%. A one-standard-deviation increase in each of seven categories raises the summed index by seven; multiplying the printed coefficients gives 0.098, 0.077 and 0.084 additional amendments per contract-year. The prose upper endpoint (0.105) requires the 0.015 coefficient that appears only in the earlier NBER working paper (w28491), whose prose is internally consistent. No erratum or corrigendum was found in Crossref, Crossmark or the journal, and the OUP version of record was not read directly (access blocked), so a marginal possibility remains that it differs from the verified post-print.
 
-Earlier ProcuraCost versions used the study as an order-of-magnitude anchor. Native model 2.3.0 now anchors the amendment differential to the published-version Table 4 as a `verified_postprint` range of 0.077, 0.084 and 0.098 per contract-year, under a signed allocation convention: the seven-category z-score index maps onto the model profile such that a declared full-profile rigidity difference carries the entire published range, and the differential is monetised as contract value times the differential only on the alternative explicitly declared more rigid. That application is a declared transfer convention, not the study's dependent-variable unit and not an estimate for Poland. Every canonical scenario declares no rigidity difference, so the monetised amendment allocation remains zero in the starting registry and the builder rejects hand-entered non-zero allocations without the declaration.
+The verified post-print reports a range of 0.077, 0.084 and 0.098 additional amendments per contract-year. This is a frequency, not a monetary cost. The model therefore assigns no monetary amendment differential, including when a rigidity difference is declared.
 
 ### 3.3 Administrative effort and delay
 
@@ -81,9 +81,9 @@ Delay remains an accounting identity between critical-path elapsed days and a de
 
 ### 3.4 TCO and informal bypass
 
-No verified peer-reviewed source supports a universal TCO saving rate for adaptive procurement. Native model 2.3.0 therefore allocates no TCO differential. The fleet scenario frames which lifecycle inputs should be assembled, but it does not assume that one workflow captures more value.
+No verified peer-reviewed source supports a universal TCO saving rate for adaptive procurement. Native model 2.3.2 therefore allocates no TCO differential. The fleet scenario frames which lifecycle inputs should be assembled, but it does not assume that one workflow captures more value.
 
-Lipsky (1980), Vaughan (1996), and Holmström and Milgrom (1991) can motivate hypotheses about workarounds and distorted incentives. They do not provide an informal-bypass probability. Native model 2.3.0 discloses informal bypass as a non-monetised dimension. Any future allocation would require observed or user-supplied evidence and a new signed allocation convention.
+Lipsky (1980), Vaughan (1996), and Holmström and Milgrom (1991) can motivate hypotheses about workarounds and distorted incentives. They do not provide an informal-bypass probability. Native model 2.3.2 discloses informal bypass as a non-monetised dimension. Any future allocation would require observed or user-supplied evidence and a new signed allocation convention.
 
 ### 3.5 Official cases
 
@@ -102,7 +102,7 @@ These sources support the existence of mechanisms and implementation questions. 
 
 | Gap | Current treatment | Evidence needed to change it |
 |---|---|---|
-| Beuve manuscript effect magnitude | Resolved in favour of the published-version Table 4 via the verified post-print (0.077, 0.084 and 0.098 per contract-year); monetised only under a declared rigidity difference, so zero in the canonical registry. | Direct reading of the OUP version of record or an erratum confirming that the post-print matches the published text. |
+| Beuve manuscript effect magnitude | The verified post-print reports 0.077, 0.084 and 0.098 per contract-year; the frequency is not monetised. | Direct reading of the OUP version of record or an erratum confirming that the post-print matches the published text. |
 | Transfer from historical EU effort statistics | EC2011 locators verified; the comparison concerns recorded model 2.2.2 outputs only. | Matched activity coverage and organisational effort data for the native process maps. |
 | TCO and informal bypass | TCO differential remains zero; bypass remains non-monetised. | Category-specific lifecycle observations and documented deviations, with a defined comparison and allocation convention. |
 | Readiness checklist | Sixteen authored questions, not a validated scale. | Evidence that respondents interpret the questions consistently and that responses correspond to independently observed implementation conditions. |
@@ -110,7 +110,7 @@ These sources support the existence of mechanisms and implementation questions. 
 
 The [remaining-source report](docs/citation-audit/REMAINING_SOURCES_FOLLOWUP.md) also records unavailable survey methods and original-book passages. Supplier-survey percentages are not inputs to this paper's calculations. Finding a full text would resolve an access gap, not establish transferability or causal validity.
 
-## 4. Native model 2.3.0
+## 4. Native model 2.3.2
 
 ### 4.1 Process maps and critical path
 
@@ -157,11 +157,10 @@ The alternative total is:
 C_j^k=C_{role,j}^{k}+C_{nonlab,j}^{k}+C_{delay,j}^{k}+C_{contract,j}^{k}.
 \]
 
-In the native starting points, competition transfer is the only non-zero contract allocation. It appears only in the stable standard-service sensitivity, which explicitly compares open policy-qualified competition with a restricted shortlist or incumbent continuation and identifies the restricted alternative. The allocation can be reversed or removed; it is never inferred from a workflow label. The contract-amendment differential is anchored to the published-version Table 4 of Beuve, Moszoro and Spiller (0.077, 0.084 and 0.098 per contract-year, verified post-print) but is monetised only under an explicitly declared contract-rigidity difference, which no canonical scenario declares. TCO is fixed at zero. Informal bypass is not monetised.
+Native starting points assume equal access to competition. A user may explicitly declare restricted supplier access for either alternative as a separate competition-transfer stress; it is never inferred from a workflow label. The amendment frequency reported by Beuve, Moszoro and Spiller is not monetised. TCO is fixed at zero. Informal bypass is not monetised.
 Bajari, Houghton and Tadelis (2014) estimate adaptation costs in incomplete
 contracts; that evidence motivates the contract-design dimension, but the
-native model monetises no amendment differential without a signed allocation
-convention.
+native model does not monetise the amendment differential.
 
 The decision record traces every monetary input to its source or declared
 assumption. It lists internal workflow assumptions, external evidence and
@@ -219,7 +218,7 @@ for the intended decision.
 
 The ERP discovery, logistics redesign, public IT market-consultation and solution co-design scenarios examine work under incomplete requirements. Supplier input or consultation may help define the problem or change the proposed contract. The co-design scenario includes additional time and staff effort for that learning.
 
-An adaptive workflow may add no distinct workflow value when the requirement is stable, the call-off is already governed by a framework or catalogue, or an MRP release simply executes an established commercial arrangement. The catalogue call-off and MRP release controls use identical maps and no supplier-access difference. They return equal alternative ranges, a zero central difference and a symmetric outer envelope. The stable standard-service starting scenario is a topology control only: its maps are identical, but it separately declares a restricted-access sensitivity and is therefore not a neutral total-cost control. The stable capital-replacement scenario also asks whether an adaptation mechanism is present rather than presuming one.
+An adaptive workflow may add no distinct workflow value when the requirement is stable, the call-off is already governed by a framework or catalogue, or an MRP release simply executes an established commercial arrangement. The catalogue call-off, MRP release and stable standard-service starting scenarios use identical maps and no supplier-access difference. A restricted-access stress can be declared separately. The stable capital-replacement scenario also asks whether an adaptation mechanism is present rather than presuming one.
 
 Legal availability must be assessed independently of cost. Organisational readiness is recorded separately through self-description.
 

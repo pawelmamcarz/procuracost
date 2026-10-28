@@ -1,8 +1,8 @@
 {
   "metadata": {
     "schemaVersion": 2,
-    "modelVersion": "2.3.1",
-    "calibrationId": "source-scenario-2026-08-28",
+    "modelVersion": "2.3.2",
+    "calibrationId": "source-scenario-2026-10-28",
     "legalRulesetId": "pl-pzp-2026-2027",
     "currency": "PLN",
     "deltaOperation": "formalSequential_minus_adaptiveCompliant",
@@ -1934,41 +1934,6 @@
           ]
         },
         {
-          "id": "contract_amendment",
-          "formalSequential": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "adaptiveCompliant": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "contribution": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "status": "included",
-          "anchors": [
-            {
-              "path": "alternatives.formalSequential.contractDesign.dimensions[1].cost",
-              "evidenceClass": "retained_legacy_assumption",
-              "evidenceIds": [
-                "scenario.fleet_tco_reframing.retained-legacy"
-              ]
-            },
-            {
-              "path": "alternatives.adaptiveCompliant.contractDesign.dimensions[1].cost",
-              "evidenceClass": "retained_legacy_assumption",
-              "evidenceIds": [
-                "scenario.fleet_tco_reframing.retained-legacy"
-              ]
-            }
-          ]
-        },
-        {
           "id": "tco",
           "formalSequential": {
             "low": 0,
@@ -2005,6 +1970,23 @@
         }
       ],
       "nonMonetizedDimensions": [
+        {
+          "id": "contract_amendment",
+          "alternatives": {
+            "formalSequential": {
+              "reasonKey": "reasons.amendmentNotMonetized",
+              "evidenceIds": [
+                "beuve_amendment_frequency_2023"
+              ]
+            },
+            "adaptiveCompliant": {
+              "reasonKey": "reasons.amendmentNotMonetized",
+              "evidenceIds": [
+                "beuve_amendment_frequency_2023"
+              ]
+            }
+          }
+        },
         {
           "id": "informal_bypass",
           "alternatives": {
@@ -2854,6 +2836,27 @@
           ],
           "assumptionKeys": [
             "evidence.ecInnovation.assumption"
+          ]
+        },
+        {
+          "id": "beuve_amendment_frequency_2023",
+          "type": "verified_postprint",
+          "sourceUrl": "https://mpra.ub.uni-muenchen.de/117230/1/Renegotiations_v5c.pdf",
+          "source": {
+            "titleKey": "evidence.beuve.sourceTitle",
+            "publisherKey": "evidence.beuve.publisher",
+            "publishedOn": "2023-02-22",
+            "publicationKind": "peer_reviewed_article"
+          },
+          "supportedClaimKey": "evidence.beuve.supported",
+          "unsupportedClaimKey": "evidence.beuve.unsupported",
+          "jurisdictionOrPopulationKey": "evidence.beuve.population",
+          "constructs": [
+            "contract_amendment",
+            "contract_adaptability"
+          ],
+          "assumptionKeys": [
+            "evidence.beuve.assumption"
           ]
         }
       ],
@@ -4800,41 +4803,6 @@
           ]
         },
         {
-          "id": "contract_amendment",
-          "formalSequential": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "adaptiveCompliant": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "contribution": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "status": "included",
-          "anchors": [
-            {
-              "path": "alternatives.formalSequential.contractDesign.dimensions[1].cost",
-              "evidenceClass": "retained_legacy_assumption",
-              "evidenceIds": [
-                "scenario.erp_transformation_discovery.retained-legacy"
-              ]
-            },
-            {
-              "path": "alternatives.adaptiveCompliant.contractDesign.dimensions[1].cost",
-              "evidenceClass": "retained_legacy_assumption",
-              "evidenceIds": [
-                "scenario.erp_transformation_discovery.retained-legacy"
-              ]
-            }
-          ]
-        },
-        {
           "id": "tco",
           "formalSequential": {
             "low": 0,
@@ -4871,6 +4839,23 @@
         }
       ],
       "nonMonetizedDimensions": [
+        {
+          "id": "contract_amendment",
+          "alternatives": {
+            "formalSequential": {
+              "reasonKey": "reasons.amendmentNotMonetized",
+              "evidenceIds": [
+                "beuve_amendment_frequency_2023"
+              ]
+            },
+            "adaptiveCompliant": {
+              "reasonKey": "reasons.amendmentNotMonetized",
+              "evidenceIds": [
+                "beuve_amendment_frequency_2023"
+              ]
+            }
+          }
+        },
         {
           "id": "informal_bypass",
           "alternatives": {
@@ -5741,6 +5726,27 @@
           ],
           "assumptionKeys": [
             "evidence.oecdRvul.assumption"
+          ]
+        },
+        {
+          "id": "beuve_amendment_frequency_2023",
+          "type": "verified_postprint",
+          "sourceUrl": "https://mpra.ub.uni-muenchen.de/117230/1/Renegotiations_v5c.pdf",
+          "source": {
+            "titleKey": "evidence.beuve.sourceTitle",
+            "publisherKey": "evidence.beuve.publisher",
+            "publishedOn": "2023-02-22",
+            "publicationKind": "peer_reviewed_article"
+          },
+          "supportedClaimKey": "evidence.beuve.supported",
+          "unsupportedClaimKey": "evidence.beuve.unsupported",
+          "jurisdictionOrPopulationKey": "evidence.beuve.population",
+          "constructs": [
+            "contract_amendment",
+            "contract_adaptability"
+          ],
+          "assumptionKeys": [
+            "evidence.beuve.assumption"
           ]
         }
       ],
@@ -7649,41 +7655,6 @@
           ]
         },
         {
-          "id": "contract_amendment",
-          "formalSequential": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "adaptiveCompliant": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "contribution": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "status": "included",
-          "anchors": [
-            {
-              "path": "alternatives.formalSequential.contractDesign.dimensions[1].cost",
-              "evidenceClass": "retained_legacy_assumption",
-              "evidenceIds": [
-                "scenario.logistics_service_redesign.retained-legacy"
-              ]
-            },
-            {
-              "path": "alternatives.adaptiveCompliant.contractDesign.dimensions[1].cost",
-              "evidenceClass": "retained_legacy_assumption",
-              "evidenceIds": [
-                "scenario.logistics_service_redesign.retained-legacy"
-              ]
-            }
-          ]
-        },
-        {
           "id": "tco",
           "formalSequential": {
             "low": 0,
@@ -7720,6 +7691,23 @@
         }
       ],
       "nonMonetizedDimensions": [
+        {
+          "id": "contract_amendment",
+          "alternatives": {
+            "formalSequential": {
+              "reasonKey": "reasons.amendmentNotMonetized",
+              "evidenceIds": [
+                "beuve_amendment_frequency_2023"
+              ]
+            },
+            "adaptiveCompliant": {
+              "reasonKey": "reasons.amendmentNotMonetized",
+              "evidenceIds": [
+                "beuve_amendment_frequency_2023"
+              ]
+            }
+          }
+        },
         {
           "id": "informal_bypass",
           "alternatives": {
@@ -8553,6 +8541,27 @@
           ],
           "assumptionKeys": [
             "evidence.ecInnovation.assumption"
+          ]
+        },
+        {
+          "id": "beuve_amendment_frequency_2023",
+          "type": "verified_postprint",
+          "sourceUrl": "https://mpra.ub.uni-muenchen.de/117230/1/Renegotiations_v5c.pdf",
+          "source": {
+            "titleKey": "evidence.beuve.sourceTitle",
+            "publisherKey": "evidence.beuve.publisher",
+            "publishedOn": "2023-02-22",
+            "publicationKind": "peer_reviewed_article"
+          },
+          "supportedClaimKey": "evidence.beuve.supported",
+          "unsupportedClaimKey": "evidence.beuve.unsupported",
+          "jurisdictionOrPopulationKey": "evidence.beuve.population",
+          "constructs": [
+            "contract_amendment",
+            "contract_adaptability"
+          ],
+          "assumptionKeys": [
+            "evidence.beuve.assumption"
           ]
         }
       ],
@@ -10498,41 +10507,6 @@
           ]
         },
         {
-          "id": "contract_amendment",
-          "formalSequential": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "adaptiveCompliant": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "contribution": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "status": "included",
-          "anchors": [
-            {
-              "path": "alternatives.formalSequential.contractDesign.dimensions[1].cost",
-              "evidenceClass": "retained_legacy_assumption",
-              "evidenceIds": [
-                "scenario.critical_material_continuity.retained-legacy"
-              ]
-            },
-            {
-              "path": "alternatives.adaptiveCompliant.contractDesign.dimensions[1].cost",
-              "evidenceClass": "retained_legacy_assumption",
-              "evidenceIds": [
-                "scenario.critical_material_continuity.retained-legacy"
-              ]
-            }
-          ]
-        },
-        {
           "id": "tco",
           "formalSequential": {
             "low": 0,
@@ -10569,6 +10543,23 @@
         }
       ],
       "nonMonetizedDimensions": [
+        {
+          "id": "contract_amendment",
+          "alternatives": {
+            "formalSequential": {
+              "reasonKey": "reasons.amendmentNotMonetized",
+              "evidenceIds": [
+                "beuve_amendment_frequency_2023"
+              ]
+            },
+            "adaptiveCompliant": {
+              "reasonKey": "reasons.amendmentNotMonetized",
+              "evidenceIds": [
+                "beuve_amendment_frequency_2023"
+              ]
+            }
+          }
+        },
         {
           "id": "informal_bypass",
           "alternatives": {
@@ -11397,7 +11388,29 @@
           ]
         }
       ],
-      "externalEvidence": [],
+      "externalEvidence": [
+        {
+          "id": "beuve_amendment_frequency_2023",
+          "type": "verified_postprint",
+          "sourceUrl": "https://mpra.ub.uni-muenchen.de/117230/1/Renegotiations_v5c.pdf",
+          "source": {
+            "titleKey": "evidence.beuve.sourceTitle",
+            "publisherKey": "evidence.beuve.publisher",
+            "publishedOn": "2023-02-22",
+            "publicationKind": "peer_reviewed_article"
+          },
+          "supportedClaimKey": "evidence.beuve.supported",
+          "unsupportedClaimKey": "evidence.beuve.unsupported",
+          "jurisdictionOrPopulationKey": "evidence.beuve.population",
+          "constructs": [
+            "contract_amendment",
+            "contract_adaptability"
+          ],
+          "assumptionKeys": [
+            "evidence.beuve.assumption"
+          ]
+        }
+      ],
       "retainedAssumptions": [
         {
           "id": "scenario.critical_material_continuity.retained-legacy",
@@ -14222,41 +14235,6 @@
           ]
         },
         {
-          "id": "contract_amendment",
-          "formalSequential": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "adaptiveCompliant": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "contribution": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "status": "included",
-          "anchors": [
-            {
-              "path": "alternatives.formalSequential.contractDesign.dimensions[1].cost",
-              "evidenceClass": "retained_legacy_assumption",
-              "evidenceIds": [
-                "scenario.public_it_open_with_market_consultation.retained-legacy"
-              ]
-            },
-            {
-              "path": "alternatives.adaptiveCompliant.contractDesign.dimensions[1].cost",
-              "evidenceClass": "retained_legacy_assumption",
-              "evidenceIds": [
-                "scenario.public_it_open_with_market_consultation.retained-legacy"
-              ]
-            }
-          ]
-        },
-        {
           "id": "tco",
           "formalSequential": {
             "low": 0,
@@ -14293,6 +14271,23 @@
         }
       ],
       "nonMonetizedDimensions": [
+        {
+          "id": "contract_amendment",
+          "alternatives": {
+            "formalSequential": {
+              "reasonKey": "reasons.amendmentNotMonetized",
+              "evidenceIds": [
+                "beuve_amendment_frequency_2023"
+              ]
+            },
+            "adaptiveCompliant": {
+              "reasonKey": "reasons.amendmentNotMonetized",
+              "evidenceIds": [
+                "beuve_amendment_frequency_2023"
+              ]
+            }
+          }
+        },
         {
           "id": "informal_bypass",
           "alternatives": {
@@ -15476,6 +15471,27 @@
           "assumptionKeys": [
             "evidence.ecInnovation.assumption"
           ]
+        },
+        {
+          "id": "beuve_amendment_frequency_2023",
+          "type": "verified_postprint",
+          "sourceUrl": "https://mpra.ub.uni-muenchen.de/117230/1/Renegotiations_v5c.pdf",
+          "source": {
+            "titleKey": "evidence.beuve.sourceTitle",
+            "publisherKey": "evidence.beuve.publisher",
+            "publishedOn": "2023-02-22",
+            "publicationKind": "peer_reviewed_article"
+          },
+          "supportedClaimKey": "evidence.beuve.supported",
+          "unsupportedClaimKey": "evidence.beuve.unsupported",
+          "jurisdictionOrPopulationKey": "evidence.beuve.population",
+          "constructs": [
+            "contract_amendment",
+            "contract_adaptability"
+          ],
+          "assumptionKeys": [
+            "evidence.beuve.assumption"
+          ]
         }
       ],
       "retainedAssumptions": [
@@ -15585,7 +15601,7 @@
           "workflow": {
             "steps": [
               {
-                "id": "stable_private_standard_service.formalSequential.requirements",
+                "id": "stable_private_standard_service.shared.requirements",
                 "labelKey": "workflow.steps.requirements",
                 "userLabel": null,
                 "predecessorIds": [],
@@ -15660,11 +15676,11 @@
                 ]
               },
               {
-                "id": "stable_private_standard_service.formalSequential.evaluation",
+                "id": "stable_private_standard_service.shared.evaluation",
                 "labelKey": "workflow.steps.evaluation",
                 "userLabel": null,
                 "predecessorIds": [
-                  "stable_private_standard_service.formalSequential.requirements"
+                  "stable_private_standard_service.shared.requirements"
                 ],
                 "activeDays": {
                   "low": 4.9,
@@ -15737,11 +15753,11 @@
                 ]
               },
               {
-                "id": "stable_private_standard_service.formalSequential.approval",
+                "id": "stable_private_standard_service.shared.approval",
                 "labelKey": "workflow.steps.approval",
                 "userLabel": null,
                 "predecessorIds": [
-                  "stable_private_standard_service.formalSequential.evaluation"
+                  "stable_private_standard_service.shared.evaluation"
                 ],
                 "activeDays": {
                   "low": 2.1,
@@ -15804,11 +15820,11 @@
                 ]
               },
               {
-                "id": "stable_private_standard_service.formalSequential.contract",
+                "id": "stable_private_standard_service.shared.contract",
                 "labelKey": "workflow.steps.contract",
                 "userLabel": null,
                 "predecessorIds": [
-                  "stable_private_standard_service.formalSequential.approval"
+                  "stable_private_standard_service.shared.approval"
                 ],
                 "activeDays": {
                   "low": 3.5,
@@ -15880,22 +15896,22 @@
             },
             "criticalPathStepIds": {
               "low": [
-                "stable_private_standard_service.formalSequential.requirements",
-                "stable_private_standard_service.formalSequential.evaluation",
-                "stable_private_standard_service.formalSequential.approval",
-                "stable_private_standard_service.formalSequential.contract"
+                "stable_private_standard_service.shared.requirements",
+                "stable_private_standard_service.shared.evaluation",
+                "stable_private_standard_service.shared.approval",
+                "stable_private_standard_service.shared.contract"
               ],
               "central": [
-                "stable_private_standard_service.formalSequential.requirements",
-                "stable_private_standard_service.formalSequential.evaluation",
-                "stable_private_standard_service.formalSequential.approval",
-                "stable_private_standard_service.formalSequential.contract"
+                "stable_private_standard_service.shared.requirements",
+                "stable_private_standard_service.shared.evaluation",
+                "stable_private_standard_service.shared.approval",
+                "stable_private_standard_service.shared.contract"
               ],
               "high": [
-                "stable_private_standard_service.formalSequential.requirements",
-                "stable_private_standard_service.formalSequential.evaluation",
-                "stable_private_standard_service.formalSequential.approval",
-                "stable_private_standard_service.formalSequential.contract"
+                "stable_private_standard_service.shared.requirements",
+                "stable_private_standard_service.shared.evaluation",
+                "stable_private_standard_service.shared.approval",
+                "stable_private_standard_service.shared.contract"
               ]
             },
             "roleCost": {
@@ -15941,7 +15957,7 @@
           "workflow": {
             "steps": [
               {
-                "id": "stable_private_standard_service.adaptiveCompliant.requirements",
+                "id": "stable_private_standard_service.shared.requirements",
                 "labelKey": "workflow.steps.requirements",
                 "userLabel": null,
                 "predecessorIds": [],
@@ -16016,11 +16032,11 @@
                 ]
               },
               {
-                "id": "stable_private_standard_service.adaptiveCompliant.evaluation",
+                "id": "stable_private_standard_service.shared.evaluation",
                 "labelKey": "workflow.steps.evaluation",
                 "userLabel": null,
                 "predecessorIds": [
-                  "stable_private_standard_service.adaptiveCompliant.requirements"
+                  "stable_private_standard_service.shared.requirements"
                 ],
                 "activeDays": {
                   "low": 4.9,
@@ -16093,11 +16109,11 @@
                 ]
               },
               {
-                "id": "stable_private_standard_service.adaptiveCompliant.approval",
+                "id": "stable_private_standard_service.shared.approval",
                 "labelKey": "workflow.steps.approval",
                 "userLabel": null,
                 "predecessorIds": [
-                  "stable_private_standard_service.adaptiveCompliant.evaluation"
+                  "stable_private_standard_service.shared.evaluation"
                 ],
                 "activeDays": {
                   "low": 2.1,
@@ -16160,11 +16176,11 @@
                 ]
               },
               {
-                "id": "stable_private_standard_service.adaptiveCompliant.contract",
+                "id": "stable_private_standard_service.shared.contract",
                 "labelKey": "workflow.steps.contract",
                 "userLabel": null,
                 "predecessorIds": [
-                  "stable_private_standard_service.adaptiveCompliant.approval"
+                  "stable_private_standard_service.shared.approval"
                 ],
                 "activeDays": {
                   "low": 3.5,
@@ -16236,22 +16252,22 @@
             },
             "criticalPathStepIds": {
               "low": [
-                "stable_private_standard_service.adaptiveCompliant.requirements",
-                "stable_private_standard_service.adaptiveCompliant.evaluation",
-                "stable_private_standard_service.adaptiveCompliant.approval",
-                "stable_private_standard_service.adaptiveCompliant.contract"
+                "stable_private_standard_service.shared.requirements",
+                "stable_private_standard_service.shared.evaluation",
+                "stable_private_standard_service.shared.approval",
+                "stable_private_standard_service.shared.contract"
               ],
               "central": [
-                "stable_private_standard_service.adaptiveCompliant.requirements",
-                "stable_private_standard_service.adaptiveCompliant.evaluation",
-                "stable_private_standard_service.adaptiveCompliant.approval",
-                "stable_private_standard_service.adaptiveCompliant.contract"
+                "stable_private_standard_service.shared.requirements",
+                "stable_private_standard_service.shared.evaluation",
+                "stable_private_standard_service.shared.approval",
+                "stable_private_standard_service.shared.contract"
               ],
               "high": [
-                "stable_private_standard_service.adaptiveCompliant.requirements",
-                "stable_private_standard_service.adaptiveCompliant.evaluation",
-                "stable_private_standard_service.adaptiveCompliant.approval",
-                "stable_private_standard_service.adaptiveCompliant.contract"
+                "stable_private_standard_service.shared.requirements",
+                "stable_private_standard_service.shared.evaluation",
+                "stable_private_standard_service.shared.approval",
+                "stable_private_standard_service.shared.contract"
               ]
             },
             "roleCost": {
@@ -16270,14 +16286,14 @@
               "high": 0
             },
             "contractCost": {
-              "low": 100000,
-              "central": 300000,
-              "high": 450000
+              "low": 0,
+              "central": 0,
+              "high": 0
             },
             "totalCost": {
-              "low": 106882.5,
-              "central": 306882.5,
-              "high": 456882.5
+              "low": 6882.5,
+              "central": 6882.5,
+              "high": 6882.5
             },
             "nonMonetizedDimensions": [
               {
@@ -16291,15 +16307,15 @@
       },
       "comparison": {
         "operation": "formalSequential_minus_adaptiveCompliant",
-        "deltaCost": -300000,
+        "deltaCost": 0,
         "deltaCostOuterEnvelope": {
-          "low": -450000,
-          "high": -100000
+          "low": 0,
+          "high": 0
         },
         "deltaCostPairedCases": {
-          "low": -100000,
-          "central": -300000,
-          "high": -450000
+          "low": 0,
+          "central": 0,
+          "high": 0
         }
       },
       "coverage": [
@@ -16731,61 +16747,26 @@
             "high": 0
           },
           "adaptiveCompliant": {
-            "low": 100000,
-            "central": 300000,
-            "high": 450000
+            "low": 0,
+            "central": 0,
+            "high": 0
           },
           "contribution": {
-            "low": -450000,
-            "central": -300000,
-            "high": -100000
+            "low": 0,
+            "central": 0,
+            "high": 0
           },
           "status": "included",
           "anchors": [
             {
               "path": "alternatives.formalSequential.contractDesign.dimensions[0].cost",
-              "evidenceClass": "empirical_anchor",
-              "evidenceIds": [
-                "szucs_discretion_price_2024"
-              ]
-            },
-            {
-              "path": "alternatives.adaptiveCompliant.contractDesign.dimensions[0].cost",
-              "evidenceClass": "empirical_anchor",
-              "evidenceIds": [
-                "szucs_discretion_price_2024"
-              ]
-            }
-          ]
-        },
-        {
-          "id": "contract_amendment",
-          "formalSequential": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "adaptiveCompliant": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "contribution": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "status": "included",
-          "anchors": [
-            {
-              "path": "alternatives.formalSequential.contractDesign.dimensions[1].cost",
               "evidenceClass": "retained_legacy_assumption",
               "evidenceIds": [
                 "scenario.stable_private_standard_service.retained-legacy"
               ]
             },
             {
-              "path": "alternatives.adaptiveCompliant.contractDesign.dimensions[1].cost",
+              "path": "alternatives.adaptiveCompliant.contractDesign.dimensions[0].cost",
               "evidenceClass": "retained_legacy_assumption",
               "evidenceIds": [
                 "scenario.stable_private_standard_service.retained-legacy"
@@ -16831,6 +16812,23 @@
       ],
       "nonMonetizedDimensions": [
         {
+          "id": "contract_amendment",
+          "alternatives": {
+            "formalSequential": {
+              "reasonKey": "reasons.amendmentNotMonetized",
+              "evidenceIds": [
+                "beuve_amendment_frequency_2023"
+              ]
+            },
+            "adaptiveCompliant": {
+              "reasonKey": "reasons.amendmentNotMonetized",
+              "evidenceIds": [
+                "beuve_amendment_frequency_2023"
+              ]
+            }
+          }
+        },
+        {
           "id": "informal_bypass",
           "alternatives": {
             "formalSequential": {
@@ -16865,18 +16863,9 @@
             "scenario.stable_private_standard_service.retained-legacy"
           ]
         },
-        "pathCompetitionDiffers": true,
-        "competitionDisadvantagedAlternative": "adaptiveCompliant",
-        "competitionTransferRate": {
-          "low": 0.02,
-          "central": 0.06,
-          "high": 0.09,
-          "rangeKind": "stress",
-          "evidenceClass": "empirical_anchor",
-          "evidenceIds": [
-            "szucs_discretion_price_2024"
-          ]
-        },
+        "pathCompetitionDiffers": false,
+        "competitionDisadvantagedAlternative": null,
+        "competitionTransferRate": null,
         "contractRigidityDiffers": false,
         "amendmentDisadvantagedAlternative": null,
         "amendmentDifferential": {
@@ -17127,9 +17116,9 @@
         },
         {
           "path": "alternatives.formalSequential.contractDesign.dimensions[0].cost",
-          "evidenceClass": "empirical_anchor",
+          "evidenceClass": "retained_legacy_assumption",
           "evidenceIds": [
-            "szucs_discretion_price_2024"
+            "scenario.stable_private_standard_service.retained-legacy"
           ]
         },
         {
@@ -17302,9 +17291,9 @@
         },
         {
           "path": "alternatives.adaptiveCompliant.contractDesign.dimensions[0].cost",
-          "evidenceClass": "empirical_anchor",
+          "evidenceClass": "retained_legacy_assumption",
           "evidenceIds": [
-            "szucs_discretion_price_2024"
+            "scenario.stable_private_standard_service.retained-legacy"
           ]
         },
         {
@@ -17390,6 +17379,27 @@
           ],
           "assumptionKeys": [
             "evidence.szucs.assumption"
+          ]
+        },
+        {
+          "id": "beuve_amendment_frequency_2023",
+          "type": "verified_postprint",
+          "sourceUrl": "https://mpra.ub.uni-muenchen.de/117230/1/Renegotiations_v5c.pdf",
+          "source": {
+            "titleKey": "evidence.beuve.sourceTitle",
+            "publisherKey": "evidence.beuve.publisher",
+            "publishedOn": "2023-02-22",
+            "publicationKind": "peer_reviewed_article"
+          },
+          "supportedClaimKey": "evidence.beuve.supported",
+          "unsupportedClaimKey": "evidence.beuve.unsupported",
+          "jurisdictionOrPopulationKey": "evidence.beuve.population",
+          "constructs": [
+            "contract_amendment",
+            "contract_adaptability"
+          ],
+          "assumptionKeys": [
+            "evidence.beuve.assumption"
           ]
         }
       ],
@@ -19435,41 +19445,6 @@
           ]
         },
         {
-          "id": "contract_amendment",
-          "formalSequential": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "adaptiveCompliant": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "contribution": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "status": "included",
-          "anchors": [
-            {
-              "path": "alternatives.formalSequential.contractDesign.dimensions[1].cost",
-              "evidenceClass": "retained_legacy_assumption",
-              "evidenceIds": [
-                "scenario.stable_capex_replacement.retained-legacy"
-              ]
-            },
-            {
-              "path": "alternatives.adaptiveCompliant.contractDesign.dimensions[1].cost",
-              "evidenceClass": "retained_legacy_assumption",
-              "evidenceIds": [
-                "scenario.stable_capex_replacement.retained-legacy"
-              ]
-            }
-          ]
-        },
-        {
           "id": "tco",
           "formalSequential": {
             "low": 0,
@@ -19506,6 +19481,23 @@
         }
       ],
       "nonMonetizedDimensions": [
+        {
+          "id": "contract_amendment",
+          "alternatives": {
+            "formalSequential": {
+              "reasonKey": "reasons.amendmentNotMonetized",
+              "evidenceIds": [
+                "beuve_amendment_frequency_2023"
+              ]
+            },
+            "adaptiveCompliant": {
+              "reasonKey": "reasons.amendmentNotMonetized",
+              "evidenceIds": [
+                "beuve_amendment_frequency_2023"
+              ]
+            }
+          }
+        },
         {
           "id": "informal_bypass",
           "alternatives": {
@@ -20319,7 +20311,29 @@
         }
       ],
       "internalEvidence": [],
-      "externalEvidence": [],
+      "externalEvidence": [
+        {
+          "id": "beuve_amendment_frequency_2023",
+          "type": "verified_postprint",
+          "sourceUrl": "https://mpra.ub.uni-muenchen.de/117230/1/Renegotiations_v5c.pdf",
+          "source": {
+            "titleKey": "evidence.beuve.sourceTitle",
+            "publisherKey": "evidence.beuve.publisher",
+            "publishedOn": "2023-02-22",
+            "publicationKind": "peer_reviewed_article"
+          },
+          "supportedClaimKey": "evidence.beuve.supported",
+          "unsupportedClaimKey": "evidence.beuve.unsupported",
+          "jurisdictionOrPopulationKey": "evidence.beuve.population",
+          "constructs": [
+            "contract_amendment",
+            "contract_adaptability"
+          ],
+          "assumptionKeys": [
+            "evidence.beuve.assumption"
+          ]
+        }
+      ],
       "retainedAssumptions": [
         {
           "id": "scenario.stable_capex_replacement.retained-legacy",
@@ -22051,41 +22065,6 @@
           ]
         },
         {
-          "id": "contract_amendment",
-          "formalSequential": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "adaptiveCompliant": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "contribution": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "status": "included",
-          "anchors": [
-            {
-              "path": "alternatives.formalSequential.contractDesign.dimensions[1].cost",
-              "evidenceClass": "retained_legacy_assumption",
-              "evidenceIds": [
-                "scenario.discovery_solution_codesign.retained-legacy"
-              ]
-            },
-            {
-              "path": "alternatives.adaptiveCompliant.contractDesign.dimensions[1].cost",
-              "evidenceClass": "retained_legacy_assumption",
-              "evidenceIds": [
-                "scenario.discovery_solution_codesign.retained-legacy"
-              ]
-            }
-          ]
-        },
-        {
           "id": "tco",
           "formalSequential": {
             "low": 0,
@@ -22122,6 +22101,23 @@
         }
       ],
       "nonMonetizedDimensions": [
+        {
+          "id": "contract_amendment",
+          "alternatives": {
+            "formalSequential": {
+              "reasonKey": "reasons.amendmentNotMonetized",
+              "evidenceIds": [
+                "beuve_amendment_frequency_2023"
+              ]
+            },
+            "adaptiveCompliant": {
+              "reasonKey": "reasons.amendmentNotMonetized",
+              "evidenceIds": [
+                "beuve_amendment_frequency_2023"
+              ]
+            }
+          }
+        },
         {
           "id": "informal_bypass",
           "alternatives": {
@@ -22865,6 +22861,27 @@
           ],
           "assumptionKeys": [
             "evidence.ecInnovation.assumption"
+          ]
+        },
+        {
+          "id": "beuve_amendment_frequency_2023",
+          "type": "verified_postprint",
+          "sourceUrl": "https://mpra.ub.uni-muenchen.de/117230/1/Renegotiations_v5c.pdf",
+          "source": {
+            "titleKey": "evidence.beuve.sourceTitle",
+            "publisherKey": "evidence.beuve.publisher",
+            "publishedOn": "2023-02-22",
+            "publicationKind": "peer_reviewed_article"
+          },
+          "supportedClaimKey": "evidence.beuve.supported",
+          "unsupportedClaimKey": "evidence.beuve.unsupported",
+          "jurisdictionOrPopulationKey": "evidence.beuve.population",
+          "constructs": [
+            "contract_amendment",
+            "contract_adaptability"
+          ],
+          "assumptionKeys": [
+            "evidence.beuve.assumption"
           ]
         }
       ],
@@ -23766,41 +23783,6 @@
           ]
         },
         {
-          "id": "contract_amendment",
-          "formalSequential": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "adaptiveCompliant": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "contribution": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "status": "included",
-          "anchors": [
-            {
-              "path": "alternatives.formalSequential.contractDesign.dimensions[1].cost",
-              "evidenceClass": "retained_legacy_assumption",
-              "evidenceIds": [
-                "scenario.catalog_calloff_control.retained-legacy"
-              ]
-            },
-            {
-              "path": "alternatives.adaptiveCompliant.contractDesign.dimensions[1].cost",
-              "evidenceClass": "retained_legacy_assumption",
-              "evidenceIds": [
-                "scenario.catalog_calloff_control.retained-legacy"
-              ]
-            }
-          ]
-        },
-        {
           "id": "tco",
           "formalSequential": {
             "low": 0,
@@ -23837,6 +23819,23 @@
         }
       ],
       "nonMonetizedDimensions": [
+        {
+          "id": "contract_amendment",
+          "alternatives": {
+            "formalSequential": {
+              "reasonKey": "reasons.amendmentNotMonetized",
+              "evidenceIds": [
+                "beuve_amendment_frequency_2023"
+              ]
+            },
+            "adaptiveCompliant": {
+              "reasonKey": "reasons.amendmentNotMonetized",
+              "evidenceIds": [
+                "beuve_amendment_frequency_2023"
+              ]
+            }
+          }
+        },
         {
           "id": "informal_bypass",
           "alternatives": {
@@ -24244,7 +24243,29 @@
         }
       ],
       "internalEvidence": [],
-      "externalEvidence": [],
+      "externalEvidence": [
+        {
+          "id": "beuve_amendment_frequency_2023",
+          "type": "verified_postprint",
+          "sourceUrl": "https://mpra.ub.uni-muenchen.de/117230/1/Renegotiations_v5c.pdf",
+          "source": {
+            "titleKey": "evidence.beuve.sourceTitle",
+            "publisherKey": "evidence.beuve.publisher",
+            "publishedOn": "2023-02-22",
+            "publicationKind": "peer_reviewed_article"
+          },
+          "supportedClaimKey": "evidence.beuve.supported",
+          "unsupportedClaimKey": "evidence.beuve.unsupported",
+          "jurisdictionOrPopulationKey": "evidence.beuve.population",
+          "constructs": [
+            "contract_amendment",
+            "contract_adaptability"
+          ],
+          "assumptionKeys": [
+            "evidence.beuve.assumption"
+          ]
+        }
+      ],
       "retainedAssumptions": [
         {
           "id": "scenario.catalog_calloff_control.retained-legacy",
@@ -25070,41 +25091,6 @@
           ]
         },
         {
-          "id": "contract_amendment",
-          "formalSequential": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "adaptiveCompliant": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "contribution": {
-            "low": 0,
-            "central": 0,
-            "high": 0
-          },
-          "status": "included",
-          "anchors": [
-            {
-              "path": "alternatives.formalSequential.contractDesign.dimensions[1].cost",
-              "evidenceClass": "retained_legacy_assumption",
-              "evidenceIds": [
-                "scenario.mrp_release_control.retained-legacy"
-              ]
-            },
-            {
-              "path": "alternatives.adaptiveCompliant.contractDesign.dimensions[1].cost",
-              "evidenceClass": "retained_legacy_assumption",
-              "evidenceIds": [
-                "scenario.mrp_release_control.retained-legacy"
-              ]
-            }
-          ]
-        },
-        {
           "id": "tco",
           "formalSequential": {
             "low": 0,
@@ -25141,6 +25127,23 @@
         }
       ],
       "nonMonetizedDimensions": [
+        {
+          "id": "contract_amendment",
+          "alternatives": {
+            "formalSequential": {
+              "reasonKey": "reasons.amendmentNotMonetized",
+              "evidenceIds": [
+                "beuve_amendment_frequency_2023"
+              ]
+            },
+            "adaptiveCompliant": {
+              "reasonKey": "reasons.amendmentNotMonetized",
+              "evidenceIds": [
+                "beuve_amendment_frequency_2023"
+              ]
+            }
+          }
+        },
         {
           "id": "informal_bypass",
           "alternatives": {
@@ -25520,7 +25523,29 @@
         }
       ],
       "internalEvidence": [],
-      "externalEvidence": [],
+      "externalEvidence": [
+        {
+          "id": "beuve_amendment_frequency_2023",
+          "type": "verified_postprint",
+          "sourceUrl": "https://mpra.ub.uni-muenchen.de/117230/1/Renegotiations_v5c.pdf",
+          "source": {
+            "titleKey": "evidence.beuve.sourceTitle",
+            "publisherKey": "evidence.beuve.publisher",
+            "publishedOn": "2023-02-22",
+            "publicationKind": "peer_reviewed_article"
+          },
+          "supportedClaimKey": "evidence.beuve.supported",
+          "unsupportedClaimKey": "evidence.beuve.unsupported",
+          "jurisdictionOrPopulationKey": "evidence.beuve.population",
+          "constructs": [
+            "contract_amendment",
+            "contract_adaptability"
+          ],
+          "assumptionKeys": [
+            "evidence.beuve.assumption"
+          ]
+        }
+      ],
       "retainedAssumptions": [
         {
           "id": "scenario.mrp_release_control.retained-legacy",

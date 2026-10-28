@@ -25,11 +25,11 @@ boundary:
 - `formalSequential` — a prescribed sequential design;
 - `adaptiveCompliant` — a policy-bounded adaptive design.
 
-The active model is **native model 2.3.1** (`schemaVersion: 2`,
-`calibrationId: "source-scenario-2026-08-28"`, `legalRulesetId: "pl-pzp-2026-2027"`,
+The active model is **native model 2.3.2** (`schemaVersion: 2`,
+`calibrationId: "source-scenario-2026-10-28"`, `legalRulesetId: "pl-pzp-2026-2027"`,
 Polish public procurement law). The model implementation is a self-contained
 pure-TypeScript layer in `lib/model-v2/`. There is **no backend, database or
-API**; the production site is a static-rendered Next.js app deployed on Vercel
+API**; the production site is a Next.js app deployed on Railway behind Cloudflare
 (canonical host `https://www.procuracost.com`, configured in `app/seo-config.ts`).
 
 The project is also a PhD/research artefact: `docs/MODEL_PARAMETERS.md` is the
@@ -40,7 +40,7 @@ and the model 2.2.2 modules are historical provenance only.
 
 ## Technology stack
 
-- **Framework:** Next.js 16.3.5 (App Router, route groups, Turbopack via
+- **Framework:** Next.js 16.4.3 (App Router, route groups, Turbopack via
   `next.config.ts`), React 19.2.8, TypeScript 5 in `strict` mode, ES2018 target.
 - **Styling:** Tailwind CSS v4 through `@tailwindcss/postcss`; fonts are
   self-hosted Public Sans and IBM Plex Mono in `public/fonts/`.
@@ -239,7 +239,8 @@ Verified state at the time of writing: `npm test` passes (80 files, 892 tests).
 
 ## Deployment and repository sync
 
-- Deployment is Vercel; production host `https://www.procuracost.com`
+- Production runs on Railway service `procuracost-web` behind Cloudflare; the
+  canonical host is `https://www.procuracost.com`
   (`VERCEL_URL` may win only for previews). Sitemap, robots and Open Graph
   images read `app/seo-config.ts`.
 - The working copy lives in an iCloud-synced folder shared with a second

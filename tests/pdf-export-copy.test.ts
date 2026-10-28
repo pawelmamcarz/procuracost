@@ -1,3 +1,4 @@
+import { competitionStressDraft } from "@/tests/fixtures/competition-stress";
 import { describe, expect, it } from "vitest";
 
 import { encodeInputsToParams } from "@/components/calculator-url";
@@ -132,7 +133,7 @@ describe("model 2.3 pure PDF copy", () => {
     const copy = buildPdfCopy(record, "en", EXPORTED_AT);
 
     expect(copy.filename).toBe(
-      "procuracost-model-2.3.1-fleet_tco_reframing-en.pdf"
+      "procuracost-model-2.3.2-fleet_tco_reframing-en.pdf"
     );
     expect(copy.title).toBe("ProcuraCost model 2.3 decision record");
     expect(copy.scenarioName).toBe("Fleet TCO reframing");
@@ -140,7 +141,7 @@ describe("model 2.3 pure PDF copy", () => {
     expect(copy.pageLabel(2, 4)).toBe("Page 2 of 4");
     expect(copy.metadata).toContainEqual({
       label: "Model version",
-      value: "2.3.1",
+      value: "2.3.2",
     });
     expect(copy.context[0]).toEqual({
       id: "legalGovernanceBoundary",
@@ -179,7 +180,7 @@ describe("model 2.3 pure PDF copy", () => {
     const copy = buildPdfCopy(fleetRecord(), "pl", EXPORTED_AT);
 
     expect(copy.filename).toBe(
-      "procuracost-model-2.3.1-fleet_tco_reframing-pl.pdf"
+      "procuracost-model-2.3.2-fleet_tco_reframing-pl.pdf"
     );
     expect(copy.title).toBe("Rekord decyzji modelu ProcuraCost 2.3");
     expect(copy.scenarioName).toBe("Flota: przeformułowanie TCO");
@@ -295,7 +296,10 @@ describe("model 2.3 pure PDF copy", () => {
     const polish = buildPdfCopy(record, "pl", EXPORTED_AT);
     const oldConsumer: PdfLabelValue[] = english.coverage;
 
-    expect(oldConsumer).toHaveLength(6);
+    expect(english.delaySensitivity.map(({ label }) => label)).toContain("Difference excluding delay cost");
+
+    expect(oldConsumer).toHaveLength(5);
+    expect(english.nonMonetizedDimensions.map(({ id }) => id)).toContain("contract_amendment");
     expect(english.roleHourlyRates.map(({ roleId }) => roleId)).toEqual([
       "requestor",
       "buyer",
@@ -591,7 +595,7 @@ describe("model 2.3 pure PDF copy", () => {
 
   it("exports the explicitly disadvantaged competition side", () => {
     const record = buildDecisionRecordV2(
-      createScenarioDraft("stable_private_standard_service")
+      competitionStressDraft()
     );
     const copy = buildPdfCopy(record, "en", EXPORTED_AT);
 

@@ -110,26 +110,15 @@ function derivedCompetitionCost(
 }
 
 function derivedAmendmentCost(
-  differential: CalibratedValue,
-  contractYears: CalibratedValue,
-  costPerAmendment: CalibratedValue,
-  zero: boolean
+  differential: CalibratedValue
 ): CalibratedValue {
   return {
-    low: zero ? 0 : differential.low * contractYears.low * costPerAmendment.low,
-    central: zero
-      ? 0
-      : differential.central * contractYears.central * costPerAmendment.central,
-    high: zero ? 0 : differential.high * contractYears.high * costPerAmendment.high,
+    low: 0,
+    central: 0,
+    high: 0,
     rangeKind: "calibrated",
     evidenceClass: differential.evidenceClass,
-    evidenceIds: [
-      ...new Set([
-        ...differential.evidenceIds,
-        ...contractYears.evidenceIds,
-        ...costPerAmendment.evidenceIds,
-      ]),
-    ],
+    evidenceIds: [...differential.evidenceIds],
   };
 }
 
@@ -157,20 +146,13 @@ function materializeContractDesign(
         "amendmentDisadvantagedAlternative is required when contract rigidity differs"
       );
     }
-    const { amendmentContractYears, costPerAmendment } = assumptions;
-    if (!amendmentContractYears || !costPerAmendment) {
-      throw new Error(
-        "amendmentContractYears and costPerAmendment are required when contract rigidity differs"
-      );
+    if (assumptions.amendmentContractYears) {
+      assertNonNegativeValue(assumptions.amendmentContractYears, "amendmentContractYears");
     }
-    assertNonNegativeValue(amendmentContractYears, "amendmentContractYears");
-    assertNonNegativeValue(costPerAmendment, "costPerAmendment");
-    amendmentCost = derivedAmendmentCost(
-      assumptions.amendmentDifferential,
-      amendmentContractYears,
-      costPerAmendment,
-      alternative !== disadvantaged
-    );
+    if (assumptions.costPerAmendment) {
+      assertNonNegativeValue(assumptions.costPerAmendment, "costPerAmendment");
+    }
+    amendmentCost = derivedAmendmentCost(assumptions.amendmentDifferential);
   } else {
     if (
       assumptions.amendmentContractYears !== null ||

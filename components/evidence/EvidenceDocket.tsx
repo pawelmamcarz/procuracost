@@ -72,7 +72,7 @@ export default function EvidenceDocket({
           >
             <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
               <div>
-                <p className="font-mono text-xs text-gray-500">
+                <p className="break-all font-mono text-xs text-gray-500">
                   <NumberedPoint className="mr-2" index={index} />
                   {record.id}
                 </p>

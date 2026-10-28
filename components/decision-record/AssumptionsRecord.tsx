@@ -12,7 +12,7 @@ export interface AssumptionsRecordProps {
 
 function formatNumber(value: number, lang: Lang): string {
   return new Intl.NumberFormat(lang === "pl" ? "pl-PL" : "en-GB", {
-    maximumFractionDigits: 2,
+    maximumFractionDigits: 3,
   }).format(value);
 }
 
@@ -24,7 +24,7 @@ function formatCurrency(value: number, lang: Lang): string {
       maximumFractionDigits: 2,
     }).format(value);
   }
-  return `${formatNumber(value, lang)} PLN`;
+  return `${new Intl.NumberFormat("en-GB", { maximumFractionDigits: 2 }).format(value)} PLN`;
 }
 
 function rangeText(value: CalibratedValue, lang: Lang, currency = true) {

@@ -1,10 +1,10 @@
 # ProcuraCost model 2.3 parameter and evidence contract
 
-**Model version:** 2.3.1
+**Model version:** 2.3.2
 
 **Schema version:** 2
 
-**Calibration identifier:** `source-scenario-2026-08-28`
+**Calibration identifier:** `source-scenario-2026-10-28`
 
 **Legal ruleset:** `pl-pzp-2026-2027`
 **Status:** transparent deterministic comparison model, not an empirical
@@ -162,7 +162,7 @@ sign reversal. For example, identical control maps have zero paired differences
 in all three cases while their outer envelope may extend below and above zero.
 An envelope touching zero admits equality; it does not contain both signs.
 
-Model 2.3.1 therefore also reports the paired-case difference:
+Model 2.3.2 therefore also reports the paired-case difference:
 
 `pairedDelta_r = total_formalSequential,r - total_adaptiveCompliant,r` for `r` in low, central, high
 
@@ -257,8 +257,8 @@ never valid outputs and must not silently become JSON null values.
 
 The 2, 6 and 9 per cent stress is applied only where the comparison explicitly
 declares different supplier access and identifies the alternative with the
-restricted access. In the canonical registry this occurs only in the stable
-standard-service sensitivity scenario:
+restricted access. No canonical starting scenario declares this difference;
+it can be selected separately as a stress:
 
 `competitionTransfer_restricted = contractValue x {0.02, 0.06, 0.09}`
 
@@ -287,29 +287,11 @@ one-standard-deviation increase in every category implies 0.098, 0.077 and
 
 `amendmentDifferential = {0.077, 0.084, 0.098} per contract-year`
 
-Model 2.3.1 corrects the monetisation unit. The differential is a frequency
-(additional amendments per contract-year), so it is no longer multiplied by
-the contract value, which implied that one amendment costs the whole contract.
-The signed allocation convention maps the study index onto the model profile:
-the model does not observe the seven category z-scores, so a declared
-full-profile rigidity difference corresponds to profile 1 and carries the
-entire published range. The differential is monetised only where the
-comparison explicitly declares a contract-rigidity difference
-(`contractRigidityDiffers`) and names the more rigid alternative
-(`amendmentDisadvantagedAlternative`):
-
-`contractAmendment_moreRigid,r = amendmentDifferential_r x amendmentContractYears_r x costPerAmendment_r`
-
-`amendmentContractYears` and `costPerAmendment` are declared inputs (normally
-`user_input`) and are required whenever a rigidity difference is declared; both
-must be null otherwise. Beuve, Moszoro and Spiller supply only the frequency.
-They do not supply a cost per amendment, which must come from the organisation.
-The other alternative receives zero. The result is not an estimate for Poland
-and does not identify the effect of procurement workflow design. The allocation never
-follows from a workflow label. Every native 2.3 starting scenario declares no
-rigidity difference, so the monetised amendment dimension is zero in the
-canonical registry, and the builder rejects any hand-entered non-zero
-amendment allocation that lacks the declaration.
+The frequency differential does not measure the monetary cost of an amendment.
+The model therefore assigns zero monetary amendment differential to both
+alternatives, including when a rigidity difference is declared. The observed
+frequency is retained as evidence for further research, not as a price or a
+percentage of contract value.
 
 Residual uncertainty: the earlier NBER working paper (w28491) reports a 0.015
 coefficient consistent with the 7.7-10.5 per cent prose range, while the
@@ -332,7 +314,7 @@ deterministic calculation must remain separate and auditable.
 Informal bypass is present in the decision record as `notMonetized`. The model
 does not infer a bypass probability from workflow design, system ownership or
 readiness. Monetisation requires observed or user-supplied rates and an explicit
-method that is not part of native model 2.3.1.
+method that is not part of native model 2.3.2.
 
 ## 8. Retained starting assumptions
 
@@ -449,15 +431,14 @@ be stated clearly and must not be confused with a statutory penalty.
 | `logistics_service_redesign` | `logistics` | private policy, competitive | complex service, sourcing event | transactional ERP | 8,000,000 | 1,800 | none declared |
 | `critical_material_continuity` | `production` | private policy, negotiated | continuity-critical, sourcing event | manual | 12,000,000 | 50,000 | none declared |
 | `public_it_open_with_market_consultation` | `pipe_vs_field` | PZP classic EU, open | incomplete requirement, sourcing event | transactional ERP | 5,000,000 | 10,000 | none declared |
-| `stable_private_standard_service` | `governance_control` | private policy, competitive | standard recurring, sourcing event | integrated source-to-pay | 5,000,000 | 0 | adaptive/compliant: restricted shortlist or incumbent continuation |
+| `stable_private_standard_service` | `governance_control` | private policy, competitive | standard recurring, sourcing event | integrated source-to-pay | 5,000,000 | 0 | none declared |
 | `stable_capex_replacement` | `capex_investment` | private policy, competitive | capital investment, sourcing event | transactional ERP | 15,000,000 | 13,700 | none declared |
 | `discovery_solution_codesign` | `discovery_rd` | private policy, negotiated | incomplete requirement, sourcing event | transactional ERP | 3,000,000 | 5,500 | none declared |
 | `catalog_calloff_control` | `catalog` | private policy, framework call-off | standard recurring, catalogue call-off | integrated source-to-pay | 50,000 | 500 | none declared |
 | `mrp_release_control` | `mrp` | private policy, framework call-off | continuity-critical, MRP release | integrated source-to-pay | 500,000 | 8,000 | none declared |
 
-Contract value affects the canonical starting calculation only in the stable
-standard-service sensitivity scenario, through its declared competition-transfer
-cost. Contract values, daily costs and role rates are retained starting
+Contract value affects a declared competition-transfer stress, not the canonical
+starting calculations. Contract values, daily costs and role rates are retained starting
 assumptions. Workflow-map provenance follows section 8.2. The catalogue and MRP controls use identical
 maps and no supplier-access difference, so the central comparison is zero. The
 outer envelope is symmetric because the aligned path ranges are identical.
@@ -465,7 +446,7 @@ All canonical scenarios use the initiation date 28 August 2026.
 
 ### 9.1 What drives the canonical results
 
-Central values, model 2.3.1. Differences are formal/sequential minus
+Central values, model 2.3.2. Differences are formal/sequential minus
 adaptive/compliant in PLN; `delay` is the elapsed-day difference times the
 central daily cost of inaction.
 

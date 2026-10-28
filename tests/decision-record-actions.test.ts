@@ -131,7 +131,7 @@ describe("decision-record download actions", () => {
         lang,
         B1_EXPORTED_AT
       );
-      const base = `procuracost-model-2.3.1-fleet_tco_reframing-${lang}`;
+      const base = `procuracost-model-2.3.2-fleet_tco_reframing-${lang}`;
 
       expect(artifacts.map(({ format, filename, mime }) => ({
         format,
@@ -252,7 +252,7 @@ describe("decision-record download actions", () => {
     renderAndSaveDecisionRecordPdf(doc as never, copy);
 
     expect(doc.saved).toEqual([
-      "procuracost-model-2.3.1-fleet_tco_reframing-pl.pdf",
+      "procuracost-model-2.3.2-fleet_tco_reframing-pl.pdf",
     ]);
   });
 

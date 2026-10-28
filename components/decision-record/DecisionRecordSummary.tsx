@@ -1,5 +1,5 @@
 import { decisionRecordT, researchExportV2T, type Lang } from "@/lib/i18n";
-import type { DecisionRecordV2 } from "@/lib/model-v2";
+import { centralDelaySensitivity, centralDifferenceWithoutDelay, type DecisionRecordV2 } from "@/lib/model-v2";
 
 export interface DecisionRecordSummaryProps {
   lang: Lang;
@@ -28,6 +28,7 @@ export default function DecisionRecordSummary({
   const tx = decisionRecordT[lang].delta;
   const rangeTx = researchExportV2T[lang].range;
   const { deltaCost, deltaCostOuterEnvelope } = record.comparison;
+  const sensitivity = centralDelaySensitivity(record);
   const centralInterpretation =
     deltaCost > 0 ? tx.positive : deltaCost < 0 ? tx.negative : tx.zero;
   const crossesZero =
@@ -43,6 +44,26 @@ export default function DecisionRecordSummary({
           {formatCurrency(deltaCost, lang)}
         </p>
         <p className="mt-1 text-xs text-gray-500">{tx.centralLabel}</p>
+      </div>
+
+      <div>
+        <p className="text-sm font-medium text-gray-700">{tx.withoutDelay}</p>
+        <p className="mt-1 font-mono text-base tabular-nums text-gray-900">
+          {formatCurrency(centralDifferenceWithoutDelay(record), lang)}
+        </p>
+      </div>
+
+      <div>
+        <p className="text-sm font-medium text-gray-700">{tx.delaySensitivity}</p>
+        <p className="mt-1 text-xs text-gray-600">{tx.delaySensitivityNote}</p>
+        <dl className="mt-2 space-y-1 text-sm text-gray-700">
+          {(["low", "central", "high"] as const).map((level) => (
+            <div key={level} className="flex flex-wrap gap-x-2">
+              <dt>{rangeTx[level]} ({formatCurrency(record.assumptions.dailyCostOfInaction[level], lang)}):</dt>
+              <dd className="font-mono tabular-nums">{formatCurrency(sensitivity[level], lang)}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
 
       <dl className="grid gap-3 border-y border-gray-200 py-4 font-mono text-xs tabular-nums text-gray-700 sm:grid-cols-3">

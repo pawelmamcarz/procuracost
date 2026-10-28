@@ -3,6 +3,8 @@ export * from "./calculation-input";
 export * from "./calculator-url";
 export {
   buildDecisionRecordV2,
+  centralDifferenceWithoutDelay,
+  centralDelaySensitivity,
   nativeV2MigrationMetadata,
   type CalculationAnchorRecord,
   type DecisionAlternativeRecord,

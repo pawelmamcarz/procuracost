@@ -70,8 +70,8 @@ describe("native model 2.3 replication artifacts", () => {
     expect(Object.keys(bundle)).toEqual(["metadata", "scenarios"]);
     expect(bundle.metadata).toEqual({
       schemaVersion: 2,
-      modelVersion: "2.3.1",
-      calibrationId: "source-scenario-2026-08-28",
+      modelVersion: "2.3.2",
+      calibrationId: "source-scenario-2026-10-28",
       legalRulesetId: "pl-pzp-2026-2027",
       currency: "PLN",
       deltaOperation: "formalSequential_minus_adaptiveCompliant",

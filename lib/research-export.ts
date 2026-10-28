@@ -1,5 +1,6 @@
 import {
   modelV2T,
+  decisionRecordT,
   researchExportV2T,
   type Lang,
 } from "./i18n";
@@ -10,6 +11,7 @@ import type {
   DecisionRecordV2,
   MonetaryDriverRecord,
 } from "./model-v2/decision-record";
+import { centralDelaySensitivity, centralDifferenceWithoutDelay } from "./model-v2/decision-record";
 import { MODEL_V2_METADATA, type AlternativeId } from "./model-v2/domain";
 import type { ScenarioV2Id } from "./model-v2/scenarios";
 
@@ -28,6 +30,7 @@ export interface ResearchJsonV2 {
   alternatives: DecisionRecordV2["alternatives"];
   results: {
     comparison: DecisionRecordV2["comparison"];
+    delaySensitivity: { withoutDelay: number; byRate: RangeValues };
     drivers: DecisionRecordV2["drivers"];
     coverage: DecisionRecordV2["coverage"];
     nonMonetizedDimensions: DecisionRecordV2["nonMonetizedDimensions"];
@@ -122,7 +125,7 @@ function scenarioName(record: DecisionRecordV2, lang: Lang): string {
 function formatNumber(value: number, lang: Lang): string {
   return new Intl.NumberFormat(lang === "en" ? "en-GB" : "pl-PL", {
     minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+    maximumFractionDigits: 3,
   }).format(value);
 }
 
@@ -135,7 +138,7 @@ function formatCurrency(value: number, lang: Lang): string {
       maximumFractionDigits: 2,
     }).format(value);
   }
-  return `${formatNumber(value, lang)} PLN`;
+  return `${new Intl.NumberFormat("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value)} PLN`;
 }
 
 function formatIsoDate(value: string, lang: Lang): string {
@@ -301,6 +304,7 @@ export function buildResearchJson(
     alternatives: record.alternatives,
     results: {
       comparison: record.comparison,
+      delaySensitivity: { withoutDelay: centralDifferenceWithoutDelay(record), byRate: centralDelaySensitivity(record) },
       drivers: record.drivers,
       coverage: record.coverage,
       nonMonetizedDimensions: record.nonMonetizedDimensions,
@@ -485,6 +489,14 @@ export function buildResearchCsv(
   }
 
   rows.push(
+    csvRow(locale, {
+      section: "comparison",
+      record_id: "formalSequential_minus_adaptiveCompliant",
+      field_id: "withoutDelay",
+      value: centralDifferenceWithoutDelay(record),
+      localized_label: decisionRecordT[locale].delta.withoutDelay,
+    }),
+    rangeCsvRows(locale, "comparison", "formalSequential_minus_adaptiveCompliant", "delaySensitivityByRate", centralDelaySensitivity(record), { localized_label: decisionRecordT[locale].delta.delaySensitivity }),
     csvRow(locale, {
       section: "comparison",
       record_id: "formalSequential_minus_adaptiveCompliant",
@@ -1002,6 +1014,11 @@ export function buildResearchMarkdown(
       record.comparison.deltaCostOuterEnvelope.high,
       locale
     )} |`,
+    "",
+    `**${decisionRecordT[locale].delta.withoutDelay}:** ${formatCurrency(centralDifferenceWithoutDelay(record), locale)}`,
+    "",
+    `**${decisionRecordT[locale].delta.delaySensitivity}:** ${decisionRecordT[locale].delta.delaySensitivityNote}`,
+    ...(["low", "central", "high"] as const).map((level) => `- ${tx.range[level]} (${formatCurrency(record.assumptions.dailyCostOfInaction[level], locale)}): ${formatCurrency(centralDelaySensitivity(record)[level], locale)}`),
     "",
     `## ${tx.sections.drivers}`,
     "",

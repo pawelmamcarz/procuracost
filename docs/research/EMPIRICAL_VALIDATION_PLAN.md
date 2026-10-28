@@ -1,6 +1,6 @@
 # Plan walidacji empirycznej ProcuraCost
 
-**Wersja dokumentu:** 2.0 dla modelu 2.3.0, 29 sierpnia 2026
+**Wersja dokumentu:** 2.0, pierwotnie dla modelu 2.3.0; aktualizacja dla modelu 2.3.2
 **Aktualizacja metodologiczna:** 21 września 2026; grupy kontrolne w wariancie DiD.
 **Status:** projekt do oceny promotora. Nie zawiera wyników i nie opisuje
 zebranych danych.
@@ -49,12 +49,13 @@ preskryptywności organizacyjnej.
 
 ## 2. Ekspozycja badawcza
 
-### 2.1 Indeks preskryptywności ex ante
+### 2.1 Cechy projektu procesu ex ante
 
-Na potrzeby badania proponowany jest indeks preskryptywności projektu przebiegu
-procesu obowiązującego w chwili autoryzacji potrzeby. Indeks jest ekspozycją
-badawczą. Nie jest parametrem modelu 2.3, wynikiem profilu w serwisie,
-miernikiem dojrzałości ani rekomendacją przebiegu.
+Ekspozycjami są osobno mierzone cechy projektu przebiegu procesu obowiązującego
+w chwili autoryzacji potrzeby. Pomocniczy indeks preskryptywności można
+rozważyć wyłącznie po pozytywnym pilotażu i uzasadnieniu jego konstrukcji. Nie
+jest parametrem modelu 2.3, wynikiem profilu w serwisie, miernikiem dojrzałości
+ani rekomendacją przebiegu.
 
 Źródłem są wersje polityki zakupowej, macierzy uprawnień i skonfigurowanego
 obiegu zakupowego obowiązujące w dacie `exposure_reference_at`. Ta data musi być
@@ -70,9 +71,10 @@ ustalona przed analizą wyników.
 | Wymagane artefakty | liczba obowiązkowych dokumentów bez dopuszczonego wariantu uproszczonego | polityka |
 | Autonomia zespołu | odwrócona możliwość zmiany zakresu bez ponownego zatwierdzenia | polityka i log zmian |
 
-Pozycje są standaryzowane i sumowane z równymi wagami wyłącznie po pozytywnym
-pilotażu pomiaru. Składowe należy również raportować osobno. Alternatywne wagi
-mają status eksploracyjny.
+Składowe należy analizować i raportować osobno. Ich standaryzacja i sumowanie z
+równymi wagami może służyć wyłącznie analizie pomocniczej po pozytywnym
+pilotażu pomiaru. Alternatywne wagi mają status eksploracyjny. Dobór głównych
+cech oraz sposób uwzględnienia wielokrotnych porównań wymagają prerejestracji.
 
 Z ekspozycji wyklucza się długość ścieżki krytycznej i udział czasu
 oczekiwania. Obie wielkości współtworzą wynik czasu, więc ich włączenie
@@ -93,10 +95,10 @@ powodowałoby mechaniczne powiązanie ekspozycji z wynikiem.
 
 ## 3. Hipotezy i dopasowanie do komponentów
 
-- **H1a:** większa preskryptywność ex ante wiąże się z większą liczbą dni od
+- **H1a:** większa liczba wymaganych bram decyzyjnych ex ante wiąże się z większą liczbą dni od
   zatwierdzenia potrzeby do podpisania umowy, warunkowo względem złożoności,
   granicy prawnej, rodziny procedury i liczby właściwych obowiązkowych dni
-  oczekiwania. **H1b:** przy tych samych kontrolach wiąże się z większą liczbą
+  oczekiwania. **H1b:** przy tych samych kontrolach liczba bram wiąże się z większą liczbą
   godzin koordynacji kupca, prawnika i kierownika.
 - **H2:** szerszy dostęp do rynku określony ex ante wiąże się z większą liczbą
   ważnych ofert i niższą ceną wyboru względem prerejestrowanego, niezależnego
@@ -236,7 +238,7 @@ interwencji. Ich liczbę określi symulacja po pilotażu.
 
 Podstawowa specyfikacja:
 
-`log(dni) = beta x prescriptiveness + gamma'X + alpha_organizacja + delta_CPV + theta_rok + epsilon`
+`log(dni) = beta' x cechy_procesu + gamma'X + alpha_organizacja + delta_CPV + theta_rok + epsilon`
 
 Zdarzenia są porównywane wewnątrz organizacji i kategorii. Błędy standardowe są
 klastrowane na poziomie organizacji. Przy mniej niż 30 klastrach planowany jest
@@ -405,6 +407,10 @@ deterministyczny.
 
 ## 13. Harmonogram decyzyjny
 
+Poniższa sekwencja jest wariantem orientacyjnym, a nie zatwierdzonym
+harmonogramem. Terminy i liczebności należy ustalić po inwentaryzacji danych,
+rozmowach z partnerami i pilotażu wykonalności.
+
 | Okres | Rezultat |
 |---|---|
 | Miesiąc 1 | zamrożony podręcznik kodowania i test na dokumentach publicznych |
@@ -417,8 +423,10 @@ deterministyczny.
 
 Największym ryzykiem wykonalności jest dostęp do wersjonowanych danych
 organizacyjnych z kilku niezależnych organizacji. Jeżeli rekrutacja nie zapewni
-wystarczającej liczby klastrów, zakres należy ograniczyć do walidacji pomiaru,
-asocjacji i studium wykonalności.
+wystarczającej liczby klastrów, zakres należy ograniczyć do walidacji pomiaru
+i studium wykonalności. Analizę asocjacji można prowadzić tylko wtedy, gdy
+dostępne zdarzenia są dostatecznie porównywalne, a ograniczenia próby pozwalają
+na jej wiarygodną interpretację.
 
 ## 14. Etyka, bezpieczeństwo i replikacja
 

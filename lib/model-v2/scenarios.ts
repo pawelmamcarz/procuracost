@@ -205,10 +205,8 @@ export function createCompetitionTransferStress(): CalibratedValue {
 // The rigidity index sums seven category z-scores, so a one-standard-deviation
 // increase in each category maps to the full model profile of 1 and yields
 // 7 x coefficient = 0.098, 0.077 and 0.084 additional amendments per
-// contract-year. The range is monetised only where a comparison explicitly
-// declares a contract-rigidity difference and names the more rigid
-// alternative, with declared contract years and cost per amendment;
-// it never follows from a workflow label.
+// contract-year. Frequency does not establish a monetary cost, so this
+// evidence is not used to monetise differences between alternatives.
 export function createAmendmentDifferentialRange(): CalibratedValue {
   return {
     low: 0.077,
@@ -777,8 +775,8 @@ const SCENARIO_SEEDS: ScenarioSeed[] = [
     dailyCostOfInaction: 0,
     roleDailyRates: DEFAULT_ROLE_RATES,
     retainedWorkflowTemplateId: "policy_control",
-    pathCompetitionDiffers: true,
-    competitionDisadvantagedAlternative: "adaptiveCompliant",
+    pathCompetitionDiffers: false,
+    competitionDisadvantagedAlternative: null,
     evidenceIds: [COMPETITION_EVIDENCE_ID],
     constructs: ["workflow_duration", "competition_transfer"],
   },

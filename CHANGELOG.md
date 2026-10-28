@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-10-28: model 2.3.2
+
+- Assign a new model version and calibration identifier to the revised
+  scenario registry and amendment-cost boundary. Amendment frequency remains
+  evidence and is not converted to money. The standard-service starting
+  scenario assumes equal supplier access; a competition stress is optional.
+- Report the central difference without delay cost and its sensitivity to
+  daily delay cost in the record and research exports.
+- Reject links and saved drafts from models 2.3.0 and 2.3.1 as incompatible rather than
+  silently recalculating them under the new rules. Existing browser storage is
+  not automatically deleted; saving a new draft can replace the old draft.
+- Run Turbopack's Node evaluation in worker threads. This avoids the local
+  socket failure observed with the child-process strategy in Codex on macOS.
+- Update Next.js and its ESLint preset to 16.4.3, and refresh vulnerable
+  transitive packages within their allowed ranges before the release.
+
 ## 2026-10-23: model 2.3.1
 
 Validation pass. No scenario economic value,

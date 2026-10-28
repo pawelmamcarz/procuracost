@@ -1,3 +1,4 @@
+import { competitionStressDraft } from "@/tests/fixtures/competition-stress";
 import { describe, expect, it } from "vitest";
 
 import { encodeInputsToParams } from "@/components/calculator-url";
@@ -139,8 +140,8 @@ describe("model 2.3 pure research exports", () => {
     ]);
     expect(payload.metadata).toEqual({
       schemaVersion: 2,
-      modelVersion: "2.3.1",
-      calibrationId: "source-scenario-2026-08-28",
+      modelVersion: "2.3.2",
+      calibrationId: "source-scenario-2026-10-28",
       legalRulesetId: "pl-pzp-2026-2027",
       scenarioId: "fleet_tco_reframing",
       currency: "PLN",
@@ -151,6 +152,7 @@ describe("model 2.3 pure research exports", () => {
     expect(payload.alternatives).toEqual(record.alternatives);
     expect(payload.results).toEqual({
       comparison: record.comparison,
+      delaySensitivity: expect.objectContaining({ withoutDelay: expect.any(Number), byRate: expect.any(Object) }),
       drivers: record.drivers,
       coverage: record.coverage,
       nonMonetizedDimensions: record.nonMonetizedDimensions,
@@ -422,10 +424,10 @@ describe("model 2.3 pure research exports", () => {
 
   it("uses one exact base filename across locales", () => {
     expect(researchExportBaseName("fleet_tco_reframing", "pl")).toBe(
-      "procuracost-model-2.3.1-fleet_tco_reframing-pl"
+      "procuracost-model-2.3.2-fleet_tco_reframing-pl"
     );
     expect(researchExportBaseName("fleet_tco_reframing", "en")).toBe(
-      "procuracost-model-2.3.1-fleet_tco_reframing-en"
+      "procuracost-model-2.3.2-fleet_tco_reframing-en"
     );
   });
 
@@ -550,7 +552,7 @@ describe("model 2.3 pure research exports", () => {
 
   it("exports the explicitly disadvantaged competition side in every research format", () => {
     const record = buildDecisionRecordV2(
-      createScenarioDraft("stable_private_standard_service")
+      competitionStressDraft()
     );
     const json = buildResearchJson(record, "en", EXPORTED_AT);
     const csv = buildResearchCsv(record, "en");
@@ -565,6 +567,16 @@ describe("model 2.3 pure research exports", () => {
     expect(markdown).toContain(
       "| Alternative with restricted supplier access | Adaptive compliant alternative |"
     );
+  });
+
+  it("exports the delay sensitivity alongside the comparison", () => {
+    const record = buildDecisionRecordV2(createScenarioDraft("fleet_tco_reframing"));
+    const json = buildResearchJson(record, "en", EXPORTED_AT);
+    expect(json.results.delaySensitivity.withoutDelay).toBe(
+      record.comparison.deltaCost - record.drivers.find(({ id }) => id === "delay_cost")!.contribution.central
+    );
+    expect(buildResearchCsv(record, "en")).toContain("withoutDelay");
+    expect(buildResearchMarkdown(record, "en")).toContain("Difference excluding delay cost");
   });
 
   it("serialises predecessor IDs and case-specific critical paths in stable CSV rows", () => {
@@ -629,6 +641,12 @@ describe("model 2.3 pure research exports", () => {
       "confidence",
     ]) {
       expect(keys).not.toContain(forbidden);
+      if (forbidden === "rigid" || forbidden === "flexible") {
+        const word = new RegExp(`\\b${forbidden}\\b`, "i");
+        expect(markdown).not.toMatch(word);
+        expect(csv).not.toMatch(word);
+        continue;
+      }
       expect(markdown.toLowerCase()).not.toContain(forbidden.toLowerCase());
       expect(csv.toLowerCase()).not.toContain(forbidden.toLowerCase());
     }

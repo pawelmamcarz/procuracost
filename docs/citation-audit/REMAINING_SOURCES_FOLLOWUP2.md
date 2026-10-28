@@ -14,7 +14,7 @@ Checked **22 September 2026**. Scope: the four unresolved items in [REMAINING_SO
 
 **Access boundary, carried forward:** the OUP version of record (`/jleo/article/39/1/281/6462048`, and the VOR PDF link from Crossref) returned HTTP 403 (Cloudflare) or timed out from this environment; SSRN delivery timed out. The published article itself was therefore not read directly. Identifying MPRA v5c with the published text rests on (a) its own JLEO citation declaration, (b) its post-print date, (c) title match with Crossref, (d) OpenAlex's OA location record. A marginal possibility that the VOR differs from v5c remains.
 
-**Calibration consequence (applied):** for the published version the defensible effect is **0.077–0.098 amendments per contract-year (7.7–9.8 p.p.)**, from coefficients 0.014/0.011/0.012. The legacy frozen high value 0.105 is supported only by the working paper (0.015) and is now documented as such; it must not be attributed to the published article.
+**Calibration consequence (applied):** for the verified post-print the effect is **0.077–0.098 additional amendments per contract-year**, from coefficients 0.014/0.011/0.012. This frequency is not a percentage-point change or a monetary cost. The legacy frozen high value 0.105 is supported only by the working paper (0.015) and is now documented as such; it must not be attributed to the post-print.
 
 ## 2. January 2026 Annual ProcureCon CPO Report: denominators RESOLVED, N still unknown
 

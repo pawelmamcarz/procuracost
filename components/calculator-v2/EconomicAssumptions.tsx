@@ -373,7 +373,7 @@ export function EconomicAssumptions({
               <Equal aria-hidden="true" className="h-3.5 w-3.5" />
               {assumptions.amendmentDifferential.low} /{" "}
               {assumptions.amendmentDifferential.central} /{" "}
-              {assumptions.amendmentDifferential.high} {tx.rateUnit}
+              {assumptions.amendmentDifferential.high} {tx.amendmentUnit}
             </dd>
           </div>
           <div className="flex items-center justify-between gap-4 py-3">

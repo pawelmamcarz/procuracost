@@ -37,7 +37,7 @@ describe("model 2.3 command-line diagnostics and replication", () => {
     const second = runScript("scripts/recompute.ts");
 
     expect(second).toBe(first);
-    expect(first).toContain("Model 2.3.1 diagnostics");
+    expect(first).toContain("Model 2.3.2 diagnostics");
     let previous = -1;
     for (const scenarioId of SCENARIO_V2_IDS) {
       const current = first.indexOf(scenarioId);
@@ -50,7 +50,7 @@ describe("model 2.3 command-line diagnostics and replication", () => {
   it("runs the native swap-symmetry invariant without sign quotas", () => {
     const output = runScript("scripts/symmetry-sweep.ts");
 
-    expect(output).toContain("Model 2.3.1 swap-symmetry sweep");
+    expect(output).toContain("Model 2.3.2 swap-symmetry sweep");
     expect(output).toContain("Examined inputs: 10");
     expect(output).toContain("Invariant failures: 0");
     expect(output).not.toMatch(/favours|winner|positive|negative|confidence/i);
@@ -73,6 +73,6 @@ describe("model 2.3 command-line diagnostics and replication", () => {
     expect(
       JSON.parse(readFileSync(join(outputDirectory, "built-in-scenarios.json"), "utf8"))
         .metadata.modelVersion
-    ).toBe("2.3.1");
+    ).toBe("2.3.2");
   });
 });
