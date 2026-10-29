@@ -27,7 +27,7 @@ później, w tym błędy wprowadzone podczas korygowania poprzednich wersji.
 
 ## 1. Uwagi z poprzedniej recenzji i ich obsługa
 
-Z Pana recenzji modelu 1.x wynikło rozróżnienie **Direct/Indirect × Upstream/Downstream** —
+Z Pana recenzji modelu 1.x wynikło rozróżnienie **Direct/Indirect × Upstream/Downstream**:
 uznanie, że model nie może traktować wszystkich zakupów jednakowo. Wprowadzono je w wydaniu
 2026.19.3.0 z jawną atrybucją w changelogu.
 
@@ -51,8 +51,8 @@ pozornie aktywne parametry i zapisałem wprost w `docs/MODEL_PARAMETERS.md`,
 których wymiarów kontekst **nie** dotyczy.
 Ponowne wprowadzenie któregokolwiek z nich wymaga argumentu o konkretnym mechanizmie, a nie stałej.
 
-Jeżeli uzna Pan, że kontekst powinien sięgać dalej — w szczególności do częstości aneksów
-i do ekspozycji na obejścia, gdzie istnieje argument merytoryczny — to jest to decyzja
+Jeżeli uzna Pan, że kontekst powinien sięgać dalej, w szczególności do częstości aneksów
+i do ekspozycji na obejścia, gdzie istnieje argument merytoryczny, to jest to decyzja
 do podjęcia z Panem, a nie do zaszycia w kodzie.
 
 ---
@@ -79,7 +79,7 @@ kanału cenowego.
 
 ### 2.2. Kotwica „OECD", której nie ma
 
-Parametr `CORRUPTION_RISK_CONTEXT` — żywy, bo skaluje koszt selekcji — miał w komentarzu
+Parametr `CORRUPTION_RISK_CONTEXT` (żywy, bo skaluje koszt selekcji) miał w komentarzu
 uzasadnienie: „kierunek porządkowy wzięty z OECD". W całym korpusie nie ma żadnej publikacji
 OECD: ani tytułu, ani roku, ani tabeli. Nazwa organizacji bez publikacji jest niesprawdzalna.
 
@@ -88,7 +88,7 @@ podstawy.
 
 ### 2.3. Odwrócona populacja przy tej samej kotwicy
 
-Ten sam komentarz wiązał wartość `pzp_eu = 1,0` — maksymalne ryzyko dyskrecji — z pracą
+Ten sam komentarz wiązał wartość `pzp_eu = 1,0` (maksymalne ryzyko dyskrecji) z pracą
 Szucsa. Szucs identyfikuje swój efekt na zamówieniach **poniżej progu ok. 25 mln HUF**
 (ok. 90 tys. USD), czyli na najmniejszym końcu rozkładu wartości. Przypisanie maksymalnej
 wartości największym, najszerzej publikowanym postępowaniom unijnym odwraca jego populację.
@@ -111,8 +111,8 @@ kotwicą rzędu wielkości**. Zapisane też, że interpretowalna jest wyłączni
 
 Badanie EC (2011) było opisywane jako zewnętrzna kontrola zdroworozsądkowa kosztów
 administracyjnych. Żadnego porównania nigdy nie wykonano, żadna liczba z tego badania nie
-wchodzi do modelu. Zdegradowane do „kontekst wyłącznie". Odnotowany też jego własny wynik —
-że ograniczenia dyskrecji wiążą się z wyższymi cenami — który działa **przeciwko** kanałowi,
+wchodzi do modelu. Zdegradowane do „kontekst wyłącznie". Odnotowany też jego własny wynik,
+że ograniczenia dyskrecji wiążą się z wyższymi cenami, który działa **przeciwko** kanałowi,
 który model importuje od Szucsa.
 
 ---
@@ -137,7 +137,7 @@ tożsamość rachunkowa.
 Po rozłożeniu wyniku okazało się, że **po odjęciu tożsamości opóźnienia ścieżka
 formalna jest tańsza na koszcie procesu w 7 z 10 scenariuszy wbudowanych.** Teza Tunnel–Field
 w tej parametryzacji jest opowieścią o zwłoce, nie o koszcie procesu. To twierdzenie węższe,
-ale sprawdzalne — i odwrotne do tego, co sugerował nagłówek 2.1.
+ale sprawdzalne i odwrotne do tego, co sugerował nagłówek 2.1.
 
 Powiązany defekt: **próg kosztu dnia bezczynności**, który był w pakiecie 2.1 przedstawiany
 w materiałach jako funkcja modelu, zwracał 0 w siedmiu scenariuszach i `null` w trzech. Nigdy nie
@@ -150,8 +150,8 @@ usunięte; próg raportuje teraz wartość surową wraz ze statusem.
 
 Working paper ma teraz sekcję 4.1, która mówi wprost coś, czego wcześniej nie mówił żaden
 dokument: **architektura modelu nie jest symetryczna.** W większości typów procesu kanały są
-z konstrukcji uporządkowane na korzyść adaptacji; jedyny kanał mogący sprzyjać formalności —
-selekcja — jest ograniczony do ok. 0,3% wartości kontraktu dla `pzp_eu`, podczas gdy kanał
+z konstrukcji uporządkowane na korzyść adaptacji; jedyny kanał mogący sprzyjać formalności
+(selekcja) jest ograniczony do ok. 0,3% wartości kontraktu dla `pzp_eu`, podczas gdy kanał
 opóźnienia jest nieograniczony. Centralnie dwa z siedmiu wymiarów są tożsamościowo zerowe.
 
 Ale przyczyna leżała głębiej, niż w parametrach, i warto ją nazwać dokładnie.
@@ -162,7 +162,7 @@ Ale przyczyna leżała głębiej, niż w parametrach, i warto ją nazwać dokła
 szybsza" nie było więc wynikiem, tylko tożsamością wpisaną w dane wejściowe. Dodatkowo
 ułamek nakładu pracy był ucięty do 1, więc wolniejsza adaptacja była niewyrażalna nawet
 w zasadzie. Przegląd wrażliwości zwracał **0 wyników odpornie pro-formalnych na 11 340
-konfiguracji** — liczba opisująca szablony, nie zamówienia.
+konfiguracji**: liczba opisująca szablony, nie zamówienia.
 
 Model 2.2 dodaje typ **zakupu odkrywczego**: wymaganie powstaje w trakcie, adaptacja kupuje
 uczenie się czasem (współprojektowanie, runda przeprojektowania, czasem porzucona runda
@@ -174,12 +174,12 @@ osłabia. Test może teraz zawieść w obie strony.
 ### 4.2. Przedział niepewności obejmował niewłaściwe wielkości
 
 Drugi, poważniejszy problem: przedział zmieniał **pięć skalarów z literatury**, a trzymał
-nieruchomo **koszt dnia bezczynności i czasy etapów** — czyli dokładnie te dwa wejścia, które
+nieruchomo **koszt dnia bezczynności i czasy etapów**, czyli dokładnie te dwa wejścia, które
 niosą 80–99% wyniku. Model raportował najwęższy zakres tam, gdzie podstawa wartości była najmniej pewna.
 
 Model 2.2.1 dokłada **oś strukturalną**: koszt dnia ×0,25 … ×4, czasy etapów nieobowiązkowych
 ×0,7 … ×1,3. Ustawowe terminy PZP pozostają nienaruszone w obu osiach. Obie osie są
-raportowane osobno, żeby było widać, która niesie szerokość — i w każdym scenariuszu
+raportowane osobno, żeby było widać, która niesie szerokość. W każdym scenariuszu
 z różnicą dni niesie ją strukturalna.
 
 **Wynik działa przeciwko tezie i to jest najważniejsza liczba w tej nocie:**
@@ -187,11 +187,11 @@ z różnicą dni niesie ją strukturalna.
 | | tylko oś dowodowa | obie osie (kalibracja 2.2.2) |
 |---|---:|---:|
 | scenariusze przechodzące przez zero | 5 z 10 | **10 z 10** |
-| przegląd: odpornie pro-formalne | — | 1 042 z 12 960 |
-| przegląd: odpornie pro-adaptacyjne | — | 5 374 z 12 960 |
+| przegląd: odpornie pro-formalne | b.d. | 1 042 z 12 960 |
+| przegląd: odpornie pro-adaptacyjne | b.d. | 5 374 z 12 960 |
 
 **Po audycie kalibracji żaden scenariusz wbudowany nie wskazuje odpornie żadnej
-ścieżki.** Obie liczby odporności spadły, nie tylko jedna — przedział jest szerszy uczciwie,
+ścieżki.** Obie liczby odporności spadły, nie tylko jedna. Przedział jest szerszy uczciwie,
 a nie przechylony.
 
 Jest to twierdzenie węższe niż w poprzednich wersjach, ale lepiej odpowiada granicom
@@ -208,13 +208,13 @@ konstrukcja wymaga uzasadnienia eksperckiego zamiast oszacowania.
 ## 4a. Baza czasowa
 
 Model 2.1 nie miał bazy czasowej. Mnożył roczną częstość aneksów przez czas trwania umowy
-bez dyskontowania, jednocześnie ograniczając pulę TCO do trzech lat — dziesięcioletni CAPEX
+bez dyskontowania, jednocześnie ograniczając pulę TCO do trzech lat. Dziesięcioletni CAPEX
 wnosił więc dziesięć pełnowartościowych lat aneksów przeciwko trzyletniej puli, a `total`
 sumował koszt zdarzenia z niedyskontowanym strumieniem wieloletnim.
 
 Wszystkie raportowane wielkości są teraz **wartością bieżącą na moment udzielenia
 zamówienia**. Oba kanały cyklu życia używają jednego czynnika annuitetowego. Stopa 0
-odtwarza arytmetykę 2.1 co do grosza — i to jest asercja testowa, nie deklaracja. Domyślnie
+odtwarza arytmetykę 2.1 co do grosza, co jest asercją testową, nie deklaracją. Domyślnie
 4% realnie, jako jawne wejście kalkulatora, obecne w linkach i w śladzie replikacyjnym.
 
 ---
@@ -226,7 +226,7 @@ poważniejsze niż nieścisłość akademicka:
 
 1. **Brakowało progu dla usług społecznych** (art. 359 PZP: 750 000 EUR = 3 232 500 zł).
    Zamówienie na usługi społeczne za 1,5 mln zł było klasyfikowane powyżej progu unijnego,
-   a tryb podstawowy — właściwy, tańszy i szybszy — był odcinany. To dotyczy dużej części
+   a tryb podstawowy (właściwy, tańszy i szybszy) był odcinany. To dotyczy dużej części
    wydatków samorządowych.
 2. **Zamawiający sektorowi i obronni** byli przepuszczani przez drabinę progów dla zamówień
    klasycznych. Sektorowa spółka wodociągowa kupująca dostawy za 500 tys. zł dostawała
@@ -234,7 +234,7 @@ poważniejsze niż nieścisłość akademicka:
 
 Pierwszy błąd poprawiono, a drugi rozwiązano przez **odmowę doradzenia** zamiast nieudokumentowanego wnioskowania.
 Oba mają testy regresyjne. Dodatkowo narzędzie ujawnia teraz, które legalne tryby jego filtr
-pomija i dlaczego — bo użytkownik, który dostaje obcięty zbiór wyboru bez informacji o tym,
+pomija i dlaczego, bo użytkownik, który dostaje obcięty zbiór wyboru bez informacji o tym,
 może zrezygnować z trybu dopuszczalnego przez prawo.
 
 ---
@@ -266,7 +266,7 @@ przechodzi przez zero**. Model nie wskazuje odpornego zwycięzcy w żadnym z nic
 Nie proszę o ocenę wyników empirycznych, bo ich nie ma. Proszę o ocenę trzech rzeczy:
 
 1. Czy rozbicie ΔC i jawne postawienie asymetrii architektury czynią z tego model, który
-   da się obronić na seminarium — czy przeciwnie, pokazują, że kanał opóźnienia trzeba
+   da się obronić na seminarium, czy przeciwnie pokazują, że kanał opóźnienia trzeba
    z modelu w ogóle wyjąć.
 2. Czy przy takiej konstrukcji wkładem jest model kosztowy, czy raczej projekt empiryczny,
    który go testuje. Moja deklaracja jest w `03-decisions-needed.md`; poprzednia wersja tego
