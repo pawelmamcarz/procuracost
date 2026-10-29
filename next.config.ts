@@ -1,13 +1,19 @@
 import type { NextConfig } from "next";
+import { existsSync, lstatSync, realpathSync } from "node:fs";
+import { dirname } from "node:path";
 import { resolveSiteVersion } from "./lib/version-core";
 
 const buildVersion = resolveSiteVersion(process.env.NEXT_PUBLIC_VERSION);
+const linkedDependencies = existsSync("node_modules") && lstatSync("node_modules").isSymbolicLink()
+  ? dirname(realpathSync("node_modules"))
+  : undefined;
 
 const nextConfig: NextConfig = {
   turbopack: {
     root: process.cwd(),
   },
   experimental: {
+    ...(linkedDependencies ? { turbopackAdditionalRoots: { linkedDependencies: { path: linkedDependencies } } } : {}),
     globalNotFound: true,
     turbopackPluginRuntimeStrategy: "workerThreads",
     // `next dev` bez limitu sterty w NODE_OPTIONS ustawia dziecku
