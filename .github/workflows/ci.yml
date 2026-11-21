@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: [self-hosted, Linux, X64, bielik]
+    runs-on: [self-hosted, Linux, X64, farma]
     steps:
       - uses: actions/checkout@v4
 
